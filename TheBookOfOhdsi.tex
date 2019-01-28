@@ -25,6 +25,7 @@
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={The Book of OHDSI},
+            pdfauthor={Observational Health Data Science and Informatics},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -119,8 +120,9 @@
   \title{The Book of OHDSI}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-    \author{}
-    \preauthor{}\postauthor{}
+    \author{Observational Health Data Science and Informatics}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
     \date{2019-01-28}
@@ -141,129 +143,205 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\chapter{Prerequisites}\label{prerequisites}
+\chapter*{Welcome}\label{welcome}
+\addcontentsline{toc}{chapter}{Welcome}
 
-This is a \emph{sample} book written in \textbf{Markdown}. You can use
-anything that Pandoc's Markdown supports, e.g., a math equation
-\(a^2 + b^2 = c^2\).
+This is a book about OHDSI
 
-The \textbf{bookdown} package can be installed from CRAN or Github:
+\part{The OHDSI Community}\label{part-the-ohdsi-community}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\StringTok{"bookdown"}\NormalTok{)}
-\CommentTok{# or the development version}
-\CommentTok{# devtools::install_github("rstudio/bookdown")}
-\end{Highlighting}
-\end{Shaded}
+\chapter{Mission, vision, values}\label{MissionVissionValues}
 
-Remember each Rmd file contains one and only one chapter, and a chapter
-is defined by the first-level heading \texttt{\#}.
+\section{Our Mission}\label{our-mission}
 
-To compile this example to PDF, you need XeLaTeX. You are recommended to
-install TinyTeX (which includes XeLaTeX):
-\url{https://yihui.name/tinytex/}.
+\begin{quote}
+To improve health by empowering a community to collaboratively generate
+the evidence that promotes better health decisions and better care.
+\end{quote}
 
-\chapter{Introduction}\label{intro}
+\section{Our Vision}\label{our-vision}
 
-You can label chapter and section titles using \texttt{\{\#label\}}
-after them, e.g., we can reference Chapter \ref{intro}. If you do not
-manually label them, there will be automatic labels anyway, e.g.,
-Chapter \ref{methods}.
+\begin{quote}
+A world in which observational research produces a comprehensive
+understanding of health and disease.
+\end{quote}
 
-Figures and tables with captions will be placed in \texttt{figure} and
-\texttt{table} environments, respectively.
+\section{Our Objectives}\label{our-objectives}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{par}\NormalTok{(}\DataTypeTok{mar =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, .}\DecValTok{1}\NormalTok{, .}\DecValTok{1}\NormalTok{))}
-\KeywordTok{plot}\NormalTok{(pressure, }\DataTypeTok{type =} \StringTok{'b'}\NormalTok{, }\DataTypeTok{pch =} \DecValTok{19}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+\begin{itemize}
+\item
+  \textbf{Innovation}: Observational research is a field which will
+  benefit greatly from disruptive thinking. We actively seek and
+  encourage fresh methodological approaches in our work.
+\item
+  \textbf{Reproducibility}: Accurate, reproducible, and well-calibrated
+  evidence is necessary for health improvement.
+\item
+  \textbf{Community}: Everyone is welcome to actively participate in
+  OHDSI, whether you are a patient, a health professional, a researcher,
+  or someone who simply believes in our cause.
+\item
+  \textbf{Collaboration}: We work collectively to prioritize and address
+  the real world needs of our community's participants.
+\item
+  \textbf{Openness}: We strive to make all our community's proceeds open
+  and publicly accessible, including the methods, tools and the evidence
+  that we generate.
+\item
+  \textbf{Beneficence}: We seek to protect the rights of individuals and
+  organizations within our community at all times.
+\end{itemize}
 
-\begin{figure}
+\chapter{Collaborators}\label{Collaborators}
 
-{\centering \includegraphics[width=0.8\linewidth]{TheBookOfOhdsi_files/figure-latex/nice-fig-1} 
+Map of collaborators Forums Wiki Workgroups and chapters Symposia and
+hack-a-thons
 
-}
+\chapter{Open Science}\label{OpenScience}
 
-\caption{Here is a nice figure!}\label{fig:nice-fig}
-\end{figure}
+\part{Uniform Data
+Representation}\label{part-uniform-data-representation}
 
-Reference a figure by its code chunk label with the \texttt{fig:}
-prefix, e.g., see Figure \ref{fig:nice-fig}. Similarly, you can
-reference tables generated from \texttt{knitr::kable()}, e.g., see Table
-\ref{tab:nice-tab}.
+\chapter{The Common Data Model}\label{CommonDataModel}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{knitr}\OperatorTok{::}\KeywordTok{kable}\NormalTok{(}
-  \KeywordTok{head}\NormalTok{(iris, }\DecValTok{20}\NormalTok{), }\DataTypeTok{caption =} \StringTok{'Here is a nice table!'}\NormalTok{,}
-  \DataTypeTok{booktabs =} \OtherTok{TRUE}
-\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
+Leads: Mui van Zandt \& Clair Blacketer
 
-\begin{table}[t]
+Introduction * Why OMOP/OHDSI * Person-centric model * Source values,
+standard concepts and source concepts * Vocabulary map query * Introduce
+patient story (Lauren endometriosis) * Description of her care *
+Conceptual items * Patient-centric * Time, when do things happen? *
+Cross-links, indications (we don't know what disease a drug is meant to
+treat, person by person) * We can infer * Typical questions and
+confusions people run into * Reference is not in the data, look in the
+vocabulary for reference information * Design principles, adherence
+Standardized Clinical Data Tables - do not restate the wiki here, they
+should be separate * Person Table * Overview * Structure * Conventions *
+How would Lauren look? ETC\ldots{}.similar section for each CDM table
 
-\caption{\label{tab:nice-tab}Here is a nice table!}
-\centering
-\begin{tabular}{rrrrl}
-\toprule
-Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
-\midrule
-5.1 & 3.5 & 1.4 & 0.2 & setosa\\
-4.9 & 3.0 & 1.4 & 0.2 & setosa\\
-4.7 & 3.2 & 1.3 & 0.2 & setosa\\
-4.6 & 3.1 & 1.5 & 0.2 & setosa\\
-5.0 & 3.6 & 1.4 & 0.2 & setosa\\
-\addlinespace
-5.4 & 3.9 & 1.7 & 0.4 & setosa\\
-4.6 & 3.4 & 1.4 & 0.3 & setosa\\
-5.0 & 3.4 & 1.5 & 0.2 & setosa\\
-4.4 & 2.9 & 1.4 & 0.2 & setosa\\
-4.9 & 3.1 & 1.5 & 0.1 & setosa\\
-\addlinespace
-5.4 & 3.7 & 1.5 & 0.2 & setosa\\
-4.8 & 3.4 & 1.6 & 0.2 & setosa\\
-4.8 & 3.0 & 1.4 & 0.1 & setosa\\
-4.3 & 3.0 & 1.1 & 0.1 & setosa\\
-5.8 & 4.0 & 1.2 & 0.2 & setosa\\
-\addlinespace
-5.7 & 4.4 & 1.5 & 0.4 & setosa\\
-5.4 & 3.9 & 1.3 & 0.4 & setosa\\
-5.1 & 3.5 & 1.4 & 0.3 & setosa\\
-5.7 & 3.8 & 1.7 & 0.3 & setosa\\
-5.1 & 3.8 & 1.5 & 0.3 & setosa\\
-\bottomrule
-\end{tabular}
-\end{table}
+How the CDM evolves based on community input
 
-You can write citations, too. For example, we are using the
-\textbf{bookdown} package \citep{R-bookdown} in this sample book, which
-was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
+Comparison of OMOP model to other models (VH suggestion)
 
-\chapter{Literature}\label{literature}
+\chapter{Standardized Vocabularies}\label{StandardizedVocabularies}
 
-Here is a review of existing methods.
+The OMOP Standardized Vocabulary: Christian's (almost) finished paper +
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary}
 
-\chapter{Methods}\label{methods}
+\chapter{Extract Transform Load
+(\#ExtractTransformLoad\}}\label{extract-transform-load-extracttransformload}
 
-We describe our methods in this chapter.
+Leads: Mui van Zandt \& Clair Blacketer
 
-\chapter{Applications}\label{applications}
+Business Rules and Conventions: From the CDM Wiki + Themis
 
-Some \emph{significant} applications are demonstrated in this chapter.
+Conversion to OMOP CDM (ETL - Extract, Transform, Load):
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:etl_best_practices}
+* WhiteRabbit and Rabbit-in-a-Hat:
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit}
+* Usagi:
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:usagi}
+* Achilles:
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:achilles}
+* Athena:
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary_etl}
 
-\section{Example one}\label{example-one}
+\chapter{Data Quality}\label{DataQuality}
 
-\section{Example two}\label{example-two}
+Why monitor data quality
 
-\chapter{Final Words}\label{final-words}
+Data Quality and Testing process
 
-We have finished a nice book.
+\part{Data Analytics}\label{part-data-analytics}
 
-\chapter{Patient Level Prediction}\label{patientlevelprediction}
+\chapter{Data Analytics Use Cases}\label{DataAnalyticsUseCases}
+
+\begin{itemize}
+\tightlist
+\item
+  Population characterization
+\item
+  Population-level estimation
+\item
+  Patient-Level prediction
+\end{itemize}
+
+What is the difference between these
+
+\chapter{OHDSI Analytics Tools}\label{OhdsiAnalyticsTools}
+
+ATLAS:
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:atlas}
+
+ARACHNE: Network Research
+
+Methods Library: \url{https://ohdsi.github.io/MethodsLibrary/}
+
+Best practices enforced in all OHDSI methods.
+
+Ethical consideration: e.g.~should always communicate uncertainty.
+Prespecification of research questions, etc.
+
+Analytic use cases
+
+What is the difference between characterization, population-level
+estimation, patient-level prediction?
+
+Doing studies in a distributed database network (Martijn has several
+slide decks on that).
+
+Case study: Perhaps on how to install the tools?
+
+\chapter{Building the building blocks: cohorts}\label{Cohorts}
+
+Introduction: a cohort is a group of people that meet a set of criteria
+for a particular span of time etc. Cohorts are used throughout OHDSIs
+analytical tools as the primary building blocks.
+
+Using ATLAS: use material from Patrick's tutorial on cohort building
+
+Using SQL: For advanced users, explain how cohorts can be created
+programmatically.
+
+Case study: some example cohort definitions
+
+\chapter{Characterization}\label{Characterization}
+
+ATLAS' incidence rate calculator + cohort characterization tool
+
+FeatureExtraction package:
+\url{https://github.com/OHDSI/FeatureExtraction}
+
+Case study: characteristics + IRs of some cohorts
+
+Example .. \url{http://www.pnas.org/content/113/27/7329}
+
+\chapter{Population-level estimation}\label{PopulationLevelEstimation}
+
+Leads: Martijn Schuemie \& Marc Suchard
+
+(Borrow from PLE tutorial:
+\url{https://www.ohdsi.org/past-events/2017-tutorials-population-level-estimation/}
+)
+
+Effect estimation: counterfactuals, time travel, RCTs Cohort method
+
+Large scale propensity models:
+\url{https://www.ncbi.nlm.nih.gov/pubmed/29939268}
+
+Self-controlled designs
+
+SCC
+
+SCCS
+
+Best practices:
+\url{http://www.ohdsi.org/web/wiki/doku.php?id=development:best_practices_estimation}
+
+Negative and positive controls, empirical calibration
+
+Case study: CohortMethod and SCCS vignettes
+
+\chapter{Patient Level Prediction}\label{PatientLevelPrediction}
 
 Clinical decision making is a complicated task in which the clinician
 has to infer a diagnosis or treatment pathway based on the available
