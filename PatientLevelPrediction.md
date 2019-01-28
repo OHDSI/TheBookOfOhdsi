@@ -14,19 +14,22 @@ In our paper @reps2018, we propose a standardised framework for patient-level pr
 
 Figure \@ref(fig:figure1), illustrates the prediction problem we address. Among a population at risk, we aim to predict which patients at a defined moment in time (t = 0) will experience some outcome during a time-at-risk. Prediction is done using only information about the patients in an observation window prior to that moment in time.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/Figure1} \caption{The prediction problem}(\#fig:figure1)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/Figure1.png" alt="The prediction problem" width="100%" />
+<p class="caption">(\#fig:figure1)The prediction problem</p>
+</div>
 
 As shown in Figure \@ref(fig:studydesign), to define a prediction problem we have to define t=0 by a Target Cohort (T), the outcome we like to predict by an outcome cohort (O), and the time-at-risk (TAR). Furthermore, we  have to make design choices for the model we like to develop, and determine the observational datasets to perform internal and external validation. This conceptual framework works for all type of prediction problems, for example those presented in Figure \@ref(fig:problems).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/studydesign} \caption{Design choices}(\#fig:studydesign)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/studydesign.png" alt="Design choices" width="100%" />
+<p class="caption">(\#fig:studydesign)Design choices</p>
+</div>
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/problems} \caption{Examples of prediction problems}(\#fig:problems)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/problems.png" alt="Examples of prediction problems" width="100%" />
+<p class="caption">(\#fig:problems)Examples of prediction problems</p>
+</div>
 
 In the next sections we will explain the best practices for model specification, implementation, and evaluation using OHDSI's Patient-Level Prediction (PLP) framework as guidance.
 
@@ -140,15 +143,17 @@ Both methods are described below for our example prediction problem.
 
 #### ATLAS cohort builder
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlas_t} \caption{Target Cohort Atrial Fibrillation}(\#fig:atlas_t)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlast.png" alt="Target Cohort Atrial Fibrillation" width="100%" />
+<p class="caption">(\#fig:atlast)Target Cohort Atrial Fibrillation</p>
+</div>
 
-ATLAS allows you to define cohorts interactively by specifying cohort entry and cohort exit criteria. Cohort entry criteria involve selecting one or more initial events, which determine the start date for cohort entry, and optionally specifying additional inclusion criteria which filter to the qualifying events. Cohort exit criteria are applied to each cohort entry record to determine the end date when the person's episode no longer qualifies for the cohort. For the outcome cohort the end date is less relevant. As an example, Figure \@ref(fig:atlas_t) shows how we created the Atrial Fibrillation cohort and Figure \@ref(fig:atlas_o) shows how we created the stroke cohort in ATLAS. 
+ATLAS allows you to define cohorts interactively by specifying cohort entry and cohort exit criteria. Cohort entry criteria involve selecting one or more initial events, which determine the start date for cohort entry, and optionally specifying additional inclusion criteria which filter to the qualifying events. Cohort exit criteria are applied to each cohort entry record to determine the end date when the person's episode no longer qualifies for the cohort. For the outcome cohort the end date is less relevant. As an example, Figure \@ref(fig:atlast) shows how we created the Atrial Fibrillation cohort and Figure \@ref(fig:atlaso) shows how we created the stroke cohort in ATLAS. 
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlas_o} \caption{Outcome Cohort Stroke}(\#fig:atlas_o)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlaso.png" alt="Outcome Cohort Stroke" width="100%" />
+<p class="caption">(\#fig:atlaso)Outcome Cohort Stroke</p>
+</div>
 
 The T and O cohorts can be found here: 
 
@@ -452,24 +457,20 @@ The script we created manually above can also be automatically created using a p
 
 1. Create a new prediction study and select your target and outcome cohorts.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp1} 
+<img src="images/PatientLevelPrediction/atlasplp1.png" width="100%" />
 
 2. Specify one or more analysis settings
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp2} 
+<img src="images/PatientLevelPrediction/atlasplp2.png" width="100%" />
 
 \newpage
 3.  Specify the trainings settigns.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp3} 
+<img src="images/PatientLevelPrediction/atlasplp3.png" width="100%" />
   
 4.  Specify the execution settings.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp4} 
+<img src="images/PatientLevelPrediction/atlasplp4.png" width="100%" />
 
 
 \newpage
@@ -478,13 +479,11 @@ Below the steps are explained how to do this in ATLAS.
 
 1.  Under utilities you can find download. Click on the button to review the full study specification.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasdownload1} 
+<img src="images/PatientLevelPrediction/atlasdownload1.png" width="100%" />
 
 2. You now have to review that you indeed want to run all these analyses (cartesian product of all the settings for each T and O combination.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasdownload2} 
+<img src="images/PatientLevelPrediction/atlasdownload2.png" width="100%" />
 
 
 3. If you agree, you give the package a name, and download the package as a zipfile. 
@@ -498,13 +497,11 @@ Once we execute the study, the runPlp() function returns the trained model and t
 You can interactively view the results by running: `viewPlp(runPlp=lrResults)`. This will generate a Shiny App in your browser in which you can view all performance measures created by the framework as shown in the figure below.
 
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/shinysummary} 
+<img src="images/PatientLevelPrediction/shinysummary.png" width="100%" />
 
 Furthermore, many interactive plots are available in the Shiny App, for example the ROC curve in which you can move over the plot to see the threshold and the corresponding sensitivity and specificity values.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/shinyroc} 
+<img src="images/PatientLevelPrediction/shinyroc.png" width="100%" />
 
 To generate and save all the evaluation plots to a folder run the following code:
 
@@ -519,16 +516,14 @@ The plots are described in more detail in the next sections.
 
 The Receiver Operating Characteristics (ROC) plot shows the sensitivity against 1-specificity on the test set. The plot illustrates how well the model is able to discriminate between the people with the outcome and those without. The dashed diagonal line is the performance of a model that randomly assigns predictions. The higher the area under the ROC plot the better the discrimination of the model. The plot is created by changing the probability threshold to assign the positive class. 
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/sparseROC} 
+<img src="images/PatientLevelPrediction/sparseROC.png" width="100%" />
 
 \newpage
 ### Calibration
 
 The calibration plot shows how close the predicted risk is to the observed risk. The diagonal dashed line thus indicates a perfectly calibrated model. The ten (or fewer) dots represent the mean predicted values for each quantile plotted against the observed fraction of people in that quantile who had the outcome (observed fraction). The straight black line is the linear regression using these 10 plotted quantile mean predicted vs observed fraction points. The straight vertical lines represented the 95% lower and upper confidence intervals of the slope of the fitted line.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/sparseCalibration} 
+<img src="images/PatientLevelPrediction/sparseCalibration.png" width="100%" />
 
 \newpage
 ### Smooth Calibration
@@ -546,16 +541,14 @@ See the help function for more information, on how to set the smoothing method e
 
 The example below is from another study that better demonstrates the impact of using a smooth calibration plot. The default line fit would not highlight the miss-calibration at the lower predicted probability levels that well.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/smoothCalibration} 
+<img src="images/PatientLevelPrediction/smoothCalibration.jpeg" width="100%" />
 
 \newpage
 ### Preference distribution
 
 The preference distribution plots are the preference score distributions corresponding to i) people in the test set with the outcome (red) and ii) people in the test set without the outcome (blue).
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/preferencePDF} 
+<img src="images/PatientLevelPrediction/preferencePDF.png" width="100%" />
 
 \newpage
 ### Predicted probability distribution
@@ -564,8 +557,7 @@ The prediction distribution box plots are for the predicted risks of the people 
 
 The box plots in the Figure show that the predicted probability of the outcome is indeed higher for those with the outcome but there is also overlap between the two distribution which lead to an imperfect discrimination.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/predictionDistribution} 
+<img src="images/PatientLevelPrediction/predictionDistribution.png" width="100%" />
 
 \newpage
 ### Test-Train similarity 
@@ -574,8 +566,7 @@ The test-train similarity is assessed by plotting the mean covariate values in t
 
 The results for our example of look very promising since the mean values of the covariates are on the diagonal.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/generalizability} 
+<img src="images/PatientLevelPrediction/generalizability.png" width="100%" />
 
 \newpage
 ### Variable scatter plot
@@ -584,8 +575,7 @@ The variable scatter plot shows the mean covariate value for the people with the
 
 The plot shows that the mean of most of the covariates is higher for subjects with the outcome compared to those without. 
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/variableScatterplot} 
+<img src="images/PatientLevelPrediction/variableScatterplot.png" width="100%" />
 
 \newpage
 ### Precision recall
@@ -610,8 +600,7 @@ Note that the precision can either decrease or increase if the threshold is lowe
 
 For Recall the denominator does not depend on the classifier threshold (Tp+Fn is a constant). This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/precisionRecall} 
+<img src="images/PatientLevelPrediction/precisionRecall.png" width="100%" />
 
 \newpage
 ### Demographic summary 
@@ -620,8 +609,7 @@ This plot shows for females and males the expected and observed risk in differen
 
 The results show that our model is well calibrated across gender and age groups.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/demographicSummary} 
+<img src="images/PatientLevelPrediction/demographicSummary.png" width="100%" />
 
 \newpage
 ## External validation
@@ -789,35 +777,29 @@ In the figures below the effect is shown of the removeSubjectsWithPriorOutcome, 
 
 1. Require minimum time-at-risk for all person in the target cohort.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef1} 
+<img src="images/PatientLevelPrediction/popdef1.png" width="100%" />
 
 2. Require minumum time-at-risk for target cohort, except for persons with outcomes during time-at-risk.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef2} 
+<img src="images/PatientLevelPrediction/popdef2.png" width="100%" />
 
 \newpage
 
 3. Include all persons in the target cohort exclude persons with prior outcomes.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef3} 
+<img src="images/PatientLevelPrediction/popdef3.png" width="100%" />
 
 4. Require minimum time-at-risk for target cohort, except for persons with outcomes during time-at-risk, exclude persons with prior outcomes.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef4} 
+<img src="images/PatientLevelPrediction/popdef4.png" width="100%" />
 
 \newpage
 
 5. Include all persons in target cohort exclude persons with prior outcomes.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef5} 
+<img src="images/PatientLevelPrediction/popdef5.png" width="100%" />
 
 6. Include all persons in target cohort.
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef6} 
+<img src="images/PatientLevelPrediction/popdef6.png" width="100%" />
   
