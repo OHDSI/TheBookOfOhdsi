@@ -185,20 +185,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>In our paper <span class="citation">Schuemie et al. (<a href="#ref-reps2018">2018</a>)</span>, we propose a standardised framework for patient-level prediction that utilizes the OMOP Common Data Model (CDM) and standardized vocabularies, and describe the open-source software that we developed implementing the framework’s pipeline. The framework is the first to support existing best practice guidelines and will enable open dissemination of models that can be extensively validated across the network of OHDSI collaborators.</p>
 <p>Figure <a href="PatientLevelPrediction.html#fig:figure1">13.1</a>, illustrates the prediction problem we address. Among a population at risk, we aim to predict which patients at a defined moment in time (t = 0) will experience some outcome during a time-at-risk. Prediction is done using only information about the patients in an observation window prior to that moment in time.</p>
 <div class="figure"><span id="fig:figure1"></span>
-<img src="images/PatientLevelPrediction/Figure1.png" alt="The prediction problem"  />
+<img src="images/PatientLevelPrediction/Figure1.png" alt="The prediction problem" width="100%" />
 <p class="caption">
 Figure 13.1: The prediction problem
 </p>
 </div>
 <p>As shown in Figure <a href="PatientLevelPrediction.html#fig:studydesign">13.2</a>, to define a prediction problem we have to define t=0 by a Target Cohort (T), the outcome we like to predict by an outcome cohort (O), and the time-at-risk (TAR). Furthermore, we have to make design choices for the model we like to develop, and determine the observational datasets to perform internal and external validation. This conceptual framework works for all type of prediction problems, for example those presented in Figure <a href="PatientLevelPrediction.html#fig:problems">13.3</a>.</p>
 <div class="figure"><span id="fig:studydesign"></span>
-<img src="images/PatientLevelPrediction/studydesign.png" alt="Design choices"  />
+<img src="images/PatientLevelPrediction/studydesign.png" alt="Design choices" width="100%" />
 <p class="caption">
 Figure 13.2: Design choices
 </p>
 </div>
 <div class="figure"><span id="fig:problems"></span>
-<img src="images/PatientLevelPrediction/problems.png" alt="Examples of prediction problems"  />
+<img src="images/PatientLevelPrediction/problems.png" alt="Examples of prediction problems" width="100%" />
 <p class="caption">
 Figure 13.3: Examples of prediction problems
 </p>
@@ -415,14 +415,14 @@ Figure 13.3: Examples of prediction problems
 <div id="atlas-cohort-builder" class="section level4">
 <h4><span class="header-section-number">13.2.1.1</span> ATLAS cohort builder</h4>
 <div class="figure">
-<img src="images/PatientLevelPrediction/atlas_t.png" alt="Target Cohort Atrial Fibrillation"  />
+<img src="images/PatientLevelPrediction/atlas_t.png" alt="Target Cohort Atrial Fibrillation" width="100%" />
 <p class="caption">
 (#fig:atlas_t)Target Cohort Atrial Fibrillation
 </p>
 </div>
 <p>ATLAS allows you to define cohorts interactively by specifying cohort entry and cohort exit criteria. Cohort entry criteria involve selecting one or more initial events, which determine the start date for cohort entry, and optionally specifying additional inclusion criteria which filter to the qualifying events. Cohort exit criteria are applied to each cohort entry record to determine the end date when the person’s episode no longer qualifies for the cohort. For the outcome cohort the end date is less relevant. As an example, Figure @ref(fig:atlas_t) shows how we created the Atrial Fibrillation cohort and Figure @ref(fig:atlas_o) shows how we created the stroke cohort in ATLAS.</p>
 <div class="figure">
-<img src="images/PatientLevelPrediction/atlas_o.png" alt="Outcome Cohort Stroke"  />
+<img src="images/PatientLevelPrediction/atlas_o.png" alt="Outcome Cohort Stroke" width="100%" />
 <p class="caption">
 (#fig:atlas_o)Outcome Cohort Stroke
 </p>
@@ -651,30 +651,30 @@ sql &lt;-<span class="st"> </span><span class="kw">translateSql</span>(sql, <spa
 <ol style="list-style-type: decimal">
 <li>Create a new prediction study and select your target and outcome cohorts.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/atlasplp1.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/atlasplp1.png" width="100%" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Specify one or more analysis settings</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/atlasplp2.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/atlasplp2.png" width="100%" /></p>
 
 <ol start="3" style="list-style-type: decimal">
 <li>Specify the trainings settigns.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/atlasplp3.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/atlasplp3.png" width="100%" /></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Specify the execution settings.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/atlasplp4.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/atlasplp4.png" width="100%" /></p>
 
 <p>ATLAS can build a R package for you that will execute the full study against you CDM. Below the steps are explained how to do this in ATLAS.</p>
 <ol style="list-style-type: decimal">
 <li>Under utilities you can find download. Click on the button to review the full study specification.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/atlasdownload1.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/atlasdownload1.png" width="100%" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>You now have to review that you indeed want to run all these analyses (cartesian product of all the settings for each T and O combination.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/atlasdownload2.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/atlasdownload2.png" width="100%" /></p>
 <ol start="3" style="list-style-type: decimal">
 <li><p>If you agree, you give the package a name, and download the package as a zipfile.</p></li>
 <li><p>By opening the R package in R studio and building the package you can run the study using the <code>execute</code> function. Theres is also an example CodeToRun.R script available in the extras folder of the package with extra instructions.</p></li>
@@ -685,9 +685,9 @@ sql &lt;-<span class="st"> </span><span class="kw">translateSql</span>(sql, <spa
 <h2><span class="header-section-number">13.3</span> Internal validation</h2>
 <p>Once we execute the study, the runPlp() function returns the trained model and the evaluation of the model on the train/test sets.</p>
 <p>You can interactively view the results by running: <code>viewPlp(runPlp=lrResults)</code>. This will generate a Shiny App in your browser in which you can view all performance measures created by the framework as shown in the figure below.</p>
-<p><img src="images/PatientLevelPrediction/shinysummary.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/shinysummary.png" width="100%" /></p>
 <p>Furthermore, many interactive plots are available in the Shiny App, for example the ROC curve in which you can move over the plot to see the threshold and the corresponding sensitivity and specificity values.</p>
-<p><img src="images/PatientLevelPrediction/shinyroc.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/shinyroc.png" width="100%" /></p>
 <p>To generate and save all the evaluation plots to a folder run the following code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotPlp</span>(lrResults, <span class="dt">dirPath=</span><span class="kw">getwd</span>())</code></pre></div>
 <p>The plots are described in more detail in the next sections.</p>
@@ -695,13 +695,13 @@ sql &lt;-<span class="st"> </span><span class="kw">translateSql</span>(sql, <spa
 <div id="discrimination" class="section level3">
 <h3><span class="header-section-number">13.3.1</span> Discrimination</h3>
 <p>The Receiver Operating Characteristics (ROC) plot shows the sensitivity against 1-specificity on the test set. The plot illustrates how well the model is able to discriminate between the people with the outcome and those without. The dashed diagonal line is the performance of a model that randomly assigns predictions. The higher the area under the ROC plot the better the discrimination of the model. The plot is created by changing the probability threshold to assign the positive class.</p>
-<p><img src="images/PatientLevelPrediction/sparseROC.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/sparseROC.png" width="100%" /></p>
 
 </div>
 <div id="calibration" class="section level3">
 <h3><span class="header-section-number">13.3.2</span> Calibration</h3>
 <p>The calibration plot shows how close the predicted risk is to the observed risk. The diagonal dashed line thus indicates a perfectly calibrated model. The ten (or fewer) dots represent the mean predicted values for each quantile plotted against the observed fraction of people in that quantile who had the outcome (observed fraction). The straight black line is the linear regression using these 10 plotted quantile mean predicted vs observed fraction points. The straight vertical lines represented the 95% lower and upper confidence intervals of the slope of the fitted line.</p>
-<p><img src="images/PatientLevelPrediction/sparseCalibration.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/sparseCalibration.png" width="100%" /></p>
 
 </div>
 <div id="smooth-calibration" class="section level3">
@@ -711,34 +711,34 @@ sql &lt;-<span class="st"> </span><span class="kw">translateSql</span>(sql, <spa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotSmoothCalibration</span>(lrResults)</code></pre></div>
 <p>See the help function for more information, on how to set the smoothing method etc.</p>
 <p>The example below is from another study that better demonstrates the impact of using a smooth calibration plot. The default line fit would not highlight the miss-calibration at the lower predicted probability levels that well.</p>
-<p><img src="images/PatientLevelPrediction/smoothCalibration.jpeg" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/smoothCalibration.jpeg" width="100%" /></p>
 
 </div>
 <div id="preference-distribution" class="section level3">
 <h3><span class="header-section-number">13.3.4</span> Preference distribution</h3>
 <p>The preference distribution plots are the preference score distributions corresponding to i) people in the test set with the outcome (red) and ii) people in the test set without the outcome (blue).</p>
-<p><img src="images/PatientLevelPrediction/preferencePDF.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/preferencePDF.png" width="100%" /></p>
 
 </div>
 <div id="predicted-probability-distribution" class="section level3">
 <h3><span class="header-section-number">13.3.5</span> Predicted probability distribution</h3>
 <p>The prediction distribution box plots are for the predicted risks of the people in the test set with the outcome (class 1: blue) and without the outcome (class 0: red).</p>
 <p>The box plots in the Figure show that the predicted probability of the outcome is indeed higher for those with the outcome but there is also overlap between the two distribution which lead to an imperfect discrimination.</p>
-<p><img src="images/PatientLevelPrediction/predictionDistribution.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/predictionDistribution.png" width="100%" /></p>
 
 </div>
 <div id="test-train-similarity" class="section level3">
 <h3><span class="header-section-number">13.3.6</span> Test-Train similarity</h3>
 <p>The test-train similarity is assessed by plotting the mean covariate values in the train set against those in the test set for people with and without the outcome.</p>
 <p>The results for our example of look very promising since the mean values of the covariates are on the diagonal.</p>
-<p><img src="images/PatientLevelPrediction/generalizability.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/generalizability.png" width="100%" /></p>
 
 </div>
 <div id="variable-scatter-plot" class="section level3">
 <h3><span class="header-section-number">13.3.7</span> Variable scatter plot</h3>
 <p>The variable scatter plot shows the mean covariate value for the people with the outcome against the mean covariate value for the people without the outcome. The color of the dots corresponds to the inclusion (green) or exclusion in the model (blue), respectively. It is highly recommended to use the Shiny App since this allows you to hoover over a covariate to show more details (name, value etc).</p>
 <p>The plot shows that the mean of most of the covariates is higher for subjects with the outcome compared to those without.</p>
-<p><img src="images/PatientLevelPrediction/variableScatterplot.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/variableScatterplot.png" width="100%" /></p>
 
 </div>
 <div id="precision-recall" class="section level3">
@@ -751,14 +751,14 @@ sql &lt;-<span class="st"> </span><span class="kw">translateSql</span>(sql, <spa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">F1 &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>P<span class="op">*</span>R<span class="op">/</span>(P<span class="op">+</span>R)</code></pre></div>
 <p>Note that the precision can either decrease or increase if the threshold is lowered. Lowering the threshold of a classifier may increase the denominator, by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase precision. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing precision.</p>
 <p>For Recall the denominator does not depend on the classifier threshold (Tp+Fn is a constant). This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.</p>
-<p><img src="images/PatientLevelPrediction/precisionRecall.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/precisionRecall.png" width="100%" /></p>
 
 </div>
 <div id="demographic-summary" class="section level3">
 <h3><span class="header-section-number">13.3.9</span> Demographic summary</h3>
 <p>This plot shows for females and males the expected and observed risk in different age groups together with a confidence area.</p>
 <p>The results show that our model is well calibrated across gender and age groups.</p>
-<p><img src="images/PatientLevelPrediction/demographicSummary.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/demographicSummary.png" width="100%" /></p>
 
 </div>
 </div>
@@ -927,29 +927,29 @@ validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</s
 <ol style="list-style-type: decimal">
 <li>Require minimum time-at-risk for all person in the target cohort.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/popdef1.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/popdef1.png" width="100%" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Require minumum time-at-risk for target cohort, except for persons with outcomes during time-at-risk.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/popdef2.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/popdef2.png" width="100%" /></p>
 
 <ol start="3" style="list-style-type: decimal">
 <li>Include all persons in the target cohort exclude persons with prior outcomes.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/popdef3.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/popdef3.png" width="100%" /></p>
 <ol start="4" style="list-style-type: decimal">
 <li>Require minimum time-at-risk for target cohort, except for persons with outcomes during time-at-risk, exclude persons with prior outcomes.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/popdef4.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/popdef4.png" width="100%" /></p>
 
 <ol start="5" style="list-style-type: decimal">
 <li>Include all persons in target cohort exclude persons with prior outcomes.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/popdef5.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/popdef5.png" width="100%" /></p>
 <ol start="6" style="list-style-type: decimal">
 <li>Include all persons in target cohort.</li>
 </ol>
-<p><img src="images/PatientLevelPrediction/popdef6.png" /><!-- --></p>
+<p><img src="images/PatientLevelPrediction/popdef6.png" width="100%" /></p>
 
 <div id="refs" class="references">
 <div>
