@@ -1,0 +1,25 @@
+# (PART) The OHDSI Community {-} 
+
+# Mission, vision, values {#MissionVissionValues}
+
+## Our Mission
+
+> To improve health by empowering a community to collaboratively generate the evidence that promotes better health decisions and better care.
+
+## Our Vision
+
+> A world in which observational research produces a comprehensive understanding of health and disease.
+
+## Our Objectives
+
+* **Innovation**: Observational research is a field which will benefit greatly from disruptive thinking. We actively seek and encourage fresh methodological approaches in our work.
+
+* **Reproducibility**: Accurate, reproducible, and well-calibrated evidence is necessary for health improvement.
+
+* **Community**: Everyone is welcome to actively participate in OHDSI, whether you are a patient, a health professional, a researcher, or someone who simply believes in our cause.
+
+* **Collaboration**: We work collectively to prioritize and address the real world needs of our community’s participants.
+
+* **Openness**: We strive to make all our community’s proceeds open and publicly accessible, including the methods, tools and the evidence that we generate.
+
+* **Beneficence**: We seek to protect the rights of individuals and organizations within our community at all times.
