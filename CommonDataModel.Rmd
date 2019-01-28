@@ -5,6 +5,7 @@
 Leads: Mui van Zandt & Clair Blacketer
 
 Introduction
+
 * Why OMOP/OHDSI
 * Person-centric model
 * Source values, standard concepts and source concepts
