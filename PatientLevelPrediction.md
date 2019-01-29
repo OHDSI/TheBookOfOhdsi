@@ -120,7 +120,7 @@ According to the best practices we need to make a protocol that completely speci
 
 ## Study implementation
 
-Now we have completely design our study we have to implement the study. This will be done using the `PatientLevelPrediction` package to build patient-level predictive models. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. To install the package we like to point you to the InstallationGuide that can be found on the GitHub website (https://github.com/OHDSI/PatientLevelPrediction/).
+Now we have completely design our study we have to implement the study. This will be done using the [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) package to build patient-level predictive models. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. To install the package we like to point you to the InstallationGuide that can be found on the GitHub website (https://github.com/OHDSI/PatientLevelPrediction/).
 
 We first have to generate the target and outcome cohorts and we then need to develop the R code to run against our CDM to execute the full study. These steps will be described in the paragraphs below.
 
@@ -330,7 +330,7 @@ In this section we assume that our cohorts have been created either by using ATL
 
 #### Data extraction
 
-Now we can tell `PatientLevelPrediction` to extract all necessary data for our analysis. This is done using the FeatureExtractionPackage package (https://github.com/OHDSI/FeatureExtration). In short the FeatureExtractionPackage allows you to specify which features (covariates) need to be extracted, e.g. all conditions and drug exposures, more information can be found in chapter X. It also supports the creation of custom covariates. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
+Now we can tell [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) to extract all necessary data for our analysis. This is done using the FeatureExtractionPackage package (https://github.com/OHDSI/FeatureExtration). In short the FeatureExtractionPackage allows you to specify which features (covariates) need to be extracted, e.g. all conditions and drug exposures, more information can be found in chapter X. It also supports the creation of custom covariates. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
 
 
 ```r
@@ -362,7 +362,7 @@ plpData <- getPlpData(connectionDetails = connectionDetails,
 )
 ```
 
-Note that if the cohorts are created in ATLAS its corresponding cohort database schema needs to be selected. There are many additional parameters for the `getPlpData` function which are all documented in the `PatientLevelPrediction` manual. The resulting `plpData` object uses the package `ff` to store information in a way that ensures R does not run out of memory, even when the data are large.
+Note that if the cohorts are created in ATLAS its corresponding cohort database schema needs to be selected. There are many additional parameters for the `getPlpData` function which are all documented in the [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) manual. The resulting `plpData` object uses the package `ff` to store information in a way that ensures R does not run out of memory, even when the data are large.
 
 Creating the `plpData` object can take considerable computing time, and it is probably a good idea to save it for future sessions. Because `plpData` uses `ff`, we cannot use R's regular save function. Instead, we'll have to use the `savePlpData()` function:
 
@@ -419,9 +419,9 @@ The `runPlP` function uses the population, `plpData`, and model settings to trai
 lrResults <- runPlp(population, plpData, modelSettings = lrModel, testSplit='person',
                     testFraction=0.25, nfold=2, splitSeed = 1234)
 ```
-Under the hood the package will now use the Cyclops packge (www.github.com/OHDSI/Cyclops) fit a large-scale regularized regression using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance etc.
+Under the hood the package will now use the [`Cyclops`](http://github.com/OHDSI/Cyclops) package fit a large-scale regularized regression using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance etc.
 
-In the runPlp function there are several parameters to save the plpData, plpResults, plpPlots, evaluation etc. which are all set to True by default. However, there is also some functionality to this manually.
+In the `runPlp` function there are several parameters to save the `plpData`, `plpResults`, `plpPlots`, `evaluation`, etc. objects which are all set to `true` by default. However, there is also some functionality to this manually.
 
 You can save the model using:
 
@@ -749,14 +749,14 @@ We have added several demos in the package that run on simulated data:
 
 ## Acknowledgments
 
-Considerable work has been dedicated to provide the `PatientLevelPrediction` package.
+Considerable work has been dedicated to provide the [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) package.
 
 
 ```r
 # citation("PatientLevelPrediction")
 ```
 
-Further, `PatientLevelPrediction` makes extensive use of the `Cyclops` package.
+Further, [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) makes extensive use of the [`Cyclops`](http://github.com/OHDSI/Cyclops) package.
 
 
 ```r
