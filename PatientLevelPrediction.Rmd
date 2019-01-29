@@ -266,7 +266,7 @@ GROUP BY visit_occurrence.person_id, visit_occurrence.visit_start_date,
 ```
 This is parameterized SQL which can be used by the [`SqlRender`](http://github.com/OHDSI/SqlRender) package. We use parameterized SQL so we do not have to pre-specify the names of the CDM and result schemas. That way, if we want to run the SQL on a different schema, we only need to change the parameter values; we do not have to change the SQL code. By also making use of translation functionality in `SqlRender`, we can make sure the SQL code can be run in many different environments.
 
-To execute this sql against our CDM we first need to tell R how to connect to the server. `PatientLevelPrediction` uses the [`DatabaseConnector`](http://github.com/ohdsi/DatabaseConnector) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
+To execute this SQL against our CDM we first need to tell R how to connect to the server. [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) uses the [`DatabaseConnector`](http://github.com/ohdsi/DatabaseConnector) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
 ```{r tidy=FALSE,eval=FALSE}
 connectionDetails <- createConnectionDetails(dbms = "postgresql",
