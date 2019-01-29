@@ -451,35 +451,35 @@ Figure 13.5: Outcome Cohort Stroke
 <p>It is also possible to create cohorts without the use of ATLAS. Using custom cohort code (SQL) you can make more advanced cohorts if needed.</p>
 <p>For our example study, we need to create at table to hold the cohort data and we need to create SQL code to instantiate this table for both the AF and Stroke cohorts. Therefore, we create a file called <em>AfStrokeCohorts.sql</em> with the following contents:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">/***********************************</span>
-<span class="co">File AfStrokeCohorts.sql </span>
+<span class="co">File AfStrokeCohorts.sql</span>
 <span class="co">***********************************/</span>
 <span class="co">/*</span>
 <span class="co">  Create a table to store the persons in the T and C cohort</span>
 <span class="co">*/</span>
 
-<span class="kw">IF</span> OBJECT_ID(<span class="st">&#39;@resultsDatabaseSchema.PLPAFibStrokeCohort&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span> 
+<span class="kw">IF</span> OBJECT_ID(<span class="st">&#39;@resultsDatabaseSchema.PLPAFibStrokeCohort&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>
   <span class="kw">DROP</span> <span class="kw">TABLE</span> @resultsDatabaseSchema.PLPAFibStrokeCohort;
 
-<span class="kw">CREATE</span> <span class="kw">TABLE</span> @resultsDatabaseSchema.PLPAFibStrokeCohort 
-( 
-  cohort_definition_id <span class="dt">INT</span>, 
+<span class="kw">CREATE</span> <span class="kw">TABLE</span> @resultsDatabaseSchema.PLPAFibStrokeCohort
+(
+  cohort_definition_id <span class="dt">INT</span>,
   subject_id BIGINT,
-  cohort_start_date <span class="dt">DATE</span>, 
+  cohort_start_date <span class="dt">DATE</span>,
   cohort_end_date <span class="dt">DATE</span>
 );
 
 
 <span class="co">/*</span>
-<span class="co">  T cohort:  [PatientLevelPrediction vignette]:  T : patients who are newly </span>
+<span class="co">  T cohort:  [PatientLevelPrediction vignette]:  T : patients who are newly</span>
 <span class="co">             diagnosed with Atrial fibrillation</span>
-<span class="co">  - persons with a condition occurrence record of &#39;Atrial fibrillation&#39; or </span>
+<span class="co">  - persons with a condition occurrence record of &#39;Atrial fibrillation&#39; or</span>
 <span class="co">    any descendants, indexed at the first diagnosis</span>
 <span class="co">  - who have &gt;1095 days of prior observation before their first diagnosis</span>
 <span class="co">  - and have no warfarin exposure any time prior to first AFib diagnosis</span>
 <span class="co">*/</span>
-<span class="kw">INSERT</span> <span class="kw">INTO</span> @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id, 
-                                                     subject_id, 
-                                                     cohort_start_date, 
+<span class="kw">INSERT</span> <span class="kw">INTO</span> @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,
+                                                     subject_id,
+                                                     cohort_start_date,
                                                      cohort_end_date)
 <span class="kw">SELECT</span> <span class="dv">1</span> <span class="kw">AS</span> cohort_definition_id,
   AFib.person_id <span class="kw">AS</span> subject_id,
@@ -489,22 +489,22 @@ Figure 13.5: Outcome Cohort Stroke
 (
   <span class="kw">SELECT</span> person_id, <span class="fu">min</span>(condition_start_date) <span class="kw">as</span> condition_start_date
   <span class="kw">FROM</span> @cdmDatabaseSchema.condition_occurrence
-  <span class="kw">WHERE</span> condition_concept_id <span class="kw">IN</span> (<span class="kw">SELECT</span> descendant_concept_id <span class="kw">FROM</span> 
-        @cdmDatabaseSchema.concept_ancestor <span class="kw">WHERE</span> ancestor_concept_id <span class="kw">IN</span> 
+  <span class="kw">WHERE</span> condition_concept_id <span class="kw">IN</span> (<span class="kw">SELECT</span> descendant_concept_id <span class="kw">FROM</span>
+        @cdmDatabaseSchema.concept_ancestor <span class="kw">WHERE</span> ancestor_concept_id <span class="kw">IN</span>
         (<span class="dv">313217</span> <span class="co">/*atrial fibrillation*/</span>))
   <span class="kw">GROUP</span> <span class="kw">BY</span> person_id
 ) AFib
 <span class="kw">INNER</span> <span class="kw">JOIN</span> @cdmDatabaseSchema.observation_period
   <span class="kw">ON</span> AFib.person_id = observation_period.person_id
-  <span class="kw">AND</span> AFib.condition_start_date &gt;= dateadd(dd,<span class="dv">1095</span>, 
+  <span class="kw">AND</span> AFib.condition_start_date &gt;= dateadd(dd,<span class="dv">1095</span>,
                                    observation_period.observation_period_start_date)
   <span class="kw">AND</span> AFib.condition_start_date &lt;= observation_period.observation_period_end_date
 <span class="kw">LEFT</span> <span class="kw">JOIN</span>
 (
   <span class="kw">SELECT</span> person_id, <span class="fu">min</span>(drug_exposure_start_date) <span class="kw">as</span> drug_exposure_start_date
   <span class="kw">FROM</span> @cdmDatabaseSchema.drug_exposure
-  <span class="kw">WHERE</span> drug_concept_id <span class="kw">IN</span> (<span class="kw">SELECT</span> descendant_concept_id <span class="kw">FROM</span> 
-       @cdmDatabaseSchema.concept_ancestor <span class="kw">WHERE</span> ancestor_concept_id <span class="kw">IN</span> 
+  <span class="kw">WHERE</span> drug_concept_id <span class="kw">IN</span> (<span class="kw">SELECT</span> descendant_concept_id <span class="kw">FROM</span>
+       @cdmDatabaseSchema.concept_ancestor <span class="kw">WHERE</span> ancestor_concept_id <span class="kw">IN</span>
        (<span class="dv">1310149</span> <span class="co">/*warfarin*/</span>))
   <span class="kw">GROUP</span> <span class="kw">BY</span> person_id
 ) warfarin
@@ -515,42 +515,42 @@ Figure 13.5: Outcome Cohort Stroke
 
 <span class="co">/*</span>
 <span class="co">  C cohort:  [PatientLevelPrediction vignette]:  O: Ischemic stroke events</span>
-<span class="co">  - inpatient visits that include a condition occurrence record for </span>
-<span class="co">    &#39;cerebral infarction&#39; and descendants, &#39;cerebral thrombosis&#39;, </span>
-<span class="co">    &#39;cerebral embolism&#39;, &#39;cerebral artery occlusion&#39; </span>
+<span class="co">  - inpatient visits that include a condition occurrence record for</span>
+<span class="co">    &#39;cerebral infarction&#39; and descendants, &#39;cerebral thrombosis&#39;,</span>
+<span class="co">    &#39;cerebral embolism&#39;, &#39;cerebral artery occlusion&#39;</span>
 <span class="co">*/</span>
-<span class="kw">INSERT</span> <span class="kw">INTO</span> @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id, 
-                                                     subject_id, 
-                                                     cohort_start_date, 
+<span class="kw">INSERT</span> <span class="kw">INTO</span> @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,
+                                                     subject_id,
+                                                     cohort_start_date,
                                                      cohort_end_date)
 <span class="kw">SELECT</span> <span class="dv">2</span> <span class="kw">AS</span> cohort_definition_id,
   visit_occurrence.person_id <span class="kw">AS</span> subject_id,
   visit_occurrence.visit_start_date <span class="kw">AS</span> cohort_start_date,
   visit_occurrence.visit_end_date <span class="kw">AS</span> cohort_end_date
-<span class="kw">FROM</span>  
+<span class="kw">FROM</span>
 (
   <span class="kw">SELECT</span> person_id, condition_start_date
   <span class="kw">FROM</span> @cdmDatabaseSchema.condition_occurrence
-  <span class="kw">WHERE</span> condition_concept_id <span class="kw">IN</span> (<span class="kw">SELECT</span> <span class="kw">DISTINCT</span> descendant_concept_id <span class="kw">FROM</span> 
-  @cdmDatabaseSchema.concept_ancestor <span class="kw">WHERE</span> ancestor_concept_id <span class="kw">IN</span> 
-  (<span class="dv">443454</span> <span class="co">/*cerebral infarction*/</span>) <span class="kw">OR</span> descendant_concept_id <span class="kw">IN</span> 
-  (<span class="dv">441874</span> <span class="co">/*cerebral thrombosis*/</span>, <span class="dv">375557</span> <span class="co">/*cerebral embolism*/</span>, 
+  <span class="kw">WHERE</span> condition_concept_id <span class="kw">IN</span> (<span class="kw">SELECT</span> <span class="kw">DISTINCT</span> descendant_concept_id <span class="kw">FROM</span>
+  @cdmDatabaseSchema.concept_ancestor <span class="kw">WHERE</span> ancestor_concept_id <span class="kw">IN</span>
+  (<span class="dv">443454</span> <span class="co">/*cerebral infarction*/</span>) <span class="kw">OR</span> descendant_concept_id <span class="kw">IN</span>
+  (<span class="dv">441874</span> <span class="co">/*cerebral thrombosis*/</span>, <span class="dv">375557</span> <span class="co">/*cerebral embolism*/</span>,
    <span class="dv">372924</span> <span class="co">/*cerebral artery occlusion*/</span>))
 ) stroke
 <span class="kw">INNER</span> <span class="kw">JOIN</span> @cdmDatabaseSchema.visit_occurrence
 <span class="kw">ON</span> stroke.person_id = visit_occurrence.person_id
 <span class="kw">AND</span> stroke.condition_start_date &gt;= visit_occurrence.visit_start_date
 <span class="kw">AND</span> stroke.condition_start_date &lt;= visit_occurrence.visit_end_date
-<span class="kw">AND</span> visit_occurrence.visit_concept_id <span class="kw">IN</span> (<span class="dv">9201</span>, <span class="dv">262</span> <span class="co">/*&#39;Inpatient Visit&#39;  or </span>
+<span class="kw">AND</span> visit_occurrence.visit_concept_id <span class="kw">IN</span> (<span class="dv">9201</span>, <span class="dv">262</span> <span class="co">/*&#39;Inpatient Visit&#39;  or</span>
 <span class="co">    &#39;Emergency Room and Inpatient Visit&#39;*/</span>)
-<span class="kw">GROUP</span> <span class="kw">BY</span> visit_occurrence.person_id, visit_occurrence.visit_start_date, 
+<span class="kw">GROUP</span> <span class="kw">BY</span> visit_occurrence.person_id, visit_occurrence.visit_start_date,
          visit_occurrence.visit_end_date
 ;</code></pre></div>
 <p>This is parameterized SQL which can be used by the <a href="http://github.com/OHDSI/SqlRender"><code>SqlRender</code></a> package. We use parameterized SQL so we do not have to pre-specify the names of the CDM and result schemas. That way, if we want to run the SQL on a different schema, we only need to change the parameter values; we do not have to change the SQL code. By also making use of translation functionality in <code>SqlRender</code>, we can make sure the SQL code can be run in many different environments.</p>
-<p>To execute this sql against our CDM we first need to tell R how to connect to the server. <code>PatientLevelPrediction</code> uses the <a href="http://github.com/ohdsi/DatabaseConnector"><code>DatabaseConnector</code></a> package, which provides a function called <code>createConnectionDetails</code>. Type <code>?createConnectionDetails</code> for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>, 
-                                             <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>, 
-                                             <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>, 
+<p>To execute this SQL against our CDM we first need to tell R how to connect to the server. <a href="http://github.com/OHDSI/PatientLevelPrediction"><code>PatientLevelPrediction</code></a> uses the <a href="http://github.com/ohdsi/DatabaseConnector"><code>DatabaseConnector</code></a> package, which provides a function called <code>createConnectionDetails</code>. Type <code>?createConnectionDetails</code> for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,
+                                             <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,
+                                             <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,
                                              <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)
 
 cdmDatabaseSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span>
@@ -641,7 +641,7 @@ sql &lt;-<span class="st"> </span><span class="kw">translateSql</span>(sql, <spa
 <p>For example, if we use the following settings for the gradientBoostingMachine: ntrees=c(100,200), maxDepth=4 the grid search will apply the gradient boosting machine algorithm with ntrees=100 and maxDepth=4 plus the default settings for other hyper-parameters and ntrees=200 and maxDepth=4 plus the default settings for other hyper-parameters. The hyper-parameters that lead to the bestcross-validation performance will then be chosen for the final model. For our problem we choose to build a logistic regression model with the default hyper-parameters</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrModel &lt;-<span class="st"> </span><span class="kw">setLassoLogisticRegression</span>()</code></pre></div>
 <p>The <code>runPlP</code> function uses the population, <code>plpData</code>, and model settings to train and evaluate the model. We can use the testSplit (person/time) and testFraction parameters to split the data in a 75%-25% split and run the patient-level prediction pipeline:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrResults &lt;-<span class="st"> </span><span class="kw">runPlp</span>(population, plpData, <span class="dt">modelSettings =</span> lrModel, <span class="dt">testSplit=</span><span class="st">&#39;person&#39;</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lrResults &lt;-<span class="st"> </span><span class="kw">runPlp</span>(population, plpData, <span class="dt">modelSettings =</span> lrModel, <span class="dt">testSplit=</span><span class="st">&#39;person&#39;</span>,
                     <span class="dt">testFraction=</span><span class="fl">0.25</span>, <span class="dt">nfold=</span><span class="dv">2</span>, <span class="dt">splitSeed =</span> <span class="dv">1234</span>)</code></pre></div>
 <p>Under the hood the package will now use the Cyclops packge (www.github.com/OHDSI/Cyclops) fit a large-scale regularized regression using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance etc.</p>
 <p>In the runPlp function there are several parameters to save the plpData, plpResults, plpPlots, evaluation etc. which are all set to True by default. However, there is also some functionality to this manually.</p>
@@ -781,12 +781,12 @@ plpModel &lt;-<span class="st"> </span><span class="kw">loadPlpModel</span>(<spa
 
 <span class="co">#load the new plpData and create the population</span>
 plpData &lt;-<span class="st"> </span><span class="kw">loadPlpData</span>(<span class="kw">getwd</span>(),<span class="st">&#39;data&#39;</span>)
-population &lt;-<span class="st"> </span><span class="kw">createStudyPopulation</span>(plpData, 
-<span class="dt">outcomeId =</span> <span class="dv">2</span>, 
-<span class="dt">includeAllOutcomes =</span> <span class="ot">TRUE</span>, 
-<span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>, 
-<span class="dt">washoutPeriod =</span> <span class="dv">365</span>, 
-<span class="dt">removeSubjectsWithPriorOutcome =</span> <span class="ot">TRUE</span>, 
+population &lt;-<span class="st"> </span><span class="kw">createStudyPopulation</span>(plpData,
+<span class="dt">outcomeId =</span> <span class="dv">2</span>,
+<span class="dt">includeAllOutcomes =</span> <span class="ot">TRUE</span>,
+<span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>,
+<span class="dt">washoutPeriod =</span> <span class="dv">365</span>,
+<span class="dt">removeSubjectsWithPriorOutcome =</span> <span class="ot">TRUE</span>,
 <span class="dt">priorOutcomeLookback =</span> <span class="dv">365</span>,
 <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,
 <span class="dt">requireTimeAtRisk =</span> <span class="ot">FALSE</span>,
@@ -799,20 +799,20 @@ validationResults &lt;-<span class="st"> </span><span class="kw">applyModel</spa
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the trained model</span>
 plpResult &lt;-<span class="st"> </span><span class="kw">loadPlpResult</span>(<span class="kw">getwd</span>(),<span class="st">&#39;plpResult&#39;</span>)
 
-connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>, 
-                                             <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>, 
-                                             <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>, 
+connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,
+                                             <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,
+                                             <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,
                                              <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)
 
-validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</span>(<span class="dt">plpResult =</span> plpResult, 
+validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</span>(<span class="dt">plpResult =</span> plpResult,
                                   <span class="dt">connectionDetails =</span> connectionDetails,
                                   <span class="dt">validationSchemaTarget =</span> <span class="st">&#39;new_cohort_schema&#39;</span>,
                                   <span class="dt">validationSchemaOutcome =</span> <span class="st">&#39;new_cohort_schema&#39;</span>,
-                                  <span class="dt">validationSchemaCdm =</span> <span class="st">&#39;new_cdm_schema&#39;</span>, 
+                                  <span class="dt">validationSchemaCdm =</span> <span class="st">&#39;new_cdm_schema&#39;</span>,
                                   <span class="dt">validationTableTarget =</span> <span class="st">&#39;cohort_table&#39;</span>,
-                                  <span class="dt">validationTableOutcome =</span> <span class="st">&#39;cohort_table&#39;</span>, 
-                                  <span class="dt">validationIdTarget =</span> <span class="st">&#39;cohort_id&#39;</span>, 
-                                  <span class="dt">validationIdOutcome =</span> <span class="st">&#39;outcome_id&#39;</span>, 
+                                  <span class="dt">validationTableOutcome =</span> <span class="st">&#39;cohort_table&#39;</span>,
+                                  <span class="dt">validationIdTarget =</span> <span class="st">&#39;cohort_id&#39;</span>,
+                                  <span class="dt">validationIdOutcome =</span> <span class="st">&#39;outcome_id&#39;</span>,
                                   <span class="dt">keepPrediction =</span> T
                                   )</code></pre></div>
 <p>This will extract the new plpData from the specified schemas and cohort tables. It will then apply the same population settings and the trained plp model. Finally, it will evaluate the performance and return the standard output as <code>validation$performance</code> and if keepPrediction is TRUE then it will also return the prediction on the population as <code>validation$prediction</code>. They can be inserted into the shiny app for viewing the model and validation by running: <code>viewPlp(runPlp=plpResult, validatePlp=validation )</code>.</p>
@@ -820,25 +820,25 @@ validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load the trained model</span>
 plpResult &lt;-<span class="st"> </span><span class="kw">loadPlpResult</span>(<span class="kw">getwd</span>(),<span class="st">&#39;plpResult&#39;</span>)
 
-connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>, 
-                                             <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>, 
-                                             <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>, 
+connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,
+                                             <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,
+                                             <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,
                                              <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)
 
-validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</span>(<span class="dt">plpResult =</span> plpResult, 
+validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</span>(<span class="dt">plpResult =</span> plpResult,
                                   <span class="dt">connectionDetails =</span> connectionDetails,
                                   <span class="dt">validationSchemaTarget =</span> <span class="kw">list</span>(<span class="st">&#39;new_cohort_schema1&#39;</span>,
                                                                 <span class="st">&#39;new_cohort_schema2&#39;</span>),
                                   <span class="dt">validationSchemaOutcome =</span> <span class="kw">list</span>(<span class="st">&#39;new_cohort_schema1&#39;</span>,
                                                                  <span class="st">&#39;new_cohort_schema2&#39;</span>),
                                   <span class="dt">validationSchemaCdm =</span> <span class="kw">list</span>(<span class="st">&#39;new_cdm_schema1&#39;</span>,
-                                                             <span class="st">&#39;new_cdm_schema2&#39;</span>), 
+                                                             <span class="st">&#39;new_cdm_schema2&#39;</span>),
                                   <span class="dt">validationTableTarget =</span> <span class="kw">list</span>(<span class="st">&#39;new_cohort_table1&#39;</span>,
                                                                <span class="st">&#39;new_cohort_table2&#39;</span>),
                                   <span class="dt">validationTableOutcome =</span> <span class="kw">list</span>(<span class="st">&#39;new_cohort_table1&#39;</span>,
                                                                 <span class="st">&#39;new_cohort_table2&#39;</span>),
-                                  <span class="dt">validationIdTarget =</span> <span class="st">&#39;cohort_id&#39;</span>, 
-                                  <span class="dt">validationIdOutcome =</span> <span class="st">&#39;outcome_id&#39;</span>, 
+                                  <span class="dt">validationIdTarget =</span> <span class="st">&#39;cohort_id&#39;</span>,
+                                  <span class="dt">validationIdOutcome =</span> <span class="st">&#39;outcome_id&#39;</span>,
                                   <span class="dt">keepPrediction =</span> T
                                   )</code></pre></div>
 </div>
@@ -846,12 +846,12 @@ validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</s
 <h2><span class="header-section-number">13.5</span> Journal paper generation</h2>
 <p>We have added functionality to automatically generate a word document you can use as start of a journal paper. It contains many of the generated study details and results. If you have performed external validation these results will can be added as well. Optionally, you can add a “Table 1” that contains data on many covariates for the target population.</p>
 <p>You can create the draft journal paper by running this function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">createPlpJournalDocument</span>(<span class="dt">plpResult =</span> <span class="op">&lt;</span>your plp results<span class="op">&gt;</span>, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"> <span class="kw">createPlpJournalDocument</span>(<span class="dt">plpResult =</span> <span class="op">&lt;</span>your plp results<span class="op">&gt;</span>,
                           <span class="dt">plpValidation =</span> <span class="op">&lt;</span>your validation results<span class="op">&gt;</span>,
-                          <span class="dt">plpData =</span> <span class="op">&lt;</span>your plp data<span class="op">&gt;</span>, 
+                          <span class="dt">plpData =</span> <span class="op">&lt;</span>your plp data<span class="op">&gt;</span>,
                           <span class="dt">targetName =</span> <span class="st">&quot;&lt;target population&gt;&quot;</span>,
-                          <span class="dt">outcomeName =</span> <span class="st">&quot;&lt;outcome&gt;&quot;</span>, 
-                          <span class="dt">table1 =</span> F, 
+                          <span class="dt">outcomeName =</span> <span class="st">&quot;&lt;outcome&gt;&quot;</span>,
+                          <span class="dt">table1 =</span> F,
                           <span class="dt">connectionDetails =</span> <span class="ot">NULL</span>,
                           <span class="dt">includeTrain =</span> <span class="ot">FALSE</span>,
                           <span class="dt">includeTest =</span> <span class="ot">TRUE</span>,
@@ -914,7 +914,7 @@ validation &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</s
 <div id="demos" class="section level2">
 <h2><span class="header-section-number">13.7</span> Demos</h2>
 <p>We have added several demos in the package that run on simulated data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Show all demos in our package: </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Show all demos in our package:</span>
  <span class="kw">demo</span>(<span class="dt">package =</span> <span class="st">&quot;PatientLevelPrediction&quot;</span>)
 
 <span class="co"># For example, to run the SingleModelDemo that runs Lasso and shows you how to run the Shiny App use this call</span>

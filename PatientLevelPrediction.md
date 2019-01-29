@@ -39,11 +39,11 @@ The first step is to clearly define the prediction problem. Interestingly, in ma
 
 ### Problem definition
 
-Atrial fibrillation is a disease characterized by an irregular heart rate that can cause poor blood flow. Patients with atrial fibrillation are at increased risk of ischemic stroke.  Anticoagulation is a recommended prophylaxis treatment strategy for patients at high risk of stroke, though the underuse of anticoagulants and persistent severity of ischemic stroke represents a substantial unmet medical need.  Various strategies have been developed to predict risk of ischemic stroke in patients with atrial fibrillation.  CHADS2 [@gage2001] was developed as a risk score based on history of congestive heart failure, hypertension, age>=75, diabetes and stroke.  CHADS2 was initially derived using Medicare claims data, where it achieved good discrimination (AUC=0.82).  However, subsequent external validation studies revealed the CHADS2 had substantially lower predictive accuracy [@keogh2011].  Subsequent stroke risk calculators have been developed and evaluated, including the extension of CHADS2Vasc.  The management of atrial fibrillation has evolved substantially over the last decade, for various reasons that include the introduction of novel oral anticoagulants.  With these innovations has come a renewed interest in greater precision medicine for stroke prevention. 
+Atrial fibrillation is a disease characterized by an irregular heart rate that can cause poor blood flow. Patients with atrial fibrillation are at increased risk of ischemic stroke.  Anticoagulation is a recommended prophylaxis treatment strategy for patients at high risk of stroke, though the underuse of anticoagulants and persistent severity of ischemic stroke represents a substantial unmet medical need.  Various strategies have been developed to predict risk of ischemic stroke in patients with atrial fibrillation.  CHADS2 [@gage2001] was developed as a risk score based on history of congestive heart failure, hypertension, age>=75, diabetes and stroke.  CHADS2 was initially derived using Medicare claims data, where it achieved good discrimination (AUC=0.82).  However, subsequent external validation studies revealed the CHADS2 had substantially lower predictive accuracy [@keogh2011].  Subsequent stroke risk calculators have been developed and evaluated, including the extension of CHADS2Vasc.  The management of atrial fibrillation has evolved substantially over the last decade, for various reasons that include the introduction of novel oral anticoagulants.  With these innovations has come a renewed interest in greater precision medicine for stroke prevention.
 
 We will apply the PLP framework to observational healthcare data to address the following patient-level prediction question:
 
-> Amongst patients who are newly diagnosed with Atrial Fibrillation, which patients will go on to have Ischemic Stroke within 1 year? 
+> Amongst patients who are newly diagnosed with Atrial Fibrillation, which patients will go on to have Ischemic Stroke within 1 year?
 
 We will define 'patients who are newly diagnosed with Atrial Fibrillation' as the first condition record of cardiac arrhythmia, which is followed by another cardiac arrhythmia condition record, at least two drug records for a drug used to treat arrhythmias, or a procedure to treat arrhythmias.  We will define 'Ischemic stroke events' as ischemic stroke condition records during an inpatient or ER visit;  successive records with > 180 day gap are considered independent episodes.
 
@@ -53,7 +53,7 @@ The final study population in which we will develop our model is often a subset 
 
 - *What is the minimum amount of observation time we require before the start of the target cohort?* This choice could depend on the available patient time in your training data, but also on the time you expect  to be available in the data sources you want to apply the model on in the future. The longer the minimum observation time, the more baseline history time is available for each person to use for feature extraction, but the fewer patients will qualify for analysis.  Moreover, there could  be clinical reasons to choose a short or longer lookback period. For our example, we will use a prior history as lookback period (washout period).
 
-- *Can patients enter the target cohort multiple times?* In the target cohort definition, a person may qualify for the cohort multiple times during different spans of time, for example if they had different episodes of a disease or separate periods of exposure to a medical product.  The cohort definition does not necessarily apply a restriction to only let the patients enter once, but in the context of a particular patient-level prediction problem, a user may want to restrict the cohort to the first qualifying episode. In our example, a person could only enter the target cohort once since our criteria was based on first occurrence of atrial fibrillation. 
+- *Can patients enter the target cohort multiple times?* In the target cohort definition, a person may qualify for the cohort multiple times during different spans of time, for example if they had different episodes of a disease or separate periods of exposure to a medical product.  The cohort definition does not necessarily apply a restriction to only let the patients enter once, but in the context of a particular patient-level prediction problem, a user may want to restrict the cohort to the first qualifying episode. In our example, a person could only enter the target cohort once since our criteria was based on first occurrence of atrial fibrillation.
 
 - *Do we allow persons to enter the cohort if they experienced the outcome before?* Do we allow persons to enter the target cohort if they experienced the outcome before qualifying for the target cohort?  Depending on the particular patient-level prediction problem, there may be a desire to predict ‘incident’ first occurrence of an outcome, in which case patients who have previously experienced the outcome are not ‘at-risk’ for having a first occurrence and therefore should be excluded from the target cohort.  In other circumstances, there may be a desire to predict ‘prevalent’ episodes, whereby patients with prior outcomes can be included in the analysis and the prior outcome itself can be a predictor of future outcomes.  For our prediction example, the answer to this question is ‘Yes, allow persons with prior outcomes’ because we know from the CHADS2 score that prior strokes are very predictive of future strokes. If this answer would have been ‘No’ we also have to decide how long we would look back for previous occurrences of the outcome.
 
@@ -64,7 +64,7 @@ The final study population in which we will develop our model is often a subset 
 
 ### Model development settings
 
-To develop the model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. you need to let the data speak for itself and try different approaches to find the best one. There is no algorithm that will work best for all problems (no free lunch). In our framework we therefore aim to implement many algorithms. Furthermore, we made the system modular so you can add your own custom algorithms. This out-of-scope for this chapter but mode details can be found in the AddingCustomAlgorithms vignette (https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/AddingCustomAlgorithms.pdf). 
+To develop the model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. you need to let the data speak for itself and try different approaches to find the best one. There is no algorithm that will work best for all problems (no free lunch). In our framework we therefore aim to implement many algorithms. Furthermore, we made the system modular so you can add your own custom algorithms. This out-of-scope for this chapter but mode details can be found in the AddingCustomAlgorithms vignette (https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/AddingCustomAlgorithms.pdf).
 
 Our framework currently contains the following algorithms to choose from:
 
@@ -127,17 +127,17 @@ We first have to generate the target and outcome cohorts and we then need to dev
 ### Cohort instantiation
 
 For our study we need to know when a person enters the target and outcome cohorts. This is stored in a table on the server that contains the cohort start date and cohort end date for all subjects for a specific cohort definition. This cohort table has a very simple structure as shown below:
-  
+
 - `cohort_definition_id`, a unique identifier for distinguishing between different types of cohorts, e.g. cohorts of interest and outcome cohorts.
 - `subject_id`, a unique identifier corresponding to the `person_id` in the CDM.
 - `cohort_start_date`, the date the subject enters the cohort.
 - `cohort_end_date`, the date the subject leaves the cohort.
 
-How do we fill this table according to our cohort definitions? There are two options for this: 
+How do we fill this table according to our cohort definitions? There are two options for this:
 
 1) use the interactive cohort builder tool in  ATLAS (www.github.com/OHDSI/ATLAS) which can be used to create cohorts based on inclusion criteria and will automatically populate this cohort table.
 
-2) write your own custom SQL statements to fill the cohort table. 
+2) write your own custom SQL statements to fill the cohort table.
 
 Both methods are described below for our example prediction problem.
 
@@ -148,21 +148,21 @@ Both methods are described below for our example prediction problem.
 <p class="caption">(\#fig:atlast)Target Cohort Atrial Fibrillation</p>
 </div>
 
-ATLAS allows you to define cohorts interactively by specifying cohort entry and cohort exit criteria. Cohort entry criteria involve selecting one or more initial events, which determine the start date for cohort entry, and optionally specifying additional inclusion criteria which filter to the qualifying events. Cohort exit criteria are applied to each cohort entry record to determine the end date when the person's episode no longer qualifies for the cohort. For the outcome cohort the end date is less relevant. As an example, Figure \@ref(fig:atlast) shows how we created the Atrial Fibrillation cohort and Figure \@ref(fig:atlaso) shows how we created the stroke cohort in ATLAS. 
+ATLAS allows you to define cohorts interactively by specifying cohort entry and cohort exit criteria. Cohort entry criteria involve selecting one or more initial events, which determine the start date for cohort entry, and optionally specifying additional inclusion criteria which filter to the qualifying events. Cohort exit criteria are applied to each cohort entry record to determine the end date when the person's episode no longer qualifies for the cohort. For the outcome cohort the end date is less relevant. As an example, Figure \@ref(fig:atlast) shows how we created the Atrial Fibrillation cohort and Figure \@ref(fig:atlaso) shows how we created the stroke cohort in ATLAS.
 
 <div class="figure">
 <img src="images/PatientLevelPrediction/atlaso.png" alt="Outcome Cohort Stroke" width="100%" />
 <p class="caption">(\#fig:atlaso)Outcome Cohort Stroke</p>
 </div>
 
-The T and O cohorts can be found here: 
+The T and O cohorts can be found here:
 
 - Atrial Fibrillaton (T): http://www.ohdsi.org/web/atlas/#/cohortdefinition/1769447
 - Stroke (O) : http://www.ohdsi.org/web/atlas/#/cohortdefinition/1769448
 
-In depth explanation of cohort creation in ATLAS is out of scope of this vignette but can be found on the OHDSI wiki pages (http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:atlas). 
+In depth explanation of cohort creation in ATLAS is out of scope of this vignette but can be found on the OHDSI wiki pages (http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:atlas).
 
-Note that when a cohort is created in ATLAS the cohortid is needed to extract the data in R. The cohortid can be found at the top of the ATLAS screen. 
+Note that when a cohort is created in ATLAS the cohortid is needed to extract the data in R. The cohortid can be found at the top of the ATLAS screen.
 
 #### Custom cohorts
 
@@ -172,35 +172,35 @@ For our example study, we need to create at table to hold the cohort data and we
 
 ```sql
 /***********************************
-File AfStrokeCohorts.sql 
+File AfStrokeCohorts.sql
 ***********************************/
 /*
   Create a table to store the persons in the T and C cohort
 */
 
-IF OBJECT_ID('@resultsDatabaseSchema.PLPAFibStrokeCohort', 'U') IS NOT NULL 
+IF OBJECT_ID('@resultsDatabaseSchema.PLPAFibStrokeCohort', 'U') IS NOT NULL
   DROP TABLE @resultsDatabaseSchema.PLPAFibStrokeCohort;
 
-CREATE TABLE @resultsDatabaseSchema.PLPAFibStrokeCohort 
-( 
-  cohort_definition_id INT, 
+CREATE TABLE @resultsDatabaseSchema.PLPAFibStrokeCohort
+(
+  cohort_definition_id INT,
   subject_id BIGINT,
-  cohort_start_date DATE, 
+  cohort_start_date DATE,
   cohort_end_date DATE
 );
 
 
 /*
-  T cohort:  [PatientLevelPrediction vignette]:  T : patients who are newly 
+  T cohort:  [PatientLevelPrediction vignette]:  T : patients who are newly
              diagnosed with Atrial fibrillation
-  - persons with a condition occurrence record of 'Atrial fibrillation' or 
+  - persons with a condition occurrence record of 'Atrial fibrillation' or
     any descendants, indexed at the first diagnosis
   - who have >1095 days of prior observation before their first diagnosis
   - and have no warfarin exposure any time prior to first AFib diagnosis
 */
-INSERT INTO @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id, 
-                                                     subject_id, 
-                                                     cohort_start_date, 
+INSERT INTO @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,
+                                                     subject_id,
+                                                     cohort_start_date,
                                                      cohort_end_date)
 SELECT 1 AS cohort_definition_id,
   AFib.person_id AS subject_id,
@@ -210,22 +210,22 @@ FROM
 (
   SELECT person_id, min(condition_start_date) as condition_start_date
   FROM @cdmDatabaseSchema.condition_occurrence
-  WHERE condition_concept_id IN (SELECT descendant_concept_id FROM 
-        @cdmDatabaseSchema.concept_ancestor WHERE ancestor_concept_id IN 
+  WHERE condition_concept_id IN (SELECT descendant_concept_id FROM
+        @cdmDatabaseSchema.concept_ancestor WHERE ancestor_concept_id IN
         (313217 /*atrial fibrillation*/))
   GROUP BY person_id
 ) AFib
 INNER JOIN @cdmDatabaseSchema.observation_period
   ON AFib.person_id = observation_period.person_id
-  AND AFib.condition_start_date >= dateadd(dd,1095, 
+  AND AFib.condition_start_date >= dateadd(dd,1095,
                                    observation_period.observation_period_start_date)
   AND AFib.condition_start_date <= observation_period.observation_period_end_date
 LEFT JOIN
 (
   SELECT person_id, min(drug_exposure_start_date) as drug_exposure_start_date
   FROM @cdmDatabaseSchema.drug_exposure
-  WHERE drug_concept_id IN (SELECT descendant_concept_id FROM 
-       @cdmDatabaseSchema.concept_ancestor WHERE ancestor_concept_id IN 
+  WHERE drug_concept_id IN (SELECT descendant_concept_id FROM
+       @cdmDatabaseSchema.concept_ancestor WHERE ancestor_concept_id IN
        (1310149 /*warfarin*/))
   GROUP BY person_id
 ) warfarin
@@ -236,48 +236,48 @@ WHERE warfarin.person_id IS NULL
 
 /*
   C cohort:  [PatientLevelPrediction vignette]:  O: Ischemic stroke events
-  - inpatient visits that include a condition occurrence record for 
-    'cerebral infarction' and descendants, 'cerebral thrombosis', 
-    'cerebral embolism', 'cerebral artery occlusion' 
+  - inpatient visits that include a condition occurrence record for
+    'cerebral infarction' and descendants, 'cerebral thrombosis',
+    'cerebral embolism', 'cerebral artery occlusion'
 */
-INSERT INTO @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id, 
-                                                     subject_id, 
-                                                     cohort_start_date, 
+INSERT INTO @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,
+                                                     subject_id,
+                                                     cohort_start_date,
                                                      cohort_end_date)
 SELECT 2 AS cohort_definition_id,
   visit_occurrence.person_id AS subject_id,
   visit_occurrence.visit_start_date AS cohort_start_date,
   visit_occurrence.visit_end_date AS cohort_end_date
-FROM  
+FROM
 (
   SELECT person_id, condition_start_date
   FROM @cdmDatabaseSchema.condition_occurrence
-  WHERE condition_concept_id IN (SELECT DISTINCT descendant_concept_id FROM 
-  @cdmDatabaseSchema.concept_ancestor WHERE ancestor_concept_id IN 
-  (443454 /*cerebral infarction*/) OR descendant_concept_id IN 
-  (441874 /*cerebral thrombosis*/, 375557 /*cerebral embolism*/, 
+  WHERE condition_concept_id IN (SELECT DISTINCT descendant_concept_id FROM
+  @cdmDatabaseSchema.concept_ancestor WHERE ancestor_concept_id IN
+  (443454 /*cerebral infarction*/) OR descendant_concept_id IN
+  (441874 /*cerebral thrombosis*/, 375557 /*cerebral embolism*/,
    372924 /*cerebral artery occlusion*/))
 ) stroke
 INNER JOIN @cdmDatabaseSchema.visit_occurrence
 ON stroke.person_id = visit_occurrence.person_id
 AND stroke.condition_start_date >= visit_occurrence.visit_start_date
 AND stroke.condition_start_date <= visit_occurrence.visit_end_date
-AND visit_occurrence.visit_concept_id IN (9201, 262 /*'Inpatient Visit'  or 
+AND visit_occurrence.visit_concept_id IN (9201, 262 /*'Inpatient Visit'  or
     'Emergency Room and Inpatient Visit'*/)
-GROUP BY visit_occurrence.person_id, visit_occurrence.visit_start_date, 
+GROUP BY visit_occurrence.person_id, visit_occurrence.visit_start_date,
          visit_occurrence.visit_end_date
 ;
 
 ```
 This is parameterized SQL which can be used by the [`SqlRender`](http://github.com/OHDSI/SqlRender) package. We use parameterized SQL so we do not have to pre-specify the names of the CDM and result schemas. That way, if we want to run the SQL on a different schema, we only need to change the parameter values; we do not have to change the SQL code. By also making use of translation functionality in `SqlRender`, we can make sure the SQL code can be run in many different environments.
 
-To execute this sql against our CDM we first need to tell R how to connect to the server. `PatientLevelPrediction` uses the [`DatabaseConnector`](http://github.com/ohdsi/DatabaseConnector) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
-  
+To execute this SQL against our CDM we first need to tell R how to connect to the server. [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) uses the [`DatabaseConnector`](http://github.com/ohdsi/DatabaseConnector) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
+
 
 ```r
-connectionDetails <- createConnectionDetails(dbms = "postgresql", 
-                                             server = "localhost/ohdsi", 
-                                             user = "joe", 
+connectionDetails <- createConnectionDetails(dbms = "postgresql",
+                                             server = "localhost/ohdsi",
+                                             user = "joe",
                                              password = "supersecret")
 
 cdmDatabaseSchema <- "my_cdm_data"
@@ -326,7 +326,7 @@ querySql(connection, sql)
 
 ### Study script creation
 
-In this section we assume that our cohorts have been created either by using ATLAS or a custom SQL script. We will first explain how to create an R script yourself that will execute our study as we have defined earlier. 
+In this section we assume that our cohorts have been created either by using ATLAS or a custom SQL script. We will first explain how to create an R script yourself that will execute our study as we have defined earlier.
 
 #### Data extraction
 
@@ -345,7 +345,7 @@ covariateSettings <- createCovariateSettings(useDemographicsGender = TRUE,
                                              endDays = -1)
 ```
 
-The final step for extracting the data is to run the `getPlpData` function and input the connection details, the database schema where the cohorts are stored, the cohort definition ids for the cohort and outcome, and the washoutPeriod which is the minimum number of days prior to cohort index date that the person must have been observed to be included into the data, and finally input the previously constructed covariate settings. 
+The final step for extracting the data is to run the `getPlpData` function and input the connection details, the database schema where the cohorts are stored, the cohort definition ids for the cohort and outcome, and the washoutPeriod which is the minimum number of days prior to cohort index date that the person must have been observed to be included into the data, and finally input the previously constructed covariate settings.
 
 
 ```r
@@ -362,7 +362,7 @@ plpData <- getPlpData(connectionDetails = connectionDetails,
 )
 ```
 
-Note that if the cohorts are created in ATLAS its corresponding cohort database schema needs to be selected. There are many additional parameters for the `getPlpData` function which are all documented in the `PatientLevelPrediction` manual. The resulting `plpData` object uses the package `ff` to store information in a way that ensures R does not run out of memory, even when the data are large. 
+Note that if the cohorts are created in ATLAS its corresponding cohort database schema needs to be selected. There are many additional parameters for the `getPlpData` function which are all documented in the `PatientLevelPrediction` manual. The resulting `plpData` object uses the package `ff` to store information in a way that ensures R does not run out of memory, even when the data are large.
 
 Creating the `plpData` object can take considerable computing time, and it is probably a good idea to save it for future sessions. Because `plpData` uses `ff`, we cannot use R's regular save function. Instead, we'll have to use the `savePlpData()` function:
 
@@ -416,10 +416,10 @@ The `runPlP` function uses the population, `plpData`, and model settings to trai
 
 
 ```r
-lrResults <- runPlp(population, plpData, modelSettings = lrModel, testSplit='person', 
+lrResults <- runPlp(population, plpData, modelSettings = lrModel, testSplit='person',
                     testFraction=0.25, nfold=2, splitSeed = 1234)
 ```
-Under the hood the package will now use the Cyclops packge (www.github.com/OHDSI/Cyclops) fit a large-scale regularized regression using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance etc. 
+Under the hood the package will now use the Cyclops packge (www.github.com/OHDSI/Cyclops) fit a large-scale regularized regression using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance etc.
 
 In the runPlp function there are several parameters to save the plpData, plpResults, plpPlots, evaluation etc. which are all set to True by default. However, there is also some functionality to this manually.
 
@@ -451,7 +451,7 @@ To load the full results structure use:
 lrResults <- loadPlpResult(file.path(getwd(),'lr'))
 ```
 \newpage
-### Study package creation 
+### Study package creation
 
 The script we created manually above can also be automatically created using a powerful feature in ATLAS. By creating a new prediction study (left menu) you can select the Target and Outcome as created in ATLAS, set all the study parameters, and then you can download a R package that you can use to execute your study. What is really powerful is that you can add multiple Ts, Os, covariate settings etc. The package will then run all the combinations of automatically as separate analyses. The screenshots below explain this process.
 
@@ -467,7 +467,7 @@ The script we created manually above can also be automatically created using a p
 3.  Specify the trainings settigns.
 
 <img src="images/PatientLevelPrediction/atlasplp3.png" width="100%" />
-  
+
 4.  Specify the execution settings.
 
 <img src="images/PatientLevelPrediction/atlasplp4.png" width="100%" />
@@ -486,7 +486,7 @@ Below the steps are explained how to do this in ATLAS.
 <img src="images/PatientLevelPrediction/atlasdownload2.png" width="100%" />
 
 
-3. If you agree, you give the package a name, and download the package as a zipfile. 
+3. If you agree, you give the package a name, and download the package as a zipfile.
 
 4. By opening the R package in R studio and building the package you can run the study using the `execute` function. Theres is also an example CodeToRun.R script available in the extras folder of the package with extra instructions.
 
@@ -514,7 +514,7 @@ The plots are described in more detail in the next sections.
 \newpage
 ### Discrimination
 
-The Receiver Operating Characteristics (ROC) plot shows the sensitivity against 1-specificity on the test set. The plot illustrates how well the model is able to discriminate between the people with the outcome and those without. The dashed diagonal line is the performance of a model that randomly assigns predictions. The higher the area under the ROC plot the better the discrimination of the model. The plot is created by changing the probability threshold to assign the positive class. 
+The Receiver Operating Characteristics (ROC) plot shows the sensitivity against 1-specificity on the test set. The plot illustrates how well the model is able to discriminate between the people with the outcome and those without. The dashed diagonal line is the performance of a model that randomly assigns predictions. The higher the area under the ROC plot the better the discrimination of the model. The plot is created by changing the probability threshold to assign the positive class.
 
 <img src="images/PatientLevelPrediction/sparseROC.png" width="100%" />
 
@@ -553,14 +553,14 @@ The preference distribution plots are the preference score distributions corresp
 \newpage
 ### Predicted probability distribution
 
-The prediction distribution box plots are for the predicted risks of the people in the test set with the outcome (class 1: blue) and without the outcome (class 0: red). 
+The prediction distribution box plots are for the predicted risks of the people in the test set with the outcome (class 1: blue) and without the outcome (class 0: red).
 
 The box plots in the Figure show that the predicted probability of the outcome is indeed higher for those with the outcome but there is also overlap between the two distribution which lead to an imperfect discrimination.
 
 <img src="images/PatientLevelPrediction/predictionDistribution.png" width="100%" />
 
 \newpage
-### Test-Train similarity 
+### Test-Train similarity
 
 The test-train similarity is assessed by plotting the mean covariate values in the train set against those in the test set for people with and without the outcome.
 
@@ -573,7 +573,7 @@ The results for our example of look very promising since the mean values of the 
 
 The variable scatter plot shows the mean covariate value for the people with the outcome against the mean covariate value for the people without the outcome. The color of the dots corresponds to the inclusion (green) or exclusion in the model (blue), respectively. It is highly recommended to use the Shiny App since this allows you to hoover over a covariate to show more details (name, value etc).
 
-The plot shows that the mean of most of the covariates is higher for subjects with the outcome compared to those without. 
+The plot shows that the mean of most of the covariates is higher for subjects with the outcome compared to those without.
 
 <img src="images/PatientLevelPrediction/variableScatterplot.png" width="100%" />
 
@@ -603,7 +603,7 @@ For Recall the denominator does not depend on the classifier threshold (Tp+Fn is
 <img src="images/PatientLevelPrediction/precisionRecall.png" width="100%" />
 
 \newpage
-### Demographic summary 
+### Demographic summary
 
 This plot shows for females and males the expected and observed risk in different age groups together with a confidence area.
 
@@ -623,12 +623,12 @@ plpModel <- loadPlpModel(getwd(),'model')
 
 #load the new plpData and create the population
 plpData <- loadPlpData(getwd(),'data')
-population <- createStudyPopulation(plpData, 
-outcomeId = 2, 
-includeAllOutcomes = TRUE, 
-firstExposureOnly = TRUE, 
-washoutPeriod = 365, 
-removeSubjectsWithPriorOutcome = TRUE, 
+population <- createStudyPopulation(plpData,
+outcomeId = 2,
+includeAllOutcomes = TRUE,
+firstExposureOnly = TRUE,
+washoutPeriod = 365,
+removeSubjectsWithPriorOutcome = TRUE,
 priorOutcomeLookback = 365,
 riskWindowStart = 1,
 requireTimeAtRisk = FALSE,
@@ -645,20 +645,20 @@ To make things easier we also provide a function for performing external validat
 # load the trained model
 plpResult <- loadPlpResult(getwd(),'plpResult')
 
-connectionDetails <- createConnectionDetails(dbms = "postgresql", 
-                                             server = "localhost/ohdsi", 
-                                             user = "joe", 
+connectionDetails <- createConnectionDetails(dbms = "postgresql",
+                                             server = "localhost/ohdsi",
+                                             user = "joe",
                                              password = "supersecret")
 
-validation <- externalValidatePlp(plpResult = plpResult, 
+validation <- externalValidatePlp(plpResult = plpResult,
                                   connectionDetails = connectionDetails,
                                   validationSchemaTarget = 'new_cohort_schema',
                                   validationSchemaOutcome = 'new_cohort_schema',
-                                  validationSchemaCdm = 'new_cdm_schema', 
+                                  validationSchemaCdm = 'new_cdm_schema',
                                   validationTableTarget = 'cohort_table',
-                                  validationTableOutcome = 'cohort_table', 
-                                  validationIdTarget = 'cohort_id', 
-                                  validationIdOutcome = 'outcome_id', 
+                                  validationTableOutcome = 'cohort_table',
+                                  validationIdTarget = 'cohort_id',
+                                  validationIdOutcome = 'outcome_id',
                                   keepPrediction = T
                                   )
 ```
@@ -670,25 +670,25 @@ If you want to validate on multiple databases available you can insert the new s
 # load the trained model
 plpResult <- loadPlpResult(getwd(),'plpResult')
 
-connectionDetails <- createConnectionDetails(dbms = "postgresql", 
-                                             server = "localhost/ohdsi", 
-                                             user = "joe", 
+connectionDetails <- createConnectionDetails(dbms = "postgresql",
+                                             server = "localhost/ohdsi",
+                                             user = "joe",
                                              password = "supersecret")
 
-validation <- externalValidatePlp(plpResult = plpResult, 
+validation <- externalValidatePlp(plpResult = plpResult,
                                   connectionDetails = connectionDetails,
                                   validationSchemaTarget = list('new_cohort_schema1',
                                                                 'new_cohort_schema2'),
                                   validationSchemaOutcome = list('new_cohort_schema1',
                                                                  'new_cohort_schema2'),
                                   validationSchemaCdm = list('new_cdm_schema1',
-                                                             'new_cdm_schema2'), 
+                                                             'new_cdm_schema2'),
                                   validationTableTarget = list('new_cohort_table1',
                                                                'new_cohort_table2'),
                                   validationTableOutcome = list('new_cohort_table1',
                                                                 'new_cohort_table2'),
-                                  validationIdTarget = 'cohort_id', 
-                                  validationIdOutcome = 'outcome_id', 
+                                  validationIdTarget = 'cohort_id',
+                                  validationIdOutcome = 'outcome_id',
                                   keepPrediction = T
                                   )
 ```
@@ -696,18 +696,18 @@ validation <- externalValidatePlp(plpResult = plpResult,
 ## Journal paper generation
 
 We have added functionality to automatically generate a word document you can use as start of a journal paper. It contains many of the generated study details and results.
-If you have performed external validation these results will can be added as well. Optionally, you can add a "Table 1" that contains data on many covariates for the target population. 
+If you have performed external validation these results will can be added as well. Optionally, you can add a "Table 1" that contains data on many covariates for the target population.
 
 You can create the draft journal paper by running this function:
 
 
 ```r
- createPlpJournalDocument(plpResult = <your plp results>, 
+ createPlpJournalDocument(plpResult = <your plp results>,
                           plpValidation = <your validation results>,
-                          plpData = <your plp data>, 
+                          plpData = <your plp data>,
                           targetName = "<target population>",
-                          outcomeName = "<outcome>", 
-                          table1 = F, 
+                          outcomeName = "<outcome>",
+                          table1 = F,
                           connectionDetails = NULL,
                           includeTrain = FALSE,
                           includeTest = TRUE,
@@ -738,7 +738,7 @@ We have added several demos in the package that run on simulated data:
 
 
 ```r
-# Show all demos in our package: 
+# Show all demos in our package:
  demo(package = "PatientLevelPrediction")
 
 # For example, to run the SingleModelDemo that runs Lasso and shows you how to run the Shiny App use this call
@@ -802,4 +802,4 @@ In the figures below the effect is shown of the removeSubjectsWithPriorOutcome, 
 6. Include all persons in target cohort.
 
 <img src="images/PatientLevelPrediction/popdef6.png" width="100%" />
-  
+

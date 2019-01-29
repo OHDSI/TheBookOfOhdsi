@@ -1064,35 +1064,35 @@ the AF and Stroke cohorts. Therefore, we create a file called
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{/***********************************}
-\CommentTok{File AfStrokeCohorts.sql }
+\CommentTok{File AfStrokeCohorts.sql}
 \CommentTok{***********************************/}
 \CommentTok{/*}
 \CommentTok{  Create a table to store the persons in the T and C cohort}
 \CommentTok{*/}
 
-\KeywordTok{IF}\NormalTok{ OBJECT_ID(}\StringTok{'@resultsDatabaseSchema.PLPAFibStrokeCohort'}\NormalTok{, }\StringTok{'U'}\NormalTok{) }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL} 
+\KeywordTok{IF}\NormalTok{ OBJECT_ID(}\StringTok{'@resultsDatabaseSchema.PLPAFibStrokeCohort'}\NormalTok{, }\StringTok{'U'}\NormalTok{) }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
   \KeywordTok{DROP} \KeywordTok{TABLE}\NormalTok{ @resultsDatabaseSchema.PLPAFibStrokeCohort;}
 
-\KeywordTok{CREATE} \KeywordTok{TABLE}\NormalTok{ @resultsDatabaseSchema.PLPAFibStrokeCohort }
-\NormalTok{( }
-\NormalTok{  cohort_definition_id }\DataTypeTok{INT}\NormalTok{, }
+\KeywordTok{CREATE} \KeywordTok{TABLE}\NormalTok{ @resultsDatabaseSchema.PLPAFibStrokeCohort}
+\NormalTok{(}
+\NormalTok{  cohort_definition_id }\DataTypeTok{INT}\NormalTok{,}
 \NormalTok{  subject_id BIGINT,}
-\NormalTok{  cohort_start_date }\DataTypeTok{DATE}\NormalTok{, }
+\NormalTok{  cohort_start_date }\DataTypeTok{DATE}\NormalTok{,}
 \NormalTok{  cohort_end_date }\DataTypeTok{DATE}
 \NormalTok{);}
 
 
 \CommentTok{/*}
-\CommentTok{  T cohort:  [PatientLevelPrediction vignette]:  T : patients who are newly }
+\CommentTok{  T cohort:  [PatientLevelPrediction vignette]:  T : patients who are newly}
 \CommentTok{             diagnosed with Atrial fibrillation}
-\CommentTok{  - persons with a condition occurrence record of 'Atrial fibrillation' or }
+\CommentTok{  - persons with a condition occurrence record of 'Atrial fibrillation' or}
 \CommentTok{    any descendants, indexed at the first diagnosis}
 \CommentTok{  - who have >1095 days of prior observation before their first diagnosis}
 \CommentTok{  - and have no warfarin exposure any time prior to first AFib diagnosis}
 \CommentTok{*/}
-\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id, }
-\NormalTok{                                                     subject_id, }
-\NormalTok{                                                     cohort_start_date, }
+\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,}
+\NormalTok{                                                     subject_id,}
+\NormalTok{                                                     cohort_start_date,}
 \NormalTok{                                                     cohort_end_date)}
 \KeywordTok{SELECT} \DecValTok{1} \KeywordTok{AS}\NormalTok{ cohort_definition_id,}
 \NormalTok{  AFib.person_id }\KeywordTok{AS}\NormalTok{ subject_id,}
@@ -1102,22 +1102,22 @@ the AF and Stroke cohorts. Therefore, we create a file called
 \NormalTok{(}
   \KeywordTok{SELECT}\NormalTok{ person_id, }\FunctionTok{min}\NormalTok{(condition_start_date) }\KeywordTok{as}\NormalTok{ condition_start_date}
   \KeywordTok{FROM}\NormalTok{ @cdmDatabaseSchema.condition_occurrence}
-  \KeywordTok{WHERE}\NormalTok{ condition_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM} 
-\NormalTok{        @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN} 
+  \KeywordTok{WHERE}\NormalTok{ condition_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM}
+\NormalTok{        @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN}
 \NormalTok{        (}\DecValTok{313217} \CommentTok{/*atrial fibrillation*/}\NormalTok{))}
   \KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ person_id}
 \NormalTok{) AFib}
 \KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ @cdmDatabaseSchema.observation_period}
   \KeywordTok{ON}\NormalTok{ AFib.person_id = observation_period.person_id}
-  \KeywordTok{AND}\NormalTok{ AFib.condition_start_date >= dateadd(dd,}\DecValTok{1095}\NormalTok{, }
+  \KeywordTok{AND}\NormalTok{ AFib.condition_start_date >= dateadd(dd,}\DecValTok{1095}\NormalTok{,}
 \NormalTok{                                   observation_period.observation_period_start_date)}
   \KeywordTok{AND}\NormalTok{ AFib.condition_start_date <= observation_period.observation_period_end_date}
 \KeywordTok{LEFT} \KeywordTok{JOIN}
 \NormalTok{(}
   \KeywordTok{SELECT}\NormalTok{ person_id, }\FunctionTok{min}\NormalTok{(drug_exposure_start_date) }\KeywordTok{as}\NormalTok{ drug_exposure_start_date}
   \KeywordTok{FROM}\NormalTok{ @cdmDatabaseSchema.drug_exposure}
-  \KeywordTok{WHERE}\NormalTok{ drug_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM} 
-\NormalTok{       @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN} 
+  \KeywordTok{WHERE}\NormalTok{ drug_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM}
+\NormalTok{       @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN}
 \NormalTok{       (}\DecValTok{1310149} \CommentTok{/*warfarin*/}\NormalTok{))}
   \KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ person_id}
 \NormalTok{) warfarin}
@@ -1128,35 +1128,35 @@ the AF and Stroke cohorts. Therefore, we create a file called
 
 \CommentTok{/*}
 \CommentTok{  C cohort:  [PatientLevelPrediction vignette]:  O: Ischemic stroke events}
-\CommentTok{  - inpatient visits that include a condition occurrence record for }
-\CommentTok{    'cerebral infarction' and descendants, 'cerebral thrombosis', }
-\CommentTok{    'cerebral embolism', 'cerebral artery occlusion' }
+\CommentTok{  - inpatient visits that include a condition occurrence record for}
+\CommentTok{    'cerebral infarction' and descendants, 'cerebral thrombosis',}
+\CommentTok{    'cerebral embolism', 'cerebral artery occlusion'}
 \CommentTok{*/}
-\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id, }
-\NormalTok{                                                     subject_id, }
-\NormalTok{                                                     cohort_start_date, }
+\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,}
+\NormalTok{                                                     subject_id,}
+\NormalTok{                                                     cohort_start_date,}
 \NormalTok{                                                     cohort_end_date)}
 \KeywordTok{SELECT} \DecValTok{2} \KeywordTok{AS}\NormalTok{ cohort_definition_id,}
 \NormalTok{  visit_occurrence.person_id }\KeywordTok{AS}\NormalTok{ subject_id,}
 \NormalTok{  visit_occurrence.visit_start_date }\KeywordTok{AS}\NormalTok{ cohort_start_date,}
 \NormalTok{  visit_occurrence.visit_end_date }\KeywordTok{AS}\NormalTok{ cohort_end_date}
-\KeywordTok{FROM}  
+\KeywordTok{FROM}
 \NormalTok{(}
   \KeywordTok{SELECT}\NormalTok{ person_id, condition_start_date}
   \KeywordTok{FROM}\NormalTok{ @cdmDatabaseSchema.condition_occurrence}
-  \KeywordTok{WHERE}\NormalTok{ condition_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT} \KeywordTok{DISTINCT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM} 
-\NormalTok{  @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN} 
-\NormalTok{  (}\DecValTok{443454} \CommentTok{/*cerebral infarction*/}\NormalTok{) }\KeywordTok{OR}\NormalTok{ descendant_concept_id }\KeywordTok{IN} 
-\NormalTok{  (}\DecValTok{441874} \CommentTok{/*cerebral thrombosis*/}\NormalTok{, }\DecValTok{375557} \CommentTok{/*cerebral embolism*/}\NormalTok{, }
+  \KeywordTok{WHERE}\NormalTok{ condition_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT} \KeywordTok{DISTINCT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM}
+\NormalTok{  @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN}
+\NormalTok{  (}\DecValTok{443454} \CommentTok{/*cerebral infarction*/}\NormalTok{) }\KeywordTok{OR}\NormalTok{ descendant_concept_id }\KeywordTok{IN}
+\NormalTok{  (}\DecValTok{441874} \CommentTok{/*cerebral thrombosis*/}\NormalTok{, }\DecValTok{375557} \CommentTok{/*cerebral embolism*/}\NormalTok{,}
    \DecValTok{372924} \CommentTok{/*cerebral artery occlusion*/}\NormalTok{))}
 \NormalTok{) stroke}
 \KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ @cdmDatabaseSchema.visit_occurrence}
 \KeywordTok{ON}\NormalTok{ stroke.person_id = visit_occurrence.person_id}
 \KeywordTok{AND}\NormalTok{ stroke.condition_start_date >= visit_occurrence.visit_start_date}
 \KeywordTok{AND}\NormalTok{ stroke.condition_start_date <= visit_occurrence.visit_end_date}
-\KeywordTok{AND}\NormalTok{ visit_occurrence.visit_concept_id }\KeywordTok{IN}\NormalTok{ (}\DecValTok{9201}\NormalTok{, }\DecValTok{262} \CommentTok{/*'Inpatient Visit'  or }
+\KeywordTok{AND}\NormalTok{ visit_occurrence.visit_concept_id }\KeywordTok{IN}\NormalTok{ (}\DecValTok{9201}\NormalTok{, }\DecValTok{262} \CommentTok{/*'Inpatient Visit'  or}
 \CommentTok{    'Emergency Room and Inpatient Visit'*/}\NormalTok{)}
-\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ visit_occurrence.person_id, visit_occurrence.visit_start_date, }
+\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ visit_occurrence.person_id, visit_occurrence.visit_start_date,}
 \NormalTok{         visit_occurrence.visit_end_date}
 \NormalTok{;}
 \end{Highlighting}
@@ -1171,8 +1171,10 @@ have to change the SQL code. By also making use of translation
 functionality in \texttt{SqlRender}, we can make sure the SQL code can
 be run in many different environments.
 
-To execute this sql against our CDM we first need to tell R how to
-connect to the server. \texttt{PatientLevelPrediction} uses the
+To execute this SQL against our CDM we first need to tell R how to
+connect to the server.
+\href{http://github.com/OHDSI/PatientLevelPrediction}{\texttt{PatientLevelPrediction}}
+uses the
 \href{http://github.com/ohdsi/DatabaseConnector}{\texttt{DatabaseConnector}}
 package, which provides a function called
 \texttt{createConnectionDetails}. Type \texttt{?createConnectionDetails}
@@ -1182,9 +1184,9 @@ using this code:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{, }
-                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{, }
-                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{, }
+\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
+                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
                                              \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
 
 \NormalTok{cdmDatabaseSchema <-}\StringTok{ "my_cdm_data"}
@@ -1398,7 +1400,7 @@ model settings to train and evaluate the model. We can use the testSplit
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{lrResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(population, plpData, }\DataTypeTok{modelSettings =}\NormalTok{ lrModel, }\DataTypeTok{testSplit=}\StringTok{'person'}\NormalTok{, }
+\NormalTok{lrResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(population, plpData, }\DataTypeTok{modelSettings =}\NormalTok{ lrModel, }\DataTypeTok{testSplit=}\StringTok{'person'}\NormalTok{,}
                     \DataTypeTok{testFraction=}\FloatTok{0.25}\NormalTok{, }\DataTypeTok{nfold=}\DecValTok{2}\NormalTok{, }\DataTypeTok{splitSeed =} \DecValTok{1234}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1761,12 +1763,12 @@ model on as much new datasets as feasible and evaluate its performance.
 
 \CommentTok{#load the new plpData and create the population}
 \NormalTok{plpData <-}\StringTok{ }\KeywordTok{loadPlpData}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'data'}\NormalTok{)}
-\NormalTok{population <-}\StringTok{ }\KeywordTok{createStudyPopulation}\NormalTok{(plpData, }
-\DataTypeTok{outcomeId =} \DecValTok{2}\NormalTok{, }
-\DataTypeTok{includeAllOutcomes =} \OtherTok{TRUE}\NormalTok{, }
-\DataTypeTok{firstExposureOnly =} \OtherTok{TRUE}\NormalTok{, }
-\DataTypeTok{washoutPeriod =} \DecValTok{365}\NormalTok{, }
-\DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{, }
+\NormalTok{population <-}\StringTok{ }\KeywordTok{createStudyPopulation}\NormalTok{(plpData,}
+\DataTypeTok{outcomeId =} \DecValTok{2}\NormalTok{,}
+\DataTypeTok{includeAllOutcomes =} \OtherTok{TRUE}\NormalTok{,}
+\DataTypeTok{firstExposureOnly =} \OtherTok{TRUE}\NormalTok{,}
+\DataTypeTok{washoutPeriod =} \DecValTok{365}\NormalTok{,}
+\DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{,}
 \DataTypeTok{priorOutcomeLookback =} \DecValTok{365}\NormalTok{,}
 \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
 \DataTypeTok{requireTimeAtRisk =} \OtherTok{FALSE}\NormalTok{,}
@@ -1786,20 +1788,20 @@ validation of a model across one or multiple datasets:
 \CommentTok{# load the trained model}
 \NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'plpResult'}\NormalTok{)}
 
-\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{, }
-                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{, }
-                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{, }
+\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
+                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
                                              \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
 
-\NormalTok{validation <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ plpResult, }
+\NormalTok{validation <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ plpResult,}
                                   \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
                                   \DataTypeTok{validationSchemaTarget =} \StringTok{'new_cohort_schema'}\NormalTok{,}
                                   \DataTypeTok{validationSchemaOutcome =} \StringTok{'new_cohort_schema'}\NormalTok{,}
-                                  \DataTypeTok{validationSchemaCdm =} \StringTok{'new_cdm_schema'}\NormalTok{, }
+                                  \DataTypeTok{validationSchemaCdm =} \StringTok{'new_cdm_schema'}\NormalTok{,}
                                   \DataTypeTok{validationTableTarget =} \StringTok{'cohort_table'}\NormalTok{,}
-                                  \DataTypeTok{validationTableOutcome =} \StringTok{'cohort_table'}\NormalTok{, }
-                                  \DataTypeTok{validationIdTarget =} \StringTok{'cohort_id'}\NormalTok{, }
-                                  \DataTypeTok{validationIdOutcome =} \StringTok{'outcome_id'}\NormalTok{, }
+                                  \DataTypeTok{validationTableOutcome =} \StringTok{'cohort_table'}\NormalTok{,}
+                                  \DataTypeTok{validationIdTarget =} \StringTok{'cohort_id'}\NormalTok{,}
+                                  \DataTypeTok{validationIdOutcome =} \StringTok{'outcome_id'}\NormalTok{,}
                                   \DataTypeTok{keepPrediction =}\NormalTok{ T}
 \NormalTok{                                  )}
 \end{Highlighting}
@@ -1822,25 +1824,25 @@ the new schemas and cohort tables as a list:
 \CommentTok{# load the trained model}
 \NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'plpResult'}\NormalTok{)}
 
-\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{, }
-                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{, }
-                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{, }
+\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
+                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
                                              \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
 
-\NormalTok{validation <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ plpResult, }
+\NormalTok{validation <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ plpResult,}
                                   \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
                                   \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_schema1'}\NormalTok{,}
                                                                 \StringTok{'new_cohort_schema2'}\NormalTok{),}
                                   \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_schema1'}\NormalTok{,}
                                                                  \StringTok{'new_cohort_schema2'}\NormalTok{),}
                                   \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cdm_schema1'}\NormalTok{,}
-                                                             \StringTok{'new_cdm_schema2'}\NormalTok{), }
+                                                             \StringTok{'new_cdm_schema2'}\NormalTok{),}
                                   \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_table1'}\NormalTok{,}
                                                                \StringTok{'new_cohort_table2'}\NormalTok{),}
                                   \DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_table1'}\NormalTok{,}
                                                                 \StringTok{'new_cohort_table2'}\NormalTok{),}
-                                  \DataTypeTok{validationIdTarget =} \StringTok{'cohort_id'}\NormalTok{, }
-                                  \DataTypeTok{validationIdOutcome =} \StringTok{'outcome_id'}\NormalTok{, }
+                                  \DataTypeTok{validationIdTarget =} \StringTok{'cohort_id'}\NormalTok{,}
+                                  \DataTypeTok{validationIdOutcome =} \StringTok{'outcome_id'}\NormalTok{,}
                                   \DataTypeTok{keepPrediction =}\NormalTok{ T}
 \NormalTok{                                  )}
 \end{Highlighting}
@@ -1859,12 +1861,12 @@ You can create the draft journal paper by running this function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
- \KeywordTok{createPlpJournalDocument}\NormalTok{(}\DataTypeTok{plpResult =} \OperatorTok{<}\NormalTok{your plp results}\OperatorTok{>}\NormalTok{, }
+ \KeywordTok{createPlpJournalDocument}\NormalTok{(}\DataTypeTok{plpResult =} \OperatorTok{<}\NormalTok{your plp results}\OperatorTok{>}\NormalTok{,}
                           \DataTypeTok{plpValidation =} \OperatorTok{<}\NormalTok{your validation results}\OperatorTok{>}\NormalTok{,}
-                          \DataTypeTok{plpData =} \OperatorTok{<}\NormalTok{your plp data}\OperatorTok{>}\NormalTok{, }
+                          \DataTypeTok{plpData =} \OperatorTok{<}\NormalTok{your plp data}\OperatorTok{>}\NormalTok{,}
                           \DataTypeTok{targetName =} \StringTok{"<target population>"}\NormalTok{,}
-                          \DataTypeTok{outcomeName =} \StringTok{"<outcome>"}\NormalTok{, }
-                          \DataTypeTok{table1 =}\NormalTok{ F, }
+                          \DataTypeTok{outcomeName =} \StringTok{"<outcome>"}\NormalTok{,}
+                          \DataTypeTok{table1 =}\NormalTok{ F,}
                           \DataTypeTok{connectionDetails =} \OtherTok{NULL}\NormalTok{,}
                           \DataTypeTok{includeTrain =} \OtherTok{FALSE}\NormalTok{,}
                           \DataTypeTok{includeTest =} \OtherTok{TRUE}\NormalTok{,}
@@ -1955,7 +1957,7 @@ We have added several demos in the package that run on simulated data:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{# Show all demos in our package: }
+\CommentTok{# Show all demos in our package:}
  \KeywordTok{demo}\NormalTok{(}\DataTypeTok{package =} \StringTok{"PatientLevelPrediction"}\NormalTok{)}
 
 \CommentTok{# For example, to run the SingleModelDemo that runs Lasso and shows you how to run the Shiny App use this call}
