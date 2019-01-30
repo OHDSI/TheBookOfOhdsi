@@ -9,7 +9,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: OHDSI/TheBookOfOhdsi
-cover-image: images/cover.png
+cover-image: images/Cover.png
 url: "https://ohdsi.github.io/TheBookOfOhdsi/"
 description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
 ---
