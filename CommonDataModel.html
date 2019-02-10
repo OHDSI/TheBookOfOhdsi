@@ -25,7 +25,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics">
 
 
-<meta name="date" content="2019-01-30">
+<meta name="date" content="2019-02-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -123,7 +123,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2" data-path="Collaborators.html"><a href="Collaborators.html"><i class="fa fa-check"></i><b>2</b> Collaborators</a></li>
 <li class="chapter" data-level="3" data-path="OpenScience.html"><a href="OpenScience.html"><i class="fa fa-check"></i><b>3</b> Open Science</a></li>
 <li class="part"><span><b>II Uniform Data Representation</b></span></li>
-<li class="chapter" data-level="4" data-path="CommonDataModel.html"><a href="CommonDataModel.html"><i class="fa fa-check"></i><b>4</b> The Common Data Model</a></li>
+<li class="chapter" data-level="4" data-path="CommonDataModel.html"><a href="CommonDataModel.html"><i class="fa fa-check"></i><b>4</b> The Common Data Model</a><ul>
+<li class="chapter" data-level="4.1" data-path="CommonDataModel.html"><a href="CommonDataModel.html#design-principles"><i class="fa fa-check"></i><b>4.1</b> Design Principles</a></li>
+<li class="chapter" data-level="4.2" data-path="CommonDataModel.html"><a href="CommonDataModel.html#data-model-conventions"><i class="fa fa-check"></i><b>4.2</b> Data Model Conventions</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="CommonDataModel.html"><a href="CommonDataModel.html#general-conventions-of-the-model"><i class="fa fa-check"></i><b>4.2.1</b> General conventions of the model</a></li>
+<li class="chapter" data-level="4.2.2" data-path="CommonDataModel.html"><a href="CommonDataModel.html#general-conventions-of-schemas"><i class="fa fa-check"></i><b>4.2.2</b> General conventions of schemas</a></li>
+<li class="chapter" data-level="4.2.3" data-path="CommonDataModel.html"><a href="CommonDataModel.html#general-conventions-of-data-tables"><i class="fa fa-check"></i><b>4.2.3</b> General conventions of data tables</a></li>
+<li class="chapter" data-level="4.2.4" data-path="CommonDataModel.html"><a href="CommonDataModel.html#general-conventions-of-fields"><i class="fa fa-check"></i><b>4.2.4</b> General conventions of fields</a></li>
+<li class="chapter" data-level="4.2.5" data-path="CommonDataModel.html"><a href="CommonDataModel.html#representation-of-content-through-concepts"><i class="fa fa-check"></i><b>4.2.5</b> Representation of content through Concepts</a></li>
+<li class="chapter" data-level="4.2.6" data-path="CommonDataModel.html"><a href="CommonDataModel.html#difference-between-concept-ids-and-source-values"><i class="fa fa-check"></i><b>4.2.6</b> Difference between Concept IDs and Source Values</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="StandardizedVocabularies.html"><a href="StandardizedVocabularies.html"><i class="fa fa-check"></i><b>5</b> Standardized Vocabularies</a></li>
 <li class="chapter" data-level="6" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html"><i class="fa fa-check"></i><b>6</b> Extract Transform Load</a></li>
 <li class="chapter" data-level="7" data-path="DataQuality.html"><a href="DataQuality.html"><i class="fa fa-check"></i><b>7</b> Data Quality</a></li>
@@ -192,36 +202,111 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="CommonDataModel" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> The Common Data Model</h1>
-<p>Leads: Mui van Zandt &amp; Clair Blacketer</p>
-<p>Introduction</p>
+<p>No single observational data source provides a comprehensive view of the clinical data a patient accumulates while receiving healthcare, and therefore none can be sufficient to meet all expected outcome analysis needs. This explains the need for assessing and analyzing multiple data sources concurrently using a common data standard. This standard is provided by the OMOP Common Data Model (CDM).</p>
+<p>The CDM is designed to support the conduct of research to identify and evaluate associations between interventions (drug exposure, procedures, healthcare policy changes etc.) and outcomes caused by these interventions (condition occurrences, procedures, drug exposure etc.). Outcomes can be efficacious (benefit) or adverse (safety risk). Often times, specific patient cohorts (e.g., those taking a certain drug or suffering from a certain disease) may be defined for treatments or outcomes, using clinical events (diagnoses, observations, procedures, etc.) that occur in predefined temporal relationships to each other. The CDM, combined with its standardized content (via the Standardized Vocabularies), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results.</p>
+<div id="design-principles" class="section level2">
+<h2><span class="header-section-number">4.1</span> Design Principles</h2>
+<p>The CDM is designed to include all observational health data elements (experiences of the patient receiving health care) that are relevant for analysis use cases to support the generation of reliable scientific evidence about disease natural history, healthcare delivery, effects of medical interventions, the identification of demographic information, health care interventions and outcomes.</p>
+<p>Therefore, the CDM is designed to store observational data to allow for research, under the following principles:</p>
 <ul>
-<li>Why OMOP/OHDSI</li>
-<li>Person-centric model</li>
-<li>Source values, standard concepts and source concepts</li>
-<li>Vocabulary map query</li>
-<li>Introduce patient story (Lauren endometriosis)</li>
-<li>Description of her care</li>
-<li>Conceptual items</li>
-<li>Patient-centric</li>
-<li>Time, when do things happen?</li>
-<li>Cross-links, indications (we don’t know what disease a drug is meant to treat, person by person)
-<ul>
-<li>We can infer</li>
-</ul></li>
-<li>Typical questions and confusions people run into</li>
-<li>Reference is not in the data, look in the vocabulary for reference information</li>
-<li>Design principles, adherence Standardized Clinical Data Tables - do not restate the wiki here, they should be separate</li>
-<li>Person Table
-<ul>
-<li>Overview</li>
-<li>Structure</li>
-<li>Conventions</li>
-<li>How would Lauren look? ETC….similar section for each CDM table</li>
-</ul></li>
+<li><strong>Suitability for purpose:</strong> The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers.</li>
+<li><strong>Data protection:</strong> All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible where the research expressly requires more detailed information, such as precise birth dates for the study of infants.</li>
+<li><strong>Design of domains:</strong> The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum.</li>
+<li><strong>Rationale for domains:</strong> Domains are identified and separately defined in an entity-relationship model if they have an analysis use case and the domain has specific attributes that are not otherwise applicable. All other data can be preserved as an observation in an entity-attribute-value structure.</li>
+<li><strong>Standardized Vocabularies:</strong> To standardize the content of those records, the CDM relies on the Standardized Vocabularies containing all necessary and appropriate corresponding standard healthcare concepts.</li>
+<li><strong>Reuse of existing vocabularies:</strong> If possible, these concepts are leveraged from national or industry standardization or vocabulary definition organizations or initiatives, such as the National Library of Medicine, the Department of Veterans’ Affairs, the Center of Disease Control and Prevention, etc.</li>
+<li><strong>Maintaining source codes:</strong> Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost.</li>
+<li><strong>Technology neutrality:</strong> The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or as SAS analytical datasets.</li>
+<li><strong>Scalability:</strong> The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations.</li>
+<li><strong>Backwards compatibility:</strong> All changes from previous CDMs are clearly delineated in the <a href="https://github.com/OHDSI/CommonDataModel">github repository</a>. Older versions of the CDM can be easily created from the CDMv5, and no information is lost that was present previously.</li>
 </ul>
-<p>How the CDM evolves based on community input</p>
-<p>Comparison of OMOP model to other models (VH suggestion)</p>
+</div>
+<div id="data-model-conventions" class="section level2">
+<h2><span class="header-section-number">4.2</span> Data Model Conventions</h2>
+<p>There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions.</p>
+<div id="general-conventions-of-the-model" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> General conventions of the model</h3>
+<p>The OMOP CDM is considered a “person-centric” model, meaning that the people (or patients) drive the event and observation tables. At a minimum, the tables have a foreign key into the PERSON table and a date. This allows for a longitudinal view on all healthcare-relevant events by person. The exceptions from this rule are the standardized health system data tables, which are linked directly to events of the various domains.</p>
+</div>
+<div id="general-conventions-of-schemas" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> General conventions of schemas</h3>
+<p>New to CDM v6.0 is the concept of schemas. This allows for more separation between read-only and writeable tables. The clinical data, event, and vocabulary tables are in the ‘CDM’ schema and tables that need to be manipulated by web-based tools or end users have moved to the ‘Results’ schema. Currently the only two tables in the ‘Results’ schema are COHORT and COHORT_DEFINITON, though likely more will be added over the course of v6.0 point releases.</p>
+</div>
+<div id="general-conventions-of-data-tables" class="section level3">
+<h3><span class="header-section-number">4.2.3</span> General conventions of data tables</h3>
+<p>The CDM is platform-independent. Data types are defined generically using ANSI SQL data types (VARCHAR, INTEGER, FLOAT, DATE, DATETIME, CLOB). Precision is provided only for VARCHAR. It reflects the minimal required string length and can be expanded within a CDM instantiation. The CDM does not prescribe the date and datetime format. Standard queries against CDM may vary for local instantiations and date/datetime configurations.</p>
+<p>In most cases, the first field in each table ends in ’_ID’, containing a record identifier that can be used as a foreign key in another table. For example, the CONDITION_OCCURRENCE table contains the field VISIT_OCCURRENCE_ID which is a foreign key to the VISIT_OCCURRENCE table where VISIT_OCCURRENCE_ID is the primary key.</p>
+</div>
+<div id="general-conventions-of-fields" class="section level3">
+<h3><span class="header-section-number">4.2.4</span> General conventions of fields</h3>
+<p>Variable names across all tables follow one convention:</p>
+<table>
+<colgroup>
+<col width="25%" />
+<col width="74%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Notation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><entity>_SOURCE_VALUE</td>
+<td>Verbatim information from the source data, typically used in ETL to map to CONCEPT_ID, and not to be used by any standard analytics. For example, CONDITION_SOURCE_VALUE = ‘787.02’ was the ICD-9 code captured as a diagnosis from the administrative claim.</td>
+</tr>
+<tr class="even">
+<td><entity>_ID</td>
+<td>Unique identifiers for key entities, which can serve as foreign keys to establish relationships across entities. For example, PERSON_ID uniquely identifies each individual. VISIT_OCCURRENCE_ID uniquely identifies a PERSON encounter at a point of care.</td>
+</tr>
+<tr class="odd">
+<td><entity>_CONCEPT_ID</td>
+<td>Foreign key into the Standardized Vocabularies (i.e. the standard_concept attribute for the corresponding term is true), which serves as the primary basis for all standardized analytics. For example, CONDITION_CONCEPT_ID = <a href="http://athena.ohdsi.org/search-terms/terms/31967">31967</a> contains the reference value for the SNOMED concept of ‘Nausea’</td>
+</tr>
+<tr class="even">
+<td><entity>_SOURCE_CONCEPT_ID</td>
+<td>Foreign key into the Standardized Vocabularies representing the concept and terminology used in the source data, when applicable. For example, CONDITION_SOURCE_CONCEPT_ID = <a href="http://athena.ohdsi.org/search-terms/terms/45431665">45431665</a> denotes the concept of ‘Nausea’ in the Read terminology; the analogous CONDITION_CONCEPT_ID might be 31967, since SNOMED-CT is the Standardized Vocabulary for most clinical diagnoses and findings.</td>
+</tr>
+<tr class="odd">
+<td><entity>_TYPE_CONCEPT_ID</td>
+<td>Delineates the origin of the source information, standardized within the Standardized Vocabularies. For example, DRUG_TYPE_CONCEPT_ID can allow analysts to discriminate between ‘Pharmacy dispensing’ and ‘Prescription written’</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="representation-of-content-through-concepts" class="section level3">
+<h3><span class="header-section-number">4.2.5</span> Representation of content through Concepts</h3>
+<p>In CDM data tables the content of each record is represented using Concepts. Concepts are stored in event tables with their CONCEPT_IDs as foreign keys to the CONCEPT table, which contains Concepts necessary to describe the healthcare experience of a patient. If a Standard Concept does not exist or cannot be identified, the the CONCEPT_ID 0 is used, representing a non-existing concept or un-mappable source value.</p>
+<p>Records in the CONCEPT table contain detailed information about each concept (name, domain, class etc.). Concepts, Concept Relationships, Concept Ancestors and other information relating to Concepts is contained in the tables of the Standardized Vocabularies.</p>
+</div>
+<div id="difference-between-concept-ids-and-source-values" class="section level3">
+<h3><span class="header-section-number">4.2.6</span> Difference between Concept IDs and Source Values</h3>
+<p>Many tables contain equivalent information in multiple places: As a Source Value, a Source Concept and as a Standard Concept.</p>
+<ul>
+<li>Source Values contain the codes from public code systems such as ICD-9-CM, NDC, CPT-4, READ etc. or locally controlled vocabularies (such as F for female and M for male) copied from the source data. Source Values are stored in the <entity>_SOURCE_VALUE fields in the data tables.</li>
+<li>Concepts are CDM-specific entities that represent the meaning of a clinical fact. Most concepts are based on code systems used in healthcare (called Source Concepts), while others were created de-novo (CONCEPT_CODE = ‘OMOP generated’). Concepts have unique IDs across all domains.</li>
+<li>Source Concepts are the concepts that represent the code used in the source. Source Concepts are only used for common healthcare code systems, not for OMOP-generated Concepts. Source Concepts are stored in the <entity>_SOURCE_CONCEPT_ID field in the data tables.</li>
+<li>Standard Concepts are those concepts that are used to define the unique meaning of a clinical entity. For each entity there is one Standard Concept. Standard Concepts are typically drawn from existing public vocabulary sources. Concepts that have the equivalent meaning to a Standard Concept are mapped to the Standard Concept. Standard Concepts are referred to in the <entity>_CONCEPT_ID field of the data tables.</li>
+</ul>
+<p>Source Values are only provided for convenience and quality assurance (QA) purposes. Source Values and Source Concepts are optional, while <strong>Standard Concepts are mandatory</strong>. Source Values may contain information that is only meaningful in the context of a specific data source. This mandatory use of Standard Concepts is what allows all OHDSI collaborators to speak the same language. For example, let’s look at the condition ‘Pulmonary Tuberculosis’ (TB). Figure <a href="CommonDataModel.html#fig:pulmTubICD9">4.1</a> shows that the ICD9CM code for TB is 011.</p>
+<div class="figure"><span id="fig:pulmTubICD9"></span>
+<img src="images/CommonDataModel/pulmTubICD9.png" alt="ICD9CM code for Pulmonary Tuberculosis" width="75%" />
+<p class="caption">
+Figure 4.1: ICD9CM code for Pulmonary Tuberculosis
+</p>
+</div>
+<p>Without the use of a standard way to represent TB the code 011 could be interpreted as ‘Hospital Inpatient (Including Medicare Part A)’ in the UB04 vocabulary, or as ‘Nervous System Neoplasms without Complications, Comorbidities’ in the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The Concept ID that represents the 011 ICD9CM code is <a href="http://athena.ohdsi.org/search-terms/terms/44828631">44828631</a>. This differentiates the ICD9CM from the UBO4 and from the DRG. The Standard Concept that ICD9CM code maps to is <a href="http://athena.ohdsi.org/search-terms/terms/253954">253954</a> as shown in figure <a href="CommonDataModel.html#fig:pulmTubMap">4.2</a> by the relationship ‘Non-standard to Standard map (OMOP)’. This same mapping relationship exists between Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes.</p>
+<div class="figure"><span id="fig:pulmTubMap"></span>
+<img src="images/CommonDataModel/pulmTubMap.png" alt="SNOMED code for Pulmonary Tuberculosis" width="100%" />
+<p class="caption">
+Figure 4.2: SNOMED code for Pulmonary Tuberculosis
+</p>
+</div>
+<p>An example of how this relationship is depicted in the tables is shown in figure (<strong>link to figure in CONDITION_OCCURRENCE</strong>)</p>
 
+</div>
+</div>
 </div>
             </section>
 
