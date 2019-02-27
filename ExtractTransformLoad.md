@@ -10,3 +10,12 @@ Conversion to OMOP CDM (ETL - Extract, Transform, Load): http://www.ohdsi.org/we
 * Usagi: http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:usagi 
 * Achilles: http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:achilles 
 * Athena: http://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary_etl
+
+Mapping and QA of codes to Standard Concepts
+
+* Mapping codes locally versus through the OHDSI Standard Vocabularies
+* Usagi
+* Systematic mapping of Drug codes
+* Systematic mapping of Condition codes
+* Systematic mapping of Procedure codes
+* Systematic mapping of other codes
