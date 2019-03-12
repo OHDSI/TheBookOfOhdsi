@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-03-11}
+    \date{2019-03-12}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -291,8 +291,8 @@ research, under the following principles:
   billions of clinical observations.
 \item
   \textbf{Backwards compatibility:} All changes from previous CDMs are
-  clearly delineated in the
-  \href{https://github.com/OHDSI/CommonDataModel}{github repository}.
+  clearly delineated in the github repository
+  \href{https://github.com/OHDSI/CommonDataModel}{(https://github.com/OHDSI/CommonDataModel)}.
   Older versions of the CDM can be easily created from the CDMv5, and no
   information is lost that was present previously.
 \end{itemize}
@@ -303,8 +303,7 @@ There are a number of implicit and explicit conventions that have been
 adopted in the CDM. Developers of methods that run against the CDM need
 to understand these conventions.
 
-\subsection{General conventions of the
-model}\label{general-conventions-of-the-model}
+\subsection{General conventions of the model}\label{model-conv}
 
 The OMOP CDM is considered a ``person-centric'' model, meaning that the
 people (or patients) drive the event and observation tables. At a
@@ -318,11 +317,21 @@ schemas}\label{general-conventions-of-schemas}
 
 New to CDM v6.0 is the concept of schemas. This allows for more
 separation between read-only and writeable tables. The clinical data,
-event, and vocabulary tables are in the `CDM' schema and tables that
-need to be manipulated by web-based tools or end users have moved to the
-`Results' schema. Currently the only two tables in the `Results' schema
-are COHORT and COHORT\_DEFINITON, though likely more will be added over
-the course of v6.0 point releases.
+event, and vocabulary tables are in the `CDM' schema and are considered
+read-only to the end user. This means that the tables can be queried but
+no information can be accidentally removed or written over except by the
+database administrator. Tables that need to be manipulated by web-based
+tools or end users have moved to the `Results' schema. Currently the
+only two tables in the `Results' schema are COHORT and
+COHORT\_DEFINITON, \textbf{add a sentence explaining that these tables
+describe groups of interest that the user might define, put in links to
+the later sections} though likely more will be added over the course of
+v6.0 point releases. These tables can be written to, meaning that a
+cohort created in ATLAS or by a user can be stored in the COHORT table
+and accessed at a later date. This does mean that cohorts in the COHORT
+table can be manipulated by anyone so it is always recommended that the
+SQL code used to create the cohort be saved along with the project or
+analysis in the event it needs to be regenerated.
 
 \subsection{General conventions of data
 tables}\label{general-conventions-of-data-tables}
@@ -377,17 +386,17 @@ identifies a PERSON encounter at a point of care.\strut
 Foreign key into the Standardized Vocabularies (i.e.~the
 standard\_concept attribute for the corresponding term is true), which
 serves as the primary basis for all standardized analytics. For example,
-CONDITION\_CONCEPT\_ID =
-\href{http://athena.ohdsi.org/search-terms/terms/31967}{31967} contains
-the reference value for the SNOMED concept of `Nausea'\strut
+CONDITION\_CONCEPT\_ID = 31967
+\href{http://athena.ohdsi.org/search-terms/terms/31967}{(http://athena.ohdsi.org/search-terms/terms/31967)}
+contains the reference value for the SNOMED concept of `Nausea'\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
 \_SOURCE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Foreign key into the Standardized Vocabularies representing the concept
 and terminology used in the source data, when applicable. For example,
-CONDITION\_SOURCE\_CONCEPT\_ID =
-\href{http://athena.ohdsi.org/search-terms/terms/45431665}{45431665}
+CONDITION\_SOURCE\_CONCEPT\_ID = 45431665
+\href{http://athena.ohdsi.org/search-terms/terms/45431665}{(http://athena.ohdsi.org/search-terms/terms/45431665)}
 denotes the concept of `Nausea' in the Read terminology; the analogous
 CONDITION\_CONCEPT\_ID might be 31967, since SNOMED-CT is the
 Standardized Vocabulary for most clinical diagnoses and findings.\strut
@@ -471,16 +480,16 @@ interpreted as `Hospital Inpatient (Including Medicare Part A)' in the
 UB04 vocabulary, or as `Nervous System Neoplasms without Complications,
 Comorbidities' in the DRG vocabulary. This is where Concept IDs, both
 Source and Standard, are valuable. The Concept ID that represents the
-011 ICD9CM code is
-\href{http://athena.ohdsi.org/search-terms/terms/44828631}{44828631}.
+011 ICD9CM code is 44828631
+\href{http://athena.ohdsi.org/search-terms/terms/44828631}{(http://athena.ohdsi.org/search-terms/terms/44828631)}.
 This differentiates the ICD9CM from the UBO4 and from the DRG. The
-Standard Concept that ICD9CM code maps to is
-\href{http://athena.ohdsi.org/search-terms/terms/253954}{253954} as
-shown in figure \ref{fig:pulmTubMap} by the relationship `Non-standard
-to Standard map (OMOP)'. This same mapping relationship exists between
-Read, ICD10, CIEL, and MeSH codes, among others, so that any research
-that references the standard SNOMED concept is sure to include all
-supported source codes.
+Standard Concept that ICD9CM code maps to is 253954
+\href{http://athena.ohdsi.org/search-terms/terms/253954}{(http://athena.ohdsi.org/search-terms/terms/253954)}
+as shown in figure \ref{fig:pulmTubMap} by the relationship
+`Non-standard to Standard map (OMOP)'. This same mapping relationship
+exists between Read, ICD10, CIEL, and MeSH codes, among others, so that
+any research that references the standard SNOMED concept is sure to
+include all supported source codes.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{images/CommonDataModel/pulmTubMap} \caption{SNOMED code for Pulmonary Tuberculosis}\label{fig:pulmTubMap}
@@ -488,6 +497,1078 @@ supported source codes.
 
 An example of how this relationship is depicted in the tables is shown
 in figure (\textbf{link to figure in CONDITION\_OCCURRENCE})
+
+\section{OMOP CDM Standardized
+Tables}\label{omop-cdm-standardized-tables}
+
+The OMOP CDM contains 16 Clinical data tables, 10 Vocabulary tables, 2
+Metadata tables, 4 Health System data tables, 2 Health Economics data
+tables, 3 standardized derived elements, and 2 results schema tables. To
+illustrate how these tables are utilized in practice the data of one
+person will be used as a common thread throughout the rest of the
+chapter. While part of the CDM the Vocabulary tables are not covered
+here, rather, they are detailed in depth in Chapter
+\ref{StandardizedVocabularies}.
+
+\subsection{Running Example:
+Endometriosis}\label{running-example-endometriosis}
+
+Endometriosis is a painful condition whereby cells normally found in the
+lining of a woman's uterus occur elsewhere in the body. Severe cases can
+lead to infertility, bowel, and bladder problems. The following sections
+will detail one patient's experience with this disease and how her
+clinical experience might be represented in the Common Data Model.
+
+\includegraphics[width=0.5\linewidth]{images/CommonDataModel/Lauren}
+
+\begin{figure}
+\includegraphics[width=0.75\linewidth]{images/CommonDataModel/laurentext} \caption{Read more about Lauren and endometriosis at https://www.endometriosis-uk.org/laurens-story}\label{fig:Laurentext}
+\end{figure}
+
+\subsection{PERSON table}\label{person}
+
+As the Common Data Model is a person-centric model (see section
+\ref{model-conv}) let's start with how she would be represented in the
+PERSON table. For the full PERSON table specification please see the CDM
+wiki \url{https://github.com/OHDSI/CommonDataModel/wiki/PERSON}.
+
+\textbf{What do we know about Lauren?}
+
+\begin{itemize}
+\tightlist
+\item
+  She is a 36-year-old woman
+\item
+  Her birthday is 12-March-1982
+\item
+  She is white
+\item
+  She is english
+\end{itemize}
+
+With that in mind, her PERSON table might look something like this:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.33\columnwidth}\raggedright\strut
+Column Name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+person\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Person\_id should be an integer, either directly from the source or
+generated as part of the build process.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+gender\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+8532\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+The concept\_id referring to female gender is 8532
+\href{http://athena.ohdsi.org/search-terms/terms/8532}{(http://athena.ohdsi.org/search-terms/terms/8532)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+year\_of\_birth\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+1982\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+month\_of\_birth\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+day\_of\_birth\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+12\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+birth\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+1982-03-12 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+When the time is not known midnight is used.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+death\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+race\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+8527\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+The concept\_id referring to white race is 8527
+\href{http://athena.ohdsi.org/search-terms/terms/8527}{(http://athena.ohdsi.org/search-terms/terms/8527)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+ethnicity\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+38003564\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Typically hispanic status is stored for ethnicity. The concept\_id
+38003564
+\href{http://athena.ohdsi.org/search-terms/terms/38003564}{(http://athena.ohdsi.org/search-terms/terms/38003564)}
+refers to `Not hispanic'.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+location\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Her address is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+provider\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Her primary care provider is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+care\_site\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Her primary care site is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+person\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Typically this would be her identifier in the source data, though often
+is it the same as the person\_id.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+gender\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+F\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+The gender value as it appears in the source is stored here.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+gender\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+If the gender value in the source was coded using a vocabulary
+recognized by OHDSI, that concept\_id would go here. For example, if her
+gender was `Sex-F' in the source and it was stated to be in the PCORNet
+vocabulary concept\_id 44814665
+\href{http://athena.ohdsi.org/search-terms/terms/44814665}{(http://athena.ohdsi.org/search-terms/terms/44814665)}
+would go in this field.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+race\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+white\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+The race value as it appears in the source is stored here.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+race\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Same principle as gender\_source\_concept\_id.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+ethnicity\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+english\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+The ethnicity value as it appears in the source is stored here.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+ethnicity\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+Same principle as gender\_source\_concept\_id.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{OBSERVATION\_PERIOD table}\label{observationPeriod}
+
+The OBSERVATION\_PERIOD table is designed to define the amount of time
+for which a patient's clinical events are recorded in the source system.
+For US healthcare insurance claims this is typically the enrollment
+period of the patient. When working with data from electronic health
+records (EHR) often the first record in the system is considered the
+observation\_period\_start\_date and the latest record is considered the
+observation\_period\_end\_date with the understanding that only the
+clinical events that happened within that particular system were
+recorded. For the full OBSERVATION\_PERIOD table specification please
+see the CDM wiki
+\href{https://github.com/OHDSI/CommonDataModel/wiki/OBSERVATION_PERIOD}{(https://github.com/OHDSI/CommonDataModel/wiki/OBSERVATION\_PERIOD)}.
+
+\textbf{How can we determine Lauren's observation period?}
+
+Lauren's information is most similar to EHR data in that we only have
+records of her encounters from which to determine her observation
+period.
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+Encounter\_ID & Start\_Date & Stop\_Date & EncounterClass\tabularnewline
+\midrule
+\endhead
+70 & 2010-01-06 & 2010-01-06 & outpatient\tabularnewline
+80 & 2011-01-06 & 2011-01-06 & outpatient\tabularnewline
+90 & 2012-01-06 & 2012-01-06 & outpatient\tabularnewline
+100 & 2013-01-07 & 2013-01-07 & outpatient\tabularnewline
+101 & 2013-01-14 & 2013-01-14 & ambulatory\tabularnewline
+102 & 2013-01-17 & 2013-01-24 & inpatient\tabularnewline
+\bottomrule
+\end{longtable}
+
+Based on the encounter records her OBSERVATION\_PERIOD table might look
+something like this:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.33\columnwidth}\raggedright\strut
+Column Name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+observation\_period\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+This is typically an autogenerated field that creates a unique id number
+for each record in the table.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+person\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+This comes from the PERSON table and links PERSON and
+OBSERVATION\_PERIOD.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+observation\_period\_start\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+2010-01-06\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+This is the start date of her earliest encounter on record.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+observation\_period\_end\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+2013-01-24\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+This is the end date of her latest encounter on record.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
+period\_type\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+44814725\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
+The best option in the Vocabulary with the concept class `Obs Period
+Type' is 44814724
+\href{http://athena.ohdsi.org/search-terms/terms/44814724}{(http://athena.ohdsi.org/search-terms/terms/44814724)},
+which stands for `Period covering healthcare encounters'.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{VISIT\_OCCURRENCE}\label{visitOccurrence}
+
+The VISIT\_OCCURRENCE table houses information about a patient's
+encounters with the health care system. Within the OHDSI vernacular
+these are referred to as visits and are considered to be discreet
+events. There are 12 categories of visits though the most common are
+inpatient, outpatient, emergency and long term care. For the full
+VISIT\_OCCURRENCE table specification please see the CDM wiki
+\href{https://github.com/OHDSI/CommonDataModel/wiki/VISIT_OCCURRENCE}{(https://github.com/OHDSI/CommonDataModel/wiki/VISIT\_OCCURRENCE)}.
+
+\textbf{How do we represent Lauren's encounters as visits?}
+
+Revisting the encounters we used to determine her observation period:
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule
+Encounter\_ID & Start\_Date & Stop\_Date & EncounterClass\tabularnewline
+\midrule
+\endhead
+70 & 2010-01-06 & 2010-01-06 & outpatient\tabularnewline
+80 & 2011-01-06 & 2011-01-06 & outpatient\tabularnewline
+90 & 2012-01-06 & 2012-01-06 & outpatient\tabularnewline
+100 & 2013-01-07 & 2013-01-07 & outpatient\tabularnewline
+101 & 2013-01-14 & 2013-01-14 & ambulatory\tabularnewline
+\textbf{102} & \textbf{2013-01-17} & \textbf{2013-01-24} &
+\textbf{inpatient}\tabularnewline
+\bottomrule
+\end{longtable}
+
+As an example let's represent the inpatient encounter as a record in the
+VISIT\_OCCURRENCE table.
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.25\columnwidth}\raggedright\strut
+Column Name\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_occurrence\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+514\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+This is typically an autogenerated field that creates a unique id number
+for each visit on the person's record in the converted CDM
+database.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+person\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+This comes from the PERSON table and links PERSON and
+VISIT\_OCCURRENCE.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+9201\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+The concept\_id referring to an inpatient visit is 9201
+\href{http://athena.ohdsi.org/search-terms/terms/9201}{(http://athena.ohdsi.org/search-terms/terms/9201)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_start\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+2013-01-17\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+The start date of the visit.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_start\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+2013-01-17 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+The date and time of the visit started. When time is unknown midnight is
+used.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_end\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+2013-01-24\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+The end date of the visit. If this is a one-day visit the end date
+should match the start date.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_end\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+2013-01-24 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+The date and time of the visit end. If time is unknown midnight is
+used.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_type\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+32034\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+This column is intended to provide information about the provenance of
+the visit record, i.e.~does it come from an insurance claim, hospital
+billing record, EHR record, etc. For this example the concept\_id 32035
+\href{http://athena.ohdsi.org/search-terms/terms/32035}{(http://athena.ohdsi.org/search-terms/terms/32035)}
+is used as the encounters are similar to electronic health records\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+provider\_id*\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+If the encounter record has a provider associated, the id for that
+provider goes in this field. This should be the provider\_id from the
+PROVIDER table that represents the provider on the encounter.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+care\_site\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+If the encounter record has a care site associated, the id for that care
+site goes in this field. This should be the care\_site\_id from the
+CARE\_SITE table that codes for the care site on the encounter.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+inpatient\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+The visit value as it appears in the source goes here. In this context
+`visit' means outpatient, inpatient, emergency, etc.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+visit\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+If the visit value from the source is coded using a vocabulary that is
+recognized by OHDSI, the concept\_id that represents the visit source
+value would go here.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+admitted\_from\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+If known, this is the concept\_id that represents where the patient was
+admitted from. This concept should have the concept class `Place of
+Service' and the domain `Visit'. For example, if a patient was admitted
+to the hospital from home, the concept\_id would be 8536
+\href{http://athena.ohdsi.org/search-terms/terms/8536}{(http://athena.ohdsi.org/search-terms/terms/8536)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+admitted\_from\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+This is the value from the source that represents where the patient was
+admitted from. Using the above example, this would be `home'.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+discharge\_to\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+If known, this is the concept\_id that represents where the patient was
+discharged to. This concept should have the concept class `Place of
+Service' and the domain `Visit'. For example, if a patient was released
+to an assisted living facility, the concept\_id would be 8615
+\href{http://athena.ohdsi.org/search-terms/terms/8615}{(http://athena.ohdsi.org/search-terms/terms/8615)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+discharge\_to\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+This is the value from the source that represents where the patient was
+discharged to. Using the above example, this would be `assisted living
+facility'.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+preceding\_visit\_occurrence\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
+The visit\_occurrence\_id for the visit immediately preceding the
+current one in time for the patient.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+*A patient may interact with multiple health care providers during one
+visit, as is often the case with inpatient stays. These interactions can
+be recorded in the VISIT\_DETAIL table. While not covered in depth in
+this chapter, you can read more about the VISIT\_DETAIL table on the CDM
+wiki
+\href{https://github.com/OHDSI/CommonDataModel/wiki/VISIT_DETAIL}{(https://github.com/OHDSI/CommonDataModel/wiki/VISIT\_DETAIL)}
+
+\subsection{CONDITION\_OCCURRENCE}\label{conditionOccurrence}
+
+Records in the CONDITION\_OCCURRENCE table are diagnoses, signs, or
+symptoms of a condition either observed by a Provider or reported by the
+patient.
+
+\textbf{What are Lauren's conditions?}
+
+Revisiting her account she says ``About 3 years ago I noticed my
+periods, which had also been painful, were getting increasingly more
+painful. I started becoming aware of a sharp jabbing pain right by my
+colon and feeling tender and bloated around my tailbone and lower pelvis
+area. My periods had become so painful that I was missing 1-2 days of
+work a month. Painkillers sometimes dulled the pain, but usually they
+didn't do much.''
+
+The SNOMED code for painful menstruation cramps, otherwise known as
+dysmenorrhea, is 266599000. Let's see how that would be represented in
+the CONDITION\_OCCURRENCE table:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.27\columnwidth}\raggedright\strut
+Column\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.50\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_occurrence\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+964\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+This is typically an autogenerated field that creates a unique id number
+for each condition on the person's record in the converted CDM
+database.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+person\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+This comes from the PERSON table and links PERSON and
+CONDITION\_OCCURRENCE.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+194696\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+The concept\_id that represents the SNOMED code 266599000 is 194696
+\href{http://athena.ohdsi.org/search-terms/terms/194696}{(http://athena.ohdsi.org/search-terms/terms/194696)}\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_start\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2010-01-06\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+The date when the instance of the Condition is recorded.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_start\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2010-01-06 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+The date and time when the instance of the Condition is recorded.
+Midnight is used when the time is unknown\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_end\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If known, this is the date when the instance of the Condition is
+considered to have ended.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_end\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If known, this is the date and time when the instance of the Condition
+is considered to have ended.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_type\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+32020\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+This column is intended to provide information about the provenance of
+the condition, i.e.~does it come from an insurance claim, hospital
+billing record, EHR record, etc. For this example the concept\_id 32020
+\href{http://athena.ohdsi.org/search-terms/terms/32020}{(http://athena.ohdsi.org/search-terms/terms/32020)}
+is used as the encounters are similar to electronic health records.
+Concept\_ids in this field should be in the `Condition Type'
+vocabulary.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_status\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If known, the condition\_status\_concept\_id represents when and/or how
+the condition was diagnosed. For example, a condition could be an
+admitting diagnosis, in which case the concept\_id 4203942
+\href{http://athena.ohdsi.org/search-terms/terms/4203942}{(http://athena.ohdsi.org/search-terms/terms/4203942)}
+would be used.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+stop\_reason\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If known, the reason that the Condition was no longer present, as
+indicated in the source data.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+provider\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If the condition record has a diagnosing provider listed, the id for
+that provider goes in this field. This should be the provider\_id from
+the PROVIDER table that represents the provider on the encounter.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+visit\_occurrence\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+509\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If known, this is the visit (represented as visit\_occurrence\_id taken
+from the VISIT\_OCCURRENCE table) during which the condition was
+diagnosed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+visit\_detail\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If known, this is the visit detail encounter (represented as
+visit\_detail\_id from the VISIT\_DETAIL table) during which the
+condition was diagnosed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+266599000\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+This is the value from the source that represents the condition. In
+Lauren's case of dysmenorrhea the SNOMED code for that condition is
+stored here and the standard concept\_id mapped from that code is stored
+in CONDITION\_CONCEPT\_ID.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+194696\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If the condition value from the source is coded using a vocabulary that
+is recognized by OHDSI, the concept\_id that represents that value would
+go here. In the example of dysmennorhea the source value is a SNOMED
+code so the concept\_id that represents that code is 194696. In this
+case it is the same as the condition\_concept\_id since the SNOMED
+vocabulary is the standard condition vocabulary\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+condition\_status\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+If the condition status value from the source is coded using a
+vocabulary that is recognized by OHDSI, the concept\_id that represents
+that source value would go here.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{DRUG\_EXPOSURE}\label{drugExposure}
+
+The DRUG\_EXPOSURE captures records about the utilization of a Drug when
+ingested or otherwise introduced into the body. Drugs include
+prescription and over-the-counter medicines, vaccines, and
+large-molecule biologic therapies. Radiological devices ingested or
+applied locally do not count as Drugs.
+
+Drug Exposure is inferred from clinical events associated with orders,
+prescriptions written, pharmacy dispensings, procedural administrations,
+and other patient-reported information.
+
+\textbf{What are Lauren's drug exposures?}
+
+We know that Lauren was given 60 acetaminophen 325mg oral tablets for 30
+days (NDC code 69842087651) at her visit on 2010-01-06 to help with her
+dysmenorrhea pain. Here's how that might look in the DRUG\_EXPOSURE
+table:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
+Column\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_exposure\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+1001\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This is typically an autogenerated field that creates a unique id number
+for each drug\_exposure on the person's record in the converted CDM
+database.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+person\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This comes from the PERSON table and links PERSON and
+DRUG\_EXPOSURE.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+1127433\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The NDC code for acetaminophen maps to the RxNorm code 313782 which is
+represented by the concept\_id 1127433
+\href{http://athena.ohdsi.org/search-terms/terms/1127433}{(http://athena.ohdsi.org/search-terms/terms/1127433)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_exposure\_start\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2010-01-06\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The start date of the drug exposure\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_exposure\_start\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2010-01-06 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The start date and time of the drug exposure. Midnight is used when the
+time is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_exposure\_end\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2010-02-05\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The end date of the drug exposure. Depending on different sources, it
+could be a known or an inferred date and denotes the last day at which
+the patient was still exposed to the drug. In this case the end is
+inferred since we know Lauren had a 30 days supply.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_exposure\_end\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2010-02-05 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The end date and time of the drug exposure. Similar rules apply as to
+drug\_exposure\_end\_date. Midnight is used when time is unknown\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+verbatim\_end\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+If the source provides an end date rather than just days supply that
+date goes here.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_type\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+38000177\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This column is intended to provide information about the provenance of
+the drug, i.e.~does it come from an insurance claim, prescription
+record, etc. For this example the concept\_id 38000177
+\href{http://athena.ohdsi.org/search-terms/terms/38000177}{(http://athena.ohdsi.org/search-terms/terms/38000177)}
+is used as the drug record is from a written prescription. Concept\_ids
+in this field should be in the `Drug Type' vocabulary.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+stop\_reason\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The reason the Drug was stopped. Reasons include regimen completed,
+changed, removed, etc.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+refills\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The number of refills after the initial prescription. The initial
+prescription is not counted, values start with null. In the case of
+Lauren's acetaminophen she did not have any refills so the value is
+NULL.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+quantity\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+60\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The quantity of drug as recorded in the original prescription or
+dispensing record.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+days\_supply\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+30\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The number of days of supply of the medication as prescribed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+sig\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The directions (`signetur') on the Drug prescription as recorded in the
+original prescription (and printed on the container) or dispensing
+record.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+route\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+4132161\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This concept is meant to represent the route of the drug the patient was
+was exposed to. Lauren took her acetaminophen orally so the concept\_id
+4132161
+\href{http://athena.ohdsi.org/search-terms/terms/4132161}{(http://athena.ohdsi.org/search-terms/terms/4132161)}
+is used.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+lot\_number\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+An identifier assigned to a particular quantity or lot of Drug product
+from the manufacturer.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+provider\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+If the drug record has a prescribing provider listed, the id for that
+provider goes in this field. This should be the provider\_id from the
+PROVIDER table that represents the provider on the encounter.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+visit\_occurrence\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+509\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+If known, this is the visit (represented as visit\_occurrence\_id taken
+from the VISIT\_OCCURRENCE table) during which the drug was
+prescribed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+visit\_detail\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+If known, this is the visit detail (represented as visit\_detail\_id
+taken from the VISIT\_DETAIL table) during which the drug was
+prescribed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+69842087651\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This is the source code for the Drug as it appears in the source data.
+In Lauren's case she was prescribed acetaminophen and the NDC code is
+stored here.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+drug\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+750264\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This is the concept\_id that represents the drug source value. In this
+example the concept\_id is 750264
+\href{http://athena.ohdsi.org/search-terms/terms/750264}{(http://athena.ohdsi.org/search-terms/terms/750264)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+route\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The information about the route of administration as detailed in the
+source.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+dose\_unit\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The information about the dose unit as detailed in the source.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\subsection{PROCEDURE\_OCCURRENCE}\label{procedureOccurrence}
+
+The PROCEDURE\_OCCURRENCE table contains records of activities or
+processes ordered by, or carried out by, a healthcare provider on the
+patient to have a diagnostic or therapeutic purpose. Procedures are
+present in various data sources in different forms with varying levels
+of standardization. For example:
+
+\begin{itemize}
+\tightlist
+\item
+  Medical Claims include procedure codes that are submitted as part of a
+  claim for health services rendered, including procedures performed.
+\item
+  Electronic Health Records that capture procedures as orders.
+\end{itemize}
+
+\textbf{What procedures did Lauren have?} From her description we know
+she had a ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm
+cyst. Here's how that would look in the PROCEDURE\_OCCURRENCE table:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
+Column\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+procedure\_occurrence\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+1277\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This is typically an autogenerated field that creates a unique id number
+for each procedure\_occurrence on the person's record in the converted
+CDM database.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+person\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This comes from the PERSON table and links PERSON and
+PROCEDURE\_OCCURRENCE\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+procedure\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+4127451\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The SNOMED procedure code for a pelvic ultrasound is 304435002 which is
+represented by the concept\_id 4127451
+\href{http://athena.ohdsi.org/search-terms/terms/4127451}{(http://athena.ohdsi.org/search-terms/terms/4127451)}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+procedure\_date\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2013-01-14\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The date on which the procedure was performed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+procedure\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+2013-01-14 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The date and time on which the procedure was performed. Midnight is used
+when time is unknown.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+procedure\_type\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+38000275\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This column is intended to provide information about the provenance of
+the procedure, i.e.~does it come from an insurance claim, EHR order,
+etc. For this example the concept\_id 38000275
+\href{http://athena.ohdsi.org/search-terms/terms/38000275}{(http://athena.ohdsi.org/search-terms/terms/38000275)}
+is used as the procedure record is from an EHR record. Concept\_ids in
+this field should be in the `Procedure Type' vocabulary.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+modifier\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This is meant for a concept\_id representing the modifier on the
+procedure. For example, if the record indicated that a CPT4 procedure
+was performed bilaterally then the concept\_id 42739579
+\href{http://athena.ohdsi.org/search-terms/terms/42739579}{(http://athena.ohdsi.org/search-terms/terms/42739579)}
+would be used.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+quantity\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The quantity of procedures ordered or administered.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+provider\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+If the procedure record has a provider listed, the id for that provider
+goes in this field. This should be the provider\_id from the PROVIDER
+table that represents the provider on the encounter.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+visit\_occurrence\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+740\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+If known, this is the visit (represented as visit\_occurrence\_id taken
+from the VISIT\_OCCURRENCE table) during which the procedure was
+performed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+visit\_detail\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+If known, this is the visit detail (represented as visit\_detail\_id
+taken from the VISIT\_DETAIL table) during which the procedure was
+performed.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+procedure\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+304435002\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The source code for the Procedure as it appears in the source data. This
+code is mapped to a standard procedure Concept in the Standardized
+Vocabularies and the original code is, stored here for reference.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+procedure\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+4127451\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+This is the concept\_id that represents the procedure source
+value.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+modifier\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+The source code for the modifier as it appears in the source data.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 \chapter{Standardized Vocabularies}\label{StandardizedVocabularies}
 
