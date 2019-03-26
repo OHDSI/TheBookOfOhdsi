@@ -109,7 +109,7 @@
 \usepackage{titling}
 
 % Create subtitle command for use in maketitle
-\newcommand{\subtitle}[1]{
+\providecommand{\subtitle}[1]{
   \posttitle{
     \begin{center}\large#1\end{center}
     }
@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-03-13}
+    \date{2019-03-26}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -1639,6 +1639,14 @@ formats?; subtypes: value, relational and computational conformance);
 data values believable?; subtypes uniqueness, atemporal; temporal)
 \citep{kahn_harmonized_2016}
 
+Kahn introduces the term \emph{data quality check} (sometimes refered to
+as data quality rule) that tests whether data conform to a given
+requirement (e.g., implausible age of 141 of a patient (due to incorrect
+birth year or missing death event)). In support of checks, he also
+defines \emph{data quality measure} (sometimes refered to as
+pre-computed analysis) as data analysis that supports evaluation of a
+check. For example, distribution of days of supply by drug concept.
+
 Two types of DQ checks can be distinguished\citep{weiskopf_methods_2013}
 
 \begin{itemize}
@@ -1649,19 +1657,54 @@ Two types of DQ checks can be distinguished\citep{weiskopf_methods_2013}
   study-specific checks
 \end{itemize}
 
+From the point of researcher analyzing the data, the desired situation
+is that data is free from erros that could have been prevented.
+\emph{ETL data errors} are errors introduced during
+extract-tranform-load proces. A special type of ETL data error is
+\emph{mapping error} that results from incorrect mapping of the data
+from the source terminology (e.g., Korean national drug terminology)
+into the target data model's standard terminology (e.g., RxNorm and
+RxNorm Extension). A \emph{source data error} is an error that is
+already present in the source data due to various cuases (e.g., human
+typo during data entry).
+
+Data quality can also be seen as a component in a larger effort refered
+to as \emph{evidence quality} or \emph{evidence validation}. Data
+quality would fall in this framework under \emph{data validation}.
+
 \section{Achilles Heel tool}\label{achilles-heel-tool}
 
-Since 2015, a component of the OHDSI Achilles tool called Heel was used
+Since 2014, a component of the OHDSI Achilles tool called Heel was used
 to check data quality.\citep{huser_methods_2018}
 
-\subsection{Precomputed Analysis}\label{precomputed-analysis}
+\subsection{Precomputed Analyses}\label{precomputed-analyses}
+
+In support of data characterization, Achilles tool pre-computes number
+of data analyses. Each pre-computed analysis has an analysis ID and a
+short description of the analysis. For example, ``715: Distribution of
+days\_supply by drug\_concept\_id'' or ``506: Distribution of age at
+death by gender''. List of all pre-computed analyses (for Achilles
+version 1.6.3) as available at
+\url{https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv}
+
+Achilles has more than 170 pre-computed analysis that support not only
+data quality checks but also general data characterization (outside data
+quality context) such as data density visualizations. The
+pre-computations are largely guided by the CDM relational database
+schema and analyze most terminology-based data columns, such as
+condition\_concept\_id or place\_of\_service\_concept\_id.
+Pre-computations results are stored in table ACHILLES\_RESULTS and
+ACHILLES\_RESULTS\_DIST.
 
 \subsection{Example DQ rule}\label{example-dq-rule}
 
 \subsection{Overview of existing DQ Heel
 checks}\label{overview-of-existing-dq-heel-checks}
 
-(overview of existing Heel rules) Each check has a rule\_id.
+Achilles developers maintain a list of all DQ checks in an overview
+file. For version 1.6.3, this overview is available here
+\url{https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv}
+Each DQ check has a rule\_id.
 
 Checks are classified into CDM conformance checks and DQ checks.
 

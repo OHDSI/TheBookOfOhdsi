@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-03-13" />
+<meta name="date" content="2019-03-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -148,7 +148,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8" data-path="DataQuality.html"><a href="DataQuality.html"><i class="fa fa-check"></i><b>8</b> Data Quality</a><ul>
 <li class="chapter" data-level="8.1" data-path="DataQuality.html"><a href="DataQuality.html#introduction"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
 <li class="chapter" data-level="8.2" data-path="DataQuality.html"><a href="DataQuality.html#achilles-heel-tool"><i class="fa fa-check"></i><b>8.2</b> Achilles Heel tool</a><ul>
-<li class="chapter" data-level="8.2.1" data-path="DataQuality.html"><a href="DataQuality.html#precomputed-analysis"><i class="fa fa-check"></i><b>8.2.1</b> Precomputed Analysis</a></li>
+<li class="chapter" data-level="8.2.1" data-path="DataQuality.html"><a href="DataQuality.html#precomputed-analyses"><i class="fa fa-check"></i><b>8.2.1</b> Precomputed Analyses</a></li>
 <li class="chapter" data-level="8.2.2" data-path="DataQuality.html"><a href="DataQuality.html#example-dq-rule"><i class="fa fa-check"></i><b>8.2.2</b> Example DQ rule</a></li>
 <li class="chapter" data-level="8.2.3" data-path="DataQuality.html"><a href="DataQuality.html#overview-of-existing-dq-heel-checks"><i class="fa fa-check"></i><b>8.2.3</b> Overview of existing DQ Heel checks</a></li>
 </ul></li>
@@ -223,24 +223,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="introduction" class="section level2">
 <h2><span class="header-section-number">8.1</span> Introduction</h2>
 <p>Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance); (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) <span class="citation">(Kahn et al. <a href="#ref-kahn_harmonized_2016">2016</a>)</span></p>
+<p>Kahn introduces the term <em>data quality check</em> (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines <em>data quality measure</em> (sometimes refered to as pre-computed analysis) as data analysis that supports evaluation of a check. For example, distribution of days of supply by drug concept.</p>
 <p>Two types of DQ checks can be distinguished<span class="citation">(N. G. Weiskopf and Weng <a href="#ref-weiskopf_methods_2013">2013</a>)</span></p>
 <ul>
 <li>general checks</li>
 <li>study-specific checks</li>
 </ul>
+<p>From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. <em>ETL data errors</em> are errors introduced during extract-tranform-load proces. A special type of ETL data error is <em>mapping error</em> that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model’s standard terminology (e.g., RxNorm and RxNorm Extension). A <em>source data error</em> is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).</p>
+<p>Data quality can also be seen as a component in a larger effort refered to as <em>evidence quality</em> or <em>evidence validation</em>. Data quality would fall in this framework under <em>data validation</em>.</p>
 </div>
 <div id="achilles-heel-tool" class="section level2">
 <h2><span class="header-section-number">8.2</span> Achilles Heel tool</h2>
-<p>Since 2015, a component of the OHDSI Achilles tool called Heel was used to check data quality.<span class="citation">(Huser et al. <a href="#ref-huser_methods_2018">2018</a>)</span></p>
-<div id="precomputed-analysis" class="section level3">
-<h3><span class="header-section-number">8.2.1</span> Precomputed Analysis</h3>
+<p>Since 2014, a component of the OHDSI Achilles tool called Heel was used to check data quality.<span class="citation">(Huser et al. <a href="#ref-huser_methods_2018">2018</a>)</span></p>
+<div id="precomputed-analyses" class="section level3">
+<h3><span class="header-section-number">8.2.1</span> Precomputed Analyses</h3>
+<p>In support of data characterization, Achilles tool pre-computes number of data analyses. Each pre-computed analysis has an analysis ID and a short description of the analysis. For example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. List of all pre-computed analyses (for Achilles version 1.6.3) as available at <a href="https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv" class="uri">https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv</a></p>
+<p>Achilles has more than 170 pre-computed analysis that support not only data quality checks but also general data characterization (outside data quality context) such as data density visualizations. The pre-computations are largely guided by the CDM relational database schema and analyze most terminology-based data columns, such as condition_concept_id or place_of_service_concept_id. Pre-computations results are stored in table ACHILLES_RESULTS and ACHILLES_RESULTS_DIST.</p>
 </div>
 <div id="example-dq-rule" class="section level3">
 <h3><span class="header-section-number">8.2.2</span> Example DQ rule</h3>
 </div>
 <div id="overview-of-existing-dq-heel-checks" class="section level3">
 <h3><span class="header-section-number">8.2.3</span> Overview of existing DQ Heel checks</h3>
-<p>(overview of existing Heel rules) Each check has a rule_id.</p>
+<p>Achilles developers maintain a list of all DQ checks in an overview file. For version 1.6.3, this overview is available here <a href="https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv" class="uri">https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv</a> Each DQ check has a rule_id.</p>
 <p>Checks are classified into CDM conformance checks and DQ checks.</p>
 </div>
 </div>
