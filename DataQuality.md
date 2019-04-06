@@ -4,6 +4,16 @@
 
 Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance);  (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) [@kahn_harmonized_2016]
 
+| Term         | Subtype                   | Definition |
+|--------------|---------------------------|------------|
+| Conformance  | Value                     |            |
+|              | Relational                |            |
+|              | Computational             |            |
+| Completeness | n/a (no subtypes defined) |            |
+| Plausibility | Uniqueness                |            |
+|              | Atemporal                 |            |
+|              | Temporal                  |            |
+
 Kahn introduces the term *data quality check* (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines *data quality measure* (sometimes refered to as pre-computed analysis) as data analysis that  supports evaluation of a check. For example, distribution of days of supply by drug concept. 
 
 Two types of DQ checks can be distinguished[@weiskopf_methods_2013]

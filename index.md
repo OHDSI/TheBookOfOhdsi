@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-03-26"
+date: "2019-04-06"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
