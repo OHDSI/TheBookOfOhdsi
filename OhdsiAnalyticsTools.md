@@ -15,6 +15,4 @@ Analytic use cases
 
 What is the difference between characterization, population-level estimation, patient-level prediction?
 
-Doing studies in a distributed database network (Martijn has several slide decks on that).
-
 Case study: Perhaps on how to install the tools?

@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-04-06}
+    \date{2019-04-10}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -206,6 +206,8 @@ hack-a-thons
 History of OHDSI?
 
 \chapter{Open Science}\label{OpenScience}
+
+Mention FAIR principles?
 
 \chapter{Where to begin}\label{WhereToBegin}
 
@@ -1628,106 +1630,6 @@ Mapping and QA of codes to Standard Concepts
   Systematic mapping of other codes
 \end{itemize}
 
-\chapter{Data Quality}\label{DataQuality}
-
-\section{Introduction}\label{introduction}
-
-Kahn et al. define data quality as consisting of three components: (1)
-conformance (do data values adhere to do specified standard and
-formats?; subtypes: value, relational and computational conformance);
-(2) completeness (are data values present?); and (3) plausibility (are
-data values believable?; subtypes uniqueness, atemporal; temporal)
-\citep{kahn_harmonized_2016}
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-Term & Subtype & Definition\tabularnewline
-\midrule
-\endhead
-Conformance & Value &\tabularnewline
-& Relational &\tabularnewline
-& Computational &\tabularnewline
-Completeness & n/a (no subtypes defined) &\tabularnewline
-Plausibility & Uniqueness &\tabularnewline
-& Atemporal &\tabularnewline
-& Temporal &\tabularnewline
-\bottomrule
-\end{longtable}
-
-Kahn introduces the term \emph{data quality check} (sometimes refered to
-as data quality rule) that tests whether data conform to a given
-requirement (e.g., implausible age of 141 of a patient (due to incorrect
-birth year or missing death event)). In support of checks, he also
-defines \emph{data quality measure} (sometimes refered to as
-pre-computed analysis) as data analysis that supports evaluation of a
-check. For example, distribution of days of supply by drug concept.
-
-Two types of DQ checks can be distinguished\citep{weiskopf_methods_2013}
-
-\begin{itemize}
-\tightlist
-\item
-  general checks
-\item
-  study-specific checks
-\end{itemize}
-
-From the point of researcher analyzing the data, the desired situation
-is that data is free from erros that could have been prevented.
-\emph{ETL data errors} are errors introduced during
-extract-tranform-load proces. A special type of ETL data error is
-\emph{mapping error} that results from incorrect mapping of the data
-from the source terminology (e.g., Korean national drug terminology)
-into the target data model's standard terminology (e.g., RxNorm and
-RxNorm Extension). A \emph{source data error} is an error that is
-already present in the source data due to various cuases (e.g., human
-typo during data entry).
-
-Data quality can also be seen as a component in a larger effort refered
-to as \emph{evidence quality} or \emph{evidence validation}. Data
-quality would fall in this framework under \emph{data validation}.
-
-\section{Achilles Heel tool}\label{achilles-heel-tool}
-
-Since 2014, a component of the OHDSI Achilles tool called Heel was used
-to check data quality.\citep{huser_methods_2018}
-
-\subsection{Precomputed Analyses}\label{precomputed-analyses}
-
-In support of data characterization, Achilles tool pre-computes number
-of data analyses. Each pre-computed analysis has an analysis ID and a
-short description of the analysis. For example, ``715: Distribution of
-days\_supply by drug\_concept\_id'' or ``506: Distribution of age at
-death by gender''. List of all pre-computed analyses (for Achilles
-version 1.6.3) as available at
-\url{https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv}
-
-Achilles has more than 170 pre-computed analysis that support not only
-data quality checks but also general data characterization (outside data
-quality context) such as data density visualizations. The
-pre-computations are largely guided by the CDM relational database
-schema and analyze most terminology-based data columns, such as
-condition\_concept\_id or place\_of\_service\_concept\_id.
-Pre-computations results are stored in table ACHILLES\_RESULTS and
-ACHILLES\_RESULTS\_DIST.
-
-\subsection{Example DQ rule}\label{example-dq-rule}
-
-\subsection{Overview of existing DQ Heel
-checks}\label{overview-of-existing-dq-heel-checks}
-
-Achilles developers maintain a list of all DQ checks in an overview
-file. For version 1.6.3, this overview is available here
-\url{https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv}
-Each DQ check has a rule\_id.
-
-Checks are classified into CDM conformance checks and DQ checks.
-
-\section{Study-specific checks}\label{study-specific-checks}
-
-The chapter has so far focused on general DQ checks. For example, if a
-study used HbA1c measurement, additional data checking is warranted.
-
 \part{Data Analytics}\label{part-data-analytics}
 
 \chapter{Data Analytics Use Cases}\label{DataAnalyticsUseCases}
@@ -1767,9 +1669,6 @@ Analytic use cases
 What is the difference between characterization, population-level
 estimation, patient-level prediction?
 
-Doing studies in a distributed database network (Martijn has several
-slide decks on that).
-
 Case study: Perhaps on how to install the tools?
 
 \chapter{SQL and R}\label{SqlAndR}
@@ -1790,6 +1689,8 @@ Using ATLAS: use material from Patrick's tutorial on cohort building
 
 Using SQL: For advanced users, explain how cohorts can be created
 programmatically.
+
+Probabilistic cohorts: Aphrodite?
 
 Case study: some example cohort definitions
 
@@ -3528,12 +3429,124 @@ final study population in the Venn diagrams below are colored green.
 
 \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef6}
 
+\part{Evidence Quality}\label{part-evidence-quality}
+
+\chapter{Data Quality}\label{DataQuality}
+
+\section{Introduction}\label{introduction}
+
+Kahn et al. define data quality as consisting of three components: (1)
+conformance (do data values adhere to do specified standard and
+formats?; subtypes: value, relational and computational conformance);
+(2) completeness (are data values present?); and (3) plausibility (are
+data values believable?; subtypes uniqueness, atemporal; temporal)
+\citep{kahn_harmonized_2016}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+Term & Subtype & Definition\tabularnewline
+\midrule
+\endhead
+Conformance & Value &\tabularnewline
+& Relational &\tabularnewline
+& Computational &\tabularnewline
+Completeness & n/a (no subtypes defined) &\tabularnewline
+Plausibility & Uniqueness &\tabularnewline
+& Atemporal &\tabularnewline
+& Temporal &\tabularnewline
+\bottomrule
+\end{longtable}
+
+Kahn introduces the term \emph{data quality check} (sometimes refered to
+as data quality rule) that tests whether data conform to a given
+requirement (e.g., implausible age of 141 of a patient (due to incorrect
+birth year or missing death event)). In support of checks, he also
+defines \emph{data quality measure} (sometimes refered to as
+pre-computed analysis) as data analysis that supports evaluation of a
+check. For example, distribution of days of supply by drug concept.
+
+Two types of DQ checks can be distinguished\citep{weiskopf_methods_2013}
+
+\begin{itemize}
+\tightlist
+\item
+  general checks
+\item
+  study-specific checks
+\end{itemize}
+
+From the point of researcher analyzing the data, the desired situation
+is that data is free from erros that could have been prevented.
+\emph{ETL data errors} are errors introduced during
+extract-tranform-load proces. A special type of ETL data error is
+\emph{mapping error} that results from incorrect mapping of the data
+from the source terminology (e.g., Korean national drug terminology)
+into the target data model's standard terminology (e.g., RxNorm and
+RxNorm Extension). A \emph{source data error} is an error that is
+already present in the source data due to various cuases (e.g., human
+typo during data entry).
+
+Data quality can also be seen as a component in a larger effort refered
+to as \emph{evidence quality} or \emph{evidence validation}. Data
+quality would fall in this framework under \emph{data validation}.
+
+\section{Achilles Heel tool}\label{achilles-heel-tool}
+
+Since 2014, a component of the OHDSI Achilles tool called Heel was used
+to check data quality.\citep{huser_methods_2018}
+
+\subsection{Precomputed Analyses}\label{precomputed-analyses}
+
+In support of data characterization, Achilles tool pre-computes number
+of data analyses. Each pre-computed analysis has an analysis ID and a
+short description of the analysis. For example, ``715: Distribution of
+days\_supply by drug\_concept\_id'' or ``506: Distribution of age at
+death by gender''. List of all pre-computed analyses (for Achilles
+version 1.6.3) as available at
+\url{https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv}
+
+Achilles has more than 170 pre-computed analysis that support not only
+data quality checks but also general data characterization (outside data
+quality context) such as data density visualizations. The
+pre-computations are largely guided by the CDM relational database
+schema and analyze most terminology-based data columns, such as
+condition\_concept\_id or place\_of\_service\_concept\_id.
+Pre-computations results are stored in table ACHILLES\_RESULTS and
+ACHILLES\_RESULTS\_DIST.
+
+\subsection{Example DQ rule}\label{example-dq-rule}
+
+\subsection{Overview of existing DQ Heel
+checks}\label{overview-of-existing-dq-heel-checks}
+
+Achilles developers maintain a list of all DQ checks in an overview
+file. For version 1.6.3, this overview is available here
+\url{https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv}
+Each DQ check has a rule\_id.
+
+Checks are classified into CDM conformance checks and DQ checks.
+
+\section{Study-specific checks}\label{study-specific-checks}
+
+The chapter has so far focused on general DQ checks. For example, if a
+study used HbA1c measurement, additional data checking is warranted.
+
+\chapter{Software Validity}\label{SoftwareValidity}
+
+\chapter{Clinical Validity}\label{ClinicalValidity}
+
+\chapter{Method Validity}\label{MethodValidity}
+
 \part{OHDSI Studies}\label{part-ohdsi-studies}
 
 \chapter{Study steps}\label{StudySteps}
 
 Writing the protocol, OHDSI style:
 \url{http://www.ohdsi.org/web/wiki/lib/exe/fetch.php?media=projects:workgroups:wg_study_protocols_eastern_hemisphere.pptx}
+
+Study reproducibility (Martijn has some slides that might help:
+\url{http://www.ohdsi.org/web/wiki/lib/exe/fetch.php?media=projects:workgroups:wg_study_reproducability.pptx}
+)
 
 \chapter{OHDSI Network Research}\label{NetworkResearch}
 

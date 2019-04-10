@@ -1,0 +1,1 @@
+# Clinical Validity {#ClinicalValidity}

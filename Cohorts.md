@@ -6,4 +6,6 @@ Using ATLAS: use material from Patrick’s tutorial on cohort building
 
 Using SQL: For advanced users, explain how cohorts can be created programmatically.
 
+Probabilistic cohorts: Aphrodite?
+
 Case study: some example cohort definitions
