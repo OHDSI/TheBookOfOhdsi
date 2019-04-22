@@ -1,5 +1,7 @@
 # Collaborators {#Collaborators}
 
+History of OHDSI
+
 Map of collaborators
 Forums
 Wiki
@@ -7,4 +9,4 @@ Workgroups and chapters
 Symposia and hack-a-thons
 
 
-History of OHDSI?
+Governance at local sites
