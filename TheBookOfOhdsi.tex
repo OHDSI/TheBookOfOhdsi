@@ -125,7 +125,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-04-30}
+    \date{2019-05-14}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -3487,18 +3487,78 @@ formats?; subtypes: value, relational and computational conformance);
 data values believable?; subtypes uniqueness, atemporal; temporal)
 \citep{kahn_harmonized_2016}
 
+Kahn additionaly defines two contexts: verification and validation.
+Verification focuses on model and data constraints and does not rely on
+external reference. Validation focuses on data expectations that are
+derived from comparison to a relative gold standard and uses external
+knowledge.
+
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-Term & Subtype & Definition\tabularnewline
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Term\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright\strut
+Subtype\strut
+\end{minipage} & \begin{minipage}[b]{0.67\columnwidth}\raggedright\strut
+Validation example\strut
+\end{minipage}\tabularnewline
 \midrule
 \endhead
-Conformance & Value &\tabularnewline
-& Relational &\tabularnewline
-& Computational &\tabularnewline
-Completeness & n/a (no subtypes defined) &\tabularnewline
-Plausibility & Uniqueness &\tabularnewline
-& Atemporal &\tabularnewline
-& Temporal &\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Conformance\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[t]{0.67\columnwidth}\raggedright\strut
+Providers are only assigned valid medical specialties.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Relational\strut
+\end{minipage} & \begin{minipage}[t]{0.67\columnwidth}\raggedright\strut
+Prescribing provider identifier is present in drug dispensation
+data.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Computational\strut
+\end{minipage} & \begin{minipage}[t]{0.67\columnwidth}\raggedright\strut
+Computed eGFR value conforms to the expected value for a test case
+patient scenario.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Completeness\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+n/a (no subtypes defined)\strut
+\end{minipage} & \begin{minipage}[t]{0.67\columnwidth}\raggedright\strut
+A drug product withdrawn from the market at a specific absolute historic
+date shows expected drop in dispensation.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Plausibility\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Uniqueness\strut
+\end{minipage} & \begin{minipage}[t]{0.67\columnwidth}\raggedright\strut
+A zip code for a location does not refer to vastly conflicting
+geographical areas.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Atemporal\strut
+\end{minipage} & \begin{minipage}[t]{0.67\columnwidth}\raggedright\strut
+Use of a medication (by age group) for a specific disease agrees with
+the age pattern for that disease.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+\strut
+\end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
+Temporal\strut
+\end{minipage} & \begin{minipage}[t]{0.67\columnwidth}\raggedright\strut
+Temporal pattern of an outbreak of a disease (e.g., Zika) agrees with
+external source pattern.\strut
+\end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -3559,7 +3619,17 @@ condition\_concept\_id or place\_of\_service\_concept\_id.
 Pre-computations results are stored in table ACHILLES\_RESULTS and
 ACHILLES\_RESULTS\_DIST.
 
-\subsection{Example DQ rule}\label{example-dq-rule}
+\subsection{Example DQ check}\label{example-dq-check}
+
+In complete data about general population, a range of services is
+provided by a range of providers (with many specialties). A data
+completness rule with rule\_id of 38 evaluates data completness in the
+PROVIDER table. Checking optional fields in CDM (such as provider
+specialty) lead to a notification severity output. Analysis Rule 38
+triggers a notification if count of distinct specialties \textless{}2.
+It relies on a derived measure \texttt{Provider:SpeciatlyCnt}. The rule
+SQL-formulated logic can be found here:
+\url{https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/sql/sql_server/heels/serial/rule_38.sql}
 
 \subsection{Overview of existing DQ Heel
 checks}\label{overview-of-existing-dq-heel-checks}
@@ -3571,10 +3641,31 @@ Each DQ check has a rule\_id.
 
 Checks are classified into CDM conformance checks and DQ checks.
 
+Depending on the severity of the problem, the Heel output can be error,
+warning or notification.
+
 \section{Study-specific checks}\label{study-specific-checks}
 
-The chapter has so far focused on general DQ checks. For example, if a
-study used HbA1c measurement, additional data checking is warranted.
+The chapter has so far focused on general DQ checks. Such checks are
+executed regardless of the single research question context. The
+assumption is that a researcher would formulate additional DQ checks
+that are required for a specific research question.
+
+We use case studies to demostrate study-specific checks.
+
+\subsection{Outcomes}\label{outcomes}
+
+For an international analysis, part of OHDSI study diagnostics (for a
+give dataset) may involve checking whether coding practices (that are
+country specific) affect a cohort definition. A stringent cohort
+definition may lead to zero cohort size in one (or multiple dataesets).
+
+\subsection{Laboratory data}\label{laboratory-data}
+
+A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study
+(\url{https://www.ncbi.nlm.nih.gov/pubmed/30646124}) defined a cohort
+`HbA1c8Moderate' (see
+\url{https://github.com/rohit43/DiabetesTxPath/blob/master/inst/settings/CohortsToCreate.csv})
 
 \chapter{Software Validity}\label{SoftwareValidity}
 

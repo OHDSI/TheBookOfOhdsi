@@ -6,16 +6,19 @@
 
 Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance);  (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) [@kahn_harmonized_2016]
 
-| Term         | Subtype                   | Definition |
-|--------------|---------------------------|------------|
-| Conformance  | Value                     |            |
-|              | Relational                |            |
-|              | Computational             |            |
-| Completeness | n/a (no subtypes defined) |            |
-| Plausibility | Uniqueness                |            |
-|              | Atemporal                 |            |
-|              | Temporal                  |            |
 
+Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge. 
+
+
+| Term         | Subtype                   | Validation example                                                                                                 |
+|--------------|---------------------------|--------------------------------------------------------------------------------------------------------------------|
+| Conformance  | Value                     | Providers are only assigned valid medical specialties.                                                             |
+|              | Relational                | Prescribing provider identifier is present in drug dispensation data.                                              |
+|              | Computational             | Computed eGFR value conforms to the expected value for a test case patient scenario.                               |
+| Completeness | n/a (no subtypes defined) | A drug product withdrawn from the market at a specific absolute historic date shows expected drop in dispensation. |
+| Plausibility | Uniqueness                | A zip code for a location does not refer to vastly conflicting geographical areas.                                 |
+|              | Atemporal                 | Use of a medication (by age group) for a specific disease agrees with the age pattern for that disease.            |
+|              | Temporal                  | Temporal pattern of an outbreak of a disease (e.g., Zika) agrees with external source pattern.                     |
 Kahn introduces the term *data quality check* (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines *data quality measure* (sometimes refered to as pre-computed analysis) as data analysis that  supports evaluation of a check. For example, distribution of days of supply by drug concept. 
 
 Two types of DQ checks can be distinguished[@weiskopf_methods_2013]
@@ -37,7 +40,9 @@ In support of data characterization, Achilles tool pre-computes number of data a
 
 Achilles has more than 170 pre-computed analysis that support not only data quality checks but also general data characterization (outside data quality context) such as data density visualizations. The pre-computations are largely guided by the CDM relational database schema and analyze most terminology-based data columns, such as condition_concept_id or place_of_service_concept_id. Pre-computations results are stored in table ACHILLES_RESULTS and ACHILLES_RESULTS_DIST.
 
-### Example DQ rule
+### Example DQ check
+
+In complete data about general population, a range of services is provided by a range of providers (with many specialties). A data completness rule with rule_id of 38 evaluates data completness in the PROVIDER table. Checking optional fields in CDM (such as provider specialty) lead to a notification severity output. Analysis Rule 38 triggers a notification if count of distinct specialties <2. It relies on a derived measure `Provider:SpeciatlyCnt`. The rule SQL-formulated logic can be found here: https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/sql/sql_server/heels/serial/rule_38.sql
 
 
 
@@ -47,11 +52,24 @@ Achilles developers maintain a list of all DQ checks in an overview file. For ve
 
 Checks are classified into CDM conformance checks and DQ checks.
 
+Depending on the severity of the problem, the Heel output can be error, warning or notification.
+
 
 ## Study-specific checks
 
-The chapter has so far focused on general DQ checks. For example, if a study used HbA1c measurement, additional data checking is warranted.
+The chapter has so far focused on general DQ checks. Such checks are executed regardless of the single research question context. The assumption is that a researcher would formulate additional DQ checks that are required for a specific research question.
 
+We use case studies to demostrate study-specific checks.
+
+### Outcomes 
+
+For an international analysis, part of OHDSI study diagnostics (for a give dataset) may involve checking whether coding practices (that are country specific) affect a cohort definition. A stringent cohort definition may lead to zero cohort size in one (or multiple dataesets). 
+
+
+### Laboratory data
+
+
+A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study (https://www.ncbi.nlm.nih.gov/pubmed/30646124) defined a cohort 'HbA1c8Moderate' (see https://github.com/rohit43/DiabetesTxPath/blob/master/inst/settings/CohortsToCreate.csv)
 
 
 
