@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 Data Analytics Use Cases | The Book of OHDSI</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
-  <meta name="generator" content="bookdown 0.10.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.10.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 Data Analytics Use Cases | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-05-14" />
+<meta name="date" content="2019-05-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -244,20 +244,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ol style="list-style-type: decimal">
 <li>Population characterization</li>
 </ol>
-<p>We can use the data to provide answers to question about the charateristics of the patients in each datbase, the practice of healthcare, and the study how these things change over time.</p>
-<p>The data can provide answers to questions like: - for patients newly diagnosed with atrial fibrillation, how many receive a prescription for warfarin?</p>
+<p>We can use the data to provide answers to questions about the charateristics of the patients in each database, the practice of healthcare, and study how these things change over time.</p>
+<p>The data can provide answers to questions like: - for patients newly diagnosed with atrial fibrillation, how many receive a prescription for warfarin? - what is the average age of patients who undergo hip arthoplasty?</p>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Population-level estimation</p></li>
-<li><p>Patient-Level prediction</p></li>
+<li>Population-level estimation</li>
 </ol>
-<p>What is the difference between these</p>
+<p>To a limited extent, the data can support causal inferences about the effects of healthcare interventions.</p>
+<p>The data can provide answers to questions like: - for patients newly diagnosed with atrial fibrillation, in the first year after therapy initiation, does warfarin cause more major bleeds than dabigatran? - Does the causal effect of metformin on diarrhea vary by age?</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Patient-Level prediction</li>
+</ol>
+<p>Based on the collected patient health histories in the database, we can make patient-level predictions about future health events. - for a specific patient newly diagnosed with atrial fibrillation, in the first year after therapy initiation with warfarin, what is the probability the patient suffers an ischemic stroke?</p>
+<p>These tasks overlap to a certain extent. For example, an important use-case for prediction is to predict an outcome for a specific patient had drug A been prescribed and also predict the same outcome had drug B been prescribed. Let’s assume that in reality only one of these drugs is prescribed (say drug A) so we get to see whether the outcome following treatment with A actually occurs. Since drug B was not prescribed, the outcome following treatment B, while predictable, is “counterfactual” since it is not ever observed. Each of these prediction tasks falls under patient-level prediction. However, the difference between (or ratio of) the two outcomes is a unit-level <em>causal</em> effect.</p>
+<p>There are many important healthcare questions for which OHDSI databases cannot provide answers. These include:</p>
+<ul>
+<li>Causal effects of interventions compared to placebo. Sometimes it is possible to consider the causal effect of a treatment as compared with non-treatment but not placebo tretamernt.</li>
+<li>Anything related to over-the-counter medications</li>
+<li>Many outcomes are sparsely recorded if at all. These include mortality, behavioral outcomes, lifestyle, and socioeconmic status.</li>
+<li>Since patients tend to encounter the healthcare system when they are unwell, measurement of the benefits of treatments can prove elusive.</li>
+</ul>
+<p>Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn’t, is “missing.” The statistics literature distinguishes between types of missingness such as “missing completely at random,” “missing at random,” and “missing not at random” and methods of increasing complexity attempt to address these types. <span class="citation">Perkins et al. (<a href="#ref-perkins2017principled">2017</a>)</span> provide a use introduction to this topic.</p>
 <p>What use cases are often observed? Drug safety, Drug utilization, etc.</p>
-<p>What type of questions can be answered by the data, and what type can’t?</p>
-<p>Discuss missingness in observational data?</p>
 <ul>
 <li>Practice</li>
 </ul>
 
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-perkins2017principled">
+<p>Perkins, Neil J, Stephen R Cole, Ofer Harel, Eric J Tchetgen Tchetgen, BaoLuo Sun, Emily M Mitchell, and Enrique F Schisterman. 2017. “Principled Approaches to Missing Data in Epidemiologic Studies.” <em>American Journal of Epidemiology</em> 187 (3). Oxford University Press: 568–75.</p>
+</div>
 </div>
             </section>
 
