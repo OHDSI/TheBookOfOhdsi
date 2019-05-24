@@ -21,7 +21,6 @@
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={The Book of OHDSI},
@@ -125,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-05-15}
+    \date{2019-05-24}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -1807,29 +1806,208 @@ Example .. \url{http://www.pnas.org/content/113/27/7329}
 
 \chapter{Population-level estimation}\label{PopulationLevelEstimation}
 
-Leads: Martijn Schuemie \& Marc Suchard
+\emph{Chapter leads: Martijn Schuemie, David Madigan \& Marc Suchard}
 
-(Borrow from PLE tutorial:
-\url{https://www.ohdsi.org/past-events/2017-tutorials-population-level-estimation/}
-)
+Observational healthcare data, such as administrative claims and
+electronic health records, offer opportunities to generate real-world
+evidence about the effect of treatments that can meaningfully improve
+the lives of patients. In this chapter we focus on population-level
+effect estimation, that is, the estimation of average causal effects of
+medical interventions on specific health outcomes of interest. In what
+follows, we consider two different estimation tasks:
 
-Effect estimation: counterfactuals, time travel, RCTs Cohort method
+\begin{itemize}
+\tightlist
+\item
+  \emph{Direct effect estimation}: estimating the effect of an exposure
+  on the risk of an outcome, as compared to no exposure.
+\item
+  \emph{Comparative effect estimation}: estimation the effect of one
+  exposure (the target exposure) on the risk of an outcome, as compared
+  to another exposure (the comparator exposure).
+\end{itemize}
 
-Large scale propensity models:
-\url{https://www.ncbi.nlm.nih.gov/pubmed/29939268}
+In both cases, the patient-level causal effect contrasts a factual
+outcome, i.e., what happened to the exposed patient, with a
+counterfactual outcome, i.e., what would have happened had the exposure
+not occurred (direct) or had a different exposure occurred
+(comparative). Since any one patient reveals only the factual outcome
+(the fundamental problem of causal inference), the various effect
+estimation methods employ analytic devices to shed light on the
+counterfactual outcomes.
 
-Self-controlled designs
+Use-cases for population-level effect estimation include treatment
+selection, safety surveillance, and comparative effectiveness. Methods
+can test specific hypotheses one-at-a-time (e.g. `signal evaluation') or
+explore multiple-hypotheses-at-once (e.g. `signal detection'). In all
+cases, the objective remains the same: to produce a high-quality
+estimate of the causal effect.
 
-SCC
+\section{Study designs}\label{study-designs}
 
-SCCS
+Several different study designs can be used to estimate treatment
+effects. The main difference between these is how they construct the
+(unobserved) counterfactual. Below is a brief discussion of the most
+commonly used designs, all of which are implemented as R packages in the
+OHDSI Methods Library.
+
+\subsection{Cohort method}\label{cohort-method}
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/cohortMethod} \caption{The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation.}\label{fig:cohortMethod}
+\end{figure}
+
+The new-user cohort method attempts to emulate a randomized clinical
+trial \citep{hernan_2016}. Subjects that are observed to initiate one
+treatment (the target) are compared to subjects initiating another
+treatment (the comparator) and are followed for a specific amount of
+time following treatment initiation, for example the time they stay on
+the treatment. One crucial difference with a randomized trial is that
+there is no randomization, and therefore there might be systematic
+differences between the target and comparator populations. Without
+adjusting for these differences, estimates are likely to be confounded.
+A popular mechanism for adjusting for confounding is the use of
+Propensity Scores (PS). The PS is the probability of a subject receiving
+one treatment instead of the other, conditional on baseline
+characteristics. \citep{rosenbaum_1983} First, a model -- typically a
+logistic regression -- is fitted using the observed treatment
+assignments (target or comparator), then the model is used to produce
+the PS for each subject. In the past, PS were computed based on manually
+selected characteristics, and although the CohortMethod package can
+support such practices, we prefer the use of large-scale regularized
+regression using many generic characteristics. \citep{tian_2018} These
+characteristics include demographics, as well as all diagnoses, drug
+exposures, measurement, and medical procedures observed prior to
+treatment initiation, and exclude the target and comparator treatment. A
+model typically involves 10,000 to 100,000 unique characteristics. The
+PS can be used in several ways, for example by stratifying the study
+population based on the PS, by matching target subjects to comparator
+subjects with similar PS, or by weighting subjects using Inverse
+Probability of Treatment Weighting (IPTW) derived from the PS. Another
+strategy for adjusting for differences between the two groups is to
+include additional variables in the outcome model. One major limitation
+of this approach is that whereas there often is a wealth of data to fit
+a propensity model, with thousands of people in both treatment groups,
+the outcomes we study tend to be somewhat rare, causing a paucity of
+data when trying to fit elaborate models with the outcome as dependent
+variable. One approach is to use both a PS and add the same variables
+that were used in the propensity model in the outcome model, thus
+adjusting for the same variables twice, but in different ways. The
+new-user cohort method inherently is a method for comparative effect
+estimation, comparing one treatment to another. It is difficult to use
+this method to compare a treatment against no treatment, since it is
+hard to define a group of unexposed people that is comparable with the
+exposed group. If one wants to use this design for direct effect
+estimation, the preferred way is to select a comparator treatment for
+the same indication as the exposure of interest, where the comparator
+treatment is believed to have no effect on the outcome. Unfortunately,
+such a comparator might not always be available. In our gold standard,
+the comparators were specifically selected to have no effect, so we can
+also evaluate the cohort method's performance for direct effect
+estimation.
+
+\subsection{Self-controlled cohort}\label{self-controlled-cohort}
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/selfControlledCohort} \caption{The self-controlled cohort design. The rate of outcomes during exposure to the target is compared to the rate of outcomes in the time pre-exposure. .}\label{fig:scc}
+\end{figure}
+
+The self-controlled cohort (SCC) design \citep{ryan_2013} compares the
+rate of outcomes during exposure to the rate of outcomes in the time
+just prior to the exposure. Because the same subject that make up the
+exposed group are also used as the control group, no adjustment for
+between-person differences need to be made. However, the method is
+vulnerable to other differences, such as differences between different
+time periods.
+
+\subsection{Case-control}\label{case-control}
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/caseControl} \caption{The case-control design. Subjects with the outcome (‘cases’) are compared to subjects without the outcome (‘controls’) in terms of their exposure status. Often, cases and controls are matched on various characteristics such as age and sex.}\label{fig:caseControl}
+\end{figure}
+
+Case-control \citep{vandenbroucke_2012} studies consider the question
+``are persons with a specific disease outcome exposed more frequently to
+a specific agent than those without the disease?'' Thus, the central
+idea is to compare ``cases'', i.e., subjects that experience the outcome
+of interest with ``controls'', i.e., subjects that did not experience
+the outcome of interest. Often, one matches controls to cases based on
+characteristics such as age and sex to make them more comparable.
+Another widespread practice is to nest the analysis within a specific
+subgroup of people, for example people that have all been diagnosed with
+one of the indications of the exposure of interest.
+
+\subsection{Case-crossover}\label{case-crossover}
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/caseCrossover} \caption{The case-crossover design. The time around the outcome is compared to a control date set at a predefined interval prior to the outcome date.}\label{fig:caseCrossover}
+\end{figure}
+
+The case-crossover \citep{maclure_1991} design evaluates whether the
+rate of exposure is different at the time of the outcome than at some
+predefined number of days prior to the outcome. It is trying to
+determine whether there is something special about the day the outcome
+occurred. Since cases serve as their own control, it is a
+self-controlled design, and should therefore be robust to confounding
+due to between-person differences. One concern is that, because the
+outcome date is always later than the control date, the method will be
+positively biased if the overall frequency of exposure increases over
+time (or negatively biased if there is a decrease). To address this, the
+case-time-control design \citep{suissa_1995} was developed, which adds
+matched controls to the case-crossover design to adjust for exposure
+trends.
+
+\subsection{Self-controlled case
+series}\label{self-controlled-case-series}
+
+\begin{figure}
+\includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/selfControlledCaseSeries} \caption{The Self-Controlled Case Series design. The rate of outcomes during exposure is compared to the rate of outcomes when not exposed.}\label{fig:selfControlledCaseSeries}
+\end{figure}
+
+The Self-Controlled Case Series (SCCS) design
+\citep[whitaker\_2006]{farrington_1995} compares the rate of outcomes
+during exposure to the rate of outcomes during all unexposed time, both
+before, between, and after exposures. It is a Poisson regression that is
+conditioned on the person. Thus, it seeks to answer the question:
+``Given that a patient has the outcome, is the outcome more likely
+during exposed time compared to non-exposed time?'' Like other
+self-controlled designs, the SCCS is robust to confounding due to
+between-person differences, but vulnerable to confounding due to
+time-varying effects. Several adjustments are possible to attempt to
+account for these, for example by including age and season. A special
+variant of the SCCS includes not just the exposure of interest, but all
+other exposures to drugs recorded in the database \citep{simpson_2013},
+potentially adding thousands of additional variables to the model.
+L1-regularization using cross-validation to select the regularization
+hyperparameter is applied to the coefficients of all exposures except
+the exposure of interest.
+
+One important assumption underlying the SCCS is that the observation
+period end is independent of the date of the outcome. Because for some
+outcomes, especially ones that can be fatal such as stroke, this
+assumption can be violated an extension to the SCCS has been developed
+that corrects for any such dependency. \citep{farrington_2011}
+
+\section{Cohort study implementation}\label{cohort-study-implementation}
+
+Describe case study: risk of angioedema and AMI in new users of ACE
+inhibitors compared to new users of thiazide and thiazide-like diuretics
+
+Template: T, C, O, time-at-risk, model
+
+\subsection{Implementation using
+ATLAS}\label{implementation-using-atlas}
+
+\subsection{Implementation using R}\label{implementation-using-r}
+
+\section{Advanced topics}\label{advanced-topics}
 
 Best practices:
 \url{http://www.ohdsi.org/web/wiki/doku.php?id=development:best_practices_estimation}
 
 Negative and positive controls, empirical calibration
 
-Case study: CohortMethod and SCCS vignettes
+\section{Excercises}\label{excercises}
 
 \chapter{Patient Level Prediction}\label{PatientLevelPrediction}
 
@@ -3809,7 +3987,7 @@ cohort file. A createCohorts function is executed next. (see
 An SQL file that is generated by Atlas populates the cohort table with
 specific person\_ids that fulfill the cohort definition.
 
-\section{Excercises}\label{excercises}
+\section{Excercises}\label{excercises-1}
 
 \subsection{Defining a cohort}\label{defining-a-cohort}
 
