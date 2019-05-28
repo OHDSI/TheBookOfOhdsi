@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-05-27}
+    \date{2019-05-28}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -1867,34 +1867,84 @@ trial \citep{hernan_2016}. Subjects that are observed to initiate one
 treatment (the target) are compared to subjects initiating another
 treatment (the comparator) and are followed for a specific amount of
 time following treatment initiation, for example the time they stay on
-the treatment. One crucial difference with a randomized trial is that
-there is no randomization, and therefore there might be systematic
-differences between the target and comparator populations. Without
-adjusting for these differences, estimates are likely to be confounded.
-A popular mechanism for adjusting for confounding is the use of
-Propensity Scores (PS). The PS is the probability of a subject receiving
-one treatment instead of the other, conditional on baseline
-characteristics. \citep{rosenbaum_1983} First, a model -- typically a
-logistic regression -- is fitted using the observed treatment
-assignments (target or comparator), then the model is used to produce
-the PS for each subject. In the past, PS were computed based on manually
-selected characteristics, and although the CohortMethod package can
-support such practices, we prefer the use of large-scale regularized
-regression using many generic characteristics. \citep{tian_2018} These
-characteristics include demographics, as well as all diagnoses, drug
-exposures, measurement, and medical procedures observed prior to
-treatment initiation, and exclude the target and comparator treatment. A
-model typically involves 10,000 to 100,000 unique characteristics. The
-PS can be used in several ways, for example by stratifying the study
-population based on the PS, by matching target subjects to comparator
-subjects with similar PS, or by weighting subjects using Inverse
-Probability of Treatment Weighting (IPTW) derived from the PS. Another
-strategy for adjusting for differences between the two groups is to
-include additional variables in the outcome model. One major limitation
-of this approach is that whereas there often is a wealth of data to fit
-a propensity model, with thousands of people in both treatment groups,
-the outcomes we study tend to be somewhat rare, causing a paucity of
-data when trying to fit elaborate models with the outcome as dependent
+the treatment. We can specify the questions we wish to answer in a
+cohort study by making five choices:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the target treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Comparator cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the comparator treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the outcome of interest\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+At what time (often relative to the target and comparator cohort start
+and end dates) do we consider the risk of the outcome?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Model\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+What type of outcome model should be used\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+One example of an outcome model to choose is a logistic regression,
+which evaluates whether or not the outcome has occurred, and produces an
+odds ratio. A logistic regression assumes the time-at-risk is of the
+same length for both target and comparator, or irrelevant.
+Alternatively, we could choose a Poisson regression which estimates the
+incidence rate ratio, assuming a constant incidence rate. Often a Cox
+regression is used which considers time to first outcome to estimate the
+hazard ratio, assuming proportional hazards.
+
+One crucial difference with a randomized trial is that there is no
+randomization, and therefore there might be systematic differences
+between the target and comparator populations. Without adjusting for
+these differences, estimates are likely to be confounded. A popular
+mechanism for adjusting for confounding is the use of Propensity Scores
+(PS). The PS is the probability of a subject receiving one treatment
+instead of the other, conditional on baseline characteristics.
+\citep{rosenbaum_1983} First, a model -- typically a logistic regression
+-- is fitted using the observed treatment assignments (target or
+comparator), then the model is used to produce the PS for each subject.
+In the past, PS were computed based on manually selected
+characteristics, and although the CohortMethod package can support such
+practices, we prefer the use of large-scale regularized regression using
+many generic characteristics. \citep{tian_2018} These characteristics
+include demographics, as well as all diagnoses, drug exposures,
+measurement, and medical procedures observed prior to treatment
+initiation, and exclude the target and comparator treatment. A model
+typically involves 10,000 to 100,000 unique characteristics. The PS can
+be used in several ways, for example by stratifying the study population
+based on the PS, by matching target subjects to comparator subjects with
+similar PS, or by weighting subjects using Inverse Probability of
+Treatment Weighting (IPTW) derived from the PS. Another strategy for
+adjusting for differences between the two groups is to include
+additional variables in the outcome model. One major limitation of this
+approach is that whereas there often is a wealth of data to fit a
+propensity model, with thousands of people in both treatment groups, the
+outcomes we study tend to be somewhat rare, causing a paucity of data
+when trying to fit elaborate models with the outcome as dependent
 variable. One approach is to use both a PS and add the same variables
 that were used in the propensity model in the outcome model, thus
 adjusting for the same variables twice, but in different ways. The
@@ -1924,11 +1974,41 @@ estimation.
 
 The self-controlled cohort (SCC) design \citep{ryan_2013} compares the
 rate of outcomes during exposure to the rate of outcomes in the time
-just prior to the exposure. Because the same subject that make up the
-exposed group are also used as the control group, no adjustment for
-between-person differences need to be made. However, the method is
-vulnerable to other differences, such as differences between different
-time periods.
+just prior to the exposure. The following three choices define a
+self-controlled cohort question:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the outcome of interest\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+At what time (often relative to the target cohort start and end dates)
+do we consider the risk of the outcome?\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Because the same subject that make up the exposed group are also used as
+the control group, no adjustment for between-person differences need to
+be made. However, the method is vulnerable to other differences, such as
+differences between different time periods.
 
 \subsection{Case-control}\label{case-control}
 
@@ -1946,11 +2026,47 @@ Case-control \citep{vandenbroucke_2012} studies consider the question
 a specific agent than those without the disease?'' Thus, the central
 idea is to compare ``cases'', i.e., subjects that experience the outcome
 of interest with ``controls'', i.e., subjects that did not experience
-the outcome of interest. Often, one matches controls to cases based on
-characteristics such as age and sex to make them more comparable.
-Another widespread practice is to nest the analysis within a specific
-subgroup of people, for example people that have all been diagnosed with
-one of the indications of the exposure of interest.
+the outcome of interest. These choices define a case-control question:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the cases (the outcome of interest)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+{[}Nesting cohort{]}\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+Optinally, a cohort defining the subpopulation from which cases and
+controls are drawn\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+At what time (often relative to the index date) do we consider exposure
+status?\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Often, one matches controls to cases based on characteristics such as
+age and sex to make them more comparable. Another widespread practice is
+to nest the analysis within a specific subgroup of people, for example
+people that have all been diagnosed with one of the indications of the
+exposure of interest.
 
 \subsection{Case-crossover}\label{case-crossover}
 
@@ -1967,15 +2083,44 @@ The case-crossover \citep{maclure_1991} design evaluates whether the
 rate of exposure is different at the time of the outcome than at some
 predefined number of days prior to the outcome. It is trying to
 determine whether there is something special about the day the outcome
-occurred. Since cases serve as their own control, it is a
-self-controlled design, and should therefore be robust to confounding
-due to between-person differences. One concern is that, because the
-outcome date is always later than the control date, the method will be
-positively biased if the overall frequency of exposure increases over
-time (or negatively biased if there is a decrease). To address this, the
-case-time-control design \citep{suissa_1995} was developed, which adds
-matched controls to the case-crossover design to adjust for exposure
-trends.
+occurred. These choices define a case-crosover question:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the cases (the outcome of interest)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+At what time (often relative to the index date) do we consider exposure
+status?\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Since cases serve as their own control, it is a self-controlled design,
+and should therefore be robust to confounding due to between-person
+differences. One concern is that, because the outcome date is always
+later than the control date, the method will be positively biased if the
+overall frequency of exposure increases over time (or negatively biased
+if there is a decrease). To address this, the case-time-control design
+\citep{suissa_1995} was developed, which adds matched controls to the
+case-crossover design to adjust for exposure trends.
 
 \subsection{Self-controlled case
 series}\label{self-controlled-case-series}
@@ -1995,9 +2140,39 @@ during exposure to the rate of outcomes during all unexposed time, both
 before, between, and after exposures. It is a Poisson regression that is
 conditioned on the person. Thus, it seeks to answer the question:
 ``Given that a patient has the outcome, is the outcome more likely
-during exposed time compared to non-exposed time?'' Like other
-self-controlled designs, the SCCS is robust to confounding due to
-between-person differences, but vulnerable to confounding due to
+during exposed time compared to non-exposed time?''. These choices
+define an SCCS question:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+A cohort representing the outcome of interest\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+At what time (often relative to the target cohort start and end dates)
+do we consider the risk of the outcome?\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+Like other self-controlled designs, the SCCS is robust to confounding
+due to between-person differences, but vulnerable to confounding due to
 time-varying effects. Several adjustments are possible to attempt to
 account for these, for example by including age and season. A special
 variant of the SCCS includes not just the exposure of interest, but all
@@ -2017,8 +2192,6 @@ that corrects for any such dependency. \citep{farrington_2011}
 
 Describe case study: risk of angioedema and AMI in new users of ACE
 inhibitors compared to new users of thiazide and thiazide-like diuretics
-
-Template: T, C, O, time-at-risk, model
 
 \subsection{Implementation using
 ATLAS}\label{implementation-using-atlas}
