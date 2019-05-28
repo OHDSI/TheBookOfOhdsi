@@ -1,8 +1,3 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
 # (PART) Data Analytics {-} 
 
 # Data Analytics Use Cases {#DataAnalyticsUseCases}
