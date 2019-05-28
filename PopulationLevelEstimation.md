@@ -26,7 +26,7 @@ Several different study designs can be used to estimate treatment effects. The m
 The new-user cohort method attempts to emulate a randomized clinical trial [@hernan_2016]. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making five choices:
 
 | Choice | Description |
-| ------ | ----------- |
+|:-------|:------------|
 | Target cohort | A cohort representing the target treatment  |
 | Comparator cohort | A cohort representing the comparator treatment  |
 | Outcome cohort | A cohort representing the outcome of interest  |
