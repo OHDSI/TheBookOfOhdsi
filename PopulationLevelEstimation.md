@@ -26,7 +26,7 @@ Several different study designs can be used to estimate treatment effects. The m
 The new-user cohort method attempts to emulate a randomized clinical trial [@hernan_2016]. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making five choices:
 
 | Choice | Description |
-| ------ | ------------|
+| ------ | ----------- |
 | Target cohort | A cohort representing the target treatment |
 | Comparator cohort | A cohort representing the comparator treatment |
 | Outcome cohort | A cohort representing the outcome of interest |
@@ -50,7 +50,7 @@ The new-user cohort method inherently is a method for comparative effect estimat
 The self-controlled cohort (SCC) design [@ryan_2013] compares the rate of outcomes during exposure to the rate of outcomes in the time just prior to the exposure. The following three choices define a self-controlled cohort question:
 
 | Choice | Description |
-| ------ | ------------|
+| ------ | ----------- |
 | Target cohort | A cohort representing the treatment |
 | Outcome cohort | A cohort representing the outcome of interest |
 | Time-at-risk | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome? |
@@ -67,7 +67,7 @@ Because the same subject that make up the exposed group are also used as the con
 Case-control [@vandenbroucke_2012] studies consider the question “are persons with a specific disease outcome exposed more frequently to a specific agent than those without the disease?” Thus, the central idea is to compare “cases”, i.e., subjects that experience the outcome of interest with “controls”, i.e., subjects that did not experience the outcome of interest. These choices define a case-control question:
 
 | Choice | Description |
-| ------ | ------------|
+| ------ | ----------- |
 | Outcome cohort | A cohort representing the cases (the outcome of interest) |
 | Target cohort | A cohort representing the treatment |
 | [Nesting cohort] | Optinally, a cohort defining the subpopulation from which cases and controls are drawn |
@@ -85,7 +85,7 @@ Often, one matches controls to cases based on characteristics such as age and se
 The case-crossover [@maclure_1991] design evaluates whether the rate of exposure is different at the time of the outcome than at some predefined number of days prior to the outcome. It is trying to determine whether there is something special about the day the outcome occurred. These choices define a case-crosover question:
 
 | Choice | Description |
-| ------ | ------------|
+| ------ | ----------- |
 | Outcome cohort | A cohort representing the cases (the outcome of interest) |
 | Target cohort | A cohort representing the treatment |
 | Time-at-risk | At what time (often relative to the index date) do we consider exposure status? |
@@ -102,7 +102,7 @@ Since cases serve as their own control, it is a self-controlled design, and shou
 The Self-Controlled Case Series (SCCS) design [@farrington_1995,whitaker_2006] compares the rate of outcomes during exposure to the rate of outcomes during all unexposed time, both before, between, and after exposures. It is a Poisson regression that is conditioned on the person. Thus, it seeks to answer the question: “Given that a patient has the outcome, is the outcome more likely during exposed time compared to non-exposed time?”. These choices define an SCCS question:
 
 | Choice | Description |
-| ------ | ------------|
+| ------ | ----------- |
 | Target cohort | A cohort representing the treatment |
 | Outcome cohort | A cohort representing the outcome of interest |
 | Time-at-risk | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome? |
