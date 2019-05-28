@@ -1,8 +1,3 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
 # (PART) Uniform Data Representation {-} 
 
 # The Common Data Model {#CommonDataModel}
