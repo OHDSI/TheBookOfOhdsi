@@ -27,11 +27,11 @@ The new-user cohort method attempts to emulate a randomized clinical trial [@her
 
 | Choice | Description |
 | ------ | ----------- |
-| Target cohort | A cohort representing the target treatment |
-| Comparator cohort | A cohort representing the comparator treatment |
-| Outcome cohort | A cohort representing the outcome of interest |
-| Time-at-risk | At what time (often relative to the target and comparator cohort start and end dates) do we consider the risk of the outcome? |
-| Model | What type of outcome model should be used |
+| Target cohort | A cohort representing the target treatment  |
+| Comparator cohort | A cohort representing the comparator treatment  |
+| Outcome cohort | A cohort representing the outcome of interest  |
+| Time-at-risk | At what time (often relative to the target and comparator cohort start and end dates) do we consider the risk of the outcome?  |
+| Model | What type of outcome model should be used  |
 
 One example of an outcome model to choose is a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards.
 
@@ -51,9 +51,9 @@ The self-controlled cohort (SCC) design [@ryan_2013] compares the rate of outcom
 
 | Choice | Description |
 | ------ | ----------- |
-| Target cohort | A cohort representing the treatment |
-| Outcome cohort | A cohort representing the outcome of interest |
-| Time-at-risk | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome? |
+| Target cohort | A cohort representing the treatment  |
+| Outcome cohort | A cohort representing the outcome of interest  |
+| Time-at-risk | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?  |
 
 Because the same subject that make up the exposed group are also used as the control group, no adjustment for between-person differences need to be made. However, the method is vulnerable to other differences, such as differences between different time periods. 
 
@@ -68,10 +68,10 @@ Case-control [@vandenbroucke_2012] studies consider the question “are persons 
 
 | Choice | Description |
 | ------ | ----------- |
-| Outcome cohort | A cohort representing the cases (the outcome of interest) |
-| Target cohort | A cohort representing the treatment |
-| [Nesting cohort] | Optinally, a cohort defining the subpopulation from which cases and controls are drawn |
-| Time-at-risk | At what time (often relative to the index date) do we consider exposure status? |
+| Outcome cohort | A cohort representing the cases (the outcome of interest)  |
+| Target cohort | A cohort representing the treatment  |
+| [Nesting cohort] | Optinally, a cohort defining the subpopulation from which cases and controls are drawn  |
+| Time-at-risk | At what time (often relative to the index date) do we consider exposure status?  |
 
 Often, one matches controls to cases based on characteristics such as age and sex to make them more comparable. Another widespread practice is to nest the analysis within a specific subgroup of people, for example people that have all been diagnosed with one of the indications of the exposure of interest. 
 
@@ -86,9 +86,9 @@ The case-crossover [@maclure_1991] design evaluates whether the rate of exposure
 
 | Choice | Description |
 | ------ | ----------- |
-| Outcome cohort | A cohort representing the cases (the outcome of interest) |
-| Target cohort | A cohort representing the treatment |
-| Time-at-risk | At what time (often relative to the index date) do we consider exposure status? |
+| Outcome cohort | A cohort representing the cases (the outcome of interest)  |
+| Target cohort | A cohort representing the treatment  |
+| Time-at-risk | At what time (often relative to the index date) do we consider exposure status?  |
 
 Since cases serve as their own control, it is a self-controlled design, and should therefore be robust to confounding due to between-person differences. One concern is that, because the outcome date is always later than the control date, the method will be positively biased if the overall frequency of exposure increases over time (or negatively biased if there is a decrease). To address this, the case-time-control design [@suissa_1995] was developed, which adds matched controls to the case-crossover design to adjust for exposure trends.
 
@@ -103,9 +103,9 @@ The Self-Controlled Case Series (SCCS) design [@farrington_1995,whitaker_2006] c
 
 | Choice | Description |
 | ------ | ----------- |
-| Target cohort | A cohort representing the treatment |
-| Outcome cohort | A cohort representing the outcome of interest |
-| Time-at-risk | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome? |
+| Target cohort | A cohort representing the treatment  |
+| Outcome cohort | A cohort representing the outcome of interest  |
+| Time-at-risk | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?  |
 
 Like other self-controlled designs, the SCCS is robust to confounding due to between-person differences, but vulnerable to confounding due to time-varying effects. Several adjustments are possible to attempt to account for these, for example by including age and season. A special variant of the SCCS includes not just the exposure of interest, but all other exposures to drugs recorded in the database [@simpson_2013], potentially adding thousands of additional variables to the model. L1-regularization using cross-validation to select the regularization hyperparameter is applied to the coefficients of all exposures except the exposure of interest.
 
