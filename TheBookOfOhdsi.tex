@@ -1849,7 +1849,7 @@ Several different study designs can be used to estimate treatment
 effects. The main difference between these is how they construct the
 (unobserved) counterfactual. Below is a brief discussion of the most
 commonly used designs, all of which are implemented as R packages in the
-OHDSI Methods Library.
+\href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}.
 
 \subsection{Cohort method}\label{cohort-method}
 
@@ -1956,10 +1956,7 @@ exposed group. If one wants to use this design for direct effect
 estimation, the preferred way is to select a comparator treatment for
 the same indication as the exposure of interest, where the comparator
 treatment is believed to have no effect on the outcome. Unfortunately,
-such a comparator might not always be available. In our gold standard,
-the comparators were specifically selected to have no effect, so we can
-also evaluate the cohort method's performance for direct effect
-estimation.
+such a comparator might not always be available.
 
 \subsection{Self-controlled cohort}\label{self-controlled-cohort}
 
@@ -2463,26 +2460,27 @@ There is no algorithm that will work best for all problems (no free
 lunch). In our framework we therefore aim to implement many algorithms.
 Furthermore, we made the system modular so you can add your own custom
 algorithms. This out-of-scope for this chapter but mode details can be
-found in the AddingCustomAlgorithms vignette
-(\url{https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/AddingCustomAlgorithms.pdf}).
+found in the AddingCustomAlgorithms vignette in the
+\href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
+package.
 
 Our framework currently contains the following algorithms to choose
 from:
 
 \begin{longtable}[]{@{}lll@{}}
 \toprule
-\begin{minipage}[b]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.11\columnwidth}\raggedright\strut
 Algorithm\strut
-\end{minipage} & \begin{minipage}[b]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.58\columnwidth}\raggedright\strut
 Description\strut
-\end{minipage} & \begin{minipage}[b]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Hyper-parameters\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 Regularized Logistic Regression\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 Lasso logistic regression belongs to the family of generalized linear
 models, where a linear combination of the variables is learned and
 finally a logistic function maps the linear combination to a value
@@ -2490,16 +2488,16 @@ between 0 and 1. The lasso regularization adds a cost based on model
 complexity to the objective function when training the model. This cost
 is the sum of the absolute values of the linear combination of the
 coefficients. The model automatically performs feature selection by
-minimizing this cost. We use the Cyclic coordinate descent for logistic,
-Poisson and survival analysis (Cyclops) package to perform large-scale
-regularized logistic regression:
-\url{https://github.com/OHDSI/Cyclops}\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+minimizing this cost. We use the
+\href{https://ohdsi.github.io/Cyclops/}{Cyclops} (Cyclic coordinate
+descent for logistic, Poisson and survival analysis) package to perform
+large-scale regularized logistic regression.\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 var (starting variance), seed\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 Gradient boosting machines\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 Gradient boosting machines is a boosting ensemble technique and in our
 framework it combines multiple decision trees. Boosting works by
 iteratively adding decision trees but adds more weight to the
@@ -2507,13 +2505,13 @@ data-points that are misclassified by prior decision trees in the cost
 function when training the next tree. We use Extreme Gradient Boosting,
 which is an efficient implementation of the gradient boosting framework
 implemented in the xgboost R package available from CRAN.\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 ntree (number of trees), max depth (max levels in tree), min rows
 (minimum data points in in node), learning rate, seed\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 Random forest\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 Random forest is a bagging ensemble technique that combines multiple
 decision trees. The idea behind bagging is to reduce the likelihood of
 overfitting, by using weak classifiers, but combining multiple diverse
@@ -2522,55 +2520,55 @@ this by training multiple decision trees but only using a subset of the
 variables in each tree and the subset of variables differ between trees.
 Our packages uses the sklearn learn implementation of Random Forest in
 python.\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 mtry (number of features in each tree),ntree (number of trees), maxDepth
 (max levels in tree), minRows (minimum data points in in node),balance
 (balance class labels), seed\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 K-nearest neighbors\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 K-nearest neighbors (KNN) is an algorithm that uses some metric to find
 the K closest labelled data-points, given the specified metric, to a new
 unlabelled data-point. The prediction of the new data-points is then the
 most prevalent class of the K-nearest labelled data-points. There is a
 sharing limitation of KNN, as the model requires labelled data to
 perform the prediction on new data, and it is often not possible to
-share this data across data sites.We included the BigKnn classifier
-developed in OHDSI which is a large scale k-nearest neighbor classifier
-using the Lucene search engine:
-\url{https://github.com/OHDSI/BigKnn}\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+share this data across data sites. We included the
+\href{https://github.com/OHDSI/BigKnn}{BigKnn} package developed in
+OHDSI which is a large scale k-nearest neighbor classifier using the
+Lucene search engine.\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 k (number of neighbours),weighted (weight by inverse frequency)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 Naive Bayes\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 The Naive Bayes algorithm applies the Bayes' theorem with the ``naive''
 assumption of conditional independence between every pair of features
 given the value of the class variable. Based on the likelihood the data
 belongs to a class and the prior distribution of the class, a posterior
 distribution is obtained.\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 none\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 AdaBoost\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 AdaBoost is a boosting ensemble technique. Boosting works by iteratively
 adding classifiers but adds more weight to the data-points that are
 misclassified by prior classifiers in the cost function when training
 the next classifier. We use the sklearn ``AdaboostClassifier''
 implementation in Python.\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 nEstimators (the maximum number of estimators at which boosting is
 terminated), learningRate (learning rate shrinks the contribution of
 each classifier by learning\_rate. There is a trade-off between
 learningRate and nEstimators)\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 Decision Tree\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 A decision tree is a classifier that partitions the variable space using
 individual tests selected using a greedy approach. It aims to find
 partitions that have the highest information gain to separate the
@@ -2579,16 +2577,16 @@ of partitions (tree depth) and often needs some regularization (e.g.,
 pruning or specifying hyper-parameters that limit the complexity of the
 model). We use the sklearn ``DecisionTreeClassifier'' implementation in
 Python.\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 maxDepth (the maximum depth of the tree),
 minSamplesSplit,minSamplesLeaf, minImpuritySplit (threshold for early
 stopping in tree growth. A node will split if its impurity is above the
 threshold, otherwise it is a leaf.), seed,classWeight (``Balance''" or
 ``None'')\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 Multilayer Perception\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 Neural networks contain multiple layers that weight their inputs using a
 non-linear function. The first layer is the input layer, the last layer
 is the output layer the between are the hidden layers. Neural networks
@@ -2598,19 +2596,19 @@ between the true label and predicted label, then go backwards through
 the network and update the linear function weights based on the error.
 This can also be performed as a batch, where multiple data-points are
 fee\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 size (the number of hidden nodes), alpha (the l2 regularisation),
 seed\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
 Deep Learning\strut
-\end{minipage} & \begin{minipage}[t]{0.55\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
 Deep learning such as deep nets, convolutional neural networks or
 recurrent neural networks are similar to a neural network but have
 multiple hidden layers that aim to learn latent representations useful
 for prediction. In the seperate BuildingDeepLearningModels vignette we
 describe these models and hyper-parameters in more detail\strut
-\end{minipage} & \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 \strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -2776,12 +2774,10 @@ specification. We will discuss this in more detail later.
 
 Now we have completely design our study we have to implement the study.
 This will be done using the
-\href{http://github.com/OHDSI/PatientLevelPrediction}{\texttt{PatientLevelPrediction}}
+\href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
 package to build patient-level predictive models. The package enables
 data extraction, model building, and model evaluation using data from
-databases that are translated into the OMOP CDM. To install the package
-we like to point you to the InstallationGuide that can be found on the
-GitHub website (\url{https://github.com/OHDSI/PatientLevelPrediction/}).
+databases that are translated into the OMOP CDM.
 
 We first have to generate the target and outcome cohorts and we then
 need to develop the R code to run against our CDM to execute the full
@@ -2816,10 +2812,10 @@ two options for this:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi})}
 \item
-  use the interactive cohort builder tool in ATLAS
-  (www.github.com/OHDSI/ATLAS) which can be used to create cohorts based
-  on inclusion criteria and will automatically populate this cohort
-  table.
+  use the interactive cohort builder tool in
+  \href{https://www.github.com/OHDSI/ATLAS}{ATLAS} which can be used to
+  create cohorts based on inclusion criteria and will automatically
+  populate this cohort table.
 \item
   write your own custom SQL statements to fill the cohort table.
 \end{enumerate}
@@ -2858,10 +2854,6 @@ The T and O cohorts can be found here:
   Stroke (O) :
   \url{http://www.ohdsi.org/web/atlas/\#/cohortdefinition/1769448}
 \end{itemize}
-
-In depth explanation of cohort creation in ATLAS is out of scope of this
-vignette but can be found on the OHDSI wiki pages
-(\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:atlas}).
 
 Note that when a cohort is created in ATLAS the cohortid is needed to
 extract the data in R. The cohortid can be found at the top of the ATLAS
@@ -2979,9 +2971,9 @@ the AF and Stroke cohorts. Therefore, we create a file called
 \end{Shaded}
 
 This is parameterized SQL which can be used by the
-\href{http://github.com/OHDSI/SqlRender}{\texttt{SqlRender}} package. We
-use parameterized SQL so we do not have to pre-specify the names of the
-CDM and result schemas. That way, if we want to run the SQL on a
+\href{https://ohdsi.github.io/SqlRender/}{\texttt{SqlRender}} package.
+We use parameterized SQL so we do not have to pre-specify the names of
+the CDM and result schemas. That way, if we want to run the SQL on a
 different schema, we only need to change the parameter values; we do not
 have to change the SQL code. By also making use of translation
 functionality in \texttt{SqlRender}, we can make sure the SQL code can
@@ -2989,9 +2981,9 @@ be run in many different environments.
 
 To execute this SQL against our CDM we first need to tell R how to
 connect to the server.
-\href{http://github.com/OHDSI/PatientLevelPrediction}{\texttt{PatientLevelPrediction}}
+\href{https://ohdsi.github.io/PatientLevelPrediction/}{\texttt{PatientLevelPrediction}}
 uses the
-\href{http://github.com/ohdsi/DatabaseConnector}{\texttt{DatabaseConnector}}
+\href{https://ohdsi.github.io/DatabaseConnector/}{\texttt{DatabaseConnector}}
 package, which provides a function called
 \texttt{createConnectionDetails}. Type \texttt{?createConnectionDetails}
 for the specific settings required for the various database management
@@ -3072,16 +3064,15 @@ earlier.
 \subsubsection{Data extraction}\label{data-extraction}
 
 Now we can tell
-\href{http://github.com/OHDSI/PatientLevelPrediction}{\texttt{PatientLevelPrediction}}
+\href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
 to extract all necessary data for our analysis. This is done using the
-FeatureExtractionPackage package
-(\url{https://github.com/OHDSI/FeatureExtration}). In short the
-FeatureExtractionPackage allows you to specify which features
-(covariates) need to be extracted, e.g.~all conditions and drug
-exposures, more information can be found in chapter X. It also supports
-the creation of custom covariates. For more detailed information on the
-FeatureExtraction package see its vignettes. For our example study we
-decided to use these settings:
+\href{https://ohdsi.github.io/FeatureExtraction/}{\texttt{FeatureExtraction}}
+package. In short the FeatureExtractionPackage allows you to specify
+which features (covariates) need to be extracted, e.g.~all conditions
+and drug exposures, more information can be found in chapter X. It also
+supports the creation of custom covariates. For more detailed
+information on the FeatureExtraction package see its vignettes. For our
+example study we decided to use these settings:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3125,7 +3116,7 @@ Note that if the cohorts are created in ATLAS its corresponding cohort
 database schema needs to be selected. There are many additional
 parameters for the \texttt{getPlpData} function which are all documented
 in the
-\href{http://github.com/OHDSI/PatientLevelPrediction}{\texttt{PatientLevelPrediction}}
+\href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
 manual. The resulting \texttt{plpData} object uses the package
 \texttt{ff} to store information in a way that ensures R does not run
 out of memory, even when the data are large.
@@ -3771,60 +3762,6 @@ regression models in the framework, e.g.~as found in literature\strut
 \bottomrule
 \end{longtable}
 
-\section{Demos}\label{demos}
-
-We have added several demos in the package that run on simulated data:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# Show all demos in our package:}
- \KeywordTok{demo}\NormalTok{(}\DataTypeTok{package =} \StringTok{"PatientLevelPrediction"}\NormalTok{)}
-
-\CommentTok{# For example, to run the SingleModelDemo that runs Lasso and shows you how to run the Shiny App use this call}
- \KeywordTok{demo}\NormalTok{(}\StringTok{"SingleModelDemo"}\NormalTok{, }\DataTypeTok{package =} \StringTok{"PatientLevelPrediction"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\newpage
-
-\section{Acknowledgments}\label{acknowledgments}
-
-Considerable work has been dedicated to provide the
-\href{http://github.com/OHDSI/PatientLevelPrediction}{\texttt{PatientLevelPrediction}}
-package.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# citation("PatientLevelPrediction")}
-\end{Highlighting}
-\end{Shaded}
-
-Further,
-\href{http://github.com/OHDSI/PatientLevelPrediction}{\texttt{PatientLevelPrediction}}
-makes extensive use of the
-\href{http://github.com/OHDSI/Cyclops}{\texttt{Cyclops}} package.
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# citation("Cyclops")}
-\end{Highlighting}
-\end{Shaded}
-
-\textbf{Please reference this paper if you use the PLP Package in your
-work:}
-
-\href{http://dx.doi.org/10.1093/jamia/ocy032}{Reps JM, Schuemie MJ,
-Suchard MA, Ryan PB, Rijnbeek PR. Design and implementation of a
-standardized framework to generate and evaluate patient-level prediction
-models using observational healthcare data. J Am Med Inform Assoc.
-2018;25(8):969-975.}
-
-This work is supported in part through the National Science Foundation
-grant IIS 1251151 and a personalised grant to P.R. Rijnbeek from Janssen
-R\&D.
-
-\newpage
-
 \section*{Appendix 1: Study population settings
 details}\label{appendix-1-study-population-settings-details}
 \addcontentsline{toc}{section}{Appendix 1: Study population settings
@@ -4119,6 +4056,216 @@ A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study
 
 \chapter{Software Validity}\label{SoftwareValidity}
 
+The central question of sofware validity is
+
+\begin{quote}
+Does the software do what it is expected to do?
+\end{quote}
+
+In broad strokes there are two approaches to ensure software validity:
+by using a software development process aimed at creating valid
+software, and by testing whether the software is valid. Here we focus
+specifically on the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI
+Methods Library}, the set of R packages used in population-level
+estimation and patient-level prediction. The OHDSI Population-Level
+Estimation Workgroup and the OHDSI Patient-Level Prediction Workgroup
+together are responsible for developing and maintaining the OHDSI
+Methods Library. The OHDSI Population-Level Estimation Workgroup is
+headed by Drs. Marc Suchard and Martijn Schuemie. The OHDSI
+Patient-Level Prediction Workgroup his headed by Drs. Peter Rijnbeek and
+Jenna Reps.
+
+\section{Software Development
+Process}\label{software-development-process}
+
+The OHDSI Methods Library is developed by the OHDSI community. Proposed
+changes to the Library are discussed in two venues: The GitHub issue
+trackers and the \href{http://forums.ohdsi.org/}{OHDSI Forums}. Both are
+open to the public. Any member of the community can contribute software
+code to the Library, however, final approval of any changes incorporated
+in the released versions of the software is performed by the OHDSI
+Population-Level Estimation Workgroup and OHDSI Patient-Level Prediction
+Workgroup leadership only.
+
+Users can install the Methods Library in R directly from the master
+branches in the GitHub repositories, or through a system known as `drat'
+that is always up-to-date with the master branches. A number of the
+Methods Library packages are available through R's Comprehensive R
+Archive Network (CRAN), and this number is expected to increase over
+time.
+
+Reasonable software development and testing methodologies are employed
+by OHDSI to maximize the accuracy, reliability and consistency of the
+Methods Library performance. Importantly, as the Methods Library is
+released under the terms of the Apache License V2, all source code
+underlying the Methods Library, whether it be in R, C++, SQL, or Java is
+available for peer review by all members of the OHDSI community, and the
+public in general. Thus, all the functionality embodied within Methods
+Library is subject to continuous critique and improvement relative to
+its accuracy, reliability and consistency.
+
+\subsection{Source Code Management}\label{source-code-management}
+
+All of the Methods Library's source code is managed in the source code
+version control system `git' publicly assessible via GitHub. The OHDSI
+Methods Library repositories are access controlled. Anyone in the world
+can view the source code, and any member of the OHDSI community can
+submit changes through so-called pull requests. Only the OHDSI
+Population-Level Estimation Workgroup and Patient-Level Prediction
+Workgroup leadership can approve such request, make changes to the
+master branches, and release new versions. Continuous logs of code
+changes are maintained within the GitHub repositories and reflect all
+aspects of changes in code and documentation. These commit logs are
+available for public review.
+
+New versions are released by the OHDSI Population-Level Estimation
+Workgroup and Patient-Level Prediction Workgroup leadership as needed. A
+new release starts by pushing changes to a master branch with a package
+version number (as defined in the DESCRIPTION file inside the package)
+that is greater than the version number of the previous release. This
+automatically triggers checking and testing of the package. If all tests
+are passed, the new version is automatically tagged in the version
+control system and the package is automatically uploaded to the OHDSI
+drat repository. New versions are numbered using three-component version
+number:
+
+\begin{itemize}
+\tightlist
+\item
+  New micro versions (e.g.~from 4.3.2 to 4.3.3) indicate bug fixes only.
+  No new functionality, and forward and backward compatibility are
+  guaranteed
+\item
+  New minor versions (e.g.~from 4.3.3 to 4.4.0) indicate added
+  functionality. Only backward compatibility is guaranteed
+\item
+  New major versions (e.g.~from 4.4.0 to 5.0.0) indicate major
+  revisions. No guarantees are madef in terms of compatibility
+\end{itemize}
+
+\subsection{Documentation}\label{documentation}
+
+All packages in the Methods Library are documented through R's internal
+documentation framework. Each package has a package manual that
+describes every function available in the package. To promote alignment
+between the function documentation and the function implementation, the
+roxygen2 software is used to combine a function's documentation and
+source code in a single file. The package manual is available on demand
+through R's command line interface, as a PDF in the package
+repositories, and as a web page. In addition, many packages also have
+vignettes that highlight specific use cases of a package. All Method
+Library source code is available to end users. Feedback from the
+community is facilitated using GitHub's issue tracking system and the
+\href{http://forums.ohdsi.org/}{OHDSI Forums}.
+
+\subsection{Availability of Current and Historical Archive
+Versions}\label{availability-of-current-and-historical-archive-versions}
+
+Current and historical versions of the Methods Library packages are
+available in two locations: First, the GitHub version control system
+contains the full development history of each package, and the state of
+a package at each point in time can be reconstructed and retrieved. Most
+importantly, each released version is tagged in GitHub. Second, the
+released R source packages are stored in the OHDSI GitHub drat
+repository.
+
+\subsection{Maintenance, Support and
+Retirement}\label{maintenance-support-and-retirement}
+
+Each current version of the Methods Library is actively supported by
+OHDSI with respect to bug reporting, fixes and patches. Issues can be
+reported through GitHub's issue tracking system, and through the OHDSI
+forums. Each package has a package manual, and zero, one or several
+vignettes. Online video tutorials are available, and in-person tutorials
+are provided from time to time.
+
+\subsection{Qualified Personnel}\label{qualified-personnel}
+
+Members of OHDSI community represent multiple statistical disciplines
+and are based at academic, not-for-profit and industry-affiliated
+institutions on multiple continents.
+
+All leaders of the OHDSI Population-Level Estimation Workgroup and OHDSI
+Patient-Level Prediction Workgroup hold PhDs from accredited academic
+institutions and have published extensively in peer reviewed journals.
+
+\subsection{Physical and Logical
+Security}\label{physical-and-logical-security}
+
+The OHDSI Methods Library is hosted on the
+\href{https://github.com/}{GitHub} system. GitHub's security measures
+are described at \url{https://github.com/security}. Usernames and
+passwords are required by all members of the OHDSI community contribute
+modifications to the Methods Library, and only the Population-Level
+Estimation Workgroup and Patient-Level Prediction Workgroup leadership
+can makes changes to the master branches. User accounts are limited in
+access based upon standard security policies and functional
+requirements.
+
+\subsection{Disaster Recovery}\label{disaster-recovery}
+
+The OHDSI Methods Library is hosted on the GitHub system. GitHub's
+disaster recovery facilities are described at
+\url{https://github.com/security}.
+
+\section{Testing}\label{testing}
+
+We distinguish between two types of tests performed on the Methods
+Library: Tests for individual functions in the packages (so-called `unit
+tests'), and tests to determine whether analyses implemented using the
+Methods Library produce reliable and accurate results (we will call this
+`method tests').
+
+\subsection{Unit test}\label{unit-test}
+
+A large set of automated validation tests is maintained and upgraded by
+OHDSI to enable the testing of source code against known data and known
+results. Each test begins with specifying some simple input data, then
+executes a function in one of the packages on this input, and evaluates
+whether the output is exactly what would be expected. For simple
+functions, the expected result is often obvious (for example when
+performing propensity score matching on example data containing only a
+few subjects), for more complicated functions the expected result may be
+generated using combinations of other functions available in R (for
+example, Cyclops, our large-scale regression engine, is tested amongst
+others by comparing results on simple problems with other regression
+routines in R). We aim for these tests in total to cover 100\% of the
+lines of executable source code. Appendix A lists the locations of the
+tests in each package. These tests are automatically performed when
+changes are made to a package (specifically, when changes are pushed to
+the package repository). Any errors noted during testing automatically
+trigger emails to the leadership of the Workgroups, and must be resolved
+prior to release of a new version of a package. The results of the unit
+tests can be found in the locations specified in Appendix A. The source
+code and expected results for these tests are available for review and
+use in other applications as may be appropriate. These tests are also
+available to end users and/or system administrators and can be run as
+part of their installation process to provide further documentation and
+objective evidence as to the accuracy, reliability and consistency of
+their installation of the Methods Library.
+
+\section{Conclusions}\label{conclusions}
+
+The purpose of this chapter is to document evidence to provide a high
+degree of assurance that the Methods Library can be used in
+observational studies to consistently produce reliable and accurate
+estimates. Both through adoption of best software development practices
+during the software lifecycle, as well as continuous extensive testing
+of individual components of the software and the start-to-finish
+application of the methods library on a gold standard aim to ensure the
+validity of the Methods Library. However, use of the Methods Library
+does not guarantee validity of a study, since validity depends on many
+other components outside of the Methods Library as well, including
+appropriate study design, exposure and outcome definitions, and data
+quality. It is important to note that there is a significant obligation
+on the part of the end-user's organization to define, create, implement
+and enforce the Method Library installation, validation and utilization
+related Standard Operating Procedures (SOPs) within the end-user's
+environment. These SOPs should define appropriate and reasonable quality
+control processes to manage end-user related risk within the applicable
+operating framework. The details and content of any such SOPs are beyond
+the scope of this document.
+
 \chapter{Method Validity}\label{MethodValidity}
 
 When considering method validity we aim to answer the question
@@ -4318,8 +4465,8 @@ rate ratio. Figure \ref{fig:posControlSynth} depicts this process.
 \subsection{Metrics}\label{metrics}
 
 Based on the estimates of a particular method for the negative and
-positive controls, we can then compute a wide range of metrics, for
-example:
+positive controls, we can then understand the operating characteristic
+by computing a range of metrics, for example:
 
 \begin{itemize}
 \tightlist
@@ -4353,20 +4500,79 @@ example:
   remained having the outcome.
 \end{itemize}
 
+Depending on our use case, we can evaluate whether these operating
+characterists are suitable for our goal. For example, if we wish to
+perform signal detection, we may care about type I and type II error, or
+if we are willing to modify our alpha threshold, we may inspect the AUC
+instead.
+
 \subsection{Empirical calibration}\label{empirical-calibration}
+
+Often the type I error (at alpha = 0.05) is larger than 5\%, and the
+coverage of the 95\% confidence interval is lower than 95\%. OHDSI has
+developed processes for calibration p-values and confidence intervals to
+restore these operating characteristics to nominal.
+
+For p-value calibration \citep{schuemie_2014} we estimate the empirical
+null distribution using the observed estimates for negative controls; We
+fit a Gaussian probability distribution to the estimates, taking into
+account the sampling error of each estimate. Using this null
+distribution we then compute the calibrated p-value for the hypothesis
+of interest, considering both random error and systematic error.
+
+For confidence inteval calibration \citep{schuemie_2018} we estimate a
+systematic error distribution, which we assume is Gaussian with a mean
+and standard deviation linearly related to the logarithm of the true
+effect size. Using the estimated distribution, we then generate
+calibrated confidence intervals considering both random and systematic
+error. Typically, but not necessarily, the calibrated confidence
+interval is wider than the nominal confidence interval, reflecting the
+problems unaccounted for in the standard procedure (such as unmeasured
+confounding, selection bias and measurement error) but accounted for in
+the calibration.
+
+Both p-value calibration and confidence interval calibration are
+implemented in the
+\href{https://ohdsi.github.io/EmpiricalCalibration/}{EmpiricalCalibration}
+package.
 
 \subsection{OHDSI Methods Benchmark}\label{ohdsi-methods-benchmark}
 
+Todo: add text on OHDSI Methods Benchmark
+
 \subsection{Replication across sites}\label{replication-across-sites}
 
-\begin{itemize}
-\tightlist
-\item
-  Warn against `Christie Brinkley Bias'
-\end{itemize}
+Another form of method validation can come from executing the study
+across several different databases that possibly represent different
+populations, different health care systems, and different data capture
+processes. Prior research has shown that executing the same study design
+across different databases can produce vastly different effect size
+estimates \citep{madigan_2013}, suggesting the design does not
+adequately address the different biases found in the different
+databases. However, not observing heterogeneity of effects does not
+guarantee an unbiased estimate. It is not unlikely that all databases
+share a similar bias, and that all estimates are therefore consistently
+wrong.
+
+\subsection{Sensitivity analyses}\label{sensitivity-analyses}
+
+When designing a study there are often design choices that are
+uncertain. For example, should propensity score matchign of
+stratification be used? If stratification is used, how many strata? What
+is the appropriate time-at-risk? When faced with such uncertainty, one
+solution is to evaluate various options, and observe the sensitivity of
+the results to the design choice. If the estimate remains the same under
+various options, we can say the study is robust to the uncertainty.
+
+This definition of sensitivity analysis should not be confused with the
+definitions used by others such as \citet{rosenbaum_2005}, who define
+sensitivity analysis to `appraise how the conclusions of a study might
+be altered by hidden biases of various magnitudes'.
 
 \section{Diagnostics for all
 prediction}\label{diagnostics-for-all-prediction}
+
+Todo
 
 \section{Method validation in
 practice}\label{method-validation-in-practice}
@@ -4376,13 +4582,42 @@ compared to new users of thiazide and thiazide-like diuretics
 
 How to select negative controls using ATLAS
 
+\begin{itemize}
+\tightlist
+\item
+  Create a concept set containing both target and comparator exposure
+  concepts.
+\item
+  Go to the `Explore evidence' tab and click `Generate'
+\item
+  Manually review negative controls, considering
+\item
+  Does the drug not cause the outcome?
+\item
+  Does the drug not prevent / treat the outcome?
+\item
+  Does the negative control appear in the data?
+\end{itemize}
+
 Include negative and positive controls.
 
 Compute metrics
 
+\begin{itemize}
+\tightlist
+\item
+  Need to add functions to MethodEvaluation
+\end{itemize}
+
 Generate calibration plots
 
 Calibrate CI and p-value
+
+\begin{itemize}
+\tightlist
+\item
+  Use EmpiricalCalibration package
+\end{itemize}
 
 \part{OHDSI Studies}\label{part-ohdsi-studies}
 
