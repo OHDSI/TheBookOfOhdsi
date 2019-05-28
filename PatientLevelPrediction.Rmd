@@ -56,21 +56,20 @@ The final study population in which we will develop our model is often a subset 
 
 - *How do we define the period in which we will predict our outcome relative to the target cohort start?* We actually have to make two decisions to answer that question. First, does the time-at-risk window start at the date of the start of the target cohort or later? Arguments to make it start later could be that you want to avoid outcomes that were entered late in the record that actually occurred before the start of the target cohort or you want to leave a gap where interventions to prevent the outcome could theoretically be implemented. Second, you need to define the time-at-risk by setting the risk window end, as some specification of days offset relative to the target cohort start or end dates. For our problem we will predict in a ‘time-at-risk’ window starting 1 day after the start of the target cohort up to 365 days later (to look for 1-year risk following atrial fibrillation diagnosis).
 
-
 - *Do we require a minimum amount of time-at-risk?* We have to decide if we want to include patients that did not experience the outcome but did leave the database earlier than the end of our time-at-risk period. These patients may experience the outcome when we do not observe them. For our  prediction problem we decide to answer this question with ‘Yes, require a mimimum time-at-risk’ for that reason. Furthermore, we have to decide if this constraint also applies to persons who experienced the outcome or we will include all persons with the outcome irrespective of their total time at risk. For example, if the outcome is death, then persons with the outcome are likely censored before the full time-at-risk period is complete.
 
 ### Model development settings
 
-To develop the model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. you need to let the data speak for itself and try different approaches to find the best one. There is no algorithm that will work best for all problems (no free lunch). In our framework we therefore aim to implement many algorithms. Furthermore, we made the system modular so you can add your own custom algorithms. This out-of-scope for this chapter but mode details can be found in the AddingCustomAlgorithms vignette (https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/AddingCustomAlgorithms.pdf).
+To develop the model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. you need to let the data speak for itself and try different approaches to find the best one. There is no algorithm that will work best for all problems (no free lunch). In our framework we therefore aim to implement many algorithms. Furthermore, we made the system modular so you can add your own custom algorithms. This out-of-scope for this chapter but mode details can be found in the AddingCustomAlgorithms vignette in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. 
 
 Our framework currently contains the following algorithms to choose from:
 
 | Algorithm | Description | Hyper-parameters |
-| ----------| ---------------------------------------------------| ----------------------- |
-| Regularized Logistic Regression | Lasso logistic regression belongs to the family of generalized linear models, where a linear combination of the variables is learned and finally a logistic function maps the linear combination to a value between 0 and 1.  The lasso regularization adds a cost based on model complexity to the objective function when training the model.  This cost is the sum of the absolute values of the linear combination of the coefficients.  The model automatically performs feature selection by minimizing this cost. We use the Cyclic coordinate descent for logistic, Poisson and survival analysis (Cyclops) package to perform large-scale regularized logistic regression: https://github.com/OHDSI/Cyclops | var  (starting  variance), seed |
+|:----------|:-------------------------------------------------------------- |:----------------------- |
+| Regularized Logistic Regression | Lasso logistic regression belongs to the family of generalized linear models, where a linear combination of the variables is learned and finally a logistic function maps the linear combination to a value between 0 and 1.  The lasso regularization adds a cost based on model complexity to the objective function when training the model.  This cost is the sum of the absolute values of the linear combination of the coefficients.  The model automatically performs feature selection by minimizing this cost. We use the [Cyclops](https://ohdsi.github.io/Cyclops/) (Cyclic coordinate descent for logistic, Poisson and survival analysis) package to perform large-scale regularized logistic regression. | var  (starting  variance), seed |
 | Gradient boosting machines | Gradient boosting machines is a boosting ensemble technique and in our framework it combines multiple decision trees.  Boosting works by iteratively adding decision trees but adds more weight to the data-points that are misclassified by prior decision trees in the cost function when training the next tree.  We use Extreme Gradient Boosting, which is an efficient implementation of the gradient boosting framework implemented in the xgboost R package available from CRAN. | ntree (number of trees), max depth (max levels in tree), min rows (minimum data points in in node), learning rate, seed  | mtry  (number  of  features  in  each  tree),ntree (number of trees), maxDepth (max levels in tree), minRows (minimum data points in in node),balance (balance class labels), seed  |
 | Random forest | Random forest is a bagging ensemble technique that combines multiple decision trees.  The idea behind bagging is to reduce the likelihood of overfitting, by using weak classifiers, but combining multiple diverse weak classifiers into a strong classifier.  Random forest accomplishes this by training multiple decision trees but only using a subset of the variables in each tree and the subset of variables differ between trees. Our packages uses the sklearn learn implementation of Random Forest in python. | mtry  (number  of  features  in  each  tree),ntree (number of trees), maxDepth (max levels in tree), minRows (minimum data points in in node),balance (balance class labels), seed  |
-| K-nearest neighbors | K-nearest neighbors (KNN) is an algorithm that uses some metric to find the K closest labelled data-points, given the specified metric, to a new unlabelled data-point.  The prediction of the new data-points is then the most prevalent class of the K-nearest labelled data-points.  There is a sharing limitation of KNN, as the model requires labelled data to perform the prediction on new data, and it is often not possible to share this data across data sites.We included the BigKnn classifier developed in OHDSI which is a large scale k-nearest neighbor classifier using the Lucene search engine: https://github.com/OHDSI/BigKnn | k (number   of   neighbours),weighted (weight by inverse frequency)  |
+| K-nearest neighbors | K-nearest neighbors (KNN) is an algorithm that uses some metric to find the K closest labelled data-points, given the specified metric, to a new unlabelled data-point.  The prediction of the new data-points is then the most prevalent class of the K-nearest labelled data-points.  There is a sharing limitation of KNN, as the model requires labelled data to perform the prediction on new data, and it is often not possible to share this data across data sites. We included the [BigKnn](https://github.com/OHDSI/BigKnn) package developed in OHDSI which is a large scale k-nearest neighbor classifier using the Lucene search engine. | k (number   of   neighbours),weighted (weight by inverse frequency)  |
 | Naive Bayes | The Naive Bayes algorithm applies the Bayes’ theorem with the “naive” assumption of conditional independence between every pair of features given the value of the class variable. Based on the likelihood the data belongs to a class and the prior distribution of the class, a posterior distribution is obtained.  | none |
 | AdaBoost | AdaBoost is a boosting ensemble technique. Boosting works by iteratively adding classifiers but adds more weight to the data-points that are misclassified by prior classifiers in the cost function when training the next classifier. We use the sklearn “AdaboostClassifier” implementation in Python. | nEstimators (the maximum number of estimators at which boosting is terminated), learningRate (learning rate shrinks the contribution of each classifier by learning_rate. There is a trade-off between learningRate and nEstimators) |
 | Decision Tree | A decision tree is a classifier that partitions the variable space using individual tests selected using a greedy approach.  It aims to find partitions that have the highest information gain to separate the classes.  The decision tree can easily overfit by enabling a large number of partitions (tree depth) and often needs some regularization (e.g., pruning or specifying hyper-parameters that limit the complexity of the model). We use the sklearn “DecisionTreeClassifier” implementation in Python. | maxDepth (the maximum depth of the tree), minSamplesSplit,minSamplesLeaf, minImpuritySplit (threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf.), seed,classWeight ("Balance"" or "None") |
@@ -117,7 +116,7 @@ According to the best practices we need to make a protocol that completely speci
 
 ## Study implementation
 
-Now we have completely design our study we have to implement the study. This will be done using the [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) package to build patient-level predictive models. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. To install the package we like to point you to the InstallationGuide that can be found on the GitHub website (https://github.com/OHDSI/PatientLevelPrediction/).
+Now we have completely design our study we have to implement the study. This will be done using the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package to build patient-level predictive models. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
 
 We first have to generate the target and outcome cohorts and we then need to develop the R code to run against our CDM to execute the full study. These steps will be described in the paragraphs below.
 
@@ -132,7 +131,7 @@ For our study we need to know when a person enters the target and outcome cohort
 
 How do we fill this table according to our cohort definitions? There are two options for this:
 
-1) use the interactive cohort builder tool in  ATLAS (www.github.com/OHDSI/ATLAS) which can be used to create cohorts based on inclusion criteria and will automatically populate this cohort table.
+1) use the interactive cohort builder tool in  [ATLAS](https://www.github.com/OHDSI/ATLAS) which can be used to create cohorts based on inclusion criteria and will automatically populate this cohort table.
 
 2) write your own custom SQL statements to fill the cohort table.
 
@@ -154,8 +153,6 @@ The T and O cohorts can be found here:
 
 - Atrial Fibrillaton (T): http://www.ohdsi.org/web/atlas/#/cohortdefinition/1769447
 - Stroke (O) : http://www.ohdsi.org/web/atlas/#/cohortdefinition/1769448
-
-In depth explanation of cohort creation in ATLAS is out of scope of this vignette but can be found on the OHDSI wiki pages (http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:atlas).
 
 Note that when a cohort is created in ATLAS the cohortid is needed to extract the data in R. The cohortid can be found at the top of the ATLAS screen.
 
@@ -264,9 +261,9 @@ GROUP BY visit_occurrence.person_id, visit_occurrence.visit_start_date,
 ;
 
 ```
-This is parameterized SQL which can be used by the [`SqlRender`](http://github.com/OHDSI/SqlRender) package. We use parameterized SQL so we do not have to pre-specify the names of the CDM and result schemas. That way, if we want to run the SQL on a different schema, we only need to change the parameter values; we do not have to change the SQL code. By also making use of translation functionality in `SqlRender`, we can make sure the SQL code can be run in many different environments.
+This is parameterized SQL which can be used by the [`SqlRender`](https://ohdsi.github.io/SqlRender/) package. We use parameterized SQL so we do not have to pre-specify the names of the CDM and result schemas. That way, if we want to run the SQL on a different schema, we only need to change the parameter values; we do not have to change the SQL code. By also making use of translation functionality in `SqlRender`, we can make sure the SQL code can be run in many different environments.
 
-To execute this SQL against our CDM we first need to tell R how to connect to the server. [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) uses the [`DatabaseConnector`](http://github.com/ohdsi/DatabaseConnector) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
+To execute this SQL against our CDM we first need to tell R how to connect to the server. [`PatientLevelPrediction`](https://ohdsi.github.io/PatientLevelPrediction/) uses the [`DatabaseConnector`](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
 ```{r tidy=FALSE,eval=FALSE}
 connectionDetails <- createConnectionDetails(dbms = "postgresql",
@@ -319,7 +316,7 @@ In this section we assume that our cohorts have been created either by using ATL
 
 #### Data extraction
 
-Now we can tell [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) to extract all necessary data for our analysis. This is done using the FeatureExtractionPackage package (https://github.com/OHDSI/FeatureExtration). In short the FeatureExtractionPackage allows you to specify which features (covariates) need to be extracted, e.g. all conditions and drug exposures, more information can be found in chapter X. It also supports the creation of custom covariates. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
+Now we can tell [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) to extract all necessary data for our analysis. This is done using the [`FeatureExtraction`](https://ohdsi.github.io/FeatureExtraction/) package. In short the FeatureExtractionPackage allows you to specify which features (covariates) need to be extracted, e.g. all conditions and drug exposures, more information can be found in chapter X. It also supports the creation of custom covariates. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
 
 ```{r tidy=FALSE,eval=FALSE}
 covariateSettings <- createCovariateSettings(useDemographicsGender = TRUE,
@@ -349,7 +346,7 @@ plpData <- getPlpData(connectionDetails = connectionDetails,
 )
 ```
 
-Note that if the cohorts are created in ATLAS its corresponding cohort database schema needs to be selected. There are many additional parameters for the `getPlpData` function which are all documented in the [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) manual. The resulting `plpData` object uses the package `ff` to store information in a way that ensures R does not run out of memory, even when the data are large.
+Note that if the cohorts are created in ATLAS its corresponding cohort database schema needs to be selected. There are many additional parameters for the `getPlpData` function which are all documented in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) manual. The resulting `plpData` object uses the package `ff` to store information in a way that ensures R does not run out of memory, even when the data are large.
 
 Creating the `plpData` object can take considerable computing time, and it is probably a good idea to save it for future sessions. Because `plpData` uses `ff`, we cannot use R's regular save function. Instead, we'll have to use the `savePlpData()` function:
 
@@ -738,42 +735,6 @@ Ensemble models | This vignette describes how you can use the framework to build
 Deep Learning Models | We have added extensive functionality for Deep Learning including several architectures in both pyTorch and Keras. These algorithms can be trained using GPU power | [`Vignette`](https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/BuildingDeepLearningModels.pdf)
 Learning curves | Learning curves assess the effect of training set size on model performance by training a sequence of prediction models on successively larger subsets of the training set. A learning curve plot can also help in diagnosing a bias or variance problem as explained below. | [`Vignette`](https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/GeneratingLearningCurves.pdf)
 Implementing existing models | This vignette describes how you can implement existing logistic regression models in the framework, e.g. as found in literature | [`Vignette`](https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/ImplementingExistingModels.pdf)
-
-## Demos
-
-We have added several demos in the package that run on simulated data:
-
-``` {r eval=FALSE}
-# Show all demos in our package:
- demo(package = "PatientLevelPrediction")
-
-# For example, to run the SingleModelDemo that runs Lasso and shows you how to run the Shiny App use this call
- demo("SingleModelDemo", package = "PatientLevelPrediction")
-```
-
-\newpage
-
-## Acknowledgments
-
-Considerable work has been dedicated to provide the [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) package.
-
-```{r tidy=TRUE,eval=TRUE}
-# citation("PatientLevelPrediction")
-```
-
-Further, [`PatientLevelPrediction`](http://github.com/OHDSI/PatientLevelPrediction) makes extensive use of the [`Cyclops`](http://github.com/OHDSI/Cyclops) package.
-
-```{r tidy=TRUE,eval=TRUE}
-# citation("Cyclops")
-```
-
-**Please reference this paper if you use the PLP Package in your work:**
-
-[Reps JM, Schuemie MJ, Suchard MA, Ryan PB, Rijnbeek PR. Design and implementation of a standardized framework to generate and evaluate patient-level prediction models using observational healthcare data. J Am Med Inform Assoc. 2018;25(8):969-975.](http://dx.doi.org/10.1093/jamia/ocy032)
-
-This work is supported in part through the National Science Foundation grant IIS 1251151 and a personalised grant to P.R. Rijnbeek from Janssen R&D.
-
-\newpage
 
 ## Appendix 1: Study population settings details {-}
 
