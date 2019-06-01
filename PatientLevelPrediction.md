@@ -424,21 +424,17 @@ Figure \@ref(fig:plpVarScatter) shows that the mean of most of the covariates is
 
 Precision (P) is defined as the number of true positives (TP) over the number of true positives plus the number of false positives (FP):
 
-**Todo: Figure out why equations aren't working in HTML**
-
 $$P\ =\frac{\ TP}{TP\ +\ FP}$$
 
 
-Recall (R) is defined as the number of true positives (Tp) over the number of true positives plus the number of false negatives (Fn).
+Recall (R) is defined as the number of true positives over the number of true positives plus the number of false negatives (FN):
 
-```r
-R <- Tp/(Tp + Fn)
-```
+$$R\ =\frac{\ TP}{TP\ +\ FN}$$
+
 These quantities are also related to the (F1) score, which is defined as the harmonic mean of precision and recall.
 
-```r
-F1 <- 2*P*R/(P+R)
-```
+$$F1\ =\ 2\ \cdot\ \frac{P\cdot R}{P+R}$$
+
 Note that the precision can either decrease or increase if the threshold is lowered.  Lowering the threshold of a classifier may increase the denominator, by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase precision. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing precision. For Recall the denominator does not depend on the classifier threshold (Tp+Fn is a constant). This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.
 
 Figure \@ref(fig:plpPrecisionRecall) shows the tradeoff between precision and recall.

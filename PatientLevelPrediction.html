@@ -664,12 +664,11 @@ Figure 14.8: Predicted probability distribution.
 <div id="precision-recall" class="section level3">
 <h3><span class="header-section-number">14.4.8</span> Precision recall</h3>
 <p>Precision (P) is defined as the number of true positives (TP) over the number of true positives plus the number of false positives (FP):</p>
-<p><strong>Todo: Figure out why equations aren’t working in HTML</strong></p>
 <p><span class="math display">\[P\ =\frac{\ TP}{TP\ +\ FP}\]</span></p>
-<p>Recall (R) is defined as the number of true positives (Tp) over the number of true positives plus the number of false negatives (Fn).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">R &lt;-<span class="st"> </span>Tp<span class="op">/</span>(Tp <span class="op">+</span><span class="st"> </span>Fn)</code></pre></div>
+<p>Recall (R) is defined as the number of true positives over the number of true positives plus the number of false negatives (FN):</p>
+<p><span class="math display">\[R\ =\frac{\ TP}{TP\ +\ FN}\]</span></p>
 <p>These quantities are also related to the (F1) score, which is defined as the harmonic mean of precision and recall.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">F1 &lt;-<span class="st"> </span><span class="dv">2</span><span class="op">*</span>P<span class="op">*</span>R<span class="op">/</span>(P<span class="op">+</span>R)</code></pre></div>
+<p><span class="math display">\[F1\ =\ 2\ \cdot\ \frac{P\cdot R}{P+R}\]</span></p>
 <p>Note that the precision can either decrease or increase if the threshold is lowered. Lowering the threshold of a classifier may increase the denominator, by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase precision. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing precision. For Recall the denominator does not depend on the classifier threshold (Tp+Fn is a constant). This means that lowering the classifier threshold may increase recall, by increasing the number of true positive results. It is also possible that lowering the threshold may leave recall unchanged, while the precision fluctuates.</p>
 <p>Figure <a href="PatientLevelPrediction.html#fig:plpPrecisionRecall">14.9</a> shows the tradeoff between precision and recall.</p>
 <div class="figure" style="text-align: center"><span id="fig:plpPrecisionRecall"></span>
