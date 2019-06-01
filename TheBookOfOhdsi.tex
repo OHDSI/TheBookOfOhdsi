@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-05-28}
+    \date{2019-06-01}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -142,8 +142,8 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\chapter*{Welcome}\label{welcome}
-\addcontentsline{toc}{chapter}{Welcome}
+\chapter*{Preface}\label{preface}
+\addcontentsline{toc}{chapter}{Preface}
 
  This is a book about OHDSI, and is currently very much under
 development.
@@ -152,6 +152,34 @@ The book is written in \href{https://rmarkdown.rstudio.com}{RMarkdown}
 with \href{https://bookdown.org}{bookdown}. It is automatically rebuilt
 from \href{https://github.com/OHDSI/TheBookOfOhdsi}{source} by
 \href{http://travis-ci.org/}{travis}.
+
+\section*{Goals of this book}\label{goals-of-this-book}
+\addcontentsline{toc}{section}{Goals of this book}
+
+This book aims to be a central knowledge repository for OHDSI, and
+focuses on describing the OHDSI community, data standards, and tools. It
+is intended both for those new to OHDSI and veterans alike, and aims to
+be practical, providing the necessary theory and subsequent instructions
+on how to do things. After reading this book you will understand what
+OHDSI is, and how you can join the journey. You will learn what the
+common data model and standard vocabularies are, and how they can be
+used to standard an observational healthcare database. You will learn
+there are three main uses cases for these data: characterization,
+population-level estimation, and patient-level prediction, and that all
+three activities are supported by OHDSI's open source tools, and how to
+use them. You will learn how to establish the quality of the generated
+evidence through data quality, clinical validity, software validity, and
+method validity. Lastly, you will learn how these tools can be used to
+execute these studies in a distributed research network.
+
+\section*{Structure of the book}\label{structure-of-the-book}
+\addcontentsline{toc}{section}{Structure of the book}
+
+This book is organizes in five major sections: (I) The OHDSI Community,
+(II) Uniform data representation, (III) Data Analytics, (IV) Evidence
+Quality, and (V) OHDSI Studies. Each section has multiple chapters, and
+each chapter aims to follow the following main outline: Introduction,
+Theory, Practice, Excercises.
 
 \part{The OHDSI Community}\label{part-the-ohdsi-community}
 
@@ -225,6 +253,8 @@ Representation}\label{part-uniform-data-representation}
 
 \chapter{The Common Data Model}\label{CommonDataModel}
 
+\emph{Chapter leads: Clair Blacketer \& Mui VanZandt}
+
 No single observational data source provides a comprehensive view of the
 clinical data a patient accumulates while receiving healthcare, and
 therefore none can be sufficient to meet all expected outcome analysis
@@ -260,52 +290,52 @@ research, under the following principles:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Suitability for purpose:} The CDM aims to provide data
+  \textbf{Suitability for purpose}: The CDM aims to provide data
   organized in a way optimal for analysis, rather than for the purpose
   of addressing the operational needs of health care providers or
   payers.
 \item
-  \textbf{Data protection:} All data that might jeopardize the identity
+  \textbf{Data protection}: All data that might jeopardize the identity
   and protection of patients, such as names, precise birthdays etc. are
   limited. Exceptions are possible where the research expressly requires
   more detailed information, such as precise birth dates for the study
   of infants.
 \item
-  \textbf{Design of domains:} The domains are modeled in a
+  \textbf{Design of domains}: The domains are modeled in a
   person-centric relational data model, where for each record the
   identity of the person and a date is captured as a minimum.
 \item
-  \textbf{Rationale for domains:} Domains are identified and separately
+  \textbf{Rationale for domains}: Domains are identified and separately
   defined in an entity-relationship model if they have an analysis use
   case and the domain has specific attributes that are not otherwise
   applicable. All other data can be preserved as an observation in an
   entity-attribute-value structure.
 \item
-  \textbf{Standardized Vocabularies:} To standardize the content of
+  \textbf{Standardized Vocabularies}: To standardize the content of
   those records, the CDM relies on the Standardized Vocabularies
   containing all necessary and appropriate corresponding standard
   healthcare concepts.
 \item
-  \textbf{Reuse of existing vocabularies:} If possible, these concepts
+  \textbf{Reuse of existing vocabularies}: If possible, these concepts
   are leveraged from national or industry standardization or vocabulary
   definition organizations or initiatives, such as the National Library
   of Medicine, the Department of Veterans' Affairs, the Center of
   Disease Control and Prevention, etc.
 \item
-  \textbf{Maintaining source codes:} Even though all codes are mapped to
+  \textbf{Maintaining source codes}: Even though all codes are mapped to
   the Standardized Vocabularies, the model also stores the original
   source code to ensure no information is lost.
 \item
-  \textbf{Technology neutrality:} The CDM does not require a specific
+  \textbf{Technology neutrality}: The CDM does not require a specific
   technology. It can be realized in any relational database, such as
   Oracle, SQL Server etc., or as SAS analytical datasets.
 \item
-  \textbf{Scalability:} The CDM is optimized for data processing and
+  \textbf{Scalability}: The CDM is optimized for data processing and
   computational analysis to accommodate data sources that vary in size,
   including databases with up to hundreds of millions of persons and
   billions of clinical observations.
 \item
-  \textbf{Backwards compatibility:} All changes from previous CDMs are
+  \textbf{Backwards compatibility}: All changes from previous CDMs are
   clearly delineated in the github repository
   \href{https://github.com/OHDSI/CommonDataModel}{(https://github.com/OHDSI/CommonDataModel)}.
   Older versions of the CDM can be easily created from the CDMv5, and no
@@ -338,15 +368,15 @@ no information can be accidentally removed or written over except by the
 database administrator. Tables that need to be manipulated by web-based
 tools or end users have moved to the `Results' schema. Currently the
 only two tables in the `Results' schema are COHORT and
-COHORT\_DEFINITON, \textbf{add a sentence explaining that these tables
-describe groups of interest that the user might define, put in links to
-the later sections} though likely more will be added over the course of
-v6.0 point releases. These tables can be written to, meaning that a
-cohort created in ATLAS or by a user can be stored in the COHORT table
-and accessed at a later date. This does mean that cohorts in the COHORT
-table can be manipulated by anyone so it is always recommended that the
-SQL code used to create the cohort be saved along with the project or
-analysis in the event it needs to be regenerated.
+COHORT\_DEFINITON, \textbf{Todo: add a sentence explaining that these
+tables describe groups of interest that the user might define, put in
+links to the later sections} though likely more will be added over the
+course of v6.0 point releases. These tables can be written to, meaning
+that a cohort created in ATLAS or by a user can be stored in the COHORT
+table and accessed at a later date. This does mean that cohorts in the
+COHORT table can be manipulated by anyone so it is always recommended
+that the SQL code used to create the cohort be saved along with the
+project or analysis in the event it needs to be regenerated.
 
 \subsection{General conventions of data
 tables}\label{general-conventions-of-data-tables}
@@ -380,7 +410,7 @@ Description\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
-\_SOURCE\_VALUE\strut
+{[}entity{]}\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Verbatim information from the source data, typically used in ETL to map
 to CONCEPT\_ID, and not to be used by any standard analytics. For
@@ -388,7 +418,7 @@ example, CONDITION\_SOURCE\_VALUE = `787.02' was the ICD-9 code captured
 as a diagnosis from the administrative claim.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
-\_ID\strut
+{[}entity{]}\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Unique identifiers for key entities, which can serve as foreign keys to
 establish relationships across entities. For example, PERSON\_ID
@@ -396,28 +426,28 @@ uniquely identifies each individual. VISIT\_OCCURRENCE\_ID uniquely
 identifies a PERSON encounter at a point of care.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
-\_CONCEPT\_ID\strut
+{[}entity{]}\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
-Foreign key into the Standardized Vocabularies (i.e.~the
-standard\_concept attribute for the corresponding term is true), which
-serves as the primary basis for all standardized analytics. For example,
-CONDITION\_CONCEPT\_ID = 31967
-\href{http://athena.ohdsi.org/search-terms/terms/31967}{(http://athena.ohdsi.org/search-terms/terms/31967)}
-contains the reference value for the SNOMED concept of `Nausea'\strut
+Foreign key into the Standardized Vocabularies (i.e.~the standard
+concept attribute for the corresponding term is true), which serves as
+the primary basis for all standardized analytics. For example,
+CONDITION\_CONCEPT\_ID =
+\href{http://athena.ohdsi.org/search-terms/terms/31967}{31967} contains
+the reference value for the SNOMED concept of `Nausea'\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
-\_SOURCE\_CONCEPT\_ID\strut
+{[}entity{]}\_SOURCE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Foreign key into the Standardized Vocabularies representing the concept
 and terminology used in the source data, when applicable. For example,
-CONDITION\_SOURCE\_CONCEPT\_ID = 45431665
-\href{http://athena.ohdsi.org/search-terms/terms/45431665}{(http://athena.ohdsi.org/search-terms/terms/45431665)}
+CONDITION\_SOURCE\_CONCEPT\_ID =
+\href{http://athena.ohdsi.org/search-terms/terms/45431665}{45431665}
 denotes the concept of `Nausea' in the Read terminology; the analogous
 CONDITION\_CONCEPT\_ID might be 31967, since SNOMED-CT is the
 Standardized Vocabulary for most clinical diagnoses and findings.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
-\_TYPE\_CONCEPT\_ID\strut
+{[}entity{]}\_TYPE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Delineates the origin of the source information, standardized within the
 Standardized Vocabularies. For example, DRUG\_TYPE\_CONCEPT\_ID can
@@ -451,30 +481,31 @@ Source Value, a Source Concept and as a Standard Concept.
 \begin{itemize}
 \tightlist
 \item
-  Source Values contain the codes from public code systems such as
-  ICD-9-CM, NDC, CPT-4, READ etc. or locally controlled vocabularies
+  \textbf{Source Values} contain the codes from public code systems such
+  as ICD-9-CM, NDC, CPT-4, READ etc. or locally controlled vocabularies
   (such as F for female and M for male) copied from the source data.
-  Source Values are stored in the \_SOURCE\_VALUE fields in the data
-  tables.
+  Source Values are stored in the {[}entity{]}\_SOURCE\_VALUE fields in
+  the data tables.
 \item
-  Concepts are CDM-specific entities that represent the meaning of a
-  clinical fact. Most concepts are based on code systems used in
+  \textbf{Concepts} are CDM-specific entities that represent the meaning
+  of a clinical fact. Most concepts are based on code systems used in
   healthcare (called Source Concepts), while others were created de-novo
   (CONCEPT\_CODE = `OMOP generated'). Concepts have unique IDs across
   all domains.
 \item
-  Source Concepts are the concepts that represent the code used in the
-  source. Source Concepts are only used for common healthcare code
-  systems, not for OMOP-generated Concepts. Source Concepts are stored
-  in the \_SOURCE\_CONCEPT\_ID field in the data tables.
+  \textbf{Source Concepts} are the concepts that represent the code used
+  in the source. Source Concepts are only used for common healthcare
+  code systems, not for OMOP-generated Concepts. Source Concepts are
+  stored in the {[}entity{]}\_SOURCE\_CONCEPT\_ID field in the data
+  tables.
 \item
-  Standard Concepts are those concepts that are used to define the
-  unique meaning of a clinical entity. For each entity there is one
+  \textbf{Standard Concepts} are those concepts that are used to define
+  the unique meaning of a clinical entity. For each entity there is one
   Standard Concept. Standard Concepts are typically drawn from existing
   public vocabulary sources. Concepts that have the equivalent meaning
   to a Standard Concept are mapped to the Standard Concept. Standard
-  Concepts are referred to in the \_CONCEPT\_ID field of the data
-  tables.
+  Concepts are referred to in the {[}entity{]}\_CONCEPT\_ID field of the
+  data tables.
 \end{itemize}
 
 Source Values are only provided for convenience and quality assurance
@@ -487,7 +518,12 @@ condition `Pulmonary Tuberculosis' (TB). Figure \ref{fig:pulmTubICD9}
 shows that the ICD9CM code for TB is 011.
 
 \begin{figure}
-\includegraphics[width=0.75\linewidth]{images/CommonDataModel/pulmTubICD9} \caption{ICD9CM code for Pulmonary Tuberculosis}\label{fig:pulmTubICD9}
+
+{\centering \includegraphics[width=0.75\linewidth]{images/CommonDataModel/pulmTubICD9} 
+
+}
+
+\caption{ICD9CM code for Pulmonary Tuberculosis}\label{fig:pulmTubICD9}
 \end{figure}
 
 Without the use of a standard way to represent TB the code 011 could be
@@ -495,31 +531,34 @@ interpreted as `Hospital Inpatient (Including Medicare Part A)' in the
 UB04 vocabulary, or as `Nervous System Neoplasms without Complications,
 Comorbidities' in the DRG vocabulary. This is where Concept IDs, both
 Source and Standard, are valuable. The Concept ID that represents the
-011 ICD9CM code is 44828631
-\href{http://athena.ohdsi.org/search-terms/terms/44828631}{(http://athena.ohdsi.org/search-terms/terms/44828631)}.
+011 ICD9CM code is
+\href{http://athena.ohdsi.org/search-terms/terms/44828631}{44828631}.
 This differentiates the ICD9CM from the UBO4 and from the DRG. The
-Standard Concept that ICD9CM code maps to is 253954
-\href{http://athena.ohdsi.org/search-terms/terms/253954}{(http://athena.ohdsi.org/search-terms/terms/253954)}
-as shown in figure \ref{fig:pulmTubMap} by the relationship
-`Non-standard to Standard map (OMOP)'. This same mapping relationship
-exists between Read, ICD10, CIEL, and MeSH codes, among others, so that
-any research that references the standard SNOMED concept is sure to
-include all supported source codes.
+Standard Concept that ICD9CM code maps to is
+\href{http://athena.ohdsi.org/search-terms/terms/253954}{253954} as
+shown in figure \ref{fig:pulmTubMap} by the relationship `Non-standard
+to Standard map (OMOP)'. This same mapping relationship exists between
+Read, ICD10, CIEL, and MeSH codes, among others, so that any research
+that references the standard SNOMED concept is sure to include all
+supported source codes.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{images/CommonDataModel/pulmTubMap} \caption{SNOMED code for Pulmonary Tuberculosis}\label{fig:pulmTubMap}
 \end{figure}
 
 An example of how this relationship is depicted in the tables is shown
-in figure (\textbf{link to figure in CONDITION\_OCCURRENCE})
+in Table \ref{tab:conditionOccurrence}.
 
 \section{OMOP CDM Standardized
 Tables}\label{omop-cdm-standardized-tables}
 
 The OMOP CDM contains 16 Clinical data tables, 10 Vocabulary tables, 2
 Metadata tables, 4 Health System data tables, 2 Health Economics data
-tables, 3 standardized derived elements, and 2 results schema tables. To
-illustrate how these tables are utilized in practice the data of one
+tables, 3 standardized derived elements, and 2 results schema tables.
+These tables are fully specified in the CDM Wiki:
+\url{https://github.com/OHDSI/CommonDataModel/wiki}.
+
+To illustrate how these tables are used in practice the data of one
 person will be used as a common thread throughout the rest of the
 chapter. While part of the CDM the Vocabulary tables are not covered
 here, rather, they are detailed in depth in Chapter
@@ -536,16 +575,21 @@ clinical experience might be represented in the Common Data Model.
 
 \includegraphics[width=0.5\linewidth]{images/CommonDataModel/Lauren}
 
-\begin{figure}
-\includegraphics[width=0.75\linewidth]{images/CommonDataModel/laurentext} \caption{Read more about Lauren and endometriosis at https://www.endometriosis-uk.org/laurens-story}\label{fig:Laurentext}
-\end{figure}
+Lauren had been experiencing endometriosis symptoms for many year;
+however, it took a ruptured cyst in her ovary before she was diagnosed.
+You can read more about Lauren at
+\url{https://www.endometriosis-uk.org/laurens-story}.
+
+\begin{quote}
+Every step of this painfull journey I had to convince everyone how much
+pain I was in.
+\end{quote}
 
 \subsection{PERSON table}\label{person}
 
 As the Common Data Model is a person-centric model (see section
 \ref{model-conv}) let's start with how she would be represented in the
-PERSON table. For the full PERSON table specification please see the CDM
-wiki \url{https://github.com/OHDSI/CommonDataModel/wiki/PERSON}.
+PERSON table.
 
 \textbf{What do we know about Lauren?}
 
@@ -564,6 +608,17 @@ wiki \url{https://github.com/OHDSI/CommonDataModel/wiki/PERSON}.
 With that in mind, her PERSON table might look something like this:
 
 \begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:person} The PERSON table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.33\columnwidth}\raggedright\strut
+Column Name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.33\columnwidth}\raggedright\strut
 Column Name\strut
@@ -575,149 +630,148 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-person\_id\strut
+PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Person\_id should be an integer, either directly from the source or
+PERSON\_ID should be an integer, either directly from the source or
 generated as part of the build process.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-gender\_concept\_id\strut
+GENDER\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 8532\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-The concept\_id referring to female gender is 8532
-\href{http://athena.ohdsi.org/search-terms/terms/8532}{(http://athena.ohdsi.org/search-terms/terms/8532)}.\strut
+The concept ID referring to female gender is
+\href{http://athena.ohdsi.org/search-terms/terms/8532}{8532}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-year\_of\_birth\strut
+YEAR\_OF\_BIRTH\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 1982\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-month\_of\_birth\strut
+MONTH\_OF\_BIRTH\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 3\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-day\_of\_birth\strut
+DAY\_OF\_BIRTH\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 12\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-birth\_datetime\strut
+BIRTH\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 1982-03-12 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 When the time is not known midnight is used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-death\_datetime\strut
+DEATH\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 \strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-race\_concept\_id\strut
+RACE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 8527\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-The concept\_id referring to white race is 8527
-\href{http://athena.ohdsi.org/search-terms/terms/8527}{(http://athena.ohdsi.org/search-terms/terms/8527)}.\strut
+The concept ID referring to white race is
+\href{http://athena.ohdsi.org/search-terms/terms/8527}{8527}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-ethnicity\_concept\_id\strut
+ETHNICITY\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 38003564\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Typically hispanic status is stored for ethnicity. The concept\_id
-38003564
-\href{http://athena.ohdsi.org/search-terms/terms/38003564}{(http://athena.ohdsi.org/search-terms/terms/38003564)}
+Typically hispanic status is stored for ethnicity. The concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/38003564}{38003564}
 refers to `Not hispanic'.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-location\_id\strut
+LOCATION\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 \strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 Her address is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-provider\_id\strut
+PROVIDER\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 \strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 Her primary care provider is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-care\_site\_id\strut
+CARE\_SITE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 \strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 Her primary care site is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-person\_source\_value\strut
+PERSON\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 Typically this would be her identifier in the source data, though often
-is it the same as the person\_id.\strut
+is it the same as the PERSON\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-gender\_source\_value\strut
+GENDER\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 F\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 The gender value as it appears in the source is stored here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-gender\_source\_concept\_id\strut
+GENDER\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 If the gender value in the source was coded using a vocabulary
-recognized by OHDSI, that concept\_id would go here. For example, if her
+recognized by OHDSI, that concept ID would go here. For example, if her
 gender was `Sex-F' in the source and it was stated to be in the PCORNet
-vocabulary concept\_id 44814665
-\href{http://athena.ohdsi.org/search-terms/terms/44814665}{(http://athena.ohdsi.org/search-terms/terms/44814665)}
+vocabulary concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/44814665}{44814665}
 would go in this field.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-race\_source\_value\strut
+RACE\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 white\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 The race value as it appears in the source is stored here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-race\_source\_concept\_id\strut
+RACE\_SOURCE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Same principle as gender\_source\_concept\_id.\strut
+Same principle as GENDER\_SOURCE\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-ethnicity\_source\_value\strut
+ETHNICITY\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 english\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 The ethnicity value as it appears in the source is stored here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-ethnicity\_source\_concept\_id\strut
+ETHNICITY\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Same principle as gender\_source\_concept\_id.\strut
+Same principle as GENDER\_SOURCE\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -729,12 +783,10 @@ for which a patient's clinical events are recorded in the source system.
 For US healthcare insurance claims this is typically the enrollment
 period of the patient. When working with data from electronic health
 records (EHR) often the first record in the system is considered the
-observation\_period\_start\_date and the latest record is considered the
-observation\_period\_end\_date with the understanding that only the
+OBSERVATION\_PERIOD\_START\_DATE and the latest record is considered the
+OBSERVATION\_PERIOD\_END\_DATE with the understanding that only the
 clinical events that happened within that particular system were
-recorded. For the full OBSERVATION\_PERIOD table specification please
-see the CDM wiki
-\href{https://github.com/OHDSI/CommonDataModel/wiki/OBSERVATION_PERIOD}{(https://github.com/OHDSI/CommonDataModel/wiki/OBSERVATION\_PERIOD)}.
+recorded.
 
 \textbf{How can we determine Lauren's observation period?}
 
@@ -760,6 +812,18 @@ Based on the encounter records her OBSERVATION\_PERIOD table might look
 something like this:
 
 \begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:observationPeriod} The OBSERVATION\_PERIOD
+table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.33\columnwidth}\raggedright\strut
+Column Name\strut
+\end{minipage} & \begin{minipage}[b]{0.16\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.33\columnwidth}\raggedright\strut
 Column Name\strut
@@ -771,7 +835,7 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-observation\_period\_id\strut
+OBSERVATION\_PERIOD\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
@@ -779,7 +843,7 @@ This is typically an autogenerated field that creates a unique id number
 for each record in the table.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-person\_id\strut
+PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
@@ -787,27 +851,27 @@ This comes from the PERSON table and links PERSON and
 OBSERVATION\_PERIOD.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-observation\_period\_start\_date\strut
+OBSERVATION\_PERIOD\_ START\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 2010-01-06\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 This is the start date of her earliest encounter on record.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-observation\_period\_end\_date\strut
+OBSERVATION\_PERIOD\_ END\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 2013-01-24\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 This is the end date of her latest encounter on record.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.33\columnwidth}\raggedright\strut
-period\_type\_concept\_id\strut
+PERIOD\_TYPE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.16\columnwidth}\raggedright\strut
 44814725\strut
 \end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
 The best option in the Vocabulary with the concept class `Obs Period
-Type' is 44814724
-\href{http://athena.ohdsi.org/search-terms/terms/44814724}{(http://athena.ohdsi.org/search-terms/terms/44814724)},
+Type' is
+\href{http://athena.ohdsi.org/search-terms/terms/44814724}{44814724},
 which stands for `Period covering healthcare encounters'.\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -819,9 +883,7 @@ The VISIT\_OCCURRENCE table houses information about a patient's
 encounters with the health care system. Within the OHDSI vernacular
 these are referred to as visits and are considered to be discreet
 events. There are 12 categories of visits though the most common are
-inpatient, outpatient, emergency and long term care. For the full
-VISIT\_OCCURRENCE table specification please see the CDM wiki
-\href{https://github.com/OHDSI/CommonDataModel/wiki/VISIT_OCCURRENCE}{(https://github.com/OHDSI/CommonDataModel/wiki/VISIT\_OCCURRENCE)}.
+inpatient, outpatient, emergency and long term care.
 
 \textbf{How do we represent Lauren's encounters as visits?}
 
@@ -846,6 +908,18 @@ As an example let's represent the inpatient encounter as a record in the
 VISIT\_OCCURRENCE table.
 
 \begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:visitOccurrence} The VISIT\_OCCURRENCE
+table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.25\columnwidth}\raggedright\strut
+Column Name\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.25\columnwidth}\raggedright\strut
 Column Name\strut
@@ -857,7 +931,7 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_occurrence\_id\strut
+VISIT\_OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 514\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -866,7 +940,7 @@ for each visit on the person's record in the converted CDM
 database.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-person\_id\strut
+PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -874,22 +948,22 @@ This comes from the PERSON table and links PERSON and
 VISIT\_OCCURRENCE.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_concept\_id\strut
+VISIT\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 9201\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
-The concept\_id referring to an inpatient visit is 9201
-\href{http://athena.ohdsi.org/search-terms/terms/9201}{(http://athena.ohdsi.org/search-terms/terms/9201)}.\strut
+The concept ID referring to an inpatient visit is
+\href{http://athena.ohdsi.org/search-terms/terms/9201}{9201}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_start\_date\strut
+VISIT\_START\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 2013-01-17\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The start date of the visit.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_start\_datetime\strut
+VISIT\_START\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 2013-01-17 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -897,7 +971,7 @@ The date and time of the visit started. When time is unknown midnight is
 used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_end\_date\strut
+VISIT\_END\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 2013-01-24\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -905,7 +979,7 @@ The end date of the visit. If this is a one-day visit the end date
 should match the start date.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_end\_datetime\strut
+VISIT\_END\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 2013-01-24 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -913,36 +987,36 @@ The date and time of the visit end. If time is unknown midnight is
 used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_type\_concept\_id\strut
+VISIT\_TYPE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 32034\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 This column is intended to provide information about the provenance of
 the visit record, i.e.~does it come from an insurance claim, hospital
-billing record, EHR record, etc. For this example the concept\_id 32035
-\href{http://athena.ohdsi.org/search-terms/terms/32035}{(http://athena.ohdsi.org/search-terms/terms/32035)}
-is used as the encounters are similar to electronic health records\strut
+billing record, EHR record, etc. For this example the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/32035}{32035} is used
+as the encounters are similar to electronic health records\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-provider\_id*\strut
+PROVIDER\_ID*\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If the encounter record has a provider associated, the id for that
-provider goes in this field. This should be the provider\_id from the
+provider goes in this field. This should be the PROVIDER\_ID from the
 PROVIDER table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-care\_site\_id\strut
+CARE\_SITE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If the encounter record has a care site associated, the id for that care
-site goes in this field. This should be the care\_site\_id from the
+site goes in this field. This should be the CARE\_SITE\_ID from the
 CARE\_SITE table that codes for the care site on the encounter.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_source\_value\strut
+VISIT\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 inpatient\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -950,27 +1024,27 @@ The visit value as it appears in the source goes here. In this context
 `visit' means outpatient, inpatient, emergency, etc.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-visit\_source\_concept\_id\strut
+VISIT\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If the visit value from the source is coded using a vocabulary that is
-recognized by OHDSI, the concept\_id that represents the visit source
+recognized by OHDSI, the concept ID that represents the visit source
 value would go here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-admitted\_from\_concept\_id\strut
+ADMITTED\_FROM\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
-If known, this is the concept\_id that represents where the patient was
+If known, this is the concept ID that represents where the patient was
 admitted from. This concept should have the concept class `Place of
 Service' and the domain `Visit'. For example, if a patient was admitted
-to the hospital from home, the concept\_id would be 8536
-\href{http://athena.ohdsi.org/search-terms/terms/8536}{(http://athena.ohdsi.org/search-terms/terms/8536)}.\strut
+to the hospital from home, the concept ID would be
+\href{http://athena.ohdsi.org/search-terms/terms/8536}{8536}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-admitted\_from\_source\_value\strut
+ADMITTED\_FROM\_ SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -978,18 +1052,18 @@ This is the value from the source that represents where the patient was
 admitted from. Using the above example, this would be `home'.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-discharge\_to\_concept\_id\strut
+DISCHARGE\_TO\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
-If known, this is the concept\_id that represents where the patient was
+If known, this is the concept ID that represents where the patient was
 discharged to. This concept should have the concept class `Place of
 Service' and the domain `Visit'. For example, if a patient was released
-to an assisted living facility, the concept\_id would be 8615
-\href{http://athena.ohdsi.org/search-terms/terms/8615}{(http://athena.ohdsi.org/search-terms/terms/8615)}.\strut
+to an assisted living facility, the concept ID would be
+\href{http://athena.ohdsi.org/search-terms/terms/8615}{8615}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-discharge\_to\_source\_value\strut
+DISCHARGE\_TO\_ SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
@@ -998,11 +1072,11 @@ discharged to. Using the above example, this would be `assisted living
 facility'.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
-preceding\_visit\_occurrence\_id\strut
+PRECEDING\_VISIT\_ OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
-The visit\_occurrence\_id for the visit immediately preceding the
+The VISIT\_OCCURRENCE\_ID for the visit immediately preceding the
 current one in time for the patient.\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -1011,9 +1085,9 @@ current one in time for the patient.\strut
 *A patient may interact with multiple health care providers during one
 visit, as is often the case with inpatient stays. These interactions can
 be recorded in the VISIT\_DETAIL table. While not covered in depth in
-this chapter, you can read more about the VISIT\_DETAIL table on the CDM
-wiki
-\href{https://github.com/OHDSI/CommonDataModel/wiki/VISIT_DETAIL}{(https://github.com/OHDSI/CommonDataModel/wiki/VISIT\_DETAIL)}
+this chapter, you can read more about the VISIT\_DETAIL table on the
+\href{https://github.com/OHDSI/CommonDataModel/wiki/VISIT_DETAIL}{CDM
+wiki}.
 
 \subsection{CONDITION\_OCCURRENCE}\label{conditionOccurrence}
 
@@ -1023,19 +1097,34 @@ patient.
 
 \textbf{What are Lauren's conditions?}
 
-Revisiting her account she says ``About 3 years ago I noticed my
-periods, which had also been painful, were getting increasingly more
-painful. I started becoming aware of a sharp jabbing pain right by my
-colon and feeling tender and bloated around my tailbone and lower pelvis
-area. My periods had become so painful that I was missing 1-2 days of
-work a month. Painkillers sometimes dulled the pain, but usually they
-didn't do much.''
+Revisiting her account she says:
+
+\begin{quote}
+About 3 years ago I noticed my periods, which had also been painful,
+were getting increasingly more painful. I started becoming aware of a
+sharp jabbing pain right by my colon and feeling tender and bloated
+around my tailbone and lower pelvis area. My periods had become so
+painful that I was missing 1-2 days of work a month. Painkillers
+sometimes dulled the pain, but usually they didn't do much.
+\end{quote}
 
 The SNOMED code for painful menstruation cramps, otherwise known as
-dysmenorrhea, is 266599000. Let's see how that would be represented in
-the CONDITION\_OCCURRENCE table:
+dysmenorrhea, is 266599000. Table \ref{tab:conditionOccurrence} shows
+how that would be represented in the CONDITION\_OCCURRENCE table:
 
 \begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:conditionOccurrence} The CONDITION\_OCCURRENCE
+table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.27\columnwidth}\raggedright\strut
+Column\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.50\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.27\columnwidth}\raggedright\strut
 Column\strut
@@ -1047,7 +1136,7 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_occurrence\_id\strut
+CONDITION\_OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 964\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
@@ -1056,7 +1145,7 @@ for each condition on the person's record in the converted CDM
 database.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-person\_id\strut
+PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
@@ -1064,22 +1153,22 @@ This comes from the PERSON table and links PERSON and
 CONDITION\_OCCURRENCE.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_concept\_id\strut
+CONDITION\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 194696\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
-The concept\_id that represents the SNOMED code 266599000 is 194696
-\href{http://athena.ohdsi.org/search-terms/terms/194696}{(http://athena.ohdsi.org/search-terms/terms/194696)}\strut
+The concept ID that represents the SNOMED code 266599000 is
+\href{http://athena.ohdsi.org/search-terms/terms/194696}{194696}\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_start\_date\strut
+CONDITION\_START\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2010-01-06\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
 The date when the instance of the Condition is recorded.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_start\_datetime\strut
+CONDITION\_START\_ DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2010-01-06 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
@@ -1087,7 +1176,7 @@ The date and time when the instance of the Condition is recorded.
 Midnight is used when the time is unknown\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_end\_date\strut
+CONDITION\_END\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
@@ -1095,7 +1184,7 @@ If known, this is the date when the instance of the Condition is
 considered to have ended.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_end\_datetime\strut
+CONDITION\_END\_ DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
@@ -1103,31 +1192,30 @@ If known, this is the date and time when the instance of the Condition
 is considered to have ended.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_type\_concept\_id\strut
+CONDITION\_TYPE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 32020\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
 This column is intended to provide information about the provenance of
 the condition, i.e.~does it come from an insurance claim, hospital
-billing record, EHR record, etc. For this example the concept\_id 32020
-\href{http://athena.ohdsi.org/search-terms/terms/32020}{(http://athena.ohdsi.org/search-terms/terms/32020)}
-is used as the encounters are similar to electronic health records.
-Concept\_ids in this field should be in the `Condition Type'
-vocabulary.\strut
+billing record, EHR record, etc. For this example the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/32020}{32020} is used
+as the encounters are similar to electronic health records. Concept IDs
+in this field should be in the `Condition Type' vocabulary.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_status\_concept\_id\strut
+CONDITION\_STATUS\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
-If known, the condition\_status\_concept\_id represents when and/or how
+If known, the CONDITION\_STATUS\_CONCEPT\_ID represents when and/or how
 the condition was diagnosed. For example, a condition could be an
-admitting diagnosis, in which case the concept\_id 4203942
-\href{http://athena.ohdsi.org/search-terms/terms/4203942}{(http://athena.ohdsi.org/search-terms/terms/4203942)}
-would be used.\strut
+admitting diagnosis, in which case the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/4203942}{4203942} would
+be used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-stop\_reason\strut
+STOP\_REASON\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
@@ -1135,61 +1223,61 @@ If known, the reason that the Condition was no longer present, as
 indicated in the source data.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-provider\_id\strut
+PROVIDER\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
 If the condition record has a diagnosing provider listed, the id for
-that provider goes in this field. This should be the provider\_id from
+that provider goes in this field. This should be the PROVIDER\_ID from
 the PROVIDER table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-visit\_occurrence\_id\strut
+VISIT\_OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 509\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
-If known, this is the visit (represented as visit\_occurrence\_id taken
+If known, this is the visit (represented as VISIT\_OCCURRENCE\_ID taken
 from the VISIT\_OCCURRENCE table) during which the condition was
 diagnosed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-visit\_detail\_id\strut
+VISIT\_DETAIL\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
 If known, this is the visit detail encounter (represented as
-visit\_detail\_id from the VISIT\_DETAIL table) during which the
+VISIT\_DETAIL\_ID from the VISIT\_DETAIL table) during which the
 condition was diagnosed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_source\_value\strut
+CONDITION\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 266599000\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
 This is the value from the source that represents the condition. In
 Lauren's case of dysmenorrhea the SNOMED code for that condition is
-stored here and the standard concept\_id mapped from that code is stored
+stored here and the standard concept ID mapped from that code is stored
 in CONDITION\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_source\_concept\_id\strut
+CONDITION\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 194696\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
 If the condition value from the source is coded using a vocabulary that
-is recognized by OHDSI, the concept\_id that represents that value would
+is recognized by OHDSI, the concept ID that represents that value would
 go here. In the example of dysmennorhea the source value is a SNOMED
-code so the concept\_id that represents that code is 194696. In this
-case it is the same as the condition\_concept\_id since the SNOMED
-vocabulary is the standard condition vocabulary\strut
+code so the concept ID that represents that code is 194696. In this case
+it is the same as the CONDITION\_CONCEPT\_ID since the SNOMED vocabulary
+is the standard condition vocabulary\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
-condition\_status\_source\_value\strut
+CONDITION\_STATUS\_ SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
 If the condition status value from the source is coded using a
-vocabulary that is recognized by OHDSI, the concept\_id that represents
+vocabulary that is recognized by OHDSI, the concept ID that represents
 that source value would go here.\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -1215,6 +1303,17 @@ dysmenorrhea pain. Here's how that might look in the DRUG\_EXPOSURE
 table:
 
 \begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:drugExposure} The DRUG\_EXPOSURE table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
+Column\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
 Column\strut
@@ -1226,16 +1325,16 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_exposure\_id\strut
+DRUG\_EXPOSURE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 1001\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 This is typically an autogenerated field that creates a unique id number
-for each drug\_exposure on the person's record in the converted CDM
+for each drug exposure on the person's record in the converted CDM
 database.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-person\_id\strut
+PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1243,23 +1342,23 @@ This comes from the PERSON table and links PERSON and
 DRUG\_EXPOSURE.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_concept\_id\strut
+DRUG\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 1127433\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 The NDC code for acetaminophen maps to the RxNorm code 313782 which is
-represented by the concept\_id 1127433
-\href{http://athena.ohdsi.org/search-terms/terms/1127433}{(http://athena.ohdsi.org/search-terms/terms/1127433)}.\strut
+represented by the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/1127433}{1127433}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_exposure\_start\_date\strut
+DRUG\_EXPOSURE\_ START\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2010-01-06\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 The start date of the drug exposure\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_exposure\_start\_datetime\strut
+DRUG\_EXPOSURE\_ START\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2010-01-06 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1267,7 +1366,7 @@ The start date and time of the drug exposure. Midnight is used when the
 time is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_exposure\_end\_date\strut
+DRUG\_EXPOSURE\_ END\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2010-02-05\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1277,15 +1376,15 @@ the patient was still exposed to the drug. In this case the end is
 inferred since we know Lauren had a 30 days supply.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_exposure\_end\_datetime\strut
+DRUG\_EXPOSURE\_ END\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2010-02-05 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 The end date and time of the drug exposure. Similar rules apply as to
-drug\_exposure\_end\_date. Midnight is used when time is unknown\strut
+DRUG\_EXPOSURE\_END\_DATE. Midnight is used when time is unknown\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-verbatim\_end\_date\strut
+VERBATIM\_END\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1293,19 +1392,19 @@ If the source provides an end date rather than just days supply that
 date goes here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_type\_concept\_id\strut
+DRUG\_TYPE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 38000177\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 This column is intended to provide information about the provenance of
 the drug, i.e.~does it come from an insurance claim, prescription
-record, etc. For this example the concept\_id 38000177
-\href{http://athena.ohdsi.org/search-terms/terms/38000177}{(http://athena.ohdsi.org/search-terms/terms/38000177)}
-is used as the drug record is from a written prescription. Concept\_ids
-in this field should be in the `Drug Type' vocabulary.\strut
+record, etc. For this example the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/38000177}{38000177} is
+used as the drug record is from a written prescription. Concept IDs in
+this field should be in the `Drug Type' vocabulary.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-stop\_reason\strut
+STOP\_REASON\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1313,7 +1412,7 @@ The reason the Drug was stopped. Reasons include regimen completed,
 changed, removed, etc.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-refills\strut
+REFILLS\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1323,7 +1422,7 @@ Lauren's acetaminophen she did not have any refills so the value is
 NULL.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-quantity\strut
+QUANTITY\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 60\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1331,14 +1430,14 @@ The quantity of drug as recorded in the original prescription or
 dispensing record.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-days\_supply\strut
+DAYS\_SUPPLY\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 30\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 The number of days of supply of the medication as prescribed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-sig\strut
+SIG\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1347,18 +1446,17 @@ original prescription (and printed on the container) or dispensing
 record.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-route\_concept\_id\strut
+ROUTE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 4132161\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 This concept is meant to represent the route of the drug the patient was
-was exposed to. Lauren took her acetaminophen orally so the concept\_id
-4132161
-\href{http://athena.ohdsi.org/search-terms/terms/4132161}{(http://athena.ohdsi.org/search-terms/terms/4132161)}
-is used.\strut
+was exposed to. Lauren took her acetaminophen orally so the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/4132161}{4132161} is
+used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-lot\_number\strut
+LOT\_NUMBER\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1366,34 +1464,34 @@ An identifier assigned to a particular quantity or lot of Drug product
 from the manufacturer.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-provider\_id\strut
+PROVIDER\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 If the drug record has a prescribing provider listed, the id for that
-provider goes in this field. This should be the provider\_id from the
+provider goes in this field. This should be the PROVIDER\_ID from the
 PROVIDER table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-visit\_occurrence\_id\strut
+VISIT\_OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 509\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-If known, this is the visit (represented as visit\_occurrence\_id taken
+If known, this is the visit (represented as VISIT\_OCCURRENCE\_ID taken
 from the VISIT\_OCCURRENCE table) during which the drug was
 prescribed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-visit\_detail\_id\strut
+VISIT\_DETAIL\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-If known, this is the visit detail (represented as visit\_detail\_id
+If known, this is the visit detail (represented as VISIT\_DETAIL\_ID
 taken from the VISIT\_DETAIL table) during which the drug was
 prescribed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_source\_value\strut
+DRUG\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 69842087651\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1402,16 +1500,16 @@ In Lauren's case she was prescribed acetaminophen and the NDC code is
 stored here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-drug\_source\_concept\_id\strut
+DRUG\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 750264\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-This is the concept\_id that represents the drug source value. In this
-example the concept\_id is 750264
-\href{http://athena.ohdsi.org/search-terms/terms/750264}{(http://athena.ohdsi.org/search-terms/terms/750264)}.\strut
+This is the concept ID that represents the drug source value. In this
+example the concept ID is
+\href{http://athena.ohdsi.org/search-terms/terms/750264}{750264}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-route\_source\_value\strut
+ROUTE\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1419,7 +1517,7 @@ The information about the route of administration as detailed in the
 source.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-dose\_unit\_source\_value\strut
+DOSE\_UNIT\_ SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1450,6 +1548,18 @@ she had a ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm
 cyst. Here's how that would look in the PROCEDURE\_OCCURRENCE table:
 
 \begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:procedureOccurrence} The PROCEDURE\_OCCURRENCE
+table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
+Column\strut
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright\strut
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
 Column\strut
@@ -1461,16 +1571,16 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-procedure\_occurrence\_id\strut
+PROCEDURE\_OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 1277\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 This is typically an autogenerated field that creates a unique id number
-for each procedure\_occurrence on the person's record in the converted
+for each procedure occurrence on the person's record in the converted
 CDM database.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-person\_id\strut
+PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1478,23 +1588,23 @@ This comes from the PERSON table and links PERSON and
 PROCEDURE\_OCCURRENCE\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-procedure\_concept\_id\strut
+PROCEDURE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 4127451\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 The SNOMED procedure code for a pelvic ultrasound is 304435002 which is
-represented by the concept\_id 4127451
-\href{http://athena.ohdsi.org/search-terms/terms/4127451}{(http://athena.ohdsi.org/search-terms/terms/4127451)}.\strut
+represented by the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/4127451}{4127451}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-procedure\_date\strut
+PROCEDURE\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2013-01-14\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 The date on which the procedure was performed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-procedure\_datetime\strut
+PROCEDURE\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2013-01-14 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1502,64 +1612,64 @@ The date and time on which the procedure was performed. Midnight is used
 when time is unknown.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-procedure\_type\_concept\_id\strut
+PROCEDURE\_TYPE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 38000275\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 This column is intended to provide information about the provenance of
 the procedure, i.e.~does it come from an insurance claim, EHR order,
-etc. For this example the concept\_id 38000275
-\href{http://athena.ohdsi.org/search-terms/terms/38000275}{(http://athena.ohdsi.org/search-terms/terms/38000275)}
-is used as the procedure record is from an EHR record. Concept\_ids in
-this field should be in the `Procedure Type' vocabulary.\strut
+etc. For this example the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/38000275}{38000275} is
+used as the procedure record is from an EHR record. Concept IDs in this
+field should be in the `Procedure Type' vocabulary.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-modifier\_concept\_id\strut
+MODIFIER\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-This is meant for a concept\_id representing the modifier on the
+This is meant for a concept ID representing the modifier on the
 procedure. For example, if the record indicated that a CPT4 procedure
-was performed bilaterally then the concept\_id 42739579
-\href{http://athena.ohdsi.org/search-terms/terms/42739579}{(http://athena.ohdsi.org/search-terms/terms/42739579)}
+was performed bilaterally then the concept ID
+\href{http://athena.ohdsi.org/search-terms/terms/42739579}{42739579}
 would be used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-quantity\strut
+QUANTITY\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 The quantity of procedures ordered or administered.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-provider\_id\strut
+PROVIDER\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
 If the procedure record has a provider listed, the id for that provider
-goes in this field. This should be the provider\_id from the PROVIDER
+goes in this field. This should be the PROVIDER\_ID from the PROVIDER
 table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-visit\_occurrence\_id\strut
+VISIT\_OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 740\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-If known, this is the visit (represented as visit\_occurrence\_id taken
+If known, this is the visit (represented as VISIT\_OCCURRENCE\_ID taken
 from the VISIT\_OCCURRENCE table) during which the procedure was
 performed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-visit\_detail\_id\strut
+VISIT\_DETAIL\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-If known, this is the visit detail (represented as visit\_detail\_id
+If known, this is the visit detail (represented as VISIT\_DETAIL\_ID
 taken from the VISIT\_DETAIL table) during which the procedure was
 performed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-procedure\_source\_value\strut
+PROCEDURE\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 304435002\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1568,15 +1678,14 @@ code is mapped to a standard procedure Concept in the Standardized
 Vocabularies and the original code is, stored here for reference.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-procedure\_source\_concept\_id\strut
+PROCEDURE\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 4127451\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
-This is the concept\_id that represents the procedure source
-value.\strut
+This is the concept ID that represents the procedure source value.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
-modifier\_source\_value\strut
+MODIFIER\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
@@ -1868,9 +1977,20 @@ treatment (the target) are compared to subjects initiating another
 treatment (the comparator) and are followed for a specific amount of
 time following treatment initiation, for example the time they stay on
 the treatment. We can specify the questions we wish to answer in a
-cohort study by making five choices:
+cohort study by making the five choices highlighted in Table
+\ref{tab:cmChoices}.
 
 \begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:cmChoices} Main design choices in a comparative cohort
+design.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Choice\strut
@@ -1903,19 +2023,21 @@ and end dates) do we consider the risk of the outcome?\strut
 \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 Model\strut
 \end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
-What type of outcome model should be used\strut
+The model used to estimate the effect while adjusting for differences
+between the target and comparator\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
-One example of an outcome model to choose is a logistic regression,
-which evaluates whether or not the outcome has occurred, and produces an
-odds ratio. A logistic regression assumes the time-at-risk is of the
-same length for both target and comparator, or irrelevant.
-Alternatively, we could choose a Poisson regression which estimates the
-incidence rate ratio, assuming a constant incidence rate. Often a Cox
-regression is used which considers time to first outcome to estimate the
-hazard ratio, assuming proportional hazards.
+The choice of model specifies, amongst others, the type of model. For
+example, we could use a logistic regression, which evaluates whether or
+not the outcome has occurred, and produces an odds ratio. A logistic
+regression assumes the time-at-risk is of the same length for both
+target and comparator, or irrelevant. Alternatively, we could choose a
+Poisson regression which estimates the incidence rate ratio, assuming a
+constant incidence rate. Often a Cox regression is used which considers
+time to first outcome to estimate the hazard ratio, assuming
+proportional hazards.
 
 One crucial difference with a randomized trial is that there is no
 randomization, and therefore there might be systematic differences
@@ -1971,10 +2093,20 @@ such a comparator might not always be available.
 
 The self-controlled cohort (SCC) design \citep{ryan_2013} compares the
 rate of outcomes during exposure to the rate of outcomes in the time
-just prior to the exposure. The following three choices define a
-self-controlled cohort question:
+just prior to the exposure. The four choices shown in Table
+\ref{tab:sccChoices} define a self-controlled cohort question.
 
 \begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:sccChoices} Main design choices in a self-controlled
+cohort design.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Choice\strut
@@ -1998,6 +2130,11 @@ Time-at-risk\strut
 \end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
 At what time (often relative to the target cohort start and end dates)
 do we consider the risk of the outcome?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Control time\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+The time period used as the control time\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -2023,9 +2160,20 @@ Case-control \citep{vandenbroucke_2012} studies consider the question
 a specific agent than those without the disease?'' Thus, the central
 idea is to compare ``cases'', i.e., subjects that experience the outcome
 of interest with ``controls'', i.e., subjects that did not experience
-the outcome of interest. These choices define a case-control question:
+the outcome of interest. The choices in Table \ref{tab:ccChoices} define
+a case-control question.
 
 \begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:ccChoices} Main design choices in a case-control
+design.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Choice\strut
@@ -2040,6 +2188,11 @@ Outcome cohort\strut
 A cohort representing the cases (the outcome of interest)\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Control selection\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+A strategy for selecting controls and their index date\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 Target cohort\strut
 \end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
 A cohort representing the treatment\strut
@@ -2047,7 +2200,7 @@ A cohort representing the treatment\strut
 \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
 {[}Nesting cohort{]}\strut
 \end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
-Optinally, a cohort defining the subpopulation from which cases and
+Optionally, a cohort defining the subpopulation from which cases and
 controls are drawn\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
@@ -2080,9 +2233,20 @@ The case-crossover \citep{maclure_1991} design evaluates whether the
 rate of exposure is different at the time of the outcome than at some
 predefined number of days prior to the outcome. It is trying to
 determine whether there is something special about the day the outcome
-occurred. These choices define a case-crosover question:
+occurred. Table \ref{tab:ccrChoices} shows the choices that define a
+case-crosover question:
 
 \begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:ccrChoices} Main design choices in a case-crossover
+design.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Choice\strut
@@ -2106,6 +2270,11 @@ Time-at-risk\strut
 \end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
 At what time (often relative to the index date) do we consider exposure
 status?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Control time\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+The time period used as the control time\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -2137,10 +2306,20 @@ during exposure to the rate of outcomes during all unexposed time, both
 before, between, and after exposures. It is a Poisson regression that is
 conditioned on the person. Thus, it seeks to answer the question:
 ``Given that a patient has the outcome, is the outcome more likely
-during exposed time compared to non-exposed time?''. These choices
-define an SCCS question:
+during exposed time compared to non-exposed time?''. The choices in
+Table \ref{tab:sccsChoices} define an SCCS question.
 
 \begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:sccsChoices} Main design choices in a self-controlled
+case series design.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
 \toprule
 \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Choice\strut
@@ -2165,6 +2344,12 @@ Time-at-risk\strut
 At what time (often relative to the target cohort start and end dates)
 do we consider the risk of the outcome?\strut
 \end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Model\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+The model to estimate the effect, including any adjustments for
+time-varying confounders\strut
+\end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -2185,15 +2370,17 @@ outcomes, especially ones that can be fatal such as stroke, this
 assumption can be violated an extension to the SCCS has been developed
 that corrects for any such dependency. \citep{farrington_2011}
 
-\section{Cohort study implementation}\label{cohort-study-implementation}
+\section{Designing a hypertension
+study}\label{designing-a-hypertension-study}
 
 Describe case study: risk of angioedema and AMI in new users of ACE
 inhibitors compared to new users of thiazide and thiazide-like diuretics
 
-\subsection{Implementation using
-ATLAS}\label{implementation-using-atlas}
+\subsection{Implementation the study using
+R}\label{implementation-the-study-using-r}
 
-\subsection{Implementation using R}\label{implementation-using-r}
+\subsection{Implementation the study using
+ATLAS}\label{implementation-the-study-using-atlas}
 
 \section{Advanced topics}\label{advanced-topics}
 
@@ -2205,6 +2392,8 @@ Negative and positive controls, empirical calibration
 \section{Excercises}\label{excercises}
 
 \chapter{Patient Level Prediction}\label{PatientLevelPrediction}
+
+\emph{Chapter leads: Peter Rijnbeek \& Jenna Reps}
 
 Clinical decision making is a complicated task in which the clinician
 has to infer a diagnosis or treatment pathway based on the available
@@ -2271,8 +2460,7 @@ standards, several papers have been written detailing guidelines for
 best practices in developing and reporting prediction models.
 
 The Transparent Reporting of a multivariable prediction model for
-Individual Prognosis Or Diagnosis (TRIPOD) statement
-(\url{https://www.equator-network.org/reporting-guidelines/tripod-statement/})
+Individual Prognosis Or Diagnosis (TRIPOD) statement \footnote{\url{https://www.equator-network.org/reporting-guidelines/tripod-statement/}}
 provides clear recommendations for reporting prediction model
 development and validation and addresses some of the concerns related to
 transparency. However, data structure heterogeneity and inconsistent
@@ -2295,43 +2483,152 @@ time-at-risk. Prediction is done using only information about the
 patients in an observation window prior to that moment in time.
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/Figure1} \caption{The prediction problem}\label{fig:figure1}
+\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/Figure1} \caption{The prediction problem.}\label{fig:figure1}
 \end{figure}
 
-As shown in Figure \ref{fig:studydesign}, to define a prediction problem
-we have to define t=0 by a Target Cohort (T), the outcome we like to
+As shown in Table \ref{tab:plpDesign}, to define a prediction problem we
+have to define t=0 by a target Cohort (T), the outcome we like to
 predict by an outcome cohort (O), and the time-at-risk (TAR).
 Furthermore, we have to make design choices for the model we like to
 develop, and determine the observational datasets to perform internal
-and external validation. This conceptual framework works for all type of
-prediction problems, for example those presented in Figure
-\ref{fig:problems}.
+and external validation.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/studydesign} \caption{Design choices}\label{fig:studydesign}
-\end{figure}
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:plpDesign} Main design choices in a prediction
+design.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+A cohort for whom we wish to predict\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+A cohort representing the outcome we wish to predict\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+For what time relative to t=0 do we want to make the prediction?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Model\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+What algorithms using which parameters do we want use, and what
+predictor variables do we want to include?\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/problems} \caption{Examples of prediction problems}\label{fig:problems}
-\end{figure}
+This conceptual framework works for all type of prediction problems:
+
+\begin{itemize}
+\tightlist
+\item
+  Disease onset and progression
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Structure}: Amongst patients who are newly diagnosed with
+    \emph{{[}a disease{]}}, who will go on to have \emph{{[}another
+    disease or complication{]}} within \emph{{[}time horizon from
+    diagnosis{]}}?
+  \item
+    \textbf{Example}: Among newly diagnosed atrial fibrilation patients,
+    who will go on to have ischemic stroke in the next three years?
+  \end{itemize}
+\item
+  Treatment choice
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Structure}: Amongst patients with \emph{{[}indicated
+    disease{]}} who are treated with either \emph{{[}treatment 1{]}} or
+    \emph{{[}treatment 2{]}}, which patients were treated with
+    \emph{{[}treatment 1{]}} (on day 0).
+  \item
+    \textbf{Example}: Among patients with atrial fibrilation who took
+    either warfarin or rivaroxaban, which patients gets warfarin?
+    (e.g.~for a propensity model)
+  \end{itemize}
+\item
+  Treatment response
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Structure}: Amongst new users of \emph{{[}a treatment{]}},
+    who will experience \emph{{[}some effect{]}} in \emph{{[}time
+    window{]}} ?
+  \item
+    \textbf{Example}: Which patients with diabetes who start on
+    metformin stay on metform for three years?
+  \end{itemize}
+\item
+  Treatment safety
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Structure}: Amongst new users of \emph{{[}a treatment{]}},
+    who will experience \emph{{[}adverse event{]}} in \emph{{[}time
+    window{]}}?
+  \item
+    \textbf{Example}: Amongst new users of warfarin, who will have a GI
+    bleed in one year?
+  \end{itemize}
+\item
+  Treatment adherence
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Structure}: Amongst new users of \emph{{[}a treatment{]}},
+    who will achieve \emph{{[}adherence metric{]}} at \emph{{[}time
+    window{]}}?
+  \item
+    \textbf{Example}: Which patients with diabetes who start on
+    metformin achieve \textgreater{}=80\% proportion of days covered at
+    one year?
+  \end{itemize}
+\end{itemize}
 
 In the next sections we will explain the best practices for model
 specification, implementation, and evaluation using OHDSI's
 Patient-Level Prediction (PLP) framework as guidance.
 
-\section{Study specification}\label{study-specification}
+\section{Designing a hypertension
+study}\label{designing-a-hypertension-study-1}
 
 The first step is to clearly define the prediction problem.
 Interestingly, in many published papers the prediction problem is poorly
-defined, e.g., it is unclear how the index date (start of the Target
-Cohort) is exactly defined. A poorly defined prediction problem does not
-allow for external validation by others let alone implementation in
-clinical practice. In the PLP framework we have enforced that we have to
-define the prediction problem we like to address, in which population we
-will build the model, which model we will build and how we will evaluate
-its performance. In this section we will guide you through this process
-and we will use a ``Disease onset and progression'' prediction type as
-an example.
+defined, e.g.~it is unclear how the index date (start of the target
+Cohort) is defined. A poorly defined prediction problem does not allow
+for external validation by others let alone implementation in clinical
+practice. In the PLP framework we have enforced that we have to define
+the prediction problem we like to address, in which population we will
+build the model, which model we will build and how we will evaluate its
+performance. In this section we will guide you through this process and
+we will use a ``Disease onset and progression'' prediction type as an
+example.
 
 \subsection{Problem definition}\label{problem-definition}
 
@@ -2359,24 +2656,15 @@ We will apply the PLP framework to observational healthcare data to
 address the following patient-level prediction question:
 
 \begin{quote}
-Amongst patients who are newly diagnosed with Atrial Fibrillation, which
-patients will go on to have Ischemic Stroke within 1 year?
+Amongst patients who have just started on an ACE inhibitor for the first
+time, who will experience angioedema in the following year?
 \end{quote}
-
-We will define `patients who are newly diagnosed with Atrial
-Fibrillation' as the first condition record of cardiac arrhythmia, which
-is followed by another cardiac arrhythmia condition record, at least two
-drug records for a drug used to treat arrhythmias, or a procedure to
-treat arrhythmias. We will define `Ischemic stroke events' as ischemic
-stroke condition records during an inpatient or ER visit; successive
-records with \textgreater{} 180 day gap are considered independent
-episodes.
 
 \subsection{Study population
 definition}\label{study-population-definition}
 
 The final study population in which we will develop our model is often a
-subset of the Target population, because we will e.g.~apply criteria
+subset of the target population, because we will e.g.~apply criteria
 that are dependent on T and O or we want to do sensitivity analyses with
 subpopulations of T. For this we have to answer the following questions:
 
@@ -2401,8 +2689,8 @@ subpopulations of T. For this we have to answer the following questions:
   restriction to only let the patients enter once, but in the context of
   a particular patient-level prediction problem, a user may want to
   restrict the cohort to the first qualifying episode. In our example, a
-  person could only enter the target cohort once since our criteria was
-  based on first occurrence of atrial fibrillation.
+  person can only enter the target cohort once since our criteria was
+  based on first use of an ACE inhibitor.
 \item
   \emph{Do we allow persons to enter the cohort if they experienced the
   outcome before?} Do we allow persons to enter the target cohort if
@@ -2414,12 +2702,8 @@ subpopulations of T. For this we have to answer the following questions:
   excluded from the target cohort. In other circumstances, there may be
   a desire to predict `prevalent' episodes, whereby patients with prior
   outcomes can be included in the analysis and the prior outcome itself
-  can be a predictor of future outcomes. For our prediction example, the
-  answer to this question is `Yes, allow persons with prior outcomes'
-  because we know from the CHADS2 score that prior strokes are very
-  predictive of future strokes. If this answer would have been `No' we
-  also have to decide how long we would look back for previous
-  occurrences of the outcome.
+  can be a predictor of future outcomes. For our prediction example, we
+  will choose not to include those with prior angioedema.
 \item
   \emph{How do we define the period in which we will predict our outcome
   relative to the target cohort start?} We actually have to make two
@@ -2433,8 +2717,7 @@ subpopulations of T. For this we have to answer the following questions:
   the risk window end, as some specification of days offset relative to
   the target cohort start or end dates. For our problem we will predict
   in a `time-at-risk' window starting 1 day after the start of the
-  target cohort up to 365 days later (to look for 1-year risk following
-  atrial fibrillation diagnosis).
+  target cohort up to 365 days later.
 \item
   \emph{Do we require a minimum amount of time-at-risk?} We have to
   decide if we want to include patients that did not experience the
@@ -2460,27 +2743,16 @@ There is no algorithm that will work best for all problems (no free
 lunch). In our framework we therefore aim to implement many algorithms.
 Furthermore, we made the system modular so you can add your own custom
 algorithms. This out-of-scope for this chapter but mode details can be
-found in the AddingCustomAlgorithms vignette in the
+found in the \emph{AddingCustomAlgorithms} vignette in the
 \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
 package.
 
 Our framework currently contains the following algorithms to choose
 from:
 
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-\begin{minipage}[b]{0.11\columnwidth}\raggedright\strut
-Algorithm\strut
-\end{minipage} & \begin{minipage}[b]{0.58\columnwidth}\raggedright\strut
-Description\strut
-\end{minipage} & \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
-Hyper-parameters\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-Regularized Logistic Regression\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+\begin{description}
+\tightlist
+\item[Regularized Logistic Regression]
 Lasso logistic regression belongs to the family of generalized linear
 models, where a linear combination of the variables is learned and
 finally a logistic function maps the linear combination to a value
@@ -2491,27 +2763,22 @@ coefficients. The model automatically performs feature selection by
 minimizing this cost. We use the
 \href{https://ohdsi.github.io/Cyclops/}{Cyclops} (Cyclic coordinate
 descent for logistic, Poisson and survival analysis) package to perform
-large-scale regularized logistic regression.\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-var (starting variance), seed\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-Gradient boosting machines\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+large-scale regularized logistic regression. \textbf{Hyper-parameters}:
+var (starting variance), seed.
+\item[Gradient boosting machines]
 Gradient boosting machines is a boosting ensemble technique and in our
 framework it combines multiple decision trees. Boosting works by
 iteratively adding decision trees but adds more weight to the
 data-points that are misclassified by prior decision trees in the cost
 function when training the next tree. We use Extreme Gradient Boosting,
 which is an efficient implementation of the gradient boosting framework
-implemented in the xgboost R package available from CRAN.\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-ntree (number of trees), max depth (max levels in tree), min rows
-(minimum data points in in node), learning rate, seed\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-Random forest\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+implemented in the xgboost R package available from CRAN.
+\textbf{Hyper-parameters}: ntree (number of trees), max depth (max
+levels in tree), min rows (minimum data points in in node), learning
+rate, seed \textbar{} mtry (number of features in each tree),ntree
+(number of trees), maxDepth (max levels in tree), minRows (minimum data
+points in in node),balance (balance class labels), seed.
+\item[Random forest]
 Random forest is a bagging ensemble technique that combines multiple
 decision trees. The idea behind bagging is to reduce the likelihood of
 overfitting, by using weak classifiers, but combining multiple diverse
@@ -2519,15 +2786,10 @@ weak classifiers into a strong classifier. Random forest accomplishes
 this by training multiple decision trees but only using a subset of the
 variables in each tree and the subset of variables differ between trees.
 Our packages uses the sklearn learn implementation of Random Forest in
-python.\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-mtry (number of features in each tree),ntree (number of trees), maxDepth
-(max levels in tree), minRows (minimum data points in in node),balance
-(balance class labels), seed\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-K-nearest neighbors\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+python. \textbf{Hyper-parameters}: mtry (number of features in each
+tree),ntree (number of trees), maxDepth (max levels in tree), minRows
+(minimum data points in in node),balance (balance class labels), seed.
+\item[K-nearest neighbors]
 K-nearest neighbors (KNN) is an algorithm that uses some metric to find
 the K closest labelled data-points, given the specified metric, to a new
 unlabelled data-point. The prediction of the new data-points is then the
@@ -2536,39 +2798,26 @@ sharing limitation of KNN, as the model requires labelled data to
 perform the prediction on new data, and it is often not possible to
 share this data across data sites. We included the
 \href{https://github.com/OHDSI/BigKnn}{BigKnn} package developed in
-OHDSI which is a large scale k-nearest neighbor classifier using the
-Lucene search engine.\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-k (number of neighbours),weighted (weight by inverse frequency)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-Naive Bayes\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+OHDSI which is a large scale k-nearest neighbor classifier.
+\textbf{Hyper-parameters}: k (number of neighbours), weighted (weight by
+inverse frequency).
+\item[Naive Bayes]
 The Naive Bayes algorithm applies the Bayes' theorem with the ``naive''
 assumption of conditional independence between every pair of features
 given the value of the class variable. Based on the likelihood the data
 belongs to a class and the prior distribution of the class, a posterior
-distribution is obtained.\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-none\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-AdaBoost\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+distribution is obtained. \textbf{Hyper-parameters}: none.
+\item[AdaBoost]
 AdaBoost is a boosting ensemble technique. Boosting works by iteratively
 adding classifiers but adds more weight to the data-points that are
 misclassified by prior classifiers in the cost function when training
 the next classifier. We use the sklearn ``AdaboostClassifier''
-implementation in Python.\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-nEstimators (the maximum number of estimators at which boosting is
-terminated), learningRate (learning rate shrinks the contribution of
-each classifier by learning\_rate. There is a trade-off between
-learningRate and nEstimators)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-Decision Tree\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+implementation in Python. \textbf{Hyper-parameters}: nEstimators (the
+maximum number of estimators at which boosting is terminated),
+learningRate (learning rate shrinks the contribution of each classifier
+by learning\_rate. There is a trade-off between learningRate and
+nEstimators).
+\item[Decision Tree]
 A decision tree is a classifier that partitions the variable space using
 individual tests selected using a greedy approach. It aims to find
 partitions that have the highest information gain to separate the
@@ -2576,48 +2825,33 @@ classes. The decision tree can easily overfit by enabling a large number
 of partitions (tree depth) and often needs some regularization (e.g.,
 pruning or specifying hyper-parameters that limit the complexity of the
 model). We use the sklearn ``DecisionTreeClassifier'' implementation in
-Python.\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-maxDepth (the maximum depth of the tree),
-minSamplesSplit,minSamplesLeaf, minImpuritySplit (threshold for early
-stopping in tree growth. A node will split if its impurity is above the
-threshold, otherwise it is a leaf.), seed,classWeight (``Balance''" or
-``None'')\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-Multilayer Perception\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
-Neural networks contain multiple layers that weight their inputs using a
-non-linear function. The first layer is the input layer, the last layer
-is the output layer the between are the hidden layers. Neural networks
-are generally trained using feed forward back-propagation. This is when
-you go through the network with a data-point and calculate the error
-between the true label and predicted label, then go backwards through
-the network and update the linear function weights based on the error.
-This can also be performed as a batch, where multiple data-points are
-fee\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-size (the number of hidden nodes), alpha (the l2 regularisation),
-seed\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright\strut
-Deep Learning\strut
-\end{minipage} & \begin{minipage}[t]{0.58\columnwidth}\raggedright\strut
+Python. \textbf{Hyper-parameters}: maxDepth (the maximum depth of the
+tree), minSamplesSplit,minSamplesLeaf, minImpuritySplit (threshold for
+early stopping in tree growth. A node will split if its impurity is
+above the threshold, otherwise it is a leaf.), seed,classWeight
+(``Balance''" or ``None'').
+\item[Multilayer Perception]
+Neural networks containing multiple layers that weight their inputs
+using a non-linear function. The first layer is the input layer, the
+last layer is the output layer the between are the hidden layers. Neural
+networks are generally trained using feed forward back-propagation. This
+is when you go through the network with a data-point and calculate the
+error between the true label and predicted label, then go backwards
+through the network and update the linear function weights based on the
+error. \textbf{Hyper-parameters}: size (the number of hidden nodes),
+alpha (the l2 regularisation), seed.
+\item[Deep Learning]
 Deep learning such as deep nets, convolutional neural networks or
 recurrent neural networks are similar to a neural network but have
 multiple hidden layers that aim to learn latent representations useful
-for prediction. In the seperate BuildingDeepLearningModels vignette we
-describe these models and hyper-parameters in more detail\strut
-\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
-\strut
-\end{minipage}\tabularnewline
-\bottomrule
-\end{longtable}
+for prediction. In a seperate vignette in the
+\href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
+package we describe these models and hyper-parameters in more detail.
+\end{description}
 
 Furthermore, we have to decide on the \textbf{covariates} that we will
-use to train our model. This choice can be driven by domain knowledge of
-available computational resources. In our example, we like to add the
-Gender, Age, Conditions, Drugs Groups, and Visit Count. We also have to
+use to train our model. In our example, we like to add gender, age, all
+conditions, drugs and drug groups, and visit counts. We also have to
 specify in which time windows we will look and we decide to look in year
 before and any time prior.
 
@@ -2628,7 +2862,7 @@ data, i.e.~how we perform \textbf{internal validation}. For this we have
 to decide how we divide our dataset in a training and testing dataset
 and how we randomly assign patients to these two sets. Dependent on the
 size of the training set we can decide how much data we like to use for
-training, typically this is a 75\%, 25\% split. If you have very large
+training, typically this is a 75\% - 25\% split. If you have very large
 datasets you can use more data for training. To randomly assign patients
 to the training and testing set, there are two commonly used approaches:
 
@@ -2651,336 +2885,82 @@ split by person.
 
 \subsection{Study summary}\label{study-summary}
 
-We now completely defined our study:
+We now completely defined our study as shown in Table
+\ref{tab:plpSummary}.
 
 \begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:plpSummary} Main design choices for our
+study.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.42\columnwidth}\raggedright\strut
-Definition\strut
-\end{minipage} & \begin{minipage}[b]{0.51\columnwidth}\raggedright\strut
-Value\strut
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
+Description\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-\textbf{Problem Definition}\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-\strut
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+Patients who have just started on an ACE inhibitor for the first
+time.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Target Cohort (T)\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-`Patients who are newly diagnosed with Atrial Fibrillation' defined as
-the first condition record of cardiac arrhythmia, which is followed by
-another cardiac arrhythmia condition record, at least two drug records
-for a drug used to treat arrhythmias, or a procedure to treat
-arrhythmias.\strut
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+Angioedema.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Outcome Cohort (O)\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-`Ischemic stroke events' defined as ischemic stroke condition records
-during an inpatient or ER visit; successive records with \textgreater{}
-180 day gap are considered independent episodes.\strut
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+1 day till 365 days from cohort start. We will require at least 364 days
+at risk.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Time-at-risk (TAR)\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-1 day till 365 days from cohort start\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-\textbf{Population Definition}\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Washout Period\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-1095\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Enter the target cohort multiple times?\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-No\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Allow prior outcomes?\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-Yes\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Start of time-at-risk\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-1 day\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-End of time-at-risk\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-365 days\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Require a minimum amount of time-at-risk?\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-Yes (364 days)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-\textbf{Model Development}\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Algorithm\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-Regularized Logistic Regression\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Hyper-parameters\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-variance = 0.01 (Default)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Covariates\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-ender, Age, Conditions (ever before, \textless{}365), Drugs Groups (ever
-before, \textless{}365), and Visit Count\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.42\columnwidth}\raggedright\strut
-Data split\strut
-\end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright\strut
-75\% train, 25\% test. Randomly assigned by person\strut
+\begin{minipage}[t]{0.23\columnwidth}\raggedright\strut
+Model\strut
+\end{minipage} & \begin{minipage}[t]{0.71\columnwidth}\raggedright\strut
+Gradient Boosting Machine with hyper-parameters ntree: 5000, max depth:
+4 or 7 or 10 and learning rate: 0.001 or 0.01 or 0.1 or 0.9. Covariates
+will include gender, age, conditions, drugs, drug groups, and visit
+count. Data split: 75\% train - 25\% test, randomly assigned by
+person.\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
-According to the best practices we need to make a protocol that
-completely specifies how we plan to execute our study. This protocol
-will be assessed by the governance boards of the participating data
-sources in your network study. For this a template could be used but we
-prefer to automate this process as much as possible by adding
-functionality to automatically generate study protocol from a study
-specification. We will discuss this in more detail later.
+We define the target cohort as the first exposure to any ACE inhibitor.
+Patients are excluded if they have less than 365 days of prior
+observation time or have prior angioedema.
 
-\section{Study implementation}\label{study-implementation}
+\section{Implementing the study in R}\label{implementing-the-study-in-r}
 
-Now we have completely design our study we have to implement the study.
-This will be done using the
+Now we have completely designed our study we have to implement the
+study. This will be done using the
 \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
 package to build patient-level predictive models. The package enables
 data extraction, model building, and model evaluation using data from
 databases that are translated into the OMOP CDM.
 
-We first have to generate the target and outcome cohorts and we then
-need to develop the R code to run against our CDM to execute the full
-study. These steps will be described in the paragraphs below.
-
 \subsection{Cohort instantiation}\label{cohort-instantiation}
 
-For our study we need to know when a person enters the target and
-outcome cohorts. This is stored in a table on the server that contains
-the cohort start date and cohort end date for all subjects for a
-specific cohort definition. This cohort table has a very simple
-structure as shown below:
+We first need to instantiate the target and outcome cohorts.
+Instantiating cohorts is described in Chapter \ref{Cohorts}. The
+Appendix provides the full definitions of the target (Appendix
+\ref{AceInhibitors}) and outcome (Appendix \ref{Angioedema}) cohorts. In
+this example we will assume the ACE inhibitors cohort has ID 1, and the
+angioedema cohort has ID 2.
 
-\begin{itemize}
-\tightlist
-\item
-  \texttt{cohort\_definition\_id}, a unique identifier for
-  distinguishing between different types of cohorts, e.g.~cohorts of
-  interest and outcome cohorts.
-\item
-  \texttt{subject\_id}, a unique identifier corresponding to the
-  \texttt{person\_id} in the CDM.
-\item
-  \texttt{cohort\_start\_date}, the date the subject enters the cohort.
-\item
-  \texttt{cohort\_end\_date}, the date the subject leaves the cohort.
-\end{itemize}
+\subsection{Data extraction}\label{data-extraction}
 
-How do we fill this table according to our cohort definitions? There are
-two options for this:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi})}
-\item
-  use the interactive cohort builder tool in
-  \href{https://www.github.com/OHDSI/ATLAS}{ATLAS} which can be used to
-  create cohorts based on inclusion criteria and will automatically
-  populate this cohort table.
-\item
-  write your own custom SQL statements to fill the cohort table.
-\end{enumerate}
-
-Both methods are described below for our example prediction problem.
-
-\subsubsection{ATLAS cohort builder}\label{atlas-cohort-builder}
-
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlast} \caption{Target Cohort Atrial Fibrillation}\label{fig:atlast}
-\end{figure}
-
-ATLAS allows you to define cohorts interactively by specifying cohort
-entry and cohort exit criteria. Cohort entry criteria involve selecting
-one or more initial events, which determine the start date for cohort
-entry, and optionally specifying additional inclusion criteria which
-filter to the qualifying events. Cohort exit criteria are applied to
-each cohort entry record to determine the end date when the person's
-episode no longer qualifies for the cohort. For the outcome cohort the
-end date is less relevant. As an example, Figure \ref{fig:atlast} shows
-how we created the Atrial Fibrillation cohort and Figure
-\ref{fig:atlaso} shows how we created the stroke cohort in ATLAS.
-
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlaso} \caption{Outcome Cohort Stroke}\label{fig:atlaso}
-\end{figure}
-
-The T and O cohorts can be found here:
-
-\begin{itemize}
-\tightlist
-\item
-  Atrial Fibrillaton (T):
-  \url{http://www.ohdsi.org/web/atlas/\#/cohortdefinition/1769447}
-\item
-  Stroke (O) :
-  \url{http://www.ohdsi.org/web/atlas/\#/cohortdefinition/1769448}
-\end{itemize}
-
-Note that when a cohort is created in ATLAS the cohortid is needed to
-extract the data in R. The cohortid can be found at the top of the ATLAS
-screen.
-
-\subsubsection{Custom cohorts}\label{custom-cohorts}
-
-It is also possible to create cohorts without the use of ATLAS. Using
-custom cohort code (SQL) you can make more advanced cohorts if needed.
-
-For our example study, we need to create at table to hold the cohort
-data and we need to create SQL code to instantiate this table for both
-the AF and Stroke cohorts. Therefore, we create a file called
-\emph{AfStrokeCohorts.sql} with the following contents:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{/***********************************}
-\CommentTok{File AfStrokeCohorts.sql}
-\CommentTok{***********************************/}
-\CommentTok{/*}
-\CommentTok{  Create a table to store the persons in the T and C cohort}
-\CommentTok{*/}
-
-\KeywordTok{IF}\NormalTok{ OBJECT_ID(}\StringTok{'@resultsDatabaseSchema.PLPAFibStrokeCohort'}\NormalTok{, }\StringTok{'U'}\NormalTok{) }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
-  \KeywordTok{DROP} \KeywordTok{TABLE}\NormalTok{ @resultsDatabaseSchema.PLPAFibStrokeCohort;}
-
-\KeywordTok{CREATE} \KeywordTok{TABLE}\NormalTok{ @resultsDatabaseSchema.PLPAFibStrokeCohort}
-\NormalTok{(}
-\NormalTok{  cohort_definition_id }\DataTypeTok{INT}\NormalTok{,}
-\NormalTok{  subject_id BIGINT,}
-\NormalTok{  cohort_start_date }\DataTypeTok{DATE}\NormalTok{,}
-\NormalTok{  cohort_end_date }\DataTypeTok{DATE}
-\NormalTok{);}
-
-
-\CommentTok{/*}
-\CommentTok{  T cohort:  [PatientLevelPrediction vignette]:  T : patients who are newly}
-\CommentTok{             diagnosed with Atrial fibrillation}
-\CommentTok{  - persons with a condition occurrence record of 'Atrial fibrillation' or}
-\CommentTok{    any descendants, indexed at the first diagnosis}
-\CommentTok{  - who have >1095 days of prior observation before their first diagnosis}
-\CommentTok{  - and have no warfarin exposure any time prior to first AFib diagnosis}
-\CommentTok{*/}
-\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,}
-\NormalTok{                                                     subject_id,}
-\NormalTok{                                                     cohort_start_date,}
-\NormalTok{                                                     cohort_end_date)}
-\KeywordTok{SELECT} \DecValTok{1} \KeywordTok{AS}\NormalTok{ cohort_definition_id,}
-\NormalTok{  AFib.person_id }\KeywordTok{AS}\NormalTok{ subject_id,}
-\NormalTok{  AFib.condition_start_date }\KeywordTok{AS}\NormalTok{ cohort_start_date,}
-\NormalTok{  observation_period.observation_period_end_date }\KeywordTok{AS}\NormalTok{ cohort_end_date}
-\KeywordTok{FROM}
-\NormalTok{(}
-  \KeywordTok{SELECT}\NormalTok{ person_id, }\FunctionTok{min}\NormalTok{(condition_start_date) }\KeywordTok{as}\NormalTok{ condition_start_date}
-  \KeywordTok{FROM}\NormalTok{ @cdmDatabaseSchema.condition_occurrence}
-  \KeywordTok{WHERE}\NormalTok{ condition_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM}
-\NormalTok{        @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN}
-\NormalTok{        (}\DecValTok{313217} \CommentTok{/*atrial fibrillation*/}\NormalTok{))}
-  \KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ person_id}
-\NormalTok{) AFib}
-\KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ @cdmDatabaseSchema.observation_period}
-  \KeywordTok{ON}\NormalTok{ AFib.person_id = observation_period.person_id}
-  \KeywordTok{AND}\NormalTok{ AFib.condition_start_date >= dateadd(dd,}\DecValTok{1095}\NormalTok{,}
-\NormalTok{                                   observation_period.observation_period_start_date)}
-  \KeywordTok{AND}\NormalTok{ AFib.condition_start_date <= observation_period.observation_period_end_date}
-\KeywordTok{LEFT} \KeywordTok{JOIN}
-\NormalTok{(}
-  \KeywordTok{SELECT}\NormalTok{ person_id, }\FunctionTok{min}\NormalTok{(drug_exposure_start_date) }\KeywordTok{as}\NormalTok{ drug_exposure_start_date}
-  \KeywordTok{FROM}\NormalTok{ @cdmDatabaseSchema.drug_exposure}
-  \KeywordTok{WHERE}\NormalTok{ drug_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM}
-\NormalTok{       @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN}
-\NormalTok{       (}\DecValTok{1310149} \CommentTok{/*warfarin*/}\NormalTok{))}
-  \KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ person_id}
-\NormalTok{) warfarin}
-  \KeywordTok{ON}\NormalTok{ Afib.person_id = warfarin.person_id}
-  \KeywordTok{AND}\NormalTok{ Afib.condition_start_date > warfarin.drug_exposure_start_date}
-\KeywordTok{WHERE}\NormalTok{ warfarin.person_id }\KeywordTok{IS} \KeywordTok{NULL}
-\NormalTok{;}
-
-\CommentTok{/*}
-\CommentTok{  C cohort:  [PatientLevelPrediction vignette]:  O: Ischemic stroke events}
-\CommentTok{  - inpatient visits that include a condition occurrence record for}
-\CommentTok{    'cerebral infarction' and descendants, 'cerebral thrombosis',}
-\CommentTok{    'cerebral embolism', 'cerebral artery occlusion'}
-\CommentTok{*/}
-\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ @resultsDatabaseSchema.AFibStrokeCohort (cohort_definition_id,}
-\NormalTok{                                                     subject_id,}
-\NormalTok{                                                     cohort_start_date,}
-\NormalTok{                                                     cohort_end_date)}
-\KeywordTok{SELECT} \DecValTok{2} \KeywordTok{AS}\NormalTok{ cohort_definition_id,}
-\NormalTok{  visit_occurrence.person_id }\KeywordTok{AS}\NormalTok{ subject_id,}
-\NormalTok{  visit_occurrence.visit_start_date }\KeywordTok{AS}\NormalTok{ cohort_start_date,}
-\NormalTok{  visit_occurrence.visit_end_date }\KeywordTok{AS}\NormalTok{ cohort_end_date}
-\KeywordTok{FROM}
-\NormalTok{(}
-  \KeywordTok{SELECT}\NormalTok{ person_id, condition_start_date}
-  \KeywordTok{FROM}\NormalTok{ @cdmDatabaseSchema.condition_occurrence}
-  \KeywordTok{WHERE}\NormalTok{ condition_concept_id }\KeywordTok{IN}\NormalTok{ (}\KeywordTok{SELECT} \KeywordTok{DISTINCT}\NormalTok{ descendant_concept_id }\KeywordTok{FROM}
-\NormalTok{  @cdmDatabaseSchema.concept_ancestor }\KeywordTok{WHERE}\NormalTok{ ancestor_concept_id }\KeywordTok{IN}
-\NormalTok{  (}\DecValTok{443454} \CommentTok{/*cerebral infarction*/}\NormalTok{) }\KeywordTok{OR}\NormalTok{ descendant_concept_id }\KeywordTok{IN}
-\NormalTok{  (}\DecValTok{441874} \CommentTok{/*cerebral thrombosis*/}\NormalTok{, }\DecValTok{375557} \CommentTok{/*cerebral embolism*/}\NormalTok{,}
-   \DecValTok{372924} \CommentTok{/*cerebral artery occlusion*/}\NormalTok{))}
-\NormalTok{) stroke}
-\KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ @cdmDatabaseSchema.visit_occurrence}
-\KeywordTok{ON}\NormalTok{ stroke.person_id = visit_occurrence.person_id}
-\KeywordTok{AND}\NormalTok{ stroke.condition_start_date >= visit_occurrence.visit_start_date}
-\KeywordTok{AND}\NormalTok{ stroke.condition_start_date <= visit_occurrence.visit_end_date}
-\KeywordTok{AND}\NormalTok{ visit_occurrence.visit_concept_id }\KeywordTok{IN}\NormalTok{ (}\DecValTok{9201}\NormalTok{, }\DecValTok{262} \CommentTok{/*'Inpatient Visit'  or}
-\CommentTok{    'Emergency Room and Inpatient Visit'*/}\NormalTok{)}
-\KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ visit_occurrence.person_id, visit_occurrence.visit_start_date,}
-\NormalTok{         visit_occurrence.visit_end_date}
-\NormalTok{;}
-\end{Highlighting}
-\end{Shaded}
-
-This is parameterized SQL which can be used by the
-\href{https://ohdsi.github.io/SqlRender/}{\texttt{SqlRender}} package.
-We use parameterized SQL so we do not have to pre-specify the names of
-the CDM and result schemas. That way, if we want to run the SQL on a
-different schema, we only need to change the parameter values; we do not
-have to change the SQL code. By also making use of translation
-functionality in \texttt{SqlRender}, we can make sure the SQL code can
-be run in many different environments.
-
-To execute this SQL against our CDM we first need to tell R how to
-connect to the server.
+We first need to tell R how to connect to the server.
 \href{https://ohdsi.github.io/PatientLevelPrediction/}{\texttt{PatientLevelPrediction}}
 uses the
 \href{https://ohdsi.github.io/DatabaseConnector/}{\texttt{DatabaseConnector}}
@@ -2992,99 +2972,69 @@ using this code:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
-                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
-                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
-                                             \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(PatientLevelPrediction)}
+\NormalTok{connDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                                       \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
+                                       \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
+                                       \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
 
-\NormalTok{cdmDatabaseSchema <-}\StringTok{ "my_cdm_data"}
-\NormalTok{cohortsDatabaseSchema <-}\StringTok{ "my_results"}
+\NormalTok{cdmDbSchema <-}\StringTok{ "my_cdm_data"}
+\NormalTok{cohortsDbSchema <-}\StringTok{ "scratch"}
+\NormalTok{cohortsDbTable <-}\StringTok{ "my_cohorts"}
 \NormalTok{cdmVersion <-}\StringTok{ "5"}
 \end{Highlighting}
 \end{Shaded}
 
-The last three lines define the \texttt{cdmDatabaseSchema} and
-\texttt{cohortsDatabaseSchema} variables, as well as the CDM version. We
-will use these later to tell R where the data in CDM format live, where
-we want to create the cohorts of interest, and what version CDM is used.
-Note that for Microsoft SQL Server, databaseschemas need to specify both
-the database and the schema, so for example
-\texttt{cdmDatabaseSchema\ \textless{}-\ "my\_cdm\_data.dbo"}.
+The last four lines define the \texttt{cdmDbSchema},
+\texttt{cohortsDbSchema}, and \texttt{cohortsDbTable} variables, as well
+as the CDM version. We will use these later to tell R where the data in
+CDM format live, where the cohorts of interest have been created, and
+what version CDM is used. Note that for Microsoft SQL Server, database
+schemas need to specify both the database and the schema, so for example
+\texttt{cdmDbSchema\ \textless{}-\ "my\_cdm\_data.dbo"}.
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(SqlRender)}
-\NormalTok{sql <-}\StringTok{ }\KeywordTok{readSql}\NormalTok{(}\StringTok{"AfStrokeCohorts.sql"}\NormalTok{)}
-\NormalTok{sql <-}\StringTok{ }\KeywordTok{renderSql}\NormalTok{(sql,}
-\DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDatabaseSchema,}
-\DataTypeTok{cohortsDatabaseSchema =}\NormalTok{ cohortsDatabaseSchema,}
-\DataTypeTok{post_time =} \DecValTok{30}\NormalTok{,}
-\DataTypeTok{pre_time =} \DecValTok{365}\NormalTok{)}\OperatorTok{$}\NormalTok{sql}
-\NormalTok{sql <-}\StringTok{ }\KeywordTok{translateSql}\NormalTok{(sql, }\DataTypeTok{targetDialect =}\NormalTok{ connectionDetails}\OperatorTok{$}\NormalTok{dbms)}\OperatorTok{$}\NormalTok{sql}
-
-\NormalTok{connection <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connectionDetails)}
-\KeywordTok{executeSql}\NormalTok{(connection, sql)}
-\end{Highlighting}
-\end{Shaded}
-
-In this code, we first read the SQL from the file into memory. In the
-next line, we replace four parameter names with the actual values. We
-then translate the SQL into the dialect appropriate for the DBMS we
-already specified in the \texttt{connectionDetails}. Next, we connect to
-the server, and submit the rendered and translated SQL.
-
-If all went well, we now have a table with the events of interest. We
-can see how many events per type:
+First it makes sense to verify that the cohort creation has succeeded,
+by counting the number of cohort entries:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{sql <-}\StringTok{ }\KeywordTok{paste}\NormalTok{(}\StringTok{"SELECT cohort_definition_id, COUNT(*) AS count"}\NormalTok{,}
-\StringTok{"FROM @cohortsDatabaseSchema.AFibStrokeCohort"}\NormalTok{,}
+\StringTok{"FROM @cohortsDbSchema.cohortsDbTable"}\NormalTok{,}
 \StringTok{"GROUP BY cohort_definition_id"}\NormalTok{)}
-\NormalTok{sql <-}\StringTok{ }\KeywordTok{renderSql}\NormalTok{(sql, }\DataTypeTok{cohortsDatabaseSchema =}\NormalTok{ cohortsDatabaseSchema)}\OperatorTok{$}\NormalTok{sql}
-\NormalTok{sql <-}\StringTok{ }\KeywordTok{translateSql}\NormalTok{(sql, }\DataTypeTok{targetDialect =}\NormalTok{ connectionDetails}\OperatorTok{$}\NormalTok{dbms)}\OperatorTok{$}\NormalTok{sql}
-
-\KeywordTok{querySql}\NormalTok{(connection, sql)}
+\NormalTok{conn <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connDetails)}
+\KeywordTok{renderTranslateQuerySql}\NormalTok{(}\DataTypeTok{connection =}\NormalTok{ conn, }
+                        \DataTypeTok{sql =}\NormalTok{ sql,}
+                        \DataTypeTok{cohortsDbSchema =}\NormalTok{ cohortsDbSchema,}
+                        \DataTypeTok{cohortsDbTable =}\NormalTok{ cohortsDbTable)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ##   cohort_definition_id  count
 ## 1                    1 527616
-## 2                    2 221555
+## 2                    2   3201
 \end{verbatim}
-
-\subsection{Study script creation}\label{study-script-creation}
-
-In this section we assume that our cohorts have been created either by
-using ATLAS or a custom SQL script. We will first explain how to create
-an R script yourself that will execute our study as we have defined
-earlier.
-
-\subsubsection{Data extraction}\label{data-extraction}
 
 Now we can tell
 \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
-to extract all necessary data for our analysis. This is done using the
+to extract all necessary data for our analysis. Covariates are extracted
+using the
 \href{https://ohdsi.github.io/FeatureExtraction/}{\texttt{FeatureExtraction}}
-package. In short the FeatureExtractionPackage allows you to specify
-which features (covariates) need to be extracted, e.g.~all conditions
-and drug exposures, more information can be found in chapter X. It also
-supports the creation of custom covariates. For more detailed
-information on the FeatureExtraction package see its vignettes. For our
-example study we decided to use these settings:
+package. For more detailed information on the FeatureExtraction package
+see its vignettes. For our example study we decided to use these
+settings:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{covariateSettings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{,}
-                                             \DataTypeTok{useDemographicsAge =} \OtherTok{TRUE}\NormalTok{,}
-                                             \DataTypeTok{useConditionGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
-                                             \DataTypeTok{useConditionGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
-                                             \DataTypeTok{useDrugGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
-                                             \DataTypeTok{useDrugGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
-                                             \DataTypeTok{useVisitConceptCountLongTerm =} \OtherTok{TRUE}\NormalTok{,}
-                                             \DataTypeTok{longTermStartDays =} \OperatorTok{-}\DecValTok{365}\NormalTok{,}
-                                             \DataTypeTok{endDays =} \OperatorTok{-}\DecValTok{1}\NormalTok{)}
+\NormalTok{covSettings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{,}
+                                       \DataTypeTok{useDemographicsAge =} \OtherTok{TRUE}\NormalTok{,}
+                                       \DataTypeTok{useConditionGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                       \DataTypeTok{useConditionGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
+                                       \DataTypeTok{useDrugGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                       \DataTypeTok{useDrugGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
+                                       \DataTypeTok{useVisitConceptCountLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                       \DataTypeTok{longTermStartDays =} \OperatorTok{-}\DecValTok{365}\NormalTok{,}
+                                       \DataTypeTok{endDays =} \OperatorTok{-}\DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3098,24 +3048,22 @@ covariate settings.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{plpData <-}\StringTok{ }\KeywordTok{getPlpData}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                      \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDatabaseSchema,}
-                      \DataTypeTok{cohortDatabaseSchema =}\NormalTok{ resultsDatabaseSchema,}
-                      \DataTypeTok{cohortTable =} \StringTok{'AFibStrokeCohort'}\NormalTok{,}
+\NormalTok{plpData <-}\StringTok{ }\KeywordTok{getPlpData}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connDetails,}
+                      \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDbSchema,}
+                      \DataTypeTok{cohortDatabaseSchema =}\NormalTok{ cohortsDbSchema,}
+                      \DataTypeTok{cohortTable =}\NormalTok{ cohortsDbSchema,}
                       \DataTypeTok{cohortId =} \DecValTok{1}\NormalTok{,}
                       \DataTypeTok{covariateSettings =}\NormalTok{ covariateSettings,}
-                      \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ resultsDatabaseSchema,}
-                      \DataTypeTok{outcomeTable =} \StringTok{'AFibStrokeCohort'}\NormalTok{,}
+                      \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortsDbSchema,}
+                      \DataTypeTok{outcomeTable =}\NormalTok{ cohortsDbSchema,}
                       \DataTypeTok{outcomeIds =} \DecValTok{2}\NormalTok{,}
                       \DataTypeTok{sampleSize =} \DecValTok{10000}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Note that if the cohorts are created in ATLAS its corresponding cohort
-database schema needs to be selected. There are many additional
-parameters for the \texttt{getPlpData} function which are all documented
-in the
+There are many additional parameters for the \texttt{getPlpData}
+function which are all documented in the
 \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction}
 manual. The resulting \texttt{plpData} object uses the package
 \texttt{ff} to store information in a way that ensures R does not run
@@ -3129,14 +3077,14 @@ function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{savePlpData}\NormalTok{(plpData, }\StringTok{"stroke_in_af_data"}\NormalTok{)}
+\KeywordTok{savePlpData}\NormalTok{(plpData, }\StringTok{"angio_in_ace_data"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 We can use the \texttt{loadPlpData()} function to load the data in a
 future session.
 
-\subsubsection{Additional inclusion
+\subsection{Additional inclusion
 criteria}\label{additional-inclusion-criteria}
 
 To completely define the prediction problem the final study population
@@ -3152,10 +3100,6 @@ some cases the risk window needs to start at the cohort end date. This
 can be achieved by setting \texttt{addExposureToStart\ =\ TRUE} which
 adds the cohort (exposure) time to the start date.
 
-In Appendix 1, we demonstrate the effect of these settings on the subset
-of the persons in the target cohort that end up in the final study
-population.
-
 In the example below all the settings we defined for our study are
 imposed:
 
@@ -3163,10 +3107,10 @@ imposed:
 \begin{Highlighting}[]
 \NormalTok{population <-}\StringTok{ }\KeywordTok{createStudyPopulation}\NormalTok{(}\DataTypeTok{plpData =}\NormalTok{ plpData,}
                                     \DataTypeTok{outcomeId =} \DecValTok{2}\NormalTok{,}
-                                    \DataTypeTok{washoutPeriod =} \DecValTok{1095}\NormalTok{,}
+                                    \DataTypeTok{washoutPeriod =} \DecValTok{364}\NormalTok{,}
                                     \DataTypeTok{firstExposureOnly =} \OtherTok{FALSE}\NormalTok{,}
-                                    \DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{FALSE}\NormalTok{,}
-                                    \DataTypeTok{priorOutcomeLookback =} \DecValTok{1}\NormalTok{,}
+                                    \DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{priorOutcomeLookback =} \DecValTok{9999}\NormalTok{,}
                                     \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
                                     \DataTypeTok{riskWindowEnd =} \DecValTok{365}\NormalTok{,}
                                     \DataTypeTok{addExposureDaysToStart =} \OtherTok{FALSE}\NormalTok{,}
@@ -3175,11 +3119,11 @@ imposed:
                                     \DataTypeTok{requireTimeAtRisk =} \OtherTok{TRUE}\NormalTok{,}
                                     \DataTypeTok{includeAllOutcomes =} \OtherTok{TRUE}\NormalTok{,}
                                     \DataTypeTok{verbosity =} \StringTok{"DEBUG"}
-\NormalTok{                                    )}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\subsubsection{Model Development}\label{model-development}
+\subsection{Model Development}\label{model-development}
 
 In the set function of an algorithm the user can specify a list of
 eligible values for each hyper-parameter. All possible combinations of
@@ -3199,7 +3143,9 @@ with the default hyper-parameters
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{lrModel <-}\StringTok{ }\KeywordTok{setLassoLogisticRegression}\NormalTok{()}
+\NormalTok{gbmModel <-}\StringTok{ }\KeywordTok{setGradientBoostingMachine}\NormalTok{(}\DataTypeTok{ntrees =} \DecValTok{5000}\NormalTok{, }
+                                       \DataTypeTok{maxDepth =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{), }
+                                       \DataTypeTok{learnRate =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.01}\NormalTok{,}\FloatTok{0.1}\NormalTok{,}\FloatTok{0.9}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3210,27 +3156,31 @@ model settings to train and evaluate the model. We can use the testSplit
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{lrResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(population, plpData, }\DataTypeTok{modelSettings =}\NormalTok{ lrModel, }\DataTypeTok{testSplit=}\StringTok{'person'}\NormalTok{,}
-                    \DataTypeTok{testFraction=}\FloatTok{0.25}\NormalTok{, }\DataTypeTok{nfold=}\DecValTok{2}\NormalTok{, }\DataTypeTok{splitSeed =} \DecValTok{1234}\NormalTok{)}
+\NormalTok{gbmResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ population, }
+                     \DataTypeTok{plpData =}\NormalTok{ plpData, }
+                     \DataTypeTok{modelSettings =}\NormalTok{ gbmModel, }
+                     \DataTypeTok{testSplit =} \StringTok{'person'}\NormalTok{,}
+                     \DataTypeTok{testFraction =} \FloatTok{0.25}\NormalTok{, }
+                     \DataTypeTok{nfold =} \DecValTok{2}\NormalTok{, }
+                     \DataTypeTok{splitSeed =} \DecValTok{1234}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Under the hood the package will now use the
-\href{http://github.com/OHDSI/Cyclops}{\texttt{Cyclops}} package fit a
-large-scale regularized regression using 75\% of the data and will
-evaluate the model on the remaining 25\%. A results data structure is
-returned containing information about the model, its performance etc.
+Under the hood the package will now use the R xgboost package to fit a a
+gradient boosting machine model using 75\% of the data and will evaluate
+the model on the remaining 25\%. A results data structure is returned
+containing information about the model, its performance etc.
 
 In the \texttt{runPlp} function there are several parameters to save the
 \texttt{plpData}, \texttt{plpResults}, \texttt{plpPlots},
-\texttt{evaluation}, etc. objects which are all set to \texttt{true} by
-default. However, there is also some functionality to this manually.
+\texttt{evaluation}, etc. objects which are all set to \texttt{TRUE} by
+default.
 
 You can save the model using:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{savePlpModel}\NormalTok{(lrResults}\OperatorTok{$}\NormalTok{model, }\DataTypeTok{dirPath =} \KeywordTok{file.path}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(), }\StringTok{"model"}\NormalTok{))}
+\KeywordTok{savePlpModel}\NormalTok{(gbmResults}\OperatorTok{$}\NormalTok{model, }\DataTypeTok{dirPath =} \StringTok{"model"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3238,7 +3188,7 @@ You can load the model using:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{plpModel <-}\StringTok{ }\KeywordTok{loadPlpModel}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'model'}\NormalTok{)}
+\NormalTok{plpModel <-}\StringTok{ }\KeywordTok{loadPlpModel}\NormalTok{(}\StringTok{"model"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3246,7 +3196,7 @@ You can also save the full results structure using:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{savePlpResult}\NormalTok{(lrResults, }\DataTypeTok{location =} \KeywordTok{file.path}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'lr'}\NormalTok{))}
+\KeywordTok{savePlpResult}\NormalTok{(gbmResults, }\DataTypeTok{location =} \StringTok{"gbmResults"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3254,13 +3204,12 @@ To load the full results structure use:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{lrResults <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'lr'}\NormalTok{))}
+\NormalTok{lrResults <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\StringTok{"gbmResults"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\newpage
-
-\subsection{Study package creation}\label{study-package-creation}
+\section{Implementing the study in
+ATLAS}\label{implementing-the-study-in-atlas}
 
 The script we created manually above can also be automatically created
 using a powerful feature in ATLAS. By creating a new prediction study
@@ -3271,117 +3220,37 @@ can add multiple Ts, Os, covariate settings etc. The package will then
 run all the combinations of automatically as separate analyses. The
 screenshots below explain this process.
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Create a new prediction study and select your target and outcome
-  cohorts.
-\end{enumerate}
+\textbf{Todo: add description of how to implement study using ATLAS}
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp1}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  Specify one or more analysis settings
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp2}
-
-\newpage
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  Specify the trainings settigns.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp3}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{3}
-\tightlist
-\item
-  Specify the execution settings.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasplp4}
-
-\newpage
-
-ATLAS can build a R package for you that will execute the full study
-against you CDM. Below the steps are explained how to do this in ATLAS.
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Under utilities you can find download. Click on the button to review
-  the full study specification.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasdownload1}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  You now have to review that you indeed want to run all these analyses
-  (cartesian product of all the settings for each T and O combination.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasdownload2}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\item
-  If you agree, you give the package a name, and download the package as
-  a zipfile.
-\item
-  By opening the R package in R studio and building the package you can
-  run the study using the \texttt{execute} function. Theres is also an
-  example CodeToRun.R script available in the extras folder of the
-  package with extra instructions.
-\end{enumerate}
+By opening the R package in R studio and building the package you can
+run the study using the \texttt{execute} function. Theres is also an
+example \texttt{CodeToRun.R} script available in the \texttt{extras}
+folder of the package with extra instructions.
 
 \section{Internal validation}\label{internal-validation}
 
-Once we execute the study, the runPlp() function returns the trained
-model and the evaluation of the model on the train/test sets.
-
+Once we execute the study, the \texttt{runPlp} function returns the
+trained model and the evaluation of the model on the train/test sets.
 You can interactively view the results by running:
-\texttt{viewPlp(runPlp=lrResults)}. This will generate a Shiny App in
+\texttt{viewPlp(runPlp\ =\ gbmResults)}. This will open a Shiny App in
 your browser in which you can view all performance measures created by
-the framework as shown in the figure below.
+the framework, including interactive plots, as shown in Figure
+\ref{fig:shinysummary}.
+
+\textbf{Todo: update Shiny app screenshot with hypertension example}
 
 \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/shinysummary}
-
-Furthermore, many interactive plots are available in the Shiny App, for
-example the ROC curve in which you can move over the plot to see the
-threshold and the corresponding sensitivity and specificity values.
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/shinyroc}
 
 To generate and save all the evaluation plots to a folder run the
 following code:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plotPlp}\NormalTok{(lrResults, }\DataTypeTok{dirPath=}\KeywordTok{getwd}\NormalTok{())}
+\KeywordTok{plotPlp}\NormalTok{(gbmResults, }\StringTok{"plots"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 The plots are described in more detail in the next sections.
-
-\newpage
 
 \subsection{Discrimination}\label{discrimination}
 
@@ -3390,28 +3259,41 @@ against 1-specificity on the test set. The plot illustrates how well the
 model is able to discriminate between the people with the outcome and
 those without. The dashed diagonal line is the performance of a model
 that randomly assigns predictions. The higher the area under the ROC
-plot the better the discrimination of the model. The plot is created by
-changing the probability threshold to assign the positive class.
+plot the better the discrimination of the model. Figure \ref{fig:roc} is
+created by changing the probability threshold to assign the positive
+class.
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/sparseROC}
+\textbf{Todo: update plots with hypertension example}
 
-\newpage
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/sparseROC} 
+
+}
+
+\caption{The Receiver Operating Characteristics (ROC) curve.}\label{fig:roc}
+\end{figure}
 
 \subsection{Calibration}\label{calibration}
 
-The calibration plot shows how close the predicted risk is to the
-observed risk. The diagonal dashed line thus indicates a perfectly
-calibrated model. The ten (or fewer) dots represent the mean predicted
-values for each quantile plotted against the observed fraction of people
-in that quantile who had the outcome (observed fraction). The straight
-black line is the linear regression using these 10 plotted quantile mean
-predicted vs observed fraction points. The straight vertical lines
-represented the 95\% lower and upper confidence intervals of the slope
-of the fitted line.
+The calibration plot (Figure \ref{fig:plpCalibration}) shows how close
+the predicted risk is to the observed risk. The diagonal dashed line
+thus indicates a perfectly calibrated model. The ten (or fewer) dots
+represent the mean predicted values for each quantile plotted against
+the observed fraction of people in that quantile who had the outcome
+(observed fraction). The straight black line is the linear regression
+using these 10 plotted quantile mean predicted vs observed fraction
+points. The straight vertical lines represented the 95\% lower and upper
+confidence intervals of the slope of the fitted line.
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/sparseCalibration}
+\begin{figure}
 
-\newpage
+{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/sparseCalibration} 
+
+}
+
+\caption{Calibration plot.}\label{fig:plpCalibration}
+\end{figure}
 
 \subsection{Smooth Calibration}\label{smooth-calibration}
 
@@ -3432,47 +3314,62 @@ calibarion plot you have to run the follow command:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{plotSmoothCalibration}\NormalTok{(lrResults)}
+\KeywordTok{plotSmoothCalibration}\NormalTok{(gbmResults)}
 \end{Highlighting}
 \end{Shaded}
 
 See the help function for more information, on how to set the smoothing
 method etc.
 
-The example below is from another study that better demonstrates the
-impact of using a smooth calibration plot. The default line fit would
-not highlight the miss-calibration at the lower predicted probability
-levels that well.
+Figure \ref{fig:plpSmoothCal} shows an example from another study that
+better demonstrates the impact of using a smooth calibration plot. The
+default line fit would not highlight the miss-calibration at the lower
+predicted probability levels that well.
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/smoothCalibration}
+\begin{figure}
 
-\newpage
+{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/smoothCalibration} 
+
+}
+
+\caption{Smooth calibration plot.}\label{fig:plpSmoothCal}
+\end{figure}
 
 \subsection{Preference distribution}\label{preference-distribution}
 
-The preference distribution plots are the preference score distributions
-corresponding to i) people in the test set with the outcome (red) and
-ii) people in the test set without the outcome (blue).
+The preference distribution plot (Figure \ref{fig:plpPreference}) shows
+the preference score distributions for people in the test set with the
+outcome (red) without the outcome (blue).
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/preferencePDF}
+\begin{figure}
 
-\newpage
+{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/preferencePDF} 
+
+}
+
+\caption{Preference distribution plot.}\label{fig:plpPreference}
+\end{figure}
 
 \subsection{Predicted probability
 distribution}\label{predicted-probability-distribution}
 
-The prediction distribution box plots are for the predicted risks of the
-people in the test set with the outcome (class 1: blue) and without the
-outcome (class 0: red).
+The prediction distribution box plot shows the predicted risks of the
+people in the test set with the outcome (blue) and without the outcome
+(red).
 
-The box plots in the Figure show that the predicted probability of the
-outcome is indeed higher for those with the outcome but there is also
-overlap between the two distribution which lead to an imperfect
-discrimination.
+The box plots in Figure \ref{fig:plpPredProb} show that the predicted
+probability of the outcome is indeed higher for those with the outcome
+but there is also overlap between the two distribution which lead to an
+imperfect discrimination.
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/predictionDistribution}
+\begin{figure}
 
-\newpage
+{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/predictionDistribution} 
+
+}
+
+\caption{Predicted probability distribution.}\label{fig:plpPredProb}
+\end{figure}
 
 \subsection{Test-Train similarity}\label{test-train-similarity}
 
@@ -3480,12 +3377,17 @@ The test-train similarity is assessed by plotting the mean covariate
 values in the train set against those in the test set for people with
 and without the outcome.
 
-The results for our example of look very promising since the mean values
-of the covariates are on the diagonal.
+The results in Figure \ref{fig:plpTestTrain} for our example look very
+promising since the mean values of the covariates are on the diagonal.
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/generalizability}
+\begin{figure}
 
-\newpage
+{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/generalizability} 
+
+}
+
+\caption{Predicted probability distribution.}\label{fig:plpTestTrain}
+\end{figure}
 
 \subsection{Variable scatter plot}\label{variable-scatter-plot}
 
@@ -3496,23 +3398,27 @@ or exclusion in the model (blue), respectively. It is highly recommended
 to use the Shiny App since this allows you to hoover over a covariate to
 show more details (name, value etc).
 
-The plot shows that the mean of most of the covariates is higher for
-subjects with the outcome compared to those without.
+Figure \ref{fig:plpVarScatter} shows that the mean of most of the
+covariates is higher for subjects with the outcome compared to those
+without.
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/variableScatterplot}
+\begin{figure}
 
-\newpage
+{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/variableScatterplot} 
+
+}
+
+\caption{Predicted probability distribution.}\label{fig:plpVarScatter}
+\end{figure}
 
 \subsection{Precision recall}\label{precision-recall}
 
-Precision (P) is defined as the number of true positives (Tp) over the
-number of true positives plus the number of false positives (Fp).
+Precision (P) is defined as the number of true positives (TP) over the
+number of true positives plus the number of false positives (FP):
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{P <-}\StringTok{ }\NormalTok{Tp}\OperatorTok{/}\NormalTok{(Tp}\OperatorTok{+}\NormalTok{Fp)}
-\end{Highlighting}
-\end{Shaded}
+\textbf{Todo: Figure out why equations aren't working in HTML}
+
+\[P\ =\frac{\ TP}{TP\ +\ FP}\]
 
 Recall (R) is defined as the number of true positives (Tp) over the
 number of true positives plus the number of false negatives (Fn).
@@ -3538,126 +3444,80 @@ denominator, by increasing the number of results returned. If the
 threshold was previously set too high, the new results may all be true
 positives, which will increase precision. If the previous threshold was
 about right or too low, further lowering the threshold will introduce
-false positives, decreasing precision.
+false positives, decreasing precision. For Recall the denominator does
+not depend on the classifier threshold (Tp+Fn is a constant). This means
+that lowering the classifier threshold may increase recall, by
+increasing the number of true positive results. It is also possible that
+lowering the threshold may leave recall unchanged, while the precision
+fluctuates.
 
-For Recall the denominator does not depend on the classifier threshold
-(Tp+Fn is a constant). This means that lowering the classifier threshold
-may increase recall, by increasing the number of true positive results.
-It is also possible that lowering the threshold may leave recall
-unchanged, while the precision fluctuates.
+Figure \ref{fig:plpPrecisionRecall} shows the tradeoff between precision
+and recall.
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/precisionRecall}
+\begin{figure}
 
-\newpage
+{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/precisionRecall} 
+
+}
+
+\caption{Precision-recall plot.}\label{fig:plpPrecisionRecall}
+\end{figure}
 
 \subsection{Demographic summary}\label{demographic-summary}
 
-This plot shows for females and males the expected and observed risk in
-different age groups together with a confidence area.
+Figure \ref{fig:plpDemoSummary} shows for females and males the expected
+and observed risk in different age groups together with a confidence
+area. The results show that our model is well calibrated across gender
+and age groups.
 
-The results show that our model is well calibrated across gender and age
-groups.
+\begin{figure}
 
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/demographicSummary}
+{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/demographicSummary} 
 
-\newpage
+}
+
+\caption{Precision-recall plot.}\label{fig:plpDemoSummary}
+\end{figure}
 
 \section{External validation}\label{external-validation}
 
 We recommend to always perform external validation, i.e.~apply the final
 model on as much new datasets as feasible and evaluate its performance.
+Here we assume the data extraction has already been peformed on a second
+database and stored in the \texttt{newData} folder. We load the model we
+previously fitted from the \texttt{model} folder:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# load the trained model}
-\NormalTok{plpModel <-}\StringTok{ }\KeywordTok{loadPlpModel}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'model'}\NormalTok{)}
+\NormalTok{plpModel <-}\StringTok{ }\KeywordTok{loadPlpModel}\NormalTok{(}\StringTok{"model"}\NormalTok{)}
 
 \CommentTok{#load the new plpData and create the population}
-\NormalTok{plpData <-}\StringTok{ }\KeywordTok{loadPlpData}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'data'}\NormalTok{)}
-\NormalTok{population <-}\StringTok{ }\KeywordTok{createStudyPopulation}\NormalTok{(plpData,}
-\DataTypeTok{outcomeId =} \DecValTok{2}\NormalTok{,}
-\DataTypeTok{includeAllOutcomes =} \OtherTok{TRUE}\NormalTok{,}
-\DataTypeTok{firstExposureOnly =} \OtherTok{TRUE}\NormalTok{,}
-\DataTypeTok{washoutPeriod =} \DecValTok{365}\NormalTok{,}
-\DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{,}
-\DataTypeTok{priorOutcomeLookback =} \DecValTok{365}\NormalTok{,}
-\DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
-\DataTypeTok{requireTimeAtRisk =} \OtherTok{FALSE}\NormalTok{,}
-\DataTypeTok{riskWindowEnd =} \DecValTok{365}
+\NormalTok{plpData <-}\StringTok{ }\KeywordTok{loadPlpData}\NormalTok{(}\StringTok{"newData"}\NormalTok{)}
+
+\NormalTok{population <-}\StringTok{ }\KeywordTok{createStudyPopulation}\NormalTok{(}\DataTypeTok{plpData =}\NormalTok{ plpData,}
+                                    \DataTypeTok{outcomeId =} \DecValTok{2}\NormalTok{,}
+                                    \DataTypeTok{washoutPeriod =} \DecValTok{364}\NormalTok{,}
+                                    \DataTypeTok{firstExposureOnly =} \OtherTok{FALSE}\NormalTok{,}
+                                    \DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{priorOutcomeLookback =} \DecValTok{9999}\NormalTok{,}
+                                    \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
+                                    \DataTypeTok{riskWindowEnd =} \DecValTok{365}\NormalTok{,}
+                                    \DataTypeTok{addExposureDaysToStart =} \OtherTok{FALSE}\NormalTok{,}
+                                    \DataTypeTok{addExposureDaysToEnd =} \OtherTok{FALSE}\NormalTok{,}
+                                    \DataTypeTok{minTimeAtRisk =} \DecValTok{364}\NormalTok{,}
+                                    \DataTypeTok{requireTimeAtRisk =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{includeAllOutcomes =} \OtherTok{TRUE}
 \NormalTok{)}
 
 \CommentTok{# apply the trained model on the new data}
-\NormalTok{validationResults <-}\StringTok{ }\KeywordTok{applyModel}\NormalTok{(population,plpData,plpModel)}
+\NormalTok{validationResults <-}\StringTok{ }\KeywordTok{applyModel}\NormalTok{(population, plpData, plpModel)}
 \end{Highlighting}
 \end{Shaded}
 
-To make things easier we also provide a function for performing external
-validation of a model across one or multiple datasets:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# load the trained model}
-\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'plpResult'}\NormalTok{)}
-
-\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
-                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
-                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
-                                             \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
-
-\NormalTok{validation <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ plpResult,}
-                                  \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                                  \DataTypeTok{validationSchemaTarget =} \StringTok{'new_cohort_schema'}\NormalTok{,}
-                                  \DataTypeTok{validationSchemaOutcome =} \StringTok{'new_cohort_schema'}\NormalTok{,}
-                                  \DataTypeTok{validationSchemaCdm =} \StringTok{'new_cdm_schema'}\NormalTok{,}
-                                  \DataTypeTok{validationTableTarget =} \StringTok{'cohort_table'}\NormalTok{,}
-                                  \DataTypeTok{validationTableOutcome =} \StringTok{'cohort_table'}\NormalTok{,}
-                                  \DataTypeTok{validationIdTarget =} \StringTok{'cohort_id'}\NormalTok{,}
-                                  \DataTypeTok{validationIdOutcome =} \StringTok{'outcome_id'}\NormalTok{,}
-                                  \DataTypeTok{keepPrediction =}\NormalTok{ T}
-\NormalTok{                                  )}
-\end{Highlighting}
-\end{Shaded}
-
-This will extract the new plpData from the specified schemas and cohort
-tables. It will then apply the same population settings and the trained
-plp model. Finally, it will evaluate the performance and return the
-standard output as \texttt{validation\$performance} and if
-keepPrediction is TRUE then it will also return the prediction on the
-population as \texttt{validation\$prediction}. They can be inserted into
-the shiny app for viewing the model and validation by running:
-\texttt{viewPlp(runPlp=plpResult,\ validatePlp=validation\ )}.
-
-If you want to validate on multiple databases available you can insert
-the new schemas and cohort tables as a list:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# load the trained model}
-\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{getwd}\NormalTok{(),}\StringTok{'plpResult'}\NormalTok{)}
-
-\NormalTok{connectionDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
-                                             \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
-                                             \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
-                                             \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
-
-\NormalTok{validation <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ plpResult,}
-                                  \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                                  \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_schema1'}\NormalTok{,}
-                                                                \StringTok{'new_cohort_schema2'}\NormalTok{),}
-                                  \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_schema1'}\NormalTok{,}
-                                                                 \StringTok{'new_cohort_schema2'}\NormalTok{),}
-                                  \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cdm_schema1'}\NormalTok{,}
-                                                             \StringTok{'new_cdm_schema2'}\NormalTok{),}
-                                  \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_table1'}\NormalTok{,}
-                                                               \StringTok{'new_cohort_table2'}\NormalTok{),}
-                                  \DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'new_cohort_table1'}\NormalTok{,}
-                                                                \StringTok{'new_cohort_table2'}\NormalTok{),}
-                                  \DataTypeTok{validationIdTarget =} \StringTok{'cohort_id'}\NormalTok{,}
-                                  \DataTypeTok{validationIdOutcome =} \StringTok{'outcome_id'}\NormalTok{,}
-                                  \DataTypeTok{keepPrediction =}\NormalTok{ T}
-\NormalTok{                                  )}
-\end{Highlighting}
-\end{Shaded}
+To make things easier we also provide the \texttt{externalValidatePlp}
+function for performing external validation that also extracts the
+required data. This function is described in the package manual.
 
 \section{Journal paper generation}\label{journal-paper-generation}
 
@@ -3666,9 +3526,8 @@ you can use as start of a journal paper. It contains many of the
 generated study details and results. If you have performed external
 validation these results will can be added as well. Optionally, you can
 add a ``Table 1'' that contains data on many covariates for the target
-population.
-
-You can create the draft journal paper by running this function:
+population. You can create the draft journal paper by running this
+function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3689,158 +3548,7 @@ You can create the draft journal paper by running this function:
 
 For more details see the help page of the function.
 
-\newpage
-
-\section{Other functionality}\label{other-functionality}
-
-The package has much more functionality than described in this vignette
-and contributions have been made my many persons in the OHDSI community.
-The table below provides an overview:
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-\begin{minipage}[b]{0.19\columnwidth}\raggedright\strut
-Functionality\strut
-\end{minipage} & \begin{minipage}[b]{0.54\columnwidth}\raggedright\strut
-Description\strut
-\end{minipage} & \begin{minipage}[b]{0.19\columnwidth}\raggedright\strut
-Vignette\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-Builing Multiple Models\strut
-\end{minipage} & \begin{minipage}[t]{0.54\columnwidth}\raggedright\strut
-This vignette describes how you can run multiple models
-automatically\strut
-\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-\href{https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/BuildingMultiplePredictiveModels.pdf}{\texttt{Vignette}}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-Custom algorithms\strut
-\end{minipage} & \begin{minipage}[t]{0.54\columnwidth}\raggedright\strut
-This vignette describes how you can add your own custom algorithms in
-the framework\strut
-\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-\href{https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/AddingCustomAlgorithms.pdf}{\texttt{Vignette}}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-Ensemble models\strut
-\end{minipage} & \begin{minipage}[t]{0.54\columnwidth}\raggedright\strut
-This vignette describes how you can use the framework to build ensemble
-models, i.e combine multiple models in a super learner\strut
-\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-\href{https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/BuildingEnsembleModels.pdf}{\texttt{Vignette}}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-Deep Learning Models\strut
-\end{minipage} & \begin{minipage}[t]{0.54\columnwidth}\raggedright\strut
-We have added extensive functionality for Deep Learning including
-several architectures in both pyTorch and Keras. These algorithms can be
-trained using GPU power\strut
-\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-\href{https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/BuildingDeepLearningModels.pdf}{\texttt{Vignette}}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-Learning curves\strut
-\end{minipage} & \begin{minipage}[t]{0.54\columnwidth}\raggedright\strut
-Learning curves assess the effect of training set size on model
-performance by training a sequence of prediction models on successively
-larger subsets of the training set. A learning curve plot can also help
-in diagnosing a bias or variance problem as explained below.\strut
-\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-\href{https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/GeneratingLearningCurves.pdf}{\texttt{Vignette}}\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-Implementing existing models\strut
-\end{minipage} & \begin{minipage}[t]{0.54\columnwidth}\raggedright\strut
-This vignette describes how you can implement existing logistic
-regression models in the framework, e.g.~as found in literature\strut
-\end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
-\href{https://github.com/OHDSI/PatientLevelPrediction/blob/master/inst/doc/ImplementingExistingModels.pdf}{\texttt{Vignette}}\strut
-\end{minipage}\tabularnewline
-\bottomrule
-\end{longtable}
-
-\section*{Appendix 1: Study population settings
-details}\label{appendix-1-study-population-settings-details}
-\addcontentsline{toc}{section}{Appendix 1: Study population settings
-details}
-
-In the figures below the effect is shown of the
-removeSubjectsWithPriorOutcome, requireTimAtRisk, and includeAllOutcomes
-booleans on the final study population. We start with a Target Cohort
-with firstExposureOnly = false and we require a washout period = 1095.
-We then subset the target cohort based on additional constraints. The
-final study population in the Venn diagrams below are colored green.
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Require minimum time-at-risk for all person in the target cohort.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef1}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  Require minumum time-at-risk for target cohort, except for persons
-  with outcomes during time-at-risk.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef2}
-
-\newpage
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  Include all persons in the target cohort exclude persons with prior
-  outcomes.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef3}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{3}
-\tightlist
-\item
-  Require minimum time-at-risk for target cohort, except for persons
-  with outcomes during time-at-risk, exclude persons with prior
-  outcomes.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef4}
-
-\newpage
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{4}
-\tightlist
-\item
-  Include all persons in target cohort exclude persons with prior
-  outcomes.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef5}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{5}
-\tightlist
-\item
-  Include all persons in target cohort.
-\end{enumerate}
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/popdef6}
+\section{Excercises}\label{excercises-1}
 
 \part{Evidence Quality}\label{part-evidence-quality}
 
@@ -4056,6 +3764,8 @@ A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study
 
 \chapter{Software Validity}\label{SoftwareValidity}
 
+\emph{Chapter lead: Martijn Schuemie}
+
 The central question of sofware validity is
 
 \begin{quote}
@@ -4267,6 +3977,8 @@ operating framework. The details and content of any such SOPs are beyond
 the scope of this document.
 
 \chapter{Method Validity}\label{MethodValidity}
+
+\emph{Chapter lead: Martijn Schuemie}
 
 When considering method validity we aim to answer the question
 
@@ -4536,10 +4248,6 @@ implemented in the
 \href{https://ohdsi.github.io/EmpiricalCalibration/}{EmpiricalCalibration}
 package.
 
-\subsection{OHDSI Methods Benchmark}\label{ohdsi-methods-benchmark}
-
-Todo: add text on OHDSI Methods Benchmark
-
 \subsection{Replication across sites}\label{replication-across-sites}
 
 Another form of method validation can come from executing the study
@@ -4618,6 +4326,11 @@ Calibrate CI and p-value
 \item
   Use EmpiricalCalibration package
 \end{itemize}
+
+\section{Advanced: OHDSI Methods
+Benchmark}\label{advanced-ohdsi-methods-benchmark}
+
+Todo: add text on OHDSI Methods Benchmark
 
 \part{OHDSI Studies}\label{part-ohdsi-studies}
 
@@ -4700,7 +4413,7 @@ cohort file. A createCohorts function is executed next. (see
 An SQL file that is generated by Atlas populates the cohort table with
 specific person\_ids that fulfill the cohort definition.
 
-\section{Excercises}\label{excercises-1}
+\section{Excercises}\label{excercises-2}
 
 \subsection{Defining a cohort}\label{defining-a-cohort}
 
@@ -4725,6 +4438,155 @@ analysis.
 Parametized SQL code An SQL code that allows for use of parameters.
 Parameters are prefixed with @. Such code has to be ``rendered''.
 Synonym: OHDSI SQL code.
+
+\chapter{Cohort definitions}\label{CohortDefinitions}
+
+This Appendix contains cohort definitions used throughout the book.
+
+\section{ACE inhibitors}\label{AceInhibitors}
+
+\textbf{Initial Event Cohort}
+
+People having any of the following:
+
+\begin{itemize}
+\tightlist
+\item
+  a drug exposure of \emph{ACE inhibitors} (Table
+  \ref{tab:aceInhibitors}) for the first time in the person's history
+\end{itemize}
+
+with continuous observation of at least 365 days prior and 0 days after
+event index date, and limit initial events to: all events per person.
+
+Limit qualifying cohort to: all events per person.
+
+\textbf{End Date Strategy}
+
+Custom Drug Era Exit Criteria This strategy creates a drug era from the
+codes found in the specified concept set. If the index event is found
+within an era, the cohort end date will use the era's end date.
+Otherwise, it will use the observation period end date that contains the
+index event.
+
+Use the era end date of \emph{ACE inhibitors} (Table
+\ref{tab:aceInhibitors})
+
+\begin{itemize}
+\tightlist
+\item
+  allowing 30 days between exposures
+\item
+  adding 0 days after exposure end
+\end{itemize}
+
+\textbf{Cohort Collapse Strategy}
+
+Collapse cohort by era with a gap size of 30 days.
+
+\textbf{Concept Set Definitions}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:aceInhibitors} ACE inhibitors}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+1308216 & Lisinopril & NO & YES & NO\tabularnewline
+1310756 & moexipril & NO & YES & NO\tabularnewline
+1331235 & quinapril & NO & YES & NO\tabularnewline
+1334456 & Ramipril & NO & YES & NO\tabularnewline
+1335471 & benazepril & NO & YES & NO\tabularnewline
+1340128 & Captopril & NO & YES & NO\tabularnewline
+1341927 & Enalapril & NO & YES & NO\tabularnewline
+1342439 & trandolapril & NO & YES & NO\tabularnewline
+1363749 & Fosinopril & NO & YES & NO\tabularnewline
+1373225 & Perindopril & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\section{Angioedema}\label{Angioedema}
+
+\textbf{Initial Event Cohort}
+
+People having any of the following:
+
+\begin{itemize}
+\tightlist
+\item
+  a condition occurrence of \emph{Angioedema} (Table
+  \ref{tab:angioedema})
+\end{itemize}
+
+with continuous observation of at least 0 days prior and 0 days after
+event index date, and limit initial events to: all events per person.
+
+For people matching the Primary Events, include: Having any of the
+following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  at least 1 occurrences of a visit occurrence of \emph{Inpatient or ER
+  visit} (Table \ref{tab:inpatientOrEr}) where event starts between all
+  days Before and 0 days After index start date and event ends between 0
+  days Before and all days After index start date
+\end{itemize}
+
+Limit cohort of initial events to: all events per person.
+
+Limit qualifying cohort to: all events per person.
+
+\textbf{End Date Strategy}
+
+This cohort defintion end date will be the index event's start date plus
+7 days
+
+\textbf{Cohort Collapse Strategy}
+
+Collapse cohort by era with a gap size of 30 days.
+
+\textbf{Concept Set Definitions}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:angioedema} Angioedema}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+432791 & Angioedema & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:inpatientOrEr} Inpatient or ER visit}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+262 & Emergency Room and Inpatient Visit & NO & YES & NO\tabularnewline
+9201 & Inpatient Visit & NO & YES & NO\tabularnewline
+9203 & Emergency Room Visit & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
 
 \bibliography{book.bib,packages.bib}
 

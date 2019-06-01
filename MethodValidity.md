@@ -1,5 +1,7 @@
 # Method Validity {#MethodValidity}
 
+*Chapter lead: Martijn Schuemie*
+
 When considering method validity we aim to answer the question
 
 > Is this method valid for answering this question?
@@ -77,10 +79,6 @@ For confidence inteval calibration [@schuemie_2018] we estimate a systematic err
 
 Both p-value calibration and confidence interval calibration are implemented in the [EmpiricalCalibration](https://ohdsi.github.io/EmpiricalCalibration/) package.
 
-### OHDSI Methods Benchmark
-
-Todo: add text on OHDSI Methods Benchmark
-
 ### Replication across sites
 
 Another form of method validation can come from executing the study across several different databases that possibly represent different populations, different health care systems, and different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates [@madigan_2013], suggesting the design does not adequately address the different biases found in the different databases. However, not observing heterogeneity of effects does not guarantee an unbiased estimate. It is not unlikely that all databases share a similar bias, and that all estimates are therefore consistently wrong.
@@ -121,3 +119,6 @@ Calibrate CI and p-value
 - Use EmpiricalCalibration package
 
 
+## Advanced: OHDSI Methods Benchmark
+
+Todo: add text on OHDSI Methods Benchmark

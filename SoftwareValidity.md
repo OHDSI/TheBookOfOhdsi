@@ -1,5 +1,7 @@
 # Software Validity {#SoftwareValidity}
 
+*Chapter lead: Martijn Schuemie*
+
 The central question of sofware validity is
 
 > Does the software do what it is expected to do?

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A Glossary | The Book of OHDSI</title>
+  <title>B Cohort definitions | The Book of OHDSI</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.11.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A Glossary | The Book of OHDSI" />
+  <meta property="og:title" content="B Cohort definitions | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A Glossary | The Book of OHDSI" />
+  <meta name="twitter:title" content="B Cohort definitions | The Book of OHDSI" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="NetworkResearch.html">
-<link rel="next" href="CohortDefinitions.html">
+<link rel="prev" href="Glossary.html">
+<link rel="next" href="references.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -282,19 +282,198 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="Glossary" class="section level1">
-<h1><span class="header-section-number">A</span> Glossary</h1>
-<p>Cohort A cohort is a list of person_ids with start and end date. It is stored in a study specific cohort table or a CDM specified cohort table can also be used. Cohort can be represented as .json file. It is used for import and export but not during an analysis. OHDSI tools use SQL so Atlas also generates a .sql file that creates the cohort during analysis.</p>
-<p>Parametized SQL code An SQL code that allows for use of parameters. Parameters are prefixed with @. Such code has to be “rendered”. Synonym: OHDSI SQL code.</p>
+<div id="CohortDefinitions" class="section level1">
+<h1><span class="header-section-number">B</span> Cohort definitions</h1>
+<p>This Appendix contains cohort definitions used throughout the book.</p>
+<div id="AceInhibitors" class="section level2">
+<h2><span class="header-section-number">B.1</span> ACE inhibitors</h2>
+<p><strong>Initial Event Cohort</strong></p>
+<p>People having any of the following:</p>
+<ul>
+<li>a drug exposure of <em>ACE inhibitors</em> (Table <a href="CohortDefinitions.html#tab:aceInhibitors">B.1</a>) for the first time in the person’s history</li>
+</ul>
+<p>with continuous observation of at least 365 days prior and 0 days after event index date, and limit initial events to: all events per person.</p>
+<p>Limit qualifying cohort to: all events per person.</p>
+<p><strong>End Date Strategy</strong></p>
+<p>Custom Drug Era Exit Criteria This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era’s end date. Otherwise, it will use the observation period end date that contains the index event.</p>
+<p>Use the era end date of <em>ACE inhibitors</em> (Table <a href="CohortDefinitions.html#tab:aceInhibitors">B.1</a>)</p>
+<ul>
+<li>allowing 30 days between exposures</li>
+<li>adding 0 days after exposure end</li>
+</ul>
+<p><strong>Cohort Collapse Strategy</strong></p>
+<p>Collapse cohort by era with a gap size of 30 days.</p>
+<p><strong>Concept Set Definitions</strong></p>
+<table>
+<caption><span id="tab:aceInhibitors">Table B.1: </span> ACE inhibitors</caption>
+<thead>
+<tr class="header">
+<th>Concept Id</th>
+<th align="left">Concept Name</th>
+<th>Excluded</th>
+<th>Descendants</th>
+<th>Mapped</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1308216</td>
+<td align="left">Lisinopril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="even">
+<td>1310756</td>
+<td align="left">moexipril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="odd">
+<td>1331235</td>
+<td align="left">quinapril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="even">
+<td>1334456</td>
+<td align="left">Ramipril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="odd">
+<td>1335471</td>
+<td align="left">benazepril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="even">
+<td>1340128</td>
+<td align="left">Captopril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="odd">
+<td>1341927</td>
+<td align="left">Enalapril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="even">
+<td>1342439</td>
+<td align="left">trandolapril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="odd">
+<td>1363749</td>
+<td align="left">Fosinopril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="even">
+<td>1373225</td>
+<td align="left">Perindopril</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="Angioedema" class="section level2">
+<h2><span class="header-section-number">B.2</span> Angioedema</h2>
+<p><strong>Initial Event Cohort</strong></p>
+<p>People having any of the following:</p>
+<ul>
+<li>a condition occurrence of <em>Angioedema</em> (Table <a href="CohortDefinitions.html#tab:angioedema">B.2</a>)</li>
+</ul>
+<p>with continuous observation of at least 0 days prior and 0 days after event index date, and limit initial events to: all events per person.</p>
+<p>For people matching the Primary Events, include: Having any of the following criteria:</p>
+<ul>
+<li>at least 1 occurrences of a visit occurrence of <em>Inpatient or ER visit</em> (Table <a href="CohortDefinitions.html#tab:inpatientOrEr">B.3</a>) where event starts between all days Before and 0 days After index start date and event ends between 0 days Before and all days After index start date</li>
+</ul>
+<p>Limit cohort of initial events to: all events per person.</p>
+<p>Limit qualifying cohort to: all events per person.</p>
+<p><strong>End Date Strategy</strong></p>
+<p>This cohort defintion end date will be the index event’s start date plus 7 days</p>
+<p><strong>Cohort Collapse Strategy</strong></p>
+<p>Collapse cohort by era with a gap size of 30 days.</p>
+<p><strong>Concept Set Definitions</strong></p>
+<table>
+<caption><span id="tab:angioedema">Table B.2: </span> Angioedema</caption>
+<thead>
+<tr class="header">
+<th>Concept Id</th>
+<th align="left">Concept Name</th>
+<th>Excluded</th>
+<th>Descendants</th>
+<th>Mapped</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>432791</td>
+<td align="left">Angioedema</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption><span id="tab:inpatientOrEr">Table B.3: </span> Inpatient or ER visit</caption>
+<thead>
+<tr class="header">
+<th>Concept Id</th>
+<th align="left">Concept Name</th>
+<th>Excluded</th>
+<th>Descendants</th>
+<th>Mapped</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>262</td>
+<td align="left">Emergency Room and Inpatient Visit</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="even">
+<td>9201</td>
+<td align="left">Inpatient Visit</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+<tr class="odd">
+<td>9203</td>
+<td align="left">Emergency Room Visit</td>
+<td>NO</td>
+<td>YES</td>
+<td>NO</td>
+</tr>
+</tbody>
+</table>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="NetworkResearch.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="CohortDefinitions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="Glossary.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -324,7 +503,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/Glossary.Rmd",
+"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/CohortDefinitions.Rmd",
 "text": "Edit"
 },
 "history": {
