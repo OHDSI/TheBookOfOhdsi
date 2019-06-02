@@ -121,12 +121,70 @@ One important assumption underlying the SCCS is that the observation period end 
 
 ## Designing a hypertension study
 
-Describe case study: risk of angioedema and AMI in new users of ACE inhibitors compared to new users of thiazide and thiazide-like diuretics
-
-### Implementation the study using R
 
 
-### Implementation the study using ATLAS
+### Problem definition
+
+ACE inhibitors are widely used in patients with hypertension or ischemic heart disease, especially those with other comorbidities such as congestive heart failure, diabetes mellitus, or chronic kidney disease [@zaman_2002]. Angioedema, a serious and sometimes life-threatening adverse event that usually manifests as swelling of the lips, tongue, mouth, larynx, pharynx, or periorbital region, has been linked to the use of these medications [@sabroe_1997]. However, limited information is available about the absolute and relative risks for angioedema associated with the use of these medications. Existing evidence is primarily based on investigations of specific cohorts (eg, predominantly male veterans or Medicaid beneficiaries), whose findings may not be generalizable to other populations, or based on investigations with few events, which provide unstable risk estimates [@powers_2012]. Several observational studies compare ACE inhibitors to beta-blockers for the risk of angioedema [@magid_2010; @toh_2012], but beta-blockers are no longer recommend as first-line treatment of hypertension [@whelton_2018]. A viable alternative treatment could be thiazides or thiazide-like diuretics, which could be just as effective in managing hypertension and its associated risks such as acute myocardial infarction.
+
+We will apply our population-level estimation framework to observational healthcare data to address the following comparative estimation question:
+
+> What is the risk of angioedema and acute myocaridal infarction in new users of ACE inhibitors compared to new users of thiazide and thiazide-like diuretics?
+
+### Target and comparator
+
+Focus on first-line mono-therapy
+
+### Outcome
+
+Angioedema and AMI
+
+### Time-at-risk
+
+### Model
+
+### Study summary
+
+Table: (\#tab:cmChoices) Main design choices four our comparative cohort study.
+
+| Choice            | Value                                                    |
+|:----------------- |:-------------------------------------------------------- |
+| Target cohort     |                                                          |
+| Comparator cohort |                                                          |
+| Outcome cohort    |                                                          |
+| Time-at-risk      |                                                          |
+| Model             |                                                          |
+
+
+## Implementation the study using R
+
+Now we have completely designed our study we have to implement the study. This will be done using the [CohortMethod](https://ohdsi.github.io/CohortMethod/) package to execute our study. It extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model. 
+
+### Cohort instantiation
+
+We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitors)) and outcome (Appendix \@ref(Angioedema)) cohorts. In this example we will assume the ACE inhibitors cohort has ID 1, and the angioedema cohort has ID 2.
+
+### Data extraction
+
+We first need to tell R how to connect to the server. [`CohortMethod`](https://ohdsi.github.io/CohortMethod/) uses the [`DatabaseConnector`](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
+
+```{r tidy=FALSE,eval=FALSE}
+library(PatientLevelPrediction)
+connDetails <- createConnectionDetails(dbms = "postgresql",
+                                       server = "localhost/ohdsi",
+                                       user = "joe",
+                                       password = "supersecret")
+
+cdmDbSchema <- "my_cdm_data"
+cohortsDbSchema <- "scratch"
+cohortsDbTable <- "my_cohorts"
+cdmVersion <- "5"
+```
+
+The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbTable` variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
+
+
+## Implementation the study using ATLAS
 
 
 
