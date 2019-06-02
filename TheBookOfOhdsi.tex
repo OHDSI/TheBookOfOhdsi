@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-01}
+    \date{2019-06-02}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -2373,13 +2373,126 @@ that corrects for any such dependency. \citep{farrington_2011}
 \section{Designing a hypertension
 study}\label{designing-a-hypertension-study}
 
-Describe case study: risk of angioedema and AMI in new users of ACE
-inhibitors compared to new users of thiazide and thiazide-like diuretics
+\subsection{Problem definition}\label{problem-definition}
 
-\subsection{Implementation the study using
+ACE inhibitors are widely used in patients with hypertension or ischemic
+heart disease, especially those with other comorbidities such as
+congestive heart failure, diabetes mellitus, or chronic kidney disease
+\citep{zaman_2002}. Angioedema, a serious and sometimes life-threatening
+adverse event that usually manifests as swelling of the lips, tongue,
+mouth, larynx, pharynx, or periorbital region, has been linked to the
+use of these medications \citep{sabroe_1997}. However, limited
+information is available about the absolute and relative risks for
+angioedema associated with the use of these medications. Existing
+evidence is primarily based on investigations of specific cohorts (eg,
+predominantly male veterans or Medicaid beneficiaries), whose findings
+may not be generalizable to other populations, or based on
+investigations with few events, which provide unstable risk estimates
+\citep{powers_2012}. Several observational studies compare ACE
+inhibitors to beta-blockers for the risk of angioedema
+\citep{magid_2010, toh_2012}, but beta-blockers are no longer recommend
+as first-line treatment of hypertension \citep{whelton_2018}. A viable
+alternative treatment could be thiazides or thiazide-like diuretics,
+which could be just as effective in managing hypertension and its
+associated risks such as acute myocardial infarction.
+
+We will apply our population-level estimation framework to observational
+healthcare data to address the following comparative estimation
+question:
+
+\begin{quote}
+What is the risk of angioedema and acute myocaridal infarction in new
+users of ACE inhibitors compared to new users of thiazide and
+thiazide-like diuretics?
+\end{quote}
+
+\subsection{Target and comparator}\label{target-and-comparator}
+
+Focus on first-line mono-therapy
+
+\subsection{Outcome}\label{outcome}
+
+Angioedema and AMI
+
+\subsection{Time-at-risk}\label{time-at-risk}
+
+\subsection{Model}\label{model}
+
+\subsection{Study summary}\label{study-summary}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:cmChoices} Main design choices four our comparative
+cohort study.}\tabularnewline
+\toprule
+Choice & Value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Choice & Value\tabularnewline
+\midrule
+\endhead
+Target cohort &\tabularnewline
+Comparator cohort &\tabularnewline
+Outcome cohort &\tabularnewline
+Time-at-risk &\tabularnewline
+Model &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\section{Implementation the study using
 R}\label{implementation-the-study-using-r}
 
-\subsection{Implementation the study using
+Now we have completely designed our study we have to implement the
+study. This will be done using the
+\href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} package to
+execute our study. It extracts the necessary data from a database in the
+CDM and can use a large set of covariates for the propensity model.
+
+\subsection{Cohort instantiation}\label{cohort-instantiation}
+
+We first need to instantiate the target and outcome cohorts.
+Instantiating cohorts is described in Chapter \ref{Cohorts}. The
+Appendix provides the full definitions of the target (Appendix
+\ref{AceInhibitors}) and outcome (Appendix \ref{Angioedema}) cohorts. In
+this example we will assume the ACE inhibitors cohort has ID 1, and the
+angioedema cohort has ID 2.
+
+\subsection{Data extraction}\label{data-extraction}
+
+We first need to tell R how to connect to the server.
+\href{https://ohdsi.github.io/CohortMethod/}{\texttt{CohortMethod}} uses
+the
+\href{https://ohdsi.github.io/DatabaseConnector/}{\texttt{DatabaseConnector}}
+package, which provides a function called
+\texttt{createConnectionDetails}. Type \texttt{?createConnectionDetails}
+for the specific settings required for the various database management
+systems (DBMS). For example, one might connect to a PostgreSQL database
+using this code:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(PatientLevelPrediction)}
+\NormalTok{connDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                                       \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
+                                       \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
+                                       \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
+
+\NormalTok{cdmDbSchema <-}\StringTok{ "my_cdm_data"}
+\NormalTok{cohortsDbSchema <-}\StringTok{ "scratch"}
+\NormalTok{cohortsDbTable <-}\StringTok{ "my_cohorts"}
+\NormalTok{cdmVersion <-}\StringTok{ "5"}
+\end{Highlighting}
+\end{Shaded}
+
+The last four lines define the \texttt{cdmDbSchema},
+\texttt{cohortsDbSchema}, and \texttt{cohortsDbTable} variables, as well
+as the CDM version. We will use these later to tell R where the data in
+CDM format live, where the cohorts of interest have been created, and
+what version CDM is used. Note that for Microsoft SQL Server, database
+schemas need to specify both the database and the schema, so for example
+\texttt{cdmDbSchema\ \textless{}-\ "my\_cdm\_data.dbo"}.
+
+\section{Implementation the study using
 ATLAS}\label{implementation-the-study-using-atlas}
 
 \section{Advanced topics}\label{advanced-topics}
@@ -2627,30 +2740,27 @@ practice. In the PLP framework we have enforced that we have to define
 the prediction problem we like to address, in which population we will
 build the model, which model we will build and how we will evaluate its
 performance. In this section we will guide you through this process and
-we will use a ``Disease onset and progression'' prediction type as an
-example.
+we will use a ``Treatment safety'' prediction type as an example.
 
-\subsection{Problem definition}\label{problem-definition}
+\subsection{Problem definition}\label{problem-definition-1}
 
-Atrial fibrillation is a disease characterized by an irregular heart
-rate that can cause poor blood flow. Patients with atrial fibrillation
-are at increased risk of ischemic stroke. Anticoagulation is a
-recommended prophylaxis treatment strategy for patients at high risk of
-stroke, though the underuse of anticoagulants and persistent severity of
-ischemic stroke represents a substantial unmet medical need. Various
-strategies have been developed to predict risk of ischemic stroke in
-patients with atrial fibrillation. CHADS2 \citep{gage2001} was developed
-as a risk score based on history of congestive heart failure,
-hypertension, age\textgreater{}=75, diabetes and stroke. CHADS2 was
-initially derived using Medicare claims data, where it achieved good
-discrimination (AUC=0.82). However, subsequent external validation
-studies revealed the CHADS2 had substantially lower predictive accuracy
-\citep{keogh2011}. Subsequent stroke risk calculators have been
-developed and evaluated, including the extension of CHADS2Vasc. The
-management of atrial fibrillation has evolved substantially over the
-last decade, for various reasons that include the introduction of novel
-oral anticoagulants. With these innovations has come a renewed interest
-in greater precision medicine for stroke prevention.
+Angioedema is a well known side-effect of ACE inhibitors, and the
+incidence of angioedema reported in the labeling for ACE inhibitors is
+in the range of 0.1\% to 0.7\% \citep{byrd_2006}. Monitoring patients
+for this adverse effect is important, because although angioedema is
+rare, it may be life-threatening, leading to respiratory arrest and
+death \citep{norman_2013}. Further, if angioedema is not initially
+recognized, it may lead to extensive and expensive workups before it is
+identified as a cause \citep{norman_2013, thompson_1993}. Other than the
+higher risk among African-American patients, there are no known
+predisposing factors for the development of ACE inhibitor--related
+angioedema \citep{byrd_2006}. Most reactions occur within the first week
+or month of initial therapy and often within hours of the initial dose
+\citep{circardi_2004}. However, some cases may occur years after therapy
+has begun \citep{mara_1996}.No diagnostic test is available that
+specifically identifies those at risk. If we could identify those at
+risk, doctors could act, for example by discontinuing the ACE
+inhibitorin favor of another hypertension drug.
 
 We will apply the PLP framework to observational healthcare data to
 address the following patient-level prediction question:
@@ -2883,7 +2993,7 @@ For our prediction model we decide to start with a Regularized Logistic
 Regression and will use the default parameters. We will do a 75\%-25\%
 split by person.
 
-\subsection{Study summary}\label{study-summary}
+\subsection{Study summary}\label{study-summary-1}
 
 We now completely defined our study as shown in Table
 \ref{tab:plpSummary}.
@@ -2895,7 +3005,7 @@ study.}\tabularnewline
 \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Choice\strut
 \end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
-Description\strut
+Value\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
@@ -2903,7 +3013,7 @@ Description\strut
 \begin{minipage}[b]{0.23\columnwidth}\raggedright\strut
 Choice\strut
 \end{minipage} & \begin{minipage}[b]{0.71\columnwidth}\raggedright\strut
-Description\strut
+Value\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
@@ -2949,7 +3059,7 @@ package to build patient-level predictive models. The package enables
 data extraction, model building, and model evaluation using data from
 databases that are translated into the OMOP CDM.
 
-\subsection{Cohort instantiation}\label{cohort-instantiation}
+\subsection{Cohort instantiation}\label{cohort-instantiation-1}
 
 We first need to instantiate the target and outcome cohorts.
 Instantiating cohorts is described in Chapter \ref{Cohorts}. The
@@ -2958,7 +3068,7 @@ Appendix provides the full definitions of the target (Appendix
 this example we will assume the ACE inhibitors cohort has ID 1, and the
 angioedema cohort has ID 2.
 
-\subsection{Data extraction}\label{data-extraction}
+\subsection{Data extraction}\label{data-extraction-1}
 
 We first need to tell R how to connect to the server.
 \href{https://ohdsi.github.io/PatientLevelPrediction/}{\texttt{PatientLevelPrediction}}
@@ -4501,6 +4611,286 @@ Mapped\tabularnewline
 \bottomrule
 \end{longtable}
 
+\section{New users of ACE inhibitors as first-line monotherapy for
+hypertension}\label{AceInhibitorsMono}
+
+\textbf{Initial Event Cohort}
+
+People having any of the following:
+
+\begin{itemize}
+\tightlist
+\item
+  a drug exposure of \emph{ACE inhibitors} (Table
+  \ref{tab:aceInhibitorsMono}) for the first time in the person's
+  history
+\end{itemize}
+
+with continuous observation of at least 365 days prior and 0 days after
+event index date, and limit initial events to: earliest event per
+person.
+
+\textbf{Inclusion Rules}
+
+Inclusion Criteria \#1: has hypertension diagnosis in 1 yr prior to
+treatment
+
+Having all of the following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  at least 1 occurrences of a condition occurrence of \emph{Hypertensive
+  disorder} (Table \ref{tab:hypertensionAceMono}) where event starts
+  between 365 days Before and 0 days After index start date
+\end{itemize}
+
+Inclusion Criteria \#2: Has no prior antihypertensive drug exposures in
+medical history
+
+Having all of the following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  exactly 0 occurrences of a drug exposure of \emph{Hypertension drugs}
+  (Table \ref{tab:htnDrugsAceMono}) where event starts between all days
+  Before and 1 days Before index start date
+\end{itemize}
+
+Inclusion Criteria \#3: Is only taking ACE as monotherapy, with no
+concomitant combination treatments
+
+Having all of the following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  exactly 1 distinct occurrences of a drug era of \emph{Hypertension
+  drugs} (Table \ref{tab:htnDrugsAceMono}) where event starts between 0
+  days Before and 7 days After index start date
+\end{itemize}
+
+Limit qualifying cohort to: earliest event per person.
+
+\textbf{End Date Strategy}
+
+Custom Drug Era Exit Criteria. This strategy creates a drug era from the
+codes found in the specified concept set. If the index event is found
+within an era, the cohort end date will use the era's end date.
+Otherwise, it will use the observation period end date that contains the
+index event.
+
+Use the era end date of \emph{ACE inhibitors} (Table
+\ref{tab:aceInhibitorsMono})
+
+\begin{itemize}
+\tightlist
+\item
+  allowing 30 days between exposures
+\item
+  adding 0 days after exposure end
+\end{itemize}
+
+\textbf{Cohort Collapse Strategy}
+
+Collapse cohort by era with a gap size of 0 days.
+
+\textbf{Concept Set Definitions}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:aceInhibitorsMono} ACE inhibitors}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+1308216 & Lisinopril & NO & YES & NO\tabularnewline
+1310756 & moexipril & NO & YES & NO\tabularnewline
+1331235 & quinapril & NO & YES & NO\tabularnewline
+1334456 & Ramipril & NO & YES & NO\tabularnewline
+1335471 & benazepril & NO & YES & NO\tabularnewline
+1340128 & Captopril & NO & YES & NO\tabularnewline
+1341927 & Enalapril & NO & YES & NO\tabularnewline
+1342439 & trandolapril & NO & YES & NO\tabularnewline
+1363749 & Fosinopril & NO & YES & NO\tabularnewline
+1373225 & Perindopril & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:hypertensionAceMono} Hypertensive
+disorder}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+316866 & Hypertensive disorder & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:htnDrugsAceMono} Hypertension drugs}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+904542 & Triamterene & NO & YES & NO\tabularnewline
+907013 & Metolazone & NO & YES & NO\tabularnewline
+932745 & Bumetanide & NO & YES & NO\tabularnewline
+942350 & torsemide & NO & YES & NO\tabularnewline
+956874 & Furosemide & NO & YES & NO\tabularnewline
+970250 & Spironolactone & NO & YES & NO\tabularnewline
+974166 & Hydrochlorothiazide & NO & YES & NO\tabularnewline
+978555 & Indapamide & NO & YES & NO\tabularnewline
+991382 & Amiloride & NO & YES & NO\tabularnewline
+1305447 & Methyldopa & NO & YES & NO\tabularnewline
+1307046 & Metoprolol & NO & YES & NO\tabularnewline
+1307863 & Verapamil & NO & YES & NO\tabularnewline
+1308216 & Lisinopril & NO & YES & NO\tabularnewline
+1308842 & valsartan & NO & YES & NO\tabularnewline
+1309068 & Minoxidil & NO & YES & NO\tabularnewline
+1309799 & eplerenone & NO & YES & NO\tabularnewline
+1310756 & moexipril & NO & YES & NO\tabularnewline
+1313200 & Nadolol & NO & YES & NO\tabularnewline
+1314002 & Atenolol & NO & YES & NO\tabularnewline
+1314577 & nebivolol & NO & YES & NO\tabularnewline
+1317640 & telmisartan & NO & YES & NO\tabularnewline
+1317967 & aliskiren & NO & YES & NO\tabularnewline
+1318137 & Nicardipine & NO & YES & NO\tabularnewline
+1318853 & Nifedipine & NO & YES & NO\tabularnewline
+1319880 & Nisoldipine & NO & YES & NO\tabularnewline
+1319998 & Acebutolol & NO & YES & NO\tabularnewline
+1322081 & Betaxolol & NO & YES & NO\tabularnewline
+1326012 & Isradipine & NO & YES & NO\tabularnewline
+1327978 & Penbutolol & NO & YES & NO\tabularnewline
+1328165 & Diltiazem & NO & YES & NO\tabularnewline
+1331235 & quinapril & NO & YES & NO\tabularnewline
+1332418 & Amlodipine & NO & YES & NO\tabularnewline
+1334456 & Ramipril & NO & YES & NO\tabularnewline
+1335471 & benazepril & NO & YES & NO\tabularnewline
+1338005 & Bisoprolol & NO & YES & NO\tabularnewline
+1340128 & Captopril & NO & YES & NO\tabularnewline
+1341238 & Terazosin & NO & YES & NO\tabularnewline
+1341927 & Enalapril & NO & YES & NO\tabularnewline
+1342439 & trandolapril & NO & YES & NO\tabularnewline
+1344965 & Guanfacine & NO & YES & NO\tabularnewline
+1345858 & Pindolol & NO & YES & NO\tabularnewline
+1346686 & eprosartan & NO & YES & NO\tabularnewline
+1346823 & carvedilol & NO & YES & NO\tabularnewline
+1347384 & irbesartan & NO & YES & NO\tabularnewline
+1350489 & Prazosin & NO & YES & NO\tabularnewline
+1351557 & candesartan & NO & YES & NO\tabularnewline
+1353766 & Propranolol & NO & YES & NO\tabularnewline
+1353776 & Felodipine & NO & YES & NO\tabularnewline
+1363053 & Doxazosin & NO & YES & NO\tabularnewline
+1363749 & Fosinopril & NO & YES & NO\tabularnewline
+1367500 & Losartan & NO & YES & NO\tabularnewline
+1373225 & Perindopril & NO & YES & NO\tabularnewline
+1373928 & Hydralazine & NO & YES & NO\tabularnewline
+1386957 & Labetalol & NO & YES & NO\tabularnewline
+1395058 & Chlorthalidone & NO & YES & NO\tabularnewline
+1398937 & Clonidine & NO & YES & NO\tabularnewline
+40226742 & olmesartan & NO & YES & NO\tabularnewline
+40235485 & azilsartan & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\section{Acute myocardial infarction (AMI)}\label{Ami}
+
+\textbf{Initial Event Cohort}
+
+People having any of the following:
+
+\begin{itemize}
+\tightlist
+\item
+  a condition occurrence of \emph{Acute myocardial Infarction} (Table
+  \ref{tab:ami})
+\end{itemize}
+
+with continuous observation of at least 0 days prior and 0 days after
+event index date, and limit initial events to: all events per person.
+
+For people matching the Primary Events, include: Having any of the
+following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  at least 1 occurrences of a visit occurrence of \emph{Inpatient or ER
+  visit} (Table \ref{tab:inpatientOrErAmi}) where event starts between
+  all days Before and 0 days After index start date and event ends
+  between 0 days Before and all days After index start date
+\end{itemize}
+
+Limit cohort of initial events to: all events per person.
+
+Limit qualifying cohort to: all events per person.
+
+\textbf{End Date Strategy}
+
+Date Offset Exit Criteria. This cohort defintion end date will be the
+index event's start date plus 7 days
+
+\textbf{Cohort Collapse Strategy}
+
+Collapse cohort by era with a gap size of 180 days.
+
+\textbf{Concept Set Definitions}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:ami} Inpatient or ER visit}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+314666 & Old myocardial infarction & YES & YES & NO\tabularnewline
+4329847 & Myocardial infarction & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:inpatientOrErAmi} Inpatient or ER visit}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+262 & Emergency Room and Inpatient Visit & NO & YES & NO\tabularnewline
+9201 & Inpatient Visit & NO & YES & NO\tabularnewline
+9203 & Emergency Room Visit & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
 \section{Angioedema}\label{Angioedema}
 
 \textbf{Initial Event Cohort}
@@ -4575,6 +4965,202 @@ Mapped\tabularnewline
 262 & Emergency Room and Inpatient Visit & NO & YES & NO\tabularnewline
 9201 & Inpatient Visit & NO & YES & NO\tabularnewline
 9203 & Emergency Room Visit & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\section{New users of Thiazide-like diuretics as first-line monotherapy
+for hypertension}\label{ThiazidesMono}
+
+\textbf{Initial Event Cohort}
+
+People having any of the following:
+
+\begin{itemize}
+\tightlist
+\item
+  a drug exposure of \emph{Thiazide or thiazide-like diuretic} (Table
+  \ref{tab:thiazidesMono}) for the first time in the person's history
+\end{itemize}
+
+with continuous observation of at least 365 days prior and 0 days after
+event index date, and limit initial events to: earliest event per
+person.
+
+\textbf{Inclusion Rules}
+
+Inclusion Criteria \#1: has hypertension diagnosis in 1 yr prior to
+treatment
+
+Having all of the following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  at least 1 occurrences of a condition occurrence of \emph{Hypertensive
+  disorder} (Table \ref{tab:hypertensionThzMono}) where event starts
+  between 365 days Before and 0 days After index start date
+\end{itemize}
+
+Inclusion Criteria \#2: Has no prior antihypertensive drug exposures in
+medical history
+
+Having all of the following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  exactly 0 occurrences of a drug exposure of \emph{Hypertension drugs}
+  (Table \ref{tab:htnDrugsThzMono}) where event starts between all days
+  Before and 1 days Before index start date
+\end{itemize}
+
+Inclusion Criteria \#3: Is only taking ACE as monotherapy, with no
+concomitant combination treatments
+
+Having all of the following criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  exactly 1 distinct occurrences of a drug era of \emph{Hypertension
+  drugs} (Table \ref{tab:htnDrugsThzMono}) where event starts between 0
+  days Before and 7 days After index start date
+\end{itemize}
+
+Limit qualifying cohort to: earliest event per person.
+
+\textbf{End Date Strategy}
+
+Custom Drug Era Exit Criteria. This strategy creates a drug era from the
+codes found in the specified concept set. If the index event is found
+within an era, the cohort end date will use the era's end date.
+Otherwise, it will use the observation period end date that contains the
+index event.
+
+Use the era end date of \emph{Thiazide or thiazide-like diuretic} (Table
+\ref{tab:thiazidesMono})
+
+\begin{itemize}
+\tightlist
+\item
+  allowing 30 days between exposures
+\item
+  adding 0 days after exposure end
+\end{itemize}
+
+\textbf{Cohort Collapse Strategy}
+
+Collapse cohort by era with a gap size of 0 days.
+
+\textbf{Concept Set Definitions}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:thiazidesMono} Thiazide or thiazide-like
+diuretic}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+907013 & Metolazone & NO & YES & NO\tabularnewline
+974166 & Hydrochlorothiazide & NO & YES & NO\tabularnewline
+978555 & Indapamide & NO & YES & NO\tabularnewline
+1395058 & Chlorthalidone & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:hypertensionThzMono} Hypertensive
+disorder}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+316866 & Hypertensive disorder & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:htnDrugsThzMono} Hypertension drugs}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants &
+Mapped\tabularnewline
+\midrule
+\endhead
+904542 & Triamterene & NO & YES & NO\tabularnewline
+907013 & Metolazone & NO & YES & NO\tabularnewline
+932745 & Bumetanide & NO & YES & NO\tabularnewline
+942350 & torsemide & NO & YES & NO\tabularnewline
+956874 & Furosemide & NO & YES & NO\tabularnewline
+970250 & Spironolactone & NO & YES & NO\tabularnewline
+974166 & Hydrochlorothiazide & NO & YES & NO\tabularnewline
+978555 & Indapamide & NO & YES & NO\tabularnewline
+991382 & Amiloride & NO & YES & NO\tabularnewline
+1305447 & Methyldopa & NO & YES & NO\tabularnewline
+1307046 & Metoprolol & NO & YES & NO\tabularnewline
+1307863 & Verapamil & NO & YES & NO\tabularnewline
+1308216 & Lisinopril & NO & YES & NO\tabularnewline
+1308842 & valsartan & NO & YES & NO\tabularnewline
+1309068 & Minoxidil & NO & YES & NO\tabularnewline
+1309799 & eplerenone & NO & YES & NO\tabularnewline
+1310756 & moexipril & NO & YES & NO\tabularnewline
+1313200 & Nadolol & NO & YES & NO\tabularnewline
+1314002 & Atenolol & NO & YES & NO\tabularnewline
+1314577 & nebivolol & NO & YES & NO\tabularnewline
+1317640 & telmisartan & NO & YES & NO\tabularnewline
+1317967 & aliskiren & NO & YES & NO\tabularnewline
+1318137 & Nicardipine & NO & YES & NO\tabularnewline
+1318853 & Nifedipine & NO & YES & NO\tabularnewline
+1319880 & Nisoldipine & NO & YES & NO\tabularnewline
+1319998 & Acebutolol & NO & YES & NO\tabularnewline
+1322081 & Betaxolol & NO & YES & NO\tabularnewline
+1326012 & Isradipine & NO & YES & NO\tabularnewline
+1327978 & Penbutolol & NO & YES & NO\tabularnewline
+1328165 & Diltiazem & NO & YES & NO\tabularnewline
+1331235 & quinapril & NO & YES & NO\tabularnewline
+1332418 & Amlodipine & NO & YES & NO\tabularnewline
+1334456 & Ramipril & NO & YES & NO\tabularnewline
+1335471 & benazepril & NO & YES & NO\tabularnewline
+1338005 & Bisoprolol & NO & YES & NO\tabularnewline
+1340128 & Captopril & NO & YES & NO\tabularnewline
+1341238 & Terazosin & NO & YES & NO\tabularnewline
+1341927 & Enalapril & NO & YES & NO\tabularnewline
+1342439 & trandolapril & NO & YES & NO\tabularnewline
+1344965 & Guanfacine & NO & YES & NO\tabularnewline
+1345858 & Pindolol & NO & YES & NO\tabularnewline
+1346686 & eprosartan & NO & YES & NO\tabularnewline
+1346823 & carvedilol & NO & YES & NO\tabularnewline
+1347384 & irbesartan & NO & YES & NO\tabularnewline
+1350489 & Prazosin & NO & YES & NO\tabularnewline
+1351557 & candesartan & NO & YES & NO\tabularnewline
+1353766 & Propranolol & NO & YES & NO\tabularnewline
+1353776 & Felodipine & NO & YES & NO\tabularnewline
+1363053 & Doxazosin & NO & YES & NO\tabularnewline
+1363749 & Fosinopril & NO & YES & NO\tabularnewline
+1367500 & Losartan & NO & YES & NO\tabularnewline
+1373225 & Perindopril & NO & YES & NO\tabularnewline
+1373928 & Hydralazine & NO & YES & NO\tabularnewline
+1386957 & Labetalol & NO & YES & NO\tabularnewline
+1395058 & Chlorthalidone & NO & YES & NO\tabularnewline
+1398937 & Clonidine & NO & YES & NO\tabularnewline
+40226742 & olmesartan & NO & YES & NO\tabularnewline
+40235485 & azilsartan & NO & YES & NO\tabularnewline
 \bottomrule
 \end{longtable}
 
