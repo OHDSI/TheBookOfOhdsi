@@ -73,7 +73,7 @@ Many tables contain equivalent information in multiple places: As a Source Value
 Source Values are only provided for convenience and quality assurance (QA) purposes. Source Values and Source Concepts are optional, while **Standard Concepts are mandatory**. Source Values may contain information that is only meaningful in the context of a specific data source. This mandatory use of Standard Concepts is what allows all OHDSI collaborators to speak the same language. For example, let's look at the condition 'Pulmonary Tuberculosis' (TB). Figure \@ref(fig:pulmTubICD9) shows that the ICD9CM code for TB is 011. 
 
 <div class="figure" style="text-align: center">
-<img src="images/CommonDataModel/pulmTubICD9.PNG" alt="ICD9CM code for Pulmonary Tuberculosis" width="75%" />
+<img src="images/CommonDataModel/pulmTubICD9.png" alt="ICD9CM code for Pulmonary Tuberculosis" width="75%" />
 <p class="caption">(\#fig:pulmTubICD9)ICD9CM code for Pulmonary Tuberculosis</p>
 </div>
 
@@ -98,11 +98,11 @@ To illustrate how these tables are used in practice the data of one person will 
 
 Endometriosis is a painful condition whereby cells normally found in the lining of a woman's uterus occur elsewhere in the body. Severe cases can lead to infertility, bowel, and bladder problems. The following sections will detail one patient's experience with this disease and how her clinical experience might be represented in the Common Data Model. 
 
-<img src="images/CommonDataModel/Lauren.jpg" width="50%" />
-
-Lauren had been experiencing endometriosis symptoms for many year; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at [https://www.endometriosis-uk.org/laurens-story](https://www.endometriosis-uk.org/laurens-story).
+<img src="images/CommonDataModel/Lauren.jpg" width="50%" style="display: block; margin: auto;" />
 
 > Every step of this painfull journey I had to convince everyone how much pain I was in.
+
+Lauren had been experiencing endometriosis symptoms for many year; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at [https://www.endometriosis-uk.org/laurens-story](https://www.endometriosis-uk.org/laurens-story).
 
 ### PERSON table{#person}
 

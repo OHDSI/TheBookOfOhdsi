@@ -150,7 +150,7 @@ Angioedema and AMI
 
 ### Study summary
 
-Table: (\#tab:cmChoices) Main design choices four our comparative cohort study.
+Table: (\#tab:aceChoices) Main design choices four our comparative cohort study.
 
 | Choice            | Value                                                    |
 |:----------------- |:-------------------------------------------------------- |
