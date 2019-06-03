@@ -1,7 +1,76 @@
 # SQL and R {#SqlAndR}
 
-DatabaseConnector and SqlRender
+*Chapter lead: Martijn Schuemie*
+
+The Common Data Model is a relational database model, which means that the data will be stored in a relational database. There are various software platforms for storing relational databases, such as PostgreSQL, Oracle, and Microsoft SQL Server. The various OHDSI tools work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. Another reason could be the full transparancy. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to approriate analysis of the data, and direct queries do not provide such guidance.
+
+The standard language for querying databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, if I wish to retrieve the top 10 rows of a table on SQL Server I would type:
+
+
+```sql
+SELECT TOP 10 * FROM person;
+```
+
+Whereas the same query on PostgreSQL would be:
+
+
+```sql
+SELECT * FROM person LIMIT 10;
+```
+
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supprted dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of SQL Server SQL. The example SQL statements provided throughout this chapter will all use OHDSI SQL. 
+
+Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, a single R package that can be used to connect to a wide range of database platforms. DatabaseConnector will also be discussed later in this chapter.
+
+So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. 
+
+## R packages
+
+
+
+The SqlRender and DatabaseConnector packages are both available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:
+
+
+```r
+install.packages(c("SqlRender", "DatabaseConnector"))
+```
+
+Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Each package comes with a package manual and vignettes that explore hte full functionality of these packages. Here we describre some of the main features.
+
+### SqlRender {#SqlRender}
+
+The [SqlRender](https://ohdsi.github.io/SqlRender/) package supports parameterization of SQL queries, and translation from a standard SQL dialect to others. For example, we can translate this statement to the PostgreSQL dialect:
+
+
+```r
+sql <- "SELECT TOP 10 * FROM person;"
+translate(sql, targetDialect = "postgresql")
+```
+
+```
+## [1] "SELECT  * FROM person LIMIT 10;"
+```
+
+The `targetDialect` parameter can have the following values: "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sqlite", and "sql server".
+
+
+
+
+
+### DatabaseConnector {#DatabaseConnector}
+
+
+
+
+
+## Querying the CDM
 
 Querying the CDM
 
 Probably borrow heavily from https://github.com/OHDSI/QueryLibrary
+
+## Querying the vocabulary
+
+## Using the vocabulary when querying
+
+

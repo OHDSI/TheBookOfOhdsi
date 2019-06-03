@@ -151,7 +151,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="part"><span><b>III Data Analytics</b></span></li>
 <li class="chapter" data-level="8" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html"><i class="fa fa-check"></i><b>8</b> Data Analytics Use Cases</a></li>
 <li class="chapter" data-level="9" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html"><i class="fa fa-check"></i><b>9</b> OHDSI Analytics Tools</a></li>
-<li class="chapter" data-level="10" data-path="SqlAndR.html"><a href="SqlAndR.html"><i class="fa fa-check"></i><b>10</b> SQL and R</a></li>
+<li class="chapter" data-level="10" data-path="SqlAndR.html"><a href="SqlAndR.html"><i class="fa fa-check"></i><b>10</b> SQL and R</a><ul>
+<li class="chapter" data-level="10.1" data-path="SqlAndR.html"><a href="SqlAndR.html#r-packages"><i class="fa fa-check"></i><b>10.1</b> R packages</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="SqlAndR.html"><a href="SqlAndR.html#SqlRender"><i class="fa fa-check"></i><b>10.1.1</b> SqlRender</a></li>
+<li class="chapter" data-level="10.1.2" data-path="SqlAndR.html"><a href="SqlAndR.html#DatabaseConnector"><i class="fa fa-check"></i><b>10.1.2</b> DatabaseConnector</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="SqlAndR.html"><a href="SqlAndR.html#querying-the-cdm"><i class="fa fa-check"></i><b>10.2</b> Querying the CDM</a></li>
+<li class="chapter" data-level="10.3" data-path="SqlAndR.html"><a href="SqlAndR.html#querying-the-vocabulary"><i class="fa fa-check"></i><b>10.3</b> Querying the vocabulary</a></li>
+<li class="chapter" data-level="10.4" data-path="SqlAndR.html"><a href="SqlAndR.html#using-the-vocabulary-when-querying"><i class="fa fa-check"></i><b>10.4</b> Using the vocabulary when querying</a></li>
+</ul></li>
 <li class="chapter" data-level="11" data-path="Cohorts.html"><a href="Cohorts.html"><i class="fa fa-check"></i><b>11</b> Building the building blocks: cohorts</a></li>
 <li class="chapter" data-level="12" data-path="Characterization.html"><a href="Characterization.html"><i class="fa fa-check"></i><b>12</b> Characterization</a></li>
 <li class="chapter" data-level="13" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html"><i class="fa fa-check"></i><b>13</b> Population-level estimation</a><ul>
@@ -296,10 +304,44 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="SqlAndR" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> SQL and R</h1>
-<p>DatabaseConnector and SqlRender</p>
+<p><em>Chapter lead: Martijn Schuemie</em></p>
+<p>The Common Data Model is a relational database model, which means that the data will be stored in a relational database. There are various software platforms for storing relational databases, such as PostgreSQL, Oracle, and Microsoft SQL Server. The various OHDSI tools work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. Another reason could be the full transparancy. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to approriate analysis of the data, and direct queries do not provide such guidance.</p>
+<p>The standard language for querying databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, if I wish to retrieve the top 10 rows of a table on SQL Server I would type:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> TOP <span class="dv">10</span> * <span class="kw">FROM</span> person;</code></pre></div>
+<p>Whereas the same query on PostgreSQL would be:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> person <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
+<p>In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to ‘speak’ the same SQL language across all OHDSI databases. For this reason OHDSI developed the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package, an R package that can translate from one standard dialect to any of the supprted dialects that will be discussed later in this chapter. This standard dialect - <strong>OHDSI SQL</strong> - is mainly a subset of SQL Server SQL. The example SQL statements provided throughout this chapter will all use OHDSI SQL.</p>
+<p>Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> package, a single R package that can be used to connect to a wide range of database platforms. DatabaseConnector will also be discussed later in this chapter.</p>
+<p>So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots.</p>
+<div id="r-packages" class="section level2">
+<h2><span class="header-section-number">10.1</span> R packages</h2>
+<p>The SqlRender and DatabaseConnector packages are both available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>))</code></pre></div>
+<p>Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Each package comes with a package manual and vignettes that explore hte full functionality of these packages. Here we describre some of the main features.</p>
+<div id="SqlRender" class="section level3">
+<h3><span class="header-section-number">10.1.1</span> SqlRender</h3>
+<p>The <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package supports parameterization of SQL queries, and translation from a standard SQL dialect to others. For example, we can translate this statement to the PostgreSQL dialect:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sql &lt;-<span class="st"> &quot;SELECT TOP 10 * FROM person;&quot;</span>
+<span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;postgresql&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;SELECT  * FROM person LIMIT 10;&quot;</code></pre>
+<p>The <code>targetDialect</code> parameter can have the following values: “oracle”, “postgresql”, “pdw”, “redshift”, “impala”, “netezza”, “bigquery”, “sqlite”, and “sql server”.</p>
+</div>
+<div id="DatabaseConnector" class="section level3">
+<h3><span class="header-section-number">10.1.2</span> DatabaseConnector</h3>
+</div>
+</div>
+<div id="querying-the-cdm" class="section level2">
+<h2><span class="header-section-number">10.2</span> Querying the CDM</h2>
 <p>Querying the CDM</p>
 <p>Probably borrow heavily from <a href="https://github.com/OHDSI/QueryLibrary" class="uri">https://github.com/OHDSI/QueryLibrary</a></p>
+</div>
+<div id="querying-the-vocabulary" class="section level2">
+<h2><span class="header-section-number">10.3</span> Querying the vocabulary</h2>
+</div>
+<div id="using-the-vocabulary-when-querying" class="section level2">
+<h2><span class="header-section-number">10.4</span> Using the vocabulary when querying</h2>
 
+</div>
 </div>
             </section>
 

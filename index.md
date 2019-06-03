@@ -14,6 +14,8 @@ url: "https://ohdsi.github.io/TheBookOfOhdsi/"
 description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
 ---
 
+
+
 # Preface {-}
 
 <img src="images/Cover/Cover.png" width="250" height="375" alt="Cover image" align="right" style="margin: 0 1em 0 1em" /> This is a book about OHDSI, and is currently very much under development. 
