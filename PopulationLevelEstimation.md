@@ -174,7 +174,7 @@ Comparative Cohort Settings
 
 > +Add Comparison   			
 
-Click on ![](images/PopulationLevelEstimation/image20-half.png). The window in Figure \@ref(fig:comparions) should appear. Then click on ![](images/PopulationLevelEstimation/image2-half.png) to add cohorts to target, comparator and outcome cohort. 
+Click on ![](images/PopulationLevelEstimation/image20-half.png). The window in Figure \@ref(fig:comparisons) should appear. Then click on ![](images/PopulationLevelEstimation/image2-half.png) to add cohorts to target, comparator and outcome cohort. 
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/image5.png" alt="The comparison window." width="100%" />
@@ -183,7 +183,7 @@ Click on ![](images/PopulationLevelEstimation/image20-half.png). The window in F
 
 > Comparison: Add or update the target, comparator, outcome(s) cohorts and negative control outcomes
 
-When specifying T, C, and O, note that you can select as many T, C, and O cohorts as you like--this means that you can do many comparisons simultaneously. Additional outcomes will appear in the table below the ![](images/PopulationLevelEstimation/image11-half.png) button. These will be listed in a table with ID and Name columns displayed. Many entries can be displayed in this table.
+When specifying T, C, and O, note that you can select as many T, C, and O cohorts as you like--this means that you can do many comparisons simultaneously. Additional outcomes will appear in the table below the ![](images/PopulationLevelEstimation/image11.png) button. These will be listed in a table with ID and Name columns displayed. Many entries can be displayed in this table.
 
 > Choose your negative control outcomes 
 
