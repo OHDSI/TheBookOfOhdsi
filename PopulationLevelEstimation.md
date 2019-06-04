@@ -161,6 +161,68 @@ Table: (\#tab:aceChoices) Main design choices four our comparative cohort study.
 | Model             |                                                          |
 
 
+## Implementation the study using ATLAS
+
+SPECIFICATION
+
+Comparative Cohort Settings
+
+
+### Specifying the comparisons
+
+> Comparative Cohort Settings 
+
+> +Add Comparison   			
+
+Click on ![](images/PopulationLevelEstimation/image20-half.png). The window in Figure \@ref(fig:comparions) should appear. Then click on ![](images/PopulationLevelEstimation/image2-half.png) to add cohorts to target, comparator and outcome cohort. 
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/image5.png" alt="The comparison window." width="100%" />
+<p class="caption">(\#fig:comparisons)The comparison window.</p>
+</div>
+
+> Comparison: Add or update the target, comparator, outcome(s) cohorts and negative control outcomes
+
+When specifying T, C, and O, note that you can select as many T, C, and O cohorts as you like--this means that you can do many comparisons simultaneously. Additional outcomes will appear in the table below the ![](images/PopulationLevelEstimation/image11-half.png) button. These will be listed in a table with ID and Name columns displayed. Many entries can be displayed in this table.
+
+> Choose your negative control outcomes 
+
+Pick concept sets you want to include by clicking on ![](images/PopulationLevelEstimation/image2-half.png). Search for the negative control concept sets you previously built as discused in Chapter \@ref(MethodValidity).
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/image3.png" alt="Negative control outcomes selection window." width="100%" />
+<p class="caption">(\#fig:negControls)Negative control outcomes selection window.</p>
+</div>
+
+Note: The negative controls concept IDs included in the concept set do not include their descendants. Figure \@ref(fig:ncConceptSet) shows the negative control concept set used in this example.
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/image14.png" alt="Negative Control concept set." width="100%" />
+<p class="caption">(\#fig:ncConceptSet)Negative Control concept set.</p>
+</div>
+
+> What concepts do you want to include in baseline covariates in the propensity score model? (Leave blank if you want to include everything)
+
+Here, you can specify exactly which covariates you would like to include in your propensity score model. When specifying covariates *here*, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the LASSO regression build a model that balances all covariates. You might want to specify particular covariates when you are replicating an existing study that manually picked a small number of covariates. These inclusions can be specified in this comparison section or in the analysis section. The option in the analysis section of whether or not to include descendants will apply also here in the comparison section.
+ 
+> What concepts do you want to exclude from baseline covariates in the propensity score model? (Leave blank if you want to include everything)
+
+Rather than specifying which covariates to include, we can instead specify covariates to *exclude*. When we submit a list of concept IDs in this field, we use every covariate except for those that we submitted. We will want to exclude covariates that are very highly correlated with the exposures or else the propensity model will separate the two groups nearly perfectly, making a comparison impossible. These exclusions can be specified in this comparison section or in the analysis section. Exclusions may be comparison specific (exposure drugs), so it often makes sense to specify them here. The option in the analysis section of whether or not to include descendants will apply also here in the comparison section.
+
+In this example, the covariates we want to exclude are ACE inhibitors and thiazides or thiazide diuretic. Figure \@ref(fig:covsToExclude) shows we select a concept set that includes all these concepts. 
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/image8.png" alt="Covariate selection window with exclusion concepts." width="100%" />
+<p class="caption">(\#fig:covsToExclude)Covariate selection window with exclusion concepts.</p>
+</div>
+
+Often we want to include or exclude concepts **and their descendants**. We could specify the concept set to include descendant concepts. However, for various reasons it might be more efficient to not include descendant in the concept set, but rather automatically add them by setting the 'Should descendant concepts be added' option to *yes* in the Covariate Settings section of the Analysis settings that will be discussed later.
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/image14.png" alt="The concept set defining the concepts to exclude. Note that no descendantsa have been included. We will specify to include these at analysis time in the Analysis settings." width="100%" />
+<p class="caption">(\#fig:covsConceptSet)The concept set defining the concepts to exclude. Note that no descendantsa have been included. We will specify to include these at analysis time in the Analysis settings.</p>
+</div>
+
 ## Implementation the study using R
 
 Now we have completely designed our study we have to implement the study. This will be done using the [CohortMethod](https://ohdsi.github.io/CohortMethod/) package to execute our study. It extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model. 
@@ -189,19 +251,7 @@ cdmVersion <- "5"
 
 The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbTable` variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
 
-
-## Implementation the study using ATLAS
-
-
-
-
-
-## Advanced topics
-
-Best practices: http://www.ohdsi.org/web/wiki/doku.php?id=development:best_practices_estimation 
-
-Negative and positive controls, empirical calibration
-
+### Specifying the analyses
 
 ## Excercises
 

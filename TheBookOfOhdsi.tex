@@ -1884,24 +1884,24 @@ Case study: Perhaps on how to install the tools?
 \emph{Chapter lead: Martijn Schuemie}
 
 The Common Data Model is a relational database model, which means that
-the data will be stored in a relational database. There are various
-software platforms for storing relational databases, such as PostgreSQL,
-Oracle, and Microsoft SQL Server. The various OHDSI tools work by
-querying the database behind the scene, but we can also query the
-database directly ourselves if we have appropriate access rights. The
-main reason to do this is to perform analyses that currently are not
-supported by any existing tool. Another reason could be the full
-transparancy. However, directly querying the database also comes with
+the data will be stored in a relational database using a software
+platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various
+OHDSI tools such as ATLAS and the Methods Library work by querying the
+database behind the scene, but we can also query the database directly
+ourselves if we have appropriate access rights. The main reason to do
+this is to perform analyses that currently are not supported by any
+existing tool. However, directly querying the database also comes with
 risks, as the OHDSI tools are often designed to help guide the user to
 approriate analysis of the data, and direct queries do not provide such
 guidance.
 
-The standard language for querying databases is SQL (Structured Query
-Language), which can be used both to query the database as well as to
-make changes to the data. Although the basic commands in SQL are indeed
-standard, meaning the same across software platforms, each platform has
-its own dialect, with subtle changes. For example, if I wish to retrieve
-the top 10 rows of a table on SQL Server I would type:
+The standard language for querying relational databases is SQL
+(Structured Query Language), which can be used both to query the
+database as well as to make changes to the data. Although the basic
+commands in SQL are indeed standard, meaning the same across software
+platforms, each platform has its own dialect, with subtle changes. For
+example, to retrieve the top 10 rows of the person table on SQL Server
+one would type:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1923,16 +1923,16 @@ OHDSI databases. For this reason OHDSI developed the
 \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package, an R
 package that can translate from one standard dialect to any of the
 supprted dialects that will be discussed later in this chapter. This
-standard dialect - \textbf{OHDSI SQL} - is mainly a subset of SQL Server
-SQL. The example SQL statements provided throughout this chapter will
-all use OHDSI SQL.
+standard dialect - \textbf{OHDSI SQL} - is mainly a subset of the SQL
+Server SQL dialect. The example SQL statements provided throughout this
+chapter will all use OHDSI SQL.
 
 Each database platform also comes with its own software tools for
 querying the database using SQL. In OHDSI we developed the
 \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}
-package, a single R package that can be used to connect to a wide range
-of database platforms. DatabaseConnector will also be discussed later in
-this chapter.
+package, a single R package that can connect to a wide range of database
+platforms. DatabaseConnector will also be discussed later in this
+chapter.
 
 So although one can query a database that conforms to the CDM without
 using any OHDSI tools, the recommended path is to use the
@@ -1941,8 +1941,6 @@ developed at one site to be used at any other site without modification.
 R itself also immediately provides features to further analyse the data
 extracted from the database, such as performing statistical analyses and
 generating (interactive) plots.
-
-\section{R packages}\label{r-packages}
 
 The SqlRender and DatabaseConnector packages are both available on CRAN
 (the Comprehensive R Archive Network), and can therefore be installed
@@ -1958,16 +1956,139 @@ Both packages support a wide array of technical platforms including
 traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite,
 and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and
 Amazon RedShift), as well as Big Data platforms (Hadoop through Impala,
-and Google BigQuery). Each package comes with a package manual and
-vignettes that explore hte full functionality of these packages. Here we
-describre some of the main features.
+and Google BigQuery). Both packages come with package manuals and
+vignettes that explore the full functionality. Here we describre some of
+the main features.
 
-\subsection{SqlRender}\label{SqlRender}
+\section{SqlRender}\label{SqlRender}
 
-The \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package
-supports parameterization of SQL queries, and translation from a
-standard SQL dialect to others. For example, we can translate this
-statement to the PostgreSQL dialect:
+\subsection{SQL parameterization}\label{sql-parameterization}
+
+One of the functions of the package is to support parameterization of
+SQL. Often, small variations of SQL need to be generated based on some
+parameters. SqlRender offers a simple markup syntax inside the SQL code
+to allow parameterization. Rendering the SQL based on parameter values
+is done using the \texttt{render()} function.
+
+\textbf{Substituting parameter values}
+
+The \texttt{@} character can be used to indicate parameter names that
+need to be exchange for actual parameter values when rendering. In the
+following example, a variable called \texttt{a} is mentioned in the SQL.
+In the call to the render function the value of this parameter is
+defined:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT * FROM concept WHERE concept_id = @a;"}
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{a =} \DecValTok{123}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM concept WHERE concept_id = 123;"
+\end{verbatim}
+
+Note that, unlike the parameterization offered by most database
+management systems, it is just as easy to parameterize table or field
+names as values:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT * FROM @x WHERE person_id = @a;"}
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{x =} \StringTok{"observation"}\NormalTok{, }\DataTypeTok{a =} \DecValTok{123}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM observation WHERE person_id = 123;"
+\end{verbatim}
+
+The parameter values can be numbers, strings, booleans, as well as
+vectors, which are converted to comma-delimited lists:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT * FROM concept WHERE concept_id IN (@a);"}
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{a =} \KeywordTok{c}\NormalTok{(}\DecValTok{123}\NormalTok{, }\DecValTok{234}\NormalTok{, }\DecValTok{345}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM concept WHERE concept_id IN (123,234,345);"
+\end{verbatim}
+
+\textbf{If-then-else}
+
+Sometimes blocks of codes need to be turned on or off based on the
+values of one or more parameters. This is done using the
+\texttt{\{Condition\}\ ?\ \{if\ true\}\ :\ \{if\ false\}} syntax. If the
+\emph{condition} evaluates to true or 1, the \emph{if true} block is
+used, else the \emph{if false} block is shown (if present).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT * FROM cohort \{@x\} ? \{WHERE subject_id = 1\}"}
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{x =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM cohort "
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{x =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM cohort WHERE subject_id = 1"
+\end{verbatim}
+
+Simple comparisons are also supported:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT * FROM cohort \{@x == 1\} ? \{WHERE subject_id = 1\};"}
+\KeywordTok{render}\NormalTok{(sql,}\DataTypeTok{x =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM cohort WHERE subject_id = 1;"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{render}\NormalTok{(sql,}\DataTypeTok{x =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM cohort ;"
+\end{verbatim}
+
+As well as the \texttt{IN} operator:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT * FROM cohort \{@x IN (1,2,3)\} ? \{WHERE subject_id = 1\};"}
+\KeywordTok{render}\NormalTok{(sql,}\DataTypeTok{x =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM cohort WHERE subject_id = 1;"
+\end{verbatim}
+
+\subsection{Translation to other SQL
+dialects}\label{translation-to-other-sql-dialects}
+
+Another function of the
+\href{https://ohdsi.github.io/SqlRender/}{SqlRender} package is to
+translate from OHDSI SQL to other SQL dialects. For example:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1984,7 +2105,504 @@ The \texttt{targetDialect} parameter can have the following values:
 ``oracle'', ``postgresql'', ``pdw'', ``redshift'', ``impala'',
 ``netezza'', ``bigquery'', ``sqlite'', and ``sql server''.
 
-\subsection{DatabaseConnector}\label{DatabaseConnector}
+There are limits to what SQL functions and constructs can be translated
+properly, both because only a limited set of translation rules have been
+implemented in the package, but also some SQL features do not have an
+equivalent in all dialects.
+
+\textbf{Functions and structures supported by translate}
+
+These SQL Server functions have been tested and were found to be
+translated correctly to the various dialects:
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:sqlFunctions} Functions supported by
+translate.}\tabularnewline
+\toprule
+Function & Function & Function\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Function & Function & Function\tabularnewline
+\midrule
+\endhead
+ABS & EXP & RAND\tabularnewline
+ACOS & FLOOR & RANK\tabularnewline
+ASIN & GETDATE & RIGHT\tabularnewline
+ATAN & HASHBYTES* & ROUND\tabularnewline
+AVG & ISNULL & ROW\_NUMBER\tabularnewline
+CAST & ISNUMERIC & RTRIM\tabularnewline
+CEILING & LEFT & SIN\tabularnewline
+CHARINDEX & LEN & SQRT\tabularnewline
+CONCAT & LOG & SQUARE\tabularnewline
+COS & LOG10 & STDEV\tabularnewline
+COUNT & LOWER & SUM\tabularnewline
+COUNT\_BIG & LTRIM & TAN\tabularnewline
+DATEADD & MAX & UPPER\tabularnewline
+DATEDIFF & MIN & VAR\tabularnewline
+DATEFROMPARTS & MONTH & YEAR\tabularnewline
+DATETIMEFROMPARTS & NEWID &\tabularnewline
+DAY & PI &\tabularnewline
+EOMONTH & POWER &\tabularnewline
+\bottomrule
+\end{longtable}
+
+\begin{itemize}
+\tightlist
+\item
+  Requires special priviliges on Oracle. Has no equivalent on SQLite.
+\end{itemize}
+
+Similarly, many SQL syntax structures are supported. Here is a
+non-exhaustive lists of things that we know will translate well:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{-- Simple selects:}
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
+
+\CommentTok{-- Selects with joins:}
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ table_1 }\KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ table_2 }\KeywordTok{ON}\NormalTok{ a = b;}
+
+\CommentTok{-- Nested queries:}
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ table_1) tmp }\KeywordTok{WHERE}\NormalTok{ a = b;}
+
+\CommentTok{-- Limiting to top rows:}
+\KeywordTok{SELECT}\NormalTok{ TOP }\DecValTok{10}\NormalTok{ * }\KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
+
+\CommentTok{-- Selecting into a new table:}
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{INTO}\NormalTok{ new_table }\KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
+
+\CommentTok{-- Creating tables:}
+\KeywordTok{CREATE} \KeywordTok{TABLE} \KeywordTok{table}\NormalTok{ (field }\DataTypeTok{INT}\NormalTok{);}
+
+\CommentTok{-- Inserting verbatim values:}
+\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ other_table (field_1) }\KeywordTok{VALUES}\NormalTok{ (}\DecValTok{1}\NormalTok{);}
+
+\CommentTok{-- Inserting from SELECT:}
+\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ other_table (field_1) }\KeywordTok{SELECT} \FunctionTok{value} \KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
+  
+\CommentTok{-- Simple drop commands:}
+\KeywordTok{DROP} \KeywordTok{TABLE} \KeywordTok{table}\NormalTok{;}
+
+\CommentTok{-- Drop table if it exists:}
+\KeywordTok{IF}\NormalTok{ OBJECT_ID(}\StringTok{'ACHILLES_analysis'}\NormalTok{, }\StringTok{'U'}\NormalTok{) }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+  \KeywordTok{DROP} \KeywordTok{TABLE}\NormalTok{ ACHILLES_analysis;}
+  
+\CommentTok{-- Drop temp table if it exists:}
+\KeywordTok{IF}\NormalTok{ OBJECT_ID(}\StringTok{'tempdb..#cohorts'}\NormalTok{, }\StringTok{'U'}\NormalTok{) }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
+  \KeywordTok{DROP} \KeywordTok{TABLE}\NormalTok{ #cohorts;  }
+
+\CommentTok{-- Common table expressions:}
+\KeywordTok{WITH}\NormalTok{ cte }\KeywordTok{AS}\NormalTok{ (}\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM} \KeywordTok{table}\NormalTok{) }\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ cte;}
+
+\CommentTok{-- OVER clauses:}
+\KeywordTok{SELECT} \FunctionTok{ROW_NUMBER}\NormalTok{() }\KeywordTok{OVER}\NormalTok{ (}\KeywordTok{PARTITION} \KeywordTok{BY}\NormalTok{ a }\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ b)}
+  \KeywordTok{AS} \OtherTok{"Row Number"} \KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
+  
+\CommentTok{-- CASE WHEN clauses:}
+\KeywordTok{SELECT} \KeywordTok{CASE} \KeywordTok{WHEN}\NormalTok{ a=}\DecValTok{1} \KeywordTok{THEN}\NormalTok{ a }\KeywordTok{ELSE} \DecValTok{0} \KeywordTok{END} \KeywordTok{AS} \FunctionTok{value} \KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
+
+\CommentTok{-- UNIONs:}
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ a }\KeywordTok{UNION} \KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ b;}
+
+\CommentTok{-- INTERSECTIONs:}
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ a }\KeywordTok{INTERSECT} \KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ b;}
+
+\CommentTok{-- EXCEPT:}
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ a }\KeywordTok{EXCEPT} \KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ b;}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{String concatenation}
+
+String concatenation is one area where SQL Server is less specific than
+other dialects. In SQL Server, one would write
+\texttt{SELECT\ first\_name\ +\ \textquotesingle{}\ \textquotesingle{}\ +\ last\_name\ AS\ full\_name\ FROM\ table},
+but this should be
+\texttt{SELECT\ first\_name\ \textbar{}\textbar{}\ \textquotesingle{}\ \textquotesingle{}\ \textbar{}\textbar{}\ last\_name\ AS\ full\_name\ FROM\ table}
+in PostgreSQL and Oracle. SqlRender tries to guess when values that are
+being concatenated are strings. In the example above, because we have an
+explicit string (the space surrounded by single quotation marks), the
+translation will be correct. However, if the query had been
+\texttt{SELECT\ first\_name\ +\ last\_name\ AS\ full\_name\ FROM\ table},
+SqlRender would have had no clue the two fields were strings, and would
+incorrectly leave the plus sign. Another clue that a value is a string
+is an explicit cast to VARCHAR, so
+\texttt{SELECT\ last\_name\ +\ CAST(age\ AS\ VARCHAR(3))\ AS\ full\_name\ FROM\ table}
+would also be translated correctly. To avoid ambiguity altogether, it is
+probable best to use the \texttt{CONCAT()} function to concatenate two
+or more strings.
+
+\textbf{Table aliases and the AS keyword}
+
+Many SQL dialects allow the use of the \texttt{AS} keyword when defining
+a table alias, but will also work fine without the keyword. For example,
+both these SQL statements are fine for SQL Server, PostgreSQL, RedShift,
+etc.:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{-- Using AS keyword}
+\KeywordTok{SELECT}\NormalTok{ * }
+\KeywordTok{FROM}\NormalTok{ my_table }\KeywordTok{AS}\NormalTok{ table_}\DecValTok{1}
+\KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ (}
+  \KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ other_table}
+\NormalTok{) }\KeywordTok{AS}\NormalTok{ table_}\DecValTok{2}
+\KeywordTok{ON}\NormalTok{ table_1.person_id = table_2.person_id;}
+
+\CommentTok{-- Not using AS keyword}
+\KeywordTok{SELECT}\NormalTok{ * }
+\KeywordTok{FROM}\NormalTok{ my_table table_}\DecValTok{1}
+\KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ (}
+  \KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ other_table}
+\NormalTok{) table_}\DecValTok{2}
+\KeywordTok{ON}\NormalTok{ table_1.person_id = table_2.person_id;}
+\end{Highlighting}
+\end{Shaded}
+
+However, Oracle will throw an error when the \texttt{AS} keyword is
+used. In the above example, the first query will fail. It is therefore
+recommended to not use the \texttt{AS} keyword when aliasing tables.
+(Note: we can't make SqlRender handle this, because it can't easily
+distinguish between table aliases where Oracle doesn't allow \texttt{AS}
+to be used, and field aliases, where Oracle requires \texttt{AS} to be
+used.)
+
+\textbf{Temp tables}
+
+Temp tables can be very useful to store intermediate results, and when
+used correctly can be used to dramatically improve performance of
+queries. On most database platforms temp tables have very nice
+properties: they're only visible to the current user, are automatically
+dropped when the session ends, and can be created even when the user has
+no write access. Unfortunately, in Oracle temp tables are basically
+permanent tables, with the only difference that the data inside the
+table is only visible to the current user. This is why, in Oracle,
+SqlRender will try to emulate temp tables by
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Adding a random string to the table name so tables from different
+  users will not conflict.
+\item
+  Allowing the user to specify the schema where the temp tables will be
+  created.
+\end{enumerate}
+
+For example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT * FROM #children;"}
+\KeywordTok{translate}\NormalTok{(sql, }\DataTypeTok{targetDialect =} \StringTok{"oracle"}\NormalTok{, }\DataTypeTok{oracleTempSchema =} \StringTok{"temp_schema"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT * FROM temp_schema.lb2is86lchildren ;"
+\end{verbatim}
+
+Note that the user will need to have write privileges on
+\texttt{temp\_schema}.
+
+Also note that because Oracle has a limit on table names of 30
+characters, \textbf{temp table names are only allowed to be at most 22
+characters long} because else the name will become too long after
+appending the session ID.
+
+Futhermore, remember that temp tables are not automatically dropped on
+Oracle, so you will need to explicitly \texttt{TRUNCATE} and
+\texttt{DROP} all temp tables once you're done with them to prevent
+orphan tables accumulating in the Oracle temp schema.
+
+\textbf{Implicit casts}
+
+One of the few points where SQL Server is less explicit than other
+dialects is that it allows implicit casts. For example, this code will
+work on SQL Server:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{CREATE} \KeywordTok{TABLE}\NormalTok{ #temp (txt }\DataTypeTok{VARCHAR}\NormalTok{);}
+
+\KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ #temp}
+\KeywordTok{SELECT} \StringTok{'1'}\NormalTok{;}
+
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ #temp }\KeywordTok{WHERE}\NormalTok{ txt = }\DecValTok{1}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+Even though \texttt{txt} is a VARCHAR field and we are comparing it with
+an integer, SQL Server will automatically cast one of the two to the
+correct type to allow the comparison. In contrast, other dialects such
+as PosgreSQL will throw an error when trying to compare a VARCHAR with
+an INT.
+
+You should therefore always make casts explicit. In the above example,
+the last statement should be replaced with either
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ #temp }\KeywordTok{WHERE}\NormalTok{ txt = }\FunctionTok{CAST}\NormalTok{(}\DecValTok{1} \KeywordTok{AS} \DataTypeTok{VARCHAR}\NormalTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+or
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ #temp }\KeywordTok{WHERE} \FunctionTok{CAST}\NormalTok{(txt }\KeywordTok{AS} \DataTypeTok{INT}\NormalTok{) = }\DecValTok{1}\NormalTok{;}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Case sensitivity in string comparisons}
+
+Some DBMS platforms such as SQL Server always perform string comparisons
+in a case-insensitive way, while others such as PostgreSQL are always
+case sensitive. It is therefore recommended to always assume
+case-sensitive comparisons, and to explicitly make comparisons
+case-insensitive when unsure about the case. For example, instead of
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ concept }\KeywordTok{WHERE}\NormalTok{ concep_class_id = }\StringTok{'Clinical Finding'}
+\end{Highlighting}
+\end{Shaded}
+
+it is preferred to use
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ concept }\KeywordTok{WHERE} \FunctionTok{LOWER}\NormalTok{(concep_class_id) = }\StringTok{'clinical finding'}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Schemas and databases}
+
+In SQL Server, tables are located in a schema, and schemas reside in a
+database. For example, \texttt{cdm\_data.dbo.person} refers to the
+\texttt{person} table in the \texttt{dbo} schema in the
+\texttt{cdm\_data} database. In other dialects, even though a similar
+hierarchy often exists they are used very differently. In SQL Server,
+there is typically one schema per database (often called \texttt{dbo}),
+and users can easily use data in different databases. On other
+platforms, for example in PostgreSQL, it is not possible to use data
+across databases in a single session, but there are often many schemas
+in a database. In PostgreSQL one could say that the equivalent of SQL
+Server's database is the schema.
+
+We therefore recommend concatenating SQL Server's database and schema
+into a single parameter, which we typically call
+\texttt{@databaseSchema}. For example, we could have the parameterized
+SQL
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{SELECT}\NormalTok{ * }\KeywordTok{FROM}\NormalTok{ @databaseSchema.person}
+\end{Highlighting}
+\end{Shaded}
+
+where on SQL Server we can include both database and schema names in the
+value: \texttt{databaseSchema\ =\ "cdm\_data.dbo"}. On other platforms,
+we can use the same code, but now only specify the schema as the
+parameter value: \texttt{databaseSchema\ =\ "cdm\_data"}.
+
+The one situation where this will fail is the \texttt{USE} command,
+since \texttt{USE\ cdm\_data.dbo;} will throw an error. It is therefore
+preferred not to use the \texttt{USE} command, but always specify the
+database / schema where a table is located.
+
+\textbf{Debugging parameterized SQL}
+
+Debugging parameterized SQL can be a bit complicated; Only the rendered
+SQL can be tested against a database server, but changes to the code
+should be made in the parameterized (pre-rendered) SQL.
+
+A Shiny app is included in the SqlRender package for interactively
+editing source SQL and generating rendered and translated SQL. The app
+can be started using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{launchSqlRenderDeveloper}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Which will open the default browser with the app.
+
+\section{DatabaseConnector}\label{DatabaseConnector}
+
+DatabaseConnector is an R package for connecting to various database
+platforms using Java's JDBC drivers. The package already contins most
+drivers, but because of licensing reasons the drivers for BigQuery,
+Netezza and Impala are not included but must be obtained by the user.
+Type \texttt{?jdbcDrivers} for instructions on how to download these
+drivers. Once downloaded, you can use the \texttt{pathToDriver} argument
+of the \texttt{connect}, \texttt{dbConnect}, and
+\texttt{createConnectionDetails} functions.
+
+\subsection{Creating a connection}\label{creating-a-connection}
+
+To connect to a database a number of details need to be specified, such
+as the database platform, the location of the server, the user name, and
+password. We can call the \texttt{connect} function and specify these
+details directly:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{conn <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                \DataTypeTok{server =} \StringTok{"localhost/postgres"}\NormalTok{,}
+                \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
+                \DataTypeTok{password =} \StringTok{"secret"}\NormalTok{,}
+                \DataTypeTok{schema =} \StringTok{"cdm"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Connecting using PostgreSQL driver
+\end{verbatim}
+
+See \texttt{?connect} for information on which details are required for
+each platform. Don't forget to close any connection afterwards:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{disconnect}\NormalTok{(conn)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that, instead of providing the server name, it is also possible to
+provide the JDBC connection string if this is more convenient:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{conn <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                \DataTypeTok{connectionString =} \StringTok{"jdbc:postgresql://localhost:5432/postgres"}\NormalTok{,}
+                \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
+                \DataTypeTok{password =} \StringTok{"secret"}\NormalTok{,}
+                \DataTypeTok{schema =} \StringTok{"cdm"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Connecting using PostgreSQL driver
+\end{verbatim}
+
+Sometimes we may want to first specify the connection details, and defer
+connecting until later. This may be convenient for example when the
+connection is established inside a function, and the details need to be
+passed as an argument. We can use the \texttt{createConnectionDetails}
+function for this purpose:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{details <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                                   \DataTypeTok{server =} \StringTok{"localhost/postgres"}\NormalTok{,}
+                                   \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
+                                   \DataTypeTok{password =} \StringTok{"secret"}\NormalTok{,}
+                                   \DataTypeTok{schema =} \StringTok{"cdm"}\NormalTok{)}
+\NormalTok{conn <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(details)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Connecting using PostgreSQL driver
+\end{verbatim}
+
+\subsection{Querying}\label{querying}
+
+The main functions for querying database are the \texttt{querySql} and
+\texttt{executeSql} functions. The difference between these functions is
+that \texttt{querySql} expects data to be returned by the database, and
+can handle only one SQL statement at a time. In contrast,
+\texttt{executeSql} does not expect data to be returned, and accepts
+multiple SQL statments in a single SQL string.
+
+Some examples:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{querySql}\NormalTok{(conn, }\StringTok{"SELECT TOP 3 * FROM person"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   PERSON_ID GENDER_CONCEPT_ID YEAR_OF_BIRTH
+## 1         1              8507          1975
+## 2         2              8507          1976
+## 3         3              8507          1977
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{executeSql}\NormalTok{(conn, }\StringTok{"TRUNCATE TABLE foo; DROP TABLE foo; CREATE TABLE foo (bar INT);"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Both function provide extensive error reporting: When an error is thrown
+by the server, the error message and the offending piece of SQL are
+written to a text file to allow better debugging. The
+\texttt{executeSql} function also by default shows a progress bar,
+indicating the percentage of SQL statements that has been executed. If
+those attributes are not desired, the package also offers the
+\texttt{lowLevelQuerySql} and \texttt{lowLevelExecuteSql} functions.
+
+\subsection{Querying using ffdf
+objects}\label{querying-using-ffdf-objects}
+
+Sometimes the data to be fetched from the database is too large to fit
+into memory. In this case one can use the \texttt{ff} package to store R
+data objects on file, and use them as if they are available in memory.
+\texttt{DatabaseConnector} can download data directly into ffdf objects:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{querySql.ffdf}\NormalTok{(conn, }\StringTok{"SELECT * FROM person"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Where x is now an ffdf object.
+
+\subsection{Querying different platforms using the same
+SQL}\label{querying-different-platforms-using-the-same-sql}
+
+The following convenience functions are available that first call the
+\texttt{render} and \texttt{translate} functions in the SqlRender
+package: \texttt{renderTranslateExecuteSql},
+\texttt{renderTranslateQuerySql}, \texttt{renderTranslateQuerySql.ffdf}.
+For example:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x <-}\StringTok{ }\KeywordTok{renderTranslatequerySql}\NormalTok{(conn, }
+                             \DataTypeTok{sql =} \StringTok{"SELECT TOP 10 * FROM @schema.person"}\NormalTok{,}
+                             \DataTypeTok{schema =} \StringTok{"cdm_synpuf"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that the SQL Server-specific `TOP 10' syntax will be translated to
+for example `LIMIT 10' on PostgreSQL, and that the SQL parameter
+\texttt{@schema} will be instantiated with the provided value
+`cdm\_synpuf'.
+
+\subsection{Inserting tables}\label{inserting-tables}
+
+Although it is also possible to insert data in the database by sending
+SQL statements using the \texttt{executeSql} function, it is often
+convenient and faster to use the \texttt{insertTable} function:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(mtcars)}
+\KeywordTok{insertTable}\NormalTok{(conn, }\StringTok{"mtcars"}\NormalTok{, mtcars, }\DataTypeTok{createTable =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+In this example, we're uploading the mtcars data frame to a table called
+`mtcars' on the server, that will be automatically created.
 
 \section{Querying the CDM}\label{querying-the-cdm}
 
@@ -2550,6 +3168,145 @@ Model &\tabularnewline
 \end{longtable}
 
 \section{Implementation the study using
+ATLAS}\label{implementation-the-study-using-atlas}
+
+SPECIFICATION
+
+Comparative Cohort Settings
+
+\subsection{Specifying the
+comparisons}\label{specifying-the-comparisons}
+
+\begin{quote}
+Comparative Cohort Settings
+\end{quote}
+
+\begin{quote}
++Add Comparison
+\end{quote}
+
+Click on
+\includegraphics{images/PopulationLevelEstimation/image20-half.png}. The
+window in Figure \ref{fig:comparions} should appear. Then click on
+\includegraphics{images/PopulationLevelEstimation/image2-half.png} to
+add cohorts to target, comparator and outcome cohort.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/image5} 
+
+}
+
+\caption{The comparison window.}\label{fig:comparisons}
+\end{figure}
+
+\begin{quote}
+Comparison: Add or update the target, comparator, outcome(s) cohorts and
+negative control outcomes
+\end{quote}
+
+When specifying T, C, and O, note that you can select as many T, C, and
+O cohorts as you like--this means that you can do many comparisons
+simultaneously. Additional outcomes will appear in the table below the
+\includegraphics{images/PopulationLevelEstimation/image11-half.png}
+button. These will be listed in a table with ID and Name columns
+displayed. Many entries can be displayed in this table.
+
+\begin{quote}
+Choose your negative control outcomes
+\end{quote}
+
+Pick concept sets you want to include by clicking on
+\includegraphics{images/PopulationLevelEstimation/image2-half.png}.
+Search for the negative control concept sets you previously built as
+discused in Chapter \ref{MethodValidity}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/image3} 
+
+}
+
+\caption{Negative control outcomes selection window.}\label{fig:negControls}
+\end{figure}
+
+Note: The negative controls concept IDs included in the concept set do
+not include their descendants. Figure \ref{fig:ncConceptSet} shows the
+negative control concept set used in this example.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/image14} 
+
+}
+
+\caption{Negative Control concept set.}\label{fig:ncConceptSet}
+\end{figure}
+
+\begin{quote}
+What concepts do you want to include in baseline covariates in the
+propensity score model? (Leave blank if you want to include everything)
+\end{quote}
+
+Here, you can specify exactly which covariates you would like to include
+in your propensity score model. When specifying covariates \emph{here},
+all other covariates (aside from those you specified) are left out. We
+usually want to include all baseline covariates, letting the LASSO
+regression build a model that balances all covariates. You might want to
+specify particular covariates when you are replicating an existing study
+that manually picked a small number of covariates. These inclusions can
+be specified in this comparison section or in the analysis section. The
+option in the analysis section of whether or not to include descendants
+will apply also here in the comparison section.
+
+\begin{quote}
+What concepts do you want to exclude from baseline covariates in the
+propensity score model? (Leave blank if you want to include everything)
+\end{quote}
+
+Rather than specifying which covariates to include, we can instead
+specify covariates to \emph{exclude}. When we submit a list of concept
+IDs in this field, we use every covariate except for those that we
+submitted. We will want to exclude covariates that are very highly
+correlated with the exposures or else the propensity model will separate
+the two groups nearly perfectly, making a comparison impossible. These
+exclusions can be specified in this comparison section or in the
+analysis section. Exclusions may be comparison specific (exposure
+drugs), so it often makes sense to specify them here. The option in the
+analysis section of whether or not to include descendants will apply
+also here in the comparison section.
+
+In this example, the covariates we want to exclude are ACE inhibitors
+and thiazides or thiazide diuretic. Figure \ref{fig:covsToExclude} shows
+we select a concept set that includes all these concepts.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/image8} 
+
+}
+
+\caption{Covariate selection window with exclusion concepts.}\label{fig:covsToExclude}
+\end{figure}
+
+Often we want to include or exclude concepts \textbf{and their
+descendants}. We could specify the concept set to include descendant
+concepts. However, for various reasons it might be more efficient to not
+include descendant in the concept set, but rather automatically add them
+by setting the `Should descendant concepts be added' option to
+\emph{yes} in the Covariate Settings section of the Analysis settings
+that will be discussed later.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/image14} 
+
+}
+
+\caption{The concept set defining the concepts to exclude. Note that no descendantsa have been included. We will specify to include these at analysis time in the Analysis settings.}\label{fig:covsConceptSet}
+\end{figure}
+
+\section{Implementation the study using
 R}\label{implementation-the-study-using-r}
 
 Now we have completely designed our study we have to implement the
@@ -2602,15 +3359,7 @@ what version CDM is used. Note that for Microsoft SQL Server, database
 schemas need to specify both the database and the schema, so for example
 \texttt{cdmDbSchema\ \textless{}-\ "my\_cdm\_data.dbo"}.
 
-\section{Implementation the study using
-ATLAS}\label{implementation-the-study-using-atlas}
-
-\section{Advanced topics}\label{advanced-topics}
-
-Best practices:
-\url{http://www.ohdsi.org/web/wiki/doku.php?id=development:best_practices_estimation}
-
-Negative and positive controls, empirical calibration
+\subsection{Specifying the analyses}\label{specifying-the-analyses}
 
 \section{Excercises}\label{excercises}
 
