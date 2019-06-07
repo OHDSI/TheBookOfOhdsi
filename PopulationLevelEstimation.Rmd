@@ -35,9 +35,45 @@ Table: (\#tab:cmChoices) Main design choices in a comparative cohort design.
 
 The choice of model specifies, amongst others, the type of model. For example, we could use a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards.
 
-One crucial difference with a randomized trial is that there is no randomization, and therefore there might be systematic differences between the target and comparator populations. Without adjusting for these differences, estimates are likely to be confounded. A popular mechanism for adjusting for confounding is the use of Propensity Scores (PS). The PS is the probability of a subject receiving one treatment instead of the other, conditional on baseline characteristics. [@rosenbaum_1983] First, a model – typically a logistic regression – is fitted using the observed treatment assignments (target or comparator), then the model is used to produce the PS for each subject. In the past, PS were computed based on manually selected characteristics, and although the CohortMethod package can support such practices, we prefer the use of large-scale regularized regression using many generic characteristics. [@tian_2018] These characteristics include demographics, as well as all diagnoses, drug exposures, measurement, and medical procedures observed prior to treatment initiation, and exclude the target and comparator treatment. A model typically involves 10,000 to 100,000 unique characteristics. The PS can be used in several ways, for example by stratifying the study population based on the PS, by matching target subjects to comparator subjects with similar PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. 
-Another strategy for adjusting for differences between the two groups is to include additional variables in the outcome model. One major limitation of this approach is that whereas there often is a wealth of data to fit a propensity model, with thousands of people in both treatment groups, the outcomes we study tend to be somewhat rare, causing a paucity of data when trying to fit elaborate models with the outcome as dependent variable. One approach is to use both a PS and add the same variables that were used in the propensity model in the outcome model, thus adjusting for the same variables twice, but in different ways.
 The new-user cohort method inherently is a method for comparative effect estimation, comparing one treatment to another. It is difficult to use this method to compare a treatment against no treatment, since it is hard to define a group of unexposed people that is comparable with the exposed group. If one wants to use this design for direct effect estimation, the preferred way is to select a comparator treatment for the same indication as the exposure of interest, where the comparator treatment is believed to have no effect on the outcome. Unfortunately, such a comparator might not always be available. 
+
+A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is, on average, 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.  stroke) might then show substantial differences. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a “confounder”.
+
+**Propensity scores**
+
+In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what’s more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially *cannot* differ systematically with respect to *any* patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure.
+
+For a given patient, the *propensity score* is the probability that that patient received the target treatment as against the comparator. [@rosenbaum_1983] In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-matched observational study, we estimate the probability that each patient received the target treatment. This a straightforward predictive modeling application; we use logistic regression but many choices exist. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. 
+
+For example, suppose we use PS matching, and that Jan has a priori probability of 0.4 of receiving the target treatment and in fact receives the target treatment. If we can find a patient (named Jun) that also had an a priori probability of 0.4 of receiving the target treatment but in fact received the comparator, the comparison of Jan and Jun’s outcomes is like a mini-randomized trial, at least with respect to measured confounders. This comparison will yield an estimate of the Jan-Jun causal contrast that is as good as the one randomization would have produced. Estimation then proceeds as follows: for every patient that received the target, find one or more matched patients that receivedt the comparator but had the same a priori probability of receiving the target. Compare the outcome for the target patient with the outcomes for the comparator patients within each of these matched groups. 
+
+Propensity scoring controls for measured confounders. In fact, if treatment assignment is “strongly ignorable” given measured characteristics, propensity scoring will yield an unbiased estimate of the causal effect. “Strongly ignorable” essentially means that there are no unmeasured confounders. Unfortunately this is not a testable assumption. See Chapter \@ref(MethodValidity) on Method Valdity for further discussion of this issue.  
+
+**Variable selection**
+
+In the past, PS were computed based on manually selected characteristics, and although the CohortMethod package can support such practices, we prefer the use of large-scale regularized regression using many generic characteristics. [@tian_2018] These characteristics include demographics, as well as all diagnoses, drug exposures, measurement, and medical procedures observed prior to and on the day of treatment initiation. A model typically involves 10,000 to 100,000 unique characteristics, which we fit using large-scale regularized regression [@suchard_2013] implemented in the [Cyclops](https://ohdsi.github.io/Cyclops/) package. In essence, we let the data appropriately weight the characteristics.
+
+```{block2, type='rmdimportant'}
+We typically include the day of treatment initiation in the covariate capture window because many relevant data points such as the diagnosis leading to the treatment are recorded on that date. This does require us to explicitly exclude the target and comparator treatment from the set of covariates to prevent circular reasoning. 
+```
+
+**Caliper**
+
+Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) to within some tolerance known as a “caliper.” Following @austin_2011, we use a default of caliper of 0.2 standard deviations on the logit scale.
+
+**Overlap: preference scores**
+
+The propensity method requires that matching patients exist! As such, a key diagnostic shows the distribution of the propensity scores in the two groups. To facilitate interpretation, OHDSI tools plot a transformation of the propensity score called the “preference score” [@walker_2013]. The preference score adjusts for the market share of the two treatments. For example, if 10% of patients receive the target treatment (and 90% receive the comparator treatment), then patients with a preference score of 0.5 have a 10% probability of receiving the target treatment. Mathematically, the preference score is
+
+$$\ln\left(\frac{F}{1-F}\right)=\ln\left(\frac{S}{1-S}\right)-\ln\left(\frac{P}{1-P}\right)$$
+
+Where $F$ is the preference score, $S$ is the propensity score, and $P$ is the proportion of patients receiving the target treatment.
+
+@walker_2013 discuss the concept of “empirical equipoise”. They accept drug pairs as emerging from empirical equipoise if at least half of the dispensings of each of the drugs are to patients with a preference score of between 0.3 and 0.7.
+
+**Balance**
+
+Good practice always checks that the propensity matching succeeded in creating balanced groups of patients. Figure Z shows the standard ATLAS output for checking balance. For each patient characteristic, this plots the A-B difference after matching against the A-B difference before matching. ATLAS measures the standardized difference between means. Some guidelines recommend an after-matching standardized difference upper bound of 0.1 [@rubin_2001].
 
 ### Self-controlled cohort
 
@@ -122,10 +158,9 @@ One important assumption underlying the SCCS is that the observation period end 
 ## Designing a hypertension study
 
 
-
 ### Problem definition
 
-ACE inhibitors are widely used in patients with hypertension or ischemic heart disease, especially those with other comorbidities such as congestive heart failure, diabetes mellitus, or chronic kidney disease [@zaman_2002]. Angioedema, a serious and sometimes life-threatening adverse event that usually manifests as swelling of the lips, tongue, mouth, larynx, pharynx, or periorbital region, has been linked to the use of these medications [@sabroe_1997]. However, limited information is available about the absolute and relative risks for angioedema associated with the use of these medications. Existing evidence is primarily based on investigations of specific cohorts (eg, predominantly male veterans or Medicaid beneficiaries), whose findings may not be generalizable to other populations, or based on investigations with few events, which provide unstable risk estimates [@powers_2012]. Several observational studies compare ACE inhibitors to beta-blockers for the risk of angioedema [@magid_2010; @toh_2012], but beta-blockers are no longer recommend as first-line treatment of hypertension [@whelton_2018]. A viable alternative treatment could be thiazides or thiazide-like diuretics, which could be just as effective in managing hypertension and its associated risks such as acute myocardial infarction.
+ACE inhibitors (ACEi) are widely used in patients with hypertension or ischemic heart disease, especially those with other comorbidities such as congestive heart failure, diabetes mellitus, or chronic kidney disease [@zaman_2002]. Angioedema, a serious and sometimes life-threatening adverse event that usually manifests as swelling of the lips, tongue, mouth, larynx, pharynx, or periorbital region, has been linked to the use of these medications [@sabroe_1997]. However, limited information is available about the absolute and relative risks for angioedema associated with the use of these medications. Existing evidence is primarily based on investigations of specific cohorts (eg, predominantly male veterans or Medicaid beneficiaries), whose findings may not be generalizable to other populations, or based on investigations with few events, which provide unstable risk estimates [@powers_2012]. Several observational studies compare ACE inhibitors to beta-blockers for the risk of angioedema [@magid_2010; @toh_2012], but beta-blockers are no longer recommend as first-line treatment of hypertension [@whelton_2018]. A viable alternative treatment could be thiazides or thiazide-like diuretics (THZ), which could be just as effective in managing hypertension and its associated risks such as acute myocardial infarction (AMI).
 
 We will apply our population-level estimation framework to observational healthcare data to address the following comparative estimation question:
 
@@ -133,15 +168,19 @@ We will apply our population-level estimation framework to observational healthc
 
 ### Target and comparator
 
-Focus on first-line mono-therapy
+We consider patients new-users if their first observed treatment for hypertension was monotherapy with any active ingredient in either the ACEi or THZ class. We define mono therapy as not starting on any other hypertension drug in the seven days following treatment initiation. We require patients to have at least one year of prior database observation before first exposure and a recorded hypertension diagnosis at or in the one-year preceding treatment initiation. 
 
 ### Outcome
 
-Angioedema and AMI
+We define angioedema as any occurrence of an angioedema diagnose code during an inpatient or ER visit, and require there to be no angioedema diagnosis recorded in the seven days prior. We define AMI as any occurrence of an aAMI diagnose code during an inpatient or ER visit, and require there to be no AMI diagnosis record in the 180 days prior.
 
 ### Time-at-risk
 
+We define time-at-risk to start on the day after treatment initiation, and stop when exposure stops, allowing for a 30-day gap between subsequent prescriptions.
+
 ### Model
+
+We  fit a PS model using the default set of covariates, which includes demographics, conditions, drugs, procedures, measurements, observations, and several comorbidity scores. We exclude ACEi and THZ from the covariates. We perform variable-ratio matching [@rassen_2012] and condition the Cox regression on the matched sets.
 
 ### Study summary
 
@@ -149,69 +188,61 @@ Table: (\#tab:aceChoices) Main design choices four our comparative cohort study.
 
 | Choice            | Value                                                    |
 |:----------------- |:-------------------------------------------------------- |
-| Target cohort     |                                                          |
-| Comparator cohort |                                                          |
-| Outcome cohort    |                                                          |
-| Time-at-risk      |                                                          |
-| Model             |                                                          |
+| Target cohort     | New users of ACE inhibitors as first-line monotherapy for hypertension. |
+| Comparator cohort | New users of thiazides or thiazide-like diuretics as first-line monotherapy for hypertension. |
+| Outcome cohort    | Angioedema or acute myocardial infarction. |
+| Time-at-risk      | Starting the day after treatment initiation, stopping when exposure stops. |
+| Model             | Cox proportional hazards model using variable ratio matching. |
 
 
 ## Implementation the study using ATLAS
 
-SPECIFICATION
+Here we demonstrate how this study can be implemented using the Estimation tool in ATLAS. Click on ![](images/PopulationLevelEstimation/estimation.png) in the left bar of ATLAS, and create a new estimation study. Make sure to give the study an easy-to-recognize name. you can save the study design at any time by clicking the ![](images/PopulationLevelEstimation/save.png) button.
 
-Comparative Cohort Settings
+In the Estimation design tool, there are three sections: Comparisons, Analysis Settings, and Evaluation Settings. We can specify multiple comparisons and multiple analysis settings, and ATLAS will execute all combinations of these as separate analyses. Here we discuss each section:
 
+### Comparative cohort settings
 
-### Specifying the comparisons
+A study can have one or more comparisons. Click on 'Add Comparison', which will open a new dialog. Click on ![](images/PopulationLevelEstimation/open.png) to the select the target and  comparator cohorts. By clicking on "Add Outcome" we can add our two outcome cohorts. We assume the cohorts have already been created as described in Chapter \@ref(Cohorts). When done, the dialog should look like Figure \@ref(fig:comparisons).
 
-> Comparative Cohort Settings 
-
-> +Add Comparison   			
-
-Click on ![](images/PopulationLevelEstimation/image20-half.png). The window in Figure \@ref(fig:comparisons) should appear. Then click on ![](images/PopulationLevelEstimation/image2-half.png) to add cohorts to target, comparator and outcome cohort. 
-
-```{r comparisons, fig.cap='The comparison window.',echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics("images/PopulationLevelEstimation/image5.png")
+```{r comparisons, fig.cap='The comparison dialog',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/PopulationLevelEstimation/comparisons.png")
 ```
 
-> Comparison: Add or update the target, comparator, outcome(s) cohorts and negative control outcomes
+Note that we can select multiple outcomes for a target-comparator pair. Each outcome will be treated independently, and will basically result in separate analysis.
 
-When specifying T, C, and O, note that you can select as many T, C, and O cohorts as you like--this means that you can do many comparisons simultaneously. Additional outcomes will appear in the table below the ![](images/PopulationLevelEstimation/image11.png) button. These will be listed in a table with ID and Name columns displayed. Many entries can be displayed in this table.
+**Negative control outcomes**
 
-> Choose your negative control outcomes 
-
-Pick concept sets you want to include by clicking on ![](images/PopulationLevelEstimation/image2-half.png). Search for the negative control concept sets you previously built as discused in Chapter \@ref(MethodValidity).
-
-```{r negControls, fig.cap='Negative control outcomes selection window.',echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics("images/PopulationLevelEstimation/image3.png")
-```
-
-Note: The negative controls concept IDs included in the concept set do not include their descendants. Figure \@ref(fig:ncConceptSet) shows the negative control concept set used in this example.
+We should also include a set of negative control outcomes. These are outcomes that are not believed to be caused by either the target or the comparator. Negative controls are discussed in more detail in Chapter \@ref(MethodValidity). Here we assume a concept set has already been created and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure \@ref(fig:ncConceptSet) shows the negative control concept set used for this study.
 
 ```{r ncConceptSet, fig.cap='Negative Control concept set.',echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics("images/PopulationLevelEstimation/image14.png")
+knitr::include_graphics("images/PopulationLevelEstimation/ncConceptSet.png")
 ```
 
-> What concepts do you want to include in baseline covariates in the propensity score model? (Leave blank if you want to include everything)
+**Concepts to include**
 
-Here, you can specify exactly which covariates you would like to include in your propensity score model. When specifying covariates *here*, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the LASSO regression build a model that balances all covariates. You might want to specify particular covariates when you are replicating an existing study that manually picked a small number of covariates. These inclusions can be specified in this comparison section or in the analysis section. The option in the analysis section of whether or not to include descendants will apply also here in the comparison section.
- 
-> What concepts do you want to exclude from baseline covariates in the propensity score model? (Leave blank if you want to include everything)
+When selecting concept to include, you can specify which covariates you would like to include in your propensity score model. When specifying covariates here, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the regularized regression build a model that balances all covariates. You might want to specify particular covariates when you are replicating an existing study that manually picked a small number of covariates. These inclusions can be specified in this comparison section or in the analysis section. The option in the analysis section of whether or not to include descendants will apply also here in the comparison section.
 
-Rather than specifying which covariates to include, we can instead specify covariates to *exclude*. When we submit a list of concept IDs in this field, we use every covariate except for those that we submitted. We will want to exclude covariates that are very highly correlated with the exposures or else the propensity model will separate the two groups nearly perfectly, making a comparison impossible. These exclusions can be specified in this comparison section or in the analysis section. Exclusions may be comparison specific (exposure drugs), so it often makes sense to specify them here. The option in the analysis section of whether or not to include descendants will apply also here in the comparison section.
+**Concepts to exclude**
 
-In this example, the covariates we want to exclude are ACE inhibitors and thiazides or thiazide diuretic. Figure \@ref(fig:covsToExclude) shows we select a concept set that includes all these concepts. 
+Rather than specifying which concepts to include, we can instead specify concepts to *exclude*. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, and any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \@ref(fig:covsToExclude) shows we select a concept set that includes all these concepts. 
 
-```{r covsToExclude, fig.cap='Covariate selection window with exclusion concepts.',echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics("images/PopulationLevelEstimation/image8.png")
+```{r covsToExclude, fig.cap='The concept set defining the concepts to exclude. Note that no descendantsa have been included. We will specify to include these at analysis time in the Analysis settings.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/PopulationLevelEstimation/covsToExclude.png")
 ```
 
 Often we want to include or exclude concepts **and their descendants**. We could specify the concept set to include descendant concepts. However, for various reasons it might be more efficient to not include descendant in the concept set, but rather automatically add them by setting the 'Should descendant concepts be added' option to *yes* in the Covariate Settings section of the Analysis settings that will be discussed later.
 
-```{r covsConceptSet, fig.cap='The concept set defining the concepts to exclude. Note that no descendantsa have been included. We will specify to include these at analysis time in the Analysis settings.',echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics("images/PopulationLevelEstimation/image14.png")
+After selecting the negative controls and covariates to exclude, the comparisons dialog should look like Figure \@ref(fig:comparisons2).
+
+```{r comparisons2, fig.cap='The comparison window showing concept sets for negative controls and concepts to exclude.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/PopulationLevelEstimation/comparisons2.png")
 ```
+
+### Effect estimation analysis settings
+
+
+
 
 ## Implementation the study using R
 
