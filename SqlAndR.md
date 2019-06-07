@@ -4,7 +4,7 @@
 
 
 
-The Common Data Model is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to approriate analysis of the data, and direct queries do not provide such guidance.
+The Common Data Model is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.
 
 The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the person table on SQL Server one would type:
 
@@ -20,7 +20,7 @@ Whereas the same query on PostgreSQL would be:
 SELECT * FROM person LIMIT 10;
 ```
 
-In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supprted dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. 
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. 
 
 Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, a single R package that can connect to a wide range of database platforms. DatabaseConnector will also be discussed later in this chapter.
 
@@ -33,7 +33,7 @@ The SqlRender and DatabaseConnector packages are both available on CRAN (the Com
 install.packages(c("SqlRender", "DatabaseConnector"))
 ```
 
-Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Both packages come with package manuals and vignettes that explore the full functionality. Here we describre some of the main features.
+Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Both packages come with package manuals and vignettes that explore the full functionality. Here we describer some of the main features.
 
 ## SqlRender {#SqlRender}
 
@@ -178,7 +178,7 @@ Table: (\#tab:sqlFunctions) Functions supported by translate.
 |DAY               |PI         |           |
 |EOMONTH           |POWER      |           |
 
-* Requires special priviliges on Oracle. Has no equivalent on SQLite.
+* Requires special privileges on Oracle. Has no equivalent on SQLite.
 
 Similarly, many SQL syntax structures are supported. Here is a non-exhaustive lists of things that we know will translate well:
 
@@ -281,14 +281,14 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.bpccep4kchildren ;"
+## [1] "SELECT * FROM temp_schema.bg3otya8children ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
 
 Also note that because Oracle has a limit on table names of 30 characters, **temp table names are only allowed to be at most 22 characters long** because else the name will become too long after appending the session ID.
 
-Futhermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly ```TRUNCATE``` and ```DROP``` all temp tables once you're done with them to prevent orphan tables accumulating in the Oracle temp schema.
+Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly ```TRUNCATE``` and ```DROP``` all temp tables once you're done with them to prevent orphan tables accumulating in the Oracle temp schema.
 
 **Implicit casts**
 
@@ -358,7 +358,7 @@ Which will open the default browser with the app.
 
 ## DatabaseConnector {#DatabaseConnector}
 
-DatabaseConnector is an R package for connecting to various database platforms using Java's JDBC drivers. The package already contins most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type `?jdbcDrivers` for instructions on how to download these drivers. Once downloaded, you can use the `pathToDriver` argument of the `connect`, `dbConnect`, and `createConnectionDetails` functions.
+DatabaseConnector is an R package for connecting to various database platforms using Java's JDBC drivers. The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type `?jdbcDrivers` for instructions on how to download these drivers. Once downloaded, you can use the `pathToDriver` argument of the `connect`, `dbConnect`, and `createConnectionDetails` functions.
 
 ### Creating a connection
 
@@ -417,7 +417,7 @@ conn <- connect(details)
 
 ### Querying
 
-The main functions for querying database are the `querySql` and `executeSql` functions. The difference between these functions is that `querySql` expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, `executeSql` does not expect data to be returned, and accepts multiple SQL statments in a single SQL string. 
+The main functions for querying database are the `querySql` and `executeSql` functions. The difference between these functions is that `querySql` expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, `executeSql` does not expect data to be returned, and accepts multiple SQL statements in a single SQL string. 
 
 Some examples:
 

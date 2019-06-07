@@ -315,17 +315,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="SqlAndR" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> SQL and R</h1>
 <p><em>Chapter lead: Martijn Schuemie</em></p>
-<p>The Common Data Model is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to approriate analysis of the data, and direct queries do not provide such guidance.</p>
+<p>The Common Data Model is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.</p>
 <p>The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the person table on SQL Server one would type:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> TOP <span class="dv">10</span> * <span class="kw">FROM</span> person;</code></pre></div>
 <p>Whereas the same query on PostgreSQL would be:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> person <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
-<p>In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to ‘speak’ the same SQL language across all OHDSI databases. For this reason OHDSI developed the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package, an R package that can translate from one standard dialect to any of the supprted dialects that will be discussed later in this chapter. This standard dialect - <strong>OHDSI SQL</strong> - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL.</p>
+<p>In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to ‘speak’ the same SQL language across all OHDSI databases. For this reason OHDSI developed the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - <strong>OHDSI SQL</strong> - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL.</p>
 <p>Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> package, a single R package that can connect to a wide range of database platforms. DatabaseConnector will also be discussed later in this chapter.</p>
 <p>So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots.</p>
 <p>The SqlRender and DatabaseConnector packages are both available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>))</code></pre></div>
-<p>Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Both packages come with package manuals and vignettes that explore the full functionality. Here we describre some of the main features.</p>
+<p>Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Both packages come with package manuals and vignettes that explore the full functionality. Here we describer some of the main features.</p>
 <div id="SqlRender" class="section level2">
 <h2><span class="header-section-number">10.1</span> SqlRender</h2>
 <div id="sql-parameterization" class="section level3">
@@ -475,7 +475,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tbody>
 </table>
 <ul>
-<li>Requires special priviliges on Oracle. Has no equivalent on SQLite.</li>
+<li>Requires special privileges on Oracle. Has no equivalent on SQLite.</li>
 </ul>
 <p>Similarly, many SQL syntax structures are supported. Here is a non-exhaustive lists of things that we know will translate well:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Simple selects:</span>
@@ -560,10 +560,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span>
 <span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.ga0cdfxjchildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.jk8bmygpchildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters, <strong>temp table names are only allowed to be at most 22 characters long</strong> because else the name will become too long after appending the session ID.</p>
-<p>Futhermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
+<p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
 <p><strong>Implicit casts</strong></p>
 <p>One of the few points where SQL Server is less explicit than other dialects is that it allows implicit casts. For example, this code will work on SQL Server:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">CREATE</span> <span class="kw">TABLE</span> #temp (txt <span class="dt">VARCHAR</span>);
@@ -597,7 +597,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="DatabaseConnector" class="section level2">
 <h2><span class="header-section-number">10.2</span> DatabaseConnector</h2>
-<p>DatabaseConnector is an R package for connecting to various database platforms using Java’s JDBC drivers. The package already contins most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type <code>?jdbcDrivers</code> for instructions on how to download these drivers. Once downloaded, you can use the <code>pathToDriver</code> argument of the <code>connect</code>, <code>dbConnect</code>, and <code>createConnectionDetails</code> functions.</p>
+<p>DatabaseConnector is an R package for connecting to various database platforms using Java’s JDBC drivers. The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type <code>?jdbcDrivers</code> for instructions on how to download these drivers. Once downloaded, you can use the <code>pathToDriver</code> argument of the <code>connect</code>, <code>dbConnect</code>, and <code>createConnectionDetails</code> functions.</p>
 <div id="creating-a-connection" class="section level3">
 <h3><span class="header-section-number">10.2.1</span> Creating a connection</h3>
 <p>To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the <code>connect</code> function and specify these details directly:</p>
@@ -627,7 +627,7 @@ conn &lt;-<span class="st"> </span><span class="kw">connect</span>(details)</cod
 </div>
 <div id="querying" class="section level3">
 <h3><span class="header-section-number">10.2.2</span> Querying</h3>
-<p>The main functions for querying database are the <code>querySql</code> and <code>executeSql</code> functions. The difference between these functions is that <code>querySql</code> expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, <code>executeSql</code> does not expect data to be returned, and accepts multiple SQL statments in a single SQL string.</p>
+<p>The main functions for querying database are the <code>querySql</code> and <code>executeSql</code> functions. The difference between these functions is that <code>querySql</code> expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, <code>executeSql</code> does not expect data to be returned, and accepts multiple SQL statements in a single SQL string.</p>
 <p>Some examples:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">querySql</span>(conn, <span class="st">&quot;SELECT TOP 3 * FROM person&quot;</span>)</code></pre></div>
 <pre><code>##   PERSON_ID GENDER_CONCEPT_ID YEAR_OF_BIRTH
