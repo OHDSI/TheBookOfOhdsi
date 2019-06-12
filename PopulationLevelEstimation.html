@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-06-07" />
+<meta name="date" content="2019-06-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -186,7 +186,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.2.6" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#study-summary"><i class="fa fa-check"></i><b>13.2.6</b> Study summary</a></li>
 </ul></li>
 <li class="chapter" data-level="13.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#implementation-the-study-using-atlas"><i class="fa fa-check"></i><b>13.3</b> Implementation the study using ATLAS</a><ul>
-<li class="chapter" data-level="13.3.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#comparative-cohort-settings"><i class="fa fa-check"></i><b>13.3.1</b> Comparative cohort settings</a></li>
+<li class="chapter" data-level="13.3.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#ComparisonSettings"><i class="fa fa-check"></i><b>13.3.1</b> Comparative cohort settings</a></li>
 <li class="chapter" data-level="13.3.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#effect-estimation-analysis-settings"><i class="fa fa-check"></i><b>13.3.2</b> Effect estimation analysis settings</a></li>
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#implementation-the-study-using-r"><i class="fa fa-check"></i><b>13.4</b> Implementation the study using R</a><ul>
@@ -641,7 +641,7 @@ Figure 13.5: The Self-Controlled Case Series design. The rate of outcomes during
 <h2><span class="header-section-number">13.3</span> Implementation the study using ATLAS</h2>
 <p>Here we demonstrate how this study can be implemented using the Estimation tool in ATLAS. Click on <img src="images/PopulationLevelEstimation/estimation.png" /> in the left bar of ATLAS, and create a new estimation study. Make sure to give the study an easy-to-recognize name. you can save the study design at any time by clicking the <img src="images/PopulationLevelEstimation/save.png" /> button.</p>
 <p>In the Estimation design tool, there are three sections: Comparisons, Analysis Settings, and Evaluation Settings. We can specify multiple comparisons and multiple analysis settings, and ATLAS will execute all combinations of these as separate analyses. Here we discuss each section:</p>
-<div id="comparative-cohort-settings" class="section level3">
+<div id="ComparisonSettings" class="section level3">
 <h3><span class="header-section-number">13.3.1</span> Comparative cohort settings</h3>
 <p>A study can have one or more comparisons. Click on ‘Add Comparison’, which will open a new dialog. Click on <img src="images/PopulationLevelEstimation/open.png" /> to the select the target and comparator cohorts. By clicking on “Add Outcome” we can add our two outcome cohorts. We assume the cohorts have already been created as described in Chapter <a href="Cohorts.html#Cohorts">11</a>. When done, the dialog should look like Figure <a href="PopulationLevelEstimation.html#fig:comparisons">13.6</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:comparisons"></span>
@@ -684,23 +684,68 @@ Figure 13.9: The comparison window showing concept sets for negative controls an
 <p><strong>Study population</strong></p>
 <p>There are a wide range of options to specify the study population; the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts. One reason for using the options in Estimation instead of in the cohort definition is re-usability: We can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).</p>
 <p>The <strong>study start and end dates</strong> can be used to limit the analyses to a specific period. The study end date also truncates risk windows, meaning no outcomes beyond the study end date will be considered. One reason for selecting a study start date might be that one of the drugs being studied is new and did not exist in an earlier time. Adjusting for this can also be done by answering “yes” to the question ‘<strong>Restrict the analysis to the period when both exposures are observed?</strong>’. Another reason to adjust study start and end dates might be that medical practice changed over time (e.g., due to a drug warning) and we are only interested in the time where medicine was practiced a specific way.</p>
-<p>The option ‘<strong>Should only the first exposure per subject be included?</strong>’ can be used to restrict to the first exposure per patient. Often this is already done in the cohort definition, as is the case in this example. Similarly, the option ‘<em>The minimum required continuous observation time prior to index date for a person to be included in the cohort</em>’ is often already set in the cohort definition, and can therefore be left at 0 here. Having observed time (as defined in the OBSERVATION_PERIOD table) before the index date ensures that there is sufficient information about the patient to calculate a propensity score, and is also often used to ensure the patient is truly a new user, and therefore was not exposed before.</p>
+<p>The option ‘<strong>Should only the first exposure per subject be included?</strong>’ can be used to restrict to the first exposure per patient. Often this is already done in the cohort definition, as is the case in this example. Similarly, the option ‘<strong>The minimum required continuous observation time prior to index date for a person to be included in the cohort</strong>’ is often already set in the cohort definition, and can therefore be left at 0 here. Having observed time (as defined in the OBSERVATION_PERIOD table) before the index date ensures that there is sufficient information about the patient to calculate a propensity score, and is also often used to ensure the patient is truly a new user, and therefore was not exposed before.</p>
 <p>‘<strong>Remove subjects that are in both the target and comparator cohort?</strong>’ defines, together with the option ‘<strong>If a subject is in multiple cohorts, should time-at-risk be censored when the new time-at-risk starts to prevent overlap?</strong>’ what happens when a subject is in both target and comparator cohort. The first setting has three choices:</p>
 <ul>
 <li>‘<strong>Keep All</strong>’ indicating to keep the subjects in both cohorts. With this option it might be possible to double-count subjects and outcomes.</li>
 <li>‘<strong>Keep First</strong>’ indicating to keep the subject in the first cohort that occurred.</li>
 <li>‘<strong>Remove All</strong>’ indicating to remove the subject from both cohorts.</li>
 </ul>
-<p>If the options ‘Keep all’ or ‘keep first’ are selected, we may wish to censor any time when a person is in both cohorts. This is illustrated in Figure <a href="PopulationLevelEstimation.html#fig:tar">13.10</a>. By default, the time-at-risk is defined relative to the cohort start and end date. In this example, the time-at-risk starts one day after cohort entry, and stops at cohort start. In this case, without censoring the time-at-risk for the two cohorts overlap. This is especially problematic if we choose to keep all, because any outcome that occurs during this overlap (as shown) will be counted twice. If we choose to censor, the first cohort’s time-at-risk ends when the second cohort’s time-at-risk starts.</p>
+<p>If the options ‘Keep all’ or ‘keep first’ are selected, we may wish to censor the time when a person is in both cohorts. This is illustrated in Figure <a href="PopulationLevelEstimation.html#fig:tar">13.10</a>. By default, the time-at-risk is defined relative to the cohort start and end date. In this example, the time-at-risk starts one day after cohort entry, and stops at cohort start. In this case, without censoring the time-at-risk for the two cohorts overlap. This is especially problematic if we choose to keep all, because any outcome that occurs during this overlap (as shown) will be counted twice. If we choose to censor, the first cohort’s time-at-risk ends when the second cohort’s time-at-risk starts.</p>
 <div class="figure" style="text-align: center"><span id="fig:tar"></span>
 <img src="images/PopulationLevelEstimation/tar.png" alt="Time-at-risk (TAR) for subjects who are in both cohorts, assuming time-at-risk starts the day after treatment initiation, and stops at exposure end." width="80%" />
 <p class="caption">
 Figure 13.10: Time-at-risk (TAR) for subjects who are in both cohorts, assuming time-at-risk starts the day after treatment initiation, and stops at exposure end.
 </p>
 </div>
-<p>Remove subjects that have the outcome prior to the risk window start?</p>
-<p>We often want only new occurrences of outcomes because a second occurrence could potentially be a continuation of the first one. For instance, when someone develops heart failure, a second occurrence is more likely, and it is likely that the heart failure never fully resolved in between. On the other hand, some outcomes are episodic, and it would be expected for patients to have more than one independent occurrence, like an upper respiratory infection. The outcome cohort may already specify that the outcome could not have occurred before the index date.</p>
-<p>This option is dependent on the selection that will be made in the section. Time at risk (TAR) depends on the target/comparator cohort start and end dates. In the figure below the start time for TAR is set 1 day after the start date for the target/comparator cohort. If the outcome occurs prior to this date you have two options. If you say NO to this question you will keep subjects with the condition shown in the figure. If you say YES those subjects will be removed.</p>
+<p>We can choose to <strong>remove subjects that have the outcome prior to the risk window start</strong>, because often a second outcome occurrence is the continuation of the first one. For instance, when someone develops heart failure, a second occurrence is more likely, and it is likely that the heart failure never fully resolved in between. On the other hand, some outcomes are episodic, and it would be expected for patients to have more than one independent occurrence, like an upper respiratory infection. If do choose to remove people that had the outcome before, we can select <strong>how many days we should look back when identifying prior outcomes</strong>.</p>
+<p>Our choices for our example study are shown in Figure <a href="PopulationLevelEstimation.html#fig:studyPopulation">13.11</a>. Because our target and comparator cohort definitions already restrict to the first exposure and require observation time prior to treatment initiation, we do not apply these criteria here.</p>
+<div class="figure" style="text-align: center"><span id="fig:studyPopulation"></span>
+<img src="images/PopulationLevelEstimation/studyPopulation.png" alt="Study population settings.." width="100%" />
+<p class="caption">
+Figure 13.11: Study population settings..
+</p>
+</div>
+<p><strong>Covariate settings</strong></p>
+<p>Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model. If we <strong>click to view details</strong> of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.</p>
+<p>We can modify the set of covariates by specifying concepts to <strong>include</strong> and/or <strong>exclude</strong>. These settings are the same as the ones found in Section <a href="PopulationLevelEstimation.html#ComparisonSettings">13.3.1</a> on comparison settings. The reason why they can be found in two places is because sometimes these settings are related to a specific comparison, as is the case here because we wish to exclude the drugs we are comparing, and sometimes the settings are related to a specific analysis, for example when we wish to use the same covariates used in another study we are trying to replicate. When executing an analysis for a specific comparison using specific analysis setings, the OHDSI tools will take the union of these sets.</p>
+<p>The choice to <strong>add descendants to include or exclude</strong> affects this union of the two settings. So in this example we specified only the ingredients to exclude when definining the comparisons. Here we set ‘Should descendant concepts be added to the list of excluded concepts?` to ’Yes’ to also add all descendants.</p>
+<p>Figure <a href="PopulationLevelEstimation.html#fig:covariateSettings">13.12</a> shows our choices for this study. Note that we have selected to add descendants to the concept to exclude, which we defined in the comparison settings in Figure <a href="PopulationLevelEstimation.html#fig:comparisons2">13.9</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:covariateSettings"></span>
+<img src="images/PopulationLevelEstimation/covariateSettings.png" alt="Covariate settings." width="100%" />
+<p class="caption">
+Figure 13.12: Covariate settings.
+</p>
+</div>
+<p><strong>Time at risk</strong></p>
+<p>Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to 1 day after cohort start, so 1 day after treatment initation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation as we do not believe it biologically plausible they can be caused by the drug.</p>
+<p>We set the end of the time-at-risk to the cohort end, so when exposure stops. We could choose to set the end date later if for example we believe events closely following treatment end may still be attributable to the exposure. In the extreme we could set the time-at-risk end to a large number of days (e.g. 99999) after the cohort end date, meaning we will effectively follow up subjects until observation end. Such a design is sometimes referred to as an <em>intent-to-treat</em> design.</p>
+<p>A patient with 0 days at risk adds no information, so the <strong>minimum days at risk</strong> is normally set at 1 day. If there is a known latency for the side effect, then this may be increased to get a more informative proportion. It can also be used to create a cohort more similar to that of a randomized trial it is being compared to (e.g., all the patients in the randomized trial were observed for at least N days).</p>
+
+<div class="rmdimportant">
+A golden rule in designing a cohort study is to never use information that falls after the cohort start date to define the study population, as this may introduce bias. For example, if we require everyone to have at least a year of time-at-risk, we will likely have limited our analyses to those who tolerate the treatment well. This setting should therefore be used with extreme care.
+</div>
+
+<div class="figure" style="text-align: center"><span id="fig:timeAtRisk"></span>
+<img src="images/PopulationLevelEstimation/timeAtRisk.png" alt="Time-at-risk settings." width="100%" />
+<p class="caption">
+Figure 13.13: Time-at-risk settings.
+</p>
+</div>
+<p><strong>Propensity score adjustment</strong></p>
+<p>We can opt to <strong>trim</strong> the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score <span class="citation">(Walker et al. <a href="#ref-walker_2013">2013</a>)</span> falls outside the range we prespecify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW.</p>
+<p>In addition to, or instead of trimming, we can choose to <strong>stratify</strong> or <strong>match</strong> on the propensity score. When stratifying we need to specifiy the <strong>number of strata</strong> and whether to select the strata based on the target, comparator, or entire study population. When matching we need to specify the <strong>maximum number of people from the comparator group to match to each person in the target group</strong>. Typical values are 1 for one-on-one matching, or a large number (e.g. 100) for variable ratio matching. We also need to specify the <strong>caliper</strong>: the maximum allowed difference between propensity scores to allow a match. The caliper can be defined on difference <strong>caliper scales</strong>:</p>
+<ul>
+<li><strong>The propensity score scale</strong>: the PS itself</li>
+<li><strong>The standardized scale</strong>: in standard deviations of the PS distributions</li>
+<li><strong>The standardized logit scale</strong>: in standard deviations of the PS distributions after the logit transformation to make the PS more normally distributed.</li>
+</ul>
+<p>In case of doubt, we suggest using the default values.</p>
+<p>Fitting large-scale propensity models can be computationally expensive, so we may want to restrict the data used to fit the model to just a sample of the data. By default the maximum size of the target and comparator cohort is set to 250,000. In most studies this limit will not be reached. It is also unlikely that more data will lead to a better model. Note that althoug a sample of the data may be used to fit the model, the model will be used to compute PS for the entire population.</p>
+<p>Test each covariate for correlation with the target assignment? If any covariate has an unusually high correlation (either positive or negative), this will throw an error.</p>
+<p>This avoids lengthy calculation of a propensity model only to discover complete separation. Finding very high univariate correlation allows you to review the covariate to determine why it has high correlation and whether it should be dropped.</p>
+<p>If an error occurs, should the function stop? Else, the two cohorts will be assumed to be perfectly separable.</p>
+<p>Yes, stop, as there is normally no sense in carrying out the calculations and not have a usable result due to perfect separation.</p>
 </div>
 </div>
 <div id="implementation-the-study-using-r" class="section level2">
