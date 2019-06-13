@@ -15,7 +15,7 @@ Use-cases for population-level effect estimation include treatment selection, sa
 
 Several different study designs can be used to estimate treatment effects. The main difference between these is how they construct the (unobserved) counterfactual. Below is a brief discussion of the most commonly used designs, all of which are implemented as R packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/).
 
-### Cohort method
+### Cohort method {#CohortMethod}
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/cohortMethod.png" alt="The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation." width="90%" />
@@ -206,7 +206,7 @@ In the Estimation design tool, there are three sections: Comparisons, Analysis S
 
 ### Comparative cohort settings {#ComparisonSettings}
 
-A study can have one or more comparisons. Click on 'Add Comparison', which will open a new dialog. Click on ![](images/PopulationLevelEstimation/open.png) to the select the target and  comparator cohorts. By clicking on "Add Outcome" we can add our two outcome cohorts. We assume the cohorts have already been created as described in Chapter \@ref(Cohorts). When done, the dialog should look like Figure \@ref(fig:comparisons).
+A study can have one or more comparisons. Click on 'Add Comparison', which will open a new dialog. Click on ![](images/PopulationLevelEstimation/open.png) to the select the target and  comparator cohorts. By clicking on "Add Outcome" we can add our two outcome cohorts. We assume the cohorts have already been created as described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitorsMono)) , comparator (Appendix \@ref(ThiazidesMono)), and outcome (Appendix \@ref(Angioedema) and Appendix \@ref(Ami)) cohorts. When done, the dialog should look like Figure \@ref(fig:comparisons).
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/comparisons.png" alt="The comparison dialog" width="100%" />
@@ -324,24 +324,62 @@ In case of doubt, we suggest using the default values.
 
 Fitting large-scale propensity models can be computationally expensive, so we may want to restrict the data used to fit the model to just a sample of the data. By default the maximum size of the target and comparator cohort is set to 250,000. In most studies this limit will not be reached. It is also unlikely that more data will lead to a better model. Note that althoug a sample of the data may be used to fit the model, the model will be used to compute PS for the entire population.
 
+**Test each covariate for correlation with the target assignment?** If any covariate has an unusually high correlation (either positive or negative), this will throw an error. This avoids lengthy calculation of a propensity model only to discover complete separation. Finding very high univariate correlation allows you to review the covariate to determine why it has high correlation and whether it should be dropped. 
 
+Figure \@ref(fig:psSettings) shows our choices for this study. Note that we select variable ratio matching by setting the maximum number of people to match to 100.
 
-Test each covariate for correlation with the target assignment? If any covariate has an unusually high correlation (either positive or negative), this will throw an error.
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/psSettings.png" alt="Propenstity score adjustment settings." width="100%" />
+<p class="caption">(\#fig:psSettings)Propenstity score adjustment settings.</p>
+</div>
 
-This avoids lengthy calculation of a propensity model only to discover complete separation. Finding very high univariate correlation allows you to review the covariate to determine why it has high correlation and whether it should be dropped.
+**Outcome model settings**
 
-If an error occurs, should the function stop? Else, the two cohorts will be assumed to be perfectly separable.
+First, we need to **specify the statistical model we will use to estimate the risk of outcome between target and comparator cohorts**. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \@ref(CohortMethod). For our exampe we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify **whether the reggression should be condition on the strata**. One way to understand conditioning is to assume a seperate estimate is produced in each strata, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable ratio matching it is required.
 
-Yes, stop, as there is normally no sense in carrying out the calculations and not have a usable result due to perfect separation.
+We can also choose to **add all covariates to the outcome model** to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend to keep the outcome model as simple as possible and not include additional covariates.
 
+Instead of stratifying or matching on the propensity score we can also choose to **use inverse probability of treatment weighting**. If weighting is used it is often recommended to use some for of trimming to avoid extreme weights and therefore unstable estimates.
+
+Figure \@ref(fig:psSettings) shows our choices for this study. Because we use vvariable ratio matching, we must condition the regression on the strata (ie. the matched sets).
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/outcomeModelSettings.png" alt="Outcome model settings." width="100%" />
+<p class="caption">(\#fig:outcomeModelSettings)Outcome model settings.</p>
+</div>
+
+### Evaluation settings
+
+As described in Chapter \@{MethodValidity}, negative and positive controls should be included in our study to evaluate the operating characterists, and perform emprical calibration. 
+
+**Negative control outcome cohort definition**
+
+In Section \@{ComparisonSettings} we selected a concept set reprenting the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic, with three options. The first option is whether to **use all occurrences** or just  the **first occurrence** of the concept. The second option determines **whether occurrences of descendant concepts should be considered**. For example, occurrences of the descendant "ingrown nail of foot" can also be counted as an occurrence of the ancestor "ingrown nail". The third option specifies which domains should be considerd when looking for the concepts.
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/ncSettings.png" alt="Outcome model settings." width="100%" />
+<p class="caption">(\#fig:ncSettings)Outcome model settings.</p>
+</div>
+
+**Positive control synthesis**
+
+In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positve controls, derived from negative controls as described in Chapter \@{MethodValidity}. Positive control synthesis is an advanced topic that we will skip for now.
+
+### Running the study package
+
+Now that we have fully defined our study, we can export it as a fully executable R package. This package contains everything that is needed to execute the study at a site that has data in the CDM. This includes the cohort definitions which can be used to instatiate the target, comparator and outcome cohorts, the negative control concept set and logic to create the negative control outcome cohorts, as well as the R code to execute the analysis. Before generating the package make sure to save your study, then click on the **Utilities** tab. Here we can review the set of analyses that will be performed. As mentioned before, every combination of a comparison and an analysis setting will results in a separate analysis. In our example we have specified two analyses: ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using propensity score matching.
+
+We must provide a name for our package, after which we can click on 'Download' to download the zip file. The zip file contains an RStudio project with a README file that describes the steps needed to execute the analysis.
 
 ## Implementation the study using R
 
-Now we have completely designed our study we have to implement the study. This will be done using the [CohortMethod](https://ohdsi.github.io/CohortMethod/) package to execute our study. It extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model. 
+Instead of using ATLAS to write the R code that executes the study, we can also write the R code ourselves. One reason we might want to do this is because R offers far greater flexibility than is exposed in ATLAS. If we for example wish to use custom covariates, or a linear outcome model, we will need to write some custom R code, and combine it with the functionality provided by the OHDSI R packages. 
+
+For our exmample study we will rely on the [CohortMethod](https://ohdsi.github.io/CohortMethod/) package to execute our study. CohortMethod extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model. In the following example we will only consider angioedema as outcome, and leave implemention for AMI and the negative controls as an excercise for the reader.
 
 ### Cohort instantiation
 
-We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitors)) and outcome (Appendix \@ref(Angioedema)) cohorts. In this example we will assume the ACE inhibitors cohort has ID 1, and the angioedema cohort has ID 2.
+We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitorsMono)), comparator (Appendix \@ref(ThiazidesMono)), and outcome (Appendix \@ref(Angioedema) ) cohorts. We will assume the ACEi, THZ, and angioedema cohorts have cohort definition IDs 1,2, and 3 respectively.
 
 ### Data extraction
 
@@ -363,7 +401,339 @@ cdmVersion <- "5"
 
 The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbTable` variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
 
-### Specifying the analyses
+Now we can tell CohortMethod to extract the cohorts, construct covariates, and extract all necessary data for our analysis:
+
+
+```r
+# target and comparator ingredient concepts:
+aceInhibitors <- c(1335471,1340128,1341927,1363749,1308216,1310756,1373225,1331235,
+                   1334456,1342439)
+thiazides <- c(1395058,974166,978555,907013)
+
+# Define which types of covariates must be constructed:
+covSettings <- createDefaultCovariateSettings(excludedCovariateConceptIds = c(aceInhibitors, 
+                                                                              thiazides),
+                                              addDescendantsToExclude = TRUE)
+
+#Load data:
+cmData <- getDbCohortMethodData(connectionDetails = connectionDetails,
+                                cdmDatabaseSchema = cdmDatabaseSchema,
+                                oracleTempSchema = NULL,
+                                targetId = 1,
+                                comparatorId = 2,
+                                outcomeIds = 3,
+                                studyStartDate = "",
+                                studyEndDate = "",
+                                exposureDatabaseSchema = cohortsDbSchema,
+                                exposureTable = cohortsDbTable,
+                                outcomeDatabaseSchema = cohortsDbSchema,
+                                outcomeTable = cohortsDbTable,
+                                cdmVersion = cdmVersion,
+                                excludeDrugsFromCovariates = FALSE,
+                                firstExposureOnly = FALSE,
+                                removeDuplicateSubjects = FALSE,
+                                restrictToCommonPeriod = FALSE,
+                                washoutPeriod = 0,
+                                covariateSettings = covSettings)
+cohortMethodData
+```
+
+
+There are many parameters, but they are all documented in the CohortMethod manual. The `createDefaultCovariateSettings` function is described in the `FeatureExtraction` package. In short, we are pointing the function to the table containing our cohorts and specify which cohort definition IDs in that table identify the target, comparator and outcome. We instruct that the default set of covariates should be constructed, including covariates for all conditions, drug exposures, and procedures that were found on or before the index date. As mentioned in Section \@ref(CohortMethod) we must exclude the target and comparator treatments from the set of covariates. 
+
+All data about the cohorts, outcomes, and covariates are extracted from the server and stored in the `cohortMethodData` object. This object uses the package `ff` to store information in a way that ensures R does not run out of memory, even when the data are large.
+
+We can use the generic `summary()` function to view some more information of the data we extracted:
+
+
+```r
+summary(cohortMethodData)
+```
+
+
+Creating the `cohortMethodData` file can take considerable computing time, and it is probably a good idea to save it for future sessions. Because `cohortMethodData` uses `ff`, we cannot use R's regular save function. Instead, we'll have to use the `saveCohortMethodData()` function:
+
+
+```r
+saveCohortMethodData(cohortMethodData, "coxibVsNonselVsGiBleed")
+```
+
+We can use the `loadCohortMethodData()` function to load the data in a future session.
+
+**Defining new users**
+
+Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior first use) is used to make sure it is truly first use. When using the `CohortMethod` package, you can enforce the necessary requirements for new use in three ways:
+
+1. When defining the cohorts.
+2. When loading the cohorts using the `getDbCohortMethodData` function, you can use the `firstExposureOnly`, `removeDuplicateSubjects`, `restrictToCommonPeriod`, and `washoutPeriod` arguments.
+3. When defining the study population using the `createStudyPopulation` function (see below) using the `firstExposureOnly`, `removeDuplicateSubjects`, `restrictToCommonPeriod`, and `washoutPeriod` arguments.
+
+The advantage of option 1 is that the input cohorts are already fully defined outside of the `CohortMethod` package, and for example external cohort characterization tools can be used on the same cohorts used in this package. The advantage of options 2 and 3 is that it saves you the trouble of limiting to first use yourself, for example allowing you to directly use the `drug_era` table in the CDM. Option 2 is more efficient than 3, since only data for first use will be fetched, while option 3 is less efficient but allows you to compare the original cohorts to the study population.
+
+###  Defining the study population
+
+Typically, the exposure cohorts and outcome cohorts will be defined independently of each other. When we want to produce an effect size estimate, we need to further restrict these cohorts and put them together, for example by removing exposed subjects that had the outcome prior to exposure, and only keeping outcomes that fall within a defined risk window. For this we can use the `createStudyPopulation` function:
+
+
+```r
+studyPop <- createStudyPopulation(cohortMethodData = cohortMethodData,
+                                  outcomeId = 3,
+                                  firstExposureOnly = FALSE,
+                                  restrictToCommonPeriod = FALSE,
+                                  washoutPeriod = 0,
+                                  removeDuplicateSubjects = "keep all",
+                                  removeSubjectsWithPriorOutcome = TRUE,
+                                  minDaysAtRisk = 1,
+                                  riskWindowStart = 0,
+                                  addExposureDaysToStart = FALSE,
+                                  riskWindowEnd = 30,
+                                  addExposureDaysToEnd = TRUE)
+```
+
+Note that we've set `firstExposureOnly` and `removeDuplicateSubjects` to FALSE, and `washoutPeriod` to zero because we already filtered on these arguments when using the `getDbCohortMethodData` function. During loading we set `restrictToCommonPeriod` to FALSE, and we do the same here because we do not want to force the comparison to restrict only to time when both drugs are recorded. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting at the index date (`riskWindowStart = 0` and `addExposureDaysToStart = FALSE`), and the risk windows ends 30 days after exposure ends (`riskWindowEnd = 30` and `addExposureDaysToEnd = TRUE`). Note that the risk windows are truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the `getAttritionTable` function:
+
+
+```r
+getAttritionTable(studyPop)
+```
+
+
+One additional filtering step that is often used is matching or trimming on propensity scores, as will be discussed next.
+
+# Propensity scores
+
+The `CohortMethod` can use propensity scores to adjust for potential confounders. Instead of the traditional approach of using a handful of predefined covariates, `CohortMethod` typically uses thousands to millions of covariates that are automatically constructed based on conditions, procedures and drugs in the records of the subjects.
+
+## Fitting a propensity model
+
+We can fit a propensity model using the covariates constructed by the `getDbcohortMethodData()` function:
+
+
+```r
+ps <- createPs(cohortMethodData = cohortMethodData, population = studyPop)
+```
+
+
+The `createPs()` function uses the `Cyclops` package to fit a large-scale regularized logistic regression.
+
+To fit the propensity model, `Cyclops` needs to know the hyperparameter value which specifies the variance of the prior. By default `Cyclops` will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the `prior` and `control` parameters of the `createPs()` to specify `Cyclops` behavior, including using multiple CPUs to speed-up the cross-validation.
+
+## Propensity score diagnostics
+
+We can compute the area under the receiver-operator curve (AUC) for the propensity score model:
+
+
+```r
+computePsAuc(ps)
+```
+
+
+We can also plot the propensity score distribution, although we prefer the preference score distribution:
+
+
+```r
+plotPs(ps, scale = "preference", showCountsLabel = TRUE, showAucLabel = TRUE, showEquiposeLabel = TRUE)
+```
+
+
+It is also possible to inspect the propensity model itself by showing the covariates that have non-zero coefficients:
+
+
+```r
+propensityModel <- getPsModel(ps, cohortMethodData)
+head(propensityModel)
+```
+
+
+One advantage of using the regularization when fitting the propensity model is that most coefficients will shrink to zero and fall out of the model. It is a good idea to inspect the remaining variables for anything that should not be there, for example variations of the drugs of interest that we forgot to exclude.
+
+## Using the propensity score
+
+We can use the propensity scores to trim, stratify, match, or weigh our population. For example, one could  trim to equipoise, meaning only subjects with a preference score between 0.25 and 0.75 are kept:
+
+
+```r
+trimmedPop <- trimByPsToEquipoise(ps)
+plotPs(trimmedPop, ps, scale = "preference")
+```
+
+
+Instead (or additionally), we could stratify the population based on the propensity score:
+
+
+```r
+stratifiedPop <- stratifyByPs(ps, numberOfStrata = 5)
+plotPs(stratifiedPop, ps, scale = "preference")
+```
+
+
+We can also match subjects based on propensity scores. In this example, we're using one-to-one matching:
+
+
+```r
+  matchedPop <- matchOnPs(ps, caliper = 0.2, caliperScale = "standardized logit", maxRatio = 1)
+  plotPs(matchedPop, ps)
+```
+
+
+Note that for both stratification and matching it is possible to specify additional matching criteria such as age and sex using the `stratifyByPsAndCovariates()` and `matchOnPsAndCovariates()` functions, respectively.
+
+We can see the effect of trimming and/or matching on the population using the `getAttritionTable` function:
+
+
+```r
+getAttritionTable(matchedPop)
+```
+
+
+Or, if we like, we can plot an attrition diagram:
+
+
+```r
+drawAttritionDiagram(matchedPop)
+```
+
+
+## Evaluating covariate balance
+
+To evaluate whether our use of the propensity score is indeed making the two cohorts more comparable, we can compute the covariate balance before and after trimming, matching, and/or stratifying:
+
+
+```r
+balance <- computeCovariateBalance(matchedPop, cohortMethodData)
+```
+
+
+```r
+plotCovariateBalanceScatterPlot(balance, showCovariateCountLabel = TRUE, showMaxLabel = TRUE)
+```
+
+
+```r
+plotCovariateBalanceOfTopVariables(balance)
+```
+
+
+The 'before matching' population is the population as extracted by the `getDbCohortMethodData` function, so before any further filtering steps.
+
+## Inspecting select population characteristics
+
+It is customary to include a table in your paper that lists some select population characteristics before and after matching/stratification/trimming. This is usually the first table, and so will be referred to as 'table 1'. To generate this table, you can use the `createCmTable1` function:
+
+
+```r
+createCmTable1(balance)
+```
+\fontsize{6.5}{6.5}
+\selectfont
+
+\fontsize{10}{12}
+\selectfont
+
+## Inserting the population cohort in the database ##
+
+For various reasons it might be necessary to insert the study population back into the database, for example because we want to use an external cohort characterization tool. We can use the `insertDbPopulation` function for this purpose:
+
+
+```r
+insertDbPopulation(population = matchedPop,
+                   cohortIds = c(101,100),
+                   connectionDetails = connectionDetails,
+                   cohortDatabaseSchema = resultsDatabaseSchema,
+                   cohortTable = "coxibVsNonselVsGiBleed",
+                   createTable = FALSE,
+                   cdmVersion = cdmVersion)
+```
+
+This function will store the population in a table with the same structure as the `cohort` table in the CDM, in this case in the same table where we had created our original cohorts.
+
+
+# Follow-up and power
+
+Before we start fitting an outcome model, we might be interested to know whether we have sufficient power to detect a
+particular effect size. It makes sense to perform these power calculations once the study population has been fully defined,
+so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, the CohortMethod package provides a function to compute the minimum detectable relative risk (MDRR) instead:
+
+
+```r
+computeMdrr(population = studyPop,
+            modelType = "cox",
+            alpha = 0.05,
+            power = 0.8,
+            twoSided = TRUE)
+```
+\fontsize{6.5}{6.5}
+\selectfont
+
+\fontsize{10}{12}
+\selectfont
+
+In this example we used the `studyPop` object, so the population before any matching or trimming. If we want to know the MDRR after matching, we use the `matchedPop` object we created earlier instead:
+
+
+```r
+computeMdrr(population = matchedPop,
+            modelType = "cox",
+            alpha = 0.05,
+            power = 0.8,
+            twoSided = TRUE)
+```
+\fontsize{6.5}{6.5}
+\selectfont
+
+\fontsize{10}{12}
+\selectfont
+
+Even thought the MDRR in the matched population is higher, meaning we have less power, we should of course not be fooled: matching most likely eliminates confounding, and is therefore preferred to not matching.
+
+To gain a better understanding of the amount of follow-up available we can also inspect the distribution of follow-up time. We defined follow-up time as time at risk, so not censored by the occurrence of the outcome. The `getFollowUpDistribution` can provide a simple overview:
+
+
+```r
+getFollowUpDistribution(population = matchedPop)
+```
+
+
+The output is telling us number of days of follow-up each quantile of the study population has. We can also plot the distribution:
+
+
+```r
+# Generate some output
+```
+
+# Outcome models
+
+The outcome model is a model describing which variables are associated with the outcome.
+
+## Fitting a simple outcome model
+
+In theory we could fit an outcome model without using the propensity scores. In this example we are fitting an outcome model using a Cox regression:
+
+
+```r
+outcomeModel <- fitOutcomeModel(population = studyPop,
+                                modelType = "cox")
+outcomeModel
+```
+
+
+But of course we want to make use of the matching done on the propensity score:
+
+
+```r
+outcomeModel <- fitOutcomeModel(population = matchedPop,
+                                modelType = "cox",
+                                stratified = TRUE)
+outcomeModel
+```
+
+
+Note that we define the sub-population to be only those in the `matchedPop` object, which we created earlier by matching on the propensity score. We also now use a stratified Cox model, conditioning on the propensity score match sets.
+
+
+
+
+
 
 ## Excercises
 

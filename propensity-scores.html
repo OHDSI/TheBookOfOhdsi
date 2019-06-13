@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 21 Software Validity | The Book of OHDSI</title>
+  <title>Chapter 14 Propensity scores | The Book of OHDSI</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.11.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 21 Software Validity | The Book of OHDSI" />
+  <meta property="og:title" content="Chapter 14 Propensity scores | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 21 Software Validity | The Book of OHDSI" />
+  <meta name="twitter:title" content="Chapter 14 Propensity scores | The Book of OHDSI" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-<link rel="prev" href="ClinicalValidity.html">
-<link rel="next" href="MethodValidity.html">
+<link rel="prev" href="PopulationLevelEstimation.html">
+<link rel="next" href="follow-up-and-power.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -326,67 +326,70 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="SoftwareValidity" class="section level1">
-<h1><span class="header-section-number">Chapter 21</span> Software Validity</h1>
-<p><em>Chapter lead: Martijn Schuemie</em></p>
-<p>The central question of sofware validity is</p>
-<blockquote>
-<p>Does the software do what it is expected to do?</p>
-</blockquote>
-<p>In broad strokes there are two approaches to ensure software validity: by using a software development process aimed at creating valid software, and by testing whether the software is valid. Here we focus specifically on the <a href="https://ohdsi.github.io/MethodsLibrary/">OHDSI Methods Library</a>, the set of R packages used in population-level estimation and patient-level prediction. The OHDSI Population-Level Estimation Workgroup and the OHDSI Patient-Level Prediction Workgroup together are responsible for developing and maintaining the OHDSI Methods Library. The OHDSI Population-Level Estimation Workgroup is headed by Drs. Marc Suchard and Martijn Schuemie. The OHDSI Patient-Level Prediction Workgroup his headed by Drs. Peter Rijnbeek and Jenna Reps.</p>
-<div id="software-development-process" class="section level2">
-<h2><span class="header-section-number">21.1</span> Software Development Process</h2>
-<p>The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers and the <a href="http://forums.ohdsi.org/">OHDSI Forums</a>. Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup and OHDSI Patient-Level Prediction Workgroup leadership only.</p>
-<p>Users can install the Methods Library in R directly from the master branches in the GitHub repositories, or through a system known as ‘drat’ that is always up-to-date with the master branches. A number of the Methods Library packages are available through R’s Comprehensive R Archive Network (CRAN), and this number is expected to increase over time.</p>
-<p>Reasonable software development and testing methodologies are employed by OHDSI to maximize the accuracy, reliability and consistency of the Methods Library performance. Importantly, as the Methods Library is released under the terms of the Apache License V2, all source code underlying the Methods Library, whether it be in R, C++, SQL, or Java is available for peer review by all members of the OHDSI community, and the public in general. Thus, all the functionality embodied within Methods Library is subject to continuous critique and improvement relative to its accuracy, reliability and consistency.</p>
-<div id="source-code-management" class="section level3">
-<h3><span class="header-section-number">21.1.1</span> Source Code Management</h3>
-<p>All of the Methods Library’s source code is managed in the source code version control system ‘git’ publicly assessible via GitHub. The OHDSI Methods Library repositories are access controlled. Anyone in the world can view the source code, and any member of the OHDSI community can submit changes through so-called pull requests. Only the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can approve such request, make changes to the master branches, and release new versions. Continuous logs of code changes are maintained within the GitHub repositories and reflect all aspects of changes in code and documentation. These commit logs are available for public review.</p>
-<p>New versions are released by the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership as needed. A new release starts by pushing changes to a master branch with a package version number (as defined in the DESCRIPTION file inside the package) that is greater than the version number of the previous release. This automatically triggers checking and testing of the package. If all tests are passed, the new version is automatically tagged in the version control system and the package is automatically uploaded to the OHDSI drat repository. New versions are numbered using three-component version number:</p>
-<ul>
-<li>New micro versions (e.g. from 4.3.2 to 4.3.3) indicate bug fixes only. No new functionality, and forward and backward compatibility are guaranteed</li>
-<li>New minor versions (e.g. from 4.3.3 to 4.4.0) indicate added functionality. Only backward compatibility is guaranteed</li>
-<li>New major versions (e.g. from 4.4.0 to 5.0.0) indicate major revisions. No guarantees are madef in terms of compatibility</li>
-</ul>
+<div id="propensity-scores" class="section level1">
+<h1><span class="header-section-number">Chapter 14</span> Propensity scores</h1>
+<p>The <code>CohortMethod</code> can use propensity scores to adjust for potential confounders. Instead of the traditional approach of using a handful of predefined covariates, <code>CohortMethod</code> typically uses thousands to millions of covariates that are automatically constructed based on conditions, procedures and drugs in the records of the subjects.</p>
+<div id="fitting-a-propensity-model" class="section level2">
+<h2><span class="header-section-number">14.1</span> Fitting a propensity model</h2>
+<p>We can fit a propensity model using the covariates constructed by the <code>getDbcohortMethodData()</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ps &lt;-<span class="st"> </span><span class="kw">createPs</span>(<span class="dt">cohortMethodData =</span> cohortMethodData, <span class="dt">population =</span> studyPop)</code></pre></div>
+<p>The <code>createPs()</code> function uses the <code>Cyclops</code> package to fit a large-scale regularized logistic regression.</p>
+<p>To fit the propensity model, <code>Cyclops</code> needs to know the hyperparameter value which specifies the variance of the prior. By default <code>Cyclops</code> will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the <code>prior</code> and <code>control</code> parameters of the <code>createPs()</code> to specify <code>Cyclops</code> behavior, including using multiple CPUs to speed-up the cross-validation.</p>
 </div>
-<div id="documentation" class="section level3">
-<h3><span class="header-section-number">21.1.2</span> Documentation</h3>
-<p>All packages in the Methods Library are documented through R’s internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the roxygen2 software is used to combine a function’s documentation and source code in a single file. The package manual is available on demand through R’s command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package. All Method Library source code is available to end users. Feedback from the community is facilitated using GitHub’s issue tracking system and the <a href="http://forums.ohdsi.org/">OHDSI Forums</a>.</p>
+<div id="propensity-score-diagnostics" class="section level2">
+<h2><span class="header-section-number">14.2</span> Propensity score diagnostics</h2>
+<p>We can compute the area under the receiver-operator curve (AUC) for the propensity score model:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">computePsAuc</span>(ps)</code></pre></div>
+<p>We can also plot the propensity score distribution, although we prefer the preference score distribution:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotPs</span>(ps, <span class="dt">scale =</span> <span class="st">&quot;preference&quot;</span>, <span class="dt">showCountsLabel =</span> <span class="ot">TRUE</span>, <span class="dt">showAucLabel =</span> <span class="ot">TRUE</span>, <span class="dt">showEquiposeLabel =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>It is also possible to inspect the propensity model itself by showing the covariates that have non-zero coefficients:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">propensityModel &lt;-<span class="st"> </span><span class="kw">getPsModel</span>(ps, cohortMethodData)
+<span class="kw">head</span>(propensityModel)</code></pre></div>
+<p>One advantage of using the regularization when fitting the propensity model is that most coefficients will shrink to zero and fall out of the model. It is a good idea to inspect the remaining variables for anything that should not be there, for example variations of the drugs of interest that we forgot to exclude.</p>
 </div>
-<div id="availability-of-current-and-historical-archive-versions" class="section level3">
-<h3><span class="header-section-number">21.1.3</span> Availability of Current and Historical Archive Versions</h3>
-<p>Current and historical versions of the Methods Library packages are available in two locations: First, the GitHub version control system contains the full development history of each package, and the state of a package at each point in time can be reconstructed and retrieved. Most importantly, each released version is tagged in GitHub. Second, the released R source packages are stored in the OHDSI GitHub drat repository.</p>
+<div id="using-the-propensity-score" class="section level2">
+<h2><span class="header-section-number">14.3</span> Using the propensity score</h2>
+<p>We can use the propensity scores to trim, stratify, match, or weigh our population. For example, one could trim to equipoise, meaning only subjects with a preference score between 0.25 and 0.75 are kept:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trimmedPop &lt;-<span class="st"> </span><span class="kw">trimByPsToEquipoise</span>(ps)
+<span class="kw">plotPs</span>(trimmedPop, ps, <span class="dt">scale =</span> <span class="st">&quot;preference&quot;</span>)</code></pre></div>
+<p>Instead (or additionally), we could stratify the population based on the propensity score:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stratifiedPop &lt;-<span class="st"> </span><span class="kw">stratifyByPs</span>(ps, <span class="dt">numberOfStrata =</span> <span class="dv">5</span>)
+<span class="kw">plotPs</span>(stratifiedPop, ps, <span class="dt">scale =</span> <span class="st">&quot;preference&quot;</span>)</code></pre></div>
+<p>We can also match subjects based on propensity scores. In this example, we’re using one-to-one matching:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>, <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, <span class="dt">maxRatio =</span> <span class="dv">1</span>)
+  <span class="kw">plotPs</span>(matchedPop, ps)</code></pre></div>
+<p>Note that for both stratification and matching it is possible to specify additional matching criteria such as age and sex using the <code>stratifyByPsAndCovariates()</code> and <code>matchOnPsAndCovariates()</code> functions, respectively.</p>
+<p>We can see the effect of trimming and/or matching on the population using the <code>getAttritionTable</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getAttritionTable</span>(matchedPop)</code></pre></div>
+<p>Or, if we like, we can plot an attrition diagram:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">drawAttritionDiagram</span>(matchedPop)</code></pre></div>
 </div>
-<div id="maintenance-support-and-retirement" class="section level3">
-<h3><span class="header-section-number">21.1.4</span> Maintenance, Support and Retirement</h3>
-<p>Each current version of the Methods Library is actively supported by OHDSI with respect to bug reporting, fixes and patches. Issues can be reported through GitHub’s issue tracking system, and through the OHDSI forums. Each package has a package manual, and zero, one or several vignettes. Online video tutorials are available, and in-person tutorials are provided from time to time.</p>
+<div id="evaluating-covariate-balance" class="section level2">
+<h2><span class="header-section-number">14.4</span> Evaluating covariate balance</h2>
+<p>To evaluate whether our use of the propensity score is indeed making the two cohorts more comparable, we can compute the covariate balance before and after trimming, matching, and/or stratifying:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">balance &lt;-<span class="st"> </span><span class="kw">computeCovariateBalance</span>(matchedPop, cohortMethodData)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotCovariateBalanceScatterPlot</span>(balance, <span class="dt">showCovariateCountLabel =</span> <span class="ot">TRUE</span>, <span class="dt">showMaxLabel =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotCovariateBalanceOfTopVariables</span>(balance)</code></pre></div>
+<p>The ‘before matching’ population is the population as extracted by the <code>getDbCohortMethodData</code> function, so before any further filtering steps.</p>
 </div>
-<div id="qualified-personnel" class="section level3">
-<h3><span class="header-section-number">21.1.5</span> Qualified Personnel</h3>
-<p>Members of OHDSI community represent multiple statistical disciplines and are based at academic, not-for-profit and industry-affiliated institutions on multiple continents.</p>
-<p>All leaders of the OHDSI Population-Level Estimation Workgroup and OHDSI Patient-Level Prediction Workgroup hold PhDs from accredited academic institutions and have published extensively in peer reviewed journals.</p>
+<div id="inspecting-select-population-characteristics" class="section level2">
+<h2><span class="header-section-number">14.5</span> Inspecting select population characteristics</h2>
+<p>It is customary to include a table in your paper that lists some select population characteristics before and after matching/stratification/trimming. This is usually the first table, and so will be referred to as ‘table 1’. To generate this table, you can use the <code>createCmTable1</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">createCmTable1</span>(balance)</code></pre></div>
+<p> </p>
+<p> </p>
 </div>
-<div id="physical-and-logical-security" class="section level3">
-<h3><span class="header-section-number">21.1.6</span> Physical and Logical Security</h3>
-<p>The OHDSI Methods Library is hosted on the <a href="https://github.com/">GitHub</a> system. GitHub’s security measures are described at <a href="https://github.com/security" class="uri">https://github.com/security</a>. Usernames and passwords are required by all members of the OHDSI community contribute modifications to the Methods Library, and only the Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can makes changes to the master branches. User accounts are limited in access based upon standard security policies and functional requirements.</p>
-</div>
-<div id="disaster-recovery" class="section level3">
-<h3><span class="header-section-number">21.1.7</span> Disaster Recovery</h3>
-<p>The OHDSI Methods Library is hosted on the GitHub system. GitHub’s disaster recovery facilities are described at <a href="https://github.com/security" class="uri">https://github.com/security</a>.</p>
-</div>
-</div>
-<div id="testing" class="section level2">
-<h2><span class="header-section-number">21.2</span> Testing</h2>
-<p>We distinguish between two types of tests performed on the Methods Library: Tests for individual functions in the packages (so-called ‘unit tests’), and tests to determine whether analyses implemented using the Methods Library produce reliable and accurate results (we will call this ‘method tests’).</p>
-<div id="unit-test" class="section level3">
-<h3><span class="header-section-number">21.2.1</span> Unit test</h3>
-<p>A large set of automated validation tests is maintained and upgraded by OHDSI to enable the testing of source code against known data and known results. Each test begins with specifying some simple input data, then executes a function in one of the packages on this input, and evaluates whether the output is exactly what would be expected. For simple functions, the expected result is often obvious (for example when performing propensity score matching on example data containing only a few subjects), for more complicated functions the expected result may be generated using combinations of other functions available in R (for example, Cyclops, our large-scale regression engine, is tested amongst others by comparing results on simple problems with other regression routines in R). We aim for these tests in total to cover 100% of the lines of executable source code. Appendix A lists the locations of the tests in each package. These tests are automatically performed when changes are made to a package (specifically, when changes are pushed to the package repository). Any errors noted during testing automatically trigger emails to the leadership of the Workgroups, and must be resolved prior to release of a new version of a package. The results of the unit tests can be found in the locations specified in Appendix A. The source code and expected results for these tests are available for review and use in other applications as may be appropriate. These tests are also available to end users and/or system administrators and can be run as part of their installation process to provide further documentation and objective evidence as to the accuracy, reliability and consistency of their installation of the Methods Library.</p>
-</div>
-</div>
-<div id="conclusions" class="section level2">
-<h2><span class="header-section-number">21.3</span> Conclusions</h2>
-<p>The purpose of this chapter is to document evidence to provide a high degree of assurance that the Methods Library can be used in observational studies to consistently produce reliable and accurate estimates. Both through adoption of best software development practices during the software lifecycle, as well as continuous extensive testing of individual components of the software and the start-to-finish application of the methods library on a gold standard aim to ensure the validity of the Methods Library. However, use of the Methods Library does not guarantee validity of a study, since validity depends on many other components outside of the Methods Library as well, including appropriate study design, exposure and outcome definitions, and data quality. It is important to note that there is a significant obligation on the part of the end-user’s organization to define, create, implement and enforce the Method Library installation, validation and utilization related Standard Operating Procedures (SOPs) within the end-user’s environment. These SOPs should define appropriate and reasonable quality control processes to manage end-user related risk within the applicable operating framework. The details and content of any such SOPs are beyond the scope of this document.</p>
-
+<div id="inserting-the-population-cohort-in-the-database" class="section level2">
+<h2><span class="header-section-number">14.6</span> Inserting the population cohort in the database</h2>
+<p>For various reasons it might be necessary to insert the study population back into the database, for example because we want to use an external cohort characterization tool. We can use the <code>insertDbPopulation</code> function for this purpose:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">insertDbPopulation</span>(<span class="dt">population =</span> matchedPop,
+                   <span class="dt">cohortIds =</span> <span class="kw">c</span>(<span class="dv">101</span>,<span class="dv">100</span>),
+                   <span class="dt">connectionDetails =</span> connectionDetails,
+                   <span class="dt">cohortDatabaseSchema =</span> resultsDatabaseSchema,
+                   <span class="dt">cohortTable =</span> <span class="st">&quot;coxibVsNonselVsGiBleed&quot;</span>,
+                   <span class="dt">createTable =</span> <span class="ot">FALSE</span>,
+                   <span class="dt">cdmVersion =</span> cdmVersion)</code></pre></div>
+<p>This function will store the population in a table with the same structure as the <code>cohort</code> table in the CDM, in this case in the same table where we had created our original cohorts.</p>
 </div>
 </div>
             </section>
@@ -394,8 +397,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           </div>
         </div>
       </div>
-<a href="ClinicalValidity.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="MethodValidity.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="PopulationLevelEstimation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="follow-up-and-power.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -425,7 +428,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/SoftwareValidity.Rmd",
+"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/PopulationLevelEstimation.Rmd",
 "text": "Edit"
 },
 "history": {

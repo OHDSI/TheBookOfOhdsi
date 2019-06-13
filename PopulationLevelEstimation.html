@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-06-12" />
+<meta name="date" content="2019-06-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
 <link rel="prev" href="Characterization.html">
-<link rel="next" href="PatientLevelPrediction.html">
+<link rel="next" href="propensity-scores.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -171,7 +171,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12" data-path="Characterization.html"><a href="Characterization.html"><i class="fa fa-check"></i><b>12</b> Characterization</a></li>
 <li class="chapter" data-level="13" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html"><i class="fa fa-check"></i><b>13</b> Population-level estimation</a><ul>
 <li class="chapter" data-level="13.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#study-designs"><i class="fa fa-check"></i><b>13.1</b> Study designs</a><ul>
-<li class="chapter" data-level="13.1.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#cohort-method"><i class="fa fa-check"></i><b>13.1.1</b> Cohort method</a></li>
+<li class="chapter" data-level="13.1.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#CohortMethod"><i class="fa fa-check"></i><b>13.1.1</b> Cohort method</a></li>
 <li class="chapter" data-level="13.1.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#self-controlled-cohort"><i class="fa fa-check"></i><b>13.1.2</b> Self-controlled cohort</a></li>
 <li class="chapter" data-level="13.1.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#case-control"><i class="fa fa-check"></i><b>13.1.3</b> Case-control</a></li>
 <li class="chapter" data-level="13.1.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#case-crossover"><i class="fa fa-check"></i><b>13.1.4</b> Case-crossover</a></li>
@@ -188,98 +188,112 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#implementation-the-study-using-atlas"><i class="fa fa-check"></i><b>13.3</b> Implementation the study using ATLAS</a><ul>
 <li class="chapter" data-level="13.3.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#ComparisonSettings"><i class="fa fa-check"></i><b>13.3.1</b> Comparative cohort settings</a></li>
 <li class="chapter" data-level="13.3.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#effect-estimation-analysis-settings"><i class="fa fa-check"></i><b>13.3.2</b> Effect estimation analysis settings</a></li>
+<li class="chapter" data-level="13.3.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#evaluation-settings"><i class="fa fa-check"></i><b>13.3.3</b> Evaluation settings</a></li>
+<li class="chapter" data-level="13.3.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#running-the-study-package"><i class="fa fa-check"></i><b>13.3.4</b> Running the study package</a></li>
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#implementation-the-study-using-r"><i class="fa fa-check"></i><b>13.4</b> Implementation the study using R</a><ul>
 <li class="chapter" data-level="13.4.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#cohort-instantiation"><i class="fa fa-check"></i><b>13.4.1</b> Cohort instantiation</a></li>
 <li class="chapter" data-level="13.4.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#data-extraction"><i class="fa fa-check"></i><b>13.4.2</b> Data extraction</a></li>
-<li class="chapter" data-level="13.4.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#specifying-the-analyses"><i class="fa fa-check"></i><b>13.4.3</b> Specifying the analyses</a></li>
+<li class="chapter" data-level="13.4.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#defining-the-study-population"><i class="fa fa-check"></i><b>13.4.3</b> Defining the study population</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#excercises"><i class="fa fa-check"></i><b>13.5</b> Excercises</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html"><i class="fa fa-check"></i><b>14</b> Patient Level Prediction</a><ul>
-<li class="chapter" data-level="14.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#designing-a-hypertension-study-1"><i class="fa fa-check"></i><b>14.1</b> Designing a hypertension study</a><ul>
-<li class="chapter" data-level="14.1.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#problem-definition-1"><i class="fa fa-check"></i><b>14.1.1</b> Problem definition</a></li>
-<li class="chapter" data-level="14.1.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#study-population-definition"><i class="fa fa-check"></i><b>14.1.2</b> Study population definition</a></li>
-<li class="chapter" data-level="14.1.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development-settings"><i class="fa fa-check"></i><b>14.1.3</b> Model development settings</a></li>
-<li class="chapter" data-level="14.1.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-evaluation"><i class="fa fa-check"></i><b>14.1.4</b> Model evaluation</a></li>
-<li class="chapter" data-level="14.1.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#study-summary-1"><i class="fa fa-check"></i><b>14.1.5</b> Study summary</a></li>
+<li class="chapter" data-level="14" data-path="propensity-scores.html"><a href="propensity-scores.html"><i class="fa fa-check"></i><b>14</b> Propensity scores</a><ul>
+<li class="chapter" data-level="14.1" data-path="propensity-scores.html"><a href="propensity-scores.html#fitting-a-propensity-model"><i class="fa fa-check"></i><b>14.1</b> Fitting a propensity model</a></li>
+<li class="chapter" data-level="14.2" data-path="propensity-scores.html"><a href="propensity-scores.html#propensity-score-diagnostics"><i class="fa fa-check"></i><b>14.2</b> Propensity score diagnostics</a></li>
+<li class="chapter" data-level="14.3" data-path="propensity-scores.html"><a href="propensity-scores.html#using-the-propensity-score"><i class="fa fa-check"></i><b>14.3</b> Using the propensity score</a></li>
+<li class="chapter" data-level="14.4" data-path="propensity-scores.html"><a href="propensity-scores.html#evaluating-covariate-balance"><i class="fa fa-check"></i><b>14.4</b> Evaluating covariate balance</a></li>
+<li class="chapter" data-level="14.5" data-path="propensity-scores.html"><a href="propensity-scores.html#inspecting-select-population-characteristics"><i class="fa fa-check"></i><b>14.5</b> Inspecting select population characteristics</a></li>
+<li class="chapter" data-level="14.6" data-path="propensity-scores.html"><a href="propensity-scores.html#inserting-the-population-cohort-in-the-database"><i class="fa fa-check"></i><b>14.6</b> Inserting the population cohort in the database</a></li>
 </ul></li>
-<li class="chapter" data-level="14.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#implementing-the-study-in-r"><i class="fa fa-check"></i><b>14.2</b> Implementing the study in R</a><ul>
-<li class="chapter" data-level="14.2.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#cohort-instantiation-1"><i class="fa fa-check"></i><b>14.2.1</b> Cohort instantiation</a></li>
-<li class="chapter" data-level="14.2.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#data-extraction-1"><i class="fa fa-check"></i><b>14.2.2</b> Data extraction</a></li>
-<li class="chapter" data-level="14.2.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#additional-inclusion-criteria"><i class="fa fa-check"></i><b>14.2.3</b> Additional inclusion criteria</a></li>
-<li class="chapter" data-level="14.2.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development"><i class="fa fa-check"></i><b>14.2.4</b> Model Development</a></li>
+<li class="chapter" data-level="15" data-path="follow-up-and-power.html"><a href="follow-up-and-power.html"><i class="fa fa-check"></i><b>15</b> Follow-up and power</a></li>
+<li class="chapter" data-level="16" data-path="outcome-models.html"><a href="outcome-models.html"><i class="fa fa-check"></i><b>16</b> Outcome models</a><ul>
+<li class="chapter" data-level="16.1" data-path="outcome-models.html"><a href="outcome-models.html#fitting-a-simple-outcome-model"><i class="fa fa-check"></i><b>16.1</b> Fitting a simple outcome model</a></li>
+<li class="chapter" data-level="16.2" data-path="outcome-models.html"><a href="outcome-models.html#excercises"><i class="fa fa-check"></i><b>16.2</b> Excercises</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#implementing-the-study-in-atlas"><i class="fa fa-check"></i><b>14.3</b> Implementing the study in ATLAS</a></li>
-<li class="chapter" data-level="14.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#internal-validation"><i class="fa fa-check"></i><b>14.4</b> Internal validation</a><ul>
-<li class="chapter" data-level="14.4.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#discrimination"><i class="fa fa-check"></i><b>14.4.1</b> Discrimination</a></li>
-<li class="chapter" data-level="14.4.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#calibration"><i class="fa fa-check"></i><b>14.4.2</b> Calibration</a></li>
-<li class="chapter" data-level="14.4.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#smooth-calibration"><i class="fa fa-check"></i><b>14.4.3</b> Smooth Calibration</a></li>
-<li class="chapter" data-level="14.4.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#preference-distribution"><i class="fa fa-check"></i><b>14.4.4</b> Preference distribution</a></li>
-<li class="chapter" data-level="14.4.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#predicted-probability-distribution"><i class="fa fa-check"></i><b>14.4.5</b> Predicted probability distribution</a></li>
-<li class="chapter" data-level="14.4.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#test-train-similarity"><i class="fa fa-check"></i><b>14.4.6</b> Test-Train similarity</a></li>
-<li class="chapter" data-level="14.4.7" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#variable-scatter-plot"><i class="fa fa-check"></i><b>14.4.7</b> Variable scatter plot</a></li>
-<li class="chapter" data-level="14.4.8" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#precision-recall"><i class="fa fa-check"></i><b>14.4.8</b> Precision recall</a></li>
-<li class="chapter" data-level="14.4.9" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#demographic-summary"><i class="fa fa-check"></i><b>14.4.9</b> Demographic summary</a></li>
+<li class="chapter" data-level="17" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html"><i class="fa fa-check"></i><b>17</b> Patient Level Prediction</a><ul>
+<li class="chapter" data-level="17.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#designing-a-hypertension-study-1"><i class="fa fa-check"></i><b>17.1</b> Designing a hypertension study</a><ul>
+<li class="chapter" data-level="17.1.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#problem-definition-1"><i class="fa fa-check"></i><b>17.1.1</b> Problem definition</a></li>
+<li class="chapter" data-level="17.1.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#study-population-definition"><i class="fa fa-check"></i><b>17.1.2</b> Study population definition</a></li>
+<li class="chapter" data-level="17.1.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development-settings"><i class="fa fa-check"></i><b>17.1.3</b> Model development settings</a></li>
+<li class="chapter" data-level="17.1.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-evaluation"><i class="fa fa-check"></i><b>17.1.4</b> Model evaluation</a></li>
+<li class="chapter" data-level="17.1.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#study-summary-1"><i class="fa fa-check"></i><b>17.1.5</b> Study summary</a></li>
 </ul></li>
-<li class="chapter" data-level="14.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#external-validation"><i class="fa fa-check"></i><b>14.5</b> External validation</a></li>
-<li class="chapter" data-level="14.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#journal-paper-generation"><i class="fa fa-check"></i><b>14.6</b> Journal paper generation</a></li>
-<li class="chapter" data-level="14.7" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#excercises-1"><i class="fa fa-check"></i><b>14.7</b> Excercises</a></li>
+<li class="chapter" data-level="17.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#implementing-the-study-in-r"><i class="fa fa-check"></i><b>17.2</b> Implementing the study in R</a><ul>
+<li class="chapter" data-level="17.2.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#cohort-instantiation-1"><i class="fa fa-check"></i><b>17.2.1</b> Cohort instantiation</a></li>
+<li class="chapter" data-level="17.2.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#data-extraction-1"><i class="fa fa-check"></i><b>17.2.2</b> Data extraction</a></li>
+<li class="chapter" data-level="17.2.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#additional-inclusion-criteria"><i class="fa fa-check"></i><b>17.2.3</b> Additional inclusion criteria</a></li>
+<li class="chapter" data-level="17.2.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development"><i class="fa fa-check"></i><b>17.2.4</b> Model Development</a></li>
+</ul></li>
+<li class="chapter" data-level="17.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#implementing-the-study-in-atlas"><i class="fa fa-check"></i><b>17.3</b> Implementing the study in ATLAS</a></li>
+<li class="chapter" data-level="17.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#internal-validation"><i class="fa fa-check"></i><b>17.4</b> Internal validation</a><ul>
+<li class="chapter" data-level="17.4.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#discrimination"><i class="fa fa-check"></i><b>17.4.1</b> Discrimination</a></li>
+<li class="chapter" data-level="17.4.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#calibration"><i class="fa fa-check"></i><b>17.4.2</b> Calibration</a></li>
+<li class="chapter" data-level="17.4.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#smooth-calibration"><i class="fa fa-check"></i><b>17.4.3</b> Smooth Calibration</a></li>
+<li class="chapter" data-level="17.4.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#preference-distribution"><i class="fa fa-check"></i><b>17.4.4</b> Preference distribution</a></li>
+<li class="chapter" data-level="17.4.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#predicted-probability-distribution"><i class="fa fa-check"></i><b>17.4.5</b> Predicted probability distribution</a></li>
+<li class="chapter" data-level="17.4.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#test-train-similarity"><i class="fa fa-check"></i><b>17.4.6</b> Test-Train similarity</a></li>
+<li class="chapter" data-level="17.4.7" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#variable-scatter-plot"><i class="fa fa-check"></i><b>17.4.7</b> Variable scatter plot</a></li>
+<li class="chapter" data-level="17.4.8" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#precision-recall"><i class="fa fa-check"></i><b>17.4.8</b> Precision recall</a></li>
+<li class="chapter" data-level="17.4.9" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#demographic-summary"><i class="fa fa-check"></i><b>17.4.9</b> Demographic summary</a></li>
+</ul></li>
+<li class="chapter" data-level="17.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#external-validation"><i class="fa fa-check"></i><b>17.5</b> External validation</a></li>
+<li class="chapter" data-level="17.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#journal-paper-generation"><i class="fa fa-check"></i><b>17.6</b> Journal paper generation</a></li>
+<li class="chapter" data-level="17.7" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#excercises-1"><i class="fa fa-check"></i><b>17.7</b> Excercises</a></li>
 </ul></li>
 <li class="part"><span><b>IV Evidence Quality</b></span></li>
-<li class="chapter" data-level="15" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html"><i class="fa fa-check"></i><b>15</b> Evidence Quality</a></li>
-<li class="chapter" data-level="16" data-path="DataQuality.html"><a href="DataQuality.html"><i class="fa fa-check"></i><b>16</b> Data Quality</a><ul>
-<li class="chapter" data-level="16.1" data-path="DataQuality.html"><a href="DataQuality.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
-<li class="chapter" data-level="16.2" data-path="DataQuality.html"><a href="DataQuality.html#achilles-heel-tool"><i class="fa fa-check"></i><b>16.2</b> Achilles Heel tool</a><ul>
-<li class="chapter" data-level="16.2.1" data-path="DataQuality.html"><a href="DataQuality.html#precomputed-analyses"><i class="fa fa-check"></i><b>16.2.1</b> Precomputed Analyses</a></li>
-<li class="chapter" data-level="16.2.2" data-path="DataQuality.html"><a href="DataQuality.html#example-dq-check"><i class="fa fa-check"></i><b>16.2.2</b> Example DQ check</a></li>
-<li class="chapter" data-level="16.2.3" data-path="DataQuality.html"><a href="DataQuality.html#overview-of-existing-dq-heel-checks"><i class="fa fa-check"></i><b>16.2.3</b> Overview of existing DQ Heel checks</a></li>
+<li class="chapter" data-level="18" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html"><i class="fa fa-check"></i><b>18</b> Evidence Quality</a></li>
+<li class="chapter" data-level="19" data-path="DataQuality.html"><a href="DataQuality.html"><i class="fa fa-check"></i><b>19</b> Data Quality</a><ul>
+<li class="chapter" data-level="19.1" data-path="DataQuality.html"><a href="DataQuality.html#introduction"><i class="fa fa-check"></i><b>19.1</b> Introduction</a></li>
+<li class="chapter" data-level="19.2" data-path="DataQuality.html"><a href="DataQuality.html#achilles-heel-tool"><i class="fa fa-check"></i><b>19.2</b> Achilles Heel tool</a><ul>
+<li class="chapter" data-level="19.2.1" data-path="DataQuality.html"><a href="DataQuality.html#precomputed-analyses"><i class="fa fa-check"></i><b>19.2.1</b> Precomputed Analyses</a></li>
+<li class="chapter" data-level="19.2.2" data-path="DataQuality.html"><a href="DataQuality.html#example-dq-check"><i class="fa fa-check"></i><b>19.2.2</b> Example DQ check</a></li>
+<li class="chapter" data-level="19.2.3" data-path="DataQuality.html"><a href="DataQuality.html#overview-of-existing-dq-heel-checks"><i class="fa fa-check"></i><b>19.2.3</b> Overview of existing DQ Heel checks</a></li>
 </ul></li>
-<li class="chapter" data-level="16.3" data-path="DataQuality.html"><a href="DataQuality.html#study-specific-checks"><i class="fa fa-check"></i><b>16.3</b> Study-specific checks</a><ul>
-<li class="chapter" data-level="16.3.1" data-path="DataQuality.html"><a href="DataQuality.html#outcomes"><i class="fa fa-check"></i><b>16.3.1</b> Outcomes</a></li>
-<li class="chapter" data-level="16.3.2" data-path="DataQuality.html"><a href="DataQuality.html#laboratory-data"><i class="fa fa-check"></i><b>16.3.2</b> Laboratory data</a></li>
+<li class="chapter" data-level="19.3" data-path="DataQuality.html"><a href="DataQuality.html#study-specific-checks"><i class="fa fa-check"></i><b>19.3</b> Study-specific checks</a><ul>
+<li class="chapter" data-level="19.3.1" data-path="DataQuality.html"><a href="DataQuality.html#outcomes"><i class="fa fa-check"></i><b>19.3.1</b> Outcomes</a></li>
+<li class="chapter" data-level="19.3.2" data-path="DataQuality.html"><a href="DataQuality.html#laboratory-data"><i class="fa fa-check"></i><b>19.3.2</b> Laboratory data</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="ClinicalValidity.html"><a href="ClinicalValidity.html"><i class="fa fa-check"></i><b>17</b> Clinical Validity</a></li>
-<li class="chapter" data-level="18" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html"><i class="fa fa-check"></i><b>18</b> Software Validity</a><ul>
-<li class="chapter" data-level="18.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#software-development-process"><i class="fa fa-check"></i><b>18.1</b> Software Development Process</a><ul>
-<li class="chapter" data-level="18.1.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#source-code-management"><i class="fa fa-check"></i><b>18.1.1</b> Source Code Management</a></li>
-<li class="chapter" data-level="18.1.2" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#documentation"><i class="fa fa-check"></i><b>18.1.2</b> Documentation</a></li>
-<li class="chapter" data-level="18.1.3" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#availability-of-current-and-historical-archive-versions"><i class="fa fa-check"></i><b>18.1.3</b> Availability of Current and Historical Archive Versions</a></li>
-<li class="chapter" data-level="18.1.4" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#maintenance-support-and-retirement"><i class="fa fa-check"></i><b>18.1.4</b> Maintenance, Support and Retirement</a></li>
-<li class="chapter" data-level="18.1.5" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#qualified-personnel"><i class="fa fa-check"></i><b>18.1.5</b> Qualified Personnel</a></li>
-<li class="chapter" data-level="18.1.6" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#physical-and-logical-security"><i class="fa fa-check"></i><b>18.1.6</b> Physical and Logical Security</a></li>
-<li class="chapter" data-level="18.1.7" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#disaster-recovery"><i class="fa fa-check"></i><b>18.1.7</b> Disaster Recovery</a></li>
+<li class="chapter" data-level="20" data-path="ClinicalValidity.html"><a href="ClinicalValidity.html"><i class="fa fa-check"></i><b>20</b> Clinical Validity</a></li>
+<li class="chapter" data-level="21" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html"><i class="fa fa-check"></i><b>21</b> Software Validity</a><ul>
+<li class="chapter" data-level="21.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#software-development-process"><i class="fa fa-check"></i><b>21.1</b> Software Development Process</a><ul>
+<li class="chapter" data-level="21.1.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#source-code-management"><i class="fa fa-check"></i><b>21.1.1</b> Source Code Management</a></li>
+<li class="chapter" data-level="21.1.2" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#documentation"><i class="fa fa-check"></i><b>21.1.2</b> Documentation</a></li>
+<li class="chapter" data-level="21.1.3" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#availability-of-current-and-historical-archive-versions"><i class="fa fa-check"></i><b>21.1.3</b> Availability of Current and Historical Archive Versions</a></li>
+<li class="chapter" data-level="21.1.4" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#maintenance-support-and-retirement"><i class="fa fa-check"></i><b>21.1.4</b> Maintenance, Support and Retirement</a></li>
+<li class="chapter" data-level="21.1.5" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#qualified-personnel"><i class="fa fa-check"></i><b>21.1.5</b> Qualified Personnel</a></li>
+<li class="chapter" data-level="21.1.6" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#physical-and-logical-security"><i class="fa fa-check"></i><b>21.1.6</b> Physical and Logical Security</a></li>
+<li class="chapter" data-level="21.1.7" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#disaster-recovery"><i class="fa fa-check"></i><b>21.1.7</b> Disaster Recovery</a></li>
 </ul></li>
-<li class="chapter" data-level="18.2" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#testing"><i class="fa fa-check"></i><b>18.2</b> Testing</a><ul>
-<li class="chapter" data-level="18.2.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#unit-test"><i class="fa fa-check"></i><b>18.2.1</b> Unit test</a></li>
+<li class="chapter" data-level="21.2" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#testing"><i class="fa fa-check"></i><b>21.2</b> Testing</a><ul>
+<li class="chapter" data-level="21.2.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#unit-test"><i class="fa fa-check"></i><b>21.2.1</b> Unit test</a></li>
 </ul></li>
-<li class="chapter" data-level="18.3" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#conclusions"><i class="fa fa-check"></i><b>18.3</b> Conclusions</a></li>
+<li class="chapter" data-level="21.3" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#conclusions"><i class="fa fa-check"></i><b>21.3</b> Conclusions</a></li>
 </ul></li>
-<li class="chapter" data-level="19" data-path="MethodValidity.html"><a href="MethodValidity.html"><i class="fa fa-check"></i><b>19</b> Method Validity</a><ul>
-<li class="chapter" data-level="19.1" data-path="MethodValidity.html"><a href="MethodValidity.html#design-specific-diagnostics"><i class="fa fa-check"></i><b>19.1</b> Design-specific diagnostics</a><ul>
-<li class="chapter" data-level="19.1.1" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-cohort-method"><i class="fa fa-check"></i><b>19.1.1</b> Diagnostics for cohort method</a></li>
-<li class="chapter" data-level="19.1.2" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-sccs"><i class="fa fa-check"></i><b>19.1.2</b> Diagnostics for SCCS</a></li>
+<li class="chapter" data-level="22" data-path="MethodValidity.html"><a href="MethodValidity.html"><i class="fa fa-check"></i><b>22</b> Method Validity</a><ul>
+<li class="chapter" data-level="22.1" data-path="MethodValidity.html"><a href="MethodValidity.html#design-specific-diagnostics"><i class="fa fa-check"></i><b>22.1</b> Design-specific diagnostics</a><ul>
+<li class="chapter" data-level="22.1.1" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-cohort-method"><i class="fa fa-check"></i><b>22.1.1</b> Diagnostics for cohort method</a></li>
+<li class="chapter" data-level="22.1.2" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-sccs"><i class="fa fa-check"></i><b>22.1.2</b> Diagnostics for SCCS</a></li>
 </ul></li>
-<li class="chapter" data-level="19.2" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-all-estimation"><i class="fa fa-check"></i><b>19.2</b> Diagnostics for all estimation</a><ul>
-<li class="chapter" data-level="19.2.1" data-path="MethodValidity.html"><a href="MethodValidity.html#negative-and-positive-controls"><i class="fa fa-check"></i><b>19.2.1</b> Negative and positive controls</a></li>
-<li class="chapter" data-level="19.2.2" data-path="MethodValidity.html"><a href="MethodValidity.html#metrics"><i class="fa fa-check"></i><b>19.2.2</b> Metrics</a></li>
-<li class="chapter" data-level="19.2.3" data-path="MethodValidity.html"><a href="MethodValidity.html#empirical-calibration"><i class="fa fa-check"></i><b>19.2.3</b> Empirical calibration</a></li>
-<li class="chapter" data-level="19.2.4" data-path="MethodValidity.html"><a href="MethodValidity.html#replication-across-sites"><i class="fa fa-check"></i><b>19.2.4</b> Replication across sites</a></li>
-<li class="chapter" data-level="19.2.5" data-path="MethodValidity.html"><a href="MethodValidity.html#sensitivity-analyses"><i class="fa fa-check"></i><b>19.2.5</b> Sensitivity analyses</a></li>
+<li class="chapter" data-level="22.2" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-all-estimation"><i class="fa fa-check"></i><b>22.2</b> Diagnostics for all estimation</a><ul>
+<li class="chapter" data-level="22.2.1" data-path="MethodValidity.html"><a href="MethodValidity.html#negative-and-positive-controls"><i class="fa fa-check"></i><b>22.2.1</b> Negative and positive controls</a></li>
+<li class="chapter" data-level="22.2.2" data-path="MethodValidity.html"><a href="MethodValidity.html#metrics"><i class="fa fa-check"></i><b>22.2.2</b> Metrics</a></li>
+<li class="chapter" data-level="22.2.3" data-path="MethodValidity.html"><a href="MethodValidity.html#empirical-calibration"><i class="fa fa-check"></i><b>22.2.3</b> Empirical calibration</a></li>
+<li class="chapter" data-level="22.2.4" data-path="MethodValidity.html"><a href="MethodValidity.html#replication-across-sites"><i class="fa fa-check"></i><b>22.2.4</b> Replication across sites</a></li>
+<li class="chapter" data-level="22.2.5" data-path="MethodValidity.html"><a href="MethodValidity.html#sensitivity-analyses"><i class="fa fa-check"></i><b>22.2.5</b> Sensitivity analyses</a></li>
 </ul></li>
-<li class="chapter" data-level="19.3" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-all-prediction"><i class="fa fa-check"></i><b>19.3</b> Diagnostics for all prediction</a></li>
-<li class="chapter" data-level="19.4" data-path="MethodValidity.html"><a href="MethodValidity.html#method-validation-in-practice"><i class="fa fa-check"></i><b>19.4</b> Method validation in practice</a></li>
-<li class="chapter" data-level="19.5" data-path="MethodValidity.html"><a href="MethodValidity.html#advanced-ohdsi-methods-benchmark"><i class="fa fa-check"></i><b>19.5</b> Advanced: OHDSI Methods Benchmark</a></li>
+<li class="chapter" data-level="22.3" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-all-prediction"><i class="fa fa-check"></i><b>22.3</b> Diagnostics for all prediction</a></li>
+<li class="chapter" data-level="22.4" data-path="MethodValidity.html"><a href="MethodValidity.html#method-validation-in-practice"><i class="fa fa-check"></i><b>22.4</b> Method validation in practice</a></li>
+<li class="chapter" data-level="22.5" data-path="MethodValidity.html"><a href="MethodValidity.html#advanced-ohdsi-methods-benchmark"><i class="fa fa-check"></i><b>22.5</b> Advanced: OHDSI Methods Benchmark</a></li>
 </ul></li>
 <li class="part"><span><b>V OHDSI Studies</b></span></li>
-<li class="chapter" data-level="20" data-path="StudySteps.html"><a href="StudySteps.html"><i class="fa fa-check"></i><b>20</b> Study steps</a></li>
-<li class="chapter" data-level="21" data-path="NetworkResearch.html"><a href="NetworkResearch.html"><i class="fa fa-check"></i><b>21</b> OHDSI Network Research</a><ul>
-<li class="chapter" data-level="21.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#ohdsi-network-study-examples"><i class="fa fa-check"></i><b>21.1</b> OHDSI Network Study Examples</a><ul>
-<li class="chapter" data-level="21.1.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#endometriosis-study"><i class="fa fa-check"></i><b>21.1.1</b> Endometriosis study</a></li>
+<li class="chapter" data-level="23" data-path="StudySteps.html"><a href="StudySteps.html"><i class="fa fa-check"></i><b>23</b> Study steps</a></li>
+<li class="chapter" data-level="24" data-path="NetworkResearch.html"><a href="NetworkResearch.html"><i class="fa fa-check"></i><b>24</b> OHDSI Network Research</a><ul>
+<li class="chapter" data-level="24.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#ohdsi-network-study-examples"><i class="fa fa-check"></i><b>24.1</b> OHDSI Network Study Examples</a><ul>
+<li class="chapter" data-level="24.1.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#endometriosis-study"><i class="fa fa-check"></i><b>24.1.1</b> Endometriosis study</a></li>
 </ul></li>
-<li class="chapter" data-level="21.2" data-path="NetworkResearch.html"><a href="NetworkResearch.html#excercises-2"><i class="fa fa-check"></i><b>21.2</b> Excercises</a><ul>
-<li class="chapter" data-level="21.2.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#defining-a-cohort"><i class="fa fa-check"></i><b>21.2.1</b> Defining a cohort</a></li>
+<li class="chapter" data-level="24.2" data-path="NetworkResearch.html"><a href="NetworkResearch.html#excercises-2"><i class="fa fa-check"></i><b>24.2</b> Excercises</a><ul>
+<li class="chapter" data-level="24.2.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#defining-a-cohort"><i class="fa fa-check"></i><b>24.2.1</b> Defining a cohort</a></li>
 </ul></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
@@ -325,7 +339,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="study-designs" class="section level2">
 <h2><span class="header-section-number">13.1</span> Study designs</h2>
 <p>Several different study designs can be used to estimate treatment effects. The main difference between these is how they construct the (unobserved) counterfactual. Below is a brief discussion of the most commonly used designs, all of which are implemented as R packages in the <a href="https://ohdsi.github.io/MethodsLibrary/">OHDSI Methods Library</a>.</p>
-<div id="cohort-method" class="section level3">
+<div id="CohortMethod" class="section level3">
 <h3><span class="header-section-number">13.1.1</span> Cohort method</h3>
 <div class="figure" style="text-align: center"><span id="fig:cohortMethod"></span>
 <img src="images/PopulationLevelEstimation/cohortMethod.png" alt="The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation." width="90%" />
@@ -380,7 +394,7 @@ The new-user cohort method inherently is a method for comparative effect estimat
 <p>In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what’s more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially <em>cannot</em> differ systematically with respect to <em>any</em> patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure.</p>
 <p>For a given patient, the <em>propensity score</em> is the probability that that patient received the target treatment as against the comparator. <span class="citation">(P. Rosenbaum and Rubin <a href="#ref-rosenbaum_1983">1983</a>)</span> In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-matched observational study, we estimate the probability that each patient received the target treatment. This a straightforward predictive modeling application; we use logistic regression but many choices exist. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS.</p>
 <p>For example, suppose we use PS matching, and that Jan has a priori probability of 0.4 of receiving the target treatment and in fact receives the target treatment. If we can find a patient (named Jun) that also had an a priori probability of 0.4 of receiving the target treatment but in fact received the comparator, the comparison of Jan and Jun’s outcomes is like a mini-randomized trial, at least with respect to measured confounders. This comparison will yield an estimate of the Jan-Jun causal contrast that is as good as the one randomization would have produced. Estimation then proceeds as follows: for every patient that received the target, find one or more matched patients that received the comparator but had the same a priori probability of receiving the target. Compare the outcome for the target patient with the outcomes for the comparator patients within each of these matched groups.</p>
-<p>Propensity scoring controls for measured confounders. In fact, if treatment assignment is “strongly ignorable” given measured characteristics, propensity scoring will yield an unbiased estimate of the causal effect. “Strongly ignorable” essentially means that there are no unmeasured confounders. Unfortunately this is not a testable assumption. See Chapter <a href="MethodValidity.html#MethodValidity">19</a> on Method Validity for further discussion of this issue.</p>
+<p>Propensity scoring controls for measured confounders. In fact, if treatment assignment is “strongly ignorable” given measured characteristics, propensity scoring will yield an unbiased estimate of the causal effect. “Strongly ignorable” essentially means that there are no unmeasured confounders. Unfortunately this is not a testable assumption. See Chapter <a href="MethodValidity.html#MethodValidity">22</a> on Method Validity for further discussion of this issue.</p>
 <p><strong>Variable selection</strong></p>
 <p>In the past, PS were computed based on manually selected characteristics, and although the CohortMethod package can support such practices, we prefer the use of large-scale regularized regression using many generic characteristics. <span class="citation">(Tian, Schuemie, and Suchard <a href="#ref-tian_2018">2018</a>)</span> These characteristics include demographics, as well as all diagnoses, drug exposures, measurement, and medical procedures observed prior to and on the day of treatment initiation. A model typically involves 10,000 to 100,000 unique characteristics, which we fit using large-scale regularized regression <span class="citation">(M. A. Suchard et al. <a href="#ref-suchard_2013">2013</a>)</span> implemented in the <a href="https://ohdsi.github.io/Cyclops/">Cyclops</a> package. In essence, we let the data appropriately weight the characteristics.</p>
 
@@ -643,7 +657,7 @@ Figure 13.5: The Self-Controlled Case Series design. The rate of outcomes during
 <p>In the Estimation design tool, there are three sections: Comparisons, Analysis Settings, and Evaluation Settings. We can specify multiple comparisons and multiple analysis settings, and ATLAS will execute all combinations of these as separate analyses. Here we discuss each section:</p>
 <div id="ComparisonSettings" class="section level3">
 <h3><span class="header-section-number">13.3.1</span> Comparative cohort settings</h3>
-<p>A study can have one or more comparisons. Click on ‘Add Comparison’, which will open a new dialog. Click on <img src="images/PopulationLevelEstimation/open.png" /> to the select the target and comparator cohorts. By clicking on “Add Outcome” we can add our two outcome cohorts. We assume the cohorts have already been created as described in Chapter <a href="Cohorts.html#Cohorts">11</a>. When done, the dialog should look like Figure <a href="PopulationLevelEstimation.html#fig:comparisons">13.6</a>.</p>
+<p>A study can have one or more comparisons. Click on ‘Add Comparison’, which will open a new dialog. Click on <img src="images/PopulationLevelEstimation/open.png" /> to the select the target and comparator cohorts. By clicking on “Add Outcome” we can add our two outcome cohorts. We assume the cohorts have already been created as described in Chapter <a href="Cohorts.html#Cohorts">11</a>. The Appendix provides the full definitions of the target (Appendix <a href="CohortDefinitions.html#AceInhibitorsMono">B.2</a>) , comparator (Appendix <a href="CohortDefinitions.html#ThiazidesMono">B.5</a>), and outcome (Appendix <a href="CohortDefinitions.html#Angioedema">B.4</a> and Appendix <a href="CohortDefinitions.html#Ami">B.3</a>) cohorts. When done, the dialog should look like Figure <a href="PopulationLevelEstimation.html#fig:comparisons">13.6</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:comparisons"></span>
 <img src="images/PopulationLevelEstimation/comparisons.png" alt="The comparison dialog" width="100%" />
 <p class="caption">
@@ -652,7 +666,7 @@ Figure 13.6: The comparison dialog
 </div>
 <p>Note that we can select multiple outcomes for a target-comparator pair. Each outcome will be treated independently, and will basically result in separate analysis.</p>
 <p><strong>Negative control outcomes</strong></p>
-<p>We should also include a set of negative control outcomes. These are outcomes that are not believed to be caused by either the target or the comparator. Negative controls are discussed in more detail in Chapter <a href="MethodValidity.html#MethodValidity">19</a>. Here we assume a concept set has already been created and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure <a href="PopulationLevelEstimation.html#fig:ncConceptSet">13.7</a> shows the negative control concept set used for this study.</p>
+<p>We should also include a set of negative control outcomes. These are outcomes that are not believed to be caused by either the target or the comparator. Negative controls are discussed in more detail in Chapter <a href="MethodValidity.html#MethodValidity">22</a>. Here we assume a concept set has already been created and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure <a href="PopulationLevelEstimation.html#fig:ncConceptSet">13.7</a> shows the negative control concept set used for this study.</p>
 <div class="figure" style="text-align: center"><span id="fig:ncConceptSet"></span>
 <img src="images/PopulationLevelEstimation/ncConceptSet.png" alt="Negative Control concept set." width="100%" />
 <p class="caption">
@@ -742,18 +756,53 @@ Figure 13.13: Time-at-risk settings.
 </ul>
 <p>In case of doubt, we suggest using the default values.</p>
 <p>Fitting large-scale propensity models can be computationally expensive, so we may want to restrict the data used to fit the model to just a sample of the data. By default the maximum size of the target and comparator cohort is set to 250,000. In most studies this limit will not be reached. It is also unlikely that more data will lead to a better model. Note that althoug a sample of the data may be used to fit the model, the model will be used to compute PS for the entire population.</p>
-<p>Test each covariate for correlation with the target assignment? If any covariate has an unusually high correlation (either positive or negative), this will throw an error.</p>
-<p>This avoids lengthy calculation of a propensity model only to discover complete separation. Finding very high univariate correlation allows you to review the covariate to determine why it has high correlation and whether it should be dropped.</p>
-<p>If an error occurs, should the function stop? Else, the two cohorts will be assumed to be perfectly separable.</p>
-<p>Yes, stop, as there is normally no sense in carrying out the calculations and not have a usable result due to perfect separation.</p>
+<p><strong>Test each covariate for correlation with the target assignment?</strong> If any covariate has an unusually high correlation (either positive or negative), this will throw an error. This avoids lengthy calculation of a propensity model only to discover complete separation. Finding very high univariate correlation allows you to review the covariate to determine why it has high correlation and whether it should be dropped.</p>
+<p>Figure <a href="PopulationLevelEstimation.html#fig:psSettings">13.14</a> shows our choices for this study. Note that we select variable ratio matching by setting the maximum number of people to match to 100.</p>
+<div class="figure" style="text-align: center"><span id="fig:psSettings"></span>
+<img src="images/PopulationLevelEstimation/psSettings.png" alt="Propenstity score adjustment settings." width="100%" />
+<p class="caption">
+Figure 13.14: Propenstity score adjustment settings.
+</p>
+</div>
+<p><strong>Outcome model settings</strong></p>
+<p>First, we need to <strong>specify the statistical model we will use to estimate the risk of outcome between target and comparator cohorts</strong>. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section <a href="PopulationLevelEstimation.html#CohortMethod">13.1.1</a>. For our exampe we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify <strong>whether the reggression should be condition on the strata</strong>. One way to understand conditioning is to assume a seperate estimate is produced in each strata, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable ratio matching it is required.</p>
+<p>We can also choose to <strong>add all covariates to the outcome model</strong> to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend to keep the outcome model as simple as possible and not include additional covariates.</p>
+<p>Instead of stratifying or matching on the propensity score we can also choose to <strong>use inverse probability of treatment weighting</strong>. If weighting is used it is often recommended to use some for of trimming to avoid extreme weights and therefore unstable estimates.</p>
+<p>Figure <a href="PopulationLevelEstimation.html#fig:psSettings">13.14</a> shows our choices for this study. Because we use vvariable ratio matching, we must condition the regression on the strata (ie. the matched sets).</p>
+<div class="figure" style="text-align: center"><span id="fig:outcomeModelSettings"></span>
+<img src="images/PopulationLevelEstimation/outcomeModelSettings.png" alt="Outcome model settings." width="100%" />
+<p class="caption">
+Figure 13.15: Outcome model settings.
+</p>
+</div>
+</div>
+<div id="evaluation-settings" class="section level3">
+<h3><span class="header-section-number">13.3.3</span> Evaluation settings</h3>
+<p>As described in Chapter @{MethodValidity}, negative and positive controls should be included in our study to evaluate the operating characterists, and perform emprical calibration.</p>
+<p><strong>Negative control outcome cohort definition</strong></p>
+<p>In Section @{ComparisonSettings} we selected a concept set reprenting the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic, with three options. The first option is whether to <strong>use all occurrences</strong> or just the <strong>first occurrence</strong> of the concept. The second option determines <strong>whether occurrences of descendant concepts should be considered</strong>. For example, occurrences of the descendant “ingrown nail of foot” can also be counted as an occurrence of the ancestor “ingrown nail”. The third option specifies which domains should be considerd when looking for the concepts.</p>
+<div class="figure" style="text-align: center"><span id="fig:ncSettings"></span>
+<img src="images/PopulationLevelEstimation/ncSettings.png" alt="Outcome model settings." width="100%" />
+<p class="caption">
+Figure 13.16: Outcome model settings.
+</p>
+</div>
+<p><strong>Positive control synthesis</strong></p>
+<p>In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positve controls, derived from negative controls as described in Chapter @{MethodValidity}. Positive control synthesis is an advanced topic that we will skip for now.</p>
+</div>
+<div id="running-the-study-package" class="section level3">
+<h3><span class="header-section-number">13.3.4</span> Running the study package</h3>
+<p>Now that we have fully defined our study, we can export it as a fully executable R package. This package contains everything that is needed to execute the study at a site that has data in the CDM. This includes the cohort definitions which can be used to instatiate the target, comparator and outcome cohorts, the negative control concept set and logic to create the negative control outcome cohorts, as well as the R code to execute the analysis. Before generating the package make sure to save your study, then click on the <strong>Utilities</strong> tab. Here we can review the set of analyses that will be performed. As mentioned before, every combination of a comparison and an analysis setting will results in a separate analysis. In our example we have specified two analyses: ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using propensity score matching.</p>
+<p>We must provide a name for our package, after which we can click on ‘Download’ to download the zip file. The zip file contains an RStudio project with a README file that describes the steps needed to execute the analysis.</p>
 </div>
 </div>
 <div id="implementation-the-study-using-r" class="section level2">
 <h2><span class="header-section-number">13.4</span> Implementation the study using R</h2>
-<p>Now we have completely designed our study we have to implement the study. This will be done using the <a href="https://ohdsi.github.io/CohortMethod/">CohortMethod</a> package to execute our study. It extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model.</p>
+<p>Instead of using ATLAS to write the R code that executes the study, we can also write the R code ourselves. One reason we might want to do this is because R offers far greater flexibility than is exposed in ATLAS. If we for example wish to use custom covariates, or a linear outcome model, we will need to write some custom R code, and combine it with the functionality provided by the OHDSI R packages.</p>
+<p>For our exmample study we will rely on the <a href="https://ohdsi.github.io/CohortMethod/">CohortMethod</a> package to execute our study. CohortMethod extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model. In the following example we will only consider angioedema as outcome, and leave implemention for AMI and the negative controls as an excercise for the reader.</p>
 <div id="cohort-instantiation" class="section level3">
 <h3><span class="header-section-number">13.4.1</span> Cohort instantiation</h3>
-<p>We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter <a href="Cohorts.html#Cohorts">11</a>. The Appendix provides the full definitions of the target (Appendix <a href="CohortDefinitions.html#AceInhibitors">B.1</a>) and outcome (Appendix <a href="CohortDefinitions.html#Angioedema">B.4</a>) cohorts. In this example we will assume the ACE inhibitors cohort has ID 1, and the angioedema cohort has ID 2.</p>
+<p>We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter <a href="Cohorts.html#Cohorts">11</a>. The Appendix provides the full definitions of the target (Appendix <a href="CohortDefinitions.html#AceInhibitorsMono">B.2</a>), comparator (Appendix <a href="CohortDefinitions.html#ThiazidesMono">B.5</a>), and outcome (Appendix <a href="CohortDefinitions.html#Angioedema">B.4</a> ) cohorts. We will assume the ACEi, THZ, and angioedema cohorts have cohort definition IDs 1,2, and 3 respectively.</p>
 </div>
 <div id="data-extraction" class="section level3">
 <h3><span class="header-section-number">13.4.2</span> Data extraction</h3>
@@ -769,14 +818,73 @@ cohortsDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span>
 cohortsDbTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span>
 cdmVersion &lt;-<span class="st"> &quot;5&quot;</span></code></pre></div>
 <p>The last four lines define the <code>cdmDbSchema</code>, <code>cohortsDbSchema</code>, and <code>cohortsDbTable</code> variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- &quot;my_cdm_data.dbo&quot;</code>.</p>
-</div>
-<div id="specifying-the-analyses" class="section level3">
-<h3><span class="header-section-number">13.4.3</span> Specifying the analyses</h3>
-</div>
-</div>
-<div id="excercises" class="section level2">
-<h2><span class="header-section-number">13.5</span> Excercises</h2>
+<p>Now we can tell CohortMethod to extract the cohorts, construct covariates, and extract all necessary data for our analysis:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># target and comparator ingredient concepts:</span>
+aceInhibitors &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1335471</span>,<span class="dv">1340128</span>,<span class="dv">1341927</span>,<span class="dv">1363749</span>,<span class="dv">1308216</span>,<span class="dv">1310756</span>,<span class="dv">1373225</span>,<span class="dv">1331235</span>,
+                   <span class="dv">1334456</span>,<span class="dv">1342439</span>)
+thiazides &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1395058</span>,<span class="dv">974166</span>,<span class="dv">978555</span>,<span class="dv">907013</span>)
 
+<span class="co"># Define which types of covariates must be constructed:</span>
+covSettings &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>(<span class="dt">excludedCovariateConceptIds =</span> <span class="kw">c</span>(aceInhibitors, 
+                                                                              thiazides),
+                                              <span class="dt">addDescendantsToExclude =</span> <span class="ot">TRUE</span>)
+
+<span class="co">#Load data:</span>
+cmData &lt;-<span class="st"> </span><span class="kw">getDbCohortMethodData</span>(<span class="dt">connectionDetails =</span> connectionDetails,
+                                <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,
+                                <span class="dt">oracleTempSchema =</span> <span class="ot">NULL</span>,
+                                <span class="dt">targetId =</span> <span class="dv">1</span>,
+                                <span class="dt">comparatorId =</span> <span class="dv">2</span>,
+                                <span class="dt">outcomeIds =</span> <span class="dv">3</span>,
+                                <span class="dt">studyStartDate =</span> <span class="st">&quot;&quot;</span>,
+                                <span class="dt">studyEndDate =</span> <span class="st">&quot;&quot;</span>,
+                                <span class="dt">exposureDatabaseSchema =</span> cohortsDbSchema,
+                                <span class="dt">exposureTable =</span> cohortsDbTable,
+                                <span class="dt">outcomeDatabaseSchema =</span> cohortsDbSchema,
+                                <span class="dt">outcomeTable =</span> cohortsDbTable,
+                                <span class="dt">cdmVersion =</span> cdmVersion,
+                                <span class="dt">excludeDrugsFromCovariates =</span> <span class="ot">FALSE</span>,
+                                <span class="dt">firstExposureOnly =</span> <span class="ot">FALSE</span>,
+                                <span class="dt">removeDuplicateSubjects =</span> <span class="ot">FALSE</span>,
+                                <span class="dt">restrictToCommonPeriod =</span> <span class="ot">FALSE</span>,
+                                <span class="dt">washoutPeriod =</span> <span class="dv">0</span>,
+                                <span class="dt">covariateSettings =</span> covSettings)
+cohortMethodData</code></pre></div>
+<p>There are many parameters, but they are all documented in the CohortMethod manual. The <code>createDefaultCovariateSettings</code> function is described in the <code>FeatureExtraction</code> package. In short, we are pointing the function to the table containing our cohorts and specify which cohort definition IDs in that table identify the target, comparator and outcome. We instruct that the default set of covariates should be constructed, including covariates for all conditions, drug exposures, and procedures that were found on or before the index date. As mentioned in Section <a href="PopulationLevelEstimation.html#CohortMethod">13.1.1</a> we must exclude the target and comparator treatments from the set of covariates.</p>
+<p>All data about the cohorts, outcomes, and covariates are extracted from the server and stored in the <code>cohortMethodData</code> object. This object uses the package <code>ff</code> to store information in a way that ensures R does not run out of memory, even when the data are large.</p>
+<p>We can use the generic <code>summary()</code> function to view some more information of the data we extracted:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(cohortMethodData)</code></pre></div>
+<p>Creating the <code>cohortMethodData</code> file can take considerable computing time, and it is probably a good idea to save it for future sessions. Because <code>cohortMethodData</code> uses <code>ff</code>, we cannot use R’s regular save function. Instead, we’ll have to use the <code>saveCohortMethodData()</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveCohortMethodData</span>(cohortMethodData, <span class="st">&quot;coxibVsNonselVsGiBleed&quot;</span>)</code></pre></div>
+<p>We can use the <code>loadCohortMethodData()</code> function to load the data in a future session.</p>
+<p><strong>Defining new users</strong></p>
+<p>Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior first use) is used to make sure it is truly first use. When using the <code>CohortMethod</code> package, you can enforce the necessary requirements for new use in three ways:</p>
+<ol style="list-style-type: decimal">
+<li>When defining the cohorts.</li>
+<li>When loading the cohorts using the <code>getDbCohortMethodData</code> function, you can use the <code>firstExposureOnly</code>, <code>removeDuplicateSubjects</code>, <code>restrictToCommonPeriod</code>, and <code>washoutPeriod</code> arguments.</li>
+<li>When defining the study population using the <code>createStudyPopulation</code> function (see below) using the <code>firstExposureOnly</code>, <code>removeDuplicateSubjects</code>, <code>restrictToCommonPeriod</code>, and <code>washoutPeriod</code> arguments.</li>
+</ol>
+<p>The advantage of option 1 is that the input cohorts are already fully defined outside of the <code>CohortMethod</code> package, and for example external cohort characterization tools can be used on the same cohorts used in this package. The advantage of options 2 and 3 is that it saves you the trouble of limiting to first use yourself, for example allowing you to directly use the <code>drug_era</code> table in the CDM. Option 2 is more efficient than 3, since only data for first use will be fetched, while option 3 is less efficient but allows you to compare the original cohorts to the study population.</p>
+</div>
+<div id="defining-the-study-population" class="section level3">
+<h3><span class="header-section-number">13.4.3</span> Defining the study population</h3>
+<p>Typically, the exposure cohorts and outcome cohorts will be defined independently of each other. When we want to produce an effect size estimate, we need to further restrict these cohorts and put them together, for example by removing exposed subjects that had the outcome prior to exposure, and only keeping outcomes that fall within a defined risk window. For this we can use the <code>createStudyPopulation</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">studyPop &lt;-<span class="st"> </span><span class="kw">createStudyPopulation</span>(<span class="dt">cohortMethodData =</span> cohortMethodData,
+                                  <span class="dt">outcomeId =</span> <span class="dv">3</span>,
+                                  <span class="dt">firstExposureOnly =</span> <span class="ot">FALSE</span>,
+                                  <span class="dt">restrictToCommonPeriod =</span> <span class="ot">FALSE</span>,
+                                  <span class="dt">washoutPeriod =</span> <span class="dv">0</span>,
+                                  <span class="dt">removeDuplicateSubjects =</span> <span class="st">&quot;keep all&quot;</span>,
+                                  <span class="dt">removeSubjectsWithPriorOutcome =</span> <span class="ot">TRUE</span>,
+                                  <span class="dt">minDaysAtRisk =</span> <span class="dv">1</span>,
+                                  <span class="dt">riskWindowStart =</span> <span class="dv">0</span>,
+                                  <span class="dt">addExposureDaysToStart =</span> <span class="ot">FALSE</span>,
+                                  <span class="dt">riskWindowEnd =</span> <span class="dv">30</span>,
+                                  <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Note that we’ve set <code>firstExposureOnly</code> and <code>removeDuplicateSubjects</code> to FALSE, and <code>washoutPeriod</code> to zero because we already filtered on these arguments when using the <code>getDbCohortMethodData</code> function. During loading we set <code>restrictToCommonPeriod</code> to FALSE, and we do the same here because we do not want to force the comparison to restrict only to time when both drugs are recorded. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting at the index date (<code>riskWindowStart = 0</code> and <code>addExposureDaysToStart = FALSE</code>), and the risk windows ends 30 days after exposure ends (<code>riskWindowEnd = 30</code> and <code>addExposureDaysToEnd = TRUE</code>). Note that the risk windows are truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the <code>getAttritionTable</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getAttritionTable</span>(studyPop)</code></pre></div>
+<p>One additional filtering step that is often used is matching or trimming on propensity scores, as will be discussed next.</p>
+</div>
 </div>
 </div>
 <h3>References</h3>
@@ -851,7 +959,7 @@ cdmVersion &lt;-<span class="st"> &quot;5&quot;</span></code></pre></div>
         </div>
       </div>
 <a href="Characterization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="PatientLevelPrediction.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="propensity-scores.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
