@@ -2359,7 +2359,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.dfdte9jhchildren ;"
+## [1] "SELECT * FROM temp_schema.wsyljxulchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -3270,7 +3270,7 @@ lips, tongue, mouth, larynx, pharynx, or periorbital region, has been
 linked to the use of these medications \citep{sabroe_1997}. However,
 limited information is available about the absolute and relative risks
 for angioedema associated with the use of these medications. Existing
-evidence is primarily based on investigations of specific cohorts (eg,
+evidence is primarily based on investigations of specific cohorts (e.g.,
 predominantly male veterans or Medicaid beneficiaries), whose findings
 may not be generalizable to other populations, or based on
 investigations with few events, which provide unstable risk estimates
@@ -3320,7 +3320,7 @@ subsequent prescriptions.
 
 We fit a PS model using the default set of covariates, which includes
 demographics, conditions, drugs, procedures, measurements, observations,
-and several comorbidity scores. We exclude ACEi and THZ from the
+and several co-morbidity scores. We exclude ACEi and THZ from the
 covariates. We perform variable-ratio matching \citep{rassen_2012} and
 condition the Cox regression on the matched sets.
 
@@ -3630,12 +3630,12 @@ case here because we wish to exclude the drugs we are comparing, and
 sometimes the settings are related to a specific analysis, for example
 when we wish to use the same covariates used in another study we are
 trying to replicate. When executing an analysis for a specific
-comparison using specific analysis setings, the OHDSI tools will take
+comparison using specific analysis settings, the OHDSI tools will take
 the union of these sets.
 
 The choice to \textbf{add descendants to include or exclude} affects
 this union of the two settings. So in this example we specified only the
-ingredients to exclude when definining the comparisons. Here we set
+ingredients to exclude when defining the comparisons. Here we set
 `Should descendant concepts be added to the list of excluded concepts?`
 to 'Yes' to also add all descendants.
 
@@ -3659,7 +3659,7 @@ Time-at-risk is defined relative to the start and end dates of our
 target and comparator cohorts. In our example, we had set the cohort
 start date to start on treatment initiation, and cohort end date when
 exposure stops (for at least 30 days). We set the start of time-at-risk
-to 1 day after cohort start, so 1 day after treatment initation. A
+to 1 day after cohort start, so 1 day after treatment initiation. A
 reason to set the time-at-risk start to be later than the cohort start
 is because we may want to exclude outcome events that occur on the day
 of treatment initiation as we do not believe it biologically plausible
@@ -3679,8 +3679,8 @@ known latency for the side effect, then this may be increased to get a
 more informative proportion. It can also be used to create a cohort more
 similar to that of a randomized trial it is being compared to (e.g., all
 the patients in the randomized trial were observed for at least N days).
-mac \BeginKnitrBlock{rmdimportant}
 
+\BeginKnitrBlock{rmdimportant}
 A golden rule in designing a cohort study is to never use information
 that falls after the cohort start date to define the study population,
 as this may introduce bias. For example, if we require everyone to have
@@ -3710,15 +3710,15 @@ trim in some cases, for example when using IPTW.
 
 In addition to, or instead of trimming, we can choose to
 \textbf{stratify} or \textbf{match} on the propensity score. When
-stratifying we need to specifiy the \textbf{number of strata} and
-whether to select the strata based on the target, comparator, or entire
-study population. When matching we need to specify the \textbf{maximum
-number of people from the comparator group to match to each person in
-the target group}. Typical values are 1 for one-on-one matching, or a
-large number (e.g.~100) for variable ratio matching. We also need to
-specify the \textbf{caliper}: the maximum allowed difference between
-propensity scores to allow a match. The caliper can be defined on
-difference \textbf{caliper scales}:
+stratifying we need to specify the \textbf{number of strata} and whether
+to select the strata based on the target, comparator, or entire study
+population. When matching we need to specify the \textbf{maximum number
+of people from the comparator group to match to each person in the
+target group}. Typical values are 1 for one-on-one matching, or a large
+number (e.g.~100) for variable ratio matching. We also need to specify
+the \textbf{caliper}: the maximum allowed difference between propensity
+scores to allow a match. The caliper can be defined on difference
+\textbf{caliper scales}:
 
 \begin{itemize}
 \tightlist
@@ -3740,7 +3740,7 @@ so we may want to restrict the data used to fit the model to just a
 sample of the data. By default the maximum size of the target and
 comparator cohort is set to 250,000. In most studies this limit will not
 be reached. It is also unlikely that more data will lead to a better
-model. Note that althoug a sample of the data may be used to fit the
+model. Note that although a sample of the data may be used to fit the
 model, the model will be used to compute PS for the entire population.
 
 \textbf{Test each covariate for correlation with the target assignment?}
@@ -3768,11 +3768,11 @@ people to match to 100.
 First, we need to \textbf{specify the statistical model we will use to
 estimate the risk of outcome between target and comparator cohorts}. We
 can choose between Cox, Poisson, and logistic regression, as discussed
-briefly in Section \ref{CohortMethod}. For our exampe we choose a Cox
+briefly in Section \ref{CohortMethod}. For our example we choose a Cox
 proportional hazards model, which considers time to first event with
 possible censoring. Next, we need to specify \textbf{whether the
 reggression should be condition on the strata}. One way to understand
-conditioning is to assume a seperate estimate is produced in each
+conditioning is to assume a separate estimate is produced in each
 strata, and then combined across strata. For one-to-one matching this is
 likely unnecessary and would just lose power. For stratification or
 variable ratio matching it is required.
@@ -3791,7 +3791,7 @@ weighting is used it is often recommended to use some for of trimming to
 avoid extreme weights and therefore unstable estimates.
 
 Figure \ref{fig:psSettings} shows our choices for this study. Because we
-use vvariable ratio matching, we must condition the regression on the
+use variable ratio matching, we must condition the regression on the
 strata (ie. the matched sets).
 
 \begin{figure}
@@ -3807,20 +3807,21 @@ strata (ie. the matched sets).
 
 As described in Chapter @\{MethodValidity\}, negative and positive
 controls should be included in our study to evaluate the operating
-characterists, and perform emprical calibration.
+characteristics, and perform empirical calibration.
 
 \textbf{Negative control outcome cohort definition}
 
-In Section @\{ComparisonSettings\} we selected a concept set reprenting
-the negative control outcomes. However, we need logic to convert
-concepts to cohorts to be used as outcomes in our analysis. ATLAS
-provides standard logic, with three options. The first option is whether
-to \textbf{use all occurrences} or just the \textbf{first occurrence} of
-the concept. The second option determines \textbf{whether occurrences of
-descendant concepts should be considered}. For example, occurrences of
-the descendant ``ingrown nail of foot'' can also be counted as an
-occurrence of the ancestor ``ingrown nail''. The third option specifies
-which domains should be considerd when looking for the concepts.
+In Section @\{ComparisonSettings\} we selected a concept set
+representing the negative control outcomes. However, we need logic to
+convert concepts to cohorts to be used as outcomes in our analysis.
+ATLAS provides standard logic, with three options. The first option is
+whether to \textbf{use all occurrences} or just the \textbf{first
+occurrence} of the concept. The second option determines \textbf{whether
+occurrences of descendant concepts should be considered}. For example,
+occurrences of the descendant ``ingrown nail of foot'' can also be
+counted as an occurrence of the ancestor ``ingrown nail''. The third
+option specifies which domains should be considered when looking for the
+concepts.
 
 \begin{figure}
 
@@ -3836,7 +3837,7 @@ which domains should be considerd when looking for the concepts.
 In addition to negative controls we can also include positive controls,
 which are exposure-outcome pairs where a causal effect is believed to
 exist with known effect size. For various reasons real positive controls
-are problematic, so instead we rely on synthetic positve controls,
+are problematic, so instead we rely on synthetic positive controls,
 derived from negative controls as described in Chapter
 @\{MethodValidity\}. Positive control synthesis is an advanced topic
 that we will skip for now.
@@ -3846,7 +3847,7 @@ that we will skip for now.
 Now that we have fully defined our study, we can export it as a fully
 executable R package. This package contains everything that is needed to
 execute the study at a site that has data in the CDM. This includes the
-cohort definitions which can be used to instatiate the target,
+cohort definitions which can be used to instantiate the target,
 comparator and outcome cohorts, the negative control concept set and
 logic to create the negative control outcome cohorts, as well as the R
 code to execute the analysis. Before generating the package make sure to
@@ -3858,7 +3859,7 @@ ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using
 propensity score matching.
 
 We must provide a name for our package, after which we can click on
-`Download' to download the zip file. The zip file contains an RStudio
+`Download' to download the zip file. The zip file contains an R Studio
 project with a README file that describes the steps needed to execute
 the analysis.
 
@@ -3872,13 +3873,13 @@ we for example wish to use custom covariates, or a linear outcome model,
 we will need to write some custom R code, and combine it with the
 functionality provided by the OHDSI R packages.
 
-For our exmample study we will rely on the
+For our example study we will rely on the
 \href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} package to
 execute our study. CohortMethod extracts the necessary data from a
 database in the CDM and can use a large set of covariates for the
 propensity model. In the following example we will only consider
-angioedema as outcome, and leave implemention for AMI and the negative
-controls as an excercise for the reader.
+angioedema as outcome, and leave implementation for AMI and the negative
+controls as an exercise for the reader.
 
 \subsection{Cohort instantiation}\label{cohort-instantiation}
 
@@ -4151,7 +4152,10 @@ Here we use the PS to perform variable ratio matching:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }\DataTypeTok{maxRatio =} \DecValTok{100}\NormalTok{)}
+\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ ps, }
+                        \DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }
+                        \DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }
+                        \DataTypeTok{maxRatio =} \DecValTok{100}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4335,7 +4339,7 @@ Figure\ref{fig:balance}. One rule-of-thumb to use is that no covariate
 may have an absolute standardized difference of means greater than 0.1
 after propensity score adjustment. Here we see that although there was
 substantial imbalance before matching, after matching we meet this
-criterium.
+criterion.
 
 \begin{figure}
 
@@ -4382,7 +4386,7 @@ we can create \ref{fig:kmPlot}.
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/kmPlot} 
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/kmPlot} 
 
 }
 

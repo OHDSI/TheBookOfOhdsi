@@ -163,7 +163,7 @@ One important assumption underlying the SCCS is that the observation period end 
 
 ### Problem definition
 
-ACE inhibitors (ACEi) are widely used in patients with hypertension or ischemic heart disease, especially those with other comorbidities such as congestive heart failure, diabetes mellitus, or chronic kidney disease [@zaman_2002]. Angioedema, a serious and sometimes life-threatening adverse event that usually manifests as swelling of the lips, tongue, mouth, larynx, pharynx, or periorbital region, has been linked to the use of these medications [@sabroe_1997]. However, limited information is available about the absolute and relative risks for angioedema associated with the use of these medications. Existing evidence is primarily based on investigations of specific cohorts (eg, predominantly male veterans or Medicaid beneficiaries), whose findings may not be generalizable to other populations, or based on investigations with few events, which provide unstable risk estimates [@powers_2012]. Several observational studies compare ACEi to beta-blockers for the risk of angioedema [@magid_2010; @toh_2012], but beta-blockers are no longer recommend as first-line treatment of hypertension [@whelton_2018]. A viable alternative treatment could be thiazides or thiazide-like diuretics (THZ), which could be just as effective in managing hypertension and its associated risks such as acute myocardial infarction (AMI).
+ACE inhibitors (ACEi) are widely used in patients with hypertension or ischemic heart disease, especially those with other comorbidities such as congestive heart failure, diabetes mellitus, or chronic kidney disease [@zaman_2002]. Angioedema, a serious and sometimes life-threatening adverse event that usually manifests as swelling of the lips, tongue, mouth, larynx, pharynx, or periorbital region, has been linked to the use of these medications [@sabroe_1997]. However, limited information is available about the absolute and relative risks for angioedema associated with the use of these medications. Existing evidence is primarily based on investigations of specific cohorts (e.g., predominantly male veterans or Medicaid beneficiaries), whose findings may not be generalizable to other populations, or based on investigations with few events, which provide unstable risk estimates [@powers_2012]. Several observational studies compare ACEi to beta-blockers for the risk of angioedema [@magid_2010; @toh_2012], but beta-blockers are no longer recommend as first-line treatment of hypertension [@whelton_2018]. A viable alternative treatment could be thiazides or thiazide-like diuretics (THZ), which could be just as effective in managing hypertension and its associated risks such as acute myocardial infarction (AMI).
 
 We will apply our population-level estimation framework to observational healthcare data to address the following comparative estimation question:
 
@@ -183,7 +183,7 @@ We define time-at-risk to start on the day after treatment initiation, and stop 
 
 ### Model
 
-We  fit a PS model using the default set of covariates, which includes demographics, conditions, drugs, procedures, measurements, observations, and several comorbidity scores. We exclude ACEi and THZ from the covariates. We perform variable-ratio matching [@rassen_2012] and condition the Cox regression on the matched sets.
+We  fit a PS model using the default set of covariates, which includes demographics, conditions, drugs, procedures, measurements, observations, and several co-morbidity scores. We exclude ACEi and THZ from the covariates. We perform variable-ratio matching [@rassen_2012] and condition the Cox regression on the matched sets.
 
 ### Study summary
 
@@ -284,9 +284,9 @@ Our choices for our example study are shown in Figure \@ref(fig:studyPopulation)
 
 Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model. If we **click to view details** of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc. 
 
-We can modify the set of covariates by specifying concepts to **include** and/or **exclude**. These settings are the same as the ones found in Section \@ref(ComparisonSettings) on comparison settings. The reason why they can be found in two places is because sometimes these settings are related to a specific comparison, as is the case here because we wish to exclude the drugs we are comparing, and sometimes the settings are related to a specific analysis, for example when we wish to use the same covariates used in another study we are trying to replicate. When executing an analysis for a specific comparison using specific analysis setings, the OHDSI tools will take the union of these sets.
+We can modify the set of covariates by specifying concepts to **include** and/or **exclude**. These settings are the same as the ones found in Section \@ref(ComparisonSettings) on comparison settings. The reason why they can be found in two places is because sometimes these settings are related to a specific comparison, as is the case here because we wish to exclude the drugs we are comparing, and sometimes the settings are related to a specific analysis, for example when we wish to use the same covariates used in another study we are trying to replicate. When executing an analysis for a specific comparison using specific analysis settings, the OHDSI tools will take the union of these sets.
 
-The choice to **add descendants to include or exclude** affects this union of the two settings. So in this example we specified only the ingredients to exclude when definining the comparisons. Here we set 'Should descendant concepts be added to the list of excluded concepts?` to 'Yes' to also add all descendants.
+The choice to **add descendants to include or exclude** affects this union of the two settings. So in this example we specified only the ingredients to exclude when defining the comparisons. Here we set 'Should descendant concepts be added to the list of excluded concepts?` to 'Yes' to also add all descendants.
 
 Figure \@ref(fig:covariateSettings) shows our choices for this study. Note that we have selected to add descendants to the concept to exclude, which we defined in the comparison settings in Figure \@ref(fig:comparisons2).  
 
@@ -297,12 +297,12 @@ Figure \@ref(fig:covariateSettings) shows our choices for this study. Note that 
 
 **Time at risk**
 
-Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to 1 day after cohort start, so 1 day after treatment initation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation as we do not believe it biologically plausible they can be caused by the drug.
+Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to 1 day after cohort start, so 1 day after treatment initiation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation as we do not believe it biologically plausible they can be caused by the drug.
 
 We set the end of the time-at-risk to the cohort end, so when exposure stops. We could choose to set the end date later if for example we believe events closely following treatment end may still be attributable to the exposure. In the extreme we could set the time-at-risk end to a large number of days (e.g. 99999) after the cohort end date, meaning we will effectively follow up subjects until observation end. Such a design is sometimes referred to as an *intent-to-treat* design.
 
 A patient with 0 days at risk adds no information, so the **minimum days at risk** is normally set at 1 day. If there is a known latency for the side effect, then this may be increased to get a more informative proportion. It can also be used to create a cohort more similar to that of a randomized trial it is being compared to (e.g., all the patients in the randomized trial were observed for at least N days).
-mac
+
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">A golden rule in designing a cohort study is to never use information that falls after the cohort start date to define the study population, as this may introduce bias. For example, if we require everyone to have at least a year of time-at-risk, we will likely have limited our analyses to those who tolerate the treatment well. This setting should therefore be used with extreme care.</div>\EndKnitrBlock{rmdimportant}
 
 <div class="figure" style="text-align: center">
@@ -314,7 +314,7 @@ mac
 
 We can opt to **trim** the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score [@walker_2013] falls outside the range we prespecify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW.  
 
-In addition to, or instead of trimming, we can choose to **stratify** or **match** on the propensity score. When stratifying we need to specifiy the **number of strata** and whether to select the strata based on the target, comparator, or entire study population. When matching we need to specify the **maximum number of people from the comparator group to match to each person in the target group**. Typical values are 1 for one-on-one matching, or a large number (e.g. 100) for variable ratio matching. We also need to specify the **caliper**: the maximum allowed difference between propensity scores to allow a match. The caliper can be defined on difference **caliper scales**:
+In addition to, or instead of trimming, we can choose to **stratify** or **match** on the propensity score. When stratifying we need to specify the **number of strata** and whether to select the strata based on the target, comparator, or entire study population. When matching we need to specify the **maximum number of people from the comparator group to match to each person in the target group**. Typical values are 1 for one-on-one matching, or a large number (e.g. 100) for variable ratio matching. We also need to specify the **caliper**: the maximum allowed difference between propensity scores to allow a match. The caliper can be defined on difference **caliper scales**:
 
 * **The propensity score scale**: the PS itself
 * **The standardized scale**: in standard deviations of the PS distributions
@@ -322,7 +322,7 @@ In addition to, or instead of trimming, we can choose to **stratify** or **match
 
 In case of doubt, we suggest using the default values.
 
-Fitting large-scale propensity models can be computationally expensive, so we may want to restrict the data used to fit the model to just a sample of the data. By default the maximum size of the target and comparator cohort is set to 250,000. In most studies this limit will not be reached. It is also unlikely that more data will lead to a better model. Note that althoug a sample of the data may be used to fit the model, the model will be used to compute PS for the entire population.
+Fitting large-scale propensity models can be computationally expensive, so we may want to restrict the data used to fit the model to just a sample of the data. By default the maximum size of the target and comparator cohort is set to 250,000. In most studies this limit will not be reached. It is also unlikely that more data will lead to a better model. Note that although a sample of the data may be used to fit the model, the model will be used to compute PS for the entire population.
 
 **Test each covariate for correlation with the target assignment?** If any covariate has an unusually high correlation (either positive or negative), this will throw an error. This avoids lengthy calculation of a propensity model only to discover complete separation. Finding very high univariate correlation allows you to review the covariate to determine why it has high correlation and whether it should be dropped. 
 
@@ -335,13 +335,13 @@ Figure \@ref(fig:psSettings) shows our choices for this study. Note that we sele
 
 **Outcome model settings**
 
-First, we need to **specify the statistical model we will use to estimate the risk of outcome between target and comparator cohorts**. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \@ref(CohortMethod). For our exampe we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify **whether the reggression should be condition on the strata**. One way to understand conditioning is to assume a seperate estimate is produced in each strata, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable ratio matching it is required.
+First, we need to **specify the statistical model we will use to estimate the risk of outcome between target and comparator cohorts**. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \@ref(CohortMethod). For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify **whether the reggression should be condition on the strata**. One way to understand conditioning is to assume a separate estimate is produced in each strata, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable ratio matching it is required.
 
 We can also choose to **add all covariates to the outcome model** to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend to keep the outcome model as simple as possible and not include additional covariates.
 
 Instead of stratifying or matching on the propensity score we can also choose to **use inverse probability of treatment weighting**. If weighting is used it is often recommended to use some for of trimming to avoid extreme weights and therefore unstable estimates.
 
-Figure \@ref(fig:psSettings) shows our choices for this study. Because we use vvariable ratio matching, we must condition the regression on the strata (ie. the matched sets).
+Figure \@ref(fig:psSettings) shows our choices for this study. Because we use variable ratio matching, we must condition the regression on the strata (ie. the matched sets).
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/outcomeModelSettings.png" alt="Outcome model settings." width="100%" />
@@ -350,11 +350,11 @@ Figure \@ref(fig:psSettings) shows our choices for this study. Because we use vv
 
 ### Evaluation settings
 
-As described in Chapter \@{MethodValidity}, negative and positive controls should be included in our study to evaluate the operating characterists, and perform emprical calibration. 
+As described in Chapter \@{MethodValidity}, negative and positive controls should be included in our study to evaluate the operating characteristics, and perform empirical calibration. 
 
 **Negative control outcome cohort definition**
 
-In Section \@{ComparisonSettings} we selected a concept set reprenting the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic, with three options. The first option is whether to **use all occurrences** or just  the **first occurrence** of the concept. The second option determines **whether occurrences of descendant concepts should be considered**. For example, occurrences of the descendant "ingrown nail of foot" can also be counted as an occurrence of the ancestor "ingrown nail". The third option specifies which domains should be considerd when looking for the concepts.
+In Section \@{ComparisonSettings} we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic, with three options. The first option is whether to **use all occurrences** or just  the **first occurrence** of the concept. The second option determines **whether occurrences of descendant concepts should be considered**. For example, occurrences of the descendant "ingrown nail of foot" can also be counted as an occurrence of the ancestor "ingrown nail". The third option specifies which domains should be considered when looking for the concepts.
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/ncSettings.png" alt="Outcome model settings." width="100%" />
@@ -363,19 +363,19 @@ In Section \@{ComparisonSettings} we selected a concept set reprenting the negat
 
 **Positive control synthesis**
 
-In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positve controls, derived from negative controls as described in Chapter \@{MethodValidity}. Positive control synthesis is an advanced topic that we will skip for now.
+In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \@{MethodValidity}. Positive control synthesis is an advanced topic that we will skip for now.
 
 ### Running the study package
 
-Now that we have fully defined our study, we can export it as a fully executable R package. This package contains everything that is needed to execute the study at a site that has data in the CDM. This includes the cohort definitions which can be used to instatiate the target, comparator and outcome cohorts, the negative control concept set and logic to create the negative control outcome cohorts, as well as the R code to execute the analysis. Before generating the package make sure to save your study, then click on the **Utilities** tab. Here we can review the set of analyses that will be performed. As mentioned before, every combination of a comparison and an analysis setting will results in a separate analysis. In our example we have specified two analyses: ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using propensity score matching.
+Now that we have fully defined our study, we can export it as a fully executable R package. This package contains everything that is needed to execute the study at a site that has data in the CDM. This includes the cohort definitions which can be used to instantiate the target, comparator and outcome cohorts, the negative control concept set and logic to create the negative control outcome cohorts, as well as the R code to execute the analysis. Before generating the package make sure to save your study, then click on the **Utilities** tab. Here we can review the set of analyses that will be performed. As mentioned before, every combination of a comparison and an analysis setting will results in a separate analysis. In our example we have specified two analyses: ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using propensity score matching.
 
-We must provide a name for our package, after which we can click on 'Download' to download the zip file. The zip file contains an RStudio project with a README file that describes the steps needed to execute the analysis.
+We must provide a name for our package, after which we can click on 'Download' to download the zip file. The zip file contains an R Studio project with a README file that describes the steps needed to execute the analysis.
 
 ## Implementation the study using R
 
 Instead of using ATLAS to write the R code that executes the study, we can also write the R code ourselves. One reason we might want to do this is because R offers far greater flexibility than is exposed in ATLAS. If we for example wish to use custom covariates, or a linear outcome model, we will need to write some custom R code, and combine it with the functionality provided by the OHDSI R packages. 
 
-For our exmample study we will rely on the [CohortMethod](https://ohdsi.github.io/CohortMethod/) package to execute our study. CohortMethod extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model. In the following example we will only consider angioedema as outcome, and leave implemention for AMI and the negative controls as an excercise for the reader.
+For our example study we will rely on the [CohortMethod](https://ohdsi.github.io/CohortMethod/) package to execute our study. CohortMethod extracts the necessary data from a database in the CDM and can use a large set of covariates for the propensity model. In the following example we will only consider angioedema as outcome, and leave implementation for AMI and the negative controls as an exercise for the reader.
 
 ### Cohort instantiation
 
@@ -545,7 +545,10 @@ Here we use the PS to perform variable ratio matching:
 
 
 ```r
-matchedPop <- matchOnPs(ps, caliper = 0.2, caliperScale = "standardized logit", maxRatio = 100)
+matchedPop <- matchOnPs(population = ps, 
+                        caliper = 0.2, 
+                        caliperScale = "standardized logit", 
+                        maxRatio = 100)
 ```
 
 Alternatively, we could have used the PS in the `trimByPs`, `trimByPsToEquipoise`, or `stratifyByPs` functions.
@@ -611,7 +614,7 @@ Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and TH
 
 ### Covariate balance
 
-The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure\@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterium.
+The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure\@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion.
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
@@ -633,7 +636,7 @@ To gain a better understanding of the amount of follow-up available we can also 
 One last check is to review the Kaplan Meier plot, showing the survival over time in both cohorts. Using the `plotKaplanMeier` function we can create \@ref(fig:kmPlot). 
 
 <div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/kmPlot.png" alt="Distribution of follow-up time for the target and comparator cohorts." width="80%" />
+<img src="images/PopulationLevelEstimation/kmPlot.png" alt="Distribution of follow-up time for the target and comparator cohorts." width="100%" />
 <p class="caption">(\#fig:kmPlot)Distribution of follow-up time for the target and comparator cohorts.</p>
 </div>
 
