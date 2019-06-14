@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-13}
+    \date{2019-06-14}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -1793,70 +1793,73 @@ Mapping and QA of codes to Standard Concepts
 
 \chapter{Data Analytics Use Cases}\label{DataAnalyticsUseCases}
 
-\begin{itemize}
-\tightlist
-\item
-  Introduction
-\end{itemize}
+\emph{Chapter lead: David Madigan}
 
 The OHDSI collaboration focuses on generating reliable evidence from
 real-world healthcare data, typically in the form of claims databases or
 electronic health record databases. The use cases that OHDSI focuses on
-fall into three major buckets and we describe these below. Note, for all
-the use cases, the evidence we generate inherits the limitations of the
-data; we discuss these limitations at length in Chapters X, Y, and Z.
+fall into three major buckets:
 
 \begin{itemize}
 \tightlist
 \item
-  Theory
-\end{itemize}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Population characterization
-\end{enumerate}
-
-We can use the data to provide answers to questions about the
-charateristics of the patients in each database, the practice of
-healthcare, and study how these things change over time.
-
-The data can provide answers to questions like: - for patients newly
-diagnosed with atrial fibrillation, how many receive a prescription for
-warfarin? - what is the average age of patients who undergo hip
-arthoplasty?
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
+  Characterization
 \item
   Population-level estimation
-\end{enumerate}
+\item
+  Patient-level prediction
+\end{itemize}
+
+We describe these in detail below. Note, for all the use cases, the
+evidence we generate inherits the limitations of the data; we discuss
+these limitations at length in Chapters X, Y, and Z.
+
+\section{Characterization}\label{characterization}
+
+We can use the data to provide answers to questions about the
+characteristics of the patients in each database, the practice of
+healthcare, and study how these things change over time.
+
+The data can provide answers to questions like:
+
+\begin{itemize}
+\tightlist
+\item
+  for patients newly diagnosed with atrial fibrillation, how many
+  receive a prescription for warfarin?
+\item
+  what is the average age of patients who undergo hip arthroplasty?
+\end{itemize}
+
+\section{Population-level estimation}\label{population-level-estimation}
 
 To a limited extent, the data can support causal inferences about the
 effects of healthcare interventions.
 
-The data can provide answers to questions like: - for patients newly
-diagnosed with atrial fibrillation, in the first year after therapy
-initiation, does warfarin cause more major bleeds than dabigatran? -
-Does the causal effect of metformin on diarrhea vary by age?
+The data can provide answers to questions like:
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
+\begin{itemize}
 \tightlist
 \item
-  Patient-Level prediction
-\end{enumerate}
+  for patients newly diagnosed with atrial fibrillation, in the first
+  year after therapy initiation, does warfarin cause more major bleeds
+  than dabigatran?
+\item
+  Does the causal effect of metformin on diarrhea vary by age?
+\end{itemize}
+
+\section{Patient-Level prediction}\label{patient-level-prediction}
 
 Based on the collected patient health histories in the database, we can
-make patient-level predictions about future health events. - for a
-specific patient newly diagnosed with atrial fibrillation, in the first
-year after therapy initiation with warfarin, what is the probability the
-patient suffers an ischemic stroke?
+make patient-level predictions about future health events.
+
+\begin{itemize}
+\tightlist
+\item
+  for a specific patient newly diagnosed with atrial fibrillation, in
+  the first year after therapy initiation with warfarin, what is the
+  probability the patient suffers an ischemic stroke?
+\end{itemize}
 
 These tasks overlap to a certain extent. For example, an important
 use-case for prediction is to predict an outcome for a specific patient
@@ -1867,7 +1870,20 @@ treatment with A actually occurs. Since drug B was not prescribed, the
 outcome following treatment B, while predictable, is ``counterfactual''
 since it is not ever observed. Each of these prediction tasks falls
 under patient-level prediction. However, the difference between (or
-ratio of) the two outcomes is a unit-level \emph{causal} effect.
+ratio of) the two outcomes is a unit-level \emph{causal} effect, and
+should be estimated using causal effect estimation methods instead.
+
+\BeginKnitrBlock{rmdimportant}
+People have a natural tendency to erroneously interpret predictive
+models as if they are causal models. But a predictive model can only
+show correlation, never causation. For example, diabetic drug use might
+be a strong predictor for myocardial infarction (MI), because diabetes
+is a strong risk factor for MI. However, that does not mean that
+stopping the diabetic drugs will prevent MI!
+\EndKnitrBlock{rmdimportant}
+
+\section{Limitations of observational
+research}\label{limitations-of-observational-research}
 
 There are many important healthcare questions for which OHDSI databases
 cannot provide answers. These include:
@@ -1877,16 +1893,18 @@ cannot provide answers. These include:
 \item
   Causal effects of interventions compared to placebo. Sometimes it is
   possible to consider the causal effect of a treatment as compared with
-  non-treatment but not placebo tretamernt.
+  non-treatment but not placebo treatment.
 \item
   Anything related to over-the-counter medications
 \item
   Many outcomes are sparsely recorded if at all. These include
-  mortality, behavioral outcomes, lifestyle, and socioeconmic status.
+  mortality, behavioral outcomes, lifestyle, and socioeconomic status.
 \item
   Since patients tend to encounter the healthcare system when they are
   unwell, measurement of the benefits of treatments can prove elusive.
 \end{itemize}
+
+\subsection{Missing data}\label{missing-data}
 
 Missingness in OHDSI databases presents subtle challenges. A health
 event (e.g., prescription, laboratory value, etc.) that should be
@@ -1894,16 +1912,8 @@ recorded in a database, but isn't, is ``missing.'' The statistics
 literature distinguishes between types of missingness such as ``missing
 completely at random,'' ``missing at random,'' and ``missing not at
 random'' and methods of increasing complexity attempt to address these
-types. \citet{perkins2017principled} provide a use introduction to this
-topic.
-
-What use cases are often observed? Drug safety, Drug utilization, etc.
-
-\begin{itemize}
-\tightlist
-\item
-  Practice
-\end{itemize}
+types. \citet{perkins2017principled} provide a useful introduction to
+this topic.
 
 \chapter{OHDSI Analytics Tools}\label{OhdsiAnalyticsTools}
 
@@ -2349,7 +2359,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.fm5i3teichildren ;"
+## [1] "SELECT * FROM temp_schema.mkqdp63zchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -3921,14 +3931,14 @@ covariates, and extract all necessary data for our analysis:
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# target and comparator ingredient concepts:}
-\NormalTok{aceInhibitors <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1335471}\NormalTok{,}\DecValTok{1340128}\NormalTok{,}\DecValTok{1341927}\NormalTok{,}\DecValTok{1363749}\NormalTok{,}\DecValTok{1308216}\NormalTok{,}\DecValTok{1310756}\NormalTok{,}\DecValTok{1373225}\NormalTok{,}\DecValTok{1331235}\NormalTok{,}
-                   \DecValTok{1334456}\NormalTok{,}\DecValTok{1342439}\NormalTok{)}
-\NormalTok{thiazides <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1395058}\NormalTok{,}\DecValTok{974166}\NormalTok{,}\DecValTok{978555}\NormalTok{,}\DecValTok{907013}\NormalTok{)}
+\NormalTok{aceI <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1335471}\NormalTok{,}\DecValTok{1340128}\NormalTok{,}\DecValTok{1341927}\NormalTok{,}\DecValTok{1363749}\NormalTok{,}\DecValTok{1308216}\NormalTok{,}\DecValTok{1310756}\NormalTok{,}\DecValTok{1373225}\NormalTok{,}
+          \DecValTok{1331235}\NormalTok{,}\DecValTok{1334456}\NormalTok{,}\DecValTok{1342439}\NormalTok{)}
+\NormalTok{thz <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1395058}\NormalTok{,}\DecValTok{974166}\NormalTok{,}\DecValTok{978555}\NormalTok{,}\DecValTok{907013}\NormalTok{)}
 
 \CommentTok{# Define which types of covariates must be constructed:}
-\NormalTok{covSettings <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{(}\DataTypeTok{excludedCovariateConceptIds =} \KeywordTok{c}\NormalTok{(aceInhibitors, }
-\NormalTok{                                                                              thiazides),}
-                                              \DataTypeTok{addDescendantsToExclude =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{cs <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{(}\DataTypeTok{excludedCovariateConceptIds =} \KeywordTok{c}\NormalTok{(aceI, }
+\NormalTok{                                                                     thz),}
+                                     \DataTypeTok{addDescendantsToExclude =} \OtherTok{TRUE}\NormalTok{)}
 
 \CommentTok{#Load data:}
 \NormalTok{cmData <-}\StringTok{ }\KeywordTok{getDbCohortMethodData}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
@@ -3949,7 +3959,7 @@ covariates, and extract all necessary data for our analysis:
                                 \DataTypeTok{removeDuplicateSubjects =} \OtherTok{FALSE}\NormalTok{,}
                                 \DataTypeTok{restrictToCommonPeriod =} \OtherTok{FALSE}\NormalTok{,}
                                 \DataTypeTok{washoutPeriod =} \DecValTok{0}\NormalTok{,}
-                                \DataTypeTok{covariateSettings =}\NormalTok{ covSettings)}
+                                \DataTypeTok{covariateSettings =}\NormalTok{ cs)}
 \NormalTok{cohortMethodData}
 \end{Highlighting}
 \end{Shaded}
@@ -4084,7 +4094,7 @@ left in the study population we can always use the
 One additional filtering step that is often used is matching or trimming
 on propensity scores, as will be discussed next.
 
-\chapter{Propensity scores}\label{propensity-scores}
+\subsection{Propensity scores}\label{propensity-scores}
 
 The \texttt{CohortMethod} can use propensity scores to adjust for
 potential confounders. Instead of the traditional approach of using a
@@ -4092,8 +4102,6 @@ handful of predefined covariates, \texttt{CohortMethod} typically uses
 thousands to millions of covariates that are automatically constructed
 based on conditions, procedures and drugs in the records of the
 subjects.
-
-\section{Fitting a propensity model}\label{fitting-a-propensity-model}
 
 We can fit a propensity model using the covariates constructed by the
 \texttt{getDbcohortMethodData()} function:
@@ -4115,9 +4123,6 @@ long time. You can use the \texttt{prior} and \texttt{control}
 parameters of the \texttt{createPs()} to specify \texttt{Cyclops}
 behavior, including using multiple CPUs to speed-up the
 cross-validation.
-
-\section{Propensity score
-diagnostics}\label{propensity-score-diagnostics}
 
 We can compute the area under the receiver-operator curve (AUC) for the
 propensity score model:
@@ -4153,8 +4158,6 @@ model. It is a good idea to inspect the remaining variables for anything
 that should not be there, for example variations of the drugs of
 interest that we forgot to exclude.
 
-\section{Using the propensity score}\label{using-the-propensity-score}
-
 We can use the propensity scores to trim, stratify, match, or weigh our
 population. For example, one could trim to equipoise, meaning only
 subjects with a preference score between 0.25 and 0.75 are kept:
@@ -4181,8 +4184,8 @@ we're using one-to-one matching:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{  matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }\DataTypeTok{maxRatio =} \DecValTok{1}\NormalTok{)}
-  \KeywordTok{plotPs}\NormalTok{(matchedPop, ps)}
+\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }\DataTypeTok{maxRatio =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{plotPs}\NormalTok{(matchedPop, ps)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4207,9 +4210,6 @@ Or, if we like, we can plot an attrition diagram:
 \KeywordTok{drawAttritionDiagram}\NormalTok{(matchedPop)}
 \end{Highlighting}
 \end{Shaded}
-
-\section{Evaluating covariate
-balance}\label{evaluating-covariate-balance}
 
 To evaluate whether our use of the propensity score is indeed making the
 two cohorts more comparable, we can compute the covariate balance before
@@ -4237,7 +4237,7 @@ The `before matching' population is the population as extracted by the
 \texttt{getDbCohortMethodData} function, so before any further filtering
 steps.
 
-\section{Inspecting select population
+\subsection{Inspecting select population
 characteristics}\label{inspecting-select-population-characteristics}
 
 It is customary to include a table in your paper that lists some select
@@ -4256,31 +4256,7 @@ the \texttt{createCmTable1} function:
 
 \fontsize{10}{12} \selectfont
 
-\section{Inserting the population cohort in the
-database}\label{inserting-the-population-cohort-in-the-database}
-
-For various reasons it might be necessary to insert the study population
-back into the database, for example because we want to use an external
-cohort characterization tool. We can use the \texttt{insertDbPopulation}
-function for this purpose:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{insertDbPopulation}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ matchedPop,}
-                   \DataTypeTok{cohortIds =} \KeywordTok{c}\NormalTok{(}\DecValTok{101}\NormalTok{,}\DecValTok{100}\NormalTok{),}
-                   \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                   \DataTypeTok{cohortDatabaseSchema =}\NormalTok{ resultsDatabaseSchema,}
-                   \DataTypeTok{cohortTable =} \StringTok{"coxibVsNonselVsGiBleed"}\NormalTok{,}
-                   \DataTypeTok{createTable =} \OtherTok{FALSE}\NormalTok{,}
-                   \DataTypeTok{cdmVersion =}\NormalTok{ cdmVersion)}
-\end{Highlighting}
-\end{Shaded}
-
-This function will store the population in a table with the same
-structure as the \texttt{cohort} table in the CDM, in this case in the
-same table where we had created our original cohorts.
-
-\chapter{Follow-up and power}\label{follow-up-and-power}
+\subsection{Follow-up and power}\label{follow-up-and-power}
 
 Before we start fitting an outcome model, we might be interested to know
 whether we have sufficient power to detect a particular effect size. It
@@ -4350,13 +4326,10 @@ the study population has. We can also plot the distribution:
 \end{Highlighting}
 \end{Shaded}
 
-\chapter{Outcome models}\label{outcome-models}
+\subsection{Outcome models}\label{outcome-models}
 
 The outcome model is a model describing which variables are associated
 with the outcome.
-
-\section{Fitting a simple outcome
-model}\label{fitting-a-simple-outcome-model}
 
 In theory we could fit an outcome model without using the propensity
 scores. In this example we are fitting an outcome model using a Cox

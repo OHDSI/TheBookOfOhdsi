@@ -279,7 +279,7 @@ Our choices for our example study are shown in Figure \@ref(fig:studyPopulation)
 <img src="images/PopulationLevelEstimation/studyPopulation.png" alt="Study population settings.." width="100%" />
 <p class="caption">(\#fig:studyPopulation)Study population settings..</p>
 </div>
- 
+
 **Covariate settings**
 
 Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model. If we **click to view details** of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc. 
@@ -406,14 +406,14 @@ Now we can tell CohortMethod to extract the cohorts, construct covariates, and e
 
 ```r
 # target and comparator ingredient concepts:
-aceInhibitors <- c(1335471,1340128,1341927,1363749,1308216,1310756,1373225,1331235,
-                   1334456,1342439)
-thiazides <- c(1395058,974166,978555,907013)
+aceI <- c(1335471,1340128,1341927,1363749,1308216,1310756,1373225,
+          1331235,1334456,1342439)
+thz <- c(1395058,974166,978555,907013)
 
 # Define which types of covariates must be constructed:
-covSettings <- createDefaultCovariateSettings(excludedCovariateConceptIds = c(aceInhibitors, 
-                                                                              thiazides),
-                                              addDescendantsToExclude = TRUE)
+cs <- createDefaultCovariateSettings(excludedCovariateConceptIds = c(aceI, 
+                                                                     thz),
+                                     addDescendantsToExclude = TRUE)
 
 #Load data:
 cmData <- getDbCohortMethodData(connectionDetails = connectionDetails,
@@ -434,7 +434,7 @@ cmData <- getDbCohortMethodData(connectionDetails = connectionDetails,
                                 removeDuplicateSubjects = FALSE,
                                 restrictToCommonPeriod = FALSE,
                                 washoutPeriod = 0,
-                                covariateSettings = covSettings)
+                                covariateSettings = cs)
 cohortMethodData
 ```
 
@@ -500,11 +500,9 @@ getAttritionTable(studyPop)
 
 One additional filtering step that is often used is matching or trimming on propensity scores, as will be discussed next.
 
-# Propensity scores
+### Propensity scores
 
 The `CohortMethod` can use propensity scores to adjust for potential confounders. Instead of the traditional approach of using a handful of predefined covariates, `CohortMethod` typically uses thousands to millions of covariates that are automatically constructed based on conditions, procedures and drugs in the records of the subjects.
-
-## Fitting a propensity model
 
 We can fit a propensity model using the covariates constructed by the `getDbcohortMethodData()` function:
 
@@ -517,8 +515,6 @@ ps <- createPs(cohortMethodData = cohortMethodData, population = studyPop)
 The `createPs()` function uses the `Cyclops` package to fit a large-scale regularized logistic regression.
 
 To fit the propensity model, `Cyclops` needs to know the hyperparameter value which specifies the variance of the prior. By default `Cyclops` will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the `prior` and `control` parameters of the `createPs()` to specify `Cyclops` behavior, including using multiple CPUs to speed-up the cross-validation.
-
-## Propensity score diagnostics
 
 We can compute the area under the receiver-operator curve (AUC) for the propensity score model:
 
@@ -547,8 +543,6 @@ head(propensityModel)
 
 One advantage of using the regularization when fitting the propensity model is that most coefficients will shrink to zero and fall out of the model. It is a good idea to inspect the remaining variables for anything that should not be there, for example variations of the drugs of interest that we forgot to exclude.
 
-## Using the propensity score
-
 We can use the propensity scores to trim, stratify, match, or weigh our population. For example, one could  trim to equipoise, meaning only subjects with a preference score between 0.25 and 0.75 are kept:
 
 
@@ -571,8 +565,8 @@ We can also match subjects based on propensity scores. In this example, we're us
 
 
 ```r
-  matchedPop <- matchOnPs(ps, caliper = 0.2, caliperScale = "standardized logit", maxRatio = 1)
-  plotPs(matchedPop, ps)
+matchedPop <- matchOnPs(ps, caliper = 0.2, caliperScale = "standardized logit", maxRatio = 1)
+plotPs(matchedPop, ps)
 ```
 
 
@@ -594,8 +588,6 @@ drawAttritionDiagram(matchedPop)
 ```
 
 
-## Evaluating covariate balance
-
 To evaluate whether our use of the propensity score is indeed making the two cohorts more comparable, we can compute the covariate balance before and after trimming, matching, and/or stratifying:
 
 
@@ -616,7 +608,7 @@ plotCovariateBalanceOfTopVariables(balance)
 
 The 'before matching' population is the population as extracted by the `getDbCohortMethodData` function, so before any further filtering steps.
 
-## Inspecting select population characteristics
+### Inspecting select population characteristics
 
 It is customary to include a table in your paper that lists some select population characteristics before and after matching/stratification/trimming. This is usually the first table, and so will be referred to as 'table 1'. To generate this table, you can use the `createCmTable1` function:
 
@@ -630,25 +622,7 @@ createCmTable1(balance)
 \fontsize{10}{12}
 \selectfont
 
-## Inserting the population cohort in the database ##
-
-For various reasons it might be necessary to insert the study population back into the database, for example because we want to use an external cohort characterization tool. We can use the `insertDbPopulation` function for this purpose:
-
-
-```r
-insertDbPopulation(population = matchedPop,
-                   cohortIds = c(101,100),
-                   connectionDetails = connectionDetails,
-                   cohortDatabaseSchema = resultsDatabaseSchema,
-                   cohortTable = "coxibVsNonselVsGiBleed",
-                   createTable = FALSE,
-                   cdmVersion = cdmVersion)
-```
-
-This function will store the population in a table with the same structure as the `cohort` table in the CDM, in this case in the same table where we had created our original cohorts.
-
-
-# Follow-up and power
+###  Follow-up and power
 
 Before we start fitting an outcome model, we might be interested to know whether we have sufficient power to detect a
 particular effect size. It makes sense to perform these power calculations once the study population has been fully defined,
@@ -701,11 +675,9 @@ The output is telling us number of days of follow-up each quantile of the study 
 # Generate some output
 ```
 
-# Outcome models
+###  Outcome models
 
 The outcome model is a model describing which variables are associated with the outcome.
-
-## Fitting a simple outcome model
 
 In theory we could fit an outcome model without using the propensity scores. In this example we are fitting an outcome model using a Cox regression:
 
