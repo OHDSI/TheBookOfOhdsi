@@ -203,11 +203,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.4.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#data-extraction"><i class="fa fa-check"></i><b>13.4.2</b> Data extraction</a></li>
 <li class="chapter" data-level="13.4.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#defining-the-study-population"><i class="fa fa-check"></i><b>13.4.3</b> Defining the study population</a></li>
 <li class="chapter" data-level="13.4.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#propensity-scores"><i class="fa fa-check"></i><b>13.4.4</b> Propensity scores</a></li>
-<li class="chapter" data-level="13.4.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#inspecting-select-population-characteristics"><i class="fa fa-check"></i><b>13.4.5</b> Inspecting select population characteristics</a></li>
-<li class="chapter" data-level="13.4.6" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#follow-up-and-power"><i class="fa fa-check"></i><b>13.4.6</b> Follow-up and power</a></li>
-<li class="chapter" data-level="13.4.7" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#outcome-models"><i class="fa fa-check"></i><b>13.4.7</b> Outcome models</a></li>
+<li class="chapter" data-level="13.4.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#outcome-models"><i class="fa fa-check"></i><b>13.4.5</b> Outcome models</a></li>
+<li class="chapter" data-level="13.4.6" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#running-multiple-analyses"><i class="fa fa-check"></i><b>13.4.6</b> Running multiple analyses</a></li>
 </ul></li>
-<li class="chapter" data-level="13.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#excercises"><i class="fa fa-check"></i><b>13.5</b> Excercises</a></li>
+<li class="chapter" data-level="13.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#diagnostics"><i class="fa fa-check"></i><b>13.5</b> Diagnostics</a><ul>
+<li class="chapter" data-level="13.5.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#propensity-score-and-model"><i class="fa fa-check"></i><b>13.5.1</b> Propensity score and model</a></li>
+<li class="chapter" data-level="13.5.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#covariate-balance"><i class="fa fa-check"></i><b>13.5.2</b> Covariate balance</a></li>
+<li class="chapter" data-level="13.5.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#follow-up-and-power"><i class="fa fa-check"></i><b>13.5.3</b> Follow up and power</a></li>
+<li class="chapter" data-level="13.5.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#kaplan-meier"><i class="fa fa-check"></i><b>13.5.4</b> Kaplan Meier</a></li>
+</ul></li>
+<li class="chapter" data-level="13.6" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#excercises"><i class="fa fa-check"></i><b>13.6</b> Excercises</a></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html"><i class="fa fa-check"></i><b>14</b> Patient Level Prediction</a><ul>
 <li class="chapter" data-level="14.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#designing-a-hypertension-study-1"><i class="fa fa-check"></i><b>14.1</b> Designing a hypertension study</a><ul>
@@ -733,8 +738,7 @@ Figure 13.12: Covariate settings.
 <p><strong>Time at risk</strong></p>
 <p>Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to 1 day after cohort start, so 1 day after treatment initation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation as we do not believe it biologically plausible they can be caused by the drug.</p>
 <p>We set the end of the time-at-risk to the cohort end, so when exposure stops. We could choose to set the end date later if for example we believe events closely following treatment end may still be attributable to the exposure. In the extreme we could set the time-at-risk end to a large number of days (e.g. 99999) after the cohort end date, meaning we will effectively follow up subjects until observation end. Such a design is sometimes referred to as an <em>intent-to-treat</em> design.</p>
-<p>A patient with 0 days at risk adds no information, so the <strong>minimum days at risk</strong> is normally set at 1 day. If there is a known latency for the side effect, then this may be increased to get a more informative proportion. It can also be used to create a cohort more similar to that of a randomized trial it is being compared to (e.g., all the patients in the randomized trial were observed for at least N days).</p>
-
+A patient with 0 days at risk adds no information, so the <strong>minimum days at risk</strong> is normally set at 1 day. If there is a known latency for the side effect, then this may be increased to get a more informative proportion. It can also be used to create a cohort more similar to that of a randomized trial it is being compared to (e.g., all the patients in the randomized trial were observed for at least N days). mac 
 <div class="rmdimportant">
 A golden rule in designing a cohort study is to never use information that falls after the cohort start date to define the study population, as this may introduce bias. For example, if we require everyone to have at least a year of time-at-risk, we will likely have limited our analyses to those who tolerate the treatment well. This setting should therefore be used with extreme care.
 </div>
@@ -806,7 +810,7 @@ Figure 13.16: Outcome model settings.
 <div id="data-extraction" class="section level3">
 <h3><span class="header-section-number">13.4.2</span> Data extraction</h3>
 <p>We first need to tell R how to connect to the server. <a href="https://ohdsi.github.io/CohortMethod/"><code>CohortMethod</code></a> uses the <a href="https://ohdsi.github.io/DatabaseConnector/"><code>DatabaseConnector</code></a> package, which provides a function called <code>createConnectionDetails</code>. Type <code>?createConnectionDetails</code> for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(PatientLevelPrediction)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CohortMethod)
 connDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,
                                        <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,
                                        <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,
@@ -849,10 +853,31 @@ cmData &lt;-<span class="st"> </span><span class="kw">getDbCohortMethodData</spa
                                 <span class="dt">washoutPeriod =</span> <span class="dv">0</span>,
                                 <span class="dt">covariateSettings =</span> cs)
 cohortMethodData</code></pre></div>
+<pre><code>## CohortMethodData object
+## 
+## Treatment concept ID: 1
+## Comparator concept ID: 2
+## Outcome concept ID(s): 3</code></pre>
 <p>There are many parameters, but they are all documented in the CohortMethod manual. The <code>createDefaultCovariateSettings</code> function is described in the <code>FeatureExtraction</code> package. In short, we are pointing the function to the table containing our cohorts and specify which cohort definition IDs in that table identify the target, comparator and outcome. We instruct that the default set of covariates should be constructed, including covariates for all conditions, drug exposures, and procedures that were found on or before the index date. As mentioned in Section <a href="PopulationLevelEstimation.html#CohortMethod">13.1.1</a> we must exclude the target and comparator treatments from the set of covariates.</p>
 <p>All data about the cohorts, outcomes, and covariates are extracted from the server and stored in the <code>cohortMethodData</code> object. This object uses the package <code>ff</code> to store information in a way that ensures R does not run out of memory, even when the data are large.</p>
 <p>We can use the generic <code>summary()</code> function to view some more information of the data we extracted:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(cohortMethodData)</code></pre></div>
+<pre><code>## CohortMethodData object summary
+## 
+## Treatment concept ID: 1
+## Comparator concept ID: 2
+## Outcome concept ID(s): 3
+## 
+## Treated persons: 81535
+## Comparator persons: 42759
+## 
+## Outcome counts:
+##          Event count Person count
+## 3               1331         1197
+## 
+## Covariates:
+## Number of covariates: 62727
+## Number of non-zero covariate values: 29910940</code></pre>
 <p>Creating the <code>cohortMethodData</code> file can take considerable computing time, and it is probably a good idea to save it for future sessions. Because <code>cohortMethodData</code> uses <code>ff</code>, we cannot use R’s regular save function. Instead, we’ll have to use the <code>saveCohortMethodData()</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveCohortMethodData</span>(cohortMethodData, <span class="st">&quot;coxibVsNonselVsGiBleed&quot;</span>)</code></pre></div>
 <p>We can use the <code>loadCohortMethodData()</code> function to load the data in a future session.</p>
@@ -873,100 +898,158 @@ cohortMethodData</code></pre></div>
                                   <span class="dt">firstExposureOnly =</span> <span class="ot">FALSE</span>,
                                   <span class="dt">restrictToCommonPeriod =</span> <span class="ot">FALSE</span>,
                                   <span class="dt">washoutPeriod =</span> <span class="dv">0</span>,
-                                  <span class="dt">removeDuplicateSubjects =</span> <span class="st">&quot;keep all&quot;</span>,
+                                  <span class="dt">removeDuplicateSubjects =</span> <span class="st">&quot;remove all&quot;</span>,
                                   <span class="dt">removeSubjectsWithPriorOutcome =</span> <span class="ot">TRUE</span>,
                                   <span class="dt">minDaysAtRisk =</span> <span class="dv">1</span>,
-                                  <span class="dt">riskWindowStart =</span> <span class="dv">0</span>,
+                                  <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,
                                   <span class="dt">addExposureDaysToStart =</span> <span class="ot">FALSE</span>,
-                                  <span class="dt">riskWindowEnd =</span> <span class="dv">30</span>,
+                                  <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,
                                   <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>Note that we’ve set <code>firstExposureOnly</code> and <code>removeDuplicateSubjects</code> to FALSE, and <code>washoutPeriod</code> to zero because we already filtered on these arguments when using the <code>getDbCohortMethodData</code> function. During loading we set <code>restrictToCommonPeriod</code> to FALSE, and we do the same here because we do not want to force the comparison to restrict only to time when both drugs are recorded. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting at the index date (<code>riskWindowStart = 0</code> and <code>addExposureDaysToStart = FALSE</code>), and the risk windows ends 30 days after exposure ends (<code>riskWindowEnd = 30</code> and <code>addExposureDaysToEnd = TRUE</code>). Note that the risk windows are truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the <code>getAttritionTable</code> function:</p>
+<p>Note that we’ve set <code>firstExposureOnly</code> and <code>removeDuplicateSubjects</code> to FALSE, and <code>washoutPeriod</code> to zero because we already applied those criteria in the cohort definitions. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting on the day after the cohort start date (<code>riskWindowStart = 1</code> and <code>addExposureDaysToStart = FALSE</code>), and the risk windows ends when the cohort exposure ends (<code>riskWindowEnd = 30</code> and <code>addExposureDaysToEnd = TRUE</code>), which was defined as the end of exposure in the cohort definition. Note that the risk windows are truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the <code>getAttritionTable</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getAttritionTable</span>(studyPop)</code></pre></div>
-<p>One additional filtering step that is often used is matching or trimming on propensity scores, as will be discussed next.</p>
+<pre><code>##                    description targetPersons comparatorPersons      ...
+## 1             Original cohorts         81604             42828      ...
+## 2 Removed subs in both cohorts         81535             42759      ...
+## 3             No prior outcome         81394             42637      ...
+## 4 Have at least 1 days at risk         80913             42375      ...</code></pre>
 </div>
 <div id="propensity-scores" class="section level3">
 <h3><span class="header-section-number">13.4.4</span> Propensity scores</h3>
-<p>The <code>CohortMethod</code> can use propensity scores to adjust for potential confounders. Instead of the traditional approach of using a handful of predefined covariates, <code>CohortMethod</code> typically uses thousands to millions of covariates that are automatically constructed based on conditions, procedures and drugs in the records of the subjects.</p>
-<p>We can fit a propensity model using the covariates constructed by the <code>getDbcohortMethodData()</code> function:</p>
+<p>We can fit a propensity model using the covariates constructed by the <code>getDbcohortMethodData()</code> function, and compute a PS for each person:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ps &lt;-<span class="st"> </span><span class="kw">createPs</span>(<span class="dt">cohortMethodData =</span> cohortMethodData, <span class="dt">population =</span> studyPop)</code></pre></div>
-<p>The <code>createPs()</code> function uses the <code>Cyclops</code> package to fit a large-scale regularized logistic regression.</p>
-<p>To fit the propensity model, <code>Cyclops</code> needs to know the hyperparameter value which specifies the variance of the prior. By default <code>Cyclops</code> will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the <code>prior</code> and <code>control</code> parameters of the <code>createPs()</code> to specify <code>Cyclops</code> behavior, including using multiple CPUs to speed-up the cross-validation.</p>
-<p>We can compute the area under the receiver-operator curve (AUC) for the propensity score model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">computePsAuc</span>(ps)</code></pre></div>
-<p>We can also plot the propensity score distribution, although we prefer the preference score distribution:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotPs</span>(ps, <span class="dt">scale =</span> <span class="st">&quot;preference&quot;</span>, <span class="dt">showCountsLabel =</span> <span class="ot">TRUE</span>, <span class="dt">showAucLabel =</span> <span class="ot">TRUE</span>, <span class="dt">showEquiposeLabel =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>It is also possible to inspect the propensity model itself by showing the covariates that have non-zero coefficients:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">propensityModel &lt;-<span class="st"> </span><span class="kw">getPsModel</span>(ps, cohortMethodData)
-<span class="kw">head</span>(propensityModel)</code></pre></div>
-<p>One advantage of using the regularization when fitting the propensity model is that most coefficients will shrink to zero and fall out of the model. It is a good idea to inspect the remaining variables for anything that should not be there, for example variations of the drugs of interest that we forgot to exclude.</p>
-<p>We can use the propensity scores to trim, stratify, match, or weigh our population. For example, one could trim to equipoise, meaning only subjects with a preference score between 0.25 and 0.75 are kept:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">trimmedPop &lt;-<span class="st"> </span><span class="kw">trimByPsToEquipoise</span>(ps)
-<span class="kw">plotPs</span>(trimmedPop, ps, <span class="dt">scale =</span> <span class="st">&quot;preference&quot;</span>)</code></pre></div>
-<p>Instead (or additionally), we could stratify the population based on the propensity score:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stratifiedPop &lt;-<span class="st"> </span><span class="kw">stratifyByPs</span>(ps, <span class="dt">numberOfStrata =</span> <span class="dv">5</span>)
-<span class="kw">plotPs</span>(stratifiedPop, ps, <span class="dt">scale =</span> <span class="st">&quot;preference&quot;</span>)</code></pre></div>
-<p>We can also match subjects based on propensity scores. In this example, we’re using one-to-one matching:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>, <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, <span class="dt">maxRatio =</span> <span class="dv">1</span>)
-<span class="kw">plotPs</span>(matchedPop, ps)</code></pre></div>
-<p>Note that for both stratification and matching it is possible to specify additional matching criteria such as age and sex using the <code>stratifyByPsAndCovariates()</code> and <code>matchOnPsAndCovariates()</code> functions, respectively.</p>
-<p>We can see the effect of trimming and/or matching on the population using the <code>getAttritionTable</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getAttritionTable</span>(matchedPop)</code></pre></div>
-<p>Or, if we like, we can plot an attrition diagram:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">drawAttritionDiagram</span>(matchedPop)</code></pre></div>
-<p>To evaluate whether our use of the propensity score is indeed making the two cohorts more comparable, we can compute the covariate balance before and after trimming, matching, and/or stratifying:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">balance &lt;-<span class="st"> </span><span class="kw">computeCovariateBalance</span>(matchedPop, cohortMethodData)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotCovariateBalanceScatterPlot</span>(balance, <span class="dt">showCovariateCountLabel =</span> <span class="ot">TRUE</span>, <span class="dt">showMaxLabel =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotCovariateBalanceOfTopVariables</span>(balance)</code></pre></div>
-<p>The ‘before matching’ population is the population as extracted by the <code>getDbCohortMethodData</code> function, so before any further filtering steps.</p>
-</div>
-<div id="inspecting-select-population-characteristics" class="section level3">
-<h3><span class="header-section-number">13.4.5</span> Inspecting select population characteristics</h3>
-<p>It is customary to include a table in your paper that lists some select population characteristics before and after matching/stratification/trimming. This is usually the first table, and so will be referred to as ‘table 1’. To generate this table, you can use the <code>createCmTable1</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">createCmTable1</span>(balance)</code></pre></div>
-<p> </p>
-<p> </p>
-</div>
-<div id="follow-up-and-power" class="section level3">
-<h3><span class="header-section-number">13.4.6</span> Follow-up and power</h3>
-<p>Before we start fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, the CohortMethod package provides a function to compute the minimum detectable relative risk (MDRR) instead:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">computeMdrr</span>(<span class="dt">population =</span> studyPop,
-            <span class="dt">modelType =</span> <span class="st">&quot;cox&quot;</span>,
-            <span class="dt">alpha =</span> <span class="fl">0.05</span>,
-            <span class="dt">power =</span> <span class="fl">0.8</span>,
-            <span class="dt">twoSided =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p> </p>
-<p> </p>
-<p>In this example we used the <code>studyPop</code> object, so the population before any matching or trimming. If we want to know the MDRR after matching, we use the <code>matchedPop</code> object we created earlier instead:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">computeMdrr</span>(<span class="dt">population =</span> matchedPop,
-            <span class="dt">modelType =</span> <span class="st">&quot;cox&quot;</span>,
-            <span class="dt">alpha =</span> <span class="fl">0.05</span>,
-            <span class="dt">power =</span> <span class="fl">0.8</span>,
-            <span class="dt">twoSided =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p> </p>
-<p> </p>
-<p>Even thought the MDRR in the matched population is higher, meaning we have less power, we should of course not be fooled: matching most likely eliminates confounding, and is therefore preferred to not matching.</p>
-<p>To gain a better understanding of the amount of follow-up available we can also inspect the distribution of follow-up time. We defined follow-up time as time at risk, so not censored by the occurrence of the outcome. The <code>getFollowUpDistribution</code> can provide a simple overview:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getFollowUpDistribution</span>(<span class="dt">population =</span> matchedPop)</code></pre></div>
-<p>The output is telling us number of days of follow-up each quantile of the study population has. We can also plot the distribution:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate some output</span></code></pre></div>
+<p>The <code>createPs()</code> function uses the <a href="https://ohdsi.github.io/Cyclops/">Cyclops</a> package to fit a large-scale regularized logistic regression. To fit the propensity model, Cyclops needs to know the hyperparameter value which specifies the variance of the prior. By default Cyclops will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the <code>prior</code> and <code>control</code> parameters of the <code>createPs()</code> to specify Cyclops’ behavior, including using multiple CPUs to speed-up the cross-validation.</p>
+<p>Here we use the PS to perform variable ratio matching:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>, <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, <span class="dt">maxRatio =</span> <span class="dv">100</span>)</code></pre></div>
+<p>Alternatively, we could have used the PS in the <code>trimByPs</code>, <code>trimByPsToEquipoise</code>, or <code>stratifyByPs</code> functions.</p>
 </div>
 <div id="outcome-models" class="section level3">
-<h3><span class="header-section-number">13.4.7</span> Outcome models</h3>
-<p>The outcome model is a model describing which variables are associated with the outcome.</p>
-<p>In theory we could fit an outcome model without using the propensity scores. In this example we are fitting an outcome model using a Cox regression:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outcomeModel &lt;-<span class="st"> </span><span class="kw">fitOutcomeModel</span>(<span class="dt">population =</span> studyPop,
-                                <span class="dt">modelType =</span> <span class="st">&quot;cox&quot;</span>)
-outcomeModel</code></pre></div>
-<p>But of course we want to make use of the matching done on the propensity score:</p>
+<h3><span class="header-section-number">13.4.5</span> Outcome models</h3>
+<p>The outcome model is a model describing which variables are associated with the outcome. Under strict assumptions, the coefficient for the treatment variable can be interpreted as the causal effect. In this case we fit a Cox proportional hazards model, conditioned on the matched sets:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">outcomeModel &lt;-<span class="st"> </span><span class="kw">fitOutcomeModel</span>(<span class="dt">population =</span> matchedPop,
                                 <span class="dt">modelType =</span> <span class="st">&quot;cox&quot;</span>,
                                 <span class="dt">stratified =</span> <span class="ot">TRUE</span>)
 outcomeModel</code></pre></div>
-<p>Note that we define the sub-population to be only those in the <code>matchedPop</code> object, which we created earlier by matching on the propensity score. We also now use a stratified Cox model, conditioning on the propensity score match sets.</p>
+<pre><code>## Model type: cox
+## Stratified: TRUE
+## Use covariates: FALSE
+## Use inverse probability of treatment weighting: FALSE
+## Status: OK
+## 
+##           Estimate lower .95 upper .95   logRr seLogRr
+## treatment   5.3776    2.9718   10.4599  1.6822   0.321</code></pre>
+</div>
+<div id="running-multiple-analyses" class="section level3">
+<h3><span class="header-section-number">13.4.6</span> Running multiple analyses</h3>
+<p>Here we describe performing the analysis for one target, comparator and outcome, using one set of analysis settings. However, often we want to perform more analyses, for example for multiple outcomes including negative controls. The <a href="https://ohdsi.github.io/CohortMethod/">CohortMethod</a> offers functions for performing such studies efficiently. This is described in the package vignette on running multiple analyses.</p>
+</div>
+</div>
+<div id="diagnostics" class="section level2">
+<h2><span class="header-section-number">13.5</span> Diagnostics</h2>
+<p>Our estimate is only valid if several assumptions have been met. We use a wide set of diagnostics to evaluate whether this is the case. These are available in the results produced by the R package generated by R, or can be generated on the fly by specific R functions.</p>
+<div id="propensity-score-and-model" class="section level3">
+<h3><span class="header-section-number">13.5.1</span> Propensity score and model</h3>
+<p>We first need to evaluate whether the target and comparator cohort are to some extend comparable. For this we can compute the Area Under the Receiver Operator Curve (AUC) statistic for the propensity model. An AUC of 1 indicates the treatment assignment was completely predictable based on baseline covariates, and that the two groups are therefore incomparable. We can use the <code>computePsAuc</code> function to compute the AUC, which in our example is 0.79. Using the <code>plotPs</code> function, we can also generate the preference score distribution as shown in Figure <a href="PopulationLevelEstimation.html#fig:ps">13.17</a>. Here we see that for many people the treatment they received was predictable, but there is also a large amount of overlap, indicating that adjustment can be used to make the groups comparable.</p>
+<div class="figure" style="text-align: center"><span id="fig:ps"></span>
+<img src="images/PopulationLevelEstimation/ps.png" alt="Preference score distribution." width="80%" />
+<p class="caption">
+Figure 13.17: Preference score distribution.
+</p>
+</div>
+<p>In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive+. Table <a href="PopulationLevelEstimation.html#tab:psModel">13.7</a> shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive.</p>
+<table>
+<caption><span id="tab:psModel">Table 13.7: </span> Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment.</caption>
+<colgroup>
+<col width="7%" />
+<col width="92%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">Beta</th>
+<th align="left">Covariate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-1.46</td>
+<td align="left">condition_era group during day -30 through 0 days relative to index: Edema</td>
+</tr>
+<tr class="even">
+<td align="right">-1.1</td>
+<td align="left">drug_era group during day 0 through 0 days relative to index: Potassium Chloride</td>
+</tr>
+<tr class="odd">
+<td align="right">0.82</td>
+<td align="left">condition_era group during day -30 through 0 days relative to index: Urticaria</td>
+</tr>
+<tr class="even">
+<td align="right">0.67</td>
+<td align="left">condition_era group during day -30 through 0 days relative to index: Edema of trunk</td>
+</tr>
+<tr class="odd">
+<td align="right">0.66</td>
+<td align="left">age group: 05-09</td>
+</tr>
+<tr class="even">
+<td align="right">0.61</td>
+<td align="left">condition_era group during day -30 through 0 days relative to index: Proteinuria</td>
+</tr>
+<tr class="odd">
+<td align="right">0.56</td>
+<td align="left">condition_era group during day -30 through 0 days relative to index: Lymphedema</td>
+</tr>
+<tr class="even">
+<td align="right">-0.56</td>
+<td align="left">race = Black or African American</td>
+</tr>
+<tr class="odd">
+<td align="right">0.56</td>
+<td align="left">(Intercept)</td>
+</tr>
+<tr class="even">
+<td align="right">0.54</td>
+<td align="left">measurement during day -365 through 0 days relative to index: Renin</td>
+</tr>
+</tbody>
+</table>
+
+<div class="rmdimportant">
+If a variable is found to be highly predictive, there are two possible conclusions: Either we find that the variable is clearly part of the exposure and should be removed from the model, or else we must conclude that the two populations are truly incomparible, and the analysis must be stopped.
+</div>
+
+</div>
+<div id="covariate-balance" class="section level3">
+<h3><span class="header-section-number">13.5.2</span> Covariate balance</h3>
+<p>The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the <code>computeCovariateBalance</code> and <code>plotCovariateBalanceScatterPlot</code> functions to generate Figure<a href="PopulationLevelEstimation.html#fig:balance">13.18</a>. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterium.</p>
+<div class="figure" style="text-align: center"><span id="fig:balance"></span>
+<img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
+<p class="caption">
+Figure 13.18: Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.
+</p>
+</div>
+</div>
+<div id="follow-up-and-power" class="section level3">
+<h3><span class="header-section-number">13.5.3</span> Follow up and power</h3>
+<p>Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, the CohortMethod package provides the <code>computeMdrr</code> function to compute the minimum detectable relative risk (MDRR) instead. In our example study the MDRR is 1.62. To gain a better understanding of the amount of follow-up available we can also inspect the distribution of follow-up time. We defined follow-up time as time at risk, so not censored by the occurrence of the outcome. The <code>getFollowUpDistribution</code> can provide a simple overview as shown in Figure <a href="PopulationLevelEstimation.html#fig:followUp">13.19</a>, which suggests the follow-up time for both cohorts is comparable.</p>
+<div class="figure" style="text-align: center"><span id="fig:followUp"></span>
+<img src="images/PopulationLevelEstimation/followUp.png" alt="Distribution of follow-up time for the target and comparator cohorts." width="80%" />
+<p class="caption">
+Figure 13.19: Distribution of follow-up time for the target and comparator cohorts.
+</p>
+</div>
+</div>
+<div id="kaplan-meier" class="section level3">
+<h3><span class="header-section-number">13.5.4</span> Kaplan Meier</h3>
+<p>One last check is to review the Kaplan Meier plot, showing the survival over time in both cohorts. Using the <code>plotKaplanMeier</code> function we can create <a href="PopulationLevelEstimation.html#fig:kmPlot">13.20</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:kmPlot"></span>
+<img src="images/PopulationLevelEstimation/kmPlot.png" alt="Distribution of follow-up time for the target and comparator cohorts." width="80%" />
+<p class="caption">
+Figure 13.20: Distribution of follow-up time for the target and comparator cohorts.
+</p>
+</div>
 </div>
 </div>
 <div id="excercises" class="section level2">
-<h2><span class="header-section-number">13.5</span> Excercises</h2>
+<h2><span class="header-section-number">13.6</span> Excercises</h2>
 
 </div>
 </div>

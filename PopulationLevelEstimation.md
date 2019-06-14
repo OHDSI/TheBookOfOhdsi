@@ -302,7 +302,7 @@ Time-at-risk is defined relative to the start and end dates of our target and co
 We set the end of the time-at-risk to the cohort end, so when exposure stops. We could choose to set the end date later if for example we believe events closely following treatment end may still be attributable to the exposure. In the extreme we could set the time-at-risk end to a large number of days (e.g. 99999) after the cohort end date, meaning we will effectively follow up subjects until observation end. Such a design is sometimes referred to as an *intent-to-treat* design.
 
 A patient with 0 days at risk adds no information, so the **minimum days at risk** is normally set at 1 day. If there is a known latency for the side effect, then this may be increased to get a more informative proportion. It can also be used to create a cohort more similar to that of a randomized trial it is being compared to (e.g., all the patients in the randomized trial were observed for at least N days).
-
+mac
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">A golden rule in designing a cohort study is to never use information that falls after the cohort start date to define the study population, as this may introduce bias. For example, if we require everyone to have at least a year of time-at-risk, we will likely have limited our analyses to those who tolerate the treatment well. This setting should therefore be used with extreme care.</div>\EndKnitrBlock{rmdimportant}
 
 <div class="figure" style="text-align: center">
@@ -387,7 +387,7 @@ We first need to tell R how to connect to the server. [`CohortMethod`](https://o
 
 
 ```r
-library(PatientLevelPrediction)
+library(CohortMethod)
 connDetails <- createConnectionDetails(dbms = "postgresql",
                                        server = "localhost/ohdsi",
                                        user = "joe",
@@ -438,6 +438,13 @@ cmData <- getDbCohortMethodData(connectionDetails = connectionDetails,
 cohortMethodData
 ```
 
+```
+## CohortMethodData object
+## 
+## Treatment concept ID: 1
+## Comparator concept ID: 2
+## Outcome concept ID(s): 3
+```
 
 There are many parameters, but they are all documented in the CohortMethod manual. The `createDefaultCovariateSettings` function is described in the `FeatureExtraction` package. In short, we are pointing the function to the table containing our cohorts and specify which cohort definition IDs in that table identify the target, comparator and outcome. We instruct that the default set of covariates should be constructed, including covariates for all conditions, drug exposures, and procedures that were found on or before the index date. As mentioned in Section \@ref(CohortMethod) we must exclude the target and comparator treatments from the set of covariates. 
 
@@ -450,6 +457,24 @@ We can use the generic `summary()` function to view some more information of the
 summary(cohortMethodData)
 ```
 
+```
+## CohortMethodData object summary
+## 
+## Treatment concept ID: 1
+## Comparator concept ID: 2
+## Outcome concept ID(s): 3
+## 
+## Treated persons: 81535
+## Comparator persons: 42759
+## 
+## Outcome counts:
+##          Event count Person count
+## 3               1331         1197
+## 
+## Covariates:
+## Number of covariates: 62727
+## Number of non-zero covariate values: 29910940
+```
 
 Creating the `cohortMethodData` file can take considerable computing time, and it is probably a good idea to save it for future sessions. Because `cohortMethodData` uses `ff`, we cannot use R's regular save function. Instead, we'll have to use the `saveCohortMethodData()` function:
 
@@ -481,215 +506,53 @@ studyPop <- createStudyPopulation(cohortMethodData = cohortMethodData,
                                   firstExposureOnly = FALSE,
                                   restrictToCommonPeriod = FALSE,
                                   washoutPeriod = 0,
-                                  removeDuplicateSubjects = "keep all",
+                                  removeDuplicateSubjects = "remove all",
                                   removeSubjectsWithPriorOutcome = TRUE,
                                   minDaysAtRisk = 1,
-                                  riskWindowStart = 0,
+                                  riskWindowStart = 1,
                                   addExposureDaysToStart = FALSE,
-                                  riskWindowEnd = 30,
+                                  riskWindowEnd = 0,
                                   addExposureDaysToEnd = TRUE)
 ```
 
-Note that we've set `firstExposureOnly` and `removeDuplicateSubjects` to FALSE, and `washoutPeriod` to zero because we already filtered on these arguments when using the `getDbCohortMethodData` function. During loading we set `restrictToCommonPeriod` to FALSE, and we do the same here because we do not want to force the comparison to restrict only to time when both drugs are recorded. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting at the index date (`riskWindowStart = 0` and `addExposureDaysToStart = FALSE`), and the risk windows ends 30 days after exposure ends (`riskWindowEnd = 30` and `addExposureDaysToEnd = TRUE`). Note that the risk windows are truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the `getAttritionTable` function:
+Note that we've set `firstExposureOnly` and `removeDuplicateSubjects` to FALSE, and `washoutPeriod` to zero because we already applied those criteria in the cohort definitions. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting on the day after the cohort start date (`riskWindowStart = 1` and `addExposureDaysToStart = FALSE`), and the risk windows ends when the cohort exposure ends (`riskWindowEnd = 30` and `addExposureDaysToEnd = TRUE`), which was defined as the end of exposure in the cohort definition. Note that the risk windows are truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the `getAttritionTable` function:
 
 
 ```r
 getAttritionTable(studyPop)
 ```
 
-
-One additional filtering step that is often used is matching or trimming on propensity scores, as will be discussed next.
+```
+##                    description targetPersons comparatorPersons      ...
+## 1             Original cohorts         81604             42828      ...
+## 2 Removed subs in both cohorts         81535             42759      ...
+## 3             No prior outcome         81394             42637      ...
+## 4 Have at least 1 days at risk         80913             42375      ...
+```
 
 ### Propensity scores
 
-The `CohortMethod` can use propensity scores to adjust for potential confounders. Instead of the traditional approach of using a handful of predefined covariates, `CohortMethod` typically uses thousands to millions of covariates that are automatically constructed based on conditions, procedures and drugs in the records of the subjects.
-
-We can fit a propensity model using the covariates constructed by the `getDbcohortMethodData()` function:
+We can fit a propensity model using the covariates constructed by the `getDbcohortMethodData()` function, and compute a PS for each person:
 
 
 ```r
 ps <- createPs(cohortMethodData = cohortMethodData, population = studyPop)
 ```
 
+The `createPs()` function uses the [Cyclops](https://ohdsi.github.io/Cyclops/) package to fit a large-scale regularized logistic regression. To fit the propensity model, Cyclops needs to know the hyperparameter value which specifies the variance of the prior. By default Cyclops will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the `prior` and `control` parameters of the `createPs()` to specify Cyclops' behavior, including using multiple CPUs to speed-up the cross-validation.
 
-The `createPs()` function uses the `Cyclops` package to fit a large-scale regularized logistic regression.
-
-To fit the propensity model, `Cyclops` needs to know the hyperparameter value which specifies the variance of the prior. By default `Cyclops` will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the `prior` and `control` parameters of the `createPs()` to specify `Cyclops` behavior, including using multiple CPUs to speed-up the cross-validation.
-
-We can compute the area under the receiver-operator curve (AUC) for the propensity score model:
+Here we use the PS to perform variable ratio matching:
 
 
 ```r
-computePsAuc(ps)
+matchedPop <- matchOnPs(ps, caliper = 0.2, caliperScale = "standardized logit", maxRatio = 100)
 ```
 
-
-We can also plot the propensity score distribution, although we prefer the preference score distribution:
-
-
-```r
-plotPs(ps, scale = "preference", showCountsLabel = TRUE, showAucLabel = TRUE, showEquiposeLabel = TRUE)
-```
-
-
-It is also possible to inspect the propensity model itself by showing the covariates that have non-zero coefficients:
-
-
-```r
-propensityModel <- getPsModel(ps, cohortMethodData)
-head(propensityModel)
-```
-
-
-One advantage of using the regularization when fitting the propensity model is that most coefficients will shrink to zero and fall out of the model. It is a good idea to inspect the remaining variables for anything that should not be there, for example variations of the drugs of interest that we forgot to exclude.
-
-We can use the propensity scores to trim, stratify, match, or weigh our population. For example, one could  trim to equipoise, meaning only subjects with a preference score between 0.25 and 0.75 are kept:
-
-
-```r
-trimmedPop <- trimByPsToEquipoise(ps)
-plotPs(trimmedPop, ps, scale = "preference")
-```
-
-
-Instead (or additionally), we could stratify the population based on the propensity score:
-
-
-```r
-stratifiedPop <- stratifyByPs(ps, numberOfStrata = 5)
-plotPs(stratifiedPop, ps, scale = "preference")
-```
-
-
-We can also match subjects based on propensity scores. In this example, we're using one-to-one matching:
-
-
-```r
-matchedPop <- matchOnPs(ps, caliper = 0.2, caliperScale = "standardized logit", maxRatio = 1)
-plotPs(matchedPop, ps)
-```
-
-
-Note that for both stratification and matching it is possible to specify additional matching criteria such as age and sex using the `stratifyByPsAndCovariates()` and `matchOnPsAndCovariates()` functions, respectively.
-
-We can see the effect of trimming and/or matching on the population using the `getAttritionTable` function:
-
-
-```r
-getAttritionTable(matchedPop)
-```
-
-
-Or, if we like, we can plot an attrition diagram:
-
-
-```r
-drawAttritionDiagram(matchedPop)
-```
-
-
-To evaluate whether our use of the propensity score is indeed making the two cohorts more comparable, we can compute the covariate balance before and after trimming, matching, and/or stratifying:
-
-
-```r
-balance <- computeCovariateBalance(matchedPop, cohortMethodData)
-```
-
-
-```r
-plotCovariateBalanceScatterPlot(balance, showCovariateCountLabel = TRUE, showMaxLabel = TRUE)
-```
-
-
-```r
-plotCovariateBalanceOfTopVariables(balance)
-```
-
-
-The 'before matching' population is the population as extracted by the `getDbCohortMethodData` function, so before any further filtering steps.
-
-### Inspecting select population characteristics
-
-It is customary to include a table in your paper that lists some select population characteristics before and after matching/stratification/trimming. This is usually the first table, and so will be referred to as 'table 1'. To generate this table, you can use the `createCmTable1` function:
-
-
-```r
-createCmTable1(balance)
-```
-\fontsize{6.5}{6.5}
-\selectfont
-
-\fontsize{10}{12}
-\selectfont
-
-###  Follow-up and power
-
-Before we start fitting an outcome model, we might be interested to know whether we have sufficient power to detect a
-particular effect size. It makes sense to perform these power calculations once the study population has been fully defined,
-so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, the CohortMethod package provides a function to compute the minimum detectable relative risk (MDRR) instead:
-
-
-```r
-computeMdrr(population = studyPop,
-            modelType = "cox",
-            alpha = 0.05,
-            power = 0.8,
-            twoSided = TRUE)
-```
-\fontsize{6.5}{6.5}
-\selectfont
-
-\fontsize{10}{12}
-\selectfont
-
-In this example we used the `studyPop` object, so the population before any matching or trimming. If we want to know the MDRR after matching, we use the `matchedPop` object we created earlier instead:
-
-
-```r
-computeMdrr(population = matchedPop,
-            modelType = "cox",
-            alpha = 0.05,
-            power = 0.8,
-            twoSided = TRUE)
-```
-\fontsize{6.5}{6.5}
-\selectfont
-
-\fontsize{10}{12}
-\selectfont
-
-Even thought the MDRR in the matched population is higher, meaning we have less power, we should of course not be fooled: matching most likely eliminates confounding, and is therefore preferred to not matching.
-
-To gain a better understanding of the amount of follow-up available we can also inspect the distribution of follow-up time. We defined follow-up time as time at risk, so not censored by the occurrence of the outcome. The `getFollowUpDistribution` can provide a simple overview:
-
-
-```r
-getFollowUpDistribution(population = matchedPop)
-```
-
-
-The output is telling us number of days of follow-up each quantile of the study population has. We can also plot the distribution:
-
-
-```r
-# Generate some output
-```
+Alternatively, we could have used the PS in the `trimByPs`, `trimByPsToEquipoise`, or `stratifyByPs` functions.
 
 ###  Outcome models
 
-The outcome model is a model describing which variables are associated with the outcome.
-
-In theory we could fit an outcome model without using the propensity scores. In this example we are fitting an outcome model using a Cox regression:
-
-
-```r
-outcomeModel <- fitOutcomeModel(population = studyPop,
-                                modelType = "cox")
-outcomeModel
-```
-
-
-But of course we want to make use of the matching done on the propensity score:
+The outcome model is a model describing which variables are associated with the outcome. Under strict assumptions, the coefficient for the treatment variable can be interpreted as the causal effect. In this case we fit a Cox proportional hazards model, conditioned on the matched sets:
 
 
 ```r
@@ -699,13 +562,80 @@ outcomeModel <- fitOutcomeModel(population = matchedPop,
 outcomeModel
 ```
 
+```
+## Model type: cox
+## Stratified: TRUE
+## Use covariates: FALSE
+## Use inverse probability of treatment weighting: FALSE
+## Status: OK
+## 
+##           Estimate lower .95 upper .95   logRr seLogRr
+## treatment   5.3776    2.9718   10.4599  1.6822   0.321
+```
 
-Note that we define the sub-population to be only those in the `matchedPop` object, which we created earlier by matching on the propensity score. We also now use a stratified Cox model, conditioning on the propensity score match sets.
+### Running multiple analyses
 
+Here we describe performing the analysis for one target, comparator and outcome, using one set of analysis settings. However, often we want to perform more analyses, for example for multiple outcomes including negative controls. The [CohortMethod](https://ohdsi.github.io/CohortMethod/) offers functions for performing such studies efficiently. This is described in the package vignette on running multiple analyses.
 
+## Diagnostics
 
+Our estimate is only valid if several assumptions have been met. We use a wide set of diagnostics to evaluate whether this is the case. These are available in the results produced by the R package generated by R, or can be generated on the fly by specific R functions.
 
+### Propensity score and model
 
+We first need to evaluate whether the target and comparator cohort are to some extend comparable. For this we can compute the Area Under the Receiver Operator Curve (AUC) statistic for the propensity model. An AUC of 1 indicates the treatment assignment was completely predictable based on baseline covariates, and that the two groups are therefore incomparable. We can use the `computePsAuc` function to compute the AUC, which in our example is 0.79. Using the `plotPs` function, we can also generate the preference score distribution as shown in Figure \@ref(fig:ps). Here we see that for many people the treatment they received was predictable, but there is also a large amount of overlap, indicating that adjustment can be used to make the groups comparable.
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/ps.png" alt="Preference score distribution." width="80%" />
+<p class="caption">(\#fig:ps)Preference score distribution.</p>
+</div>
+
+In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive+. Table \@ref(tab:psModel) shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive. 
+
+Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment.
+
+| Beta | Covariate
+| ----:|:----------------------------------------------------------------------------|
+| -1.46 | condition_era group during day -30 through 0 days relative to index: Edema |
+| -1.1 | drug_era group during day 0 through 0 days relative to index: Potassium Chloride |
+| 0.82 | condition_era group during day -30 through 0 days relative to index: Urticaria |
+| 0.67 | condition_era group during day -30 through 0 days relative to index: Edema of trunk |
+| 0.66 | age group: 05-09 |
+| 0.61 | condition_era group during day -30 through 0 days relative to index: Proteinuria |
+| 0.56 | condition_era group during day -30 through 0 days relative to index: Lymphedema |
+| -0.56 | race = Black or African American |
+| 0.56 | (Intercept) |
+| 0.54 | measurement during day -365 through 0 days relative to index: Renin |
+
+\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">If a variable is found to be highly predictive, there are two possible conclusions: Either we find that the variable is clearly part of the exposure and should be removed from the model, or else we must conclude that the two populations are truly incomparible, and the analysis must be stopped.</div>\EndKnitrBlock{rmdimportant}
+
+### Covariate balance
+
+The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure\@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterium.
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
+<p class="caption">(\#fig:balance)Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.</p>
+</div>
+
+### Follow up and power
+
+Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, the CohortMethod package provides the `computeMdrr` function to compute the minimum detectable relative risk (MDRR) instead. In our example study the MDRR is 1.62. 
+To gain a better understanding of the amount of follow-up available we can also inspect the distribution of follow-up time. We defined follow-up time as time at risk, so not censored by the occurrence of the outcome. The `getFollowUpDistribution` can provide a simple overview as shown in Figure \@ref(fig:followUp), which suggests the follow-up time for both cohorts is comparable.
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/followUp.png" alt="Distribution of follow-up time for the target and comparator cohorts." width="80%" />
+<p class="caption">(\#fig:followUp)Distribution of follow-up time for the target and comparator cohorts.</p>
+</div>
+
+### Kaplan Meier
+
+One last check is to review the Kaplan Meier plot, showing the survival over time in both cohorts. Using the `plotKaplanMeier` function we can create \@ref(fig:kmPlot). 
+
+<div class="figure" style="text-align: center">
+<img src="images/PopulationLevelEstimation/kmPlot.png" alt="Distribution of follow-up time for the target and comparator cohorts." width="80%" />
+<p class="caption">(\#fig:kmPlot)Distribution of follow-up time for the target and comparator cohorts.</p>
+</div>
 
 ## Excercises
 

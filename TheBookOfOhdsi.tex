@@ -2359,7 +2359,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.mkqdp63zchildren ;"
+## [1] "SELECT * FROM temp_schema.dfdte9jhchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -3679,8 +3679,8 @@ known latency for the side effect, then this may be increased to get a
 more informative proportion. It can also be used to create a cohort more
 similar to that of a randomized trial it is being compared to (e.g., all
 the patients in the randomized trial were observed for at least N days).
+mac \BeginKnitrBlock{rmdimportant}
 
-\BeginKnitrBlock{rmdimportant}
 A golden rule in designing a cohort study is to never use information
 that falls after the cohort start date to define the study population,
 as this may introduce bias. For example, if we require everyone to have
@@ -3904,7 +3904,7 @@ using this code:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(PatientLevelPrediction)}
+\KeywordTok{library}\NormalTok{(CohortMethod)}
 \NormalTok{connDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
                                        \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
                                        \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
@@ -3964,6 +3964,14 @@ covariates, and extract all necessary data for our analysis:
 \end{Highlighting}
 \end{Shaded}
 
+\begin{verbatim}
+## CohortMethodData object
+## 
+## Treatment concept ID: 1
+## Comparator concept ID: 2
+## Outcome concept ID(s): 3
+\end{verbatim}
+
 There are many parameters, but they are all documented in the
 CohortMethod manual. The \texttt{createDefaultCovariateSettings}
 function is described in the \texttt{FeatureExtraction} package. In
@@ -3988,6 +3996,25 @@ information of the data we extracted:
 \KeywordTok{summary}\NormalTok{(cohortMethodData)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## CohortMethodData object summary
+## 
+## Treatment concept ID: 1
+## Comparator concept ID: 2
+## Outcome concept ID(s): 3
+## 
+## Treated persons: 81535
+## Comparator persons: 42759
+## 
+## Outcome counts:
+##          Event count Person count
+## 3               1331         1197
+## 
+## Covariates:
+## Number of covariates: 62727
+## Number of non-zero covariate values: 29910940
+\end{verbatim}
 
 Creating the \texttt{cohortMethodData} file can take considerable
 computing time, and it is probably a good idea to save it for future
@@ -4057,29 +4084,27 @@ function:
                                   \DataTypeTok{firstExposureOnly =} \OtherTok{FALSE}\NormalTok{,}
                                   \DataTypeTok{restrictToCommonPeriod =} \OtherTok{FALSE}\NormalTok{,}
                                   \DataTypeTok{washoutPeriod =} \DecValTok{0}\NormalTok{,}
-                                  \DataTypeTok{removeDuplicateSubjects =} \StringTok{"keep all"}\NormalTok{,}
+                                  \DataTypeTok{removeDuplicateSubjects =} \StringTok{"remove all"}\NormalTok{,}
                                   \DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{,}
                                   \DataTypeTok{minDaysAtRisk =} \DecValTok{1}\NormalTok{,}
-                                  \DataTypeTok{riskWindowStart =} \DecValTok{0}\NormalTok{,}
+                                  \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
                                   \DataTypeTok{addExposureDaysToStart =} \OtherTok{FALSE}\NormalTok{,}
-                                  \DataTypeTok{riskWindowEnd =} \DecValTok{30}\NormalTok{,}
+                                  \DataTypeTok{riskWindowEnd =} \DecValTok{0}\NormalTok{,}
                                   \DataTypeTok{addExposureDaysToEnd =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 Note that we've set \texttt{firstExposureOnly} and
 \texttt{removeDuplicateSubjects} to FALSE, and \texttt{washoutPeriod} to
-zero because we already filtered on these arguments when using the
-\texttt{getDbCohortMethodData} function. During loading we set
-\texttt{restrictToCommonPeriod} to FALSE, and we do the same here
-because we do not want to force the comparison to restrict only to time
-when both drugs are recorded. We specify the outcome ID we will use, and
-that people with outcomes prior to the risk window start date will be
-removed. The risk window is defined as starting at the index date
-(\texttt{riskWindowStart\ =\ 0} and
-\texttt{addExposureDaysToStart\ =\ FALSE}), and the risk windows ends 30
-days after exposure ends (\texttt{riskWindowEnd\ =\ 30} and
-\texttt{addExposureDaysToEnd\ =\ TRUE}). Note that the risk windows are
+zero because we already applied those criteria in the cohort
+definitions. We specify the outcome ID we will use, and that people with
+outcomes prior to the risk window start date will be removed. The risk
+window is defined as starting on the day after the cohort start date
+(\texttt{riskWindowStart\ =\ 1} and
+\texttt{addExposureDaysToStart\ =\ FALSE}), and the risk windows ends
+when the cohort exposure ends (\texttt{riskWindowEnd\ =\ 30} and
+\texttt{addExposureDaysToEnd\ =\ TRUE}), which was defined as the end of
+exposure in the cohort definition. Note that the risk windows are
 truncated at the end of observation or the study end date. We also
 remove subjects who have no time at risk. To see how many people are
 left in the study population we can always use the
@@ -4091,20 +4116,19 @@ left in the study population we can always use the
 \end{Highlighting}
 \end{Shaded}
 
-One additional filtering step that is often used is matching or trimming
-on propensity scores, as will be discussed next.
+\begin{verbatim}
+##                    description targetPersons comparatorPersons      ...
+## 1             Original cohorts         81604             42828      ...
+## 2 Removed subs in both cohorts         81535             42759      ...
+## 3             No prior outcome         81394             42637      ...
+## 4 Have at least 1 days at risk         80913             42375      ...
+\end{verbatim}
 
 \subsection{Propensity scores}\label{propensity-scores}
 
-The \texttt{CohortMethod} can use propensity scores to adjust for
-potential confounders. Instead of the traditional approach of using a
-handful of predefined covariates, \texttt{CohortMethod} typically uses
-thousands to millions of covariates that are automatically constructed
-based on conditions, procedures and drugs in the records of the
-subjects.
-
 We can fit a propensity model using the covariates constructed by the
-\texttt{getDbcohortMethodData()} function:
+\texttt{getDbcohortMethodData()} function, and compute a PS for each
+person:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4112,239 +4136,35 @@ We can fit a propensity model using the covariates constructed by the
 \end{Highlighting}
 \end{Shaded}
 
-The \texttt{createPs()} function uses the \texttt{Cyclops} package to
-fit a large-scale regularized logistic regression.
-
-To fit the propensity model, \texttt{Cyclops} needs to know the
-hyperparameter value which specifies the variance of the prior. By
-default \texttt{Cyclops} will use cross-validation to estimate the
-optimal hyperparameter. However, be aware that this can take a really
-long time. You can use the \texttt{prior} and \texttt{control}
-parameters of the \texttt{createPs()} to specify \texttt{Cyclops}
-behavior, including using multiple CPUs to speed-up the
+The \texttt{createPs()} function uses the
+\href{https://ohdsi.github.io/Cyclops/}{Cyclops} package to fit a
+large-scale regularized logistic regression. To fit the propensity
+model, Cyclops needs to know the hyperparameter value which specifies
+the variance of the prior. By default Cyclops will use cross-validation
+to estimate the optimal hyperparameter. However, be aware that this can
+take a really long time. You can use the \texttt{prior} and
+\texttt{control} parameters of the \texttt{createPs()} to specify
+Cyclops' behavior, including using multiple CPUs to speed-up the
 cross-validation.
 
-We can compute the area under the receiver-operator curve (AUC) for the
-propensity score model:
+Here we use the PS to perform variable ratio matching:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{computePsAuc}\NormalTok{(ps)}
+\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }\DataTypeTok{maxRatio =} \DecValTok{100}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-We can also plot the propensity score distribution, although we prefer
-the preference score distribution:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{plotPs}\NormalTok{(ps, }\DataTypeTok{scale =} \StringTok{"preference"}\NormalTok{, }\DataTypeTok{showCountsLabel =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{showAucLabel =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{showEquiposeLabel =} \OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-It is also possible to inspect the propensity model itself by showing
-the covariates that have non-zero coefficients:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{propensityModel <-}\StringTok{ }\KeywordTok{getPsModel}\NormalTok{(ps, cohortMethodData)}
-\KeywordTok{head}\NormalTok{(propensityModel)}
-\end{Highlighting}
-\end{Shaded}
-
-One advantage of using the regularization when fitting the propensity
-model is that most coefficients will shrink to zero and fall out of the
-model. It is a good idea to inspect the remaining variables for anything
-that should not be there, for example variations of the drugs of
-interest that we forgot to exclude.
-
-We can use the propensity scores to trim, stratify, match, or weigh our
-population. For example, one could trim to equipoise, meaning only
-subjects with a preference score between 0.25 and 0.75 are kept:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{trimmedPop <-}\StringTok{ }\KeywordTok{trimByPsToEquipoise}\NormalTok{(ps)}
-\KeywordTok{plotPs}\NormalTok{(trimmedPop, ps, }\DataTypeTok{scale =} \StringTok{"preference"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-Instead (or additionally), we could stratify the population based on the
-propensity score:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{stratifiedPop <-}\StringTok{ }\KeywordTok{stratifyByPs}\NormalTok{(ps, }\DataTypeTok{numberOfStrata =} \DecValTok{5}\NormalTok{)}
-\KeywordTok{plotPs}\NormalTok{(stratifiedPop, ps, }\DataTypeTok{scale =} \StringTok{"preference"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-We can also match subjects based on propensity scores. In this example,
-we're using one-to-one matching:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }\DataTypeTok{maxRatio =} \DecValTok{1}\NormalTok{)}
-\KeywordTok{plotPs}\NormalTok{(matchedPop, ps)}
-\end{Highlighting}
-\end{Shaded}
-
-Note that for both stratification and matching it is possible to specify
-additional matching criteria such as age and sex using the
-\texttt{stratifyByPsAndCovariates()} and
-\texttt{matchOnPsAndCovariates()} functions, respectively.
-
-We can see the effect of trimming and/or matching on the population
-using the \texttt{getAttritionTable} function:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{getAttritionTable}\NormalTok{(matchedPop)}
-\end{Highlighting}
-\end{Shaded}
-
-Or, if we like, we can plot an attrition diagram:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{drawAttritionDiagram}\NormalTok{(matchedPop)}
-\end{Highlighting}
-\end{Shaded}
-
-To evaluate whether our use of the propensity score is indeed making the
-two cohorts more comparable, we can compute the covariate balance before
-and after trimming, matching, and/or stratifying:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{balance <-}\StringTok{ }\KeywordTok{computeCovariateBalance}\NormalTok{(matchedPop, cohortMethodData)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{plotCovariateBalanceScatterPlot}\NormalTok{(balance, }\DataTypeTok{showCovariateCountLabel =} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{showMaxLabel =} \OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{plotCovariateBalanceOfTopVariables}\NormalTok{(balance)}
-\end{Highlighting}
-\end{Shaded}
-
-The `before matching' population is the population as extracted by the
-\texttt{getDbCohortMethodData} function, so before any further filtering
-steps.
-
-\subsection{Inspecting select population
-characteristics}\label{inspecting-select-population-characteristics}
-
-It is customary to include a table in your paper that lists some select
-population characteristics before and after
-matching/stratification/trimming. This is usually the first table, and
-so will be referred to as `table 1'. To generate this table, you can use
-the \texttt{createCmTable1} function:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{createCmTable1}\NormalTok{(balance)}
-\end{Highlighting}
-\end{Shaded}
-
-\fontsize{6.5}{6.5} \selectfont
-
-\fontsize{10}{12} \selectfont
-
-\subsection{Follow-up and power}\label{follow-up-and-power}
-
-Before we start fitting an outcome model, we might be interested to know
-whether we have sufficient power to detect a particular effect size. It
-makes sense to perform these power calculations once the study
-population has been fully defined, so taking into account loss to the
-various inclusion and exclusion criteria (such as no prior outcomes),
-and loss due to matching and/or trimming. Since the sample size is fixed
-in retrospective studies (the data has already been collected), and the
-true effect size is unknown, the CohortMethod package provides a
-function to compute the minimum detectable relative risk (MDRR) instead:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{computeMdrr}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ studyPop,}
-            \DataTypeTok{modelType =} \StringTok{"cox"}\NormalTok{,}
-            \DataTypeTok{alpha =} \FloatTok{0.05}\NormalTok{,}
-            \DataTypeTok{power =} \FloatTok{0.8}\NormalTok{,}
-            \DataTypeTok{twoSided =} \OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\fontsize{6.5}{6.5} \selectfont
-
-\fontsize{10}{12} \selectfont
-
-In this example we used the \texttt{studyPop} object, so the population
-before any matching or trimming. If we want to know the MDRR after
-matching, we use the \texttt{matchedPop} object we created earlier
-instead:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{computeMdrr}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ matchedPop,}
-            \DataTypeTok{modelType =} \StringTok{"cox"}\NormalTok{,}
-            \DataTypeTok{alpha =} \FloatTok{0.05}\NormalTok{,}
-            \DataTypeTok{power =} \FloatTok{0.8}\NormalTok{,}
-            \DataTypeTok{twoSided =} \OtherTok{TRUE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\fontsize{6.5}{6.5} \selectfont
-
-\fontsize{10}{12} \selectfont
-
-Even thought the MDRR in the matched population is higher, meaning we
-have less power, we should of course not be fooled: matching most likely
-eliminates confounding, and is therefore preferred to not matching.
-
-To gain a better understanding of the amount of follow-up available we
-can also inspect the distribution of follow-up time. We defined
-follow-up time as time at risk, so not censored by the occurrence of the
-outcome. The \texttt{getFollowUpDistribution} can provide a simple
-overview:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{getFollowUpDistribution}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ matchedPop)}
-\end{Highlighting}
-\end{Shaded}
-
-The output is telling us number of days of follow-up each quantile of
-the study population has. We can also plot the distribution:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# Generate some output}
-\end{Highlighting}
-\end{Shaded}
+Alternatively, we could have used the PS in the \texttt{trimByPs},
+\texttt{trimByPsToEquipoise}, or \texttt{stratifyByPs} functions.
 
 \subsection{Outcome models}\label{outcome-models}
 
 The outcome model is a model describing which variables are associated
-with the outcome.
-
-In theory we could fit an outcome model without using the propensity
-scores. In this example we are fitting an outcome model using a Cox
-regression:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{outcomeModel <-}\StringTok{ }\KeywordTok{fitOutcomeModel}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ studyPop,}
-                                \DataTypeTok{modelType =} \StringTok{"cox"}\NormalTok{)}
-\NormalTok{outcomeModel}
-\end{Highlighting}
-\end{Shaded}
-
-But of course we want to make use of the matching done on the propensity
-score:
+with the outcome. Under strict assumptions, the coefficient for the
+treatment variable can be interpreted as the causal effect. In this case
+we fit a Cox proportional hazards model, conditioned on the matched
+sets:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4355,10 +4175,219 @@ score:
 \end{Highlighting}
 \end{Shaded}
 
-Note that we define the sub-population to be only those in the
-\texttt{matchedPop} object, which we created earlier by matching on the
-propensity score. We also now use a stratified Cox model, conditioning
-on the propensity score match sets.
+\begin{verbatim}
+## Model type: cox
+## Stratified: TRUE
+## Use covariates: FALSE
+## Use inverse probability of treatment weighting: FALSE
+## Status: OK
+## 
+##           Estimate lower .95 upper .95   logRr seLogRr
+## treatment   5.3776    2.9718   10.4599  1.6822   0.321
+\end{verbatim}
+
+\subsection{Running multiple analyses}\label{running-multiple-analyses}
+
+Here we describe performing the analysis for one target, comparator and
+outcome, using one set of analysis settings. However, often we want to
+perform more analyses, for example for multiple outcomes including
+negative controls. The
+\href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} offers
+functions for performing such studies efficiently. This is described in
+the package vignette on running multiple analyses.
+
+\section{Diagnostics}\label{diagnostics}
+
+Our estimate is only valid if several assumptions have been met. We use
+a wide set of diagnostics to evaluate whether this is the case. These
+are available in the results produced by the R package generated by R,
+or can be generated on the fly by specific R functions.
+
+\subsection{Propensity score and
+model}\label{propensity-score-and-model}
+
+We first need to evaluate whether the target and comparator cohort are
+to some extend comparable. For this we can compute the Area Under the
+Receiver Operator Curve (AUC) statistic for the propensity model. An AUC
+of 1 indicates the treatment assignment was completely predictable based
+on baseline covariates, and that the two groups are therefore
+incomparable. We can use the \texttt{computePsAuc} function to compute
+the AUC, which in our example is 0.79. Using the \texttt{plotPs}
+function, we can also generate the preference score distribution as
+shown in Figure \ref{fig:ps}. Here we see that for many people the
+treatment they received was predictable, but there is also a large
+amount of overlap, indicating that adjustment can be used to make the
+groups comparable.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/ps} 
+
+}
+
+\caption{Preference score distribution.}\label{fig:ps}
+\end{figure}
+
+In general it is a good idea to also inspect the propensity model
+itself, and especially so if the model is very predictive. That way we
+may discover which variables are most predictive+. Table
+\ref{tab:psModel} shows the top predictors in our propensity model. Note
+that if a variable is too predictive, the CohortMethod package will
+throw an informative error rather than attempt to fit a model that is
+already known to be perfectly predictive.
+
+\begin{longtable}[]{@{}rl@{}}
+\caption{\label{tab:psModel} Top 10 predictors in the propensity model for
+ACEi and THZ. Positive values mean subjects with the covariate are more
+likely to receive the target treatment.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.07\columnwidth}\raggedleft\strut
+Beta\strut
+\end{minipage} & \begin{minipage}[b]{0.87\columnwidth}\raggedright\strut
+Covariate\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.07\columnwidth}\raggedleft\strut
+Beta\strut
+\end{minipage} & \begin{minipage}[b]{0.87\columnwidth}\raggedright\strut
+Covariate\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+-1.46\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+condition\_era group during day -30 through 0 days relative to index:
+Edema\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+-1.1\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+drug\_era group during day 0 through 0 days relative to index: Potassium
+Chloride\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+0.82\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+condition\_era group during day -30 through 0 days relative to index:
+Urticaria\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+0.67\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+condition\_era group during day -30 through 0 days relative to index:
+Edema of trunk\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+0.66\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+age group: 05-09\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+0.61\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+condition\_era group during day -30 through 0 days relative to index:
+Proteinuria\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+0.56\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+condition\_era group during day -30 through 0 days relative to index:
+Lymphedema\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+-0.56\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+race = Black or African American\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+0.56\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+(Intercept)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.07\columnwidth}\raggedleft\strut
+0.54\strut
+\end{minipage} & \begin{minipage}[t]{0.87\columnwidth}\raggedright\strut
+measurement during day -365 through 0 days relative to index:
+Renin\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\BeginKnitrBlock{rmdimportant}
+If a variable is found to be highly predictive, there are two possible
+conclusions: Either we find that the variable is clearly part of the
+exposure and should be removed from the model, or else we must conclude
+that the two populations are truly incomparible, and the analysis must
+be stopped.
+\EndKnitrBlock{rmdimportant}
+
+\subsection{Covariate balance}\label{covariate-balance}
+
+The goal of using PS is to make the two groups comparable. We must
+verify whether this is achieved, for example by checked whether the
+baseline covariates are indeed balanced after adjustment. We can use the
+\texttt{computeCovariateBalance} and
+\texttt{plotCovariateBalanceScatterPlot} functions to generate
+Figure\ref{fig:balance}. One rule-of-thumb to use is that no covariate
+may have an absolute standardized difference of means greater than 0.1
+after propensity score adjustment. Here we see that although there was
+substantial imbalance before matching, after matching we meet this
+criterium.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{images/PopulationLevelEstimation/balance} 
+
+}
+
+\caption{Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.}\label{fig:balance}
+\end{figure}
+
+\subsection{Follow up and power}\label{follow-up-and-power}
+
+Before fitting an outcome model, we might be interested to know whether
+we have sufficient power to detect a particular effect size. It makes
+sense to perform these power calculations once the study population has
+been fully defined, so taking into account loss to the various inclusion
+and exclusion criteria (such as no prior outcomes), and loss due to
+matching and/or trimming. Since the sample size is fixed in
+retrospective studies (the data has already been collected), and the
+true effect size is unknown, the CohortMethod package provides the
+\texttt{computeMdrr} function to compute the minimum detectable relative
+risk (MDRR) instead. In our example study the MDRR is 1.62. To gain a
+better understanding of the amount of follow-up available we can also
+inspect the distribution of follow-up time. We defined follow-up time as
+time at risk, so not censored by the occurrence of the outcome. The
+\texttt{getFollowUpDistribution} can provide a simple overview as shown
+in Figure \ref{fig:followUp}, which suggests the follow-up time for both
+cohorts is comparable.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/followUp} 
+
+}
+
+\caption{Distribution of follow-up time for the target and comparator cohorts.}\label{fig:followUp}
+\end{figure}
+
+\subsection{Kaplan Meier}\label{kaplan-meier}
+
+One last check is to review the Kaplan Meier plot, showing the survival
+over time in both cohorts. Using the \texttt{plotKaplanMeier} function
+we can create \ref{fig:kmPlot}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/kmPlot} 
+
+}
+
+\caption{Distribution of follow-up time for the target and comparator cohorts.}\label{fig:kmPlot}
+\end{figure}
 
 \section{Excercises}\label{excercises}
 
