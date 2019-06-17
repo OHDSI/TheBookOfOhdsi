@@ -107,7 +107,7 @@ execute <- function(connectionDetails,
   }
   
   # Set doPositiveControlSynthesis to FALSE if you don't want to use synthetic positive controls:
-  doPositiveControlSynthesis = FALSE
+  doPositiveControlSynthesis = TRUE
   if (doPositiveControlSynthesis) {
     if (synthesizePositiveControls) {
       ParallelLogger::logInfo("Synthesizing positive controls")
