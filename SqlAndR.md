@@ -283,7 +283,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.m9v1jotechildren ;"
+## [1] "SELECT * FROM temp_schema.adrdqn6achildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -397,8 +397,9 @@ Note that, instead of providing the server name, it is also possible to provide 
 
 
 ```r
+connString <- "jdbc:postgresql://localhost:5432/postgres"
 conn <- connect(dbms = "postgresql",
-                connectionString = "jdbc:postgresql://localhost:5432/postgres",
+                connectionString = connString,
                 user = "joe",
                 password = "secret",
                 schema = "cdm")
@@ -444,7 +445,7 @@ querySql(conn, "SELECT TOP 3 * FROM person")
 
 
 ```r
-executeSql(conn, "TRUNCATE TABLE foo; DROP TABLE foo; CREATE TABLE foo (bar INT);")
+executeSql(conn, "TRUNCATE TABLE foo; DROP TABLE foo;")
 ```
 
 Both function provide extensive error reporting: When an error is thrown by the server, the error message and the offending piece of SQL are written to a text file to allow better debugging. The `executeSql` function also by default shows a progress bar, indicating the percentage of SQL statements that has been executed. If those attributes are not desired, the package also offers the `lowLevelQuerySql` and `lowLevelExecuteSql` functions.
