@@ -337,8 +337,9 @@ disconnect(conn)
 Note that, instead of providing the server name, it is also possible to provide the JDBC connection string if this is more convenient:
 
 ```{r eval=FALSE}
+connString <- "jdbc:postgresql://localhost:5432/postgres"
 conn <- connect(dbms = "postgresql",
-                connectionString = "jdbc:postgresql://localhost:5432/postgres",
+                connectionString = connString,
                 user = "joe",
                 password = "secret",
                 schema = "cdm")
@@ -375,7 +376,7 @@ data.frame(PERSON_ID = c(1,2,3), GENDER_CONCEPT_ID = c(8507, 8507, 8507), YEAR_O
 ```
 
 ```{r eval=FALSE}
-executeSql(conn, "TRUNCATE TABLE foo; DROP TABLE foo; CREATE TABLE foo (bar INT);")
+executeSql(conn, "TRUNCATE TABLE foo; DROP TABLE foo;")
 ```
 
 Both function provide extensive error reporting: When an error is thrown by the server, the error message and the offending piece of SQL are written to a text file to allow better debugging. The `executeSql` function also by default shows a progress bar, indicating the percentage of SQL statements that has been executed. If those attributes are not desired, the package also offers the `lowLevelQuerySql` and `lowLevelExecuteSql` functions.
