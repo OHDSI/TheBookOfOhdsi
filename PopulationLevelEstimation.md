@@ -596,7 +596,7 @@ We first need to evaluate whether the target and comparator cohort are to some e
 <p class="caption">(\#fig:ps)Preference score distribution.</p>
 </div>
 
-In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive+. Table \@ref(tab:psModel) shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive. 
+In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive. Table \@ref(tab:psModel) shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive. 
 
 Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment.
 

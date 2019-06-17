@@ -170,9 +170,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="10.2.4" data-path="SqlAndR.html"><a href="SqlAndR.html#querying-different-platforms-using-the-same-sql"><i class="fa fa-check"></i><b>10.2.4</b> Querying different platforms using the same SQL</a></li>
 <li class="chapter" data-level="10.2.5" data-path="SqlAndR.html"><a href="SqlAndR.html#inserting-tables"><i class="fa fa-check"></i><b>10.2.5</b> Inserting tables</a></li>
 </ul></li>
-<li class="chapter" data-level="10.3" data-path="SqlAndR.html"><a href="SqlAndR.html#querying-the-cdm"><i class="fa fa-check"></i><b>10.3</b> Querying the CDM</a></li>
-<li class="chapter" data-level="10.4" data-path="SqlAndR.html"><a href="SqlAndR.html#querying-the-vocabulary"><i class="fa fa-check"></i><b>10.4</b> Querying the vocabulary</a></li>
-<li class="chapter" data-level="10.5" data-path="SqlAndR.html"><a href="SqlAndR.html#using-the-vocabulary-when-querying"><i class="fa fa-check"></i><b>10.5</b> Using the vocabulary when querying</a></li>
+<li class="chapter" data-level="10.3" data-path="SqlAndR.html"><a href="SqlAndR.html#QueryTheCdm"><i class="fa fa-check"></i><b>10.3</b> Querying the CDM</a></li>
+<li class="chapter" data-level="10.4" data-path="SqlAndR.html"><a href="SqlAndR.html#using-the-vocabulary-when-querying"><i class="fa fa-check"></i><b>10.4</b> Using the vocabulary when querying</a></li>
+<li class="chapter" data-level="10.5" data-path="SqlAndR.html"><a href="SqlAndR.html#exercices"><i class="fa fa-check"></i><b>10.5</b> Exercices</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="Cohorts.html"><a href="Cohorts.html"><i class="fa fa-check"></i><b>11</b> Building the building blocks: cohorts</a></li>
 <li class="chapter" data-level="12" data-path="Characterization.html"><a href="Characterization.html"><i class="fa fa-check"></i><b>12</b> Characterization</a></li>
@@ -333,20 +333,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="SqlAndR" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> SQL and R</h1>
-<p><em>Chapter lead: Martijn Schuemie</em></p>
+<p><em>Chapter lead: Martijn Schuemie &amp; Peter Rijnbeek</em></p>
 <p>The Common Data Model is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.</p>
-<p>The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the person table on SQL Server one would type:</p>
+<p>The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server one would type:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> TOP <span class="dv">10</span> * <span class="kw">FROM</span> person;</code></pre></div>
 <p>Whereas the same query on PostgreSQL would be:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> person <span class="kw">LIMIT</span> <span class="dv">10</span>;</code></pre></div>
 <p>In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to ‘speak’ the same SQL language across all OHDSI databases. For this reason OHDSI developed the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - <strong>OHDSI SQL</strong> - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL.</p>
 <p>Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> package, a single R package that can connect to a wide range of database platforms. DatabaseConnector will also be discussed later in this chapter.</p>
 <p>So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots.</p>
-<p>The SqlRender and DatabaseConnector packages are both available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>))</code></pre></div>
-<p>Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Both packages come with package manuals and vignettes that explore the full functionality. Here we describer some of the main features.</p>
+<p>In this chapter we first review how to use qlRender and DatabaseConnector to perform database operations in R in a way that allows the same code to be executed across a range of database platforms. If the reader does not intend to use these packages these sections can be skipped. In Section <a href="SqlAndR.html#QueryTheCdm">10.3</a> we discuss how to use SQL (in this case OHDSI SQL) can be used to query the CDM. The following section highlight how to query the OHDSI Standardized Vocabulary when querying the CDM.</p>
 <div id="SqlRender" class="section level2">
 <h2><span class="header-section-number">10.1</span> SqlRender</h2>
+<p>The <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;SqlRender&quot;</span>)</code></pre></div>
+<p>SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignettes that explores the full functionality. Here we describer some of the main features.</p>
 <div id="sql-parameterization" class="section level3">
 <h3><span class="header-section-number">10.1.1</span> SQL parameterization</h3>
 <p>One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the <code>render()</code> function.</p>
@@ -579,7 +580,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span>
 <span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.f0tkld1mchildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.jg2pq8amchildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters, <strong>temp table names are only allowed to be at most 22 characters long</strong> because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -616,7 +617,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="DatabaseConnector" class="section level2">
 <h2><span class="header-section-number">10.2</span> DatabaseConnector</h2>
-<p>DatabaseConnector is an R package for connecting to various database platforms using Java’s JDBC drivers. The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type <code>?jdbcDrivers</code> for instructions on how to download these drivers. Once downloaded, you can use the <code>pathToDriver</code> argument of the <code>connect</code>, <code>dbConnect</code>, and <code>createConnectionDetails</code> functions.</p>
+<p><a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> is an R package for connecting to various database platforms using Java’s JDBC drivers. The DatabaseConnector package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;DatabaseConnector&quot;</span>)</code></pre></div>
+<p>DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type <code>?jdbcDrivers</code> for instructions on how to download these drivers. Once downloaded, you can use the <code>pathToDriver</code> argument of the <code>connect</code>, <code>dbConnect</code>, and <code>createConnectionDetails</code> functions.</p>
 <div id="creating-a-connection" class="section level3">
 <h3><span class="header-section-number">10.2.1</span> Creating a connection</h3>
 <p>To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the <code>connect</code> function and specify these details directly:</p>
@@ -665,7 +668,7 @@ conn &lt;-<span class="st"> </span><span class="kw">connect</span>(details)</cod
 <div id="querying-different-platforms-using-the-same-sql" class="section level3">
 <h3><span class="header-section-number">10.2.4</span> Querying different platforms using the same SQL</h3>
 <p>The following convenience functions are available that first call the <code>render</code> and <code>translate</code> functions in the SqlRender package: <code>renderTranslateExecuteSql</code>, <code>renderTranslateQuerySql</code>, <code>renderTranslateQuerySql.ffdf</code>. For example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">renderTranslatequerySql</span>(conn, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, 
                              <span class="dt">sql =</span> <span class="st">&quot;SELECT TOP 10 * FROM @schema.person&quot;</span>,
                              <span class="dt">schema =</span> <span class="st">&quot;cdm_synpuf&quot;</span>)</code></pre></div>
 <p>Note that the SQL Server-specific ‘TOP 10’ syntax will be translated to for example ‘LIMIT 10’ on PostgreSQL, and that the SQL parameter <code>@schema</code> will be instantiated with the provided value ‘cdm_synpuf’.</p>
@@ -675,19 +678,237 @@ conn &lt;-<span class="st"> </span><span class="kw">connect</span>(details)</cod
 <p>Although it is also possible to insert data in the database by sending SQL statements using the <code>executeSql</code> function, it is often convenient and faster to use the <code>insertTable</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
 <span class="kw">insertTable</span>(conn, <span class="st">&quot;mtcars&quot;</span>, mtcars, <span class="dt">createTable =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>In this example, we’re uploading the mtcars data frame to a table called ‘mtcars’ on the server, that will be automatically created.</p>
+<p>In this example, we’re uploading the mtcars data frame to a table called ‘mtcars’ on the server, which will be automatically created.</p>
 </div>
 </div>
-<div id="querying-the-cdm" class="section level2">
+<div id="QueryTheCdm" class="section level2">
 <h2><span class="header-section-number">10.3</span> Querying the CDM</h2>
-<p>Querying the CDM</p>
-<p>Probably borrow heavily from <a href="https://github.com/OHDSI/QueryLibrary" class="uri">https://github.com/OHDSI/QueryLibrary</a></p>
-</div>
-<div id="querying-the-vocabulary" class="section level2">
-<h2><span class="header-section-number">10.4</span> Querying the vocabulary</h2>
+<p>In the examples below we use OHDSI SQL to query a database that adheres to the CDM. These queries use <code>@cdm</code> to denote the database schema where the data in CDM can be found.</p>
+<p>We can start by just querying how many people are in the database:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> person_count <span class="kw">FROM</span> @cdm.person;</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">PERSON_COUNT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">26299001</td>
+</tr>
+</tbody>
+</table>
+<p>Or perhaps we’re interested in the average length of an observation period:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">AVG</span>(DATEDIFF(<span class="dt">DAY</span>, 
+                    observation_period_start_date, 
+                    observation_period_end_date) / <span class="fl">365.25</span>) <span class="kw">AS</span> num_years
+<span class="kw">FROM</span> @cdm.observation_period;</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">NUM_YEARS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1.980803</td>
+</tr>
+</tbody>
+</table>
+<p>We can join tables to produce additional statistics. For example the maximum age at observation end can be computed by joining the PERSON table to the OBSERVATION_PERIOD table:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">YEAR</span>(observation_period_end_date) -
+           year_of_birth) <span class="kw">AS</span> max_age
+<span class="kw">FROM</span> @cdm.person
+<span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.observation_period
+<span class="kw">ON</span> person.person_id = observation_period.person_id;</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">MAX_AGE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">90</td>
+</tr>
+</tbody>
+</table>
+<p>A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION_PERIOD table to compute age, and then order the result set to find the min, max, median, and interquartile range:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">WITH</span> age
+<span class="kw">AS</span> (
+    <span class="kw">SELECT</span> age,
+        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (
+            <span class="kw">ORDER</span> <span class="kw">BY</span> age
+            ) order_nr
+    <span class="kw">FROM</span> (
+        <span class="kw">SELECT</span> <span class="dt">YEAR</span>(observation_period_start_date) - year_of_birth <span class="kw">AS</span> age
+        <span class="kw">FROM</span> @cdm.person
+        <span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.observation_period
+            <span class="kw">ON</span> person.person_id = observation_period.person_id
+        ) age_computed
+    )
+<span class="kw">SELECT</span> <span class="fu">MIN</span>(age) <span class="kw">AS</span> min_age,
+    <span class="fu">MIN</span>(<span class="kw">CASE</span> 
+            <span class="kw">WHEN</span> order_nr &lt; .<span class="dv">25</span> * n
+                <span class="kw">THEN</span> <span class="dv">9999</span>
+            <span class="kw">ELSE</span> age
+            <span class="kw">END</span>) <span class="kw">AS</span> q25_age,
+    <span class="fu">MIN</span>(<span class="kw">CASE</span> 
+            <span class="kw">WHEN</span> order_nr &lt; .<span class="dv">50</span> * n
+                <span class="kw">THEN</span> <span class="dv">9999</span>
+            <span class="kw">ELSE</span> age
+            <span class="kw">END</span>) <span class="kw">AS</span> median_age,
+    <span class="fu">MIN</span>(<span class="kw">CASE</span> 
+            <span class="kw">WHEN</span> order_nr &lt; .<span class="dv">75</span> * n
+                <span class="kw">THEN</span> <span class="dv">9999</span>
+            <span class="kw">ELSE</span> age
+            <span class="kw">END</span>) <span class="kw">AS</span> q75_age,
+    <span class="fu">MAX</span>(age) <span class="kw">AS</span> max_age
+<span class="kw">FROM</span> age
+<span class="kw">CROSS</span> <span class="kw">JOIN</span> (
+    <span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> n
+    <span class="kw">FROM</span> age
+    ) population_size;</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">MIN_AGE</th>
+<th align="right">Q25_AGE</th>
+<th align="right">MEDIAN_AGE</th>
+<th align="right">Q75_AGE</th>
+<th align="right">MAX_AGE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">6</td>
+<td align="right">17</td>
+<td align="right">34</td>
+<td align="right">90</td>
+</tr>
+</tbody>
+</table>
+<p>More complex computations can also be performed in R instead of using SQL. For example, we can get the same answer using this R code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sql &lt;-<span class="st"> &quot;SELECT YEAR(observation_period_start_date) -</span>
+<span class="st">               year_of_birth AS age</span>
+<span class="st">FROM @cdm.person</span>
+<span class="st">INNER JOIN @cdm.observation_period</span>
+<span class="st">ON person.person_id = observation_period.person_id;&quot;</span>
+age &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, sq, <span class="dt">cdm =</span> <span class="st">&quot;cdm&quot;</span>)
+<span class="kw">quantile</span>(age[, <span class="dv">1</span>], <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>))</code></pre></div>
+<pre><code>##   0%  25%  50%  75% 100% 
+##    0    6   17   34   90</code></pre>
+<p>Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is not very efficient.</p>
+<p>Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> TOP <span class="dv">10</span> condition_source_value, 
+  <span class="fu">COUNT</span>(*) <span class="kw">AS</span> code_count
+<span class="kw">FROM</span> @cdm.condition_occurrence
+<span class="kw">GROUP</span> <span class="kw">BY</span> condition_source_value
+<span class="kw">ORDER</span> <span class="kw">BY</span> -COUNT(*);</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">CONDITION_SOURCE_VALUE</th>
+<th align="right">CODE_COUNT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4019</td>
+<td align="right">49094668</td>
+</tr>
+<tr class="even">
+<td align="right">25000</td>
+<td align="right">36149139</td>
+</tr>
+<tr class="odd">
+<td align="right">78099</td>
+<td align="right">28908399</td>
+</tr>
+<tr class="even">
+<td align="right">319</td>
+<td align="right">25798284</td>
+</tr>
+<tr class="odd">
+<td align="right">31401</td>
+<td align="right">22547122</td>
+</tr>
+<tr class="even">
+<td align="right">317</td>
+<td align="right">22453999</td>
+</tr>
+<tr class="odd">
+<td align="right">311</td>
+<td align="right">19626574</td>
+</tr>
+<tr class="even">
+<td align="right">496</td>
+<td align="right">19570098</td>
+</tr>
+<tr class="odd">
+<td align="right">I10</td>
+<td align="right">19453451</td>
+</tr>
+<tr class="even">
+<td align="right">3180</td>
+<td align="right">18973883</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="using-the-vocabulary-when-querying" class="section level2">
-<h2><span class="header-section-number">10.5</span> Using the vocabulary when querying</h2>
+<h2><span class="header-section-number">10.4</span> Using the vocabulary when querying</h2>
+<p>Many operations require the vocabulary to be useful. The Vocabulary tables are part of the CDM, and are therefore available using SQL queries. Querying the Vocabulary is already described at length in Chapter <a href="StandardizedVocabularies.html#StandardizedVocabularies">6</a>. Here we show how queries against the Vocabulary can be combined with queries against the CDM. Many fields in the CDM contain concept IDs which can be resolved using the CONCEPT table. For example, we may wish to count the number of persons in the database stratified by gender, and it would be convenient to resolve the GENDER_CONCEPT_ID field to a concept name:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> subject_count,
+  concept_name
+<span class="kw">FROM</span> @cdm.person
+<span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept
+  <span class="kw">ON</span> person.gender_concept_id = concept.concept_id
+<span class="kw">GROUP</span> <span class="kw">BY</span> concept_name;</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">SUBJECT_COUNT</th>
+<th align="right">CONCEPT_NAME</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">14927548</td>
+<td align="right">FEMALE</td>
+</tr>
+<tr class="even">
+<td align="right">11371453</td>
+<td align="right">MALE</td>
+</tr>
+</tbody>
+</table>
+<p>A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept <em>and all of its descendants</em>. For example, image we wish to count the number of prescriptions containing the ingredient ibuprofen:</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*) <span class="kw">AS</span> prescription_count
+<span class="kw">FROM</span> @cdm.drug_exposure
+<span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept_ancestor
+  <span class="kw">ON</span> drug_concept_id = descendant_concept_id
+<span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept ingredient
+  <span class="kw">ON</span> ancestor_concept_id = ingredient.concept_id
+<span class="kw">WHERE</span> ingredient.concept_name = <span class="st">&#39;Ibuprofen&#39;</span>
+  <span class="kw">AND</span> ingredient.concept_class_id = <span class="st">&#39;Ingredient&#39;</span>
+  <span class="kw">AND</span> ingredient.standard_concept = <span class="st">&#39;S&#39;</span>;</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">PRESCRIPTION_COUNT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">26871214</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="exercices" class="section level2">
+<h2><span class="header-section-number">10.5</span> Exercices</h2>
 
 </div>
 </div>

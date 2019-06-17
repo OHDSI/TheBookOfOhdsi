@@ -1,12 +1,12 @@
 # SQL and R {#SqlAndR}
 
-*Chapter lead: Martijn Schuemie*
+*Chapter lead: Martijn Schuemie & Peter Rijnbeek*
 
 
 
 The Common Data Model is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.
 
-The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the person table on SQL Server one would type:
+The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server one would type:
 
 
 ```sql
@@ -26,16 +26,18 @@ Each database platform also comes with its own software tools for querying the d
 
 So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. 
 
-The SqlRender and DatabaseConnector packages are both available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:
+In this chapter we first review  how to use qlRender and DatabaseConnector to perform database operations in R in a way that allows the same code to be executed across a range of database platforms. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) can be used to query the CDM. The following section highlight how to query the OHDSI Standardized Vocabulary when querying the CDM.
+
+## SqlRender {#SqlRender}
+
+The [SqlRender](https://ohdsi.github.io/SqlRender/) package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:
 
 
 ```r
-install.packages(c("SqlRender", "DatabaseConnector"))
+install.packages("SqlRender")
 ```
 
-Both packages support a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). Both packages come with package manuals and vignettes that explore the full functionality. Here we describer some of the main features.
-
-## SqlRender {#SqlRender}
+SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and  a vignettes that explores the full functionality. Here we describer some of the main features.
 
 ### SQL parameterization
 
@@ -281,7 +283,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.qa9pqky7children ;"
+## [1] "SELECT * FROM temp_schema.m9v1jotechildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -358,7 +360,14 @@ Which will open the default browser with the app.
 
 ## DatabaseConnector {#DatabaseConnector}
 
-DatabaseConnector is an R package for connecting to various database platforms using Java's JDBC drivers. The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type `?jdbcDrivers` for instructions on how to download these drivers. Once downloaded, you can use the `pathToDriver` argument of the `connect`, `dbConnect`, and `createConnectionDetails` functions.
+[DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) is an R package for connecting to various database platforms using Java's JDBC drivers. The DatabaseConnector package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:
+
+
+```r
+install.packages("DatabaseConnector")
+```
+
+DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type `?jdbcDrivers` for instructions on how to download these drivers. Once downloaded, you can use the `pathToDriver` argument of the `connect`, `dbConnect`, and `createConnectionDetails` functions.
 
 ### Creating a connection
 
@@ -457,7 +466,7 @@ The following convenience functions are available that first call the `render` a
 
 
 ```r
-x <- renderTranslatequerySql(conn, 
+x <- renderTranslateQuerySql(conn, 
                              sql = "SELECT TOP 10 * FROM @schema.person",
                              schema = "cdm_synpuf")
 ```
@@ -473,17 +482,167 @@ data(mtcars)
 insertTable(conn, "mtcars", mtcars, createTable = TRUE)
 ```
 
-In this example, we're uploading the mtcars data frame to a table called 'mtcars' on the server, that will be automatically created.
+In this example, we're uploading the mtcars data frame to a table called 'mtcars' on the server, which will be automatically created.
+
+## Querying the CDM {#QueryTheCdm}
+
+In the examples below we use OHDSI SQL to query a database that adheres to the CDM. These queries use `@cdm` to denote the database schema where the data in CDM can be found.
+
+We can start by just querying how many people are in the database:
+
+```sql
+SELECT COUNT(*) AS person_count FROM @cdm.person;
+```
+| PERSON_COUNT |     
+| ------------:|
+| 26299001     |
 
 
-## Querying the CDM
+Or perhaps we're interested in the average length of an observation period:
 
-Querying the CDM
+```sql
+SELECT AVG(DATEDIFF(DAY, 
+                    observation_period_start_date, 
+                    observation_period_end_date) / 365.25) AS num_years
+FROM @cdm.observation_period;
+```
+| NUM_YEARS |     
+| ---------:|
+| 1.980803  |
 
-Probably borrow heavily from https://github.com/OHDSI/QueryLibrary
+We can join tables to produce additional statistics. For example the maximum age at observation end can be computed by joining the PERSON table to the OBSERVATION_PERIOD table:
 
-## Querying the vocabulary
+```sql
+SELECT MAX(YEAR(observation_period_end_date) -
+           year_of_birth) AS max_age
+FROM @cdm.person
+INNER JOIN @cdm.observation_period
+ON person.person_id = observation_period.person_id;
+```
+| MAX_AGE |     
+| -------:|
+|      90 |
+
+A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION_PERIOD table to compute age, and then order the result set to find the min, max, median, and interquartile range:
+
+```sql
+WITH age
+AS (
+	SELECT age,
+		ROW_NUMBER() OVER (
+			ORDER BY age
+			) order_nr
+	FROM (
+		SELECT YEAR(observation_period_start_date) - year_of_birth AS age
+		FROM @cdm.person
+		INNER JOIN @cdm.observation_period
+			ON person.person_id = observation_period.person_id
+		) age_computed
+	)
+SELECT MIN(age) AS min_age,
+	MIN(CASE 
+			WHEN order_nr < .25 * n
+				THEN 9999
+			ELSE age
+			END) AS q25_age,
+	MIN(CASE 
+			WHEN order_nr < .50 * n
+				THEN 9999
+			ELSE age
+			END) AS median_age,
+	MIN(CASE 
+			WHEN order_nr < .75 * n
+				THEN 9999
+			ELSE age
+			END) AS q75_age,
+	MAX(age) AS max_age
+FROM age
+CROSS JOIN (
+	SELECT COUNT(*) AS n
+	FROM age
+	) population_size;
+```
+| MIN_AGE | Q25_AGE | MEDIAN_AGE | Q75_AGE | MAX_AGE |
+| -------:| -------:| ----------:| -------:| -------:|
+|       0 |       6 |         17 |      34 |      90 |
+
+More complex computations can also be performed in R instead of using SQL. For example, we can get the same answer using this R code:
+
+
+```r
+sql <- "SELECT YEAR(observation_period_start_date) -
+               year_of_birth AS age
+FROM @cdm.person
+INNER JOIN @cdm.observation_period
+ON person.person_id = observation_period.person_id;"
+age <- renderTranslateQuerySql(conn, sq, cdm = "cdm")
+quantile(age[, 1], c(0, 0.25, 0.5, 0.75, 1))
+```
+
+```
+##   0%  25%  50%  75% 100% 
+##    0    6   17   34   90
+```
+
+Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is not very efficient.
+
+Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:
+
+```sql
+SELECT TOP 10 condition_source_value, 
+  COUNT(*) AS code_count
+FROM @cdm.condition_occurrence
+GROUP BY condition_source_value
+ORDER BY -COUNT(*);
+```
+| CONDITION_SOURCE_VALUE | CODE_COUNT |    
+| ----------------------:| ----------:|
+|                   4019 |   49094668 |
+|                  25000 |   36149139 |
+|                  78099 |   28908399 |
+|                    319 |   25798284 |
+|                  31401 |   22547122 |
+|                    317 |   22453999 |
+|                    311 |   19626574 |
+|                    496 |   19570098 |
+|                    I10 |   19453451 |
+|                   3180 |   18973883 |
 
 ## Using the vocabulary when querying
 
+Many operations require the vocabulary to be useful. The Vocabulary tables are part of the CDM, and are therefore available using SQL queries. Querying the Vocabulary is already described at length in Chapter \@ref(StandardizedVocabularies). Here we show how queries against the Vocabulary can be combined with queries against the CDM. Many fields in the CDM contain concept IDs which can be resolved using the CONCEPT table. For example, we may wish to count the number of persons in the database stratified by gender, and it would be convenient to resolve the GENDER_CONCEPT_ID field to a concept name:
+
+```sql
+SELECT COUNT(*) AS subject_count,
+  concept_name
+FROM @cdm.person
+INNER JOIN @cdm.concept
+  ON person.gender_concept_id = concept.concept_id
+GROUP BY concept_name;
+```
+| SUBJECT_COUNT | CONCEPT_NAME |    
+| -------------:| ------------:|
+|      14927548 |       FEMALE |
+|      11371453 |         MALE |
+
+A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept *and all of its descendants*. For example, image we wish to count the number of prescriptions containing the ingredient ibuprofen:
+
+```sql
+SELECT COUNT(*) AS prescription_count
+FROM @cdm.drug_exposure
+INNER JOIN @cdm.concept_ancestor
+  ON drug_concept_id = descendant_concept_id
+INNER JOIN @cdm.concept ingredient
+  ON ancestor_concept_id = ingredient.concept_id
+WHERE ingredient.concept_name = 'Ibuprofen'
+  AND ingredient.concept_class_id = 'Ingredient'
+  AND ingredient.standard_concept = 'S';
+```
+| PRESCRIPTION_COUNT |
+| ------------------:|
+|           26871214 |
+
+
+
+## Exercices
 
