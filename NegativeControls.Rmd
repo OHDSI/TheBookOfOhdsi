@@ -4,7 +4,7 @@ This Appendix contains negative controls used in various chapters of the book.
 
 ## ACEi and THZ {#AceiThzNsc}
 
-Negative control outcomes when comparing ACE inhibitors (ACEi) to thiazides and thiazide-like diuretics (THZ).
+Table: (\#tab:AceiThzNsc) Negative control outcomes when comparing ACE inhibitors (ACEi) to thiazides and thiazide-like diuretics (THZ).
 
 | Concept ID | Concept Name                                               |
 | ----------:|:---------------------------------------------------------- |
