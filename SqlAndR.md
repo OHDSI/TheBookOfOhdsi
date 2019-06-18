@@ -283,7 +283,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.x28nk0xcchildren ;"
+## [1] "SELECT * FROM temp_schema.n43i36nxchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -518,7 +518,7 @@ SELECT MAX(YEAR(observation_period_end_date) -
            year_of_birth) AS max_age
 FROM @cdm.person
 INNER JOIN @cdm.observation_period
-ON person.person_id = observation_period.person_id;
+  ON person.person_id = observation_period.person_id;
 ```
 | MAX_AGE |     
 | -------:|

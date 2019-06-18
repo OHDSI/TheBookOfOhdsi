@@ -180,7 +180,7 @@ For our example study we select the 76 negative controls listed in Appendix \@re
 
 ### Including controls 
 
-Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \@ref(ncOutcomeCohorts) discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. 
+Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \@ref(evaluationSettings) discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. 
 
 The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4.
 
@@ -188,13 +188,34 @@ Next we must execute the same study used to estimate the effect of interest to a
 
 ### Empirical performance
 
-Compute metrics
+Figure \@ref(fig:controls) shows the estimated effect sizes for the negative and positive controls included in our example study, stratified by true effect size. Note that the number of controls is often lower than what was defined because there was not enough data to either produce an estimate, or to synthesize a positive control.
 
-- Need to add functions to MethodEvaluation
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/controls.png" alt="Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio &gt; 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size." width="100%" />
+<p class="caption">(\#fig:controls)Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio > 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size.</p>
+</div>
 
-Generate calibration plots
+Based on these estimates we can compute the metrics shown in Table \@ref(tab:exampleMetrics).
+
+Table: (\#tab:exampleMetrics) Method performance metrics derived from the negative and positive control estimates.
+
+| Metric         | Value |
+|:-------------- | -----:|
+| AUC            |  0.96 |
+| Coverage       |  0.97 |
+| Mean Precision | 19.33 |
+| MSE            |  2.08 |
+| Type 1 error   |  0.00 |
+| Type 2 error   |  0.18 |
+| Non-estimable  |  0.08 |
+
+We see that coverage and type 1 error are actually very close to their nominal values of 95% and 5%, respectively, and that the AUC is very high. This is certainly not always the case. 
+
+Note that although in \@ref(fig:controls) not all confidence intervals include 1 when the true hazard ratio is 1, the type 1 error in Table \@ref(tab:exampleMetrics) is 0%. This is an exceptional situation, caused by the fact that confidence intervals in the [Cyclops](https://ohdsi.github.io/Cyclops/) package are estimated using likelihood profiling, which is more accurate than traditional methods but can result in assymmetric confidence intervals. The p-value instead is computed assuming symmetrical confidence intervals, and this is what was used to compute the type 1 error.
 
 ### Calibrate p-value
+
+
 
 ### Calibrate confidence interval
 
