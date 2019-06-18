@@ -283,7 +283,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.adrdqn6achildren ;"
+## [1] "SELECT * FROM temp_schema.x28nk0xcchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -575,8 +575,8 @@ sql <- "SELECT YEAR(observation_period_start_date) -
                year_of_birth AS age
 FROM @cdm.person
 INNER JOIN @cdm.observation_period
-ON person.person_id = observation_period.person_id;"
-age <- renderTranslateQuerySql(conn, sq, cdm = "cdm")
+  ON person.person_id = observation_period.person_id;"
+age <- renderTranslateQuerySql(conn, sql, cdm = "cdm")
 quantile(age[, 1], c(0, 0.25, 0.5, 0.75, 1))
 ```
 
@@ -585,7 +585,7 @@ quantile(age[, 1], c(0, 0.25, 0.5, 0.75, 1))
 ##    0    6   17   34   90
 ```
 
-Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is not very efficient.
+Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is therefore not very efficient.
 
 Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:
 

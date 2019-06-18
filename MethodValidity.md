@@ -30,14 +30,13 @@ Similarly, for the self-controlled case series (SCCS) design we may check other 
 
 ## Diagnostics for all estimation
 
-No matter what estimation design we use, we should always asses performance using control hypotheses, research questions where the answer is already known. We can then evaluate whether our design produces results in line with the truth. Controls can be divided into negative controls and positive controls.
+Next to the design-specific diagnostics, there are also several diagnostics that are applicable across all causal effect estimation methods. Many of these rely on the use of control hypotheses, research questions where the answer is already known. Using control hypotheses We can then evaluate whether our design produces results in line with the truth. Controls can be divided into negative controls and positive controls.
 
 ### Negative controls
 
 Negative controls are exposure-outcome pairs where one believes no causal effect exists, and including negative controls or 'falsification endpoints' [@prased_2013] has been recommended as a means to detect confounding [@lipsitch_2010], selection bias and measurement error [@arnold_2016]. For example, in one study [@zaadstra_2008] investigate the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased. 
 
 We should select negative controls that are comparable to our hypothesis of interest, which means we typically select exposure-outcome pairs that either have the same exposure as the hypothesis of interest (so-called 'outcome controls') or the same outcome ('exposure controls). In OHDSI we have developed a semi-automated procedure for selecting negative controls [@voss_2016]. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of outcomes with no known links with any hypertension treatment. We rank-order this list by prevalence in an observational database and manually review these in order.
-
 
 ### Positive controls
 
@@ -52,7 +51,7 @@ In OHDSI we therefore use synthetic positive controls [@schuemie_2018], created 
 
 Although we refer to a single true ‘effect size’ for each control, different methods estimate different statistics of the treatment effect. For negative controls, where we believe no causal effect exists, all such statistics, including the relative risk, hazard ratio, odds ratio, incidence rate ratio, both conditional and marginal, as well as the average treatment effect in the treated (ATT) and the overall average treatment effect (ATE) will be identical to 1. Our process for creating positive controls synthesizes outcomes with a constant incidence rate ratio over time and between patients, using a model conditioned on the patient where this ratio is held constant, up to the point where the marginal effect is achieved. The true effect size is thus guaranteed to hold as the marginal incidence rate ratio in the treated. Under the assumption that our outcome model used during synthesis is correct, this also holds for the conditional effect size and the ATE. Since all outcomes are rare, odds ratios are all but identical to the relative risk.
 
-### Metrics
+### Empirical evaluation
 
 Based on the estimates of a particular method for the negative and positive controls, we can then understand the operating characteristic by computing a range of metrics, for example:
 
@@ -69,7 +68,7 @@ Depending on our use case, we can evaluate whether these operating characterists
 ### P-value calibration
 
 Often the type I error (at alpha = 0.05) is larger than 5%. OHDSI has developed a process for calibrating p-values  to restore the type I error to nominal. [@schuemie_2014] We derive an empirical null distribution from the actual effect estimates for the negative controls. These negative control estimates give us an indication of what can be expected when the null hypothesis is true, and we use them to estimate an empirical null distribution. We fit a Gaussian probability distribution to the estimates, taking into account the sampling error of each estimate. Let $\hat{\theta}_i$ denote the estimated log effect estimate (relative risk, odds or incidence rate ratio) from the $i$th negative control drug–outcome pair, and let $\hat{\tau}_i$ denote the corresponding estimated standard error, $i=1,\ldots,n$. Let $\theta_i$ denote the true log effect size (assumed 0 for negative controls), and let $\beta_i$ denote the true (but unknown) bias associated with pair $i$ , that is, the difference between the log of the true effect size and the log of the estimate that the study would have returned for control $i$ had it been infinitely large. As in the standard p-value computation, we assume that $\hat{\theta}_i$  is normally distributed with mean $\theta_i + \beta_i$ and standard deviation $\hat{\tau}_i^2$. Note that in traditional p-value calculation, $\beta_i$ is always assumed to be equal to zero, but that we assume the $\beta_i$’s, arise from a normal distribution with mean $\mu$ and variance $\sigma^2$. This represents the null (bias) distribution. We estimate $\mu$ and $\sigma^2$ via maximum likelihood. In summary, we assume the following:
-$$\theta_i \sim N(\mu,\sigma^2) \text{ , and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)$$
+$$\beta_i \sim N(\mu,\sigma^2) \text{  and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)$$
 
 where $N(a,b)$ denotes a Gaussian distribution with mean $a$ and variance $b$, and estimate $\mu$ and $\sigma^2$ by maximizing the following likelihood:
 $$L(\mu, \sigma | \theta, \tau) \propto \prod_{i=1}^{n}\int p(\hat{\theta}_i|\beta_i, \theta_i, \hat{\tau}_i)p(\beta_i|\mu, \sigma) \text{d}\beta_i$$
@@ -82,19 +81,52 @@ When $\hat{\theta}_{n+1}$ is smaller than $\hat{\mu}$, the one-sided p-value for
 
 $$\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)$$
 
-where $\phi(.)$ denotes the cumulative distribution function of the standard normal distribution. When $\hat{\theta}_{n+1}$ is bigger than $\hat{\mu}$, the one-sided p-value is then
+where $\phi(\cdot)$ denotes the cumulative distribution function of the standard normal distribution. When $\hat{\theta}_{n+1}$ is bigger than $\hat{\mu}$, the one-sided p-value is then
 $$1-\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)$$
 
 
 ### Confidence interval calibration
 
-For confidence inteval calibration [@schuemie_2018] we estimate a systematic error distribution, which we assume is Gaussian with a mean and standard deviation linearly related to the logarithm of the true effect size. Using the estimated distribution, we then generate calibrated confidence intervals considering both random and systematic error. Typically, but not necessarily, the calibrated confidence interval is wider than the nominal confidence interval, reflecting the problems unaccounted for in the standard procedure (such as unmeasured confounding, selection bias and measurement error) but accounted for in the calibration.
+Similarly, we typically observe that the coverage of the 95% confidence interval is less than 95%. For confidence inteval calibration [@schuemie_2018] we extend the framework for p-value calibration by also making use of our positive controls. Here we assume that $beta_i$, the bias associated with pair $i$, again comes from a Gaussian distribution, but this time using a mean and standard deviation that are linearly related to $theta_i$, the true effect size:
+
+$$\beta_i \sim N(\mu(\theta_i) , \sigma^2(\theta_i))$$
+
+where
+
+$$\mu(\theta_i) = a + b \times \theta_i \text{ and} \\
+  \sigma(\theta_i) ^2= c + d \times \mid \theta_i \mid$$
+
+We estimate $a$, $b$, $c$ and $d$ by maximizing the marginalized likelihood in which we integrate out the unobserved $\beta_i$:
+
+$$l(a,b,c,d | \theta, \hat{\theta}, \hat{\tau} ) \propto \prod_{i=1}^{n}\int p(\hat{\theta}_i|\beta_i, \theta_i, \hat{\tau}_i)p(\beta_i|a,b,c,d,\theta_i) \text{d}\beta_i ,$$
+yielding maximum likelihood estimates $(\hat{a}, \hat{b}, \hat{c}, \hat{d})$.
+
+We compute a calibrated CI that uses the systematic error model. Let $\hat{\theta}_{n+1}$ again denote the log of the effect estimate for a new outcome of interest, and let $\hat{\tau}_{n+1}$ denote the corresponding estimated standard error. From the assumptions above, and assuming $\beta_{n+1}$ arises from the same systematic error model, we have: 
+
+$$\hat{\theta}_{n+1} \sim N(
+\theta_{n+1} + \hat{a} + \hat{b} \times \theta_{n+1},
+\hat{c} + \hat{d} \times \mid \theta_{n+1} \mid) + \hat{\tau}_{n+1}^2) .$$
+
+We find the lower bound of the calibrated 95% CI by solving this equation for $\theta_{n+1}$:
+
+$$\Phi\left(
+\frac{\theta_{n+1} + \hat{a} + \hat{b} \times \theta_{n+1}-\hat{\theta}_{n+1}}
+{\sqrt{(\hat{c} + \hat{d} \times \mid \theta_{n+1} \mid) + \hat{\tau}_{n+1}^2}}
+\right) = 0.025 ,$$
+
+where $\Phi(\cdot)$ denotes the cumulative distribution function of the standard normal distribution. We find the upper bound similarly for probability 0.975.  We define the calibrated point estimate by using probability 0.5.
+
+Typically, but not necessarily, the calibrated confidence interval is wider than the nominal confidence interval, reflecting the problems unaccounted for in the standard procedure (such as unmeasured confounding, selection bias and measurement error) but accounted for in the calibration.
 
 Both p-value calibration and confidence interval calibration are implemented in the [EmpiricalCalibration](https://ohdsi.github.io/EmpiricalCalibration/) package.
 
 ### Replication across sites
 
-Another form of method validation can come from executing the study across several different databases that possibly represent different populations, different health care systems, and different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates [@madigan_2013], suggesting the design does not adequately address the different biases found in the different databases. However, not observing heterogeneity of effects does not guarantee an unbiased estimate. It is not unlikely that all databases share a similar bias, and that all estimates are therefore consistently wrong.
+Another form of method validation comes from executing the study across several different databases that represent different populations, different health care systems, and/or different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates [@madigan_2013], suggesting that either the effect differs greatly for different populations, or that the design does not adequately address the different biases found in the different databases. In fact, we observe that accounting for residual bias in a database through empirical calibration of confidence intervals can greatly reduce between-study heterogeneity. [@schuemie_2018]
+
+One way to express between-database heterogeneity is the $I^2$ score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. [@higgins_2003] A naive categorisation of values for $I^2$ would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to $I^2$ values of 25%, 50%, and 75%. In a study estimation many effects for depression treatments using a new-user cohort design with large-scale propensity score adjustment, @schuemie_2018b observed only 58% of the estimates to have an $I^2$ below 25%. After empirical calibration this increased to 83%. 
+
+\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">Observing between-database heterogeneity casts doubt on the validity of the estimates. Unfortunately, the inverse is not true. Not observing heterogeneity does not guarantee an unbiased estimate. It is not unlikely that all databases share a similar bias, and that all estimates are therefore consistently wrong.</div>\EndKnitrBlock{rmdimportant}
 
 ### Sensitivity analyses
 
@@ -104,22 +136,57 @@ This definition of sensitivity analysis should not be confused with the definiti
 
 ## Diagnostics for all prediction
 
-Todo
+Internal validation:
+
+- Discrimination
+- Calibration
+
+External validation
+
 
 ## Method validation in practice
 
-Example: risk of angioedema and AMI in new users of ACE inhibitors compared to new users of thiazide and thiazide-like diuretics
+Here we build on the example in Chapter \@ref(PopulationLevelEstimation), where we investigate the effect of ACE inhibitors (ACEi) on the risk of angioedema and acute myocardial infarction (AMI), compared to thiazides and thiazide-like diuretics (THZ). In that chapter we already explore many of the diagnostics specific to the design we used: the cohort method. Here, we apply additional diagnostics that could also been applied had other designs been used. 
 
-How to select negative controls using ATLAS
+### Selecting negative controls
 
-- Create a concept set containing both target and comparator exposure concepts.
-- Go to the 'Explore evidence' tab and click 'Generate'
-- Manually review negative controls, considering
-  - Does the drug not cause the outcome?
-  - Does the drug not prevent / treat the outcome?
-  - Does the negative control appear in the data? 
+We must select negative controls, exposure-outcome pairs where no causal effect is believed to exist. For comparative effect estimation such as our example study, we select negative control outcomes that are believed to be neither caused by the target nor the comparator exposure. We want enough negative controls to make sure we have a diverse mix of biases represented in the controls, and also to allow empirical calibration. As a rule-of-thumb We typically aim to have 50-100 such negative controls. We could come up with these controls completely manually, but fortunately ATLAS also provides features to aid the selection of negative controls using data from literature, product labels, and spontaneous reports. 
 
-Include negative and positive controls. 
+To generate a canidate list of negative controls, we first must create a concept set containing all exposures of interest. In this case we select all ingredients in the ACEi and THZ classes, as shown in Figure \@ref(fig:exposuresConceptSet).
+
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/exposuresConceptSet.png" alt="A concept set containing the concepts defining the target and comparator exposures." width="100%" />
+<p class="caption">(\#fig:exposuresConceptSet)A concept set containing the concepts defining the target and comparator exposures.</p>
+</div>
+
+Next, we go to the 'Explore Evidence' tab, and click on the ![](images/MethodValidity/generate.png) button. Generating the evidence overview will take a few minutes, after which you can click on the ![](images/MethodValidity/viewEvidence.png) button. This will open the list of outcomes as shown in Figure \@ref(fig:candidateNcs).
+
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/candidateNcs.png" alt="Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports." width="100%" />
+<p class="caption">(\#fig:candidateNcs)Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports.</p>
+</div>
+
+This list shows condition concepts, along with an overview of the evidence linking the condition to any of the exposures we defined. For example, we see the number of publications that link the exposures to the outcomes found in PubMed using various strategies, the number of product labels of our exposures of interest that list the condition as a possible adverse effect, and the number of spontaneous reports. By default the list is sorted to show candidate negative controls first. It is then sorted by the 'Sort Order', which represents the prevalance of the condition in a collection of observational databases. The higher the Sort Order, the higher the prevalence. Although the prevalence in these databases might not correspond with the prevalence in the database we wish to run the study, it is likely a good approximation.
+
+The next step is to manually review the candidate list, typically starting at the top, so with the most prevalent condition, and working our way down until we are satisfied we have enough. One typical way to do this is to export the list to CSV, and have clinicians review these. When reviewing negative controls, the following things should be considerd:
+
+- The exposure **cannot cause** the outcome. One way to think of causation is to think of the counterfactual: could the outcome be caused (or prevented) if a patient was not exposed, compared to if the patient had been exposed? Sometimes this is clear, for example ACEi are known to cause angioedema. Other times this is far less obvious. For example, a drug that may cause hypertension can therefore indirectly cause cardiovascular diseases that are a consequence of the hypertension.
+- The exposure should also **not prevent** or treat the outcome. This is just another causal relationship that should be absent if we are to believe the true effect size (e.g. the hazard ratio) is 1.
+- The negative control should **exist in the data**, ideally with sufficient numbers. We try to achieve this by rank-ordering the candidate list by prevalence.
+- Negative controls should ideally be **independent**. For example, we should avoid having negative controls that are either ancestors of each other (e.g. 'ingrown nail' and 'ingrown nail of foot') or siblings (e.g. 'fracture of left femur' and 'fracture of right femur').
+- Negative controls should ideally have **some potential for bias**. For example, the last digit of someone's social security number is basically a random number, and is unlikely to show confounding. It should therefore not be used as a negative control.
+
+For our example study we select the 76 negative controls listed in Appendix \@ref(AceiThzNsc).
+
+### Including controls 
+
+Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \@ref(ncOutcomeCohorts) discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. 
+
+The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4.
+
+Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. All estimation packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) readily allow estimation of many effects in an efficient manner.
+
+### Empirical performance
 
 Compute metrics
 
@@ -127,11 +194,20 @@ Compute metrics
 
 Generate calibration plots
 
-Calibrate CI and p-value
+### Calibrate p-value
 
-- Use EmpiricalCalibration package
+### Calibrate confidence interval
 
+### Between-database heterogeneity
+
+Use LEGEND results
+
+### Sensitivity analyses
+
+Use LEGEND results
 
 ## Advanced: OHDSI Methods Benchmark
 
 Todo: add text on OHDSI Methods Benchmark
+
+## Exercises

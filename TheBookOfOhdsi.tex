@@ -124,7 +124,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-17}
+    \date{2019-06-18}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -2368,7 +2368,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.cr9buun4children ;"
+## [1] "SELECT * FROM temp_schema.sypnvg0gchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -2815,8 +2815,8 @@ SQL. For example, we can get the same answer using this R code:
 \StringTok{               year_of_birth AS age}
 \StringTok{FROM @cdm.person}
 \StringTok{INNER JOIN @cdm.observation_period}
-\StringTok{ON person.person_id = observation_period.person_id;"}
-\NormalTok{age <-}\StringTok{ }\KeywordTok{renderTranslateQuerySql}\NormalTok{(conn, sq, }\DataTypeTok{cdm =} \StringTok{"cdm"}\NormalTok{)}
+\StringTok{  ON person.person_id = observation_period.person_id;"}
+\NormalTok{age <-}\StringTok{ }\KeywordTok{renderTranslateQuerySql}\NormalTok{(conn, sql, }\DataTypeTok{cdm =} \StringTok{"cdm"}\NormalTok{)}
 \KeywordTok{quantile}\NormalTok{(age[, }\DecValTok{1}\NormalTok{], }\KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.25}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.75}\NormalTok{, }\DecValTok{1}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
@@ -2828,7 +2828,8 @@ SQL. For example, we can get the same answer using this R code:
 
 Here we compute age on the server, download all ages, and then compute
 the age distribution. However, this requires millions of rows of data to
-be downloaded from the database server, and is not very efficient.
+be downloaded from the database server, and is therefore not very
+efficient.
 
 Queries can use the source values in the CDM. For example, we can
 retrieve the top 10 most frequent condition source codes using:
@@ -4079,6 +4080,7 @@ controls should be included in our study to evaluate the operating
 characteristics, and perform empirical calibration.
 
 \textbf{Negative control outcome cohort definition}
+\{\#ncOutcomeCohorts\}
 
 In Section \ref{ComparisonSettings} we selected a concept set
 representing the negative control outcomes. However, we need logic to
@@ -6356,11 +6358,13 @@ distributions, suggesting our assumptions holds.
 \section{Diagnostics for all
 estimation}\label{diagnostics-for-all-estimation}
 
-No matter what estimation design we use, we should always asses
-performance using control hypotheses, research questions where the
-answer is already known. We can then evaluate whether our design
-produces results in line with the truth. Controls can be divided into
-negative controls and positive controls.
+Next to the design-specific diagnostics, there are also several
+diagnostics that are applicable across all causal effect estimation
+methods. Many of these rely on the use of control hypotheses, research
+questions where the answer is already known. Using control hypotheses We
+can then evaluate whether our design produces results in line with the
+truth. Controls can be divided into negative controls and positive
+controls.
 
 \subsection{Negative controls}\label{negative-controls}
 
@@ -6456,7 +6460,7 @@ also holds for the conditional effect size and the ATE. Since all
 outcomes are rare, odds ratios are all but identical to the relative
 risk.
 
-\subsection{Metrics}\label{metrics}
+\subsection{Empirical evaluation}\label{empirical-evaluation}
 
 Based on the estimates of a particular method for the negative and
 positive controls, we can then understand the operating characteristic
@@ -6527,7 +6531,7 @@ we assume the \(\beta_i\)'s, arise from a normal distribution with mean
 \(\mu\) and variance \(\sigma^2\). This represents the null (bias)
 distribution. We estimate \(\mu\) and \(\sigma^2\) via maximum
 likelihood. In summary, we assume the following:
-\[\theta_i \sim N(\mu,\sigma^2) \text{ , and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)\]
+\[\beta_i \sim N(\mu,\sigma^2) \text{  and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)\]
 
 where \(N(a,b)\) denotes a Gaussian distribution with mean \(a\) and
 variance \(b\), and estimate \(\mu\) and \(\sigma^2\) by maximizing the
@@ -6549,22 +6553,63 @@ p-value for the new pair is then
 
 \[\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)\]
 
-where \(\phi(.)\) denotes the cumulative distribution function of the
-standard normal distribution. When \(\hat{\theta}_{n+1}\) is bigger than
-\(\hat{\mu}\), the one-sided p-value is then
+where \(\phi(\cdot)\) denotes the cumulative distribution function of
+the standard normal distribution. When \(\hat{\theta}_{n+1}\) is bigger
+than \(\hat{\mu}\), the one-sided p-value is then
 \[1-\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)\]
 
 \subsection{Confidence interval
 calibration}\label{confidence-interval-calibration}
 
-For confidence inteval calibration \citep{schuemie_2018} we estimate a
-systematic error distribution, which we assume is Gaussian with a mean
-and standard deviation linearly related to the logarithm of the true
-effect size. Using the estimated distribution, we then generate
-calibrated confidence intervals considering both random and systematic
-error. Typically, but not necessarily, the calibrated confidence
-interval is wider than the nominal confidence interval, reflecting the
-problems unaccounted for in the standard procedure (such as unmeasured
+Similarly, we typically observe that the coverage of the 95\% confidence
+interval is less than 95\%. For confidence inteval calibration
+\citep{schuemie_2018} we extend the framework for p-value calibration by
+also making use of our positive controls. Here we assume that
+\(beta_i\), the bias associated with pair \(i\), again comes from a
+Gaussian distribution, but this time using a mean and standard deviation
+that are linearly related to \(theta_i\), the true effect size:
+
+\[\beta_i \sim N(\mu(\theta_i) , \sigma^2(\theta_i))\]
+
+where
+
+\[\mu(\theta_i) = a + b \times \theta_i \text{ and} \\
+  \sigma(\theta_i) ^2= c + d \times \mid \theta_i \mid\]
+
+We estimate \(a\), \(b\), \(c\) and \(d\) by maximizing the marginalized
+likelihood in which we integrate out the unobserved \(\beta_i\):
+
+\[l(a,b,c,d | \theta, \hat{\theta}, \hat{\tau} ) \propto \prod_{i=1}^{n}\int p(\hat{\theta}_i|\beta_i, \theta_i, \hat{\tau}_i)p(\beta_i|a,b,c,d,\theta_i) \text{d}\beta_i ,\]
+yielding maximum likelihood estimates
+\((\hat{a}, \hat{b}, \hat{c}, \hat{d})\).
+
+We compute a calibrated CI that uses the systematic error model. Let
+\(\hat{\theta}_{n+1}\) again denote the log of the effect estimate for a
+new outcome of interest, and let \(\hat{\tau}_{n+1}\) denote the
+corresponding estimated standard error. From the assumptions above, and
+assuming \(\beta_{n+1}\) arises from the same systematic error model, we
+have:
+
+\[\hat{\theta}_{n+1} \sim N(
+\theta_{n+1} + \hat{a} + \hat{b} \times \theta_{n+1},
+\hat{c} + \hat{d} \times \mid \theta_{n+1} \mid) + \hat{\tau}_{n+1}^2) .\]
+
+We find the lower bound of the calibrated 95\% CI by solving this
+equation for \(\theta_{n+1}\):
+
+\[\Phi\left(
+\frac{\theta_{n+1} + \hat{a} + \hat{b} \times \theta_{n+1}-\hat{\theta}_{n+1}}
+{\sqrt{(\hat{c} + \hat{d} \times \mid \theta_{n+1} \mid) + \hat{\tau}_{n+1}^2}}
+\right) = 0.025 ,\]
+
+where \(\Phi(\cdot)\) denotes the cumulative distribution function of
+the standard normal distribution. We find the upper bound similarly for
+probability 0.975. We define the calibrated point estimate by using
+probability 0.5.
+
+Typically, but not necessarily, the calibrated confidence interval is
+wider than the nominal confidence interval, reflecting the problems
+unaccounted for in the standard procedure (such as unmeasured
 confounding, selection bias and measurement error) but accounted for in
 the calibration.
 
@@ -6575,17 +6620,36 @@ package.
 
 \subsection{Replication across sites}\label{replication-across-sites}
 
-Another form of method validation can come from executing the study
-across several different databases that possibly represent different
-populations, different health care systems, and different data capture
-processes. Prior research has shown that executing the same study design
-across different databases can produce vastly different effect size
-estimates \citep{madigan_2013}, suggesting the design does not
-adequately address the different biases found in the different
-databases. However, not observing heterogeneity of effects does not
-guarantee an unbiased estimate. It is not unlikely that all databases
-share a similar bias, and that all estimates are therefore consistently
-wrong.
+Another form of method validation comes from executing the study across
+several different databases that represent different populations,
+different health care systems, and/or different data capture processes.
+Prior research has shown that executing the same study design across
+different databases can produce vastly different effect size estimates
+\citep{madigan_2013}, suggesting that either the effect differs greatly
+for different populations, or that the design does not adequately
+address the different biases found in the different databases. In fact,
+we observe that accounting for residual bias in a database through
+empirical calibration of confidence intervals can greatly reduce
+between-study heterogeneity. \citep{schuemie_2018}
+
+One way to express between-database heterogeneity is the \(I^2\) score,
+describing the percentage of total variation across studies that is due
+to heterogeneity rather than chance. \citep{higgins_2003} A naive
+categorisation of values for \(I^2\) would not be appropriate for all
+circumstances, although one could tentatively assign adjectives of low,
+moderate, and high to \(I^2\) values of 25\%, 50\%, and 75\%. In a study
+estimation many effects for depression treatments using a new-user
+cohort design with large-scale propensity score adjustment,
+\citet{schuemie_2018b} observed only 58\% of the estimates to have an
+\(I^2\) below 25\%. After empirical calibration this increased to 83\%.
+
+\BeginKnitrBlock{rmdimportant}
+Observing between-database heterogeneity casts doubt on the validity of
+the estimates. Unfortunately, the inverse is not true. Not observing
+heterogeneity does not guarantee an unbiased estimate. It is not
+unlikely that all databases share a similar bias, and that all estimates
+are therefore consistently wrong.
+\EndKnitrBlock{rmdimportant}
 
 \subsection{Sensitivity analyses}\label{sensitivity-analyses}
 
@@ -6605,34 +6669,151 @@ be altered by hidden biases of various magnitudes'.
 \section{Diagnostics for all
 prediction}\label{diagnostics-for-all-prediction}
 
-Todo
-
-\section{Method validation in
-practice}\label{method-validation-in-practice}
-
-Example: risk of angioedema and AMI in new users of ACE inhibitors
-compared to new users of thiazide and thiazide-like diuretics
-
-How to select negative controls using ATLAS
+Internal validation:
 
 \begin{itemize}
 \tightlist
 \item
-  Create a concept set containing both target and comparator exposure
-  concepts.
+  Discrimination
 \item
-  Go to the `Explore evidence' tab and click `Generate'
-\item
-  Manually review negative controls, considering
-\item
-  Does the drug not cause the outcome?
-\item
-  Does the drug not prevent / treat the outcome?
-\item
-  Does the negative control appear in the data?
+  Calibration
 \end{itemize}
 
-Include negative and positive controls.
+External validation
+
+\section{Method validation in
+practice}\label{method-validation-in-practice}
+
+Here we build on the example in Chapter \ref{PopulationLevelEstimation},
+where we investigate the effect of ACE inhibitors (ACEi) on the risk of
+angioedema and acute myocardial infarction (AMI), compared to thiazides
+and thiazide-like diuretics (THZ). In that chapter we already explore
+many of the diagnostics specific to the design we used: the cohort
+method. Here, we apply additional diagnostics that could also been
+applied had other designs been used.
+
+\subsection{Selecting negative
+controls}\label{selecting-negative-controls}
+
+We must select negative controls, exposure-outcome pairs where no causal
+effect is believed to exist. For comparative effect estimation such as
+our example study, we select negative control outcomes that are believed
+to be neither caused by the target nor the comparator exposure. We want
+enough negative controls to make sure we have a diverse mix of biases
+represented in the controls, and also to allow empirical calibration. As
+a rule-of-thumb We typically aim to have 50-100 such negative controls.
+We could come up with these controls completely manually, but
+fortunately ATLAS also provides features to aid the selection of
+negative controls using data from literature, product labels, and
+spontaneous reports.
+
+To generate a canidate list of negative controls, we first must create a
+concept set containing all exposures of interest. In this case we select
+all ingredients in the ACEi and THZ classes, as shown in Figure
+\ref{fig:exposuresConceptSet}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/exposuresConceptSet} 
+
+}
+
+\caption{A concept set containing the concepts defining the target and comparator exposures.}\label{fig:exposuresConceptSet}
+\end{figure}
+
+Next, we go to the `Explore Evidence' tab, and click on the
+\includegraphics{images/MethodValidity/generate.png} button. Generating
+the evidence overview will take a few minutes, after which you can click
+on the \includegraphics{images/MethodValidity/viewEvidence.png} button.
+This will open the list of outcomes as shown in Figure
+\ref{fig:candidateNcs}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/candidateNcs} 
+
+}
+
+\caption{Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports.}\label{fig:candidateNcs}
+\end{figure}
+
+This list shows condition concepts, along with an overview of the
+evidence linking the condition to any of the exposures we defined. For
+example, we see the number of publications that link the exposures to
+the outcomes found in PubMed using various strategies, the number of
+product labels of our exposures of interest that list the condition as a
+possible adverse effect, and the number of spontaneous reports. By
+default the list is sorted to show candidate negative controls first. It
+is then sorted by the `Sort Order', which represents the prevalance of
+the condition in a collection of observational databases. The higher the
+Sort Order, the higher the prevalence. Although the prevalence in these
+databases might not correspond with the prevalence in the database we
+wish to run the study, it is likely a good approximation.
+
+The next step is to manually review the candidate list, typically
+starting at the top, so with the most prevalent condition, and working
+our way down until we are satisfied we have enough. One typical way to
+do this is to export the list to CSV, and have clinicians review these.
+When reviewing negative controls, the following things should be
+considerd:
+
+\begin{itemize}
+\tightlist
+\item
+  The exposure \textbf{cannot cause} the outcome. One way to think of
+  causation is to think of the counterfactual: could the outcome be
+  caused (or prevented) if a patient was not exposed, compared to if the
+  patient had been exposed? Sometimes this is clear, for example ACEi
+  are known to cause angioedema. Other times this is far less obvious.
+  For example, a drug that may cause hypertension can therefore
+  indirectly cause cardiovascular diseases that are a consequence of the
+  hypertension.
+\item
+  The exposure should also \textbf{not prevent} or treat the outcome.
+  This is just another causal relationship that should be absent if we
+  are to believe the true effect size (e.g.~the hazard ratio) is 1.
+\item
+  The negative control should \textbf{exist in the data}, ideally with
+  sufficient numbers. We try to achieve this by rank-ordering the
+  candidate list by prevalence.
+\item
+  Negative controls should ideally be \textbf{independent}. For example,
+  we should avoid having negative controls that are either ancestors of
+  each other (e.g. `ingrown nail' and `ingrown nail of foot') or
+  siblings (e.g. `fracture of left femur' and `fracture of right
+  femur').
+\item
+  Negative controls should ideally have \textbf{some potential for
+  bias}. For example, the last digit of someone's social security number
+  is basically a random number, and is unlikely to show confounding. It
+  should therefore not be used as a negative control.
+\end{itemize}
+
+For our example study we select the 76 negative controls listed in
+Appendix \ref{AceiThzNsc}.
+
+\subsection{Including controls}\label{including-controls}
+
+Once we have defined our set of negative controls we must include them
+in our study. First we must define some logic for turning our negative
+control condition concepts into outcome cohorts. Section
+\ref{ncOutcomeCohorts} discusses how ATLAS allows creating such cohorts
+based on a few choices the user must make. Often we simply choose to
+create a cohort based on any occurrence of a negative control concept or
+any of its descendants.
+
+The OHDSI tools also provide functionality for automatically generating
+and including positive controls derived from the negative controls. Here
+we generate three positive controls for each negative control, with true
+effect sizes of 1.5, 2, and 4.
+
+Next we must execute the same study used to estimate the effect of
+interest to also estimate effects for the negative and positive
+controls. All estimation packages in the
+\href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}
+readily allow estimation of many effects in an efficient manner.
+
+\subsection{Empirical performance}\label{empirical-performance}
 
 Compute metrics
 
@@ -6644,18 +6825,26 @@ Compute metrics
 
 Generate calibration plots
 
-Calibrate CI and p-value
+\subsection{Calibrate p-value}\label{calibrate-p-value}
 
-\begin{itemize}
-\tightlist
-\item
-  Use EmpiricalCalibration package
-\end{itemize}
+\subsection{Calibrate confidence
+interval}\label{calibrate-confidence-interval}
+
+\subsection{Between-database
+heterogeneity}\label{between-database-heterogeneity}
+
+Use LEGEND results
+
+\subsection{Sensitivity analyses}\label{sensitivity-analyses-1}
+
+Use LEGEND results
 
 \section{Advanced: OHDSI Methods
 Benchmark}\label{advanced-ohdsi-methods-benchmark}
 
 Todo: add text on OHDSI Methods Benchmark
+
+\section{Exercises}\label{exercises}
 
 \part{OHDSI Studies}\label{part-ohdsi-studies}
 
@@ -7386,6 +7575,102 @@ Mapped\tabularnewline
 1398937 & Clonidine & NO & YES & NO\tabularnewline
 40226742 & olmesartan & NO & YES & NO\tabularnewline
 40235485 & azilsartan & NO & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+\chapter{Negative controls}\label{NegativeControls}
+
+This Appendix contains negative controls used in various chapters of the
+book.
+
+\section{ACEi and THZ}\label{AceiThzNsc}
+
+Negative control outcomes when comparing ACE inhibitors (ACEi) to
+thiazides and thiazide-like diuretics (THZ).
+
+\begin{longtable}[]{@{}rl@{}}
+\toprule
+Concept ID & Concept Name\tabularnewline
+\midrule
+\endhead
+434165 & Abnormal cervical smear\tabularnewline
+436409 & Abnormal pupil\tabularnewline
+199192 & Abrasion and/or friction burn of trunk without
+infection\tabularnewline
+4088290 & Absence of breast\tabularnewline
+4092879 & Absent kidney\tabularnewline
+44783954 & Acid reflux\tabularnewline
+75911 & Acquired hallux valgus\tabularnewline
+137951 & Acquired keratoderma\tabularnewline
+77965 & Acquired trigger finger\tabularnewline
+376707 & Acute conjunctivitis\tabularnewline
+4103640 & Amputated foot\tabularnewline
+73241 & Anal and rectal polyp\tabularnewline
+133655 & Burn of forearm\tabularnewline
+73560 & Calcaneal spur\tabularnewline
+434327 & Cannabis abuse\tabularnewline
+4213540 & Cervical somatic dysfunction\tabularnewline
+140842 & Changes in skin texture\tabularnewline
+81378 & Chondromalacia of patella\tabularnewline
+432303 & Cocaine abuse\tabularnewline
+4201390 & Colostomy present\tabularnewline
+46269889 & Complication due to Crohn's disease\tabularnewline
+134438 & Contact dermatitis\tabularnewline
+78619 & Contusion of knee\tabularnewline
+201606 & Crohn's disease\tabularnewline
+76786 & Derangement of knee\tabularnewline
+4115402 & Difficulty sleeping\tabularnewline
+45757370 & Disproportion of reconstructed breast\tabularnewline
+433111 & Effects of hunger\tabularnewline
+433527 & Endometriosis\tabularnewline
+4170770 & Epidermoid cyst\tabularnewline
+4092896 & Feces contents abnormal\tabularnewline
+259995 & Foreign body in orifice\tabularnewline
+40481632 & Ganglion cyst\tabularnewline
+4166231 & Genetic predisposition\tabularnewline
+433577 & Hammer toe\tabularnewline
+4231770 & Hereditary thrombophilia\tabularnewline
+440329 & Herpes zoster without complication\tabularnewline
+4012570 & High risk sexual behavior\tabularnewline
+4012934 & Homocystinuria\tabularnewline
+441788 & Human papilloma virus infection\tabularnewline
+4201717 & Ileostomy present\tabularnewline
+374375 & Impacted cerumen\tabularnewline
+4344500 & Impingement syndrome of shoulder region\tabularnewline
+139099 & Ingrowing nail\tabularnewline
+444132 & Injury of knee\tabularnewline
+196168 & Irregular periods\tabularnewline
+432593 & Kwashiorkor\tabularnewline
+434203 & Late effect of contusion\tabularnewline
+438329 & Late effect of motor vehicle accident\tabularnewline
+195873 & Leukorrhea\tabularnewline
+4083487 & Macular drusen\tabularnewline
+4103703 & Melena\tabularnewline
+4209423 & Nicotine dependence\tabularnewline
+377572 & Noise effects on inner ear\tabularnewline
+40480893 & Nonspecific tuberculin test reaction\tabularnewline
+136368 & Non-toxic multinodular goiter\tabularnewline
+140648 & Onychomycosis due to dermatophyte\tabularnewline
+438130 & Opioid abuse\tabularnewline
+4091513 & Passing flatus\tabularnewline
+4202045 & Postviral fatigue syndrome\tabularnewline
+373478 & Presbyopia\tabularnewline
+46286594 & Problem related to lifestyle\tabularnewline
+439790 & Psychalgia\tabularnewline
+81634 & Ptotic breast\tabularnewline
+380706 & Regular astigmatism\tabularnewline
+141932 & Senile hyperkeratosis\tabularnewline
+36713918 & Somatic dysfunction of lumbar region\tabularnewline
+443172 & Splinter of face, without major open wound\tabularnewline
+81151 & Sprain of ankle\tabularnewline
+72748 & Strain of rotator cuff capsule\tabularnewline
+378427 & Tear film insufficiency\tabularnewline
+437264 & Tobacco dependence syndrome\tabularnewline
+194083 & Vaginitis and vulvovaginitis\tabularnewline
+140641 & Verruca vulgaris\tabularnewline
+440193 & Wristdrop\tabularnewline
+4115367 & Wrist joint pain\tabularnewline
+&\tabularnewline
 \bottomrule
 \end{longtable}
 

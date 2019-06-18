@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 8 Data Analytics Use Cases | The Book of OHDSI</title>
+  <title>C Negative controls | The Book of OHDSI</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.11.1 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 8 Data Analytics Use Cases | The Book of OHDSI" />
+  <meta property="og:title" content="C Negative controls | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 8 Data Analytics Use Cases | The Book of OHDSI" />
+  <meta name="twitter:title" content="C Negative controls | The Book of OHDSI" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-<link rel="prev" href="ExtractTransformLoad.html">
-<link rel="next" href="OhdsiAnalyticsTools.html">
+<link rel="prev" href="CohortDefinitions.html">
+<link rel="next" href="references.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -342,67 +342,331 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="DataAnalyticsUseCases" class="section level1">
-<h1><span class="header-section-number">Chapter 8</span> Data Analytics Use Cases</h1>
-<p><em>Chapter lead: David Madigan</em></p>
-<p>The OHDSI collaboration focuses on generating reliable evidence from real-world healthcare data, typically in the form of claims databases or electronic health record databases. The use cases that OHDSI focuses on fall into three major buckets:</p>
-<ul>
-<li>Characterization</li>
-<li>Population-level estimation</li>
-<li>Patient-level prediction</li>
-</ul>
-<p>We describe these in detail below. Note, for all the use cases, the evidence we generate inherits the limitations of the data; we discuss these limitations at length in Chapters X, Y, and Z.</p>
-<div id="characterization" class="section level2">
-<h2><span class="header-section-number">8.1</span> Characterization</h2>
-<p>We can use the data to provide answers to questions about the characteristics of the patients in each database, the practice of healthcare, and study how these things change over time.</p>
-<p>The data can provide answers to questions like:</p>
-<ul>
-<li>for patients newly diagnosed with atrial fibrillation, how many receive a prescription for warfarin?</li>
-<li>what is the average age of patients who undergo hip arthroplasty?</li>
-</ul>
-</div>
-<div id="population-level-estimation" class="section level2">
-<h2><span class="header-section-number">8.2</span> Population-level estimation</h2>
-<p>To a limited extent, the data can support causal inferences about the effects of healthcare interventions.</p>
-<p>The data can provide answers to questions like:</p>
-<ul>
-<li>for patients newly diagnosed with atrial fibrillation, in the first year after therapy initiation, does warfarin cause more major bleeds than dabigatran?</li>
-<li>Does the causal effect of metformin on diarrhea vary by age?</li>
-</ul>
-</div>
-<div id="patient-level-prediction" class="section level2">
-<h2><span class="header-section-number">8.3</span> Patient-Level prediction</h2>
-<p>Based on the collected patient health histories in the database, we can make patient-level predictions about future health events.</p>
-<ul>
-<li>for a specific patient newly diagnosed with atrial fibrillation, in the first year after therapy initiation with warfarin, what is the probability the patient suffers an ischemic stroke?</li>
-</ul>
-<p>These tasks overlap to a certain extent. For example, an important use-case for prediction is to predict an outcome for a specific patient had drug A been prescribed and also predict the same outcome had drug B been prescribed. Let’s assume that in reality only one of these drugs is prescribed (say drug A) so we get to see whether the outcome following treatment with A actually occurs. Since drug B was not prescribed, the outcome following treatment B, while predictable, is “counterfactual” since it is not ever observed. Each of these prediction tasks falls under patient-level prediction. However, the difference between (or ratio of) the two outcomes is a unit-level <em>causal</em> effect, and should be estimated using causal effect estimation methods instead.</p>
+<div id="NegativeControls" class="section level1">
+<h1><span class="header-section-number">C</span> Negative controls</h1>
+<p>This Appendix contains negative controls used in various chapters of the book.</p>
+<div id="AceiThzNsc" class="section level2">
+<h2><span class="header-section-number">C.1</span> ACEi and THZ</h2>
+<p>Negative control outcomes when comparing ACE inhibitors (ACEi) to thiazides and thiazide-like diuretics (THZ).</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Concept ID</th>
+<th align="left">Concept Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">434165</td>
+<td align="left">Abnormal cervical smear</td>
+</tr>
+<tr class="even">
+<td align="right">436409</td>
+<td align="left">Abnormal pupil</td>
+</tr>
+<tr class="odd">
+<td align="right">199192</td>
+<td align="left">Abrasion and/or friction burn of trunk without infection</td>
+</tr>
+<tr class="even">
+<td align="right">4088290</td>
+<td align="left">Absence of breast</td>
+</tr>
+<tr class="odd">
+<td align="right">4092879</td>
+<td align="left">Absent kidney</td>
+</tr>
+<tr class="even">
+<td align="right">44783954</td>
+<td align="left">Acid reflux</td>
+</tr>
+<tr class="odd">
+<td align="right">75911</td>
+<td align="left">Acquired hallux valgus</td>
+</tr>
+<tr class="even">
+<td align="right">137951</td>
+<td align="left">Acquired keratoderma</td>
+</tr>
+<tr class="odd">
+<td align="right">77965</td>
+<td align="left">Acquired trigger finger</td>
+</tr>
+<tr class="even">
+<td align="right">376707</td>
+<td align="left">Acute conjunctivitis</td>
+</tr>
+<tr class="odd">
+<td align="right">4103640</td>
+<td align="left">Amputated foot</td>
+</tr>
+<tr class="even">
+<td align="right">73241</td>
+<td align="left">Anal and rectal polyp</td>
+</tr>
+<tr class="odd">
+<td align="right">133655</td>
+<td align="left">Burn of forearm</td>
+</tr>
+<tr class="even">
+<td align="right">73560</td>
+<td align="left">Calcaneal spur</td>
+</tr>
+<tr class="odd">
+<td align="right">434327</td>
+<td align="left">Cannabis abuse</td>
+</tr>
+<tr class="even">
+<td align="right">4213540</td>
+<td align="left">Cervical somatic dysfunction</td>
+</tr>
+<tr class="odd">
+<td align="right">140842</td>
+<td align="left">Changes in skin texture</td>
+</tr>
+<tr class="even">
+<td align="right">81378</td>
+<td align="left">Chondromalacia of patella</td>
+</tr>
+<tr class="odd">
+<td align="right">432303</td>
+<td align="left">Cocaine abuse</td>
+</tr>
+<tr class="even">
+<td align="right">4201390</td>
+<td align="left">Colostomy present</td>
+</tr>
+<tr class="odd">
+<td align="right">46269889</td>
+<td align="left">Complication due to Crohn’s disease</td>
+</tr>
+<tr class="even">
+<td align="right">134438</td>
+<td align="left">Contact dermatitis</td>
+</tr>
+<tr class="odd">
+<td align="right">78619</td>
+<td align="left">Contusion of knee</td>
+</tr>
+<tr class="even">
+<td align="right">201606</td>
+<td align="left">Crohn’s disease</td>
+</tr>
+<tr class="odd">
+<td align="right">76786</td>
+<td align="left">Derangement of knee</td>
+</tr>
+<tr class="even">
+<td align="right">4115402</td>
+<td align="left">Difficulty sleeping</td>
+</tr>
+<tr class="odd">
+<td align="right">45757370</td>
+<td align="left">Disproportion of reconstructed breast</td>
+</tr>
+<tr class="even">
+<td align="right">433111</td>
+<td align="left">Effects of hunger</td>
+</tr>
+<tr class="odd">
+<td align="right">433527</td>
+<td align="left">Endometriosis</td>
+</tr>
+<tr class="even">
+<td align="right">4170770</td>
+<td align="left">Epidermoid cyst</td>
+</tr>
+<tr class="odd">
+<td align="right">4092896</td>
+<td align="left">Feces contents abnormal</td>
+</tr>
+<tr class="even">
+<td align="right">259995</td>
+<td align="left">Foreign body in orifice</td>
+</tr>
+<tr class="odd">
+<td align="right">40481632</td>
+<td align="left">Ganglion cyst</td>
+</tr>
+<tr class="even">
+<td align="right">4166231</td>
+<td align="left">Genetic predisposition</td>
+</tr>
+<tr class="odd">
+<td align="right">433577</td>
+<td align="left">Hammer toe</td>
+</tr>
+<tr class="even">
+<td align="right">4231770</td>
+<td align="left">Hereditary thrombophilia</td>
+</tr>
+<tr class="odd">
+<td align="right">440329</td>
+<td align="left">Herpes zoster without complication</td>
+</tr>
+<tr class="even">
+<td align="right">4012570</td>
+<td align="left">High risk sexual behavior</td>
+</tr>
+<tr class="odd">
+<td align="right">4012934</td>
+<td align="left">Homocystinuria</td>
+</tr>
+<tr class="even">
+<td align="right">441788</td>
+<td align="left">Human papilloma virus infection</td>
+</tr>
+<tr class="odd">
+<td align="right">4201717</td>
+<td align="left">Ileostomy present</td>
+</tr>
+<tr class="even">
+<td align="right">374375</td>
+<td align="left">Impacted cerumen</td>
+</tr>
+<tr class="odd">
+<td align="right">4344500</td>
+<td align="left">Impingement syndrome of shoulder region</td>
+</tr>
+<tr class="even">
+<td align="right">139099</td>
+<td align="left">Ingrowing nail</td>
+</tr>
+<tr class="odd">
+<td align="right">444132</td>
+<td align="left">Injury of knee</td>
+</tr>
+<tr class="even">
+<td align="right">196168</td>
+<td align="left">Irregular periods</td>
+</tr>
+<tr class="odd">
+<td align="right">432593</td>
+<td align="left">Kwashiorkor</td>
+</tr>
+<tr class="even">
+<td align="right">434203</td>
+<td align="left">Late effect of contusion</td>
+</tr>
+<tr class="odd">
+<td align="right">438329</td>
+<td align="left">Late effect of motor vehicle accident</td>
+</tr>
+<tr class="even">
+<td align="right">195873</td>
+<td align="left">Leukorrhea</td>
+</tr>
+<tr class="odd">
+<td align="right">4083487</td>
+<td align="left">Macular drusen</td>
+</tr>
+<tr class="even">
+<td align="right">4103703</td>
+<td align="left">Melena</td>
+</tr>
+<tr class="odd">
+<td align="right">4209423</td>
+<td align="left">Nicotine dependence</td>
+</tr>
+<tr class="even">
+<td align="right">377572</td>
+<td align="left">Noise effects on inner ear</td>
+</tr>
+<tr class="odd">
+<td align="right">40480893</td>
+<td align="left">Nonspecific tuberculin test reaction</td>
+</tr>
+<tr class="even">
+<td align="right">136368</td>
+<td align="left">Non-toxic multinodular goiter</td>
+</tr>
+<tr class="odd">
+<td align="right">140648</td>
+<td align="left">Onychomycosis due to dermatophyte</td>
+</tr>
+<tr class="even">
+<td align="right">438130</td>
+<td align="left">Opioid abuse</td>
+</tr>
+<tr class="odd">
+<td align="right">4091513</td>
+<td align="left">Passing flatus</td>
+</tr>
+<tr class="even">
+<td align="right">4202045</td>
+<td align="left">Postviral fatigue syndrome</td>
+</tr>
+<tr class="odd">
+<td align="right">373478</td>
+<td align="left">Presbyopia</td>
+</tr>
+<tr class="even">
+<td align="right">46286594</td>
+<td align="left">Problem related to lifestyle</td>
+</tr>
+<tr class="odd">
+<td align="right">439790</td>
+<td align="left">Psychalgia</td>
+</tr>
+<tr class="even">
+<td align="right">81634</td>
+<td align="left">Ptotic breast</td>
+</tr>
+<tr class="odd">
+<td align="right">380706</td>
+<td align="left">Regular astigmatism</td>
+</tr>
+<tr class="even">
+<td align="right">141932</td>
+<td align="left">Senile hyperkeratosis</td>
+</tr>
+<tr class="odd">
+<td align="right">36713918</td>
+<td align="left">Somatic dysfunction of lumbar region</td>
+</tr>
+<tr class="even">
+<td align="right">443172</td>
+<td align="left">Splinter of face, without major open wound</td>
+</tr>
+<tr class="odd">
+<td align="right">81151</td>
+<td align="left">Sprain of ankle</td>
+</tr>
+<tr class="even">
+<td align="right">72748</td>
+<td align="left">Strain of rotator cuff capsule</td>
+</tr>
+<tr class="odd">
+<td align="right">378427</td>
+<td align="left">Tear film insufficiency</td>
+</tr>
+<tr class="even">
+<td align="right">437264</td>
+<td align="left">Tobacco dependence syndrome</td>
+</tr>
+<tr class="odd">
+<td align="right">194083</td>
+<td align="left">Vaginitis and vulvovaginitis</td>
+</tr>
+<tr class="even">
+<td align="right">140641</td>
+<td align="left">Verruca vulgaris</td>
+</tr>
+<tr class="odd">
+<td align="right">440193</td>
+<td align="left">Wristdrop</td>
+</tr>
+<tr class="even">
+<td align="right">4115367</td>
+<td align="left">Wrist joint pain</td>
+</tr>
+<tr class="odd">
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
 
-<div class="rmdimportant">
-People have a natural tendency to erroneously interpret predictive models as if they are causal models. But a predictive model can only show correlation, never causation. For example, diabetic drug use might be a strong predictor for myocardial infarction (MI), because diabetes is a strong risk factor for MI. However, that does not mean that stopping the diabetic drugs will prevent MI!
-</div>
-
-</div>
-<div id="limitations-of-observational-research" class="section level2">
-<h2><span class="header-section-number">8.4</span> Limitations of observational research</h2>
-<p>There are many important healthcare questions for which OHDSI databases cannot provide answers. These include:</p>
-<ul>
-<li>Causal effects of interventions compared to placebo. Sometimes it is possible to consider the causal effect of a treatment as compared with non-treatment but not placebo treatment.</li>
-<li>Anything related to over-the-counter medications</li>
-<li>Many outcomes are sparsely recorded if at all. These include mortality, behavioral outcomes, lifestyle, and socioeconomic status.</li>
-<li>Since patients tend to encounter the healthcare system when they are unwell, measurement of the benefits of treatments can prove elusive.</li>
-</ul>
-<div id="missing-data" class="section level3">
-<h3><span class="header-section-number">8.4.1</span> Missing data</h3>
-<p>Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn’t, is “missing.” The statistics literature distinguishes between types of missingness such as “missing completely at random,” “missing at random,” and “missing not at random” and methods of increasing complexity attempt to address these types. <span class="citation">Perkins et al. (<a href="#ref-perkins2017principled">2017</a>)</span> provide a useful introduction to this topic.</p>
-
-</div>
-</div>
-</div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-perkins2017principled">
-<p>Perkins, Neil J, Stephen R Cole, Ofer Harel, Eric J Tchetgen Tchetgen, BaoLuo Sun, Emily M Mitchell, and Enrique F Schisterman. 2017. “Principled Approaches to Missing Data in Epidemiologic Studies.” <em>American Journal of Epidemiology</em> 187 (3). Oxford University Press: 568–75.</p>
 </div>
 </div>
             </section>
@@ -410,8 +674,8 @@ People have a natural tendency to erroneously interpret predictive models as if 
           </div>
         </div>
       </div>
-<a href="ExtractTransformLoad.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="OhdsiAnalyticsTools.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="CohortDefinitions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -441,7 +705,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/DataAnalyticsUseCases.Rmd",
+"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/NegativeControls.Rmd",
 "text": "Edit"
 },
 "history": {
