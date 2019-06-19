@@ -1,17 +1,33 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-06-18"
-site: bookdown::bookdown_site
+date: "2019-06-19"
+output:
+  bookdown::pdf_book:
+  - keep_tex: yes
+  - includes:
+      in_header: preamble.tex   
+geometry:
+- paperheight=10in 
+- paperwidth=7in
+- margin=1in
+- left=0.6in
+- right=0.6in
+- top=1in
+- bottom=0.6in
+bibliography:
+- book.bib
+- packages.bib
+description: This is a minimal example of using the bookdown package to write a book.
+  The output format for this example is bookdown::gitbook.
 documentclass: book
-bibliography: [book.bib, packages.bib]
-biblio-style: apalike
-link-citations: yes
+favicon: images/favicon.ico
 github-repo: OHDSI/TheBookOfOhdsi
-favicon: "images/favicon.ico"
+link-citations: yes
 cover-image: images/Cover/Cover.png
-url: "https://ohdsi.github.io/TheBookOfOhdsi/"
-description: "This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook."
+site: bookdown::bookdown_site
+biblio-style: apalike
+url: https://ohdsi.github.io/TheBookOfOhdsi/
 ---
 
 
