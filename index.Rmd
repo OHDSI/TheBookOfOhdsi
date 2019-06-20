@@ -17,7 +17,7 @@ geometry:
 - right=0.6in
 - top=1in
 - bottom=0.6in
-mainfont: Arial
+mainfont: Times New Roman
 bibliography:
 - book.bib
 - packages.bib
