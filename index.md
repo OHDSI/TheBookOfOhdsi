@@ -1,12 +1,13 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-06-19"
+date: "2019-06-20"
 output:
   bookdown::pdf_book:
   - keep_tex: yes
   - includes:
       in_header: preamble.tex   
+classoption: 11pt      
 geometry:
 - paperheight=10in 
 - paperwidth=7in
