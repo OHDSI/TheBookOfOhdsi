@@ -23,14 +23,10 @@ For each study design there are diagnostics specific to such a design. Many of t
 
 Similarly, for the self-controlled case series (SCCS) design we may check other assumptions that are relevant for that design. On such assumptionis that the end of observation is independent of the outcome. This assumption is often violated in the case of serious, potentially lethal, events such as myocardial infarction. We can evaluate whether the assumption holds by generating the plot shown in Figure \@ref(fig:timeToObsEnd), which shows a histograms of the time to obsevation period end for those that are censored, and those that uncensored. In our data we consider those whose observation period ends at the end date of data capture (the date when observation stopped for the entire data base, for example the date of extraction, or the study end date) to be uncensored, and all others to be censored. In Figure \@ref(fig:timeToObsEnd) we see only minor differences between the two distributions, suggesting our assumptions holds.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/timeToObsEnd} 
-
-}
-
-\caption{Time to observation end for those that are censored, and those that uncensored.}(\#fig:timeToObsEnd)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/timeToObsEnd.png" alt="Time to observation end for those that are censored, and those that uncensored." width="100%" />
+<p class="caption">(\#fig:timeToObsEnd)Time to observation end for those that are censored, and those that uncensored.</p>
+</div>
 
 ## Diagnostics for all estimation
 
@@ -48,14 +44,10 @@ To understand the behavior of a method when the true relative risk is smaller or
 
 In OHDSI we therefore use synthetic positive controls [@schuemie_2018], created by modifying a negative control through injection of additional, simulated occurrences of the outcome during the time at risk of the exposure. One issue that stands important is the preservation of confounding. The negative controls may show strong confounding, but if we inject additional outcomes randomly, these new outcomes will not be confounded, and we may therefore be optimistic in our evaluation of our capacity to deal with confounding for positive controls. To preserve confounding, we want the new outcomes to show similar associations with baseline subject-specific covariates as the original outcomes. To achieve this, for each outcome we train a model to predict the survival rate with respect to the outcome during exposure using covariates captured prior to exposure. These covariates include demographics, as well as all recorded diagnoses, drug exposures, measurements, and medical procedures. An L1-regularized Poisson regression [@suchard_2013] using 10-fold cross-validation to select the regularization hyperparameter fits the prediction model. We then use the predicted rates to sample simulated outcomes during exposure to increase the true effect size to the desired magnitude. The resulting positive control thus contains both real and simulated outcomes. Figure \@ref(fig:posControlSynth) depicts this process. Note that although this procedure simulates several important sources of bias, it does not capture all. For example, some effects of measurement error are not present. The synthetic positive controls imply constant positive predictive value and sensitivity, which may not be true in reality.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/MethodValidity/posControlSynth} 
-
-}
-
-\caption{Synthesizing positive controls from negative controls.}(\#fig:posControlSynth)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/posControlSynth.png" alt="Synthesizing positive controls from negative controls." width="90%" />
+<p class="caption">(\#fig:posControlSynth)Synthesizing positive controls from negative controls.</p>
+</div>
 
 Although we refer to a single true ‘effect size’ for each control, different methods estimate different statistics of the treatment effect. For negative controls, where we believe no causal effect exists, all such statistics, including the relative risk, hazard ratio, odds ratio, incidence rate ratio, both conditional and marginal, as well as the average treatment effect in the treated (ATT) and the overall average treatment effect (ATE) will be identical to 1. Our process for creating positive controls synthesizes outcomes with a constant incidence rate ratio over time and between patients, using a model conditioned on the patient where this ratio is held constant, up to the point where the marginal effect is achieved. The true effect size is thus guaranteed to hold as the marginal incidence rate ratio in the treated. Under the assumption that our outcome model used during synthesis is correct, this also holds for the conditional effect size and the ATE. Since all outcomes are rare, odds ratios are all but identical to the relative risk.
 
@@ -162,25 +154,17 @@ We must select negative controls, exposure-outcome pairs where no causal effect 
 
 To generate a canidate list of negative controls, we first must create a concept set containing all exposures of interest. In this case we select all ingredients in the ACEi and THZ classes, as shown in Figure \@ref(fig:exposuresConceptSet).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/exposuresConceptSet} 
-
-}
-
-\caption{A concept set containing the concepts defining the target and comparator exposures.}(\#fig:exposuresConceptSet)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/exposuresConceptSet.png" alt="A concept set containing the concepts defining the target and comparator exposures." width="100%" />
+<p class="caption">(\#fig:exposuresConceptSet)A concept set containing the concepts defining the target and comparator exposures.</p>
+</div>
 
 Next, we go to the 'Explore Evidence' tab, and click on the ![](images/MethodValidity/generate.png) button. Generating the evidence overview will take a few minutes, after which you can click on the ![](images/MethodValidity/viewEvidence.png) button. This will open the list of outcomes as shown in Figure \@ref(fig:candidateNcs).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/candidateNcs} 
-
-}
-
-\caption{Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports.}(\#fig:candidateNcs)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/candidateNcs.png" alt="Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports." width="100%" />
+<p class="caption">(\#fig:candidateNcs)Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports.</p>
+</div>
 
 This list shows condition concepts, along with an overview of the evidence linking the condition to any of the exposures we defined. For example, we see the number of publications that link the exposures to the outcomes found in PubMed using various strategies, the number of product labels of our exposures of interest that list the condition as a possible adverse effect, and the number of spontaneous reports. By default the list is sorted to show candidate negative controls first. It is then sorted by the 'Sort Order', which represents the prevalance of the condition in a collection of observational databases. The higher the Sort Order, the higher the prevalence. Although the prevalence in these databases might not correspond with the prevalence in the database we wish to run the study, it is likely a good approximation.
 
@@ -206,14 +190,10 @@ Next we must execute the same study used to estimate the effect of interest to a
 
 Figure \@ref(fig:controls) shows the estimated effect sizes for the negative and positive controls included in our example study, stratified by true effect size. Note that the number of controls is often lower than what was defined because there was not enough data to either produce an estimate, or to synthesize a positive control.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/controls} 
-
-}
-
-\caption{Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio > 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size.}(\#fig:controls)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/controls.png" alt="Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio &gt; 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size." width="100%" />
+<p class="caption">(\#fig:controls)Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio > 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size.</p>
+</div>
 
 Based on these estimates we can compute the metrics shown in Table \@ref(tab:exampleMetrics).
 

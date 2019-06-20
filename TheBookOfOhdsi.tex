@@ -1,4 +1,4 @@
-\documentclass[]{book}
+\documentclass[11pt]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -13,6 +13,7 @@
     \usepackage{fontspec}
   \fi
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+    \setmainfont[]{Times New Roman}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -21,6 +22,7 @@
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
+\usepackage[paperheight=10in,paperwidth=7in,margin=1in,left=0.6in,right=0.6in,top=1in,bottom=0.6in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={The Book of OHDSI},
@@ -124,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-18}
+    \date{2019-06-20}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -180,6 +182,23 @@
 \newenvironment{rmdimportant}
   {\begin{rmdblock}{important}}
   {\end{rmdblock}}
+
+%\sloppy % helps with poorly wrapped URLs, but can look ugly in places
+%\AtBeginDocument{\raggedright}
+
+%\usepackage{fontspec} % Requires xelatex
+%\setmainfont{Arial}
+
+%\usepackage{titlesec}
+%\titleformat{\chapter}[runin]{}{}{}{}[]
+%\titleformat{\chapter}% reformat chapter headings
+%     [hang]% like section, with number on same line
+%     {\Huge\bfseries}% formatting applied to whole
+%     {\thechapter}% Chapter number
+%     {0.5em}% space between # and title
+%     {}% formatting applied just to title
+
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
 
 \let\BeginKnitrBlock\begin \let\EndKnitrBlock\end
 \begin{document}
@@ -449,32 +468,32 @@ Variable names across all tables follow one convention:
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule
-\begin{minipage}[b]{0.24\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.34\columnwidth}\raggedright\strut
 Notation\strut
-\end{minipage} & \begin{minipage}[b]{0.70\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.61\columnwidth}\raggedright\strut
 Description\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_SOURCE\_VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
 Verbatim information from the source data, typically used in ETL to map
 to CONCEPT\_ID, and not to be used by any standard analytics. For
 example, CONDITION\_SOURCE\_VALUE = `787.02' was the ICD-9 code captured
 as a diagnosis from the administrative claim.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
 Unique identifiers for key entities, which can serve as foreign keys to
 establish relationships across entities. For example, PERSON\_ID
 uniquely identifies each individual. VISIT\_OCCURRENCE\_ID uniquely
 identifies a PERSON encounter at a point of care.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
 Foreign key into the Standardized Vocabularies (i.e.~the standard
 concept attribute for the corresponding term is true), which serves as
 the primary basis for all standardized analytics. For example,
@@ -482,9 +501,9 @@ CONDITION\_CONCEPT\_ID =
 \href{http://athena.ohdsi.org/search-terms/terms/31967}{31967} contains
 the reference value for the SNOMED concept of `Nausea'\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_SOURCE\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
 Foreign key into the Standardized Vocabularies representing the concept
 and terminology used in the source data, when applicable. For example,
 CONDITION\_SOURCE\_CONCEPT\_ID =
@@ -493,9 +512,9 @@ denotes the concept of `Nausea' in the Read terminology; the analogous
 CONDITION\_CONCEPT\_ID might be 31967, since SNOMED-CT is the
 Standardized Vocabulary for most clinical diagnoses and findings.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.24\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_TYPE\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
 Delineates the origin of the source information, standardized within the
 Standardized Vocabularies. For example, DRUG\_TYPE\_CONCEPT\_ID can
 allow analysts to discriminate between `Pharmacy dispensing' and
@@ -958,9 +977,9 @@ VISIT\_OCCURRENCE table.
 \caption{\label{tab:visitOccurrence} The VISIT\_OCCURRENCE
 table.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.27\columnwidth}\raggedright\strut
 Column Name\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
 Value\strut
 \end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright\strut
 Explanation\strut
@@ -968,74 +987,74 @@ Explanation\strut
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.27\columnwidth}\raggedright\strut
 Column Name\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
 Value\strut
 \end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright\strut
 Explanation\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_OCCURRENCE\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 514\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 This is typically an autogenerated field that creates a unique id number
 for each visit on the person's record in the converted CDM
 database.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 PERSON\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 This comes from the PERSON table and links PERSON and
 VISIT\_OCCURRENCE.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 9201\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The concept ID referring to an inpatient visit is
 \href{http://athena.ohdsi.org/search-terms/terms/9201}{9201}.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_START\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 2013-01-17\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The start date of the visit.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_START\_DATETIME\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 2013-01-17 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The date and time of the visit started. When time is unknown midnight is
 used.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_END\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 2013-01-24\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The end date of the visit. If this is a one-day visit the end date
 should match the start date.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_END\_DATETIME\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 2013-01-24 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The date and time of the visit end. If time is unknown midnight is
 used.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_TYPE\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 32034\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 This column is intended to provide information about the provenance of
@@ -1044,44 +1063,44 @@ billing record, EHR record, etc. For this example the concept ID
 \href{http://athena.ohdsi.org/search-terms/terms/32035}{32035} is used
 as the encounters are similar to electronic health records\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 PROVIDER\_ID*\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If the encounter record has a provider associated, the id for that
 provider goes in this field. This should be the PROVIDER\_ID from the
 PROVIDER table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 CARE\_SITE\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If the encounter record has a care site associated, the id for that care
 site goes in this field. This should be the CARE\_SITE\_ID from the
 CARE\_SITE table that codes for the care site on the encounter.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_SOURCE\_VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 inpatient\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The visit value as it appears in the source goes here. In this context
 `visit' means outpatient, inpatient, emergency, etc.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 VISIT\_SOURCE\_ CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If the visit value from the source is coded using a vocabulary that is
 recognized by OHDSI, the concept ID that represents the visit source
 value would go here.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 ADMITTED\_FROM\_ CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If known, this is the concept ID that represents where the patient was
@@ -1090,17 +1109,17 @@ Service' and the domain `Visit'. For example, if a patient was admitted
 to the hospital from home, the concept ID would be
 \href{http://athena.ohdsi.org/search-terms/terms/8536}{8536}.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 ADMITTED\_FROM\_ SOURCE\_VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 This is the value from the source that represents where the patient was
 admitted from. Using the above example, this would be `home'.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 DISCHARGE\_TO\_ CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 If known, this is the concept ID that represents where the patient was
@@ -1109,18 +1128,18 @@ Service' and the domain `Visit'. For example, if a patient was released
 to an assisted living facility, the concept ID would be
 \href{http://athena.ohdsi.org/search-terms/terms/8615}{8615}.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 DISCHARGE\_TO\_ SOURCE\_VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 This is the value from the source that represents where the patient was
 discharged to. Using the above example, this would be `assisted living
 facility'.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.25\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
 PRECEDING\_VISIT\_ OCCURRENCE\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright\strut
 The VISIT\_OCCURRENCE\_ID for the visit immediately preceding the
@@ -1163,86 +1182,86 @@ how that would be represented in the CONDITION\_OCCURRENCE table:
 \caption{\label{tab:conditionOccurrence} The CONDITION\_OCCURRENCE
 table.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.31\columnwidth}\raggedright\strut
 Column\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright\strut
 Value\strut
-\end{minipage} & \begin{minipage}[b]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.48\columnwidth}\raggedright\strut
 Explanation\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.31\columnwidth}\raggedright\strut
 Column\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright\strut
 Value\strut
-\end{minipage} & \begin{minipage}[b]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.48\columnwidth}\raggedright\strut
 Explanation\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_OCCURRENCE\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 964\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 This is typically an autogenerated field that creates a unique id number
 for each condition on the person's record in the converted CDM
 database.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 PERSON\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 1\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 This comes from the PERSON table and links PERSON and
 CONDITION\_OCCURRENCE.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 194696\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 The concept ID that represents the SNOMED code 266599000 is
 \href{http://athena.ohdsi.org/search-terms/terms/194696}{194696}\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_START\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 2010-01-06\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 The date when the instance of the Condition is recorded.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_START\_ DATETIME\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 2010-01-06 00:00:00\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 The date and time when the instance of the Condition is recorded.
 Midnight is used when the time is unknown\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_END\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If known, this is the date when the instance of the Condition is
 considered to have ended.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_END\_ DATETIME\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If known, this is the date and time when the instance of the Condition
 is considered to have ended.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_TYPE\_ CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 32020\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 This column is intended to provide information about the provenance of
 the condition, i.e.~does it come from an insurance claim, hospital
 billing record, EHR record, etc. For this example the concept ID
@@ -1250,67 +1269,67 @@ billing record, EHR record, etc. For this example the concept ID
 as the encounters are similar to electronic health records. Concept IDs
 in this field should be in the `Condition Type' vocabulary.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_STATUS\_ CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 0\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If known, the CONDITION\_STATUS\_CONCEPT\_ID represents when and/or how
 the condition was diagnosed. For example, a condition could be an
 admitting diagnosis, in which case the concept ID
 \href{http://athena.ohdsi.org/search-terms/terms/4203942}{4203942} would
 be used.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 STOP\_REASON\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If known, the reason that the Condition was no longer present, as
 indicated in the source data.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 PROVIDER\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If the condition record has a diagnosing provider listed, the id for
 that provider goes in this field. This should be the PROVIDER\_ID from
 the PROVIDER table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 VISIT\_OCCURRENCE\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 509\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If known, this is the visit (represented as VISIT\_OCCURRENCE\_ID taken
 from the VISIT\_OCCURRENCE table) during which the condition was
 diagnosed.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 VISIT\_DETAIL\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If known, this is the visit detail encounter (represented as
 VISIT\_DETAIL\_ID from the VISIT\_DETAIL table) during which the
 condition was diagnosed.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_SOURCE\_VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 266599000\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 This is the value from the source that represents the condition. In
 Lauren's case of dysmenorrhea the SNOMED code for that condition is
 stored here and the standard concept ID mapped from that code is stored
 in CONDITION\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_SOURCE\_ CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 194696\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If the condition value from the source is coded using a vocabulary that
 is recognized by OHDSI, the concept ID that represents that value would
 go here. In the example of dysmennorhea the source value is a SNOMED
@@ -1318,11 +1337,11 @@ code so the concept ID that represents that code is 194696. In this case
 it is the same as the CONDITION\_CONCEPT\_ID since the SNOMED vocabulary
 is the standard condition vocabulary\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.27\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.31\columnwidth}\raggedright\strut
 CONDITION\_STATUS\_ SOURCE\_VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright\strut
 0\strut
-\end{minipage} & \begin{minipage}[t]{0.50\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.48\columnwidth}\raggedright\strut
 If the condition status value from the source is coded using a
 vocabulary that is recognized by OHDSI, the concept ID that represents
 that source value would go here.\strut
@@ -1598,71 +1617,71 @@ cyst. Here's how that would look in the PROCEDURE\_OCCURRENCE table:
 \caption{\label{tab:procedureOccurrence} The PROCEDURE\_OCCURRENCE
 table.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.36\columnwidth}\raggedright\strut
 Column\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
 Value\strut
-\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.46\columnwidth}\raggedright\strut
 Explanation\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.36\columnwidth}\raggedright\strut
 Column\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright\strut
 Value\strut
-\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.46\columnwidth}\raggedright\strut
 Explanation\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROCEDURE\_OCCURRENCE\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 1277\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 This is typically an autogenerated field that creates a unique id number
 for each procedure occurrence on the person's record in the converted
 CDM database.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PERSON\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 1\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 This comes from the PERSON table and links PERSON and
 PROCEDURE\_OCCURRENCE\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROCEDURE\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 4127451\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 The SNOMED procedure code for a pelvic ultrasound is 304435002 which is
 represented by the concept ID
 \href{http://athena.ohdsi.org/search-terms/terms/4127451}{4127451}.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROCEDURE\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 2013-01-14\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 The date on which the procedure was performed.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROCEDURE\_DATETIME\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 2013-01-14 00:00:00\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 The date and time on which the procedure was performed. Midnight is used
 when time is unknown.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROCEDURE\_TYPE\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 38000275\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 This column is intended to provide information about the provenance of
 the procedure, i.e.~does it come from an insurance claim, EHR order,
 etc. For this example the concept ID
@@ -1670,72 +1689,72 @@ etc. For this example the concept ID
 used as the procedure record is from an EHR record. Concept IDs in this
 field should be in the `Procedure Type' vocabulary.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 MODIFIER\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 0\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 This is meant for a concept ID representing the modifier on the
 procedure. For example, if the record indicated that a CPT4 procedure
 was performed bilaterally then the concept ID
 \href{http://athena.ohdsi.org/search-terms/terms/42739579}{42739579}
 would be used.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 QUANTITY\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 0\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 The quantity of procedures ordered or administered.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROVIDER\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 If the procedure record has a provider listed, the id for that provider
 goes in this field. This should be the PROVIDER\_ID from the PROVIDER
 table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 VISIT\_OCCURRENCE\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 740\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 If known, this is the visit (represented as VISIT\_OCCURRENCE\_ID taken
 from the VISIT\_OCCURRENCE table) during which the procedure was
 performed.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 VISIT\_DETAIL\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 If known, this is the visit detail (represented as VISIT\_DETAIL\_ID
 taken from the VISIT\_DETAIL table) during which the procedure was
 performed.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROCEDURE\_SOURCE\_VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 304435002\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 The source code for the Procedure as it appears in the source data. This
 code is mapped to a standard procedure Concept in the Standardized
 Vocabularies and the original code is, stored here for reference.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 PROCEDURE\_SOURCE\_ CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 4127451\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 This is the concept ID that represents the procedure source value.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.36\columnwidth}\raggedright\strut
 MODIFIER\_SOURCE\_ VALUE\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright\strut
 NULL\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.46\columnwidth}\raggedright\strut
 The source code for the modifier as it appears in the source data.\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -2368,7 +2387,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.y1uppxlnchildren ;"
+## [1] "SELECT * FROM temp_schema.a94lx141children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -4424,10 +4443,8 @@ Here we use the PS to perform variable ratio matching:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ ps, }
-                        \DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }
-                        \DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }
-                        \DataTypeTok{maxRatio =} \DecValTok{100}\NormalTok{)}
+\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }
+                        \DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }\DataTypeTok{maxRatio =} \DecValTok{100}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
