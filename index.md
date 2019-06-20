@@ -4,6 +4,7 @@ author: "Observational Health Data Science and Informatics"
 date: "2019-06-20"
 output:
   bookdown::pdf_book:
+  - latex_engine: xelatex
   - keep_tex: yes
   - includes:
       in_header: preamble.tex   
@@ -16,6 +17,7 @@ geometry:
 - right=0.6in
 - top=1in
 - bottom=0.6in
+mainfont: Arial
 bibliography:
 - book.bib
 - packages.bib

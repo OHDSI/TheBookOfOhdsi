@@ -612,10 +612,8 @@ Here we use the PS to perform variable ratio matching:
 
 
 ```r
-matchedPop <- matchOnPs(population = ps, 
-                        caliper = 0.2, 
-                        caliperScale = "standardized logit", 
-                        maxRatio = 100)
+matchedPop <- matchOnPs(population = ps, caliper = 0.2, 
+                        caliperScale = "standardized logit", maxRatio = 100)
 ```
 
 Alternatively, we could have used the PS in the `trimByPs`, `trimByPsToEquipoise`, or `stratifyByPs` functions.

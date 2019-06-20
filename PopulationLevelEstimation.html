@@ -933,10 +933,8 @@ cmData</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ps &lt;-<span class="st"> </span><span class="kw">createPs</span>(<span class="dt">cohortMethodData =</span> cmData, <span class="dt">population =</span> studyPop)</code></pre></div>
 <p>The <code>createPs</code> function uses the <a href="https://ohdsi.github.io/Cyclops/">Cyclops</a> package to fit a large-scale regularized logistic regression. To fit the propensity model, Cyclops needs to know the hyperparameter value which specifies the variance of the prior. By default Cyclops will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the <code>prior</code> and <code>control</code> parameters of the <code>createPs</code> to specify Cyclops’ behavior, including using multiple CPUs to speed-up the cross-validation.</p>
 <p>Here we use the PS to perform variable ratio matching:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(<span class="dt">population =</span> ps, 
-                        <span class="dt">caliper =</span> <span class="fl">0.2</span>, 
-                        <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, 
-                        <span class="dt">maxRatio =</span> <span class="dv">100</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(<span class="dt">population =</span> ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>, 
+                        <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, <span class="dt">maxRatio =</span> <span class="dv">100</span>)</code></pre></div>
 <p>Alternatively, we could have used the PS in the <code>trimByPs</code>, <code>trimByPsToEquipoise</code>, or <code>stratifyByPs</code> functions.</p>
 </div>
 <div id="outcome-models" class="section level3">
