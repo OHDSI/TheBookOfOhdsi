@@ -60,7 +60,7 @@ Some have argued that a data-driven approach to covariate selection that does no
 
 Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) to within some tolerance known as a “caliper.” Following @austin_2011, we use a default of caliper of 0.2 standard deviations on the logit scale.
 
-### Overlap: preference scores**
+### Overlap: preference scores
 
 The propensity method requires that matching patients exist! As such, a key diagnostic shows the distribution of the propensity scores in the two groups. To facilitate interpretation, OHDSI tools plot a transformation of the propensity score called the “preference score” [@walker_2013]. The preference score adjusts for the 'market share' of the two treatments. For example, if 10% of patients receive the target treatment (and 90% receive the comparator treatment), then patients with a preference score of 0.5 have a 10% probability of receiving the target treatment. Mathematically, the preference score is
 

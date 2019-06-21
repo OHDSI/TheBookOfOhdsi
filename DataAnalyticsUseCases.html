@@ -181,7 +181,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="13.1.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#propensity-scores"><i class="fa fa-check"></i><b>13.1.1</b> Propensity scores</a></li>
 <li class="chapter" data-level="13.1.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#variable-selection"><i class="fa fa-check"></i><b>13.1.2</b> Variable selection</a></li>
 <li class="chapter" data-level="13.1.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#caliper"><i class="fa fa-check"></i><b>13.1.3</b> Caliper</a></li>
-<li class="chapter" data-level="13.1.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#overlap-preference-scores"><i class="fa fa-check"></i><b>13.1.4</b> Overlap: preference scores**</a></li>
+<li class="chapter" data-level="13.1.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#overlap-preference-scores"><i class="fa fa-check"></i><b>13.1.4</b> Overlap: preference scores</a></li>
 <li class="chapter" data-level="13.1.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#balance"><i class="fa fa-check"></i><b>13.1.5</b> Balance</a></li>
 </ul></li>
 <li class="chapter" data-level="13.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#the-self-controlled-cohort-design"><i class="fa fa-check"></i><b>13.2</b> The self-controlled cohort design</a></li>
@@ -348,38 +348,52 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="DataAnalyticsUseCases" class="section level1">
 <h1><span class="header-section-number">Chapter 8</span> Data Analytics Use Cases</h1>
 <p><em>Chapter lead: David Madigan</em></p>
-<p>The OHDSI collaboration focuses on generating reliable evidence from real-world healthcare data, typically in the form of claims databases or electronic health record databases. The use cases that OHDSI focuses on fall into three major buckets:</p>
+<p>The OHDSI collaboration focuses on generating reliable evidence from real-world healthcare data, typically in the form of claims databases or electronic health record databases. The use cases that OHDSI focuses on fall into three major categories:</p>
 <ul>
 <li>Characterization</li>
 <li>Population-level estimation</li>
 <li>Patient-level prediction</li>
 </ul>
-<p>We describe these in detail below. Note, for all the use cases, the evidence we generate inherits the limitations of the data; we discuss these limitations at length in Chapters X, Y, and Z.</p>
+<p>We describe these in detail below. Note, for all the use cases, the evidence we generate inherits the limitations of the data; we discuss these limitations at length in the book section on Evidence Quality (Chapters <a href="EvidenceQuality.html#EvidenceQuality">15</a> - <a href="MethodValidity.html#MethodValidity">19</a>)</p>
 <div id="characterization" class="section level2">
 <h2><span class="header-section-number">8.1</span> Characterization</h2>
-<p>We can use the data to provide answers to questions about the characteristics of the patients in each database, the practice of healthcare, and study how these things change over time.</p>
+<p>Characterization attempts to answer the question</p>
+<blockquote>
+<p>What happened to them?</p>
+</blockquote>
+<p>We can use the data to provide answers to questions about the characteristics of the persons in a cohort or the entire database, the practice of healthcare, and study how these things change over time.</p>
 <p>The data can provide answers to questions like:</p>
 <ul>
-<li>for patients newly diagnosed with atrial fibrillation, how many receive a prescription for warfarin?</li>
-<li>what is the average age of patients who undergo hip arthroplasty?</li>
+<li>For patients newly diagnosed with atrial fibrillation, how many receive a prescription for warfarin?</li>
+<li>What is the average age of patients who undergo hip arthroplasty?</li>
+<li>What is the incidence rate of pneumonia in patients over 65 years old?</li>
 </ul>
 </div>
 <div id="population-level-estimation" class="section level2">
 <h2><span class="header-section-number">8.2</span> Population-level estimation</h2>
-<p>To a limited extent, the data can support causal inferences about the effects of healthcare interventions.</p>
+<p>To a limited extent, the data can support causal inferences about the effects of healthcare interventions, answering the question</p>
+<blockquote>
+<p>What are the causal effects?</p>
+</blockquote>
+<p>We would like to understand causal effects to understand consequences of actions. For example, if we decide to take some treatment, how does that change what happens to us in the future?</p>
 <p>The data can provide answers to questions like:</p>
 <ul>
-<li>for patients newly diagnosed with atrial fibrillation, in the first year after therapy initiation, does warfarin cause more major bleeds than dabigatran?</li>
+<li>For patients newly diagnosed with atrial fibrillation, in the first year after therapy initiation, does warfarin cause more major bleeds than dabigatran?</li>
 <li>Does the causal effect of metformin on diarrhea vary by age?</li>
 </ul>
 </div>
 <div id="patient-level-prediction" class="section level2">
 <h2><span class="header-section-number">8.3</span> Patient-Level prediction</h2>
-<p>Based on the collected patient health histories in the database, we can make patient-level predictions about future health events.</p>
+<p>Based on the collected patient health histories in the database, we can make patient-level predictions about future health events, answering the question</p>
+<blockquote>
+<p>What will happen to me?</p>
+</blockquote>
+<p>The data can provide answers to questions like:</p>
 <ul>
-<li>for a specific patient newly diagnosed with atrial fibrillation, in the first year after therapy initiation with warfarin, what is the probability the patient suffers an ischemic stroke?</li>
+<li>For a specific patient newly diagnosed with major depressive disorder, what is the probability the patient will attempt suicide in the first year following diagnosis?</li>
+<li>For a specific patient newly diagnosed with atrial fibrillation, in the first year after therapy initiation with warfarin, what is the probability the patient suffers an ischemic stroke?</li>
 </ul>
-<p>These tasks overlap to a certain extent. For example, an important use-case for prediction is to predict an outcome for a specific patient had drug A been prescribed and also predict the same outcome had drug B been prescribed. Let’s assume that in reality only one of these drugs is prescribed (say drug A) so we get to see whether the outcome following treatment with A actually occurs. Since drug B was not prescribed, the outcome following treatment B, while predictable, is “counterfactual” since it is not ever observed. Each of these prediction tasks falls under patient-level prediction. However, the difference between (or ratio of) the two outcomes is a unit-level <em>causal</em> effect, and should be estimated using causal effect estimation methods instead.</p>
+<p>Population-level estimation and patient-level prediction overlap to a certain extent. For example, an important use case for prediction is to predict an outcome for a specific patient had drug A been prescribed and also predict the same outcome had drug B been prescribed. Let’s assume that in reality only one of these drugs is prescribed (say drug A) so we get to see whether the outcome following treatment with A actually occurs. Since drug B was not prescribed, the outcome following treatment B, while predictable, is “counterfactual” since it is not ever observed. Each of these prediction tasks falls under patient-level prediction. However, the difference between (or ratio of) the two outcomes is a unit-level <em>causal</em> effect, and should be estimated using causal effect estimation methods instead.</p>
 
 <div class="rmdimportant">
 People have a natural tendency to erroneously interpret predictive models as if they are causal models. But a predictive model can only show correlation, never causation. For example, diabetic drug use might be a strong predictor for myocardial infarction (MI), because diabetes is a strong risk factor for MI. However, that does not mean that stopping the diabetic drugs will prevent MI!
@@ -392,12 +406,12 @@ People have a natural tendency to erroneously interpret predictive models as if 
 <ul>
 <li>Causal effects of interventions compared to placebo. Sometimes it is possible to consider the causal effect of a treatment as compared with non-treatment but not placebo treatment.</li>
 <li>Anything related to over-the-counter medications</li>
-<li>Many outcomes are sparsely recorded if at all. These include mortality, behavioral outcomes, lifestyle, and socioeconomic status.</li>
-<li>Since patients tend to encounter the healthcare system when they are unwell, measurement of the benefits of treatments can prove elusive.</li>
+<li>Many outcomes and other variables are sparsely recorded if at all. These include mortality, behavioral outcomes, lifestyle, and socioeconomic status.</li>
+<li>Since patients tend to encounter the healthcare system only when they are unwell, measurement of the benefits of treatments can prove elusive.</li>
 </ul>
 <div id="missing-data" class="section level3">
 <h3><span class="header-section-number">8.4.1</span> Missing data</h3>
-<p>Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn’t, is “missing.” The statistics literature distinguishes between types of missingness such as “missing completely at random,” “missing at random,” and “missing not at random” and methods of increasing complexity attempt to address these types. <span class="citation">Perkins et al. (<a href="#ref-perkins2017principled">2017</a>)</span> provide a useful introduction to this topic.</p>
+<p>Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn’t, is “missing.” The statistics literature distinguishes between types of missingness such as “missing completely at random”, “missing at random”, and “missing not at random” and methods of increasing complexity attempt to address these types. <span class="citation">Perkins et al. (<a href="#ref-perkins2017principled">2017</a>)</span> provide a useful introduction to this topic.</p>
 
 </div>
 </div>
