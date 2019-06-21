@@ -61,6 +61,8 @@ In the past, PS were computed based on manually selected characteristics, and al
 We typically include the day of treatment initiation in the covariate capture window because many relevant data points such as the diagnosis leading to the treatment are recorded on that date. This does require us to explicitly exclude the target and comparator treatment from the set of covariates, because these are the things we are trying to predict. 
 ```
 
+Some have argued that a data-driven approach to covariate selection that does not depend on clinical expertise to specify the 'right' causal structure runs the risk of erroneously including so-called instrumental variables and colliders, thus increasing variance and potentially introducing bias. [@hernan_2002] However, these concerns are unlikely to have a large impact in real-world scenarios [@schneeweiss_2018]. Furthermore, in medicine the true causal structure is rarely known, and when different researchers are asked to identify the ‘right’ covariates to include for a specific research question, each researcher invariably comes up with a different list, thus making the process irreproducible. Most importantly, our diagnostics such as inspection of the propensity model, evaluating balance on all covariates, and including negative controls would identify most of but not all problems related to colliders and instrumental variables.
+
 **Caliper**
 
 Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) to within some tolerance known as a “caliper.” Following @austin_2011, we use a default of caliper of 0.2 standard deviations on the logit scale.
@@ -201,7 +203,7 @@ Table: (\#tab:aceChoices) Main design choices four our comparative cohort study.
 | Model             | Cox proportional hazards model using variable ratio matching. |
 
 
-## Implementation the study using ATLAS
+## Implementing the study using ATLAS
 
 Here we demonstrate how this study can be implemented using the Estimation tool in ATLAS. Click on ![](images/PopulationLevelEstimation/estimation.png) in the left bar of ATLAS, and create a new estimation study. Make sure to give the study an easy-to-recognize name. you can save the study design at any time by clicking the ![](images/PopulationLevelEstimation/save.png) button.
 
@@ -233,7 +235,7 @@ When selecting concept to include, you can specify which covariates you would li
 
 Rather than specifying which concepts to include, we can instead specify concepts to *exclude*. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, and any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \@ref(fig:covsToExclude) shows we select a concept set that includes all these concepts. 
 
-```{r covsToExclude, fig.cap='The concept set defining the concepts to exclude. Note that no descendantsa have been included. We will specify to include these at analysis time in the Analysis settings.',echo=FALSE, out.width='100%', fig.align='center'}
+```{r covsToExclude, fig.cap='The concept set defining the concepts to exclude. Note that no descendants have been included. We will specify to include these at analysis time in the Analysis settings.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/PopulationLevelEstimation/covsToExclude.png")
 ```
 
@@ -363,9 +365,13 @@ In addition to negative controls we can also include positive controls, which ar
 
 Now that we have fully defined our study, we can export it as a fully executable R package. This package contains everything that is needed to execute the study at a site that has data in the CDM. This includes the cohort definitions that can be used to instantiate the target, comparator and outcome cohorts, the negative control concept set and logic to create the negative control outcome cohorts, as well as the R code to execute the analysis. Before generating the package make sure to save your study, then click on the **Utilities** tab. Here we can review the set of analyses that will be performed. As mentioned before, every combination of a comparison and an analysis setting will results in a separate analysis. In our example we have specified two analyses: ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using propensity score matching.
 
-We must provide a name for our package, after which we can click on 'Download' to download the zip file. The zip file contains an R Studio project with a README file that describes the steps needed to execute the analysis.
+We must provide a name for our package, after which we can click on 'Download' to download the zip file. The zip file contains an R package, with the usual required folder structure for R packages. [@Wickham_2015] To use this package we recommend using R Studio. If you are running R Studio locally, unzip the file, and double click the .Rproj file to open it in R Studio. If you are running R Studio on an R studio server, click ![](images/PopulationLevelEstimation/upload.png) to upload and unzip the file, then click on the .Rproj file to open the project.
 
-## Implementation the study using R
+Once you have opened the project in R Studio, you can open the README file, and follow the instructions. Make sure to change all file paths to existing paths on your system. 
+
+A common error message that may appear when running the study is 'High correlation between covariate(s) and treatment detected'. This indicates that when fitting the propensity model, some covariates were observed to be highly correlated with the exposure. Please review the covariates mentioned in the error message, and exclude them from the set of covariates if appropriate.
+
+## Implementing the study using R
 
 Instead of using ATLAS to write the R code that executes the study, we can also write the R code ourselves. One reason we might want to do this is because R offers far greater flexibility than is exposed in ATLAS. If we for example wish to use custom covariates, or a linear outcome model, we will need to write some custom R code, and combine it with the functionality provided by the OHDSI R packages. 
 
