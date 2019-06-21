@@ -560,7 +560,127 @@ treatment   4.3203    2.4531    8.0771 1.4633   0.304")
 
 ### Running multiple analyses
 
-Here we describe performing the analysis for one target, comparator and outcome, using one set of analysis settings. However, often we want to perform more analyses, for example for multiple outcomes including negative controls. The [CohortMethod](https://ohdsi.github.io/CohortMethod/) offers functions for performing such studies efficiently. This is described in the package vignette on running multiple analyses.
+Here we describe performing the analysis for one target, comparator and outcome, using one set of analysis settings. However, often we want to perform more analyses, for example for multiple outcomes including negative controls. The [CohortMethod](https://ohdsi.github.io/CohortMethod/) offers functions for performing such studies efficiently. This is described in detail in the package vignette on running multiple analyses. Briefly, we can first specify all target-comparator-outcome combinations we wish to analyse:
+
+```{r tidy=FALSE,eval=FALSE}
+# Outcomes of interest:
+ois <- c(3, 4) # Angioedema, AMI
+
+# Negative controls:
+ncs <- c(434165,436409,199192,4088290,4092879,44783954,75911,137951,77965,
+         376707,4103640,73241,133655,73560,434327,4213540,140842,81378,432303,
+         4201390,46269889,134438,78619,201606,76786,4115402,45757370,433111
+         433527,4170770,4092896,259995,40481632,4166231,433577,4231770,440329,
+         4012570,4012934,441788,4201717,374375,4344500,139099,444132,196168,
+         432593,434203,438329,195873,4083487,4103703,4209423,377572,40480893,
+         136368,140648,438130,4091513,4202045,373478,46286594,439790,81634,
+         380706,141932,36713918,443172,81151,72748,378427,437264,194083,
+         140641,440193,4115367)
+
+tcos <- createTargetComparatorOutcomes(targetId = 1,
+                                       comparatorId = 2,
+                                       outcomeIds = c(ois, ncs)
+
+tcosList <- list(tcos)
+```
+
+We assume the outcome of interest and negative control cohorts have already been created. Next, we specify what arguments should be used when calling the various functions described previously in our example with one outcome:
+
+```{r tidy=FALSE,eval=FALSE}
+aceI <- c(1335471,1340128,1341927,1363749,1308216,1310756,1373225,
+          1331235,1334456,1342439)
+thz <- c(1395058,974166,978555,907013)
+
+cs <- createDefaultCovariateSettings(excludedCovariateConceptIds = c(aceI, 
+                                                                     thz),
+                                     addDescendantsToExclude = TRUE)
+
+cmdArgs <- createGetDbCohortMethodDataArgs(
+  studyStartDate = "",
+  studyEndDate = "",
+  firstExposureOnly = FALSE,
+  removeDuplicateSubjects = FALSE,
+  restrictToCommonPeriod = FALSE,
+  washoutPeriod = 0,
+  covariateSettings = cs)
+
+spArgs <- createCreateStudyPopulationArgs(
+  firstExposureOnly = FALSE,
+  restrictToCommonPeriod = FALSE,
+  washoutPeriod = 0,
+  removeDuplicateSubjects = "remove all",
+  removeSubjectsWithPriorOutcome = TRUE,
+  minDaysAtRisk = 1,
+  riskWindowStart = 1,
+  addExposureDaysToStart = FALSE,
+  riskWindowEnd = 0,
+  addExposureDaysToEnd = TRUE)
+
+psArgs <- createCreatePsArgs()
+
+matchArgs <- createMatchOnPsArgs(
+  caliper = 0.2, 
+  caliperScale = "standardized logit", 
+  maxRatio = 100)
+
+fomArgs <- createFitOutcomeModelArgs(
+  modelType = "cox",
+  stratified = TRUE)
+```
+
+We then combine these into a single analysis settings object, which we provide a unique analysis ID and some description. We can combine multiple analysis settings objects into a single list:
+
+```{r tidy=FALSE,eval=FALSE}
+cmAnalysis <- createCmAnalysis(
+  analysisId = 1,
+  description = "Propensity score matching",
+  getDbCohortMethodDataArgs = cmdArgs,
+  createStudyPopArgs = spArgs,
+  createPs = TRUE,
+  createPsArgs = psArgs,
+  matchOnPs = TRUE,
+  matchOnPsArgs = matchArgs
+  fitOutcomeModel = TRUE,
+  fitOutcomeModelArgs = fomArgs)
+
+cmAnalysisList <- list(cmAnalysis)
+```
+
+We can now run the study including all comparisons and analysis settings: 
+
+```{r tidy=FALSE,eval=FALSE}
+result <- runCmAnalyses(connectionDetails = connectionDetails,
+                        cdmDatabaseSchema = cdmDatabaseSchema,
+                        exposureDatabaseSchema = cohortsDbSchema,
+                        exposureTable = cohortsDbTable,
+                        outcomeDatabaseSchema = cohortsDbSchema,
+                        outcomeTable = cohortsDbTable,
+                        cdmVersion = cdmVersion,
+                        outputFolder = outputFolder,
+                        cmAnalysisList = cmAnalysisList,
+                        targetComparatorOutcomesList = tcosList)
+```
+
+The `result` object contains references to all the artifacts that were created. For example, we can retrieve the outcome model for AMI:
+
+```{r tidy=FALSE,eval=FALSE}
+omFile <- result$outcomeModelFile[result$targetId == 1 & 
+                                    result$comparatorId == 2 & 
+                                    result$outcomeId == 4 &
+                                    result$analysisId == 1]
+outcomeModel <- readRDS(file.path(outputFolder, omFile))
+outcomeModel
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("Model type: cox
+Stratified: TRUE
+Use covariates: FALSE
+Use inverse probability of treatment weighting: FALSE
+Status: OK
+
+          Estimate lower .95 upper .95   logRr seLogRr
+treatment   1.1338    0.5921    2.1765 0.1256   0.332")
+```
 
 ## Study outputs {#studyOutputs}
 
