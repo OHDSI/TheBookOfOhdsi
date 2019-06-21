@@ -157,7 +157,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.4.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#missing-data"><i class="fa fa-check"></i><b>8.4.1</b> Missing data</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html"><i class="fa fa-check"></i><b>9</b> OHDSI Analytics Tools</a></li>
+<li class="chapter" data-level="9" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html"><i class="fa fa-check"></i><b>9</b> OHDSI Analytics Tools</a><ul>
+<li class="chapter" data-level="9.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#analysis-implementation"><i class="fa fa-check"></i><b>9.1</b> Analysis implementation</a></li>
+<li class="chapter" data-level="9.2" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#analysis-strategy"><i class="fa fa-check"></i><b>9.2</b> Analysis strategy</a></li>
+<li class="chapter" data-level="9.3" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#atlas"><i class="fa fa-check"></i><b>9.3</b> ATLAS</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#how-to-install"><i class="fa fa-check"></i><b>9.3.1</b> How to install</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#methods-library"><i class="fa fa-check"></i><b>9.4</b> Methods Library</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#how-to-install-1"><i class="fa fa-check"></i><b>9.4.1</b> How to install</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#integrated-solutions"><i class="fa fa-check"></i><b>9.5</b> Integrated solutions</a></li>
+</ul></li>
 <li class="chapter" data-level="10" data-path="SqlAndR.html"><a href="SqlAndR.html"><i class="fa fa-check"></i><b>10</b> SQL and R</a><ul>
 <li class="chapter" data-level="10.1" data-path="SqlAndR.html"><a href="SqlAndR.html#SqlRender"><i class="fa fa-check"></i><b>10.1</b> SqlRender</a><ul>
 <li class="chapter" data-level="10.1.1" data-path="SqlAndR.html"><a href="SqlAndR.html#sql-parameterization"><i class="fa fa-check"></i><b>10.1.1</b> SQL parameterization</a></li>
@@ -347,15 +357,128 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="OhdsiAnalyticsTools" class="section level1">
 <h1><span class="header-section-number">Chapter 9</span> OHDSI Analytics Tools</h1>
-<p>ATLAS: <a href="http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:atlas" class="uri">http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:atlas</a></p>
-<p>ARACHNE: Network Research</p>
-<p>Methods Library: <a href="https://ohdsi.github.io/MethodsLibrary/" class="uri">https://ohdsi.github.io/MethodsLibrary/</a></p>
+<p><em>Chapter lead: Martijn Schuemie</em></p>
+<p>OHDSI offers a wide range of open source tools to support the various data-analytics use cases. What these tools have in common is that they can all interaction with one or more databases using the Commond Data Model (CDM). Furthermore, these tools standardize the analytics for various use cases; Rather than having to start from scratch, an analysis can be implemented by filling in standard templates. This makes performign analysis easier, and also improves reproducibility and transparancy. For example, there appear to be a near-infinte number of ways to compute an incidence rate, but these can be specified in the OHDSI tools with a few choices, and anyone making those same choices will compute incidence rates the same way.</p>
+<p>In this chapter we first describe various ways in which we can choose to implement an analysis, and what strategies the analysis can employ. We then review the various OHDSI tools and how they fit the various use cases.</p>
+<div id="analysis-implementation" class="section level2">
+<h2><span class="header-section-number">9.1</span> Analysis implementation</h2>
+<p>Figure <a href="OhdsiAnalyticsTools.html#fig:implementations">9.1</a> shows the various ways in which we can choose to implement a study against a database using the CDM.</p>
+<div class="figure" style="text-align: center"><span id="fig:implementations"></span>
+<img src="images/OhdsiAnalyticsTools/implementations.png" alt="Different ways to implement an analysis against data in the CDM." width="90%" />
+<p class="caption">
+Figure 9.1: Different ways to implement an analysis against data in the CDM.
+</p>
+</div>
+<p>We may choose to write our analysis as custom code, and not make use of any of the tools OHDSI has to offer. One could write a de novo analysis in R, SAS, or any other language. This provides the maximum flexibility, and may in fact be the only option if the specific analysis is not supported by any of our tools. However, this path requires a lot of technical skill, time, and effort, and as the analysis increases in complexity it becomes harder to avoid errors in the code.</p>
+<p>An alternative is to develop the analysis in R, and make use of the packages in the <a href="https://ohdsi.github.io/MethodsLibrary/">OHDSI Methods Library</a>. At a minimum, one could use the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> and <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> packages described in more detail in Chapter <a href="SqlAndR.html#SqlAndR">10</a> that allow the same code to be executed on various database platforms, such as PostgreSQL, SQL Server, and Oracle. Other packages such as <a href="https://ohdsi.github.io/CohortMethod/">CohortMethod</a> and <a href="https://ohdsi.github.io/PatientLevelPrediction/">PatientLevelPrediction</a> offer R functions for advanced analytics against the CDM that can be called on in one’s code. This still requires a lot of tecnhical expertise, but by re-using the validated components of the Methods Library we can be more efficient and error-free than when using completely custom code.</p>
+<p>The third approach relies on our interactive analysis platform <a href="https://github.com/OHDSI/Atlas/wiki">ATLAS</a>, a web-based tool that allows non-programmers to perform a wide range of analyses efficiently. The downside is that some options may not be available.</p>
+<p>ATLAS and the Methods Library are not independent. Some of the more complicated analytics that can be invoked in ATLAS are executed through calls to the packages in the Methods Library. Similarly, cohorts used in the Methods Library are often designed in ATLAS.</p>
+</div>
+<div id="analysis-strategy" class="section level2">
+<h2><span class="header-section-number">9.2</span> Analysis strategy</h2>
+<p>More or less independently of how we choose to implement our analysis is the strategy that our analytics takes in answering specific questions. Figure <a href="OhdsiAnalyticsTools.html#fig:strategies">9.2</a> highlights three strategies that are employed in OHDSI.</p>
+<div class="figure" style="text-align: center"><span id="fig:strategies"></span>
+<img src="images/OhdsiAnalyticsTools/strategies.png" alt="Strategies for generating evidence for (clinical) questions." width="90%" />
+<p class="caption">
+Figure 9.2: Strategies for generating evidence for (clinical) questions.
+</p>
+</div>
+<p>The first strategy views every analysis as a single indivual study. The analysis must be pre-specified in a protocol, implemented as code, executed against the data, after which the result can be compiled and interpreted. For every question, all steps must be repeated. An example of such an analysis is the OHDSI study into the risk of angioedema associated with levetiracetam compared with phenytoin. <span class="citation">(Duke et al. <a href="#ref-duke_2017">2017</a>)</span> Here, a protocol was first written, analysis code using the OHDSI Methods Library was developed and executed across the OHDSI network, and results were compiled and disseminated in a journal publication.</p>
+<p>The second strategy develops some app that allows users to answer a specific class of questions in real time or near-real time. Once the app has been developed, users can interactively define queries, submit them, and view the results. An example is the cohort definition and generation tool in ATLAS. This tool allows users to specify cohort definitions of arbitrary complexity, and execute the definition against a database to see how many people meet the various inclusion and exclusion criteria.</p>
+<p>The third strategy similarly focuses on a class of questions, but then attempts to exhaustively generate all the evidence for the questions within the class. Users can then explore the evidence as needed, usually through some viewer app. One example is the OHDSI study into the effects of depression treatments <span class="citation">(Schuemie, Ryan, et al. <a href="#ref-schuemie_2018b">2018</a>)</span>. In this study all depression treatments are compared for a large set of outcomes of interest across four large observational databases. The full set of results, including 17,718 empirically calibrated hazard ratios along with extensive study diagnostics, is available in an interactive web app.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+</div>
+<div id="atlas" class="section level2">
+<h2><span class="header-section-number">9.3</span> ATLAS</h2>
+<p>ATLAS is a web-based tool that must run on a server with access to the patient-level data in the CDM. To directly run the analyses against the data, ATLAS must therefore be installed behind your organization’s firewall. However, there is also a public ATLAS,<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> and although this ATLAS instance only has access to a small simulated dataset, it can still be used for many purposes. For example, it is possible to fully define an effect estimation of prediction study in the public ATLAS, and automatically generate the R code for executing the study.</p>
+<div class="figure" style="text-align: center"><span id="fig:atlas"></span>
+<img src="images/OhdsiAnalyticsTools/atlas.png" alt="ATLAS user interface." width="100%" />
+<p class="caption">
+Figure 9.3: ATLAS user interface.
+</p>
+</div>
+<p>A screenshot of ATLAS is provided in Figure <a href="OhdsiAnalyticsTools.html#fig:atlas">9.3</a>. On the left is a navigation bar showing the various functions provided by ATLAS:</p>
+<dl>
+<dt>Data Sources</dt>
+<dd>Data sources provides the capability review descriptive, standardized reporting for each of the data sources that you have configured within your Atlas platform. This feature uses the large-scale analytics strategy: all descriptives have been pre-computed. Data sources is discussed in Chapter <a href="Characterization.html#Characterization">12</a>.
+</dd>
+<dt>Vocabulary Search</dt>
+<dd>Atlas provides the ability to search and explore the OMOP standardized vocabulary to understand what concepts exist within those vocabularies and how to apply those concepts in your standardized analysis against your data sources. This feature is discussed in Chapter <a href="StandardizedVocabularies.html#StandardizedVocabularies">6</a>.
+</dd>
+<dt>Concept Sets</dt>
+<dd>Concept sets is the ability to create your own lists of codes that you are going to use throughout your standardized analyses so by searching the vocabulary and identifying the sets of terms that you’re interested in you can save those and reuse them in all of your analyses.
+</dd>
+<dt>Cohort Definitions</dt>
+<dd>Cohort definitions is the ability to construct a set of persons who satisfy one or more criteria for a duration of time and these cohorts can then serve as the basis of inputs for all of your subsequent analyses. This feature is discussed in Chapter <a href="Cohorts.html#Cohorts">11</a>.
+</dd>
+<dt>Characterizations</dt>
+<dd>Characterisations is an analytic capability that allows you to look at one or more cohorts that you’ve defined and to summarize characteristics about those patient populations. This feature uses the real-time query strategy, and is discussed in Chapter <a href="Characterization.html#Characterization">12</a>.
+</dd>
+<dt>Cohort Pathways</dt>
+<dd>Cohort pathways is an analytic tool that allows you to look at the sequence of clinical events that occur within one or more populations. This feature uses the real-time query strategy, and is discussed in Chapter <a href="Characterization.html#Characterization">12</a>.
+</dd>
+<dt>Incidence Rates</dt>
+<dd>Incidence rates is a tool that allows you to estimate the incidence of outcomes within target populations of interest. This feature uses the real-time query strategy, and is discussed in Chapter <a href="Characterization.html#Characterization">12</a>.
+</dd>
+<dt>Profiles</dt>
+<dd>Profiles is a tool that allows you to explore an individual patients longitudinal observational data to summarize what is going on within a given individual. This feature uses the real-time query strategy.
+</dd>
+<dt>Population Level Estimation</dt>
+<dd>Estimation is a capability to allow you to conduct population level effect estimation studies using a comparative cohort design whereby comparisons between one or more target and comparator cohorts can be explored for a series of outcomes. This feature can be said to implement the real-time query strategy, as no coding is required, and is discussed in Chapter <a href="PopulationLevelEstimation.html#PopulationLevelEstimation">13</a>.
+</dd>
+<dt>Patient Level Prediction</dt>
+<dd>Prediction is a capability to allow you to apply machine learning algorithms to conduct patient level prediction analyses whereby you can predict an outcome within any given target exposures. This feature can be said to implement the real-time query strategy, as no coding is required, and is discussed in Chapter <a href="PatientLevelPrediction.html#PatientLevelPrediction">14</a>.
+</dd>
+<dt>Jobs</dt>
+<dd>Select the “jobs” menu item to explore jobs that are running in the background for long running processes such as generating a cohort or computing cohort reports.
+</dd>
+<dt>Configuration</dt>
+<dd>Select the “configuration” menu item to review the data sources that have been configured in the source configuration section.
+</dd>
+<dt>Feedback</dt>
+<dd>This will take you to the issue log for Atlas so that you can log a new issue or to search through existing issues. If you have ideas for new features or enhancements, this is also a place note these for the development community.
+</dd>
+</dl>
+<div id="how-to-install" class="section level3">
+<h3><span class="header-section-number">9.3.1</span> How to install</h3>
+</div>
+</div>
+<div id="methods-library" class="section level2">
+<h2><span class="header-section-number">9.4</span> Methods Library</h2>
+<p>The <a href="https://ohdsi.github.io/MethodsLibrary/">OHDSI Methods Library</a> is the collection of R packages show in Figure <a href="OhdsiAnalyticsTools.html#fig:methodsLibrary">9.4</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:methodsLibrary"></span>
+<img src="images/OhdsiAnalyticsTools/methodsLibrary.png" alt="Packages in the OHDSI Methods Library." width="100%" />
+<p class="caption">
+Figure 9.4: Packages in the OHDSI Methods Library.
+</p>
+</div>
+<div id="how-to-install-1" class="section level3">
+<h3><span class="header-section-number">9.4.1</span> How to install</h3>
+</div>
+</div>
+<div id="integrated-solutions" class="section level2">
+<h2><span class="header-section-number">9.5</span> Integrated solutions</h2>
+<p>BroadSea?</p>
 <p>Best practices enforced in all OHDSI methods.</p>
 <p>Ethical consideration: e.g. should always communicate uncertainty. Prespecification of research questions, etc.</p>
-<p>Analytic use cases</p>
-<p>What is the difference between characterization, population-level estimation, patient-level prediction?</p>
 <p>Case study: Perhaps on how to install the tools?</p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-duke_2017">
+<p>Duke, J. D., P. B. Ryan, M. A. Suchard, G. Hripcsak, P. Jin, C. Reich, M. S. Schwalm, et al. 2017. “Risk of angioedema associated with levetiracetam compared with phenytoin: Findings of the observational health data sciences and informatics research network.” <em>Epilepsia</em> 58 (8): e101–e106.</p>
+</div>
+<div id="ref-schuemie_2018b">
+<p>Schuemie, M. J., P. B. Ryan, G. Hripcsak, D. Madigan, and M. A. Suchard. 2018. “Improving reproducibility by using high-throughput observational studies with empirical calibration.” <em>Philos Trans A Math Phys Eng Sci</em> 376 (2128).</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p><a href="http://data.ohdsi.org/SystematicEvidence/" class="uri">http://data.ohdsi.org/SystematicEvidence/</a><a href="OhdsiAnalyticsTools.html#fnref1">↩</a></p></li>
+<li id="fn2"><p><a href="http://www.ohdsi.org/web/atlas" class="uri">http://www.ohdsi.org/web/atlas</a><a href="OhdsiAnalyticsTools.html#fnref2">↩</a></p></li>
+</ol>
 </div>
             </section>
 

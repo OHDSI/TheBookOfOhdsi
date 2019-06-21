@@ -72,7 +72,7 @@ Where $F$ is the preference score, $S$ is the propensity score, and $P$ is the p
 
 ### Balance
 
-Good practice always checks that the PS adjustment succeeded in creating balanced groups of patients. Figure\@ref(fig:balance) shows the standard OHDSI output for checking balance. For each patient characteristic, this plots the standardized difference between means between the two exposure groups before and after PS adjustment. Some guidelines recommend an after-adjustment standardized difference upper bound of 0.1 [@rubin_2001].
+Good practice always checks that the PS adjustment succeeded in creating balanced groups of patients. Figure \@ref(fig:balance) shows the standard OHDSI output for checking balance. For each patient characteristic, this plots the standardized difference between means between the two exposure groups before and after PS adjustment. Some guidelines recommend an after-adjustment standardized difference upper bound of 0.1 [@rubin_2001].
 
 ## The self-controlled cohort design
 
@@ -743,7 +743,7 @@ Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and TH
 
 ### Covariate balance
 
-The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure\@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion.
+The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure \@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion.
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
@@ -752,7 +752,7 @@ The goal of using PS is to make the two groups comparable. We must verify whethe
 
 ### Follow up and power
 
-Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. We can view the attrition of subjects in our study using the `drawAttritionDiagram` function as shown in Figure\@ref(fig:attrition).
+Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. We can view the attrition of subjects in our study using the `drawAttritionDiagram` function as shown in Figure \@ref(fig:attrition).
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/attrition.png" alt="Attrition diagram. The counts shown at the top are those that meet our target and comparator cohort definitions. The counts at the bottom are those that enter our outcome model, in  this case a Cox regression." width="70%" />

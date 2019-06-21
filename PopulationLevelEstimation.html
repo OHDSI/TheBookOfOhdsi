@@ -157,7 +157,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.4.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#missing-data"><i class="fa fa-check"></i><b>8.4.1</b> Missing data</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html"><i class="fa fa-check"></i><b>9</b> OHDSI Analytics Tools</a></li>
+<li class="chapter" data-level="9" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html"><i class="fa fa-check"></i><b>9</b> OHDSI Analytics Tools</a><ul>
+<li class="chapter" data-level="9.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#analysis-implementation"><i class="fa fa-check"></i><b>9.1</b> Analysis implementation</a></li>
+<li class="chapter" data-level="9.2" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#analysis-strategy"><i class="fa fa-check"></i><b>9.2</b> Analysis strategy</a></li>
+<li class="chapter" data-level="9.3" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#atlas"><i class="fa fa-check"></i><b>9.3</b> ATLAS</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#how-to-install"><i class="fa fa-check"></i><b>9.3.1</b> How to install</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#methods-library"><i class="fa fa-check"></i><b>9.4</b> Methods Library</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#how-to-install-1"><i class="fa fa-check"></i><b>9.4.1</b> How to install</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#integrated-solutions"><i class="fa fa-check"></i><b>9.5</b> Integrated solutions</a></li>
+</ul></li>
 <li class="chapter" data-level="10" data-path="SqlAndR.html"><a href="SqlAndR.html"><i class="fa fa-check"></i><b>10</b> SQL and R</a><ul>
 <li class="chapter" data-level="10.1" data-path="SqlAndR.html"><a href="SqlAndR.html#SqlRender"><i class="fa fa-check"></i><b>10.1</b> SqlRender</a><ul>
 <li class="chapter" data-level="10.1.1" data-path="SqlAndR.html"><a href="SqlAndR.html#sql-parameterization"><i class="fa fa-check"></i><b>10.1.1</b> SQL parameterization</a></li>
@@ -437,7 +447,7 @@ We typically include the day of treatment initiation in the covariate capture wi
 </div>
 <div id="balance" class="section level3">
 <h3><span class="header-section-number">13.1.5</span> Balance</h3>
-<p>Good practice always checks that the PS adjustment succeeded in creating balanced groups of patients. Figure<a href="PopulationLevelEstimation.html#fig:balance">13.18</a> shows the standard OHDSI output for checking balance. For each patient characteristic, this plots the standardized difference between means between the two exposure groups before and after PS adjustment. Some guidelines recommend an after-adjustment standardized difference upper bound of 0.1 <span class="citation">(Rubin <a href="#ref-rubin_2001">2001</a>)</span>.</p>
+<p>Good practice always checks that the PS adjustment succeeded in creating balanced groups of patients. Figure <a href="PopulationLevelEstimation.html#fig:balance">13.18</a> shows the standard OHDSI output for checking balance. For each patient characteristic, this plots the standardized difference between means between the two exposure groups before and after PS adjustment. Some guidelines recommend an after-adjustment standardized difference upper bound of 0.1 <span class="citation">(Rubin <a href="#ref-rubin_2001">2001</a>)</span>.</p>
 </div>
 </div>
 <div id="the-self-controlled-cohort-design" class="section level2">
@@ -1145,7 +1155,7 @@ If a variable is found to be highly predictive, there are two possible conclusio
 </div>
 <div id="covariate-balance" class="section level3">
 <h3><span class="header-section-number">13.9.2</span> Covariate balance</h3>
-<p>The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the <code>computeCovariateBalance</code> and <code>plotCovariateBalanceScatterPlot</code> functions to generate Figure<a href="PopulationLevelEstimation.html#fig:balance">13.18</a>. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion.</p>
+<p>The goal of using PS is to make the two groups comparable. We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the <code>computeCovariateBalance</code> and <code>plotCovariateBalanceScatterPlot</code> functions to generate Figure <a href="PopulationLevelEstimation.html#fig:balance">13.18</a>. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion.</p>
 <div class="figure" style="text-align: center"><span id="fig:balance"></span>
 <img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
 <p class="caption">
@@ -1155,7 +1165,7 @@ Figure 13.18: Covariate balance, showing the absolute standardized difference of
 </div>
 <div id="follow-up-and-power" class="section level3">
 <h3><span class="header-section-number">13.9.3</span> Follow up and power</h3>
-<p>Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. We can view the attrition of subjects in our study using the <code>drawAttritionDiagram</code> function as shown in Figure<a href="PopulationLevelEstimation.html#fig:attrition">13.19</a>.</p>
+<p>Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. We can view the attrition of subjects in our study using the <code>drawAttritionDiagram</code> function as shown in Figure <a href="PopulationLevelEstimation.html#fig:attrition">13.19</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:attrition"></span>
 <img src="images/PopulationLevelEstimation/attrition.png" alt="Attrition diagram. The counts shown at the top are those that meet our target and comparator cohort definitions. The counts at the bottom are those that enter our outcome model, in  this case a Cox regression." width="70%" />
 <p class="caption">
