@@ -195,7 +195,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="10.6.1" data-path="SqlAndR.html"><a href="SqlAndR.html#exposure-cohort"><i class="fa fa-check"></i><b>10.6.1</b> Exposure cohort</a></li>
 <li class="chapter" data-level="10.6.2" data-path="SqlAndR.html"><a href="SqlAndR.html#outcome-cohort"><i class="fa fa-check"></i><b>10.6.2</b> Outcome cohort</a></li>
 <li class="chapter" data-level="10.6.3" data-path="SqlAndR.html"><a href="SqlAndR.html#incidence-rate-calculation"><i class="fa fa-check"></i><b>10.6.3</b> Incidence rate calculation</a></li>
-<li class="chapter" data-level="10.6.4" data-path="SqlAndR.html"><a href="SqlAndR.html#compatibility"><i class="fa fa-check"></i><b>10.6.4</b> Compatibility</a></li>
+<li class="chapter" data-level="10.6.4" data-path="SqlAndR.html"><a href="SqlAndR.html#clean-up"><i class="fa fa-check"></i><b>10.6.4</b> Clean up</a></li>
+<li class="chapter" data-level="10.6.5" data-path="SqlAndR.html"><a href="SqlAndR.html#compatibility"><i class="fa fa-check"></i><b>10.6.5</b> Compatibility</a></li>
 </ul></li>
 <li class="chapter" data-level="10.7" data-path="SqlAndR.html"><a href="SqlAndR.html#exercises"><i class="fa fa-check"></i><b>10.7</b> Exercises</a></li>
 </ul></li>
@@ -617,7 +618,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span>
 <span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.ln8lrq7pchildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.sc4ipy60children ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters, <strong>temp table names are only allowed to be at most 22 characters long</strong> because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -970,7 +971,12 @@ age &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span
 <div id="implementing-the-study-using-sql-and-r" class="section level2">
 <h2><span class="header-section-number">10.6</span> Implementing the study using SQL and R</h2>
 <p>Although we are not bound to any of the OHDSI tool conventions, it is helpful to follow the same principles. In this case, we will use SQL to populate a cohort table, similarly to how the OHDSI tools work. We first must create the cohort table in a database schema where we have write access, which likely is not the same as the database schema that holds the data in CDM format.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cdmDbSchema &lt;-<span class="st"> &quot;cdm&quot;</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DatabaseConnector)
+conn &lt;-<span class="st"> </span><span class="kw">connect</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,
+                <span class="dt">server =</span> <span class="st">&quot;localhost/postgres&quot;</span>,
+                <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,
+                <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>)
+cdmDbSchema &lt;-<span class="st"> &quot;cdm&quot;</span>
 cohortDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span>
 cohortTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span>
 
@@ -978,9 +984,9 @@ sql &lt;-<span class="st"> &quot;</span>
 <span class="st">CREATE TABLE @cohort_db_schema.@cohort_table (</span>
 <span class="st">  cohort_definition_id INT,</span>
 <span class="st">  cohort_start_date DATE,</span>
-<span class="st">    cohort_end_date DATE,</span>
-<span class="st">    subject_id BIGINT</span>
-<span class="st">    );</span>
+<span class="st">  cohort_end_date DATE,</span>
+<span class="st">  subject_id BIGINT</span>
+<span class="st">);</span>
 <span class="st">&quot;</span>
 <span class="kw">renderTranslateExecuteSql</span>(conn, sql,
                           <span class="dt">cohort_db_schema =</span> cohortDbSchema,
@@ -1126,6 +1132,7 @@ results &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</
                                    <span class="dt">cdm_db_schema =</span> cdmDbSchema,
                                    <span class="dt">snakeCaseToCamelCase =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>We first create “tar”, a common table expression (CTE) that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to the count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.</p>
+<p>We use <code>snakeCaseToCamelCase = TRUE</code> because in SQL we tend to use snake_case for field names (because SQL in case insentive), whereas in R we tend to use camelCase (because R is case sensitive). The <code>results</code> data frame colum names will now be in camelCase.</p>
 <p>With the help of the ggplot2 package we can easily plot our results:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute incidence rate (IR) :</span>
 results<span class="op">$</span>ir &lt;-<span class="st"> </span><span class="dv">1000</span> <span class="op">*</span><span class="st"> </span>results<span class="op">$</span>events <span class="op">/</span><span class="st"> </span>results<span class="op">$</span>days <span class="op">/</span><span class="st"> </span><span class="dv">7</span>
@@ -1140,8 +1147,21 @@ results<span class="op">$</span>age &lt;-<span class="st"> </span>results<span c
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Incidence (per 1,000 patient weeks)&quot;</span>)</code></pre></div>
 <p><img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
+<div id="clean-up" class="section level3">
+<h3><span class="header-section-number">10.6.4</span> Clean up</h3>
+<p>Don’t forget to clean up the table we created, and to close the connection:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sql &lt;-<span class="st"> &quot;</span>
+<span class="st">TRUNCATE TABLE @cohort_db_schema.@cohort_table;</span>
+<span class="st">DROP TABLE @cohort_db_schema.@cohort_table;</span>
+<span class="st">&quot;</span>
+<span class="kw">renderTranslateExecuteSql</span>(conn, sql,
+                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,
+                          <span class="dt">cohort_table =</span> cohortTable)
+
+<span class="kw">disconnect</span>(conn)</code></pre></div>
+</div>
 <div id="compatibility" class="section level3">
-<h3><span class="header-section-number">10.6.4</span> Compatibility</h3>
+<h3><span class="header-section-number">10.6.5</span> Compatibility</h3>
 <p>Because we use OHDSI SQL together with DatabaseConnector and SqlRender throughout, the code we reviewed here will run on any database platform supported by OHDSI.</p>
 <p>Note that for demonstration purposes we chose to create our cohortst using hand-crafted SQL. It would probably have been more convenient to construct cohort definition in ATLAS, and use the SQL generated by ATLAS to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can therefore easily be used together with SqlRender and DatabaseConnector.</p>
 </div>

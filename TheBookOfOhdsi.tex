@@ -2645,7 +2645,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.c5ut2ye6children ;"
+## [1] "SELECT * FROM temp_schema.wu0k5xz3children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -3247,6 +3247,11 @@ the data in CDM format.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(DatabaseConnector)}
+\NormalTok{conn <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                \DataTypeTok{server =} \StringTok{"localhost/postgres"}\NormalTok{,}
+                \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
+                \DataTypeTok{password =} \StringTok{"secret"}\NormalTok{)}
 \NormalTok{cdmDbSchema <-}\StringTok{ "cdm"}
 \NormalTok{cohortDbSchema <-}\StringTok{ "scratch"}
 \NormalTok{cohortTable <-}\StringTok{ "my_cohorts"}
@@ -3255,9 +3260,9 @@ the data in CDM format.
 \StringTok{CREATE TABLE @cohort_db_schema.@cohort_table (}
 \StringTok{  cohort_definition_id INT,}
 \StringTok{  cohort_start_date DATE,}
-\StringTok{    cohort_end_date DATE,}
-\StringTok{    subject_id BIGINT}
-\StringTok{    );}
+\StringTok{  cohort_end_date DATE,}
+\StringTok{  subject_id BIGINT}
+\StringTok{);}
 \StringTok{"}
 \KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql,}
                           \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema,}
@@ -3449,6 +3454,11 @@ times in a query. In this case we use it to the count the total amount
 of time-at-risk, as well as the number of angioedema events that occur
 during the time-at-risk.
 
+We use \texttt{snakeCaseToCamelCase\ =\ TRUE} because in SQL we tend to
+use snake\_case for field names (because SQL in case insentive), whereas
+in R we tend to use camelCase (because R is case sensitive). The
+\texttt{results} data frame colum names will now be in camelCase.
+
 With the help of the ggplot2 package we can easily plot our results:
 
 \begin{Shaded}
@@ -3468,6 +3478,25 @@ With the help of the ggplot2 package we can easily plot our results:
 \end{Shaded}
 
 \begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
+
+\subsection{Clean up}\label{clean-up}
+
+Don't forget to clean up the table we created, and to close the
+connection:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "}
+\StringTok{TRUNCATE TABLE @cohort_db_schema.@cohort_table;}
+\StringTok{DROP TABLE @cohort_db_schema.@cohort_table;}
+\StringTok{"}
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql,}
+                          \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema,}
+                          \DataTypeTok{cohort_table =}\NormalTok{ cohortTable)}
+
+\KeywordTok{disconnect}\NormalTok{(conn)}
+\end{Highlighting}
+\end{Shaded}
 
 \subsection{Compatibility}\label{compatibility}
 

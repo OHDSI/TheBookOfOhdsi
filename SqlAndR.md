@@ -283,7 +283,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.aatruslkchildren ;"
+## [1] "SELECT * FROM temp_schema.llg3gdd8children ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -669,6 +669,11 @@ Although we are not bound to any of the OHDSI tool conventions, it is helpful to
 
 
 ```r
+library(DatabaseConnector)
+conn <- connect(dbms = "postgresql",
+                server = "localhost/postgres",
+                user = "joe",
+                password = "secret")
 cdmDbSchema <- "cdm"
 cohortDbSchema <- "scratch"
 cohortTable <- "my_cohorts"
@@ -677,9 +682,9 @@ sql <- "
 CREATE TABLE @cohort_db_schema.@cohort_table (
   cohort_definition_id INT,
   cohort_start_date DATE,
-	cohort_end_date DATE,
-	subject_id BIGINT
-	);
+  cohort_end_date DATE,
+  subject_id BIGINT
+);
 "
 renderTranslateExecuteSql(conn, sql,
                           cohort_db_schema = cohortDbSchema,
@@ -844,6 +849,8 @@ results <- renderTranslateQuerySql(conn, sql,
 
 We first create "tar", a common table expression (CTE) that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to the count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
 
+We use `snakeCaseToCamelCase = TRUE` because in SQL we tend to use snake_case for field names (because SQL in case insentive), whereas in R we tend to use camelCase (because R is case sensitive). The `results` data frame colum names will now be in camelCase.
+
 With the help of the ggplot2 package we can easily plot our results:
 
 
@@ -861,6 +868,23 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
   ylab("Incidence (per 1,000 patient weeks)")
 ```
 <img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" />
+
+### Clean up
+
+Don't forget to clean up the table we created, and to close the connection:
+
+
+```r
+sql <- "
+TRUNCATE TABLE @cohort_db_schema.@cohort_table;
+DROP TABLE @cohort_db_schema.@cohort_table;
+"
+renderTranslateExecuteSql(conn, sql,
+                          cohort_db_schema = cohortDbSchema,
+                          cohort_table = cohortTable)
+
+disconnect(conn)
+```
 
 ### Compatibility
 
