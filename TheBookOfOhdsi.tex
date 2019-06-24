@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-21}
+    \date{2019-06-24}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -2079,6 +2079,13 @@ results, including 17,718 empirically calibrated hazard ratios along
 with extensive study diagnostics, is available in an interactive web app
 \footnote{\url{http://data.ohdsi.org/SystematicEvidence/}}.
 
+\section{Re-usable artifacts}\label{re-usable-artifacts}
+
+concept (live in domains) -\textgreater{} concept set -\textgreater{}
+cohort definition -\textgreater{} analysis
+
+Aim to use Standard concepts, although tools allow using source codes
+
 \section{ATLAS}\label{atlas}
 
 ATLAS is a web-based tool that must run on a server with access to the
@@ -2173,6 +2180,10 @@ features or enhancements, this is also a place note these for the
 development community.
 \end{description}
 
+\section{Artifact management}\label{artifact-management}
+
+\section{Security}\label{security}
+
 \subsection{How to install}\label{how-to-install}
 
 \section{Methods Library}\label{methods-library}
@@ -2189,6 +2200,8 @@ Library} is the collection of R packages show in Figure
 
 \caption{Packages in the OHDSI Methods Library.}\label{fig:methodsLibrary}
 \end{figure}
+
+Software validity discussed in\ldots{}
 
 \subsection{How to install}\label{how-to-install-1}
 
@@ -2207,8 +2220,8 @@ Case study: Perhaps on how to install the tools?
 
 \emph{Chapter lead: Martijn Schuemie \& Peter Rijnbeek}
 
-The Common Data Model is a relational database model, which means that
-the data will be stored in a relational database using a software
+The Common Data Model (CDM) is a relational database model, which means
+that the data will be stored in a relational database using a software
 platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various
 OHDSI tools such as ATLAS and the Methods Library work by querying the
 database behind the scene, but we can also query the database directly
@@ -2266,14 +2279,15 @@ R itself also immediately provides features to further analyse the data
 extracted from the database, such as performing statistical analyses and
 generating (interactive) plots.
 
-In this chapter we first review how to use qlRender and
+In this chapter we first review how to use SqlRender and
 DatabaseConnector to perform database operations in R in a way that
 allows the same code to be executed across a range of database
 platforms. If the reader does not intend to use these packages these
 sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to
-use SQL (in this case OHDSI SQL) can be used to query the CDM. The
-following section highlight how to query the OHDSI Standardized
-Vocabulary when querying the CDM.
+use SQL (in this case OHDSI SQL) to query the CDM. The following section
+highlight how to use the OHDSI Standardized Vocabulary when querying the
+CDM. We close this chapter with an example study estimating incidence
+rates, and implement this study using SqlRender and DatabaseConnector.
 
 \section{SqlRender}\label{SqlRender}
 
@@ -2480,11 +2494,7 @@ EOMONTH & POWER &\tabularnewline
 \bottomrule
 \end{longtable}
 
-\begin{itemize}
-\tightlist
-\item
-  Requires special privileges on Oracle. Has no equivalent on SQLite.
-\end{itemize}
+* Requires special privileges on Oracle. Has no equivalent on SQLite.
 
 Similarly, many SQL syntax structures are supported. Here is a
 non-exhaustive lists of things that we know will translate well:
@@ -2635,7 +2645,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.zpqkmqgichildren ;"
+## [1] "SELECT * FROM temp_schema.c5ut2ye6children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -3096,7 +3106,8 @@ SQL. For example, we can get the same answer using this R code:
 Here we compute age on the server, download all ages, and then compute
 the age distribution. However, this requires millions of rows of data to
 be downloaded from the database server, and is therefore not very
-efficient.
+efficient. You will need to decide on a case-by-case basis whether a
+computation is best performed in SQL or in R.
 
 Queries can use the source values in the CDM. For example, we can
 retrieve the top 10 most frequent condition source codes using:
@@ -3191,7 +3202,286 @@ PRESCRIPTION\_COUNT\tabularnewline
 \bottomrule
 \end{longtable}
 
-\section{Exercices}\label{exercices}
+\section{Designing a simple study}\label{designing-a-simple-study}
+
+\subsection{Problem definition}\label{problem-definition}
+
+Angioedema is a well-known side-effect of ACE inhibitors (ACEi).
+\citet{slater_1988} estimate the incidence rate of angioedema in the
+first week of ACEi treatment to be one case per 3,000 patients per week.
+Here we seek to replicate this finding, and stratify by age and gender,
+thus answering the question
+
+\begin{quote}
+What is the rate of angioedema in the first week following ACEi
+treatment initiation, stratified by age and gender?
+\end{quote}
+
+\subsection{Exposure}\label{exposure}
+
+We'll define exposure as first exposure to a drug containing an
+ingredient in the ACEi class. By first we mean no earlier exposure to
+any ingredient in the class. We require 365 days of continuous
+observation time prior to the first exposure.
+
+\subsection{Outcome}\label{outcome}
+
+We define angioedema as any occurrence of an angioedema diagnose code
+during an inpatient or emergency room (ER) visit.
+
+\subsection{Time-at-risk}\label{time-at-risk}
+
+We will compute the incidence rate in the first week following treatment
+initiation, irrespective of whether patients were exposed for the full
+week.
+
+\section{Implementing the study using SQL and
+R}\label{implementing-the-study-using-sql-and-r}
+
+Although we are not bound to any of the OHDSI tool conventions, it is
+helpful to follow the same principles. In this case, we will use SQL to
+populate a cohort table, similarly to how the OHDSI tools work. We first
+must create the cohort table in a database schema where we have write
+access, which likely is not the same as the database schema that holds
+the data in CDM format.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cdmDbSchema <-}\StringTok{ "cdm"}
+\NormalTok{cohortDbSchema <-}\StringTok{ "scratch"}
+\NormalTok{cohortTable <-}\StringTok{ "my_cohorts"}
+
+\NormalTok{sql <-}\StringTok{ "}
+\StringTok{CREATE TABLE @cohort_db_schema.@cohort_table (}
+\StringTok{  cohort_definition_id INT,}
+\StringTok{  cohort_start_date DATE,}
+\StringTok{    cohort_end_date DATE,}
+\StringTok{    subject_id BIGINT}
+\StringTok{    );}
+\StringTok{"}
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql,}
+                          \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema,}
+                          \DataTypeTok{cohort_table =}\NormalTok{ cohortTable)}
+\end{Highlighting}
+\end{Shaded}
+
+Here we have parameterized the database schema and table names, so we
+can easily adapt them to different environments.
+
+\subsection{Exposure cohort}\label{exposure-cohort}
+
+Next we create our exposure cohort, and insert it into our cohort table:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "}
+\StringTok{INSERT INTO @cohort_db_schema.@cohort_table (}
+\StringTok{  cohort_definition_id,}
+\StringTok{  cohort_start_date,}
+\StringTok{  cohort_end_date,}
+\StringTok{  subject_id}
+\StringTok{)}
+\StringTok{SELECT 1 AS cohort_definition_id,}
+\StringTok{  cohort_start_date,}
+\StringTok{  cohort_end_date,}
+\StringTok{  subject_id}
+\StringTok{FROM (}
+\StringTok{  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,}
+\StringTok{    MIN(drug_exposure_end_date) AS cohort_end_date,}
+\StringTok{    person_id AS subject_id}
+\StringTok{  FROM @cdm_db_schema.drug_exposure}
+\StringTok{  INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{    ON drug_concept_id = descendant_concept_id}
+\StringTok{  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,}
+\StringTok{    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,}
+\StringTok{    1342439) -- ACE inhibitors}
+\StringTok{  GROUP BY person_id}
+\StringTok{) first_exposure}
+\StringTok{INNER JOIN @cdm_db_schema.observation_period}
+\StringTok{  ON subject_id = person_id}
+\StringTok{    AND observation_period_start_date < cohort_start_date}
+\StringTok{    AND observation_period_end_date > cohort_start_date}
+\StringTok{WHERE DATEDIFF(DAY,}
+\StringTok{               observation_period_start_date,}
+\StringTok{               cohort_start_date) >= 365;}
+\StringTok{"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql,}
+                          \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema,}
+                          \DataTypeTok{cohort_table =}\NormalTok{ cohortTable,}
+                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema)}
+\end{Highlighting}
+\end{Shaded}
+
+Here we use the DRUG\_EXPOSURE table, and join it the CONCEPT\_ANCESTOR
+table, thus allowing us to search for the ACEi ingredients and all their
+descendants, ie. all drugs containing an ACEi. We take the first drug
+exposure per person, and then join to the OBSERVATION\_PERIOD table, and
+because a person can have several observation periods we must make sure
+we only join to the period containing the drug exposure. We then require
+at least 365 days between the observation\_period\_start\_date and the
+cohort\_start\_date.
+
+\subsection{Outcome cohort}\label{outcome-cohort}
+
+Finally, we must create our outcome cohort:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "}
+\StringTok{INSERT INTO @cohort_db_schema.@cohort_table (}
+\StringTok{ cohort_definition_id,}
+\StringTok{ cohort_start_date,}
+\StringTok{ cohort_end_date,}
+\StringTok{subject_id}
+\StringTok{)}
+\StringTok{SELECT 2 AS cohort_definition_id,}
+\StringTok{  cohort_start_date,}
+\StringTok{  cohort_end_date,}
+\StringTok{  subject_id}
+\StringTok{FROM (}
+\StringTok{  SELECT DISTINCT person_id AS subject_id,}
+\StringTok{    condition_start_date AS cohort_start_date,}
+\StringTok{    condition_end_date AS cohort_end_date}
+\StringTok{  FROM @cdm_db_schema.condition_occurrence}
+\StringTok{  INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{    ON condition_concept_id = descendant_concept_id}
+\StringTok{  WHERE ancestor_concept_id = 432791 -- Angioedema}
+\StringTok{) distinct_occurrence}
+\StringTok{INNER JOIN @cdm_db_schema.visit_occurrence}
+\StringTok{  ON subject_id = person_id}
+\StringTok{  AND visit_start_date <= cohort_start_date}
+\StringTok{  AND visit_end_date >= cohort_start_date}
+\StringTok{WHERE visit_concept_id IN (262, 9203,}
+\StringTok{    9201) -- Inpatient or ER;}
+\StringTok{"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql,}
+                          \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema,}
+                          \DataTypeTok{cohort_table =}\NormalTok{ cohortTable,}
+                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema)}
+\end{Highlighting}
+\end{Shaded}
+
+Here we join the CONDITION\_OCCURRENCE table to the CONCEPT\_ANCESTOR
+table to find all occurrences of angioedema or any of its descendants.
+We use DISTINCT to make sure we only select one record per day, as we
+believe multiple angioedema diagnoses on the same day are more likely to
+be the same occurrence rather than multiple angioedema events. We join
+these occurrences to the VISIT\_OCCURRENCE table to ensure the diagnose
+was made in and inpatient or ER setting.
+
+\subsection{Incidence rate
+calculation}\label{incidence-rate-calculation}
+
+Now that our cohorts are in place, we can compute the incidence rate,
+stratified by age and gender:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "}
+\StringTok{WITH tar AS (}
+\StringTok{  SELECT concept_name AS gender,}
+\StringTok{    FLOOR((YEAR(cohort_start_date) -}
+\StringTok{          year_of_birth) / 10) AS age,}
+\StringTok{    subject_id,}
+\StringTok{    cohort_start_date,}
+\StringTok{    CASE WHEN DATEADD(DAY, 7, cohort_start_date) >}
+\StringTok{      observation_period_end_date}
+\StringTok{    THEN observation_period_end_date}
+\StringTok{    ELSE DATEADD(DAY, 7, cohort_start_date)}
+\StringTok{    END AS cohort_end_date}
+\StringTok{  FROM @cohort_db_schema.@cohort_table}
+\StringTok{  INNER JOIN @cdm_db_schema.observation_period}
+\StringTok{    ON subject_id = observation_period.person_id}
+\StringTok{      AND observation_period_start_date < cohort_start_date}
+\StringTok{      AND observation_period_end_date > cohort_start_date}
+\StringTok{  INNER JOIN @cdm_db_schema.person}
+\StringTok{    ON subject_id = person.person_id}
+\StringTok{  INNER JOIN @cdm_db_schema.concept}
+\StringTok{    ON gender_concept_id = concept_id}
+\StringTok{  WHERE cohort_definition_id = 1 -- Exposure}
+\StringTok{)}
+\StringTok{SELECT days.gender,}
+\StringTok{    days.age,}
+\StringTok{    days,}
+\StringTok{    CASE WHEN events IS NULL THEN 0 ELSE events END AS events}
+\StringTok{FROM (}
+\StringTok{  SELECT gender,}
+\StringTok{    age,}
+\StringTok{    SUM(DATEDIFF(DAY, cohort_start_date,}
+\StringTok{      cohort_end_date)) AS days}
+\StringTok{  FROM tar}
+\StringTok{  GROUP BY gender,}
+\StringTok{    age}
+\StringTok{) days}
+\StringTok{LEFT JOIN (}
+\StringTok{  SELECT gender,}
+\StringTok{      age,}
+\StringTok{      COUNT(*) AS events}
+\StringTok{  FROM tar}
+\StringTok{  INNER JOIN @cohort_db_schema.@cohort_table angioedema}
+\StringTok{    ON tar.subject_id = angioedema.subject_id}
+\StringTok{      AND tar.cohort_start_date <= angioedema.cohort_start_date}
+\StringTok{      AND tar.cohort_end_date >= angioedema.cohort_start_date}
+\StringTok{  WHERE cohort_definition_id = 2 -- Outcome}
+\StringTok{  GROUP BY gender,}
+\StringTok{    age}
+\StringTok{) events}
+\StringTok{ON days.gender = events.gender}
+\StringTok{  AND days.age = events.age;}
+\StringTok{"}
+
+\NormalTok{results <-}\StringTok{ }\KeywordTok{renderTranslateQuerySql}\NormalTok{(conn, sql,}
+                                   \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema,}
+                                   \DataTypeTok{cohort_table =}\NormalTok{ cohortTable,}
+                                   \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}
+                                   \DataTypeTok{snakeCaseToCamelCase =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+We first create ``tar'', a common table expression (CTE) that contains
+all exposures with the appropriate time-at-risk. Note that we truncate
+the time-at-risk at the observation\_period\_end\_date. We also compute
+the age in 10-year bins, and identify the gender. The advantage of using
+a CTE is that we can use the same set of intermediate results several
+times in a query. In this case we use it to the count the total amount
+of time-at-risk, as well as the number of angioedema events that occur
+during the time-at-risk.
+
+With the help of the ggplot2 package we can easily plot our results:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Compute incidence rate (IR) :}
+\NormalTok{results}\OperatorTok{$}\NormalTok{ir <-}\StringTok{ }\DecValTok{1000} \OperatorTok{*}\StringTok{ }\NormalTok{results}\OperatorTok{$}\NormalTok{events }\OperatorTok{/}\StringTok{ }\NormalTok{results}\OperatorTok{$}\NormalTok{days }\OperatorTok{/}\StringTok{ }\DecValTok{7}
+
+\CommentTok{# Fix age scale:}
+\NormalTok{results}\OperatorTok{$}\NormalTok{age <-}\StringTok{ }\NormalTok{results}\OperatorTok{$}\NormalTok{age }\OperatorTok{*}\StringTok{ }\DecValTok{10}
+
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{ggplot}\NormalTok{(results, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ age, }\DataTypeTok{y =}\NormalTok{ ir, }\DataTypeTok{group =}\NormalTok{ gender, }\DataTypeTok{color =}\NormalTok{ gender)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Age"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Incidence (per 1,000 patient weeks)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
+
+\subsection{Compatibility}\label{compatibility}
+
+Because we use OHDSI SQL together with DatabaseConnector and SqlRender
+throughout, the code we reviewed here will run on any database platform
+supported by OHDSI.
+
+Note that for demonstration purposes we chose to create our cohortst
+using hand-crafted SQL. It would probably have been more convenient to
+construct cohort definition in ATLAS, and use the SQL generated by ATLAS
+to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can
+therefore easily be used together with SqlRender and DatabaseConnector.
+
+\section{Exercises}\label{exercises}
 
 \chapter{Building the building blocks: cohorts}\label{Cohorts}
 
@@ -3800,7 +4090,7 @@ that corrects for any such dependency. \citep{farrington_2011}
 \section{Designing a hypertension
 study}\label{designing-a-hypertension-study}
 
-\subsection{Problem definition}\label{problem-definition}
+\subsection{Problem definition}\label{problem-definition-1}
 
 ACE inhibitors (ACEi) are widely used in patients with hypertension or
 ischemic heart disease, especially those with other comorbidities such
@@ -3846,7 +4136,7 @@ require patients to have at least one year of prior continuous
 observation in the database before first exposure and a recorded
 hypertension diagnosis at or in the year preceding treatment initiation.
 
-\subsection{Outcome}\label{outcome}
+\subsection{Outcome}\label{outcome-1}
 
 We define angioedema as any occurrence of an angioedema diagnose code
 during an inpatient or ER visit, and require there to be no angioedema
@@ -3854,7 +4144,7 @@ diagnosis recorded in the seven days prior. We define AMI as any
 occurrence of an AMI diagnose code during an inpatient or ER visit, and
 require there to be no AMI diagnosis record in the 180 days prior.
 
-\subsection{Time-at-risk}\label{time-at-risk}
+\subsection{Time-at-risk}\label{time-at-risk-1}
 
 We define time-at-risk to start on the day after treatment initiation,
 and stop when exposure stops, allowing for a 30-day gap between
@@ -5364,7 +5654,7 @@ build the model, which model we will build and how we will evaluate its
 performance. In this section we will guide you through this process and
 we will use a ``Treatment safety'' prediction type as an example.
 
-\subsection{Problem definition}\label{problem-definition-1}
+\subsection{Problem definition}\label{problem-definition-2}
 
 Angioedema is a well known side-effect of ACE inhibitors, and the
 incidence of angioedema reported in the labeling for ACE inhibitors is
@@ -6913,20 +7203,20 @@ by computing a range of metrics, for example:
   \textbf{Coverage}: how often the true effect size is within the 95\%
   confidence interval.
 \item
-  \textbf{Mean precision}: precision is computed as 1 / (standard
-  error)2, higher precision means narrower confidence intervals. We can
-  use the geometric mean to account for the skewed distribution of the
-  precision.
+  \textbf{Mean precision}: precision is computed as
+  \(1/(standard\ error)^2\), higher precision means narrower confidence
+  intervals. We can use the geometric mean to account for the skewed
+  distribution of the precision.
 \item
   \textbf{Mean squared error (MSE)}: Mean squared error between the log
   of the effect size point-estimate and the log of the true effect size.
 \item
   \textbf{Type 1 error}: For negative controls, how often was the null
-  rejected (at alpha = 0.05). This is equivalent to the false positive
-  rate and 1 - specificity.
+  rejected (at \(\alpha = 0.05\)). This is equivalent to the false
+  positive rate and 1 - specificity.
 \item
   \textbf{Type 2 error}: For positive controls, how often was the null
-  not rejected (at alpha = 0.05). This is equivalent to the false
+  not rejected (at \(\alpha = 0.05\)). This is equivalent to the false
   negative rate and 1 - sensitivity.
 \item
   \textbf{Non-estimable}: For how many of the controls was the method
@@ -6939,14 +7229,14 @@ by computing a range of metrics, for example:
 Depending on our use case, we can evaluate whether these operating
 characterists are suitable for our goal. For example, if we wish to
 perform signal detection, we may care about type I and type II error, or
-if we are willing to modify our alpha threshold, we may inspect the AUC
-instead.
+if we are willing to modify our \(\alpha\) threshold, we may inspect the
+AUC instead.
 
 \subsection{P-value calibration}\label{p-value-calibration}
 
-Often the type I error (at alpha = 0.05) is larger than 5\%. OHDSI has
-developed a process for calibrating p-values to restore the type I error
-to nominal. \citep{schuemie_2014} We derive an empirical null
+Often the type I error (at \(\alpha = 0.05\)) is larger than 5\%. OHDSI
+has developed a process for calibrating p-values to restore the type I
+error to nominal. \citep{schuemie_2014} We derive an empirical null
 distribution from the actual effect estimates for the negative controls.
 These negative control estimates give us an indication of what can be
 expected when the null hypothesis is true, and we use them to estimate
@@ -7092,7 +7382,7 @@ are therefore consistently wrong.
 \subsection{Sensitivity analyses}\label{sensitivity-analyses}
 
 When designing a study there are often design choices that are
-uncertain. For example, should propensity score matchign of
+uncertain. For example, should propensity score matching of
 stratification be used? If stratification is used, how many strata? What
 is the appropriate time-at-risk? When faced with such uncertainty, one
 solution is to evaluate various options, and observe the sensitivity of
@@ -7192,7 +7482,7 @@ considerd:
   indirectly cause cardiovascular diseases that are a consequence of the
   hypertension.
 \item
-  The exposure should also \textbf{not prevent} or treat the outcome.
+  The exposure should also \textbf{not prevent or treat} the outcome.
   This is just another causal relationship that should be absent if we
   are to believe the true effect size (e.g.~the hazard ratio) is 1.
 \item
@@ -7320,7 +7610,7 @@ Benchmark}\label{advanced-ohdsi-methods-benchmark}
 
 Todo: add text on OHDSI Methods Benchmark
 
-\section{Exercises}\label{exercises}
+\section{Exercises}\label{exercises-1}
 
 \part{OHDSI Studies}\label{part-ohdsi-studies}
 

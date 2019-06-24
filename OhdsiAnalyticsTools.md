@@ -40,6 +40,12 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 
 [^systematicEvidenceUrl]: http://data.ohdsi.org/SystematicEvidence/
 
+## Re-usable artifacts
+
+concept (live in domains) -> concept set -> cohort definition -> analysis
+
+Aim to use Standard concepts, although tools allow using source codes
+
 ## ATLAS
 
 ATLAS is a web-based tool that must run on a server with access to the patient-level data in the CDM. To directly run the analyses against the data, ATLAS must therefore be installed behind your organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a small simulated dataset, it can still be used for many purposes. For example, it is possible to fully define an effect estimation of prediction study in the public ATLAS, and automatically generate the R code for executing the study. 
@@ -93,6 +99,11 @@ Configuration
 Feedback
 : This will take you to the issue log for Atlas so that you can log a new issue or to search through existing issues. If you have ideas for new features or enhancements, this is also a place note these for the development community.
 
+## Artifact management
+
+## Security
+
+
 ### How to install
 
 
@@ -106,7 +117,7 @@ The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the coll
 <p class="caption">(\#fig:methodsLibrary)Packages in the OHDSI Methods Library.</p>
 </div>
 
-
+Software validity discussed in...
 
 
 ### How to install
