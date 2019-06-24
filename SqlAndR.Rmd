@@ -7,7 +7,7 @@ require(SqlRender)
 require(DatabaseConnector)
 ```
 
-The Common Data Model is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.
+The Common Data Model (CDM) is a relational database model, which means that the data will be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with risks, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.
 
 The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server one would type:
 
@@ -27,7 +27,7 @@ Each database platform also comes with its own software tools for querying the d
 
 So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. 
 
-In this chapter we first review  how to use qlRender and DatabaseConnector to perform database operations in R in a way that allows the same code to be executed across a range of database platforms. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) can be used to query the CDM. The following section highlight how to query the OHDSI Standardized Vocabulary when querying the CDM.
+In this chapter we first review how to use SqlRender and DatabaseConnector to perform database operations in R in a way that allows the same code to be executed across a range of database platforms. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlight how to use the OHDSI Standardized Vocabulary when querying the CDM. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector.
 
 ## SqlRender {#SqlRender}
 
@@ -131,7 +131,7 @@ Table: (\#tab:sqlFunctions) Functions supported by translate.
 |DAY               |PI         |           |
 |EOMONTH           |POWER      |           |
 
-* Requires special privileges on Oracle. Has no equivalent on SQLite.
+\* Requires special privileges on Oracle. Has no equivalent on SQLite.
 
 Similarly, many SQL syntax structures are supported. Here is a non-exhaustive lists of things that we know will translate well:
 
@@ -512,7 +512,7 @@ cat("  0%  25%  50%  75% 100%
 ")
 ```
 
-Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is therefore not very efficient.
+Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is therefore not very efficient. You will need to decide on a case-by-case basis whether a computation is best performed in SQL or in R.
 
 Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:
 
@@ -570,7 +570,250 @@ WHERE ingredient.concept_name = 'Ibuprofen'
 | ------------------:|
 |           26871214 |
 
+## Designing a simple study
 
+### Problem definition
 
-## Exercices
+Angioedema is a well-known side-effect of ACE inhibitors (ACEi). @slater_1988 estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender, thus answering the question
+
+> What is the rate of angioedema in the first week following ACEi treatment initiation, stratified by age and gender?
+
+### Exposure
+
+We'll define exposure as first exposure to a drug containing an ingredient in the ACEi class. By first we mean no earlier exposure to any ingredient in the class. We require 365 days of continuous observation time prior to the first exposure.
+
+### Outcome
+
+We define angioedema as any occurrence of an angioedema diagnose code during an inpatient or emergency room (ER) visit. 
+
+### Time-at-risk
+
+We will compute the incidence rate in the first week following treatment initiation, irrespective of whether patients were exposed for the full week.
+
+## Implementing the study using SQL and R
+
+Although we are not bound to any of the OHDSI tool conventions, it is helpful to follow the same principles. In this case, we will use SQL to populate a cohort table, similarly to how the OHDSI tools work. We first must create the cohort table in a database schema where we have write access, which likely is not the same as the database schema that holds the data in CDM format.
+
+```{r eval=FALSE}
+library(DatabaseConnector)
+conn <- connect(dbms = "postgresql",
+                server = "localhost/postgres",
+                user = "joe",
+                password = "secret")
+cdmDbSchema <- "cdm"
+cohortDbSchema <- "scratch"
+cohortTable <- "my_cohorts"
+
+sql <- "
+CREATE TABLE @cohort_db_schema.@cohort_table (
+  cohort_definition_id INT,
+  cohort_start_date DATE,
+  cohort_end_date DATE,
+  subject_id BIGINT
+);
+"
+renderTranslateExecuteSql(conn, sql,
+                          cohort_db_schema = cohortDbSchema,
+                          cohort_table = cohortTable)
+```
+
+Here we have parameterized the database schema and table names, so we can easily adapt them to different environments.
+
+### Exposure cohort
+
+Next we create our exposure cohort, and insert it into our cohort table:
+
+```{r eval=FALSE}
+sql <- "
+INSERT INTO @cohort_db_schema.@cohort_table (
+  cohort_definition_id,
+  cohort_start_date,
+  cohort_end_date,
+  subject_id
+)
+SELECT 1 AS cohort_definition_id,
+  cohort_start_date,
+  cohort_end_date,
+  subject_id
+FROM (
+  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,
+    MIN(drug_exposure_end_date) AS cohort_end_date,
+    person_id AS subject_id
+  FROM @cdm_db_schema.drug_exposure
+  INNER JOIN @cdm_db_schema.concept_ancestor
+    ON drug_concept_id = descendant_concept_id
+  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
+    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
+    1342439) -- ACE inhibitors
+  GROUP BY person_id
+) first_exposure
+INNER JOIN @cdm_db_schema.observation_period
+  ON subject_id = person_id
+    AND observation_period_start_date < cohort_start_date
+    AND observation_period_end_date > cohort_start_date
+WHERE DATEDIFF(DAY,
+               observation_period_start_date,
+               cohort_start_date) >= 365;
+"
+
+renderTranslateExecuteSql(conn, sql,
+                          cohort_db_schema = cohortDbSchema,
+                          cohort_table = cohortTable,
+                          cdm_db_schema = cdmDbSchema)
+```
+
+Here we use the DRUG_EXPOSURE table, and join it the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, ie. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation_period_start_date and the cohort_start_date.
+
+### Outcome cohort
+
+Finally, we must create our outcome cohort:
+
+```{r eval=FALSE}
+sql <- "
+INSERT INTO @cohort_db_schema.@cohort_table (
+ cohort_definition_id,
+ cohort_start_date,
+ cohort_end_date,
+subject_id
+)
+SELECT 2 AS cohort_definition_id,
+  cohort_start_date,
+  cohort_end_date,
+  subject_id
+FROM (
+  SELECT DISTINCT person_id AS subject_id,
+    condition_start_date AS cohort_start_date,
+    condition_end_date AS cohort_end_date
+  FROM @cdm_db_schema.condition_occurrence
+  INNER JOIN @cdm_db_schema.concept_ancestor
+    ON condition_concept_id = descendant_concept_id
+  WHERE ancestor_concept_id = 432791 -- Angioedema
+) distinct_occurrence
+INNER JOIN @cdm_db_schema.visit_occurrence
+  ON subject_id = person_id
+  AND visit_start_date <= cohort_start_date
+  AND visit_end_date >= cohort_start_date
+WHERE visit_concept_id IN (262, 9203,
+    9201) -- Inpatient or ER;
+"
+
+renderTranslateExecuteSql(conn, sql,
+                          cohort_db_schema = cohortDbSchema,
+                          cohort_table = cohortTable,
+                          cdm_db_schema = cdmDbSchema)
+```
+
+Here we join the CONDITION_OCCURRENCE table to the CONCEPT_ANCESTOR table to find all occurrences of angioedema or any of its descendants. We use DISTINCT to make sure we only select one record per day, as we believe multiple angioedema diagnoses on the same day are more likely to be the same occurrence rather than multiple angioedema events. We join these occurrences to the VISIT_OCCURRENCE table to ensure the diagnose was made in and inpatient or ER setting.
+
+### Incidence rate calculation
+
+Now that our cohorts are in place, we can compute the incidence rate, stratified by age and gender:
+
+```{r eval=FALSE}
+sql <- "
+WITH tar AS (
+  SELECT concept_name AS gender,
+    FLOOR((YEAR(cohort_start_date) -
+          year_of_birth) / 10) AS age,
+    subject_id,
+    cohort_start_date,
+    CASE WHEN DATEADD(DAY, 7, cohort_start_date) >
+      observation_period_end_date
+    THEN observation_period_end_date
+    ELSE DATEADD(DAY, 7, cohort_start_date)
+    END AS cohort_end_date
+  FROM @cohort_db_schema.@cohort_table
+  INNER JOIN @cdm_db_schema.observation_period
+    ON subject_id = observation_period.person_id
+      AND observation_period_start_date < cohort_start_date
+      AND observation_period_end_date > cohort_start_date
+  INNER JOIN @cdm_db_schema.person
+    ON subject_id = person.person_id
+  INNER JOIN @cdm_db_schema.concept
+    ON gender_concept_id = concept_id
+  WHERE cohort_definition_id = 1 -- Exposure
+)
+SELECT days.gender,
+    days.age,
+    days,
+    CASE WHEN events IS NULL THEN 0 ELSE events END AS events
+FROM (
+  SELECT gender,
+    age,
+    SUM(DATEDIFF(DAY, cohort_start_date,
+      cohort_end_date)) AS days
+  FROM tar
+  GROUP BY gender,
+    age
+) days
+LEFT JOIN (
+  SELECT gender,
+      age,
+      COUNT(*) AS events
+  FROM tar
+  INNER JOIN @cohort_db_schema.@cohort_table angioedema
+    ON tar.subject_id = angioedema.subject_id
+      AND tar.cohort_start_date <= angioedema.cohort_start_date
+      AND tar.cohort_end_date >= angioedema.cohort_start_date
+  WHERE cohort_definition_id = 2 -- Outcome
+  GROUP BY gender,
+    age
+) events
+ON days.gender = events.gender
+  AND days.age = events.age;
+"
+
+results <- renderTranslateQuerySql(conn, sql,
+                                   cohort_db_schema = cohortDbSchema,
+                                   cohort_table = cohortTable,
+                                   cdm_db_schema = cdmDbSchema,
+                                   snakeCaseToCamelCase = TRUE)
+```
+
+We first create "tar", a common table expression (CTE) that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to the count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
+
+We use `snakeCaseToCamelCase = TRUE` because in SQL we tend to use snake_case for field names (because SQL in case insentive), whereas in R we tend to use camelCase (because R is case sensitive). The `results` data frame colum names will now be in camelCase.
+
+With the help of the ggplot2 package we can easily plot our results:
+
+```{r eval=FALSE}
+# Compute incidence rate (IR) :
+results$ir <- 1000 * results$events / results$days / 7
+
+# Fix age scale:
+results$age <- results$age * 10
+
+library(ggplot2)
+ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
+  geom_line() +
+  xlab("Age") +
+  ylab("Incidence (per 1,000 patient weeks)")
+```
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics("images/SqlAndR/ir.png")
+```
+
+### Clean up
+
+Don't forget to clean up the table we created, and to close the connection:
+
+```{r eval=FALSE}
+sql <- "
+TRUNCATE TABLE @cohort_db_schema.@cohort_table;
+DROP TABLE @cohort_db_schema.@cohort_table;
+"
+renderTranslateExecuteSql(conn, sql,
+                          cohort_db_schema = cohortDbSchema,
+                          cohort_table = cohortTable)
+
+disconnect(conn)
+```
+
+### Compatibility
+
+Because we use OHDSI SQL together with DatabaseConnector and SqlRender throughout, the code we reviewed here will run on any database platform supported by OHDSI. 
+
+Note that for demonstration purposes we chose to create our cohortst using hand-crafted SQL. It would probably have been more convenient to construct cohort definition in ATLAS, and use the SQL generated by ATLAS to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can therefore easily be used together with SqlRender and DatabaseConnector.
+
+## Exercises
 
