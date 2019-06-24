@@ -264,6 +264,15 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
 
 ggsave(filename = "c:/temp/ir.png", width = 5.5, height = 3.5, dpi = 300)
 
+
+sql <- "
+TRUNCATE TABLE @cohort_db_schema.@cohort_table;
+DROP TABLE @cohort_db_schema.@cohort_table;
+"
+renderTranslateExecuteSql(conn, sql,
+                          cohort_db_schema = cohortDbSchema,
+                          cohort_table = cohortTable)
+
 disconnect(conn)
 
 
