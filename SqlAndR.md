@@ -26,7 +26,7 @@ Each database platform also comes with its own software tools for querying the d
 
 So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. 
 
-In this chapter we first review how to use SqlRender and DatabaseConnector to perform database operations in R in a way that allows the same code to be executed across a range of database platforms. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlight how to use the OHDSI Standardized Vocabulary when querying the CDM. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector.
+In this chapter we first review how to use SqlRender and DatabaseConnector to perform database operations in R in a way that allows the same code to be executed across a range of database platforms. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlight how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector.
 
 ## SqlRender {#SqlRender}
 
@@ -283,7 +283,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.uup4g9uvchildren ;"
+## [1] "SELECT * FROM temp_schema.t78ml8kmchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -305,7 +305,7 @@ SELECT '1';
 SELECT * FROM #temp WHERE txt = 1;
 ```
 
-Even though `txt` is a VARCHAR field and we are comparing it with an integer, SQL Server will automatically cast one of the two to the correct type to allow the comparison. In contrast, other dialects such as PosgreSQL will throw an error when trying to compare a VARCHAR with an INT.
+Even though `txt` is a VARCHAR field and we are comparing it with an integer, SQL Server will automatically cast one of the two to the correct type to allow the comparison. In contrast, other dialects such as PostgreSQL will throw an error when trying to compare a VARCHAR with an INT.
 
 You should therefore always make casts explicit. In the above example, the last statement should be replaced with either
 
@@ -643,6 +643,27 @@ WHERE ingredient.concept_name = 'Ibuprofen'
 | ------------------:|
 |           26871214 |
 
+## QueryLibrary
+
+QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application [^queryLibraryUrl] shown in Figure \@ref(fig:queryLibrary), and as an R package[^queryLibraryPackageUrl]. 
+
+[^queryLibraryUrl]: http:/data.ohdsi.org/QueryLibrary
+
+[^queryLibraryPackageUrl]: https://github.com/OHDSI/QueryLibrary
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/sqlAndR/queryLibrary} 
+
+}
+
+\caption{QueryLibrary: a library of SQL queries against the CDM.}(\#fig:queryLibrary)
+\end{figure}
+
+The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but is also a valuable resource for experienced users.
+
+The QueryLibrary makes use of SqlRender to output the queries in the SQL dialect of choice. Users can also specify the CDM database schema, vocabulary database schema (if separate), and the Oracle temp schema (if needed), so the queries will be automatically rendered with these settings.
+
 ## Designing a simple study
 
 ### Problem definition
@@ -737,7 +758,7 @@ renderTranslateExecuteSql(conn, sql,
                           cdm_db_schema = cdmDbSchema)
 ```
 
-Here we use the DRUG_EXPOSURE table, and join it the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, ie. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation_period_start_date and the cohort_start_date.
+Here we use the DRUG_EXPOSURE table, and join it the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e.. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation_period_start_date and the cohort_start_date.
 
 ### Outcome cohort
 
@@ -849,7 +870,7 @@ results <- renderTranslateQuerySql(conn, sql,
 
 We first create "tar", a common table expression (CTE) that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to the count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
 
-We use `snakeCaseToCamelCase = TRUE` because in SQL we tend to use snake_case for field names (because SQL in case insentive), whereas in R we tend to use camelCase (because R is case sensitive). The `results` data frame colum names will now be in camelCase.
+We use `snakeCaseToCamelCase = TRUE` because in SQL we tend to use snake_case for field names (because SQL in case-insensitive), whereas in R we tend to use camelCase (because R is case-sensitive). The `results` data frame column names will now be in camelCase.
 
 With the help of the ggplot2 package we can easily plot our results:
 
@@ -867,7 +888,8 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
   xlab("Age") +
   ylab("Incidence (per 1,000 patient weeks)")
 ```
-<img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
 
 ### Clean up
 
@@ -890,7 +912,7 @@ disconnect(conn)
 
 Because we use OHDSI SQL together with DatabaseConnector and SqlRender throughout, the code we reviewed here will run on any database platform supported by OHDSI. 
 
-Note that for demonstration purposes we chose to create our cohortst using hand-crafted SQL. It would probably have been more convenient to construct cohort definition in ATLAS, and use the SQL generated by ATLAS to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can therefore easily be used together with SqlRender and DatabaseConnector.
+Note that for demonstration purposes we chose to create our cohorts using hand-crafted SQL. It would probably have been more convenient to construct cohort definition in ATLAS, and use the SQL generated by ATLAS to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can therefore easily be used together with SqlRender and DatabaseConnector.
 
 ## Exercises
 
