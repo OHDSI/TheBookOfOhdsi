@@ -26,7 +26,7 @@ knitr::include_graphics("images/PatientLevelPrediction/Figure1.png")
 As shown in Table \@ref(tab:plpDesign), to define a prediction problem we have to define t=0 by a target Cohort (T), the outcome we like to predict by an outcome cohort (O), and the time-at-risk (TAR). We define the standard prediction question as:
 
 ```{block2, type='rmdimportant'}
-Amongst <add Target cohort definition>, who will go on to have <add outcome definition> within <add time at risk period>
+Amongst [add Target cohort definition], who will go on to have [add outcome definition] within [add time at risk period]
 ```
 
 Furthermore, we  have to make design choices for the model we like to develop, and determine the observational datasets to perform internal and external validation. 
@@ -68,7 +68,7 @@ In the next sections we will explain the best practices for model specification,
 ### Creating Labelled Data
 The observational datasets we use in OHDSI consist of timestamped records of patient medical interactions. These are represented by tables containing anonymised patient details such as gender and year of birth in addition to tables containing date stamped medical records.
 
-```{r figure_theory1, fig.cap='Observational data.',echo=FALSE, out.width='100%'}
+```{r figuretheory1, fig.cap='Observational data.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/patienttimeline.png")
 ```
 
@@ -76,13 +76,13 @@ Applying supervised learning techniques for prediction requires having covariate
 
 To convert the observational data into labelled data consisting of covariate and label pairs for a set of patients, we need to specify a point in time for each patient that will be used as a pivot. Covariates can be constructed at that pivot point in time (using all records up to that point), and we can can determine whether a patient has the outcome of interest during some time interval relative to the pivot point in time (the time at risk).
 
-```{r figure_theory2, fig.cap='Create laelled data from observational data.',echo=FALSE, out.width='100%'}
+```{r figuretheory2, fig.cap='Create laelled data from observational data.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/dataplot1.png")
 ```
 
 This will then provide us with labelled data.  The definition of the target cohort population is what we use to define this pivot point in time.  For example, if the target cohort was new users of drug A, then the pivot point in time is the date a patient first had drug A recorded in the database.  Alternatively, if the target cohort was diagnoses of cardiovascular disease, then the pivot point in time is the date a patient first has a record indicating cardiovascular disease is present.  Our prediction specification directly links to how the labelled data are constructed.
 
-```{r figure_theory3, fig.cap='Create laelled data from observational data.',echo=FALSE, out.width='100%'}
+```{r figuretheory3, fig.cap='Create laelled data from observational data.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/dataplot2.png")
 ```
 
