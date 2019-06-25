@@ -1139,7 +1139,97 @@ To make things easier we also provide the `externalValidatePlp` function for per
 ## Exploring the Shiny App
 The interactive shiny app will start at the summary page:
 
-[add shiny usage]
+```{r shinySummary, fig.cap='The shiny summary page containing key hold out set performance metrics for each model trained',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinySummary.png")
+```
+
+This summary page table contains:
+
+- basic information about the model (e.g., database information, classifier type, time at risk settings, target population and outcome names)
+- hold out target population count and incidence of outcome 
+- discrimination metrics: AUC, AUPRC
+
+To the left of the table is the filter option:
+```{r shinyFilter, fig.cap='Demonstration of the filter option',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyFilter.png")
+```
+
+Here a user can specify the development/valdiation databases to focus on, the type of model, the time at risk settings of interest and/or the cohorts of interest.  For example, to pick the models corresponding to the target population "New users of ACE inhibitors as first line monotherapy for hypertension", select this in the *Target Cohort* option.
+
+To explore a model click on the corresponding row, a selected row will be highlighted.  To unselect simply click on the selected row again or select a new row.
+```{r shinySelect, fig.cap='The highlighted row shows a selected model.  We can then use other tab to explore the settings and results for the selected model',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinySelect.png")
+```
+
+With a row selected, you can now explore the model settings used when developing the model by clicking on the *Model Settings* tab:
+```{r shinyModelSet, fig.cap='To view the model settings used when developing the model.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyModelSet.png")
+```
+
+To explore the population settings, click on the *Population Settings* tab to display the settings used when developing the model:
+```{r shinyPopSet, fig.cap='To view the model settings used when developing the model.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPopSet.png")
+```
+
+Simialrly, to explore the covariates settings, click on the *Covariate Settings* tab to display which covariates were used as candidate covariates in the model:
+```{r shinyCovSet, fig.cap='To view the covariate settings used when developing the model.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyCovSet.png")
+```
+
+The row selection also works for displaying the model performance.  To view the performance you need to select 'Performance' from the left menu:
+```{r shinyBar, fig.cap='The shiny option bar for navigating around the interface.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyBar.png")
+```
+
+By clicking the 'Performance' option from the menu you will be taken to a threshold performance summary:
+
+```{r shinyPerformanceSum, fig.cap='The summary performance measures at a set threshold.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceSum.png")
+```
+
+You can adjust the threshold by moving the dot in the *Input* box:
+```{r shinyPerformanceThres, fig.cap='Moving this changes the threshold and the values in the Dashboard will update.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceThres.png")
+```
+
+To look at the overal discrimiantion ability of the model click on the 'Discrimination' tab, this then takes you to a view with the ROC plot, PR plot, and distribution plots (the line on the plots corresponds to the selected threshold point):
+```{r shinyPerformanceDisc, fig.cap='The ROC and PR plots used to access the overal discrimination ability of the model.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceDisc.png")
+```
+
+```{r shinyPerformanceDist, fig.cap='The predicted risk distribtion for those with and without the outcome.  The more these overlap the worse the discrimination',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceDist.png")
+```
+
+Finally, you can also inspect the calibration of the model by clicking on the 'Calibration' tab.  This displays the calibration plot and the demographic calibration:
+```{r shinyPerformanceCal, fig.cap='The risk stratified calibration and demographic calibration',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceCal.png")
+```
+
+
+To inspect the final model, select the "Model" option from the left hand menu. This will open a view containing plots for each variable in the model and a table summarising all the candidate covariates.  The variable plots are seperated into binary variables and continuous variables.  The x-axis is the prevalance/mean in patients without the outcome and the y-axis is the prevalance/mean in patients with the outcome.  Therefore, any variable's dot falling above the diagonal is more common in patients with the outcome and any variable's dot falling below the diagonal is less common in patients with the outcome:
+```{r shinyModelPlots, fig.cap='Each dot corresponds to a varible included in the model.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyModelPlots.png")
+```
+
+The table below displays the Name, Value (coefficient if using a glm or variable importance otherwise) all the candidate covariates, Outcome mean (the mean value for those who have the outcome) and non-outcome mean (the mean value for those who do not have the outcome):
+```{r shinyModelTable, fig.cap='Each dot corresponds to a varible included in the model.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyModelTable.png")
+```
+
+You can click on the columns headers to order by the chosen column.  For example, to order by Value, click on the 'Value' heading.
+
+The shiny interface also enables you to view the model development and evaluation log file.  Click on 'Log' in the left hand option bar:
+```{r shinyLog, fig.cap='Example log display.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyLog.png")
+```
+
+Finally, for instructions on accessing a youtube video demonstrating how to use the interactive shiny result viewer click on "Help" in the left hand option bar: 
+```{r shinyHelp, fig.cap='Instructions for viewing a demo video.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyHelp.png")
+```
+
+
 
 
 \newpage
