@@ -630,7 +630,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span>
 <span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.c61eey2cchildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.tztndk5ichildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters, <strong>temp table names are only allowed to be at most 22 characters long</strong> because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -791,7 +791,7 @@ conn &lt;-<span class="st"> </span><span class="kw">connect</span>(details)</cod
 </tr>
 </tbody>
 </table>
-<p>A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION_PERIOD table to compute age at start of observetion. We also compute the ordering for this joined set based on age, and store it as order_nr. Because we want to use the result of this join multiple times, we define it as a common table expression (CTE) (defined using <code>WITH ... AS</code>) that we call “ages”, meaning We can refer to ages as if it is an existing table. We count the number of rows in ages to produce “n”, and then for each quantile find the minimum age where the order_nr is smaller than the fraction times n. For example, median we use the minumum age where <span class="math inline">\(order\_nr &lt; .50 * n\)</span>. The minimum and maximum age are computed separately:</p>
+<p>A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION_PERIOD table to compute age at start of observetion. We also compute the ordering for this joined set based on age, and store it as order_nr. Because we want to use the result of this join multiple times, we define it as a common table expression (CTE) (defined using <code>WITH ... AS</code>) that we call “ages”, meaning We can refer to ages as if it is an existing table. We count the number of rows in ages to produce “n”, and then for each quantile find the minimum age where the order_nr is smaller than the fraction times n. For example, median we use the minimum age where <span class="math inline">\(order\_nr &lt; .50 * n\)</span>. The minimum and maximum age are computed separately:</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">WITH</span> ages
 <span class="kw">AS</span> (
     <span class="kw">SELECT</span> age,
@@ -1164,7 +1164,7 @@ results &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</
                                    <span class="dt">cohort_table =</span> cohortTable,
                                    <span class="dt">cdm_db_schema =</span> cdmDbSchema,
                                    <span class="dt">snakeCaseToCamelCase =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p>We first create “tar”, CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.</p>
+<p>We first create “tar”, a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.</p>
 <p>We use <code>snakeCaseToCamelCase = TRUE</code> because in SQL we tend to use snake_case for field names (because SQL in case-insensitive), whereas in R we tend to use camelCase (because R is case-sensitive). The <code>results</code> data frame column names will now be in camelCase.</p>
 <p>With the help of the ggplot2 package we can easily plot our results:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute incidence rate (IR) :</span>

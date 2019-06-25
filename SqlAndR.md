@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.omnp4imwchildren ;"
+## [1] "SELECT * FROM temp_schema.gyyjn0wychildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -536,7 +536,7 @@ INNER JOIN @cdm.observation_period
 | -------:|
 |      90 |
 
-A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION_PERIOD table to compute age at start of observetion. We also compute the ordering for this joined set based on age, and store it as order_nr. Because we want to use the result of this join multiple times, we define it as a common table expression (CTE) (defined using `WITH ... AS`) that we call "ages", meaning We can refer to ages as if it is an existing table. We count the number of rows in ages to produce "n", and then for each quantile find the minimum age where the order_nr is smaller than the fraction times n. For example, median we use the minumum age where $order\_nr < .50 * n$. The minimum and maximum age are computed separately:
+A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION_PERIOD table to compute age at start of observetion. We also compute the ordering for this joined set based on age, and store it as order_nr. Because we want to use the result of this join multiple times, we define it as a common table expression (CTE) (defined using `WITH ... AS`) that we call "ages", meaning We can refer to ages as if it is an existing table. We count the number of rows in ages to produce "n", and then for each quantile find the minimum age where the order_nr is smaller than the fraction times n. For example, median we use the minimum age where $order\_nr < .50 * n$. The minimum and maximum age are computed separately:
 
 ```sql
 WITH ages
@@ -881,7 +881,7 @@ results <- renderTranslateQuerySql(conn, sql,
                                    snakeCaseToCamelCase = TRUE)
 ```
 
-We first create "tar", CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to  count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
+We first create "tar", a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to  count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
 
 We use `snakeCaseToCamelCase = TRUE` because in SQL we tend to use snake_case for field names (because SQL in case-insensitive), whereas in R we tend to use camelCase (because R is case-sensitive). The `results` data frame column names will now be in camelCase.
 
