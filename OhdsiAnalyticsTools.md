@@ -32,7 +32,7 @@ More or less independently of how we choose to implement our analysis is the str
 <p class="caption">(\#fig:strategies)Strategies for generating evidence for (clinical) questions.</p>
 </div>
 
-The first strategy views every analysis as a single indivual study. The analysis must be pre-specified in a protocol, implemented as code, executed against the data, after which the result can be compiled and interpreted. For every question, all steps must be repeated. An example of such an analysis is the OHDSI study into the risk of angioedema associated with levetiracetam compared with phenytoin. [@duke_2017] Here, a protocol was first written, analysis code using the OHDSI Methods Library was developed and executed across the OHDSI network, and results were compiled and disseminated in a journal publication.
+The first strategy views every analysis as a single individual study. The analysis must be pre-specified in a protocol, implemented as code, executed against the data, after which the result can be compiled and interpreted. For every question, all steps must be repeated. An example of such an analysis is the OHDSI study into the risk of angioedema associated with levetiracetam compared with phenytoin. [@duke_2017] Here, a protocol was first written, analysis code using the OHDSI Methods Library was developed and executed across the OHDSI network, and results were compiled and disseminated in a journal publication.
 
 The second strategy develops some app that allows users to answer a specific class of questions in real time or near-real time. Once the app has been developed, users can interactively define queries, submit them, and view the results. An example is the cohort definition and generation tool in ATLAS. This tool allows users to specify cohort definitions of arbitrary complexity, and execute the definition against a database to see how many people meet the various inclusion and exclusion criteria. 
 
@@ -41,6 +41,8 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 [^systematicEvidenceUrl]: http://data.ohdsi.org/SystematicEvidence/
 
 ## Re-usable artifacts
+
+
 
 concept (live in domains) -> concept set -> cohort definition -> analysis
 
@@ -119,6 +121,17 @@ The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the coll
 
 Software validity discussed in...
 
+### Support for multiple analyses
+
+### Big data support {#BigDataSupport}
+
+ff
+Cyclops
+
+
+### Documentation
+
+Manuals and vignettes
 
 ### How to install
 

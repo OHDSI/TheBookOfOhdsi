@@ -2111,8 +2111,8 @@ employed in OHDSI.
 \caption{Strategies for generating evidence for (clinical) questions.}\label{fig:strategies}
 \end{figure}
 
-The first strategy views every analysis as a single indivual study. The
-analysis must be pre-specified in a protocol, implemented as code,
+The first strategy views every analysis as a single individual study.
+The analysis must be pre-specified in a protocol, implemented as code,
 executed against the data, after which the result can be compiled and
 interpreted. For every question, all steps must be repeated. An example
 of such an analysis is the OHDSI study into the risk of angioedema
@@ -2264,6 +2264,17 @@ Library} is the collection of R packages show in Figure
 
 Software validity discussed in\ldots{}
 
+\subsection{Support for multiple
+analyses}\label{support-for-multiple-analyses}
+
+\subsection{Big data support}\label{BigDataSupport}
+
+ff Cyclops
+
+\subsection{Documentation}\label{documentation}
+
+Manuals and vignettes
+
 \subsection{How to install}\label{how-to-install-1}
 
 \section{Integrated solutions}\label{integrated-solutions}
@@ -2281,17 +2292,18 @@ Case study: Perhaps on how to install the tools?
 
 \emph{Chapter lead: Martijn Schuemie \& Peter Rijnbeek}
 
-The Common Data Model (CDM) is a relational database model, which means
-that the data will be stored in a relational database using a software
+The Common Data Model (CDM) is a relational database model (all data is
+represented as records in tables that have fields), which means that the
+data will typically be stored in a relational database using a software
 platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various
 OHDSI tools such as ATLAS and the Methods Library work by querying the
 database behind the scene, but we can also query the database directly
 ourselves if we have appropriate access rights. The main reason to do
 this is to perform analyses that currently are not supported by any
 existing tool. However, directly querying the database also comes with
-risks, as the OHDSI tools are often designed to help guide the user to
-appropriate analysis of the data, and direct queries do not provide such
-guidance.
+greater risk of making mistakes, as the OHDSI tools are often designed
+to help guide the user to appropriate analysis of the data, and direct
+queries do not provide such guidance.
 
 The standard language for querying relational databases is SQL
 (Structured Query Language), which can be used both to query the
@@ -2328,9 +2340,8 @@ chapter will all use OHDSI SQL.
 Each database platform also comes with its own software tools for
 querying the database using SQL. In OHDSI we developed the
 \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}
-package, a single R package that can connect to a wide range of database
-platforms. DatabaseConnector will also be discussed later in this
-chapter.
+package, one R package that can connect to many database platforms.
+DatabaseConnector will also be discussed later in this chapter.
 
 So although one can query a database that conforms to the CDM without
 using any OHDSI tools, the recommended path is to use the
@@ -2340,17 +2351,16 @@ R itself also immediately provides features to further analyse the data
 extracted from the database, such as performing statistical analyses and
 generating (interactive) plots.
 
-In this chapter we first review how to use SqlRender and
-DatabaseConnector to perform database operations in R in a way that
-allows the same code to be executed across a range of database
-platforms. If the reader does not intend to use these packages these
-sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to
-use SQL (in this case OHDSI SQL) to query the CDM. The following section
-highlight how to use the OHDSI Standardized Vocabulary when querying the
-CDM. We highlight the QueryLibrary, a collection of commonly-used
-queries against the CDM that is publicly available. We close this
-chapter with an example study estimating incidence rates, and implement
-this study using SqlRender and DatabaseConnector.
+In this chapter we assume the reader has a basic understanding of SQL.
+We first review how to use SqlRender and DatabaseConnector. If the
+reader does not intend to use these packages these sections can be
+skipped. In Section \ref{QueryTheCdm} we discuss how to use SQL (in this
+case OHDSI SQL) to query the CDM. The following section highlight how to
+use the OHDSI Standardized Vocabulary when querying the CDM. We
+highlight the QueryLibrary, a collection of commonly-used queries
+against the CDM that is publicly available. We close this chapter with
+an example study estimating incidence rates, and implement this study
+using SqlRender and DatabaseConnector.
 
 \section{SqlRender}\label{SqlRender}
 
@@ -2369,8 +2379,8 @@ traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite,
 and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and
 Amazon RedShift), as well as Big Data platforms (Hadoop through Impala,
 and Google BigQuery). The R package comes with a package manual and a
-vignettes that explores the full functionality. Here we describer some
-of the main features.
+vignette that explores the full functionality. Here we describer some of
+the main features.
 
 \subsection{SQL parameterization}\label{sql-parameterization}
 
@@ -2515,10 +2525,18 @@ The \texttt{targetDialect} parameter can have the following values:
 ``oracle'', ``postgresql'', ``pdw'', ``redshift'', ``impala'',
 ``netezza'', ``bigquery'', ``sqlite'', and ``sql server''.
 
+\BeginKnitrBlock{rmdimportant}
 There are limits to what SQL functions and constructs can be translated
 properly, both because only a limited set of translation rules have been
 implemented in the package, but also some SQL features do not have an
-equivalent in all dialects.
+equivalent in all dialects. This is the primary reason why OHDSI SQL was
+developed as its own, new SQL dialect. However, whenever possible we
+have kept to the SQL Server syntax to avoid reinventing the wheel.
+\EndKnitrBlock{rmdimportant}
+
+Despite our best effords, there are quite a few things to consider when
+writing OHDSI SQL that will run without error on all supported
+platforms. In what follows we discuss these considerations in detail.
 
 \textbf{Functions and structures supported by translate}
 
@@ -2560,7 +2578,7 @@ EOMONTH & POWER &\tabularnewline
 * Requires special privileges on Oracle. Has no equivalent on SQLite.
 
 Similarly, many SQL syntax structures are supported. Here is a
-non-exhaustive lists of things that we know will translate well:
+non-exhaustive lists of expressions that we know will translate well:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2708,7 +2726,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.u4azvk9xchildren ;"
+## [1] "SELECT * FROM temp_schema.wz8zidp6children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -2837,7 +2855,22 @@ can be started using:
 \end{Highlighting}
 \end{Shaded}
 
-Which will open the default browser with the app.
+Which will open the default browser with the app shown in Figure
+\ref{fig:sqlDeveloper}. The app is also publicly available on the
+web\footnote{\url{http://data.ohdsi.org/SqlDeveloper/}}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/sqlDeveloper} 
+
+}
+
+\caption{The SqlDeveloper Shiny app.}\label{fig:sqlDeveloper}
+\end{figure}
+
+In the app you can enter OHDSI SQL, select the target dialect as well as
+provide values for the parameters that appear in your SQL, and the
+translation will automatically appear at the bottom.
 
 \section{DatabaseConnector}\label{DatabaseConnector}
 
@@ -2975,8 +3008,9 @@ those attributes are not desired, the package also offers the
 objects}\label{querying-using-ffdf-objects}
 
 Sometimes the data to be fetched from the database is too large to fit
-into memory. In this case one can use the \texttt{ff} package to store R
-data objects on file, and use them as if they are available in memory.
+into memory. As mentioned in Section \ref{BigDataSupport}, in such a
+case we can use the \texttt{ff} package to store R data objects on file,
+and use them as if they are available in memory.
 \texttt{DatabaseConnector} can download data directly into ffdf objects:
 
 \begin{Shaded}
@@ -3012,8 +3046,9 @@ for example `LIMIT 10' on PostgreSQL, and that the SQL parameter
 \subsection{Inserting tables}\label{inserting-tables}
 
 Although it is also possible to insert data in the database by sending
-SQL statements using the \texttt{executeSql} function, it is often
-convenient and faster to use the \texttt{insertTable} function:
+SQL statements using the \texttt{executeSql} function, it is often more
+convenient and faster (due to some optimization) to use the
+\texttt{insertTable} function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3027,9 +3062,9 @@ In this example, we're uploading the mtcars data frame to a table called
 
 \section{Querying the CDM}\label{QueryTheCdm}
 
-In the examples below we use OHDSI SQL to query a database that adheres
-to the CDM. These queries use \texttt{@cdm} to denote the database
-schema where the data in CDM can be found.
+In the following examples we use OHDSI SQL to query a database that
+adheres to the CDM. These queries use \texttt{@cdm} to denote the
+database schema where the data in CDM can be found.
 
 We can start by just querying how many people are in the database:
 
@@ -3069,9 +3104,16 @@ NUM\_YEARS\tabularnewline
 \bottomrule
 \end{longtable}
 
-We can join tables to produce additional statistics. For example the
-maximum age at observation end can be computed by joining the PERSON
-table to the OBSERVATION\_PERIOD table:
+We can join tables to produce additional statistics. A join combines
+fields from multiple tables, typically by requiring specific fields in
+the tables to have the same value. For example, here we join the PERSON
+table to the OBSERVATION\_PERIOD table on the person\_id fields in both
+tables. In other words, the result of the join is a new table-like set
+that has all the fields of the two tables, but in all rows the
+person\_id fields from the two tables must have the same value. We can
+now for example compute the maximum age at observation end by using the
+observation\_period\_end\_date field from the OBSERVATION\_PERIOD table
+together with the year\_of\_birth field of the PERSON table:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3094,12 +3136,20 @@ MAX\_AGE\tabularnewline
 
 A much more complicated query is needed to determine the distribution of
 age at the start of observation. In this query, we first join the PERSON
-to the OBSERVATION\_PERIOD table to compute age, and then order the
-result set to find the min, max, median, and interquartile range:
+to the OBSERVATION\_PERIOD table to compute age at start of observetion.
+We also compute the ordering for this joined set based on age, and store
+it as order\_nr. Because we want to use the result of this join multiple
+times, we define it as a common table expression (CTE) (defined using
+\texttt{WITH\ ...\ AS}) that we call ``ages'', meaning We can refer to
+ages as if it is an existing table. We count the number of rows in ages
+to produce ``n'', and then for each quantile find the minimum age where
+the order\_nr is smaller than the fraction times n. For example, median
+we use the minumum age where \(order\_nr < .50 * n\). The minimum and
+maximum age are computed separately:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{WITH}\NormalTok{ age}
+\KeywordTok{WITH}\NormalTok{ ages}
 \KeywordTok{AS}\NormalTok{ (}
     \KeywordTok{SELECT}\NormalTok{ age,}
         \FunctionTok{ROW_NUMBER}\NormalTok{() }\KeywordTok{OVER}\NormalTok{ (}
@@ -3129,10 +3179,10 @@ result set to find the min, max, median, and interquartile range:
             \KeywordTok{ELSE}\NormalTok{ age}
             \KeywordTok{END}\NormalTok{) }\KeywordTok{AS}\NormalTok{ q75_age,}
     \FunctionTok{MAX}\NormalTok{(age) }\KeywordTok{AS}\NormalTok{ max_age}
-\KeywordTok{FROM}\NormalTok{ age}
+\KeywordTok{FROM}\NormalTok{ ages}
 \KeywordTok{CROSS} \KeywordTok{JOIN}\NormalTok{ (}
     \KeywordTok{SELECT} \FunctionTok{COUNT}\NormalTok{(*) }\KeywordTok{AS}\NormalTok{ n}
-    \KeywordTok{FROM}\NormalTok{ age}
+    \KeywordTok{FROM}\NormalTok{ ages}
 \NormalTok{    ) population_size;}
 \end{Highlighting}
 \end{Shaded}
@@ -3203,6 +3253,11 @@ I10 & 19453451\tabularnewline
 \bottomrule
 \end{longtable}
 
+Here we grouped records in the CONDITION\_OCCURRENCE table by values of
+the condition\_source\_value field, and counted the number of records in
+each group. We retrieve the condition\_source\_value and the count, and
+reverse-order it by the count.
+
 \section{Using the vocabulary when
 querying}\label{using-the-vocabulary-when-querying}
 
@@ -3267,6 +3322,8 @@ PRESCRIPTION\_COUNT\tabularnewline
 
 \section{QueryLibrary}\label{querylibrary}
 
+TODO: update this section when QueryLibrary is finalized.
+
 QueryLibrary is a library of commonly-used SQL queries for the CDM. It
 is available as an online application \footnote{\url{http:/data.ohdsi.org/QueryLibrary}}
 shown in Figure \ref{fig:queryLibrary}, and as an R package\footnote{\url{https://github.com/OHDSI/QueryLibrary}}.
@@ -3329,10 +3386,11 @@ R}\label{implementing-the-study-using-sql-and-r}
 
 Although we are not bound to any of the OHDSI tool conventions, it is
 helpful to follow the same principles. In this case, we will use SQL to
-populate a cohort table, similarly to how the OHDSI tools work. We first
-must create the cohort table in a database schema where we have write
-access, which likely is not the same as the database schema that holds
-the data in CDM format.
+populate a cohort table, similarly to how the OHDSI tools work. The
+COHORT table is defined in the CDM, and has a predefined set of fields
+that we will also use. We first must create the COHORT table in a
+database schema where we have write access, which likely is not the same
+as the database schema that holds the data in CDM format.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3360,11 +3418,12 @@ the data in CDM format.
 \end{Shaded}
 
 Here we have parameterized the database schema and table names, so we
-can easily adapt them to different environments.
+can easily adapt them to different environments. The result is an empty
+table on the database server.
 
 \subsection{Exposure cohort}\label{exposure-cohort}
 
-Next we create our exposure cohort, and insert it into our cohort table:
+Next we create our exposure cohort, and insert it into our COHORT table:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3409,7 +3468,7 @@ Next we create our exposure cohort, and insert it into our cohort table:
 
 Here we use the DRUG\_EXPOSURE table, and join it the CONCEPT\_ANCESTOR
 table, thus allowing us to search for the ACEi ingredients and all their
-descendants, i.e.. all drugs containing an ACEi. We take the first drug
+descendants, i.e.~all drugs containing an ACEi. We take the first drug
 exposure per person, and then join to the OBSERVATION\_PERIOD table, and
 because a person can have several observation periods we must make sure
 we only join to the period containing the drug exposure. We then require
@@ -3534,14 +3593,13 @@ stratified by age and gender:
 \end{Highlighting}
 \end{Shaded}
 
-We first create ``tar'', a common table expression (CTE) that contains
-all exposures with the appropriate time-at-risk. Note that we truncate
-the time-at-risk at the observation\_period\_end\_date. We also compute
-the age in 10-year bins, and identify the gender. The advantage of using
-a CTE is that we can use the same set of intermediate results several
-times in a query. In this case we use it to the count the total amount
-of time-at-risk, as well as the number of angioedema events that occur
-during the time-at-risk.
+We first create ``tar'', CTE that contains all exposures with the
+appropriate time-at-risk. Note that we truncate the time-at-risk at the
+observation\_period\_end\_date. We also compute the age in 10-year bins,
+and identify the gender. The advantage of using a CTE is that we can use
+the same set of intermediate results several times in a query. In this
+case we use it to count the total amount of time-at-risk, as well as the
+number of angioedema events that occur during the time-at-risk.
 
 We use \texttt{snakeCaseToCamelCase\ =\ TRUE} because in SQL we tend to
 use snake\_case for field names (because SQL in case-insensitive),
@@ -6983,7 +7041,7 @@ number:
   revisions. No guarantees are madef in terms of compatibility
 \end{itemize}
 
-\subsection{Documentation}\label{documentation}
+\subsection{Documentation}\label{documentation-1}
 
 All packages in the Methods Library are documented through R's internal
 documentation framework. Each package has a package manual that
