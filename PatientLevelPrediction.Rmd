@@ -26,7 +26,7 @@ knitr::include_graphics("images/PatientLevelPrediction/Figure1.png")
 As shown in Table \@ref(tab:plpDesign), to define a prediction problem we have to define t=0 by a target Cohort (T), the outcome we like to predict by an outcome cohort (O), and the time-at-risk (TAR). We define the standard prediction question as:
 
 ```{block2, type='rmdimportant'}
-Amongst *<add Target cohort definition>*, who will go on to have *<add outcome definition>* within *<add time at risk period>*
+Amongst <add Target cohort definition>, who will go on to have <add outcome definition> within <add time at risk period>
 ```
 
 Furthermore, we  have to make design choices for the model we like to develop, and determine the observational datasets to perform internal and external validation. 
@@ -61,6 +61,8 @@ This conceptual framework works for all type of prediction problems:
     
 In the next sections we will explain the best practices for model specification, implementation, and evaluation using OHDSI's Patient-Level Prediction (PLP) framework as guidance.
 
+\newpage
+
 ## Patient-level Prediction Theory
 
 ### Creating Labelled Data
@@ -84,28 +86,26 @@ This will then provide us with labelled data.  The definition of the target coho
 knitr::include_graphics("images/PatientLevelPrediction/theory/dataplot2.png")
 ```
 
-
-
 ### Supervised learning
-The idea of supervised learning is to be able to generalise what is observed in the labelled data so that when a new patient's covariates are known but their label is unknown, we can infer their label. 
+The idea of supervised learning is to be able to generalise what is observed in the labelled data so that when a new patient's covariates are known but their label is unknown, we can predict their label. 
 
-If we consider the situation where we have two covariates, then we can represent each patient as a plot in two dimensional space.  The shape/color of a data points corresponds to the patient's label.  The idea of supervised learning is to generalise the what we see and fill in where there are no current data points.  A supervised learning model will try to partition the space via a decision boundary, as seen in Figure X that aims to minimise the cases where the data point labels do not match the models prediction.  Different supervised learning techniques lead to different decision boundaries and there are often hyper-parameters that can impact the complexity of the decision boundary. 
+If we consider the situation where we have two covariates, then we can represent each patient as a plot in two dimensional space.  The shape/color of a data points corresponds to the patient's label.  The idea of supervised learning is to generalise the what we see and fill in where there are no current data points.  A supervised learning model will try to partition the space via a decision boundary, as seen in Figure \ref{fig:figuretheory4} that aims to minimise the cases where the data point labels do not match the models prediction.  Different supervised learning techniques lead to different decision boundaries and there are often hyper-parameters that can impact the complexity of the decision boundary. 
 
-```{r figure_theory4, fig.cap='Decision boundary.',echo=FALSE, out.width='100%'}
+```{r figuretheory4, fig.cap='Decision boundary.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/learning.png")
 ```
 
-In Figure X you can see three different decision boundaries.  The boundaries are used to infer the class of any new data point.  In figure Y the decision boundaries are used to shade the 2 dimentional space into red regions and green regions.  If a new data point falls into the green shaded area then the model will predict 'no outcome', otherwise it will predict 'has outcome'.
+In Figure Figure \ref{fig:figuretheory4} you can see three different decision boundaries.  The boundaries are used to infer the class of any new data point.  In figure Figure \ref{fig:figuretheory5} the decision boundaries are used to shade the 2 dimentional space into red regions and green regions.  If a new data point falls into the green shaded area then the model will predict 'no outcome', otherwise it will predict 'has outcome'.
 
 Ideally a decision boundary should partition the two classes with no error.  However, generlizability is an issue, as complex models can 'overfit' where they can correctly partition each data points in the labelled data by using very complex boundaries:
 
-```{r figure_theory5, fig.cap='Overfitting issues.',echo=FALSE, out.width='100%'}
+```{r figuretheory5, fig.cap='Overfitting issues.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/noise.png")
 ```
 
-The issue here is that these boundaries may be fit too closely to the labelled data used to learn them and may not work for new data.  For example, noise causing incorrectly positioned data points can cause issues.  This is shown in Figure Y where the ...
+The issue here is that these boundaries may be fit too closely to the labelled data used to learn them and may not work for new data.  For example, noise causing incorrectly positioned data points can cause issues.  This is shown in Figure Figure \ref{fig:figuretheory5} where the decision boundary goes around a data point that was incorrectly positioned due to noise and this impacts predictions near this region.
 
-Therefore, you want a model that appers to partition the labelled data well but is also as simple as possible.  Techniques such as regularization aim to maximise model performance on the labelled data while minimising complexity. 
+Therefore, you want a model that appears to partition the labelled data well but is also as simple as possible.  Techniques such as regularization aim to maximise model performance on the labelled data while minimising complexity.  Complexity can also be controlled by picking classifier hyper-parameters such that a simpler decision boundary is used.     
 
 Another way to think about supervised learning is finding a function that maps from a patient's covariates to their label. [add function]. Each supervised learning model has a different way to learn the mapping function and the no free lunch theorem states that no one algorithm is always going to outperform the others.  The performance of each type of supervised learning algorithm depends on how the labelled data points are distributed in space. Therefore we recommend trying multiple supervised learning techniques when developing patient-level prediction models. 
 
@@ -149,13 +149,13 @@ Cross validation is useful when the data are limited.  A user needs to specify t
 
 Bootstrapping is useful when calculating confidence intervals.  In bootstrapping multiple sample sets are drawn with replacement from the whole labelled dataset to generate hold out sets, the unsampled patient data are used to develop the models and then evaluated on the sample sets.  This gives a range for each metric.  We currently do not use bootstrapping in the patient-level prediction framework.
 
-```{r figure_theory_val, fig.cap='Types of internal valdiation.',echo=FALSE, out.width='100%'}
+```{r figuretheoryval, fig.cap='Types of internal valdiation.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/validationTypes.png")
 ```
 
 External validation is when a model trained on one dataset is validated on a new dataset or set of patients.  This is important as it helps model developers understand which types of patients the model will transport to.
 
-```{r figure_theory_extval, fig.cap='Visulisation of external validation.',echo=FALSE, out.width='100%'}
+```{r figuretheoryextval, fig.cap='Visulisation of external validation.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/externalValidation.png")
 ```
 
@@ -165,32 +165,43 @@ Temporal validation is a type of validation where a model is validated on data t
 
 A prediction model assigned a value between 0 and 1 for each patient corresponding to the risk of the patient having the outcome during the time at risk.  A value of 0 means 0% risk, a value of 0.5 means 50% risk and a value of 1 means 100% risk.  Common metrics such as accuracy, sensitivity, specificity, positivity predictive value can be calculated by first specifying a threshold that is used to class patients as having the outcome or not having the outcome during the time at risk.  For example, given Table …, if we set the threshold as 0.5, the patients 1,3,7 and 10 have a predicted risk greater than or equal to the threshold of 0.5 so they would be predicted to have the outcome.  All other patients had a predicted risk less than 0.5, so would be predicted to not have the outcome. 
 
-```{r figure_theory_tab, fig.cap='Example performance table.',echo=FALSE, out.width='100%'}
+```{r figuretheorytab, fig.cap='Example performance table.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/exampleTable.png")
 ```
 
 If a patient is predicted to have the outcome and has the outcome during TAR then this is called as a true positive (TP).  If a patient is predicted to have the outcome but does not have the outcome during TAR then this I called a false positive (FP).  If a patient is predicted to not have the outcome and does not have the outcome during TAR then this is called a true negative (TN).  Finally, if a patient is predicted to not have the outcome but does have the outcome during TAR then this is called a false negative (FN).
 
 The following threshold based metrics are:
+
 -	accuracy: (TP+TN)/(TP+TN+FP+FN)
 -	sensitivity: TP/(TP+FN)
 -	specificity: TN/(TN+FP)
 -	positive predictive value: TP/(TP+FP)
 
 There are two main criteria used to assess a prediction model; discrimination and calibration.  
+
 Discrimination is the ability to assign a higher risk to patients who will experience the outcome during the time at risk, where the area under the receiver operating characteristic curve (AUROC) gives an overall measure of discrimination where a value of 0.5 corresponds to randomly assigning the risk and a value of 1 means perfect discrimination.  In reality, most prediction models obtain AUCs between 0.6-0.8.   The AUC is calculated by plotting 1 – specificity on the x-axis and sensitivity on the y-axis at all possible thresholds.  This generated a plot as seen in Figure … and the area under the line is the AUROC.  The AUROC is invariant to class imbalance, unlike accuracy, but for rare outcomes even a model with a high AUROC may not be practical.  When the outcome is rare another measure known as the area under the precision recall curve (AUPRC) is recommended. A model may obtain a high AUC when the outcome is rare but have a very low positive predictive value.  This would mean may false positives.  Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a low false positive rate may result in a non-practical model.  The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. 
 
 The AUROC provides a way to determine how different the predicted risk distributions are between the patients who experience the outcome during the time at risk and those who do not. If the AUROC is high, then the distributions will be mostly disjointed, whereas when there is a lot of overlap, the AUROC will be closer to 0.5:
 
-[roc theory plot] 
-[roc shiny screen shot]
+```{r figuretheoryroctheory, fig.cap='How the ROC plots are linked to discrimination.',echo=FALSE, out.width='100%'}
+knitr::include_graphics("images/PatientLevelPrediction/theory/roctheory.png")
+```
+
+
+```{r figuretheoryroc, fig.cap='Example discrimination plots generated by the patient-level prediction framework.',echo=FALSE, out.width='100%'}
+knitr::include_graphics("images/PatientLevelPrediction/theory/discrimination.png")
+```
 
 Calibration is the ability of the model to assign a correct risk.  For example, if the model assigned one hundred patients a risk of 10% then ten of the patients should experience the outcome during the time at risk.  If the model assigned 100 patients a risk of 80% then eighty of the patients should experience the outcome during the time at risk.  The calibration is generally calculated by partitioning the patients into deciles based on the predicted risk and in each group calculating the mean predicted risk and the fraction of the patients who experienced the outcome during the time at risk.  We then plot these ten points (predicted risk on the y-axis and observed risk on the x-axis) and see whether they fall on the x = y line, indicating the model is well calibrated.  We also fit a linear model using the points to calculate the intercept (which should be close to 0) and the gradient (which should be close to 1).  If the gradient is greater than 1 then the model is assigning a higher risk than the true risk and if the gradient is less than 1 the model is assigning a lower risk than the true risk.
 
-[calibration plot]
+```{r figuretheorycal, fig.cap='Example calibration plots generated by the patient-level prediction framework.',echo=FALSE, out.width='100%'}
+knitr::include_graphics("images/PatientLevelPrediction/theory/calibration.png")
+```
 
 It can also be useful to determine how well calibrated a model is for different demographics (age and gender groups).  This can be calculated by partitioning the patients into groups of similar age and gender and comparing the mean predicted risk within the group with the observed fraction of the patients who experience the outcome during the time at risk.  This can identify demographic groups where the model does not perform well when applied.
 
+\newpage 
 
 ## Specfifying a Patient-level Prediction Study
 
@@ -255,11 +266,9 @@ Table: (\#tab:plpSummary) Main design choices for our study.
 We define the target cohort as the first exposure to any ACE inhibitor. Patients are excluded if they have less than 365 days of prior observation time or have prior angioedema.
 
 \newpage
+
 ## Implementing a Patient-level Prediction Study
 There are two ways to use the OHDSI tools for patient-level prediction.  The first approach is to use the atlas interface to design a study and then atlas creates an R package that goes end to end from data extraction to model develoment and evaluation.  This requires only basic R knowledge.  The second approach is to manually write R code using our PatientLevelPrediction R library.  This requires intermediate R knowledge at a minimum, but enables greater flexibility in the prediction analysis study design.  In this section, we will provide step-by-step guides for both approaches. 
-
-### Installing PatientLevelPrediction
-[add code for install]
 
 ### Implementing the study in Atlas
 #### Introduction 
@@ -807,12 +816,10 @@ After running the R package analysis you can view the results in an interactive 
 PatientLevelPrediction::viewMultiplePlp(outputFolder)
 ```
 
-
-
 \newpage
 ### Implementing the study in R
 
-Now we have completely designed our study we have to implement the study. This will be done using the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package to build patient-level predictive models. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
+Now we have completely designed our study we have to implement the study in R. This will be done using the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package to build patient-level predictive models. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
 
 #### Cohort instantiation
 
@@ -965,15 +972,12 @@ savePlpResult(gbmResults, location = "gbmResults")
 To load the full results structure use:
 
 ```{r tidy=TRUE,eval=FALSE}
-lrResults <- loadPlpResult("gbmResults")
+gbmResults <- loadPlpResult("gbmResults")
 ```
 
+#### Interpreting the Patient-level Prediction Study Performance
 
-
-
-## Interpreting the Patient-level Prediction Study Performance
-
-### Internal validation
+##### Internal Validation
 
 Once we execute the study, the `runPlp` function returns the trained model and the evaluation of the model on the train/test sets. You can interactively view the results by running: `viewPlp(runPlp = gbmResults)`. This will open a Shiny App in your browser in which you can view all performance measures created by the framework, including interactive plots, as shown in Figure \@ref(fig:shinysummary).
 
@@ -991,7 +995,7 @@ plotPlp(gbmResults, "plots")
 
 The plots are described in more detail in the next sections.
 
-#### Discrimination
+*Discrimination*
 
 The Receiver Operating Characteristics (ROC) plot shows the sensitivity against 1-specificity on the test set. The plot illustrates how well the model is able to discriminate between the people with the outcome and those without. The dashed diagonal line is the performance of a model that randomly assigns predictions. The higher the area under the ROC plot the better the discrimination of the model. Figure \@ref(fig:roc) is created by changing the probability threshold to assign the positive class.
 
@@ -1002,7 +1006,7 @@ The Receiver Operating Characteristics (ROC) plot shows the sensitivity against 
   knitr::include_graphics("images/PatientLevelPrediction/sparseROC.png")
 ```
 
-#### Calibration
+*Calibration*
 
 The calibration plot (Figure \@ref(fig:plpCalibration)) shows how close the predicted risk is to the observed risk. The diagonal dashed line thus indicates a perfectly calibrated model. The ten (or fewer) dots represent the mean predicted values for each quantile plotted against the observed fraction of people in that quantile who had the outcome (observed fraction). The straight black line is the linear regression using these 10 plotted quantile mean predicted vs observed fraction points. The straight vertical lines represented the 95% lower and upper confidence intervals of the slope of the fitted line.
 
@@ -1010,7 +1014,7 @@ The calibration plot (Figure \@ref(fig:plpCalibration)) shows how close the pred
 knitr::include_graphics("images/PatientLevelPrediction/sparseCalibration.png")
 ```
 
-#### Smooth Calibration
+*Smooth Calibration*
 
 Similar to the traditional calibration shown above the Smooth Calibration plot shows the relationship between predicted and observed risk. the major difference is that the smooth fit allows for a more fine grained examination of this. Whereas the traditional plot will be heavily influenced by the areas with the highest density of data the smooth plot will provide the same information for this region as well as a more accurate interpretation of areas with lower density. the plot also contains information on the distribution of the outcomes relative to predicted risk.
 
@@ -1028,7 +1032,7 @@ Figure \@ref(fig:plpSmoothCal) shows an example from another study that better d
   knitr::include_graphics("images/PatientLevelPrediction/smoothCalibration.jpeg")
 ```
 
-#### Preference distribution
+*Preference distribution*
 
 The preference distribution plot (Figure \@ref(fig:plpPreference)) shows the preference score distributions for people in the test set with the outcome (red) without the outcome (blue).
 
@@ -1036,7 +1040,7 @@ The preference distribution plot (Figure \@ref(fig:plpPreference)) shows the pre
   knitr::include_graphics("images/PatientLevelPrediction/preferencePDF.png")
 ```
 
-#### Predicted probability distribution
+*Predicted probability distribution*
 
 The prediction distribution box plot shows the predicted risks of the people in the test set with the outcome (blue) and without the outcome (red). 
 
@@ -1046,7 +1050,7 @@ The box plots in Figure \@ref(fig:plpPredProb) show that the predicted probabili
   knitr::include_graphics("images/PatientLevelPrediction/predictionDistribution.png")
 ```
 
-#### Test-Train similarity
+*Test-Train similarity*
 
 The test-train similarity is assessed by plotting the mean covariate values in the train set against those in the test set for people with and without the outcome.
 
@@ -1056,7 +1060,7 @@ The results in Figure \@ref(fig:plpTestTrain) for our example look very promisin
   knitr::include_graphics("images/PatientLevelPrediction/generalizability.png")
 ```
 
-#### Variable scatter plot
+*Variable scatter plot*
 
 The variable scatter plot shows the mean covariate value for the people with the outcome against the mean covariate value for the people without the outcome. The color of the dots corresponds to the inclusion (green) or exclusion in the model (blue), respectively. It is highly recommended to use the Shiny App since this allows you to hoover over a covariate to show more details (name, value etc).
 
@@ -1066,7 +1070,7 @@ Figure \@ref(fig:plpVarScatter) shows that the mean of most of the covariates is
   knitr::include_graphics("images/PatientLevelPrediction/variableScatterplot.png")
 ```
 
-#### Precision recall
+*Precision recall*
 
 Precision (P) is defined as the number of true positives (TP) over the number of true positives plus the number of false positives (FP):
 
@@ -1089,7 +1093,7 @@ Figure \@ref(fig:plpPrecisionRecall) shows the tradeoff between precision and re
   knitr::include_graphics("images/PatientLevelPrediction/precisionRecall.png")
 ```
 
-#### Demographic summary
+*Demographic summary*
 
 Figure \@ref(fig:plpDemoSummary) shows for females and males the expected and observed risk in different age groups together with a confidence area. The results show that our model is well calibrated across gender and age groups.
 
@@ -1097,7 +1101,7 @@ Figure \@ref(fig:plpDemoSummary) shows for females and males the expected and ob
   knitr::include_graphics("images/PatientLevelPrediction/demographicSummary.png")
 ```
 
-### External validation
+##### External validation
 
 We recommend to always perform external validation, i.e. apply the final model on as much new datasets as feasible and evaluate its performance. Here we assume the data extraction has already been peformed on a second database and stored in the `newData` folder. We load the model we previously fitted from the `model` folder:
 
@@ -1129,6 +1133,16 @@ validationResults <- applyModel(population, plpData, plpModel)
 
 To make things easier we also provide the `externalValidatePlp` function for performing external validation that also extracts the required data. This function is described in the package manual.
 
+\newpage
+
+
+## Exploring the Shiny App
+The interactive shiny app will start at the summary page:
+
+[add shiny usage]
+
+
+\newpage
 
 ## Additional Patient-level Prediction Features
 ### Journal paper generation
