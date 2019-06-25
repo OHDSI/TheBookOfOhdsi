@@ -283,7 +283,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.t78ml8kmchildren ;"
+## [1] "SELECT * FROM temp_schema.czwi5aw3children ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -651,14 +651,10 @@ QueryLibrary is a library of commonly-used SQL queries for the CDM. It is availa
 
 [^queryLibraryPackageUrl]: https://github.com/OHDSI/QueryLibrary
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/sqlAndR/queryLibrary} 
-
-}
-
-\caption{QueryLibrary: a library of SQL queries against the CDM.}(\#fig:queryLibrary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SqlAndR/queryLibrary.png" alt="QueryLibrary: a library of SQL queries against the CDM." width="100%" />
+<p class="caption">(\#fig:queryLibrary)QueryLibrary: a library of SQL queries against the CDM.</p>
+</div>
 
 The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but is also a valuable resource for experienced users.
 
@@ -888,8 +884,7 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
   xlab("Age") +
   ylab("Incidence (per 1,000 patient weeks)")
 ```
-
-\begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
+<img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" />
 
 ### Clean up
 

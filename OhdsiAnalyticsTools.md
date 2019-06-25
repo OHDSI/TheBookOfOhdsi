@@ -10,14 +10,10 @@ In this chapter we first describe various ways in which we can choose to impleme
 
 Figure \@ref(fig:implementations) shows the various ways in which we can choose to implement a study against a database using the CDM. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/OhdsiAnalyticsTools/implementations} 
-
-}
-
-\caption{Different ways to implement an analysis against data in the CDM.}(\#fig:implementations)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/implementations.png" alt="Different ways to implement an analysis against data in the CDM." width="90%" />
+<p class="caption">(\#fig:implementations)Different ways to implement an analysis against data in the CDM.</p>
+</div>
 
 We may choose to write our analysis as custom code, and not make use of any of the tools OHDSI has to offer. One could write a de novo analysis in R, SAS, or any other language. This provides the maximum flexibility, and may in fact be the only option if the specific analysis is not supported by any of our tools. However, this path requires a lot of technical skill, time, and effort, and as the analysis increases in complexity it becomes harder to avoid errors in the code.
 
@@ -31,14 +27,10 @@ ATLAS and the Methods Library are not independent. Some of the more complicated 
 
 More or less independently of how we choose to implement our analysis is the strategy that our analytics takes in answering specific questions. Figure \@ref(fig:strategies) highlights three strategies that are employed in OHDSI.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/OhdsiAnalyticsTools/strategies} 
-
-}
-
-\caption{Strategies for generating evidence for (clinical) questions.}(\#fig:strategies)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/strategies.png" alt="Strategies for generating evidence for (clinical) questions." width="90%" />
+<p class="caption">(\#fig:strategies)Strategies for generating evidence for (clinical) questions.</p>
+</div>
 
 The first strategy views every analysis as a single indivual study. The analysis must be pre-specified in a protocol, implemented as code, executed against the data, after which the result can be compiled and interpreted. For every question, all steps must be repeated. An example of such an analysis is the OHDSI study into the risk of angioedema associated with levetiracetam compared with phenytoin. [@duke_2017] Here, a protocol was first written, analysis code using the OHDSI Methods Library was developed and executed across the OHDSI network, and results were compiled and disseminated in a journal publication.
 
@@ -61,14 +53,10 @@ ATLAS is a web-based tool that must run on a server with access to the patient-l
 [^atlasUrl]: http://www.ohdsi.org/web/atlas
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/atlas} 
-
-}
-
-\caption{ATLAS user interface.}(\#fig:atlas)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/atlas.png" alt="ATLAS user interface." width="100%" />
+<p class="caption">(\#fig:atlas)ATLAS user interface.</p>
+</div>
 
 A screenshot of ATLAS is provided in Figure \@ref(fig:atlas). On the left is a navigation bar showing the various functions provided by ATLAS:
 
@@ -124,14 +112,10 @@ Feedback
 
 The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the collection of R packages show in  Figure \@ref(fig:methodsLibrary).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/methodsLibrary} 
-
-}
-
-\caption{Packages in the OHDSI Methods Library.}(\#fig:methodsLibrary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/methodsLibrary.png" alt="Packages in the OHDSI Methods Library." width="100%" />
+<p class="caption">(\#fig:methodsLibrary)Packages in the OHDSI Methods Library.</p>
+</div>
 
 Software validity discussed in...
 

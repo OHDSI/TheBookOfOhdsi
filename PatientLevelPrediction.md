@@ -16,9 +16,10 @@ In our paper [@reps2018], we propose a standardised framework for patient-level 
 
 Figure \@ref(fig:figure1), illustrates the prediction problem we address. Among a population at risk, we aim to predict which patients at a defined moment in time (t = 0) will experience some outcome during a time-at-risk. Prediction is done using only information about the patients in an observation window prior to that moment in time.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/Figure1} \caption{The prediction problem.}(\#fig:figure1)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/Figure1.png" alt="The prediction problem." width="100%" />
+<p class="caption">(\#fig:figure1)The prediction problem.</p>
+</div>
 
 As shown in Table \@ref(tab:plpDesign), to define a prediction problem we have to define t=0 by a target Cohort (T), the outcome we like to predict by an outcome cohort (O), and the time-at-risk (TAR). Furthermore, we  have to make design choices for the model we like to develop, and determine the observational datasets to perform internal and external validation. 
 
@@ -325,8 +326,7 @@ Once we execute the study, the `runPlp` function returns the trained model and t
 
 **Todo: update Shiny app screenshot with hypertension example**
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/shinysummary} 
+<img src="images/PatientLevelPrediction/shinysummary.png" width="100%" />
 
 To generate and save all the evaluation plots to a folder run the following code:
 
@@ -344,27 +344,19 @@ The Receiver Operating Characteristics (ROC) plot shows the sensitivity against 
 **Todo: update plots with hypertension example**
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/sparseROC} 
-
-}
-
-\caption{The Receiver Operating Characteristics (ROC) curve.}(\#fig:roc)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/sparseROC.png" alt="The Receiver Operating Characteristics (ROC) curve." width="80%" />
+<p class="caption">(\#fig:roc)The Receiver Operating Characteristics (ROC) curve.</p>
+</div>
 
 ### Calibration
 
 The calibration plot (Figure \@ref(fig:plpCalibration)) shows how close the predicted risk is to the observed risk. The diagonal dashed line thus indicates a perfectly calibrated model. The ten (or fewer) dots represent the mean predicted values for each quantile plotted against the observed fraction of people in that quantile who had the outcome (observed fraction). The straight black line is the linear regression using these 10 plotted quantile mean predicted vs observed fraction points. The straight vertical lines represented the 95% lower and upper confidence intervals of the slope of the fitted line.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/sparseCalibration} 
-
-}
-
-\caption{Calibration plot.}(\#fig:plpCalibration)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/sparseCalibration.png" alt="Calibration plot." width="90%" />
+<p class="caption">(\#fig:plpCalibration)Calibration plot.</p>
+</div>
 
 ### Smooth Calibration
 
@@ -381,27 +373,19 @@ See the help function for more information, on how to set the smoothing method e
 
 Figure \@ref(fig:plpSmoothCal) shows an example from another study that better demonstrates the impact of using a smooth calibration plot. The default line fit would not highlight the miss-calibration at the lower predicted probability levels that well.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/smoothCalibration} 
-
-}
-
-\caption{Smooth calibration plot.}(\#fig:plpSmoothCal)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/smoothCalibration.jpeg" alt="Smooth calibration plot." width="100%" />
+<p class="caption">(\#fig:plpSmoothCal)Smooth calibration plot.</p>
+</div>
 
 ### Preference distribution
 
 The preference distribution plot (Figure \@ref(fig:plpPreference)) shows the preference score distributions for people in the test set with the outcome (red) without the outcome (blue).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/preferencePDF} 
-
-}
-
-\caption{Preference distribution plot.}(\#fig:plpPreference)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/preferencePDF.png" alt="Preference distribution plot." width="90%" />
+<p class="caption">(\#fig:plpPreference)Preference distribution plot.</p>
+</div>
 
 ### Predicted probability distribution
 
@@ -409,14 +393,10 @@ The prediction distribution box plot shows the predicted risks of the people in 
 
 The box plots in Figure \@ref(fig:plpPredProb) show that the predicted probability of the outcome is indeed higher for those with the outcome but there is also overlap between the two distribution which lead to an imperfect discrimination.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/predictionDistribution} 
-
-}
-
-\caption{Predicted probability distribution.}(\#fig:plpPredProb)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/predictionDistribution.png" alt="Predicted probability distribution." width="90%" />
+<p class="caption">(\#fig:plpPredProb)Predicted probability distribution.</p>
+</div>
 
 ### Test-Train similarity
 
@@ -424,14 +404,10 @@ The test-train similarity is assessed by plotting the mean covariate values in t
 
 The results in Figure \@ref(fig:plpTestTrain) for our example look very promising since the mean values of the covariates are on the diagonal.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/generalizability} 
-
-}
-
-\caption{Predicted probability distribution.}(\#fig:plpTestTrain)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/generalizability.png" alt="Predicted probability distribution." width="100%" />
+<p class="caption">(\#fig:plpTestTrain)Predicted probability distribution.</p>
+</div>
 
 ### Variable scatter plot
 
@@ -439,14 +415,10 @@ The variable scatter plot shows the mean covariate value for the people with the
 
 Figure \@ref(fig:plpVarScatter) shows that the mean of most of the covariates is higher for subjects with the outcome compared to those without.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/variableScatterplot} 
-
-}
-
-\caption{Predicted probability distribution.}(\#fig:plpVarScatter)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/variableScatterplot.png" alt="Predicted probability distribution." width="100%" />
+<p class="caption">(\#fig:plpVarScatter)Predicted probability distribution.</p>
+</div>
 
 ### Precision recall
 
@@ -467,27 +439,19 @@ Note that the precision can either decrease or increase if the threshold is lowe
 
 Figure \@ref(fig:plpPrecisionRecall) shows the tradeoff between precision and recall.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/precisionRecall} 
-
-}
-
-\caption{Precision-recall plot.}(\#fig:plpPrecisionRecall)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/precisionRecall.png" alt="Precision-recall plot." width="80%" />
+<p class="caption">(\#fig:plpPrecisionRecall)Precision-recall plot.</p>
+</div>
 
 ### Demographic summary
 
 Figure \@ref(fig:plpDemoSummary) shows for females and males the expected and observed risk in different age groups together with a confidence area. The results show that our model is well calibrated across gender and age groups.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/demographicSummary} 
-
-}
-
-\caption{Precision-recall plot.}(\#fig:plpDemoSummary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/demographicSummary.png" alt="Precision-recall plot." width="100%" />
+<p class="caption">(\#fig:plpDemoSummary)Precision-recall plot.</p>
+</div>
 
 ## External validation
 
