@@ -1,6 +1,6 @@
 # SQL and R {#SqlAndR}
 
-*Chapter lead: Martijn Schuemie & Peter Rijnbeek*
+*Chapter leads: Martijn Schuemie & Peter Rijnbeek*
 
 
 
@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.mrkodda5children ;"
+## [1] "SELECT * FROM temp_schema.pxaifh3pchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
