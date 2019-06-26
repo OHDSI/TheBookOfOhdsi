@@ -1136,7 +1136,14 @@ To make things easier we also provide the `externalValidatePlp` function for per
 \newpage
 
 
-## Exploring the Shiny App
+## Exploring the Atlas PLP Shiny App
+To view the atlas generated analysis results via an interactive shiny app, run:
+`PatientLevelPrediction::viewMultiplePlp(outputFolder)` where *outputFolder* is the directory path containing the analysis results (e.g., 'C:/atlasResults/Example'), it will look like:
+
+```{r shinyResults, fig.cap='The directory where the atlas models and results were saved',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyResults.png")
+```
+
 The interactive shiny app will start at the summary page:
 
 ```{r shinySummary, fig.cap='The shiny summary page containing key hold out set performance metrics for each model trained',echo=FALSE, out.width='80%', fig.align='center'}
@@ -1162,8 +1169,8 @@ To explore a model click on the corresponding row, a selected row will be highli
 ```
 
 With a row selected, you can now explore the model settings used when developing the model by clicking on the *Model Settings* tab:
-```{r shinyModelSet, fig.cap='To view the model settings used when developing the model.',echo=FALSE, out.width='80%', fig.align='center'}
-  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyModelSet.png")
+```{r shinyModel, fig.cap='To view the model settings used when developing the model.',echo=FALSE, out.width='80%', fig.align='center'}
+  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyModel.png")
 ```
 
 To explore the population settings, click on the *Population Settings* tab to display the settings used when developing the model:
@@ -1187,25 +1194,31 @@ By clicking the 'Performance' option from the menu you will be taken to a thresh
   knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceSum.png")
 ```
 
+This summary view shows the selected prediction question in the standard format, a threshold selector and a dashboard containing key threshold based metrics such as positive predictive value (PPV), negative predictive value (NPV), sensitivity and specificity.  See Section ... for more details about these measurements.  In Figure \@ref(fig:shinyPerformanceSum) we see the selected prediction model is: "within new users of ACE inhibitors as first line monotherapy for hypertension predict who will developed acute myocardial infarction during 1 day after cohort start and 365 days after cohort start". At a threshold of 0.00482 the sensitivity is 83.4% (83.4% of patients with the acute MI in the following year have a risk greater than or equal to 0.00482) and the PPV is 1.2% (1.2% of patients with a risk greater than or equal to 0.00482 have an acute MI in the following year).  As the incidence of the acute MI within the year is 0.741%, identifying patients with a risk greater than or equal to 0.00482 would find a subgroup of patients that have nearly double the risk of the population average risk. 
+
 You can adjust the threshold by moving the dot in the *Input* box:
 ```{r shinyPerformanceThres, fig.cap='Moving this changes the threshold and the values in the Dashboard will update.',echo=FALSE, out.width='80%', fig.align='center'}
   knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceThres.png")
 ```
 
-To look at the overal discrimiantion ability of the model click on the 'Discrimination' tab, this then takes you to a view with the ROC plot, PR plot, and distribution plots (the line on the plots corresponds to the selected threshold point):
+To look at the overal discrimination ability of the model click on the 'Discrimination' tab, this then takes you to a view with the ROC plot, PR plot, and distribution plots (the line on the plots corresponds to the selected threshold point):
 ```{r shinyPerformanceDisc, fig.cap='The ROC and PR plots used to access the overal discrimination ability of the model.',echo=FALSE, out.width='80%', fig.align='center'}
   knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceDisc.png")
 ```
 
+We see in Figure \@ref(fig:shinyPerformanceDisc) that the ROC plot shows the model was able to discriminate between those who will have the acute MI within the year and those who will not.  However, the performance looks less impressive when we see the PR plot, as the low incidence of the acute MI means there is a high false positive rate.
+
 ```{r shinyPerformanceDist, fig.cap='The predicted risk distribtion for those with and without the outcome.  The more these overlap the worse the discrimination',echo=FALSE, out.width='80%', fig.align='center'}
   knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceDist.png")
 ```
+
 
 Finally, you can also inspect the calibration of the model by clicking on the 'Calibration' tab.  This displays the calibration plot and the demographic calibration:
 ```{r shinyPerformanceCal, fig.cap='The risk stratified calibration and demographic calibration',echo=FALSE, out.width='80%', fig.align='center'}
   knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceCal.png")
 ```
 
+Figure \@ref(fig:shinyPerformanceCal) shows the average predicted risk appears to match the observed fraction who experienced the acute MI within a year, so the model is well calibrated.  Interestingly, the demographic calibration shows that the blue line is higher than the red line for young patients, so we are predicting a higher risk for young age groups.  Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk.  This may prompt us to develop seperate models for the younger or older patients.
 
 To inspect the final model, select the "Model" option from the left hand menu. This will open a view containing plots for each variable in the model and a table summarising all the candidate covariates.  The variable plots are seperated into binary variables and continuous variables.  The x-axis is the prevalance/mean in patients without the outcome and the y-axis is the prevalance/mean in patients with the outcome.  Therefore, any variable's dot falling above the diagonal is more common in patients with the outcome and any variable's dot falling below the diagonal is less common in patients with the outcome:
 ```{r shinyModelPlots, fig.cap='Each dot corresponds to a varible included in the model.',echo=FALSE, out.width='80%', fig.align='center'}
