@@ -21,8 +21,7 @@ mainfont: Times New Roman
 bibliography:
 - book.bib
 - packages.bib
-description: This is a minimal example of using the bookdown package to write a book.
-  The output format for this example is bookdown::gitbook.
+description: A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software.
 documentclass: book
 favicon: images/favicon.ico
 github-repo: OHDSI/TheBookOfOhdsi
@@ -47,4 +46,40 @@ This book aims to be a central knowledge repository for OHDSI, and focuses on de
 
 ## Structure of the book {-}
 
-This book is organizes in five major sections: (I) The OHDSI Community, (II) Uniform data representation, (III) Data Analytics, (IV) Evidence Quality, and (V) OHDSI Studies. Each section has multiple chapters, and each chapter aims to follow the following main outline: Introduction, Theory, Practice, Excercises. 
+This book is organized in five major sections: 
+
+I) The OHDSI Community
+II) Uniform data representation
+III) Data Analytics
+IV) Evidence Quality
+V) OHDSI Studies
+
+Each section has multiple chapters, and each chapter aims to follow the following main outline: Introduction, Theory, Practice, Excercises. 
+
+## Contributors {-}
+
+TODO: make list of contributors complete
+
+Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
+
+
+------------------  ---------------------  ----------------
+Hamed Abedtash      Mustafa Ascha          Mark Beno       
+Clair Blacketer     Brian Christian        Gino Cloft      
+Sara Dempster       Jon Duke               Sergio Eslava   
+Clark Evans         Thomas Falconer        George Hripcsak 
+Mark Khayter        Greg Klebanov          Kristin Kostka  
+Bob Lanese          Wanda Lattimore        Chun Li         
+David Madigan       Sindhoosha  Malay      Harry Menegay   
+Akihiko Nishimura   Ellen Palmer           Nirav Patil     
+Jose Posada         Dani Prieto-Alhambra   Christian Reich 
+Jenna Reps          Peter Rijnbeek         Patrick Ryan    
+Craig Sachson       Izzy Saridakis         Paula Saroufim  
+Martijn Schuemie    Sarah Seager           Chan Seng You   
+Anthony Senna       Sunah Song             Matt Spotnitz   
+Marc Suchard        Joel Swerdel           Devin Tian      
+Don Torok           Kees van Bochove       Mui Van Zandt   
+Kristin Waite       Mike Warfe             Jamie Weaver    
+Andrew Williams     Chan You Seng                          
+------------------  ---------------------  ----------------
+
