@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-06-26}
+    \date{2019-06-27}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -2140,13 +2140,6 @@ results, including 17,718 empirically calibrated hazard ratios along
 with extensive study diagnostics, is available in an interactive web app
 \footnote{\url{http://data.ohdsi.org/SystematicEvidence/}}.
 
-\section{Re-usable artifacts}\label{re-usable-artifacts}
-
-concept (live in domains) -\textgreater{} concept set -\textgreater{}
-cohort definition -\textgreater{} analysis
-
-Aim to use Standard concepts, although tools allow using source codes
-
 \section{ATLAS}\label{atlas}
 
 ATLAS is a web-based tool that must run on a server with access to the
@@ -2241,16 +2234,18 @@ features or enhancements, this is also a place note these for the
 development community.
 \end{description}
 
-\section{Artifact management}\label{artifact-management}
+\subsection{Security}\label{security}
 
-\section{Security}\label{security}
+\subsection{Documentation}\label{documentation}
+
+\subsection{System requirements}\label{system-requirements}
 
 \subsection{How to install}\label{how-to-install}
 
 \section{Methods Library}\label{methods-library}
 
 The \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods
-Library} is the collection of R packages show in Figure
+Library} is the collection of open source R packages show in Figure
 \ref{fig:methodsLibrary}.
 
 \begin{figure}
@@ -2262,31 +2257,315 @@ Library} is the collection of R packages show in Figure
 \caption{Packages in the OHDSI Methods Library.}\label{fig:methodsLibrary}
 \end{figure}
 
-Software validity discussed in\ldots{}
+The packages offer R functions that together can be used to perform an
+observation study from data to estimates and supporting statistics,
+figures, and tables. The packages interact directly with observational
+data in the CDM, and can be used simply to provide cross-platform
+compatibility to completely custom analyses as described in Chapter
+\ref{SqlAndR}, or can provide advanced standardized analytics for
+population characterization (Chapter \ref{Characterization}),
+population-level causal effect estimation (Chapter
+\ref{PopulationLevelEstimation}), and patient-level prediction (Chapter
+\ref{PatientLevelPrediction}). The Methods Library supports best
+practices for use of observational data as learned from previous and
+ongoing research, such as transparency, reproducibility, as well as
+measuring of the operating characteristics of methods in a particular
+context and subsequent empirical calibration of estimates produced by
+the methods.
 
-\subsection{Support for multiple
-analyses}\label{support-for-multiple-analyses}
+The Methods Library has already been used in many published clinical
+studies (refs), as well as methodological studies (refs). Great care is
+taken to ensure the validity of the Methods Library, as described in
+Chapter \ref{SoftwareValidity}.
 
-\subsection{Big data support}\label{BigDataSupport}
+\subsection{Support for large-scale
+analytics}\label{support-for-large-scale-analytics}
 
-ff Cyclops
+One key feature incorporated in all packages is the ability to
+efficiently run many analyses. For example, when performing
+population-level estimation, the CohortMethod package allows for
+computing effect-size estimates for many exposures and outcomes, using
+various analysis settings, and the package will automatically choose the
+optimal path to compute all the required artifacts. Steps that can be
+re-used, such as extraction of covariates, or fitting a propensity
+model, will be executed only once. Where possible, computations will
+take place in parallel to maximuze the use of computational resources.
 
-\subsection{Documentation}\label{documentation}
+This feature allows for large-scale analytics, answering many questions
+at once, and is also essential for including control hypotheses
+(e.g.~negative controls) to measure the operating characteristics of our
+methods, and perform empirical calibration as described in Chapter
+\ref{MethodValidity}.
 
-Manuals and vignettes
+\subsection{Support for big data}\label{BigDataSupport}
+
+The Methods Library is also designed to run against very large databases
+and be able to perform computations involving large amounts of data.
+This achieved in three ways:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Most data manipulation is performed on the database server. An
+  analysis usually only requires a small fraction of the entire data in
+  the database, and the Methods Library, through the SqlRender and
+  DatabaseConnector packages, allows for advanced operations to be
+  performed on the server to preprocess and extract the relevant data.
+\item
+  Large local data objects are stored in a memory-efficient manner. For
+  the data that is downloaded to the local machine, the Methods Library
+  uses the \href{https://cran.r-project.org/web/packages/ff}{ff} package
+  to store and work with large data objects. This allows us to work with
+  data much larger than fits in memory.
+\item
+  High-performance computing is applied where needed. For example, the
+  \href{https://ohdsi.github.io/Cyclops/}{Cyclops} package implements a
+  highly efficient regression engine that is used throughout the Methods
+  Library to perform large-scale regressions (large number of variables,
+  large number of observations) that would not be possible to fit
+  otherwise.
+\end{enumerate}
+
+\subsection{Documentation}\label{documentation-1}
+
+R provides a standard way of documenting package. Each package has a
+\emph{package manual} that documents every function and data set in the
+package. All package manuals are available online through the Methods
+Library website \footnote{\url{https://ohdsi.github.io/MethodsLibrary}},
+through the package GitHub repositories, and for those packages
+available through CRAN they can be found in CRAN. Furtermore, from
+within R the package manual can be consulted by using the question mark.
+For example, after loading the DatabaseConnector package, typing the
+command \texttt{?connect} brings up the documentation on the ``connect''
+function.
+
+In addition to the package manual, many packages provide
+\emph{vignettes}. Vignettes are long-form documentation that describe
+how a package can be used to perform certain tasks. For example, one
+vignette \footnote{\url{https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html}}
+describes how to perform multiple analyses efficiently using the
+CohortMethod package. Vignettes can also be found through the Methods
+Library website , through the package GitHub repositories, and for those
+packages available through CRAN they can be found in CRAN.
+
+\subsection{System requirements}\label{system-requirements-1}
+
+Two computing environments are relevant when discussing the system
+requirements: The database server, and the analytics workstation.
+
+The database server must hold the observational healthcare data in CDM
+format. The Methods Library supports a wide array of database management
+systems including traditional database systems (PostgreSQL, Microsoft
+SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM
+Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop
+through Impala, and Google BigQuery).
+
+The analytics workstation is where the Methods Library is installed and
+run. This can either be a local machine, such as someone's laptop, or a
+remote server running RStudio Server. In all cases the requiments are
+that R is installed, preferrably together with RStudio. The Methods
+Library also requires that Java is installed. The analytics workstation
+should also be able to connect to the database server, specifically, any
+firewall between them should have the database server access ports
+opened the the workstation. Some of the analytics can be computationally
+intensive, so having multiple processing cores and ample memory can help
+speed up the analyses. We recommend having at least four cores and 16
+gigabytes of memory.
 
 \subsection{How to install}\label{how-to-install-1}
+
+Here are the steps for installing the required environment to run the
+OHDSI R packages. Four things needs to be installed:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{R} is a statistical computing environment. It comes with a
+  basic user interface that is primarily a command-line interface.
+\item
+  \textbf{RTools} is a set of programs that is required on Windows to
+  build R packages from source.
+\item
+  \textbf{RStudio} is an IDE (Integrated Development Environment) that
+  makes R easier to use. It includes a code editor, debugging and
+  visualization tools. Please use it to obtain a nice R experience.
+\item
+  \textbf{Java} is a computing environment that is needed to run some of
+  the components in the OHDSI R packages, for example those needed to
+  connect to a database.
+\end{enumerate}
+
+Below we describe how to install each of these in a Windows environment.
+
+\BeginKnitrBlock{rmdimportant}
+In Windows, both R and Java come in 32-bit and 64-bits architectures. If
+you install R in both architectures, you \textbf{must} also install Java
+in both architectures. It is recommended to only install the 64-bit
+version of R.
+\EndKnitrBlock{rmdimportant}
+
+\textbf{Installing R}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Go to \url{https://cran.r-project.org/}, click on ``Download R for
+  Windows'', then ``base'', then click the Download link indicated in
+  Figure \ref{fig:downloadR}.
+\end{enumerate}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/downloadR} 
+
+}
+
+\caption{Downloading R from CRAN.}\label{fig:downloadR}
+\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  After the download has completed, run the installer. Use the default
+  options everywhere, with two exceptions: First, it is better not to
+  install into program files. Instead, just make R a subfolder of your C
+  drive as shown in Figure \ref{fig:rDestination}. Second, to avoid
+  problems due to differing architectures between R and Java, disable
+  the 32-bit architecture as shown in Figure \ref{fig:no32Bits}.
+\end{enumerate}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/OhdsiAnalyticsTools/rDestination} 
+
+}
+
+\caption{Settings the destination folder for R.}\label{fig:rDestination}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/OhdsiAnalyticsTools/no32Bits} 
+
+}
+
+\caption{Disabling the 32-bit version of R.}\label{fig:no32Bits}
+\end{figure}
+
+Once completed, you should be able to select R from your Start Menu.
+
+\textbf{Installing RTools}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Go to \url{https://cran.r-project.org/}, click on ``Download R for
+  Windows'', then ``Rtools'', and select the very latest version of
+  RTools to download.
+\item
+  After downloading has completed run the installer. Select the default
+  options everywhere.
+\end{enumerate}
+
+\textbf{Installing RStudio}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Go to \url{https://www.rstudio.com/}, select ``Download RStudio'' (or
+  the ``Download'' button under ``RStudio''), opt for the free version,
+  and download the installer for Windows as shown in Figure
+  \ref{fig:downloadRStudio}.
+\end{enumerate}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/downloadRStudio} 
+
+}
+
+\caption{Downloading RStudio.}\label{fig:downloadRStudio}
+\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  After downloading, start the installer, and use the default options
+  everywhere.
+\end{enumerate}
+
+\section{Installing Java}\label{installing-java}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Go to \url{https://java.com/en/download/manual.jsp}, and select the
+  Windows 64-bit installer as shown in Figure \ref{fig:downloadJava}. If
+  you also installed the 32-bit version of R, you \emph{must} also
+  install the other (32-bit) version of Java.
+\end{enumerate}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/downloadJava} 
+
+}
+
+\caption{Downloading Java.}\label{fig:downloadJava}
+\end{figure}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  After downloading just run the installer.
+\end{enumerate}
+
+\textbf{Verifying the installation}
+
+You should now be ready to go, but we should make sure. Start R-studio,
+and type
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(SqlRender)}
+\KeywordTok{translate}\NormalTok{(}\StringTok{"SELECT TOP 10 * FROM person;"}\NormalTok{, }\StringTok{"postgresql"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "SELECT  * FROM person LIMIT 10;"
+\end{verbatim}
+
+This function uses Java, so if all goes well we know both R and Java
+have been installed correctly!
+
+Another test is to see if source packages can be built. Run the
+following R code to install the \texttt{CohortMethod} package from the
+OHDSI GitHub repository:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"drat"}\NormalTok{)}
+\NormalTok{drat}\OperatorTok{::}\KeywordTok{addRepo}\NormalTok{(}\StringTok{"OHDSI"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\StringTok{"CohortMethod"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \section{Integrated solutions}\label{integrated-solutions}
 
 BroadSea?
-
-Best practices enforced in all OHDSI methods.
-
-Ethical consideration: e.g.~should always communicate uncertainty.
-Prespecification of research questions, etc.
-
-Case study: Perhaps on how to install the tools?
 
 \chapter{SQL and R}\label{SqlAndR}
 
@@ -2726,7 +3005,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.yd9uapj7children ;"
+## [1] "SELECT * FROM temp_schema.fh9kvo3lchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -8748,7 +9027,7 @@ number:
   revisions. No guarantees are madef in terms of compatibility
 \end{itemize}
 
-\subsection{Documentation}\label{documentation-1}
+\subsection{Documentation}\label{documentation-2}
 
 All packages in the Methods Library are documented through R's internal
 documentation framework. Each package has a package manual that
