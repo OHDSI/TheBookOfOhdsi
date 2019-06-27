@@ -1,6 +1,6 @@
 # (PART) Evidence Quality {-}
 
-# Evidence Quality {#EvidenceQuality}
+# Introduction to Evidence Quality {#EvidenceQuality}
 
 *Chapter lead: Jon Duke*
 
@@ -14,9 +14,9 @@ While the topic of "data quality" is often discussed in the context of observati
 
 As such, we frame the discussion in terms of "Evidence Quality", which is derived from establishing validity along four dimensions:
 
-- [Data Validity](DataQuality.html) (ie data quality)
-- [Clinical Validity](ClinicalValidity.html)
-- [Software Validity](SoftwareValidity.html)
-- [Method Validity](MethodValidity.html)
+* [Data Quality](DataQuality.html) (ie data validity)
+* [Clinical Validity](ClinicalValidity.html)
+* [Software Validity](SoftwareValidity.html)
+* [Method Validity](MethodValidity.html)
 
 In this chapter, we will review each of these components and discuss how OHDSI tools, conventions, and community support their evaluation and improvement.
