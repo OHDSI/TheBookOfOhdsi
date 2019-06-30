@@ -5,6 +5,33 @@
 
 ## Introduction
 
+It is widely excepted in medicine that prevention is better than cure.  If we could identify patients who are at a high risk of developing some illness, then it might be possible to intervene and slow down the progression of, or even prevent, the illness.  Big observational healthcare data capture rich information across a diverse and often large patient population.  These data are collected retrospectively.  It may be possible to learn associations from the data that can be used to calculate patient-level predictions for various illnesses or health outcomes.  In this chapter we consider prediction the tasks: 
+
+- Disease onset and progression
+    - **Structure**: Amongst patients who are newly diagnosed with *[a disease]*, who will go on to have *[another disease or complication]* within *[time horizon from diagnosis]*?
+    - **Example**: Among newly diagnosed atrial fibrilation patients, who will go on to have ischemic stroke in the next three years?
+- Treatment choice
+    - **Structure**: Amongst patients with *[indicated disease]* who are treated with either *[treatment 1]* or *[treatment 2]*, which patients were treated with *[treatment 1]* (on day 0).
+    - **Example**: Among patients with atrial fibrilation who took either warfarin or rivaroxaban, which patients gets warfarin? (e.g. for a propensity model)
+- Treatment response
+    - **Structure**: Amongst new users of *[a treatment]*, who will experience *[some effect]* in *[time window]* ?
+    - **Example**: Which patients with diabetes who start on metformin stay on metform for three years?
+- Treatment safety
+    - **Structure**: Amongst new users of *[a treatment]*, who will experience *[adverse event]* in *[time window]*?
+    - **Example**:  Amongst new users of warfarin, who will have a GI bleed in one year?
+- Treatment adherence
+    - **Structure**: Amongst new users of *[a treatment]*, who will achieve *[adherence metric]* at *[time window]*?
+    - **Example**: Which patients with diabetes who start on metformin achieve >=80% proportion of days covered at one year?
+
+All these examples answer the question, within some target population predict the occurrence of some outcome during some time interval relative to the target population index.  Prediction models can be used to find groups of patients that are at a high or low risk of some health outcome or to calculate a patient’s personalized risk.  However, prediction does not tell us anything about the causality relationship between the predictors and the outcome.  If you are interested in causal inference, then you want to read Chapter [add link to Population level estimation].
+
+There are two ways to use the OHDSI tools for patient-level prediction.  The first approach is to use the atlas interface to design a study and then atlas creates an R package that goes end to end from data extraction to model develoment and evaluation.  This requires only basic R knowledge.  The second approach is to manually write R code using our PatientLevelPrediction R library.  This requires intermediate R knowledge at a minimum, but enables greater flexibility in the prediction analysis study design. 
+
+In chapter we first describe the theory behind patient-level prediction, including a summary of current progress in patient-level prediction, an overview of supervised learning and the various classifiers, details about how labeled data are extracted from observational databases and how to evaluate the performance of a model.  We then provide a walk-through including how to specify the prediction problem, how to use Atlas or R to develop the prediction model and how to evaluate the model. 
+
+\newpage
+
+## Current Progress in Patient-Level Prediction
 Clinical decision making is a complicated task in which the clinician has to infer a diagnosis or treatment pathway based on the available medical history of the patient and the current clinical guidelines. Clinical prediction models have been developed to support this decision making process and are used in clinical practice in a wide spectrum of specialties. These models predict a diagnostic or prognostic outcome based on a combination of patient characteristics, e.g. demographic information, disease history, treatment history. The number of publications describing clinical prediction models has increased strongly over the last 10 years. An example is the Garvan model that predicts the 5-years and 10-years fractures risk in any elderly man or woman based on age, fracture history, fall history, bone mass density or weight [@nguyen2008]. Many prediction models have been developed in patient subgroups at higher risk that need more intensive monitoring, e.g. the prediction of 30-day mortality after an acute myocardial described by @lee1995. Also, many models have been developed for asymptomatic subjects in the population, e.g. the famous Framingham risk functions for cardiovascular disease [@wilson1998], or the models for breast cancer screening [@engel2015].
 
 Surprisingly, most currently used models are estimated using small datasets and contain a limited set of patient characteristics. For example, in a review of 102 prognostic models in traumatic brain injury showed that three quarters of the models were based on samples with less than 500 patients [@perel2006]. This low sample size, and thus low statistical power, forces the data analyst to make stronger modelling assumptions. The selection of the often limited set of patient characteristics is strongly guided by the expert knowledge at hand. This contrasts sharply with the reality of modern medicine wherein patients generate a rich digital trail, which is well beyond the power of any medical practitioner to fully assimilate. Presently, health care is generating huge amount of patient-specific information contained in the Electronic Health Record (EHR). This includes structured data in the form of diagnose, medication, laboratory test results, and unstructured data contained in clinical narratives. Currently, it is unknown how much predictive accuracy can be gained by leveraging the large amount of data originating from the complete EHR of a patient.
@@ -41,31 +68,10 @@ Table: (\#tab:plpDesign) Main design choices in a prediction design.
 | Model             | What algorithms using which parameters do we want use, and what predictor variables do we want to include?  |
 
 
-This conceptual framework works for all type of prediction problems:
+This conceptual framework works for all type of prediction problems, see [introduction link]
 
-- Disease onset and progression
-    - **Structure**: Amongst patients who are newly diagnosed with *[a disease]*, who will go on to have *[another disease or complication]* within *[time horizon from diagnosis]*?
-    - **Example**: Among newly diagnosed atrial fibrilation patients, who will go on to have ischemic stroke in the next three years?
-- Treatment choice
-    - **Structure**: Amongst patients with *[indicated disease]* who are treated with either *[treatment 1]* or *[treatment 2]*, which patients were treated with *[treatment 1]* (on day 0).
-    - **Example**: Among patients with atrial fibrilation who took either warfarin or rivaroxaban, which patients gets warfarin? (e.g. for a propensity model)
-- Treatment response
-    - **Structure**: Amongst new users of *[a treatment]*, who will experience *[some effect]* in *[time window]* ?
-    - **Example**: Which patients with diabetes who start on metformin stay on metform for three years?
-- Treatment safety
-    - **Structure**: Amongst new users of *[a treatment]*, who will experience *[adverse event]* in *[time window]*?
-    - **Example**:  Amongst new users of warfarin, who will have a GI bleed in one year?
-- Treatment adherence
-    - **Structure**: Amongst new users of *[a treatment]*, who will achieve *[adherence metric]* at *[time window]*?
-    - **Example**: Which patients with diabetes who start on metformin achieve >=80% proportion of days covered at one year?
-    
-In the next sections we will explain the best practices for model specification, implementation, and evaluation using OHDSI's Patient-Level Prediction (PLP) framework as guidance.
 
-\newpage
-
-## Patient-level Prediction Theory
-
-### Creating Labelled Data
+## Creating Labelled Data
 The observational datasets we use in OHDSI consist of timestamped records of patient medical interactions. These are represented by tables containing anonymised patient details such as gender and year of birth in addition to tables containing date stamped medical records.
 
 ```{r figuretheory1, fig.cap='Observational data.',echo=FALSE, out.width='100%'}
@@ -86,7 +92,7 @@ This will then provide us with labelled data.  The definition of the target coho
 knitr::include_graphics("images/PatientLevelPrediction/theory/dataplot2.png")
 ```
 
-### Supervised learning
+## Supervised learning
 The idea of supervised learning is to be able to generalise what is observed in the labelled data so that when a new patient's covariates are known but their label is unknown, we can predict their label. 
 
 If we consider the situation where we have two covariates, then we can represent each patient as a plot in two dimensional space.  The shape/color of a data points corresponds to the patient's label.  The idea of supervised learning is to generalise the what we see and fill in where there are no current data points.  A supervised learning model will try to partition the space via a decision boundary, as seen in Figure \ref{fig:figuretheory4} that aims to minimise the cases where the data point labels do not match the models prediction.  Different supervised learning techniques lead to different decision boundaries and there are often hyper-parameters that can impact the complexity of the decision boundary. 
@@ -109,36 +115,36 @@ Therefore, you want a model that appears to partition the labelled data well but
 
 Another way to think about supervised learning is finding a function that maps from a patient's covariates to their label. [add function]. Each supervised learning model has a different way to learn the mapping function and the no free lunch theorem states that no one algorithm is always going to outperform the others.  The performance of each type of supervised learning algorithm depends on how the labelled data points are distributed in space. Therefore we recommend trying multiple supervised learning techniques when developing patient-level prediction models. 
 
-#### Regularized Logistic Regression
+### Regularized Logistic Regression
 Lasso logistic regression belongs to the family of generalized linear models, where a linear combination of the variables is learned and finally a logistic function maps the linear combination to a value between 0 and 1.  The lasso regularization adds a cost based on model complexity to the objective function when training the model.  This cost is the sum of the absolute values of the linear combination of the coefficients.  The model automatically performs feature selection by minimizing this cost. We use the [Cyclops](https://ohdsi.github.io/Cyclops/) (Cyclic coordinate descent for logistic, Poisson and survival analysis) package to perform large-scale regularized logistic regression. **Hyper-parameters**: var  (starting  variance), seed.
 
-#### Gradient boosting machines
+### Gradient boosting machines
 Gradient boosting machines is a boosting ensemble technique and in our framework it combines multiple decision trees.  Boosting works by iteratively adding decision trees but adds more weight to the data-points that are misclassified by prior decision trees in the cost function when training the next tree.  We use Extreme Gradient Boosting, which is an efficient implementation of the gradient boosting framework implemented in the xgboost R package available from CRAN. **Hyper-parameters**: ntree (number of trees), max depth (max levels in tree), min rows (minimum data points in in node), learning rate, seed  | mtry  (number  of  features  in  each  tree),ntree (number of trees), maxDepth (max levels in tree), minRows (minimum data points in in node),balance (balance class labels), seed.
 
-#### Random forest
+### Random forest
 Random forest is a bagging ensemble technique that combines multiple decision trees.  The idea behind bagging is to reduce the likelihood of overfitting, by using weak classifiers, but combining multiple diverse weak classifiers into a strong classifier.  Random forest accomplishes this by training multiple decision trees but only using a subset of the variables in each tree and the subset of variables differ between trees. Our packages uses the sklearn learn implementation of Random Forest in python. **Hyper-parameters**: mtry  (number  of  features  in  each  tree),ntree (number of trees), maxDepth (max levels in tree), minRows (minimum data points in in node),balance (balance class labels), seed.
 
-####K-nearest neighbors
+### K-nearest neighbors
 K-nearest neighbors (KNN) is an algorithm that uses some metric to find the K closest labelled data-points, given the specified metric, to a new unlabelled data-point. The prediction of the new data-points is then the most prevalent class of the K-nearest labelled data-points. There is a sharing limitation of KNN, as the model requires labelled data to perform the prediction on new data, and it is often not possible to share this data across data sites. We included the [BigKnn](https://github.com/OHDSI/BigKnn) package developed in OHDSI which is a large scale k-nearest neighbor classifier. **Hyper-parameters**: k (number of neighbours), weighted (weight by inverse frequency).
 
-#### Naive Bayes
+### Naive Bayes
 The Naive Bayes algorithm applies the Bayes theorem with the naive assumption of conditional independence between every pair of features given the value of the class variable. Based on the likelihood the data belongs to a class and the prior distribution of the class, a posterior distribution is obtained. **Hyper-parameters**: none.
 
-#### AdaBoost
+### AdaBoost
 AdaBoost is a boosting ensemble technique. Boosting works by iteratively adding classifiers but adds more weight to the data-points that are misclassified by prior classifiers in the cost function when training the next classifier. We use the sklearn AdaboostClassifier implementation in Python. **Hyper-parameters**: nEstimators (the maximum number of estimators at which boosting is terminated), learningRate (learning rate shrinks the contribution of each classifier by learning_rate. There is a trade-off between learningRate and nEstimators).
 
-#### Decision Tree
+### Decision Tree
 A decision tree is a classifier that partitions the variable space using individual tests selected using a greedy approach.  It aims to find partitions that have the highest information gain to separate the classes.  The decision tree can easily overfit by enabling a large number of partitions (tree depth) and often needs some regularization (e.g., pruning or specifying hyper-parameters that limit the complexity of the model). We use the sklearn DecisionTreeClassifier implementation in Python. **Hyper-parameters**: maxDepth (the maximum depth of the tree), minSamplesSplit,minSamplesLeaf, minImpuritySplit (threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf.), seed,classWeight ("Balance"" or "None").
 
-#### Multilayer Perception
+### Multilayer Perception
 Neural networks containing multiple layers that weight their inputs using a non-linear function.  The first layer is the input layer, the last layer is the output layer the between are the hidden layers.  Neural networks are generally trained using feed forward back-propagation.  This is when you go through the network with a data-point and calculate the error between the true label and predicted label, then go backwards through the network and update the linear function weights based on the error.  **Hyper-parameters**: size (the number of hidden nodes), alpha (the l2 regularisation), seed.
 
-#### Deep Learning
+### Deep Learning
 Deep learning such as deep nets, convolutional neural networks or recurrent neural networks are similar to a neural network but have multiple hidden layers that aim to learn latent representations useful for prediction. In a seperate vignette in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package we describe these models and hyper-parameters in more detail.
 
-### Evaluating Models
+## Evaluating Patient-Level Prediction Models
 
-#### Evaluation Types
+### Evaluation Types
 There are various ways to evaluate a prediction model: internal validation, external valdiation, temporal validation and  spatial validation.  
 
 Internal validation is when a prediction model is evaluated using the same dataset used to develop the model.  There are three ways to perform internal validation: using a holdout set, using cross validation and using bootstrapping.  In the patient-level prediction framework we use a holdout set for internal validation.  
@@ -161,7 +167,7 @@ knitr::include_graphics("images/PatientLevelPrediction/theory/externalValidation
 
 Temporal validation is a type of validation where a model is validated on data that were collected after the data used to develop the model.  This can help identify situations where they may be temporal shifts in the data that impact the transportability of the model across time.  Another type of validation, spatial validation, is location based where a model is developed on patients for some locations (perhaps certain hospitals or doctor surgeries) and validated on patients at a different location.
 
-#### Performance Metrics
+### Performance Metrics
 
 A prediction model assigned a value between 0 and 1 for each patient corresponding to the risk of the patient having the outcome during the time at risk.  A value of 0 means 0% risk, a value of 0.5 means 50% risk and a value of 1 means 100% risk.  Common metrics such as accuracy, sensitivity, specificity, positivity predictive value can be calculated by first specifying a threshold that is used to class patients as having the outcome or not having the outcome during the time at risk.  For example, given Table …, if we set the threshold as 0.5, the patients 1,3,7 and 10 have a predicted risk greater than or equal to the threshold of 0.5 so they would be predicted to have the outcome.  All other patients had a predicted risk less than 0.5, so would be predicted to not have the outcome. 
 
@@ -267,11 +273,10 @@ We define the target cohort as the first exposure to any ACE inhibitor. Patients
 
 \newpage
 
-## Implementing a Patient-level Prediction Study
-There are two ways to use the OHDSI tools for patient-level prediction.  The first approach is to use the atlas interface to design a study and then atlas creates an R package that goes end to end from data extraction to model develoment and evaluation.  This requires only basic R knowledge.  The second approach is to manually write R code using our PatientLevelPrediction R library.  This requires intermediate R knowledge at a minimum, but enables greater flexibility in the prediction analysis study design.  In this section, we will provide step-by-step guides for both approaches. 
 
-### Implementing the study in Atlas
-#### Introduction 
+## Implementing the study in Atlas
+### Introduction
+
 The atlas interface to patient-level prediction enables a users to design a prediction study analysis containing multiple prediction questions and analyses settings.  The atlas interface creates a prediction study R package populated with all the code ready to develop and evaluate the specified models.  All a user needs to develop the models is R studio with: 
 
 - OHDSI's PatientLevelPrediction R package installed
@@ -286,7 +291,8 @@ The atlas created prediction study R package has additional functionality to:
 
 In this section we will detail the design choices for the prediction problem specification, the analysis settings and the executing settings.  We will then guide the user through the process of reviewing analysis, downloading and running the prediction study package and interpreting the results via the shiny app.
 
-#### The Atlas layout
+### The Atlas layout
+
 The interface for designing a prediction study can be opened by clicking on the 'Prediction' button in the left hand side atlas menu.
 
 ```{r figure2a, fig.cap='The Atlas home page.',echo=FALSE, out.width='100%'}
@@ -343,10 +349,12 @@ knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/Spec_
 
 Each of the 'Specification' settings are described in more detail in the following sections.  We also describe the 'Utilities' tab where a user can review, import/export and download their study as an executional R library.   
 
-#### Atlas Specification Tab
+### Atlas Specification Tab
+
 The specification section is where a user can specify her prediction question, covariates, additional study population inclusion criteria, model type and hyper-parameters and execution settings. 
 
-##### Prediction Problem Settings
+### Prediction Problem Settings
+
 The prediction problem settings enables you to select the target population cohorts and outcome cohorts for the analysis.  A prediction model will be developed for all combinations of the target population cohorts and the outcome cohorts.  
 
 For example, if you specify two target populations: 
@@ -402,10 +410,12 @@ knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/compl
 
 Once you have added all the target population cohorts and outcome cohorts you are now ready to procede to the analysis settings.
 
-#####  Analysis Settings
+### Analysis Settings
+
 The analysis settings enables you to pick the supervised learning models, the covariates and population settings.
 
-###### Model Settings
+### Model Settings
+
 You can pick one or more supervised learning models to investigate using for model development. To add a supervised learning model click on the blue '+ Add Model Settings' button.  A dropdown containing all the models currently supported in the Atlas interface will appear (note: more models may be available outside of Atlas);
 
 ```{r figureAS1, fig.cap='Adding a supervised learning model',echo=FALSE, out.width='100%'}
@@ -447,7 +457,8 @@ knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/analy
 
 Once happy with the hyper-parameters, click on the grey '<' button on the top left to add the model into the prediction study.  You will now see you model and hyper-parameter settings in the 'Model Setttings' table.  Repeat the process to include all the supervised learning models you want to investigate.
 
-###### Covariate Settings
+### Covariate Settings
+
 We have defined a set of *standard* covariates that can be extracted from the observational data in the OMOP CDM format.  In the covariate settings view, it is possible to select which of the standard covariates to include.  It is possible to add many different types of covariate settings.
 
 To add a covariate setting into the study, click on the blue '+ Add Covariate Settings' button:
@@ -575,7 +586,8 @@ knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/analy
 
 Once happy with the covariate settings, click the '<' button on the top left corner to return to the main prediction settings.  Your covariate options you picked  will now show in the covaraite settings table.  You can edit an exisitng setting by clicking on the corresponding row or add more covariate settings by clicking on the blue '+ Add Covariate Settings' button again. 
 
-###### Population Settings
+### Population Settings
+
 The population settings is where addition inclusion criteria can be applied to the target population (this may be useful for sensitivity investigations) and is also where the time-at-risk is defined.
 
 To add a population setting into the study, click on the blue '+ Add Population Settings' button:
@@ -614,7 +626,7 @@ Once you are happy with the population settings, click on the grey '<' button in
 
 To add more population settings, repeat the process detailed in this section.
 
-###### Execution settings
+### Execution settings
 
 Execution settings determine whether to use sampling, how to manage rare events, and whether to normalize covariates. Sampling can be an efficient means to determine if a model for a large population (i.e. 10 million patients) is accurate, by creating and testing the model with a subgroup of patients (e.g. if AUC is close to 0.5 on your sampling, you might abandon the model). The user specifies the size of the subgroup to be sampled.  A minimum threshold value for covariate occurrence is necessary to remove rare events that are not representative of the overall population.  Normalization of the covariates is usually necessary for successful implementation of a LASSO model.
 
@@ -628,7 +640,7 @@ There are three options:
 - "Minimum covariate occurrence: If a covariate occurs in a fraction of the target population less than this value, it will be removed:": here you can choose then minimum covariate occurrence (default = 0.001)
 - "Normalize covariate": here you can choose whether to normalize covariates (default = ‘Yes)
 
-###### Training settings
+### Training settings
 
 Training settings determine how to distribute the data between training and testing groups. Most of the data will be used to train the model and the rest will be used to test it. The data can be divided by either unit person or time. The percentage of data attributed to training or testing the model is specified by the user (Figure X). Additionally, the number of folds for cross-validation is specified, which partitions the training data for hyper-parametric analysis (Figure Y).  The user has the option of specifying the seed used to split the training and testing data for consistent distribution of the outcomes between the groups. This option is only needed for person based splitting.
 
@@ -645,7 +657,7 @@ There are four options:
 
 [add picture of the test/train and cross valdiation]
 
-##### Atlas Utilities Tab
+### Atlas Utilities Tab
 The Utilities tab is where a user can review the prediction study (once minimum required settings are defined), export/import existing atlas prediction studies and download the prediction study R package.
 
 ```{r figureU1, fig.cap='The utilities tab',echo=FALSE, out.width='100%'}
@@ -653,8 +665,8 @@ knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/utili
 ```
 
 
-###### How to review a study
 **Review and Download Tab**
+
 If you have not completed all pre-requisites needed to run the study, you will see the following:
 
 ```{r figureU2, fig.cap='Reviewing when insufficient design',echo=FALSE, out.width='100%'}
@@ -680,7 +692,7 @@ Finally, clicking on the Analysis Settings tab results in the screen below, allo
 knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/utilities_review_analysis.png")
 ```
 
-###### How to import/export study
+### How to import/export study
 
 To export a study, click on the Export tab under utilities.  ATLAS will produce JSON file that can be directly copied and pasted into a file that contains all of the data (study name, cohort definitions, models selected, covariates, settings, etc.) needed to run the study.
 
@@ -693,7 +705,7 @@ To import a study, first go back to the main ATLAS menu and click on Prediction.
 knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/utilities_import.png")
 ```
 
-###### How to download package 
+### How to download package
 The Download Study button is available at the bottom of the Utilities screen.  Enter a descriptive name for the R package, noting that any illegal characters in R will automatically be removed from the file name by ATLAS.
 
 ```{r figureU8, fig.cap='Downloading the study design as an R package',echo=FALSE, out.width='100%'}
@@ -707,19 +719,19 @@ knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/utili
 ```
 
 
-##### Building Atlas created prediction study R package
+### Building Atlas created prediction study R package
 
-######  Setting up R 
+** Setting up R **
 To run the atlas generated prediction R package study requires having R studio () installed, the devtools R package [in R run: install.packages(‘devtools’)] and the OHDSI PatientLevelPrediction package installed (see …).
 
-###### Unzipping atlas compressed folder
+** Unzipping atlas compressed folder **
 Atlas generates a zipped directory containing the R package.  This zipped directory needs to be extracted. Once extracted the directory will look like:
 
 ```{r figureU10, fig.cap='The directory of study design R package',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/download_folder.png")
 ```
 
-######  Opening package project in R
+** Opening package project in R **
 The easiest way to open the atlas created package in R is to double click on the project file:
 
 ```{r figureU11, fig.cap='Opening the study design R package',echo=FALSE, out.width='100%'}
@@ -733,7 +745,7 @@ This will then open a new R studio session:
 knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/rstudio_start.png")
 ```
 
-###### Building project
+** Building project **
 Once R studio has opened the project, you can then build the package by clicking on the ‘build’ option in the top right hand side:
 ```{r figureU13, fig.cap='Building the R project into a local R library',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/building.png")
@@ -758,8 +770,8 @@ knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/descr
 
 If you do not have any of the packages listed in ‘Imports:’ then you will need to install them before building the atlas generated package.
 
-##### Running Study
-###### Readme and extras/codetorun.R
+### Running Study
+** Readme and extras/codetorun.R **
 
 The key file in the atlas generated package directory is the one that contains code for running the study, the CodeToRun.R file found in the extras directory:
 
@@ -772,7 +784,7 @@ We recommend opening the file CodeToRun.R
 knitr::include_graphics("images/PatientLevelPrediction/atlasImplementation/code_to_run.png")
 ```
 
-######  CodeToRun.R Settings 
+** CodeToRun.R Settings **
 The final step to running the study is to connect to the database through R and specify where the results should be saved.,
 
 The CodeToRun.R file looks like:
@@ -810,22 +822,22 @@ The following options specify:
 - G: minCellCount - this is linked to E: packageResults and  F: createValidationPackage and specifies the minimum cell count for any result to be included when sharing the models.  For example, if the minCellCount is 5, then any count with a value less than 5 will be removed.
 
 
-##### Viewing the Results
+** Viewing the Results **
 After running the R package analysis you can view the results in an interactive shiny app by running:
 ```{r tidy=TRUE,eval=FALSE}
 PatientLevelPrediction::viewMultiplePlp(outputFolder)
 ```
 
 \newpage
-### Implementing the study in R
+## Implementing the study in R
 
 Now we have completely designed our study we have to implement the study in R. This will be done using the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package to build patient-level predictive models. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
 
-#### Cohort instantiation
+### Cohort instantiation
 
 We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitors)) and outcome (Appendix \@ref(Angioedema)) cohorts. In this example we will assume the ACE inhibitors cohort has ID 1, and the angioedema cohort has ID 2.
 
-#### Data extraction
+### Data extraction
 
 We first need to tell R how to connect to the server. [`PatientLevelPrediction`](https://ohdsi.github.io/PatientLevelPrediction/) uses the [`DatabaseConnector`](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
@@ -900,7 +912,7 @@ savePlpData(plpData, "angio_in_ace_data")
 
 We can use the `loadPlpData()` function to load the data in a future session.
 
-#### Additional inclusion criteria
+### Additional inclusion criteria
 
 To completely define the prediction problem the final study population is obtained by applying additional constraints on the two earlier defined cohorts, e.g., a minumim time at risk can be enforced (`requireTimeAtRisk, minTimeAtRisk`) and we can specify if this also applies to patients with the outcome (`includeAllOutcomes`). Here we also specify the start and end of the risk window relative to target cohort start. For example, if we like the risk window to start 30 days after the at-risk cohort start and end a year later we can set `riskWindowStart = 30` and `riskWindowEnd = 365`. In some cases the risk window needs to start at the cohort end date. This can be achieved by setting `addExposureToStart = TRUE` which adds the cohort (exposure) time to the start date.
 
@@ -924,7 +936,7 @@ population <- createStudyPopulation(plpData = plpData,
 )
 ```
 
-#### Model Development
+### Model Development
 
 In the set function of an algorithm the user can specify a list of eligible values for each hyper-parameter. All possible combinations of the hyper-parameters are included in a so-called grid search using cross-validation on the training set. If a user does not specify any value then the default value is used instead.
 
@@ -975,9 +987,9 @@ To load the full results structure use:
 gbmResults <- loadPlpResult("gbmResults")
 ```
 
-#### Interpreting the Patient-level Prediction Study Performance
+## Interpreting the Patient-level Prediction Study Performance
 
-##### Internal Validation
+### Internal Validation
 
 Once we execute the study, the `runPlp` function returns the trained model and the evaluation of the model on the train/test sets. You can interactively view the results by running: `viewPlp(runPlp = gbmResults)`. This will open a Shiny App in your browser in which you can view all performance measures created by the framework, including interactive plots, as shown in Figure \@ref(fig:shinysummary).
 
