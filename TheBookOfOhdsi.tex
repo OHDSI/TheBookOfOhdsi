@@ -359,6 +359,8 @@ understanding of health and disease.
 
 \chapter{Collaborators}\label{Collaborators}
 
+\emph{Chapter lead: Patrick Ryan}
+
 History of OHDSI
 
 Map of collaborators Forums Wiki Workgroups and chapters Symposia and
@@ -3096,7 +3098,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.q5tkcwuochildren ;"
+## [1] "SELECT * FROM temp_schema.gjb8ua6nchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -9369,12 +9371,12 @@ When considering method validity we aim to answer the question
 Is this method valid for answering this question?
 \end{quote}
 
-Where `method' includes not only the study design, but als the data and
-the implementation of the design. Method validity is therefore somewhat
-of a catch-all; It is often not possible to observe good method validity
-without good data quality, clinical validity, and software validity.
-Those aspects of evidence quality should have already been addressed
-separately before we consider method validity.
+Where ``method'' includes not only the study design, but als the data
+and the implementation of the design. Method validity is therefore
+somewhat of a catch-all; It is often not possible to observe good method
+validity without good data quality, clinical validity, and software
+validity. Those aspects of evidence quality should have already been
+addressed separately before we consider method validity.
 
 The core activity when establishing method validity is evaluating
 whether important assumptions in the analysis have been met. For
@@ -9430,20 +9432,21 @@ including:
   whether the proportionality assumption underlying Cox models is met.
 \end{itemize}
 
-Similarly, for the self-controlled case series (SCCS) design we may
-check other assumptions that are relevant for that design. One such
-assumptionis that the end of observation is independent of the outcome.
-This assumption is often violated in the case of serious, potentially
-lethal, events such as myocardial infarction. We can evaluate whether
-the assumption holds by generating the plot shown in Figure
-\ref{fig:timeToObsEnd}, which shows a histograms of the time to
-obsevation period end for those that are censored, and those that
-uncensored. In our data we consider those whose observation period ends
-at the end date of data capture (the date when observation stopped for
-the entire data base, for example the date of extraction, or the study
-end date) to be uncensored, and all others to be censored. In Figure
-\ref{fig:timeToObsEnd} we see only minor differences between the two
-distributions, suggesting our assumptions holds.
+Other study designs require different diagnostics to test the different
+assumptions in those designs. For example, for the self-controlled case
+series (SCCS) design we may check the necessary assumption that the end
+of observation is independent of the outcome. This assumption is often
+violated in the case of serious, potentially lethal, events such as
+myocardial infarction. We can evaluate whether the assumption holds by
+generating the plot shown in Figure \ref{fig:timeToObsEnd}, which shows
+a histograms of the time to obsevation period end for those that are
+censored, and those that uncensored. In our data we consider those whose
+observation period ends at the end date of data capture (the date when
+observation stopped for the entire data base, for example the date of
+extraction, or the study end date) to be uncensored, and all others to
+be censored. In Figure \ref{fig:timeToObsEnd} we see only minor
+differences between the two distributions, suggesting our assumptions
+holds.
 
 \begin{figure}
 
@@ -9460,35 +9463,77 @@ estimation}\label{diagnostics-for-all-estimation}
 Next to the design-specific diagnostics, there are also several
 diagnostics that are applicable across all causal effect estimation
 methods. Many of these rely on the use of control hypotheses, research
-questions where the answer is already known. Using control hypotheses We
+questions where the answer is already known. Using control hypotheses we
 can then evaluate whether our design produces results in line with the
 truth. Controls can be divided into negative controls and positive
 controls.
 
-\subsection{Negative controls}\label{negative-controls}
+\subsection{Negative controls}\label{NegativeControls}
 
 Negative controls are exposure-outcome pairs where one believes no
-causal effect exists, and including negative controls or `falsification
-endpoints' \citep{prased_2013} has been recommended as a means to detect
-confounding \citep{lipsitch_2010}, selection bias and measurement error
-\citep{arnold_2016}. For example, in one study \citep{zaadstra_2008}
-investigate the relationship between childhood diseases and later
-multiple sclerosis (MS), the authors include three negative controls
-that are not believed to cause MS: a broken arm, concussion, and
-tonsillectomy. Two of these three controls produce statistically
-significant associations with MS, suggesting that the study may be
-biased.
+causal effect exists, and including negative controls or ``falsification
+endpoints'' \citep{prased_2013} has been recommended as a means to
+detect confounding, \citep{lipsitch_2010} selection bias and measurement
+error. \citep{arnold_2016} For example, in one study
+\citep{zaadstra_2008} investigating the relationship between childhood
+diseases and later multiple sclerosis (MS), the authors include three
+negative controls that are not believed to cause MS: a broken arm,
+concussion, and tonsillectomy. Two of these three controls produce
+statistically significant associations with MS, suggesting that the
+study may be biased.
 
 We should select negative controls that are comparable to our hypothesis
 of interest, which means we typically select exposure-outcome pairs that
 either have the same exposure as the hypothesis of interest (so-called
-`outcome controls') or the same outcome ('exposure controls). In OHDSI
-we have developed a semi-automated procedure for selecting negative
-controls \citep{voss_2016}. In brief, information from literature,
-product labels, and spontaneous reporting is automatically extracted and
-synthesized to produce a candidate list of outcomes with no known links
-with any hypertension treatment. We rank-order this list by prevalence
-in an observational database and manually review these in order.
+``outcome controls'') or the same outcome (``exposure controls''). Our
+negative controls should further meet these criteria:
+
+\begin{itemize}
+\tightlist
+\item
+  The exposure \textbf{cannot cause} the outcome. One way to think of
+  causation is to think of the counterfactual: could the outcome be
+  caused (or prevented) if a patient was not exposed, compared to if the
+  patient had been exposed? Sometimes this is clear, for example ACEi
+  are known to cause angioedema. Other times this is far less obvious.
+  For example, a drug that may cause hypertension can therefore
+  indirectly cause cardiovascular diseases that are a consequence of the
+  hypertension.
+\item
+  The exposure should also \textbf{not prevent or treat} the outcome.
+  This is just another causal relationship that should be absent if we
+  are to believe the true effect size (e.g.~the hazard ratio) is 1.
+\item
+  The negative control should \textbf{exist in the data}, ideally with
+  sufficient numbers. We try to achieve this by rank-ordering the
+  candidate list by prevalence.
+\item
+  Negative controls should ideally be \textbf{independent}. For example,
+  we should avoid having negative controls that are either ancestors of
+  each other (e.g. ``ingrown nail'' and ``ingrown nail of foot'') or
+  siblings (e.g. ``fracture of left femur'' and ``fracture of right
+  femur'').
+\item
+  Negative controls should ideally have \textbf{some potential for
+  bias}. For example, the last digit of someone's social security number
+  is basically a random number, and is unlikely to show confounding. It
+  should therefore not be used as a negative control.
+\end{itemize}
+
+The absence of a causal relationship between an exposure and an outcome
+is rarely documented. Instead, we often make the assumption that a lack
+of evidence of a relationship implies the lack of a relationship. This
+assumption is more likely to hold if the exposure and outcome have both
+been studies extensively, so a relationship could have been detected.
+For example, the lack of evidence for a completely novel drug likely
+implies a lack of knowledge, not the lack of a relationship. With this
+principe in mind we have developed a semi-automated procedure for
+selecting negative controls \citep{voss_2016}. In brief, information
+from literature, product labels, and spontaneous reporting is
+automatically extracted and synthesized to produce a candidate list of
+negative controls. This list must then undergo manual review, not only
+to verify that the automated extraction was accurate, but also to impose
+additional criteria such as biological plausibility.
 
 \subsection{Positive controls}\label{positive-controls}
 
@@ -9505,10 +9550,10 @@ measures it. Third, when treatments are widely known to cause a
 particular outcome, this shapes the behavior of physicians prescribing
 the treatment, for example by taking actions to mitigate the risk of
 unwanted outcomes, thereby rendering the positive controls useless as a
-means for evaluation \citep{noren_2014}.
+means for evaluation. \citep{noren_2014}
 
-In OHDSI we therefore use synthetic positive controls
-\citep{schuemie_2018}, created by modifying a negative control through
+In OHDSI we therefore use synthetic positive controls,
+\citep{schuemie_2018} created by modifying a negative control through
 injection of additional, simulated occurrences of the outcome during the
 time at risk of the exposure. One issue that stands important is the
 preservation of confounding. The negative controls may show strong
@@ -9542,7 +9587,7 @@ predictive value and sensitivity, which may not be true in reality.
 \caption{Synthesizing positive controls from negative controls.}\label{fig:posControlSynth}
 \end{figure}
 
-Although we refer to a single true `effect size' for each control,
+Although we refer to a single true ``effect size'' for each control,
 different methods estimate different statistics of the treatment effect.
 For negative controls, where we believe no causal effect exists, all
 such statistics, including the relative risk, hazard ratio, odds ratio,
@@ -9576,7 +9621,7 @@ by computing a range of metrics, for example:
 \item
   \textbf{Mean precision}: precision is computed as
   \(1/(standard\ error)^2\), higher precision means narrower confidence
-  intervals. We can use the geometric mean to account for the skewed
+  intervals. We use the geometric mean to account for the skewed
   distribution of the precision.
 \item
   \textbf{Mean squared error (MSE)}: Mean squared error between the log
@@ -9584,11 +9629,11 @@ by computing a range of metrics, for example:
 \item
   \textbf{Type 1 error}: For negative controls, how often was the null
   rejected (at \(\alpha = 0.05\)). This is equivalent to the false
-  positive rate and 1 - specificity.
+  positive rate and \(1 - specificity\).
 \item
   \textbf{Type 2 error}: For positive controls, how often was the null
   not rejected (at \(\alpha = 0.05\)). This is equivalent to the false
-  negative rate and 1 - sensitivity.
+  negative rate and \(1 - sensitivity\).
 \item
   \textbf{Non-estimable}: For how many of the controls was the method
   unable to produce an estimate? There can be various reasons why an
@@ -9605,31 +9650,38 @@ AUC instead.
 
 \subsection{P-value calibration}\label{p-value-calibration}
 
-Often the type I error (at \(\alpha = 0.05\)) is larger than 5\%. OHDSI
-has developed a process for calibrating p-values to restore the type I
-error to nominal. \citep{schuemie_2014} We derive an empirical null
-distribution from the actual effect estimates for the negative controls.
-These negative control estimates give us an indication of what can be
-expected when the null hypothesis is true, and we use them to estimate
-an empirical null distribution. We fit a Gaussian probability
-distribution to the estimates, taking into account the sampling error of
-each estimate. Let \(\hat{\theta}_i\) denote the estimated log effect
-estimate (relative risk, odds or incidence rate ratio) from the \(i\)th
-negative control drug--outcome pair, and let \(\hat{\tau}_i\) denote the
-corresponding estimated standard error, \(i=1,\ldots,n\). Let
-\(\theta_i\) denote the true log effect size (assumed 0 for negative
-controls), and let \(\beta_i\) denote the true (but unknown) bias
-associated with pair \(i\) , that is, the difference between the log of
-the true effect size and the log of the estimate that the study would
-have returned for control \(i\) had it been infinitely large. As in the
-standard p-value computation, we assume that \(\hat{\theta}_i\) is
-normally distributed with mean \(\theta_i + \beta_i\) and standard
-deviation \(\hat{\tau}_i^2\). Note that in traditional p-value
-calculation, \(\beta_i\) is always assumed to be equal to zero, but that
-we assume the \(\beta_i\)'s, arise from a normal distribution with mean
-\(\mu\) and variance \(\sigma^2\). This represents the null (bias)
-distribution. We estimate \(\mu\) and \(\sigma^2\) via maximum
-likelihood. In summary, we assume the following:
+Often the type I error (at \(\alpha = 0.05\)) is larger than 5\%. In
+other words, we are often more likely than 5\% to reject the null
+hypothesis when in fact the null hypothesis is true. The reason is that
+the p-value only reflects random error, the error due to having a
+limited sample size. It does not reflect systematic error, for example
+the error due to confounding. OHDSI has developed a process for
+calibrating p-values to restore the type I error to nominal.
+\citep{schuemie_2014} We derive an empirical null distribution from the
+actual effect estimates for the negative controls. These negative
+control estimates give us an indication of what can be expected when the
+null hypothesis is true, and we use them to estimate an empirical null
+distribution.
+
+Formally, we fit a Gaussian probability distribution to the estimates,
+taking into account the sampling error of each estimate. Let
+\(\hat{\theta}_i\) denote the estimated log effect estimate (relative
+risk, odds or incidence rate ratio) from the \(i\)th negative control
+drug--outcome pair, and let \(\hat{\tau}_i\) denote the corresponding
+estimated standard error, \(i=1,\ldots,n\). Let \(\theta_i\) denote the
+true log effect size (assumed 0 for negative controls), and let
+\(\beta_i\) denote the true (but unknown) bias associated with pair
+\(i\) , that is, the difference between the log of the true effect size
+and the log of the estimate that the study would have returned for
+control \(i\) had it been infinitely large. As in the standard p-value
+computation, we assume that \(\hat{\theta}_i\) is normally distributed
+with mean \(\theta_i + \beta_i\) and standard deviation
+\(\hat{\tau}_i^2\). Note that in traditional p-value calculation,
+\(\beta_i\) is always assumed to be equal to zero, but that we assume
+the \(\beta_i\)'s, arise from a normal distribution with mean \(\mu\)
+and variance \(\sigma^2\). This represents the null (bias) distribution.
+We estimate \(\mu\) and \(\sigma^2\) via maximum likelihood. In summary,
+we assume the following:
 \[\beta_i \sim N(\mu,\sigma^2) \text{  and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)\]
 
 where \(N(a,b)\) denotes a Gaussian distribution with mean \(a\) and
@@ -9648,25 +9700,32 @@ from the same null distribution, we have the following:
 \[\hat{\theta}_{n+1} \sim N(\hat{\mu}, \hat{\sigma} + \hat{\tau}_{n+1})\]
 
 When \(\hat{\theta}_{n+1}\) is smaller than \(\hat{\mu}\), the one-sided
-p-value for the new pair is then
+calibrated p-value for the new pair is then
 
 \[\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)\]
 
 where \(\phi(\cdot)\) denotes the cumulative distribution function of
 the standard normal distribution. When \(\hat{\theta}_{n+1}\) is bigger
-than \(\hat{\mu}\), the one-sided p-value is then
+than \(\hat{\mu}\), the one-sided calibrated p-value is then
 \[1-\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)\]
 
 \subsection{Confidence interval
 calibration}\label{confidence-interval-calibration}
 
 Similarly, we typically observe that the coverage of the 95\% confidence
-interval is less than 95\%. For confidence inteval calibration
-\citep{schuemie_2018} we extend the framework for p-value calibration by
-also making use of our positive controls. Here we assume that
-\(beta_i\), the bias associated with pair \(i\), again comes from a
-Gaussian distribution, but this time using a mean and standard deviation
-that are linearly related to \(theta_i\), the true effect size:
+interval is less than 95\%: the true effect size is inside the 95\%
+confidence interval less than 95\% of the time. For confidence interval
+calibration \citep{schuemie_2018} we extend the framework for p-value
+calibration by also making use of our positive controls. Typically, but
+not necessarily, the calibrated confidence interval is wider than the
+nominal confidence interval, reflecting the problems unaccounted for in
+the standard procedure (such as unmeasured confounding, selection bias
+and measurement error) but accounted for in the calibration.
+
+Formally, we assume that \(beta_i\), the bias associated with pair
+\(i\), again comes from a Gaussian distribution, but this time using a
+mean and standard deviation that are linearly related to \(theta_i\),
+the true effect size:
 
 \[\beta_i \sim N(\mu(\theta_i) , \sigma^2(\theta_i))\]
 
@@ -9706,12 +9765,6 @@ the standard normal distribution. We find the upper bound similarly for
 probability 0.975. We define the calibrated point estimate by using
 probability 0.5.
 
-Typically, but not necessarily, the calibrated confidence interval is
-wider than the nominal confidence interval, reflecting the problems
-unaccounted for in the standard procedure (such as unmeasured
-confounding, selection bias and measurement error) but accounted for in
-the calibration.
-
 Both p-value calibration and confidence interval calibration are
 implemented in the
 \href{https://ohdsi.github.io/EmpiricalCalibration/}{EmpiricalCalibration}
@@ -9723,8 +9776,8 @@ Another form of method validation comes from executing the study across
 several different databases that represent different populations,
 different health care systems, and/or different data capture processes.
 Prior research has shown that executing the same study design across
-different databases can produce vastly different effect size estimates
-\citep{madigan_2013}, suggesting that either the effect differs greatly
+different databases can produce vastly different effect size estimates,
+\citep{madigan_2013} suggesting that either the effect differs greatly
 for different populations, or that the design does not adequately
 address the different biases found in the different databases. In fact,
 we observe that accounting for residual bias in a database through
@@ -9762,8 +9815,8 @@ various options, we can say the study is robust to the uncertainty.
 
 This definition of sensitivity analysis should not be confused with the
 definitions used by others such as \citet{rosenbaum_2005}, who define
-sensitivity analysis to `appraise how the conclusions of a study might
-be altered by hidden biases of various magnitudes'.
+sensitivity analysis to ``appraise how the conclusions of a study might
+be altered by hidden biases of various magnitudes''.
 
 \section{Method validation in
 practice}\label{method-validation-in-practice}
@@ -9773,7 +9826,7 @@ where we investigate the effect of ACE inhibitors (ACEi) on the risk of
 angioedema and acute myocardial infarction (AMI), compared to thiazides
 and thiazide-like diuretics (THZ). In that chapter we already explore
 many of the diagnostics specific to the design we used: the cohort
-method. Here, we apply additional diagnostics that could also been
+method. Here, we apply additional diagnostics that could also have been
 applied had other designs been used.
 
 \subsection{Selecting negative
@@ -9785,11 +9838,11 @@ our example study, we select negative control outcomes that are believed
 to be neither caused by the target nor the comparator exposure. We want
 enough negative controls to make sure we have a diverse mix of biases
 represented in the controls, and also to allow empirical calibration. As
-a rule-of-thumb We typically aim to have 50-100 such negative controls.
+a rule-of-thumb we typically aim to have 50-100 such negative controls.
 We could come up with these controls completely manually, but
-fortunately ATLAS also provides features to aid the selection of
-negative controls using data from literature, product labels, and
-spontaneous reports.
+fortunately ATLAS provides features to aid the selection of negative
+controls using data from literature, product labels, and spontaneous
+reports.
 
 To generate a canidate list of negative controls, we first must create a
 concept set containing all exposures of interest. In this case we select
@@ -9805,7 +9858,7 @@ all ingredients in the ACEi and THZ classes, as shown in Figure
 \caption{A concept set containing the concepts defining the target and comparator exposures.}\label{fig:exposuresConceptSet}
 \end{figure}
 
-Next, we go to the `Explore Evidence' tab, and click on the
+Next, we go to the ``Explore Evidence'' tab, and click on the
 \includegraphics{images/MethodValidity/generate.png} button. Generating
 the evidence overview will take a few minutes, after which you can click
 on the \includegraphics{images/MethodValidity/viewEvidence.png} button.
@@ -9828,7 +9881,7 @@ the outcomes found in PubMed using various strategies, the number of
 product labels of our exposures of interest that list the condition as a
 possible adverse effect, and the number of spontaneous reports. By
 default the list is sorted to show candidate negative controls first. It
-is then sorted by the `Sort Order', which represents the prevalance of
+is then sorted by the ``Sort Order'', which represents the prevalance of
 the condition in a collection of observational databases. The higher the
 Sort Order, the higher the prevalence. Although the prevalence in these
 databases might not correspond with the prevalence in the database we
@@ -9837,41 +9890,8 @@ wish to run the study, it is likely a good approximation.
 The next step is to manually review the candidate list, typically
 starting at the top, so with the most prevalent condition, and working
 our way down until we are satisfied we have enough. One typical way to
-do this is to export the list to CSV, and have clinicians review these.
-When reviewing negative controls, the following things should be
-considerd:
-
-\begin{itemize}
-\tightlist
-\item
-  The exposure \textbf{cannot cause} the outcome. One way to think of
-  causation is to think of the counterfactual: could the outcome be
-  caused (or prevented) if a patient was not exposed, compared to if the
-  patient had been exposed? Sometimes this is clear, for example ACEi
-  are known to cause angioedema. Other times this is far less obvious.
-  For example, a drug that may cause hypertension can therefore
-  indirectly cause cardiovascular diseases that are a consequence of the
-  hypertension.
-\item
-  The exposure should also \textbf{not prevent or treat} the outcome.
-  This is just another causal relationship that should be absent if we
-  are to believe the true effect size (e.g.~the hazard ratio) is 1.
-\item
-  The negative control should \textbf{exist in the data}, ideally with
-  sufficient numbers. We try to achieve this by rank-ordering the
-  candidate list by prevalence.
-\item
-  Negative controls should ideally be \textbf{independent}. For example,
-  we should avoid having negative controls that are either ancestors of
-  each other (e.g. `ingrown nail' and `ingrown nail of foot') or
-  siblings (e.g. `fracture of left femur' and `fracture of right
-  femur').
-\item
-  Negative controls should ideally have \textbf{some potential for
-  bias}. For example, the last digit of someone's social security number
-  is basically a random number, and is unlikely to show confounding. It
-  should therefore not be used as a negative control.
-\end{itemize}
+do this is to export the list to CSV, and have clinicians review these,
+considering the criteria mentioned in Section \ref{NegativeControls}.
 
 For our example study we select the 76 negative controls listed in
 Appendix \ref{AceiThzNsc}.
@@ -9889,7 +9909,7 @@ concept or any of its descendants.
 The OHDSI tools also provide functionality for automatically generating
 and including positive controls derived from the negative controls. This
 functionality can be found in the Evaluation Settings section in ATLAS
-desribed in Section \ref{evaluationSettings}, and is implemented in the
+described in Section \ref{evaluationSettings}, and is implemented in the
 \texttt{injectSignals} function in the
 \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation}
 package. Here we generate three positive controls for each negative
@@ -9911,9 +9931,13 @@ readily allow estimation of many effects in an efficient manner.
 
 Figure \ref{fig:controls} shows the estimated effect sizes for the
 negative and positive controls included in our example study, stratified
-by true effect size. Note that the number of controls is often lower
-than what was defined because there was not enough data to either
-produce an estimate, or to synthesize a positive control.
+by true effect size. This plot is included in the Shiny app that comes
+with the study R package generated by ATLAS, and can be generated using
+the \texttt{plotControls} function in the
+\href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation}
+package. Note that the number of controls is often lower than what was
+defined because there was not enough data to either produce an estimate,
+or to synthesize a positive control.
 
 \begin{figure}
 
@@ -9925,7 +9949,9 @@ produce an estimate, or to synthesize a positive control.
 \end{figure}
 
 Based on these estimates we can compute the metrics shown in Table
-\ref{tab:exampleMetrics}.
+\ref{tab:exampleMetrics} using the \texttt{computeMetrics} function in
+the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation}
+package.
 
 \begin{longtable}[]{@{}lr@{}}
 \caption{\label{tab:exampleMetrics} Method performance metrics derived from
@@ -9980,6 +10006,16 @@ Use LEGEND results
 Benchmark}\label{advanced-ohdsi-methods-benchmark}
 
 Todo: add text on OHDSI Methods Benchmark
+
+\section{Summary}\label{summary-3}
+
+\BeginKnitrBlock{rmdsummary}
+\begin{itemize}
+\tightlist
+\item
+  TODO: add
+\end{itemize}
+\EndKnitrBlock{rmdsummary}
 
 \section{Exercises}\label{exercises-1}
 
