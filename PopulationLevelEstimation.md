@@ -792,16 +792,15 @@ We observe a hazard ratio of 4.32 (95% confidence interval: 2.45 - 8.08) for ang
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- **SQL** (Structured Query Language) is a standard language for querying databases, including those that conform to the CDM.
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- Population-level estimation aims to infer causal effects from observational data.
 
-- Different database platforms have different SQL dialects, and require different tools to query them.
+- The **counterfactual**, what would have happened if the subject had received an alternative exposure or no exposure, cannot be observed.
 
-- The **SqlRender** and **DatabaseConnector** packages provide a unified way to query data in the CDM.
+- Different designs aim to construct the counterfactual in different ways.
 
-- By using R and SQL together we can implement custom analyses that are not supported by the OHDSI tools.
-
-- The **QueryLibrary** provides a collection of re-usable SQL queries for the CDM.
+- The various designs as implemented in the OHDSI Methods Library provide diagnostics to evaluate whether the assumptions for creating an appropriate counterfactual have been met.
 </div>\EndKnitrBlock{rmdsummary}
+
 
 ## Excercises
 
