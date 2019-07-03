@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-07-01"
+date: "2019-07-03"
 output:
   bookdown::pdf_book:
   - latex_engine: xelatex
