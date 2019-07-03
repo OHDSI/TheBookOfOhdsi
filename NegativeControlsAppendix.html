@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>C Negative controls | The Book of OHDSI</title>
+  <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="generator" content="bookdown 0.11.2 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="C Negative controls | The Book of OHDSI" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
+  <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
+  <meta property="og:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="C Negative controls | The Book of OHDSI" />
+  
+  <meta name="twitter:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
+
+<meta name="author" content="Observational Health Data Science and Informatics" />
+
+
+<meta name="date" content="2019-07-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="prev" href="CohortDefinitions.html">
+<link rel="next" href="references.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-104086677-2');
+</script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">The Book of OHDSI</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#goals-of-this-book"><i class="fa fa-check"></i>Goals of this book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#structure-of-the-book"><i class="fa fa-check"></i>Structure of the book</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#contributors"><i class="fa fa-check"></i>Contributors</a></li>
+</ul></li>
+<li class="part"><span><b>I The OHDSI Community</b></span></li>
+<li class="chapter" data-level="1" data-path="MissionVissionValues.html"><a href="MissionVissionValues.html"><i class="fa fa-check"></i><b>1</b> Mission, vision, values</a><ul>
+<li class="chapter" data-level="1.1" data-path="MissionVissionValues.html"><a href="MissionVissionValues.html#our-mission"><i class="fa fa-check"></i><b>1.1</b> Our Mission</a></li>
+<li class="chapter" data-level="1.2" data-path="MissionVissionValues.html"><a href="MissionVissionValues.html#our-vision"><i class="fa fa-check"></i><b>1.2</b> Our Vision</a></li>
+<li class="chapter" data-level="1.3" data-path="MissionVissionValues.html"><a href="MissionVissionValues.html#our-objectives"><i class="fa fa-check"></i><b>1.3</b> Our Objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Collaborators.html"><a href="Collaborators.html"><i class="fa fa-check"></i><b>2</b> Collaborators</a></li>
+<li class="chapter" data-level="3" data-path="OpenScience.html"><a href="OpenScience.html"><i class="fa fa-check"></i><b>3</b> Open Science</a><ul>
+<li class="chapter" data-level="3.1" data-path="OpenScience.html"><a href="OpenScience.html#open-science"><i class="fa fa-check"></i><b>3.1</b> Open Science</a></li>
+<li class="chapter" data-level="3.2" data-path="OpenScience.html"><a href="OpenScience.html#fair-guiding-principles"><i class="fa fa-check"></i><b>3.2</b> FAIR Guiding Principles</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="WhereToBegin.html"><a href="WhereToBegin.html"><i class="fa fa-check"></i><b>4</b> Where to begin</a></li>
+<li class="part"><span><b>II Uniform Data Representation</b></span></li>
+<li class="chapter" data-level="5" data-path="CommonDataModel.html"><a href="CommonDataModel.html"><i class="fa fa-check"></i><b>5</b> The Common Data Model</a><ul>
+<li class="chapter" data-level="5.1" data-path="CommonDataModel.html"><a href="CommonDataModel.html#design-principles"><i class="fa fa-check"></i><b>5.1</b> Design Principles</a></li>
+<li class="chapter" data-level="5.2" data-path="CommonDataModel.html"><a href="CommonDataModel.html#data-model-conventions"><i class="fa fa-check"></i><b>5.2</b> Data Model Conventions</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="CommonDataModel.html"><a href="CommonDataModel.html#model-conv"><i class="fa fa-check"></i><b>5.2.1</b> General conventions of the model</a></li>
+<li class="chapter" data-level="5.2.2" data-path="CommonDataModel.html"><a href="CommonDataModel.html#general-conventions-of-schemas"><i class="fa fa-check"></i><b>5.2.2</b> General conventions of schemas</a></li>
+<li class="chapter" data-level="5.2.3" data-path="CommonDataModel.html"><a href="CommonDataModel.html#general-conventions-of-data-tables"><i class="fa fa-check"></i><b>5.2.3</b> General conventions of data tables</a></li>
+<li class="chapter" data-level="5.2.4" data-path="CommonDataModel.html"><a href="CommonDataModel.html#general-conventions-of-fields"><i class="fa fa-check"></i><b>5.2.4</b> General conventions of fields</a></li>
+<li class="chapter" data-level="5.2.5" data-path="CommonDataModel.html"><a href="CommonDataModel.html#representation-of-content-through-concepts"><i class="fa fa-check"></i><b>5.2.5</b> Representation of content through Concepts</a></li>
+<li class="chapter" data-level="5.2.6" data-path="CommonDataModel.html"><a href="CommonDataModel.html#difference-between-concept-ids-and-source-values"><i class="fa fa-check"></i><b>5.2.6</b> Difference between Concept IDs and Source Values</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="CommonDataModel.html"><a href="CommonDataModel.html#omop-cdm-standardized-tables"><i class="fa fa-check"></i><b>5.3</b> OMOP CDM Standardized Tables</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="CommonDataModel.html"><a href="CommonDataModel.html#running-example-endometriosis"><i class="fa fa-check"></i><b>5.3.1</b> Running Example: Endometriosis</a></li>
+<li class="chapter" data-level="5.3.2" data-path="CommonDataModel.html"><a href="CommonDataModel.html#person"><i class="fa fa-check"></i><b>5.3.2</b> PERSON table</a></li>
+<li class="chapter" data-level="5.3.3" data-path="CommonDataModel.html"><a href="CommonDataModel.html#observationPeriod"><i class="fa fa-check"></i><b>5.3.3</b> OBSERVATION_PERIOD table</a></li>
+<li class="chapter" data-level="5.3.4" data-path="CommonDataModel.html"><a href="CommonDataModel.html#visitOccurrence"><i class="fa fa-check"></i><b>5.3.4</b> VISIT_OCCURRENCE</a></li>
+<li class="chapter" data-level="5.3.5" data-path="CommonDataModel.html"><a href="CommonDataModel.html#conditionOccurrence"><i class="fa fa-check"></i><b>5.3.5</b> CONDITION_OCCURRENCE</a></li>
+<li class="chapter" data-level="5.3.6" data-path="CommonDataModel.html"><a href="CommonDataModel.html#drugExposure"><i class="fa fa-check"></i><b>5.3.6</b> DRUG_EXPOSURE</a></li>
+<li class="chapter" data-level="5.3.7" data-path="CommonDataModel.html"><a href="CommonDataModel.html#procedureOccurrence"><i class="fa fa-check"></i><b>5.3.7</b> PROCEDURE_OCCURRENCE</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="CommonDataModel.html"><a href="CommonDataModel.html#summary"><i class="fa fa-check"></i><b>5.4</b> Summary</a></li>
+<li class="chapter" data-level="5.5" data-path="CommonDataModel.html"><a href="CommonDataModel.html#exercises"><i class="fa fa-check"></i><b>5.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="StandardizedVocabularies.html"><a href="StandardizedVocabularies.html"><i class="fa fa-check"></i><b>6</b> Standardized Vocabularies</a></li>
+<li class="chapter" data-level="7" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html"><i class="fa fa-check"></i><b>7</b> Extract Transform Load</a></li>
+<li class="part"><span><b>III Data Analytics</b></span></li>
+<li class="chapter" data-level="8" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html"><i class="fa fa-check"></i><b>8</b> Data Analytics Use Cases</a><ul>
+<li class="chapter" data-level="8.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#characterization"><i class="fa fa-check"></i><b>8.1</b> Characterization</a></li>
+<li class="chapter" data-level="8.2" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#population-level-estimation"><i class="fa fa-check"></i><b>8.2</b> Population-level estimation</a></li>
+<li class="chapter" data-level="8.3" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#patient-level-prediction"><i class="fa fa-check"></i><b>8.3</b> Patient-Level prediction</a></li>
+<li class="chapter" data-level="8.4" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#limitations-of-observational-research"><i class="fa fa-check"></i><b>8.4</b> Limitations of observational research</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#missing-data"><i class="fa fa-check"></i><b>8.4.1</b> Missing data</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#summary-1"><i class="fa fa-check"></i><b>8.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html"><i class="fa fa-check"></i><b>9</b> OHDSI Analytics Tools</a><ul>
+<li class="chapter" data-level="9.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#analysis-implementation"><i class="fa fa-check"></i><b>9.1</b> Analysis implementation</a></li>
+<li class="chapter" data-level="9.2" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#analysis-strategy"><i class="fa fa-check"></i><b>9.2</b> Analysis strategy</a></li>
+<li class="chapter" data-level="9.3" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#atlas"><i class="fa fa-check"></i><b>9.3</b> ATLAS</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#security"><i class="fa fa-check"></i><b>9.3.1</b> Security</a></li>
+<li class="chapter" data-level="9.3.2" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#documentation"><i class="fa fa-check"></i><b>9.3.2</b> Documentation</a></li>
+<li class="chapter" data-level="9.3.3" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#system-requirements"><i class="fa fa-check"></i><b>9.3.3</b> System requirements</a></li>
+<li class="chapter" data-level="9.3.4" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#how-to-install"><i class="fa fa-check"></i><b>9.3.4</b> How to install</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#methods-library"><i class="fa fa-check"></i><b>9.4</b> Methods Library</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#support-for-large-scale-analytics"><i class="fa fa-check"></i><b>9.4.1</b> Support for large-scale analytics</a></li>
+<li class="chapter" data-level="9.4.2" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#BigDataSupport"><i class="fa fa-check"></i><b>9.4.2</b> Support for big data</a></li>
+<li class="chapter" data-level="9.4.3" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#documentation-1"><i class="fa fa-check"></i><b>9.4.3</b> Documentation</a></li>
+<li class="chapter" data-level="9.4.4" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#system-requirements-1"><i class="fa fa-check"></i><b>9.4.4</b> System requirements</a></li>
+<li class="chapter" data-level="9.4.5" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#how-to-install-1"><i class="fa fa-check"></i><b>9.4.5</b> How to install</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#installing-java"><i class="fa fa-check"></i><b>9.5</b> Installing Java</a></li>
+<li class="chapter" data-level="9.6" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#integrated-solutions"><i class="fa fa-check"></i><b>9.6</b> Integrated solutions</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="SqlAndR.html"><a href="SqlAndR.html"><i class="fa fa-check"></i><b>10</b> SQL and R</a><ul>
+<li class="chapter" data-level="10.1" data-path="SqlAndR.html"><a href="SqlAndR.html#SqlRender"><i class="fa fa-check"></i><b>10.1</b> SqlRender</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="SqlAndR.html"><a href="SqlAndR.html#sql-parameterization"><i class="fa fa-check"></i><b>10.1.1</b> SQL parameterization</a></li>
+<li class="chapter" data-level="10.1.2" data-path="SqlAndR.html"><a href="SqlAndR.html#translation-to-other-sql-dialects"><i class="fa fa-check"></i><b>10.1.2</b> Translation to other SQL dialects</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="SqlAndR.html"><a href="SqlAndR.html#DatabaseConnector"><i class="fa fa-check"></i><b>10.2</b> DatabaseConnector</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="SqlAndR.html"><a href="SqlAndR.html#creating-a-connection"><i class="fa fa-check"></i><b>10.2.1</b> Creating a connection</a></li>
+<li class="chapter" data-level="10.2.2" data-path="SqlAndR.html"><a href="SqlAndR.html#querying"><i class="fa fa-check"></i><b>10.2.2</b> Querying</a></li>
+<li class="chapter" data-level="10.2.3" data-path="SqlAndR.html"><a href="SqlAndR.html#querying-using-ffdf-objects"><i class="fa fa-check"></i><b>10.2.3</b> Querying using ffdf objects</a></li>
+<li class="chapter" data-level="10.2.4" data-path="SqlAndR.html"><a href="SqlAndR.html#querying-different-platforms-using-the-same-sql"><i class="fa fa-check"></i><b>10.2.4</b> Querying different platforms using the same SQL</a></li>
+<li class="chapter" data-level="10.2.5" data-path="SqlAndR.html"><a href="SqlAndR.html#inserting-tables"><i class="fa fa-check"></i><b>10.2.5</b> Inserting tables</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="SqlAndR.html"><a href="SqlAndR.html#QueryTheCdm"><i class="fa fa-check"></i><b>10.3</b> Querying the CDM</a></li>
+<li class="chapter" data-level="10.4" data-path="SqlAndR.html"><a href="SqlAndR.html#using-the-vocabulary-when-querying"><i class="fa fa-check"></i><b>10.4</b> Using the vocabulary when querying</a></li>
+<li class="chapter" data-level="10.5" data-path="SqlAndR.html"><a href="SqlAndR.html#querylibrary"><i class="fa fa-check"></i><b>10.5</b> QueryLibrary</a></li>
+<li class="chapter" data-level="10.6" data-path="SqlAndR.html"><a href="SqlAndR.html#designing-a-simple-study"><i class="fa fa-check"></i><b>10.6</b> Designing a simple study</a><ul>
+<li class="chapter" data-level="10.6.1" data-path="SqlAndR.html"><a href="SqlAndR.html#problem-definition"><i class="fa fa-check"></i><b>10.6.1</b> Problem definition</a></li>
+<li class="chapter" data-level="10.6.2" data-path="SqlAndR.html"><a href="SqlAndR.html#exposure"><i class="fa fa-check"></i><b>10.6.2</b> Exposure</a></li>
+<li class="chapter" data-level="10.6.3" data-path="SqlAndR.html"><a href="SqlAndR.html#outcome"><i class="fa fa-check"></i><b>10.6.3</b> Outcome</a></li>
+<li class="chapter" data-level="10.6.4" data-path="SqlAndR.html"><a href="SqlAndR.html#time-at-risk"><i class="fa fa-check"></i><b>10.6.4</b> Time-at-risk</a></li>
+</ul></li>
+<li class="chapter" data-level="10.7" data-path="SqlAndR.html"><a href="SqlAndR.html#implementing-the-study-using-sql-and-r"><i class="fa fa-check"></i><b>10.7</b> Implementing the study using SQL and R</a><ul>
+<li class="chapter" data-level="10.7.1" data-path="SqlAndR.html"><a href="SqlAndR.html#exposure-cohort"><i class="fa fa-check"></i><b>10.7.1</b> Exposure cohort</a></li>
+<li class="chapter" data-level="10.7.2" data-path="SqlAndR.html"><a href="SqlAndR.html#outcome-cohort"><i class="fa fa-check"></i><b>10.7.2</b> Outcome cohort</a></li>
+<li class="chapter" data-level="10.7.3" data-path="SqlAndR.html"><a href="SqlAndR.html#incidence-rate-calculation"><i class="fa fa-check"></i><b>10.7.3</b> Incidence rate calculation</a></li>
+<li class="chapter" data-level="10.7.4" data-path="SqlAndR.html"><a href="SqlAndR.html#clean-up"><i class="fa fa-check"></i><b>10.7.4</b> Clean up</a></li>
+<li class="chapter" data-level="10.7.5" data-path="SqlAndR.html"><a href="SqlAndR.html#compatibility"><i class="fa fa-check"></i><b>10.7.5</b> Compatibility</a></li>
+</ul></li>
+<li class="chapter" data-level="10.8" data-path="SqlAndR.html"><a href="SqlAndR.html#summary-2"><i class="fa fa-check"></i><b>10.8</b> Summary</a></li>
+<li class="chapter" data-level="10.9" data-path="SqlAndR.html"><a href="SqlAndR.html#exercises-1"><i class="fa fa-check"></i><b>10.9</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="Cohorts.html"><a href="Cohorts.html"><i class="fa fa-check"></i><b>11</b> Building the building blocks: cohorts</a></li>
+<li class="chapter" data-level="12" data-path="Characterization.html"><a href="Characterization.html"><i class="fa fa-check"></i><b>12</b> Characterization</a></li>
+<li class="chapter" data-level="13" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html"><i class="fa fa-check"></i><b>13</b> Population-level estimation</a><ul>
+<li class="chapter" data-level="13.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#CohortMethod"><i class="fa fa-check"></i><b>13.1</b> The cohort method design</a><ul>
+<li class="chapter" data-level="13.1.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#propensity-scores"><i class="fa fa-check"></i><b>13.1.1</b> Propensity scores</a></li>
+<li class="chapter" data-level="13.1.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#VariableSelection"><i class="fa fa-check"></i><b>13.1.2</b> Variable selection</a></li>
+<li class="chapter" data-level="13.1.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#caliper"><i class="fa fa-check"></i><b>13.1.3</b> Caliper</a></li>
+<li class="chapter" data-level="13.1.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#overlap-preference-scores"><i class="fa fa-check"></i><b>13.1.4</b> Overlap: preference scores</a></li>
+<li class="chapter" data-level="13.1.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#balance"><i class="fa fa-check"></i><b>13.1.5</b> Balance</a></li>
+</ul></li>
+<li class="chapter" data-level="13.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#the-self-controlled-cohort-design"><i class="fa fa-check"></i><b>13.2</b> The self-controlled cohort design</a></li>
+<li class="chapter" data-level="13.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#the-case-control-design"><i class="fa fa-check"></i><b>13.3</b> The case-control design</a></li>
+<li class="chapter" data-level="13.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#the-case-crossover-design"><i class="fa fa-check"></i><b>13.4</b> The case-crossover design</a></li>
+<li class="chapter" data-level="13.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#the-self-controlled-case-series-design"><i class="fa fa-check"></i><b>13.5</b> The self-controlled case series design</a></li>
+<li class="chapter" data-level="13.6" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#designing-a-hypertension-study"><i class="fa fa-check"></i><b>13.6</b> Designing a hypertension study</a><ul>
+<li class="chapter" data-level="13.6.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#problem-definition-1"><i class="fa fa-check"></i><b>13.6.1</b> Problem definition</a></li>
+<li class="chapter" data-level="13.6.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#target-and-comparator"><i class="fa fa-check"></i><b>13.6.2</b> Target and comparator</a></li>
+<li class="chapter" data-level="13.6.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#outcome-1"><i class="fa fa-check"></i><b>13.6.3</b> Outcome</a></li>
+<li class="chapter" data-level="13.6.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#time-at-risk-1"><i class="fa fa-check"></i><b>13.6.4</b> Time-at-risk</a></li>
+<li class="chapter" data-level="13.6.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#model"><i class="fa fa-check"></i><b>13.6.5</b> Model</a></li>
+<li class="chapter" data-level="13.6.6" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#study-summary"><i class="fa fa-check"></i><b>13.6.6</b> Study summary</a></li>
+<li class="chapter" data-level="13.6.7" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#control-questions"><i class="fa fa-check"></i><b>13.6.7</b> Control questions</a></li>
+</ul></li>
+<li class="chapter" data-level="13.7" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#PleAtlas"><i class="fa fa-check"></i><b>13.7</b> Implementing the study using ATLAS</a><ul>
+<li class="chapter" data-level="13.7.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#ComparisonSettings"><i class="fa fa-check"></i><b>13.7.1</b> Comparative cohort settings</a></li>
+<li class="chapter" data-level="13.7.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#effect-estimation-analysis-settings"><i class="fa fa-check"></i><b>13.7.2</b> Effect estimation analysis settings</a></li>
+<li class="chapter" data-level="13.7.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#evaluationSettings"><i class="fa fa-check"></i><b>13.7.3</b> Evaluation settings</a></li>
+<li class="chapter" data-level="13.7.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#running-the-study-package"><i class="fa fa-check"></i><b>13.7.4</b> Running the study package</a></li>
+</ul></li>
+<li class="chapter" data-level="13.8" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#pleR"><i class="fa fa-check"></i><b>13.8</b> Implementing the study using R</a><ul>
+<li class="chapter" data-level="13.8.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#cohort-instantiation"><i class="fa fa-check"></i><b>13.8.1</b> Cohort instantiation</a></li>
+<li class="chapter" data-level="13.8.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#data-extraction"><i class="fa fa-check"></i><b>13.8.2</b> Data extraction</a></li>
+<li class="chapter" data-level="13.8.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#defining-the-study-population"><i class="fa fa-check"></i><b>13.8.3</b> Defining the study population</a></li>
+<li class="chapter" data-level="13.8.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#propensity-scores-1"><i class="fa fa-check"></i><b>13.8.4</b> Propensity scores</a></li>
+<li class="chapter" data-level="13.8.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#outcome-models"><i class="fa fa-check"></i><b>13.8.5</b> Outcome models</a></li>
+<li class="chapter" data-level="13.8.6" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#MultipleAnalyses"><i class="fa fa-check"></i><b>13.8.6</b> Running multiple analyses</a></li>
+</ul></li>
+<li class="chapter" data-level="13.9" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#studyOutputs"><i class="fa fa-check"></i><b>13.9</b> Study outputs</a><ul>
+<li class="chapter" data-level="13.9.1" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#propensity-scores-and-model"><i class="fa fa-check"></i><b>13.9.1</b> Propensity scores and model</a></li>
+<li class="chapter" data-level="13.9.2" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#covariate-balance"><i class="fa fa-check"></i><b>13.9.2</b> Covariate balance</a></li>
+<li class="chapter" data-level="13.9.3" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#follow-up-and-power"><i class="fa fa-check"></i><b>13.9.3</b> Follow up and power</a></li>
+<li class="chapter" data-level="13.9.4" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#kaplan-meier"><i class="fa fa-check"></i><b>13.9.4</b> Kaplan Meier</a></li>
+<li class="chapter" data-level="13.9.5" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#effect-size-estimate"><i class="fa fa-check"></i><b>13.9.5</b> Effect size estimate</a></li>
+</ul></li>
+<li class="chapter" data-level="13.10" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#summary-3"><i class="fa fa-check"></i><b>13.10</b> Summary</a></li>
+<li class="chapter" data-level="13.11" data-path="PopulationLevelEstimation.html"><a href="PopulationLevelEstimation.html#excercises"><i class="fa fa-check"></i><b>13.11</b> Excercises</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html"><i class="fa fa-check"></i><b>14</b> Patient Level Prediction</a><ul>
+<li class="chapter" data-level="14.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#introduction"><i class="fa fa-check"></i><b>14.1</b> Introduction</a></li>
+<li class="chapter" data-level="14.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#patient-level-prediction-theory"><i class="fa fa-check"></i><b>14.2</b> Patient-level Prediction Theory</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#creating-labelled-data"><i class="fa fa-check"></i><b>14.2.1</b> Creating Labelled Data</a></li>
+<li class="chapter" data-level="14.2.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#supervised-learning"><i class="fa fa-check"></i><b>14.2.2</b> Supervised learning</a></li>
+<li class="chapter" data-level="14.2.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#evaluating-models"><i class="fa fa-check"></i><b>14.2.3</b> Evaluating Models</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#specfifying-a-patient-level-prediction-study"><i class="fa fa-check"></i><b>14.3</b> Specfifying a Patient-level Prediction Study</a><ul>
+<li class="chapter" data-level="14.3.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#problem-definition-2"><i class="fa fa-check"></i><b>14.3.1</b> Problem definition</a></li>
+<li class="chapter" data-level="14.3.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#study-population-definition"><i class="fa fa-check"></i><b>14.3.2</b> Study population definition</a></li>
+<li class="chapter" data-level="14.3.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development-settings"><i class="fa fa-check"></i><b>14.3.3</b> Model development settings</a></li>
+<li class="chapter" data-level="14.3.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-evaluation"><i class="fa fa-check"></i><b>14.3.4</b> Model evaluation</a></li>
+<li class="chapter" data-level="14.3.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#study-summary-1"><i class="fa fa-check"></i><b>14.3.5</b> Study summary</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#implementing-a-patient-level-prediction-study"><i class="fa fa-check"></i><b>14.4</b> Implementing a Patient-level Prediction Study</a><ul>
+<li class="chapter" data-level="14.4.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#implementing-the-study-in-atlas"><i class="fa fa-check"></i><b>14.4.1</b> Implementing the study in Atlas</a></li>
+<li class="chapter" data-level="14.4.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#implementing-the-study-in-r"><i class="fa fa-check"></i><b>14.4.2</b> Implementing the study in R</a></li>
+</ul></li>
+<li class="chapter" data-level="14.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#exploring-the-atlas-plp-shiny-app"><i class="fa fa-check"></i><b>14.5</b> Exploring the Atlas PLP Shiny App</a></li>
+<li class="chapter" data-level="14.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#additional-patient-level-prediction-features"><i class="fa fa-check"></i><b>14.6</b> Additional Patient-level Prediction Features</a><ul>
+<li class="chapter" data-level="14.6.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#journal-paper-generation"><i class="fa fa-check"></i><b>14.6.1</b> Journal paper generation</a></li>
+</ul></li>
+<li class="chapter" data-level="14.7" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#excercises-1"><i class="fa fa-check"></i><b>14.7</b> Excercises</a></li>
+</ul></li>
+<li class="part"><span><b>IV Evidence Quality</b></span></li>
+<li class="chapter" data-level="15" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html"><i class="fa fa-check"></i><b>15</b> Introduction to Evidence Quality</a></li>
+<li class="chapter" data-level="16" data-path="DataQuality.html"><a href="DataQuality.html"><i class="fa fa-check"></i><b>16</b> Data Quality</a><ul>
+<li class="chapter" data-level="16.1" data-path="DataQuality.html"><a href="DataQuality.html#introduction-2"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
+<li class="chapter" data-level="16.2" data-path="DataQuality.html"><a href="DataQuality.html#achilles-heel-tool"><i class="fa fa-check"></i><b>16.2</b> Achilles Heel tool</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="DataQuality.html"><a href="DataQuality.html#precomputed-analyses"><i class="fa fa-check"></i><b>16.2.1</b> Precomputed Analyses</a></li>
+<li class="chapter" data-level="16.2.2" data-path="DataQuality.html"><a href="DataQuality.html#example-dq-check"><i class="fa fa-check"></i><b>16.2.2</b> Example DQ check</a></li>
+<li class="chapter" data-level="16.2.3" data-path="DataQuality.html"><a href="DataQuality.html#overview-of-existing-dq-heel-checks"><i class="fa fa-check"></i><b>16.2.3</b> Overview of existing DQ Heel checks</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="DataQuality.html"><a href="DataQuality.html#study-specific-checks"><i class="fa fa-check"></i><b>16.3</b> Study-specific checks</a><ul>
+<li class="chapter" data-level="16.3.1" data-path="DataQuality.html"><a href="DataQuality.html#outcomes"><i class="fa fa-check"></i><b>16.3.1</b> Outcomes</a></li>
+<li class="chapter" data-level="16.3.2" data-path="DataQuality.html"><a href="DataQuality.html#laboratory-data"><i class="fa fa-check"></i><b>16.3.2</b> Laboratory data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="ClinicalValidity.html"><a href="ClinicalValidity.html"><i class="fa fa-check"></i><b>17</b> Clinical Validity</a></li>
+<li class="chapter" data-level="18" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html"><i class="fa fa-check"></i><b>18</b> Software Validity</a><ul>
+<li class="chapter" data-level="18.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#software-development-process"><i class="fa fa-check"></i><b>18.1</b> Software Development Process</a><ul>
+<li class="chapter" data-level="18.1.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#source-code-management"><i class="fa fa-check"></i><b>18.1.1</b> Source Code Management</a></li>
+<li class="chapter" data-level="18.1.2" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#documentation-2"><i class="fa fa-check"></i><b>18.1.2</b> Documentation</a></li>
+<li class="chapter" data-level="18.1.3" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#availability-of-current-and-historical-archive-versions"><i class="fa fa-check"></i><b>18.1.3</b> Availability of Current and Historical Archive Versions</a></li>
+<li class="chapter" data-level="18.1.4" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#maintenance-support-and-retirement"><i class="fa fa-check"></i><b>18.1.4</b> Maintenance, Support and Retirement</a></li>
+<li class="chapter" data-level="18.1.5" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#qualified-personnel"><i class="fa fa-check"></i><b>18.1.5</b> Qualified Personnel</a></li>
+<li class="chapter" data-level="18.1.6" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#physical-and-logical-security"><i class="fa fa-check"></i><b>18.1.6</b> Physical and Logical Security</a></li>
+<li class="chapter" data-level="18.1.7" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#disaster-recovery"><i class="fa fa-check"></i><b>18.1.7</b> Disaster Recovery</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#testing"><i class="fa fa-check"></i><b>18.2</b> Testing</a><ul>
+<li class="chapter" data-level="18.2.1" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#unit-test"><i class="fa fa-check"></i><b>18.2.1</b> Unit test</a></li>
+</ul></li>
+<li class="chapter" data-level="18.3" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html#conclusions"><i class="fa fa-check"></i><b>18.3</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="MethodValidity.html"><a href="MethodValidity.html"><i class="fa fa-check"></i><b>19</b> Method Validity</a><ul>
+<li class="chapter" data-level="19.1" data-path="MethodValidity.html"><a href="MethodValidity.html#design-specific-diagnostics"><i class="fa fa-check"></i><b>19.1</b> Design-specific diagnostics</a></li>
+<li class="chapter" data-level="19.2" data-path="MethodValidity.html"><a href="MethodValidity.html#diagnostics-for-all-estimation"><i class="fa fa-check"></i><b>19.2</b> Diagnostics for all estimation</a><ul>
+<li class="chapter" data-level="19.2.1" data-path="MethodValidity.html"><a href="MethodValidity.html#NegativeControls"><i class="fa fa-check"></i><b>19.2.1</b> Negative controls</a></li>
+<li class="chapter" data-level="19.2.2" data-path="MethodValidity.html"><a href="MethodValidity.html#positive-controls"><i class="fa fa-check"></i><b>19.2.2</b> Positive controls</a></li>
+<li class="chapter" data-level="19.2.3" data-path="MethodValidity.html"><a href="MethodValidity.html#empirical-evaluation"><i class="fa fa-check"></i><b>19.2.3</b> Empirical evaluation</a></li>
+<li class="chapter" data-level="19.2.4" data-path="MethodValidity.html"><a href="MethodValidity.html#p-value-calibration"><i class="fa fa-check"></i><b>19.2.4</b> P-value calibration</a></li>
+<li class="chapter" data-level="19.2.5" data-path="MethodValidity.html"><a href="MethodValidity.html#confidence-interval-calibration"><i class="fa fa-check"></i><b>19.2.5</b> Confidence interval calibration</a></li>
+<li class="chapter" data-level="19.2.6" data-path="MethodValidity.html"><a href="MethodValidity.html#replication-across-sites"><i class="fa fa-check"></i><b>19.2.6</b> Replication across sites</a></li>
+<li class="chapter" data-level="19.2.7" data-path="MethodValidity.html"><a href="MethodValidity.html#sensitivity-analyses"><i class="fa fa-check"></i><b>19.2.7</b> Sensitivity analyses</a></li>
+</ul></li>
+<li class="chapter" data-level="19.3" data-path="MethodValidity.html"><a href="MethodValidity.html#method-validation-in-practice"><i class="fa fa-check"></i><b>19.3</b> Method validation in practice</a><ul>
+<li class="chapter" data-level="19.3.1" data-path="MethodValidity.html"><a href="MethodValidity.html#selecting-negative-controls"><i class="fa fa-check"></i><b>19.3.1</b> Selecting negative controls</a></li>
+<li class="chapter" data-level="19.3.2" data-path="MethodValidity.html"><a href="MethodValidity.html#including-controls"><i class="fa fa-check"></i><b>19.3.2</b> Including controls</a></li>
+<li class="chapter" data-level="19.3.3" data-path="MethodValidity.html"><a href="MethodValidity.html#empirical-performance"><i class="fa fa-check"></i><b>19.3.3</b> Empirical performance</a></li>
+<li class="chapter" data-level="19.3.4" data-path="MethodValidity.html"><a href="MethodValidity.html#p-value-calibration-1"><i class="fa fa-check"></i><b>19.3.4</b> P-value calibration</a></li>
+<li class="chapter" data-level="19.3.5" data-path="MethodValidity.html"><a href="MethodValidity.html#confidence-interval-calibration-1"><i class="fa fa-check"></i><b>19.3.5</b> Confidence interval calibration</a></li>
+<li class="chapter" data-level="19.3.6" data-path="MethodValidity.html"><a href="MethodValidity.html#between-database-heterogeneity"><i class="fa fa-check"></i><b>19.3.6</b> Between-database heterogeneity</a></li>
+<li class="chapter" data-level="19.3.7" data-path="MethodValidity.html"><a href="MethodValidity.html#sensitivity-analyses-1"><i class="fa fa-check"></i><b>19.3.7</b> Sensitivity analyses</a></li>
+</ul></li>
+<li class="chapter" data-level="19.4" data-path="MethodValidity.html"><a href="MethodValidity.html#advanced-ohdsi-methods-benchmark"><i class="fa fa-check"></i><b>19.4</b> Advanced: OHDSI Methods Benchmark</a></li>
+<li class="chapter" data-level="19.5" data-path="MethodValidity.html"><a href="MethodValidity.html#summary-4"><i class="fa fa-check"></i><b>19.5</b> Summary</a></li>
+<li class="chapter" data-level="19.6" data-path="MethodValidity.html"><a href="MethodValidity.html#exercises-2"><i class="fa fa-check"></i><b>19.6</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>V OHDSI Studies</b></span></li>
+<li class="chapter" data-level="20" data-path="StudySteps.html"><a href="StudySteps.html"><i class="fa fa-check"></i><b>20</b> Study steps</a></li>
+<li class="chapter" data-level="21" data-path="NetworkResearch.html"><a href="NetworkResearch.html"><i class="fa fa-check"></i><b>21</b> OHDSI Network Research</a><ul>
+<li class="chapter" data-level="21.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#ohdsi-network-study-examples"><i class="fa fa-check"></i><b>21.1</b> OHDSI Network Study Examples</a><ul>
+<li class="chapter" data-level="21.1.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#endometriosis-study"><i class="fa fa-check"></i><b>21.1.1</b> Endometriosis study</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="NetworkResearch.html"><a href="NetworkResearch.html#excercises-2"><i class="fa fa-check"></i><b>21.2</b> Excercises</a><ul>
+<li class="chapter" data-level="21.2.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#defining-a-cohort"><i class="fa fa-check"></i><b>21.2.1</b> Defining a cohort</a></li>
+</ul></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="Glossary.html"><a href="Glossary.html"><i class="fa fa-check"></i><b>A</b> Glossary</a></li>
+<li class="chapter" data-level="B" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html"><i class="fa fa-check"></i><b>B</b> Cohort definitions</a><ul>
+<li class="chapter" data-level="B.1" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#AceInhibitors"><i class="fa fa-check"></i><b>B.1</b> ACE inhibitors</a></li>
+<li class="chapter" data-level="B.2" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#AceInhibitorsMono"><i class="fa fa-check"></i><b>B.2</b> New users of ACE inhibitors as first-line monotherapy for hypertension</a></li>
+<li class="chapter" data-level="B.3" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#Ami"><i class="fa fa-check"></i><b>B.3</b> Acute myocardial infarction (AMI)</a></li>
+<li class="chapter" data-level="B.4" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#Angioedema"><i class="fa fa-check"></i><b>B.4</b> Angioedema</a></li>
+<li class="chapter" data-level="B.5" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#ThiazidesMono"><i class="fa fa-check"></i><b>B.5</b> New users of Thiazide-like diuretics as first-line monotherapy for hypertension</a></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="NegativeControlsAppendix.html"><a href="NegativeControlsAppendix.html"><i class="fa fa-check"></i><b>C</b> Negative controls</a><ul>
+<li class="chapter" data-level="C.1" data-path="NegativeControlsAppendix.html"><a href="NegativeControlsAppendix.html#AceiThzNsc"><i class="fa fa-check"></i><b>C.1</b> ACEi and THZ</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">The Book of OHDSI</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="NegativeControlsAppendix" class="section level1">
+<h1><span class="header-section-number">C</span> Negative controls</h1>
+<p>This Appendix contains negative controls used in various chapters of the book.</p>
+<div id="AceiThzNsc" class="section level2">
+<h2><span class="header-section-number">C.1</span> ACEi and THZ</h2>
+<table>
+<caption><span id="tab:AceiThzNsc">Table C.1: </span> Negative control outcomes when comparing ACE inhibitors (ACEi) to thiazides and thiazide-like diuretics (THZ).</caption>
+<thead>
+<tr class="header">
+<th align="right">Concept ID</th>
+<th align="left">Concept Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">434165</td>
+<td align="left">Abnormal cervical smear</td>
+</tr>
+<tr class="even">
+<td align="right">436409</td>
+<td align="left">Abnormal pupil</td>
+</tr>
+<tr class="odd">
+<td align="right">199192</td>
+<td align="left">Abrasion and/or friction burn of trunk without infection</td>
+</tr>
+<tr class="even">
+<td align="right">4088290</td>
+<td align="left">Absence of breast</td>
+</tr>
+<tr class="odd">
+<td align="right">4092879</td>
+<td align="left">Absent kidney</td>
+</tr>
+<tr class="even">
+<td align="right">44783954</td>
+<td align="left">Acid reflux</td>
+</tr>
+<tr class="odd">
+<td align="right">75911</td>
+<td align="left">Acquired hallux valgus</td>
+</tr>
+<tr class="even">
+<td align="right">137951</td>
+<td align="left">Acquired keratoderma</td>
+</tr>
+<tr class="odd">
+<td align="right">77965</td>
+<td align="left">Acquired trigger finger</td>
+</tr>
+<tr class="even">
+<td align="right">376707</td>
+<td align="left">Acute conjunctivitis</td>
+</tr>
+<tr class="odd">
+<td align="right">4103640</td>
+<td align="left">Amputated foot</td>
+</tr>
+<tr class="even">
+<td align="right">73241</td>
+<td align="left">Anal and rectal polyp</td>
+</tr>
+<tr class="odd">
+<td align="right">133655</td>
+<td align="left">Burn of forearm</td>
+</tr>
+<tr class="even">
+<td align="right">73560</td>
+<td align="left">Calcaneal spur</td>
+</tr>
+<tr class="odd">
+<td align="right">434327</td>
+<td align="left">Cannabis abuse</td>
+</tr>
+<tr class="even">
+<td align="right">4213540</td>
+<td align="left">Cervical somatic dysfunction</td>
+</tr>
+<tr class="odd">
+<td align="right">140842</td>
+<td align="left">Changes in skin texture</td>
+</tr>
+<tr class="even">
+<td align="right">81378</td>
+<td align="left">Chondromalacia of patella</td>
+</tr>
+<tr class="odd">
+<td align="right">432303</td>
+<td align="left">Cocaine abuse</td>
+</tr>
+<tr class="even">
+<td align="right">4201390</td>
+<td align="left">Colostomy present</td>
+</tr>
+<tr class="odd">
+<td align="right">46269889</td>
+<td align="left">Complication due to Crohn’s disease</td>
+</tr>
+<tr class="even">
+<td align="right">134438</td>
+<td align="left">Contact dermatitis</td>
+</tr>
+<tr class="odd">
+<td align="right">78619</td>
+<td align="left">Contusion of knee</td>
+</tr>
+<tr class="even">
+<td align="right">201606</td>
+<td align="left">Crohn’s disease</td>
+</tr>
+<tr class="odd">
+<td align="right">76786</td>
+<td align="left">Derangement of knee</td>
+</tr>
+<tr class="even">
+<td align="right">4115402</td>
+<td align="left">Difficulty sleeping</td>
+</tr>
+<tr class="odd">
+<td align="right">45757370</td>
+<td align="left">Disproportion of reconstructed breast</td>
+</tr>
+<tr class="even">
+<td align="right">433111</td>
+<td align="left">Effects of hunger</td>
+</tr>
+<tr class="odd">
+<td align="right">433527</td>
+<td align="left">Endometriosis</td>
+</tr>
+<tr class="even">
+<td align="right">4170770</td>
+<td align="left">Epidermoid cyst</td>
+</tr>
+<tr class="odd">
+<td align="right">4092896</td>
+<td align="left">Feces contents abnormal</td>
+</tr>
+<tr class="even">
+<td align="right">259995</td>
+<td align="left">Foreign body in orifice</td>
+</tr>
+<tr class="odd">
+<td align="right">40481632</td>
+<td align="left">Ganglion cyst</td>
+</tr>
+<tr class="even">
+<td align="right">4166231</td>
+<td align="left">Genetic predisposition</td>
+</tr>
+<tr class="odd">
+<td align="right">433577</td>
+<td align="left">Hammer toe</td>
+</tr>
+<tr class="even">
+<td align="right">4231770</td>
+<td align="left">Hereditary thrombophilia</td>
+</tr>
+<tr class="odd">
+<td align="right">440329</td>
+<td align="left">Herpes zoster without complication</td>
+</tr>
+<tr class="even">
+<td align="right">4012570</td>
+<td align="left">High risk sexual behavior</td>
+</tr>
+<tr class="odd">
+<td align="right">4012934</td>
+<td align="left">Homocystinuria</td>
+</tr>
+<tr class="even">
+<td align="right">441788</td>
+<td align="left">Human papilloma virus infection</td>
+</tr>
+<tr class="odd">
+<td align="right">4201717</td>
+<td align="left">Ileostomy present</td>
+</tr>
+<tr class="even">
+<td align="right">374375</td>
+<td align="left">Impacted cerumen</td>
+</tr>
+<tr class="odd">
+<td align="right">4344500</td>
+<td align="left">Impingement syndrome of shoulder region</td>
+</tr>
+<tr class="even">
+<td align="right">139099</td>
+<td align="left">Ingrowing nail</td>
+</tr>
+<tr class="odd">
+<td align="right">444132</td>
+<td align="left">Injury of knee</td>
+</tr>
+<tr class="even">
+<td align="right">196168</td>
+<td align="left">Irregular periods</td>
+</tr>
+<tr class="odd">
+<td align="right">432593</td>
+<td align="left">Kwashiorkor</td>
+</tr>
+<tr class="even">
+<td align="right">434203</td>
+<td align="left">Late effect of contusion</td>
+</tr>
+<tr class="odd">
+<td align="right">438329</td>
+<td align="left">Late effect of motor vehicle accident</td>
+</tr>
+<tr class="even">
+<td align="right">195873</td>
+<td align="left">Leukorrhea</td>
+</tr>
+<tr class="odd">
+<td align="right">4083487</td>
+<td align="left">Macular drusen</td>
+</tr>
+<tr class="even">
+<td align="right">4103703</td>
+<td align="left">Melena</td>
+</tr>
+<tr class="odd">
+<td align="right">4209423</td>
+<td align="left">Nicotine dependence</td>
+</tr>
+<tr class="even">
+<td align="right">377572</td>
+<td align="left">Noise effects on inner ear</td>
+</tr>
+<tr class="odd">
+<td align="right">40480893</td>
+<td align="left">Nonspecific tuberculin test reaction</td>
+</tr>
+<tr class="even">
+<td align="right">136368</td>
+<td align="left">Non-toxic multinodular goiter</td>
+</tr>
+<tr class="odd">
+<td align="right">140648</td>
+<td align="left">Onychomycosis due to dermatophyte</td>
+</tr>
+<tr class="even">
+<td align="right">438130</td>
+<td align="left">Opioid abuse</td>
+</tr>
+<tr class="odd">
+<td align="right">4091513</td>
+<td align="left">Passing flatus</td>
+</tr>
+<tr class="even">
+<td align="right">4202045</td>
+<td align="left">Postviral fatigue syndrome</td>
+</tr>
+<tr class="odd">
+<td align="right">373478</td>
+<td align="left">Presbyopia</td>
+</tr>
+<tr class="even">
+<td align="right">46286594</td>
+<td align="left">Problem related to lifestyle</td>
+</tr>
+<tr class="odd">
+<td align="right">439790</td>
+<td align="left">Psychalgia</td>
+</tr>
+<tr class="even">
+<td align="right">81634</td>
+<td align="left">Ptotic breast</td>
+</tr>
+<tr class="odd">
+<td align="right">380706</td>
+<td align="left">Regular astigmatism</td>
+</tr>
+<tr class="even">
+<td align="right">141932</td>
+<td align="left">Senile hyperkeratosis</td>
+</tr>
+<tr class="odd">
+<td align="right">36713918</td>
+<td align="left">Somatic dysfunction of lumbar region</td>
+</tr>
+<tr class="even">
+<td align="right">443172</td>
+<td align="left">Splinter of face, without major open wound</td>
+</tr>
+<tr class="odd">
+<td align="right">81151</td>
+<td align="left">Sprain of ankle</td>
+</tr>
+<tr class="even">
+<td align="right">72748</td>
+<td align="left">Strain of rotator cuff capsule</td>
+</tr>
+<tr class="odd">
+<td align="right">378427</td>
+<td align="left">Tear film insufficiency</td>
+</tr>
+<tr class="even">
+<td align="right">437264</td>
+<td align="left">Tobacco dependence syndrome</td>
+</tr>
+<tr class="odd">
+<td align="right">194083</td>
+<td align="left">Vaginitis and vulvovaginitis</td>
+</tr>
+<tr class="even">
+<td align="right">140641</td>
+<td align="left">Verruca vulgaris</td>
+</tr>
+<tr class="odd">
+<td align="right">440193</td>
+<td align="left">Wristdrop</td>
+</tr>
+<tr class="even">
+<td align="right">4115367</td>
+<td align="left">Wrist joint pain</td>
+</tr>
+<tr class="odd">
+<td align="right"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="CohortDefinitions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/NegativeControls.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["TheBookOfOhdsi.pdf", "TheBookOfOhdsi.epub"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

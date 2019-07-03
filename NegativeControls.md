@@ -1,4 +1,4 @@
-# Negative controls {#NegativeControls}
+# Negative controls {#NegativeControlsAppendix}
 
 This Appendix contains negative controls used in various chapters of the book.
 

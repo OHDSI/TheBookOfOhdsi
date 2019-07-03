@@ -206,7 +206,7 @@ Table: (\#tab:aceChoices) Main design choices four our comparative cohort study.
 To evaluate whether our study design produces estimates in line with the truth, we additionally include a set of control questions where the true effect size is known. Control questions can be divided in negative controls, having a hazard ratio of 1, and positive controls, having a known hazard ratio greater than 1. For several reasons we use real negative controls, and synthesize positive controls based on these negative controls. How to define and use control questions is discussed in detail in Chapter \@ref(MethodValidity).
 
 
-## Implementing the study using ATLAS
+## Implementing the study using ATLAS {#PleAtlas}
 
 Here we demonstrate how this study can be implemented using the Estimation function in ATLAS. Click on ![](images/PopulationLevelEstimation/estimation.png) in the left bar of ATLAS, and create a new estimation study. Make sure to give the study an easy-to-recognize name. The study design can be saved at any time by clicking the ![](images/PopulationLevelEstimation/save.png) button.
 
@@ -386,7 +386,7 @@ Once you have opened the project in R Studio, you can open the README file, and 
 
 A common error message that may appear when running the study is "High correlation between covariate(s) and treatment detected". This indicates that when fitting the propensity model, some covariates were observed to be highly correlated with the exposure. Please review the covariates mentioned in the error message, and exclude them from the set of covariates if appropriate (see Section \@ref(VariableSelection)).
 
-## Implementing the study using R
+## Implementing the study using R {#pleR}
 
 Instead of using ATLAS to write the R code that executes the study, we can also write the R code ourselves. One reason we might want to do this is because R offers far greater flexibility than is exposed in ATLAS. If we for example wish to use custom covariates, or a linear outcome model, we will need to write some custom R code, and combine it with the functionality provided by the OHDSI R packages. 
 
@@ -590,7 +590,7 @@ outcomeModel
 
 ### Running multiple analyses {#MultipleAnalyses}
 
-Often we want to perform more than one analyses, for example for multiple outcomes including negative controls. The [CohortMethod](https://ohdsi.github.io/CohortMethod/) offers functions for performing such studies efficiently. This is described in detail in the [package vignette on running multiple analyses](https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html). Briefly, we can first specify all target-comparator-outcome combinations we wish to analyse:
+Often we want to perform more than one analyses, for example for multiple outcomes including negative controls. The [CohortMethod](https://ohdsi.github.io/CohortMethod/) offers functions for performing such studies efficiently. This is described in detail in the [package vignette on running multiple analyses](https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html). Briefly, assuming the outcome of interest and negative control cohorts have already been created, we can specify all target-comparator-outcome combinations we wish to analyse:
 
 
 ```r
@@ -610,12 +610,12 @@ ncs <- c(434165,436409,199192,4088290,4092879,44783954,75911,137951,77965,
 
 tcos <- createTargetComparatorOutcomes(targetId = 1,
                                        comparatorId = 2,
-                                       outcomeIds = c(ois, ncs)
+                                       outcomeIds = c(ois, ncs))
 
 tcosList <- list(tcos)
 ```
 
-We assume the outcome of interest and negative control cohorts have already been created. Next, we specify what arguments should be used when calling the various functions described previously in our example with one outcome:
+Next, we specify what arguments should be used when calling the various functions described previously in our example with one outcome:
 
 
 ```r
@@ -718,9 +718,26 @@ outcomeModel
 ## treatment   1.1338    0.5921    2.1765 0.1256   0.332
 ```
 
+We can also retrieve the effect size estimates for all outcomes with one command:
+
+```r
+summ <- summarizeAnalyses(result, outputFolder = outputFolder)
+head(summ)
+```
+
+```
+##     analysisId targetId comparatorId outcomeId        rr    ci95lb  ...
+## 1            1        1            2     72748 0.9734698 0.5691589  ...
+## 2            1        1            2     73241 0.7067981 0.4009951  ...
+## 3            1        1            2     73560 1.0623951 0.7187302  ...
+## 4            1        1            2     75911 0.9952184 0.6190344  ...
+## 5            1        1            2     76786 1.0861746 0.6730408  ...
+## 6            1        1            2     77965 1.1439772 0.5173222  ...
+```
+
 ## Study outputs {#studyOutputs}
 
-Our estimate is only valid if several assumptions have been met. We use a wide set of diagnostics to evaluate whether this is the case. These are available in the results produced by the R package generated by ATLAS, or can be generated on the fly using specific R functions.
+Our estimates are only valid if several assumptions have been met. We use a wide set of diagnostics to evaluate whether this is the case. These are available in the results produced by the R package generated by ATLAS, or can be generated on the fly using specific R functions.
 
 ### Propensity scores and model
 
