@@ -63,6 +63,7 @@ TODO: make list of contributors complete
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
 
+Contributor         Contributor            Contributor     
 ------------------  ---------------------  ----------------
 Hamed Abedtash      Mustafa Ascha          Mark Beno       
 Clair Blacketer     Brian Christian        Gino Cloft      
@@ -81,6 +82,4 @@ Marc Suchard        Joel Swerdel           Devin Tian
 Don Torok           Kees van Bochove       Mui Van Zandt   
 Kristin Waite       Mike Warfe             Jamie Weaver    
 James Wiggins       Andrew Williams        Chan You Seng   
-                                                           
-------------------  ---------------------  ----------------
 

@@ -48,7 +48,7 @@ We should select negative controls that are comparable to our hypothesis of inte
 
 The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studies extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this principe in mind we have developed a semi-automated procedure for selecting negative controls [@voss_2016]. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.
 
-### Positive controls
+### Positive controls {#PositiveControls}
 
 To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls, where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. [@noren_2014]
 
@@ -61,7 +61,7 @@ In OHDSI we therefore use synthetic positive controls, [@schuemie_2018] created 
 
 Although we refer to a single true "effect size" for each control, different methods estimate different statistics of the treatment effect. For negative controls, where we believe no causal effect exists, all such statistics, including the relative risk, hazard ratio, odds ratio, incidence rate ratio, both conditional and marginal, as well as the average treatment effect in the treated (ATT) and the overall average treatment effect (ATE) will be identical to 1. Our process for creating positive controls synthesizes outcomes with a constant incidence rate ratio over time and between patients, using a model conditioned on the patient where this ratio is held constant, up to the point where the marginal effect is achieved. The true effect size is thus guaranteed to hold as the marginal incidence rate ratio in the treated. Under the assumption that our outcome model used during synthesis is correct, this also holds for the conditional effect size and the ATE. Since all outcomes are rare, odds ratios are all but identical to the relative risk.
 
-### Empirical evaluation
+### Empirical evaluation {#metrics}
 
 Based on the estimates of a particular method for the negative and positive controls, we can then understand the operating characteristic by computing a range of metrics, for example:
 
@@ -207,7 +207,7 @@ Table: (\#tab:exampleMetrics) Method performance metrics derived from the negati
 
 We see that coverage and type 1 error are very close to their nominal values of 95% and 5%, respectively, and that the AUC is very high. This is certainly not always the case. 
 
-Note that although in \@ref(fig:controls) not all confidence intervals include one when the true hazard ratio is one, the type 1 error in Table \@ref(tab:exampleMetrics) is 0%. This is an exceptional situation, caused by the fact that confidence intervals in the [Cyclops](https://ohdsi.github.io/Cyclops/) package are estimated using likelihood profiling, which is more accurate than traditional methods but can result in assymmetric confidence intervals. The p-value instead is computed assuming symmetrical confidence intervals, and this is what was used to compute the type 1 error.
+Note that although in Figure \@ref(fig:controls) not all confidence intervals include one when the true hazard ratio is one, the type 1 error in Table \@ref(tab:exampleMetrics) is 0%. This is an exceptional situation, caused by the fact that confidence intervals in the [Cyclops](https://ohdsi.github.io/Cyclops/) package are estimated using likelihood profiling, which is more accurate than traditional methods but can result in assymmetric confidence intervals. The p-value instead is computed assuming symmetrical confidence intervals, and this is what was used to compute the type 1 error.
 
 ### P-value calibration
 
@@ -276,7 +276,7 @@ Just as we executed our analysis on one database, in this case the IBM MarketSca
 <p class="caption">(\#fig:forest)Effect size estimates and 95% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.</p>
 </div>
 
-Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the $I^2$ suggests between-database heterogeneity. However, if we compute the $I^2$ using the calibrated confidence intervals as shown in Figure \@ref(fig:forestCal), we see that this heterogeneity can be explained by the observed biases in each database, and appear to be properly taken into account in the calibrated confidence intervals.
+Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the $I^2$ suggests between-database heterogeneity. However, if we compute the $I^2$ using the calibrated confidence intervals as shown in Figure \@ref(fig:forestCal), we see that this heterogeneity can be explained by the bias observed in each database through the negative and positive controls. The empirical calibration appears to properly taken this bias into account.
 
 <div class="figure" style="text-align: center">
 <img src="images/MethodValidity/forestCal.png" alt="Calibrated Effect size estimates and 95% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics." width="90%" />
@@ -298,13 +298,38 @@ Table: (\#tab:sensAnalysis) Uncalibrated and calibrated hazard ratios (95% confi
 
 We see that the estimates from the matched and stratified analysis are in strong agreement, with the confidence intervals for stratification falling completely inside of the confidence intervals for matching. This suggests that our uncertainty around this design choice does not impact the validity of our estimates. Stratification does appear to give us more power (narrower confidence intervals), which is not surprising since matching results in loss of data, whereas stratification does not. The price for this could be an increase in bias, due to within-strata residual confounding, although we see no evidence of increased bias reflected in the calibrated confidence intervals. 
 
-## Advanced: OHDSI Methods Benchmark
+\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">Study diagnostics allow us to evaluate design choices even before fully executing a study. It is recommended not to finalize the protocol before generating and reviewing all study diagnostics. To avoid p-hacking (adjusting the design to achieve a desired result), this should be done before estimating the effect of interest. </div>\EndKnitrBlock{rmdimportant}
 
-Todo: add text on OHDSI Methods Benchmark
+## OHDSI Methods Benchmark
+
+Although the recommended practice is to empirically evaluate a method's performance within the context that it is applied, using negative and positive controls that are in ways similar to the exposures-outcomes pairs of interest (for example using the same exposure or the same outcome), there is also value in evaluating a method's performance in general. This is why the OHDSI Methods Evaluation Benchmark was developed. The benchmark evaluates performance using a wide range of control questions, including those with chronic or acute outcomes, and long-term or short-term exposures. The results on this benchmark can help demonstrate the overall userfulness of a method, and can be used as a prior belief about the performance of a method when a context-specific empirical evaluation is not (yet) available. The benchmark consists of 200 carefully selected negative controls that can be stratified into eight categories, with the controls in each category either sharing the same exposure or the same outcome. From these 200 negative controls, 600 synthetic positive controls are derived as described in Section \@ref(PositiveControls). To evaluate a method, it must be used to produce effect size estimates for all controls, after which the metrics described in Section \@ref(metrics) can be computed. The benchmark is publicly available, and can be deployed as described in the [Running the OHDSI Methods Benchmark vignette](https://ohdsi.github.io/MethodEvaluation/articles/OhdsiMethodsBenchmark.html) in the  [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package.
+
+We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app[^methodEvalViewerUrl], show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95% confidence interval, as shown in Figure \@ref(fig:methodEval). 
+
+[^methodEvalViewerUrl]: http://data.ohdsi.org/MethodEvalViewer/
+
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/methodEval.png" alt="Coverage of the 95% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease." width="100%" />
+<p class="caption">(\#fig:methodEval)Coverage of the 95% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease.</p>
+</div>
+
+This emphasizes the need for empirical evaluation and calibration: if no empirical evaluation is performed, wich is true for almost all published observational studies, we must assume a prior informed by the results in Figure \@ref(fig:methodEval), and conclude that it is likely that the true effect size is not contained in the 95% confidence interval!
+
+Our evaluation of the designs in the Methods Library also shows that empirical calibration restores type 1 error and coverage to their nominal values, although often at the cost of increasing type 2 error and descreasing precision. 
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- TODO: add
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- A method's validity depends on whether the assumptions underlying the method are met.
+
+- Where possible, these assumptions should be empirically tested using study diagnostics.
+
+- Control hypotheses, questions where the answer is known, should be used to evaluate whether a specific study design produces answers in line with the truth.
+
+- Often, p-values and confidence intervals do not demonstrate nominal characteristics as measured using control hypotheses. 
+
+- These characteristics can often be restored to nominal using empirical calibration.
+
+- Study diagnostics can be used to guide analytic design choices and adapt the protocol, as long as the researcher remains blinded to the effect of interest to avoid p-hacking.
 </div>\EndKnitrBlock{rmdsummary}
 
 ## Exercises
