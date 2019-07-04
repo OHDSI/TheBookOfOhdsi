@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-07-03}
+    \date{2019-07-04}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -307,7 +307,9 @@ Don Torok & Kees van Bochove & Mui Van Zandt\\
 \hline
 Kristin Waite & Mike Warfe & Jamie Weaver\\
 \hline
-Andrew Williams & Chan You Seng & \\
+James Wiggins & Andrew Williams & Chan You Seng\\
+\hline
+ &  & \\
 \hline
 \end{tabular}
 
@@ -448,7 +450,7 @@ Representation}\label{part-uniform-data-representation}
 
 \chapter{The Common Data Model}\label{CommonDataModel}
 
-\emph{Chapter leads: Clair Blacketer \& Mui VanZandt}
+\emph{Chapter lead: Clair Blacketer}
 
 No single observational data source provides a comprehensive view of the
 clinical data a patient accumulates while receiving healthcare, and
@@ -2146,7 +2148,7 @@ this topic.
 
 \chapter{OHDSI Analytics Tools}\label{OhdsiAnalyticsTools}
 
-\emph{Chapter lead: Martijn Schuemie}
+\emph{Chapter leads: Martijn Schuemie \& Frank DeFalco}
 
 OHDSI offers a wide range of open source tools to support the various
 data-analytics use cases. What these tools have in common is that they
@@ -2393,7 +2395,7 @@ the methods.
 
 The Methods Library has already been used in many published clinical
 studies
-\citep{boland_2017, duke_2017, ramcharran_2017, weinstein_2017, wang_2017, ryan_2018, vashisht_2018, yuan_2018, johnston_2019},
+\citep{boland_2017, duke_2017, ramcharran_2017, weinstein_2017, wang_2017, ryan_2017, ryan_2018, vashisht_2018, yuan_2018, johnston_2019},
 as well as methodological studies
 \citep{schuemie_2014, schuemie_2016, reps2018, tian_2018, schuemie_2018, schuemie_2018b, reps_2019}.
 Great care is taken to ensure the validity of the Methods Library, as
@@ -2654,7 +2656,7 @@ Once completed, you should be able to select R from your Start Menu.
 
 \textbf{Verifying the installation}
 
-You should now be ready to go, but we should make sure. Start R-studio,
+You should now be ready to go, but we should make sure. Start RStudio,
 and type
 
 \begin{Shaded}
@@ -2684,9 +2686,74 @@ OHDSI GitHub repository:
 \end{Highlighting}
 \end{Shaded}
 
-\section{Integrated solutions}\label{integrated-solutions}
+\section{Deployment strategies}\label{deployment-strategies}
 
-BroadSea?
+Deploying the entire OHDSI tool stack, including ATLAS and the Methods
+Library, in an organization is a daunting task. There are many
+components with dependencies that have to be considered, and
+configurations to set. For this reason, two initiatives have developed
+integrated deployment strategies that allow the entire stack to be
+installed as one package, using some forms of virtualization: Broadsea
+and Amazon Web Services (AWS).
+
+\subsection{Broadsea}\label{broadsea}
+
+BroadSea uses Docker container technology\footnote{\url{https://www.docker.com/}}.
+The OHDSI tools are packaged along with dependencies into a single
+portable binary file called a Docker Image. This image can then be run
+on a Docker engine service, creating a virtual machine with all the
+software installed and ready to run. Docker engines are available for
+most operating systems, including Microsoft Windows, MacOS, and Linux.
+The Broadsea Docker image \ldots{}
+
+TODO: Find out if Broadsea is still maintained
+
+\subsection{Amazon AWS}\label{amazon-aws}
+
+Amazon has prepared two environments that can be instantiated in the AWS
+cloud computing environment with a click of the button:
+OHDSI-in-a-Box\footnote{\url{https://github.com/OHDSI/OHDSI-in-a-Box}}
+and OHDSIonAWS\footnote{\url{https://github.com/OHDSI/OHDSIonAWS}}.
+OHDSI-in-a-Box is specifically created as a learning environment, and is
+used in most of the tutorials provided by the OHDSI community.
+OHDSIonAWS is intended as a starting point to create an enterprise
+class, multi-user, scalable and fault tolerant environment that can be
+used by organizations to perform their data analytics. Both follow the
+architecture depicted in Figure \ref{fig:awsDiagram}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/awsDiagram} 
+
+}
+
+\caption{The Amazon Web Services architecure for OHDSI-in-a-Box and OHDSIonAWS.}\label{fig:awsDiagram}
+\end{figure}
+
+On the back end there is data in the CDM. By default several simulated
+datasets are provided alongside the Standardized Vocabularies, although
+of course for OHDSIonAWS it is likely organizations will want to include
+real healthcare data taht they have access to as well. The data is
+placed in the Amazon's RedShift database platform, which is supported by
+the OHDSI tools. Intermediary results of ATLAS are stored in a
+PostgreSQL database. On the front end, users have access to ATLAS and to
+RStudio through a web interface (leveraging RStudio Server). In RStudio
+the OHDSI Methods Library has already been installed, and can be used to
+connect to the databases.
+
+\section{Summary}\label{summary-2}
+
+\BeginKnitrBlock{rmdsummary}
+\begin{itemize}
+\tightlist
+\item
+  TODO: add
+\end{itemize}
+\EndKnitrBlock{rmdsummary}
+
+\section{Exercises}\label{exercises-1}
+
+Todo
 
 \chapter{SQL and R}\label{SqlAndR}
 
@@ -3126,7 +3193,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.g3kuuw39children ;"
+## [1] "SELECT * FROM temp_schema.nunqmwn9children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -4057,7 +4124,7 @@ construct cohort definition in ATLAS, and use the SQL generated by ATLAS
 to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can
 therefore easily be used together with SqlRender and DatabaseConnector.
 
-\section{Summary}\label{summary-2}
+\section{Summary}\label{summary-3}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -4082,7 +4149,7 @@ therefore easily be used together with SqlRender and DatabaseConnector.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\section{Exercises}\label{exercises-1}
+\section{Exercises}\label{exercises-2}
 
 \chapter{Building the building blocks: cohorts}\label{Cohorts}
 
@@ -6069,7 +6136,7 @@ and whether we choose to trust it, depends on many factors that are not
 covererd by the study diagnostics as described in Chapter
 \ref{EvidenceQuality}.
 
-\section{Summary}\label{summary-3}
+\section{Summary}\label{summary-4}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -10396,7 +10463,7 @@ Benchmark}\label{advanced-ohdsi-methods-benchmark}
 
 Todo: add text on OHDSI Methods Benchmark
 
-\section{Summary}\label{summary-4}
+\section{Summary}\label{summary-5}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -10406,7 +10473,7 @@ Todo: add text on OHDSI Methods Benchmark
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\section{Exercises}\label{exercises-2}
+\section{Exercises}\label{exercises-3}
 
 Todo
 
