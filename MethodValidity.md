@@ -267,8 +267,8 @@ plotCalibrationEffect(logRrNegatives = ncEstimates$logRr,
                       showCis = TRUE)
 ```
 <div class="figure" style="text-align: center">
-<img src="images/MethodValidity/pValueCal.png" alt="P-value calibration: estimates below the dashed line have a conventional p &lt; 0.05. Estimates in the orange area have calibrated p &lt; 0.05. The pink area denotes the 95% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest." width="70%" />
-<p class="caption">(\#fig:pValueCal)P-value calibration: estimates below the dashed line have a conventional p < 0.05. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest.</p>
+<img src="images/MethodValidity/pValueCal.png" alt="P-value calibration: estimates below the dashed line have a conventional p &lt; 0.05. Estimates in the orange area have calibrated p &lt; 0.05. The pink area denotes the 95\% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest." width="70%" />
+<p class="caption">(\#fig:pValueCal)P-value calibration: estimates below the dashed line have a conventional p < 0.05. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest.</p>
 </div>
 
 In Figure \@ref(fig:pValueCal) we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicated hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
@@ -312,22 +312,22 @@ Before calibration, the estimated hazard ratios (95% confidence interval) are 4.
 Just as we executed our analysis on one database, in this case the IBM MarketScan Medicaid (MDCD) database, we can also run the same analysis code on other databases that adhere to the Common Data Model (CDM). Figure \@ref(fig:forest) shows the forest plot and meta-analytic estimates (assuming random effects) [@dersimonian_1986] across a total of five databases for the outcome of angioedema. This figure was generated using the `plotMetaAnalysisForest` function in the [EvidenceSynthesis](https://ohdsi.github.io/EvidenceSynthesis/) package.
 
 <div class="figure" style="text-align: center">
-<img src="images/MethodValidity/forest.png" alt="Effect size estimates and 95% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema." width="90%" />
-<p class="caption">(\#fig:forest)Effect size estimates and 95% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.</p>
+<img src="images/MethodValidity/forest.png" alt="Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema." width="90%" />
+<p class="caption">(\#fig:forest)Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.</p>
 </div>
 
 Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the $I^2$ suggests between-database heterogeneity. However, if we compute the $I^2$ using the calibrated confidence intervals as shown in Figure \@ref(fig:forestCal), we see that this heterogeneity can be explained by the bias measured in each database through the negative and positive controls. The empirical calibration appears to properly taken this bias into account.
 
 <div class="figure" style="text-align: center">
-<img src="images/MethodValidity/forestCal.png" alt="Calibrated Effect size estimates and 95% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics." width="90%" />
-<p class="caption">(\#fig:forestCal)Calibrated Effect size estimates and 95% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics.</p>
+<img src="images/MethodValidity/forestCal.png" alt="Calibrated Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics." width="90%" />
+<p class="caption">(\#fig:forestCal)Calibrated Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics.</p>
 </div>
 
 ### Sensitivity analyses
 
 One of the design choices in our analysis was to use variable-ratio matching on the propensity score. However, we could have also used stratification on the propensity score. Because we we are uncertain about this choice, we may decide to use both. Table \@ref(tab:sensAnalysis) shows the effect size estimates for AMI and angioedema, both calibrated and uncalibrated, when using variable-ratio matching and stratification (with 10 equally-sized strata).
 
-Table: (\#tab:sensAnalysis) Uncalibrated and calibrated hazard ratios (95% confidence interval) for the two analysis variants.
+Table: (\#tab:sensAnalysis) Uncalibrated and calibrated hazard ratios (95\% confidence interval) for the two analysis variants.
 
 | Outcome | Adjustment | Uncalibrated | Calibrated |
 |:-------------------- |:---------- | ------------- | ------------- |
@@ -349,8 +349,8 @@ We have run all the methods in the OHDSI Methods Library through this benchmark,
 [^methodEvalViewerUrl]: http://data.ohdsi.org/MethodEvalViewer/
 
 <div class="figure" style="text-align: center">
-<img src="images/MethodValidity/methodEval.png" alt="Coverage of the 95% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease." width="100%" />
-<p class="caption">(\#fig:methodEval)Coverage of the 95% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease.</p>
+<img src="images/MethodValidity/methodEval.png" alt="Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease." width="100%" />
+<p class="caption">(\#fig:methodEval)Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease.</p>
 </div>
 
 This emphasizes the need for empirical evaluation and calibration: if no empirical evaluation is performed, which is true for almost all published observational studies, we must assume a prior informed by the results in Figure \@ref(fig:methodEval), and conclude that it is likely that the true effect size is not contained in the 95% confidence interval!
