@@ -2,7 +2,7 @@
 
 # The Common Data Model {#CommonDataModel}
 
-*Chapter leads: Clair Blacketer & Mui VanZandt*
+*Chapter lead: Clair Blacketer*
 
 No single observational data source provides a comprehensive view of the clinical data a patient accumulates while receiving healthcare, and therefore none can be sufficient to meet all expected outcome analysis needs. This explains the need for assessing and analyzing multiple data sources concurrently using a common data standard. This standard is provided by the OMOP Common Data Model (CDM). 
 

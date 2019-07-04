@@ -1,6 +1,6 @@
 # OHDSI Analytics Tools {#OhdsiAnalyticsTools}
 
-*Chapter lead: Martijn Schuemie*
+*Chapter leads: Martijn Schuemie & Frank DeFalco*
 
 OHDSI offers a wide range of open source tools to support the various data-analytics use cases. What these tools have in common is that they can all interaction with one or more databases using the Commond Data Model (CDM). Furthermore, these tools standardize the analytics for various use cases; Rather than having to start from scratch, an analysis can be implemented by filling in standard templates. This makes performign analysis easier, and also improves reproducibility and transparancy. For example, there appear to be a near-infinte number of ways to compute an incidence rate, but these can be specified in the OHDSI tools with a few choices, and anyone making those same choices will compute incidence rates the same way. 
 
@@ -112,7 +112,7 @@ The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the coll
 
 The packages offer R functions that together can be used to perform an observation study from data to estimates and supporting statistics, figures, and tables. The packages interact directly with observational data in the CDM, and can be used simply to provide cross-platform compatibility to completely custom analyses as described in Chapter \@ref(SqlAndR), or can provide advanced standardized analytics for population characterization (Chapter \@ref(Characterization)), population-level causal effect estimation (Chapter \@ref(PopulationLevelEstimation)), and patient-level prediction (Chapter \@ref(PatientLevelPrediction)). The Methods Library supports best practices for use of observational data as learned from previous and ongoing research, such as transparency, reproducibility, as well as measuring of the operating characteristics of methods in a particular context and subsequent empirical calibration of estimates produced by the methods. 
 
-The Methods Library has already been used in many published clinical studies [@boland_2017; @duke_2017; @ramcharran_2017; @weinstein_2017; @wang_2017; @ryan_2018; @vashisht_2018; @yuan_2018; @johnston_2019], as well as methodological studies [@schuemie_2014; @schuemie_2016; @reps2018; @tian_2018; @schuemie_2018; @schuemie_2018b; @reps_2019]. Great care is taken to ensure the validity of the Methods Library, as described in Chapter \@ref(SoftwareValidity).
+The Methods Library has already been used in many published clinical studies [@boland_2017; @duke_2017; @ramcharran_2017; @weinstein_2017; @wang_2017; @ryan_2017; @ryan_2018; @vashisht_2018; @yuan_2018; @johnston_2019], as well as methodological studies [@schuemie_2014; @schuemie_2016; @reps2018; @tian_2018; @schuemie_2018; @schuemie_2018b; @reps_2019]. Great care is taken to ensure the validity of the Methods Library, as described in Chapter \@ref(SoftwareValidity).
 
 ### Support for large-scale analytics
 
@@ -213,7 +213,7 @@ Once completed, you should be able to select R from your Start Menu.
 
 **Verifying the installation**
 
-You should now be ready to go, but we should make sure. Start R-studio, and type
+You should now be ready to go, but we should make sure. Start RStudio, and type
 
 
 ```r
@@ -237,10 +237,41 @@ install.packages("CohortMethod")
 ```
 
 
-## Integrated solutions
+## Deployment strategies
 
-BroadSea?
+Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, in an organization is a daunting task. There are many components with dependencies that have to be considered, and configurations to set. For this reason, two initiatives have developed integrated deployment strategies that allow the entire stack to be installed as one package, using some forms of virtualization: Broadsea and Amazon Web Services (AWS).  
 
+### Broadsea
+
+BroadSea uses Docker container technology[^dockerUrl]. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image ...
+
+[^dockerUrl]: https://www.docker.com/
+
+TODO: Find out if Broadsea is still maintained
+
+### Amazon AWS
+
+Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box[^ohdsiInaBoxUrl] and OHDSIonAWS[^ohdsiOnAwsUrl]. OHDSI-in-a-Box is specifically created as a learning environment, and is used in most of the tutorials provided by the OHDSI community. OHDSIonAWS is intended as a starting point to create an enterprise class, multi-user, scalable and fault tolerant environment that can be used by organizations to perform their data analytics. Both follow the architecture depicted in Figure \@ref(fig:awsDiagram).
+
+[^ohdsiInaBoxUrl]: https://github.com/OHDSI/OHDSI-in-a-Box
+
+[^ohdsiOnAwsUrl]: https://github.com/OHDSI/OHDSIonAWS
+
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/awsDiagram.png" alt="The Amazon Web Services architecure for OHDSI-in-a-Box and OHDSIonAWS." width="100%" />
+<p class="caption">(\#fig:awsDiagram)The Amazon Web Services architecure for OHDSI-in-a-Box and OHDSIonAWS.</p>
+</div>
+
+On the back end there is data in the CDM. By default several simulated datasets are provided alongside the Standardized Vocabularies, although of course for OHDSIonAWS it is likely organizations will want to include real healthcare data taht they have access to as well. The data is placed in the Amazon's RedShift database platform, which is supported by the OHDSI tools. Intermediary results of ATLAS are stored in a PostgreSQL database. On the front end, users have access to ATLAS and to RStudio through a web interface (leveraging RStudio Server). In RStudio the OHDSI Methods Library has already been installed, and can be used to connect to the databases.
+
+## Summary
+
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- TODO: add
+</div>\EndKnitrBlock{rmdsummary}
+
+## Exercises
+
+Todo
 
 
 

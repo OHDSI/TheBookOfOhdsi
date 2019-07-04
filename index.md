@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-07-03"
+date: "2019-07-04"
 output:
   bookdown::pdf_book:
   - latex_engine: xelatex
@@ -80,6 +80,7 @@ Anthony Senna       Sunah Song             Matt Spotnitz
 Marc Suchard        Joel Swerdel           Devin Tian      
 Don Torok           Kees van Bochove       Mui Van Zandt   
 Kristin Waite       Mike Warfe             Jamie Weaver    
-Andrew Williams     Chan You Seng                          
+James Wiggins       Andrew Williams        Chan You Seng   
+                                                           
 ------------------  ---------------------  ----------------
 
