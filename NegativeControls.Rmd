@@ -84,4 +84,4 @@ Table: (\#tab:AceiThzNsc) Negative control outcomes when comparing ACE inhibitor
 | 140641 | Verruca vulgaris |
 | 440193 | Wristdrop |
 | 4115367 | Wrist joint pain |
-|  |
+
