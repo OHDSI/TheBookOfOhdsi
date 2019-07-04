@@ -4,8 +4,8 @@
 
 Observational healthcare data, such as administrative claims and electronic health records, offer opportunities to generate real-world evidence about the effect of treatments that can meaningfully improve the lives of patients. In this chapter we focus on population-level effect estimation, that is, the estimation of average causal effects of exposures (e.g. medical interventions such as drug exposures or procedures) on specific health outcomes of interest. In what follows, we consider two different estimation tasks:
 
-- **Direct effect estimation**: estimating the effect of an exposure on the risk of an outcome, as compared to no exposure.
-- **Comparative effect estimation**: estimating the effect of an exposure (the target exposure) on the risk of an outcome, as compared to another exposure (the comparator exposure).
+- **\index{Direct effect estimation}**: estimating the effect of an exposure on the risk of an outcome, as compared to no exposure.
+- **\index{Comparative effect estimation}**: estimating the effect of an exposure (the target exposure) on the risk of an outcome, as compared to another exposure (the comparator exposure).
 
 In both cases, the patient-level causal effect contrasts a factual outcome, i.e., what happened to the exposed patient, with a counterfactual outcome, i.e., what would have happened had the exposure not occurred (direct) or had a different exposure occurred (comparative). Since any one patient reveals only the factual outcome (the fundamental problem of causal inference), the various effect estimation designs employ different analytic devices to shed light on the counterfactual outcomes.
 
@@ -15,12 +15,16 @@ In this chapter we first describe various population-level estimation study desi
 
 ## The cohort method design {#CohortMethod}
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/cohortMethod.png" alt="The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation." width="90%" />
-<p class="caption">(\#fig:cohortMethod)The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation.</p>
-</div>
+\begin{figure}
 
-The cohort method attempts to emulate a randomized clinical trial [@hernan_2016]. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \@ref(tab:cmChoices).
+{\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/cohortMethod} 
+
+}
+
+\caption{The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation.}(\#fig:cohortMethod)
+\end{figure}
+
+The \index{cohort method} attempts to emulate a randomized clinical trial [@hernan_2016]. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \@ref(tab:cmChoices).
 
 Table: (\#tab:cmChoices) Main design choices in a comparative cohort design.
 
@@ -42,7 +46,7 @@ A key concern is that the patients receiving the target treatment may systematic
 
 In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what’s more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially *cannot* differ systematically with respect to *any* patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure.
 
-For a given patient, the *propensity score* (PS) is the probability that that patient received the target treatment as against the comparator. [@rosenbaum_1983] In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received).  This a straightforward predictive modeling application; we fit a model (e.g. a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. [@rassen_2012]
+For a given patient, the *\index{propensity score}* (PS) is the probability that that patient received the target treatment as against the comparator. [@rosenbaum_1983] In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received).  This a straightforward predictive modeling application; we fit a model (e.g. a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. [@rassen_2012]
 
 For example, suppose we use one-on-one PS matching, and that Jan has a priori probability of 0.4 of receiving the target treatment and in fact receives the target treatment. If we can find a patient (named Jun) that also had an a priori probability of 0.4 of receiving the target treatment but in fact received the comparator, the comparison of Jan and Jun’s outcomes is like a mini-randomized trial, at least with respect to measured confounders. This comparison will yield an estimate of the Jan-Jun causal contrast that is as good as the one randomization would have produced. Estimation then proceeds as follows: for every patient that received the target, find one or more matched patients that received the comparator but had the same a priori probability of receiving the target. Compare the outcome for the target patient with the outcomes for the comparator patients within each of these matched groups. 
 
@@ -58,11 +62,11 @@ Some have argued that a data-driven approach to covariate selection that does no
 
 ### Caliper
 
-Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) within some tolerance known as a “caliper.” Following @austin_2011, we use a default caliper of 0.2 standard deviations on the logit scale.
+Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) within some tolerance known as a “\index{caliper}.” Following @austin_2011, we use a default caliper of 0.2 standard deviations on the logit scale.
 
 ### Overlap: preference scores
 
-The propensity method requires that matching patients exist! As such, a key diagnostic shows the distribution of the propensity scores in the two groups. To facilitate interpretation, the OHDSI tools plot a transformation of the propensity score called the “preference score”. [@walker_2013] The preference score adjusts for the "market share" of the two treatments. For example, if 10% of patients receive the target treatment (and 90% receive the comparator treatment), then patients with a preference score of 0.5 have a 10% probability of receiving the target treatment. Mathematically, the preference score is
+The propensity method requires that matching patients exist! As such, a key diagnostic shows the distribution of the propensity scores in the two groups. To facilitate interpretation, the OHDSI tools plot a transformation of the propensity score called the “\index{preference score}”. [@walker_2013] The preference score adjusts for the "market share" of the two treatments. For example, if 10% of patients receive the target treatment (and 90% receive the comparator treatment), then patients with a preference score of 0.5 have a 10% probability of receiving the target treatment. Mathematically, the preference score is
 
 $$\ln\left(\frac{F}{1-F}\right)=\ln\left(\frac{S}{1-S}\right)-\ln\left(\frac{P}{1-P}\right)$$
 
@@ -76,10 +80,14 @@ Good practice always checks that the PS adjustment succeeds in creating balanced
 
 ## The self-controlled cohort design
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/selfControlledCohort.png" alt="The self-controlled cohort design. The rate of outcomes during exposure to the target is compared to the rate of outcomes in the time pre-exposure." width="90%" />
-<p class="caption">(\#fig:scc)The self-controlled cohort design. The rate of outcomes during exposure to the target is compared to the rate of outcomes in the time pre-exposure.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/selfControlledCohort} 
+
+}
+
+\caption{The self-controlled cohort design. The rate of outcomes during exposure to the target is compared to the rate of outcomes in the time pre-exposure.}(\#fig:scc)
+\end{figure}
 
 The self-controlled cohort (SCC) design [@ryan_2013] compares the rate of outcomes during exposure to the rate of outcomes in the time just prior to the exposure. The  four choices shown in Table \@ref(tab:sccChoices) define a self-controlled cohort question.
 
@@ -96,10 +104,14 @@ Because the same subject that make up the exposed group are also used as the con
 
 ## The case-control design
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/caseControl.png" alt="The case-control design. Subjects with the outcome (‘cases’) are compared to subjects without the outcome (‘controls’) in terms of their exposure status. Often, cases and controls are matched on various characteristics such as age and sex." width="90%" />
-<p class="caption">(\#fig:caseControl)The case-control design. Subjects with the outcome (‘cases’) are compared to subjects without the outcome (‘controls’) in terms of their exposure status. Often, cases and controls are matched on various characteristics such as age and sex.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/caseControl} 
+
+}
+
+\caption{The case-control design. Subjects with the outcome (‘cases’) are compared to subjects without the outcome (‘controls’) in terms of their exposure status. Often, cases and controls are matched on various characteristics such as age and sex.}(\#fig:caseControl)
+\end{figure}
 
 Case-control studies [@vandenbroucke_2012] consider the question “are persons with a specific disease outcome exposed more frequently to a specific agent than those without the disease?” Thus, the central idea is to compare “cases”, i.e., subjects that experience the outcome of interest with “controls”, i.e., subjects that did not experience the outcome of interest. The choices in Table \@ref(tab:ccChoices) define a case-control question.
 
@@ -117,10 +129,14 @@ Often, one selects controls to match cases based on characteristics such as age 
 
 ## The case-crossover design
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/caseCrossover.png" alt="The case-crossover design. The time around the outcome is compared to a control date set at a predefined interval prior to the outcome date." width="90%" />
-<p class="caption">(\#fig:caseCrossover)The case-crossover design. The time around the outcome is compared to a control date set at a predefined interval prior to the outcome date.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/caseCrossover} 
+
+}
+
+\caption{The case-crossover design. The time around the outcome is compared to a control date set at a predefined interval prior to the outcome date.}(\#fig:caseCrossover)
+\end{figure}
 
 The case-crossover [@maclure_1991] design evaluates whether the rate of exposure is different at the time of the outcome than at some predefined number of days prior to the outcome. It is trying to determine whether there is something special about the day the outcome occurred. Table \@ref(tab:ccrChoices) shows the choices that define a case-crossover question:
 
@@ -137,10 +153,14 @@ Since cases serve as their own control, it is a self-controlled design, and shou
 
 ## The self-controlled case series design
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/selfControlledCaseSeries.png" alt="The Self-Controlled Case Series design. The rate of outcomes during exposure is compared to the rate of outcomes when not exposed." width="90%" />
-<p class="caption">(\#fig:selfControlledCaseSeries)The Self-Controlled Case Series design. The rate of outcomes during exposure is compared to the rate of outcomes when not exposed.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/selfControlledCaseSeries} 
+
+}
+
+\caption{The Self-Controlled Case Series design. The rate of outcomes during exposure is compared to the rate of outcomes when not exposed.}(\#fig:selfControlledCaseSeries)
+\end{figure}
 
 The Self-Controlled Case Series (SCCS) design [@farrington_1995; @whitaker_2006] compares the rate of outcomes during exposure to the rate of outcomes during all unexposed time, both before, between, and after exposures. It is a Poisson regression that is conditioned on the person. Thus, it seeks to answer the question: “Given that a patient has the outcome, is the outcome more likely during exposed time compared to non-exposed time?”. The choices in Table \@ref(tab:sccsChoices) define an SCCS question.
 
@@ -216,10 +236,14 @@ In the Estimation design function, there are three sections: Comparisons, Analys
 
 A study can have one or more comparisons. Click on "Add Comparison", which will open a new dialog. Click on ![](images/PopulationLevelEstimation/open.png) to the select the target and  comparator cohorts. By clicking on "Add Outcome" we can add our two outcome cohorts. We assume the cohorts have already been created in ATLAS  as described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitorsMono)) , comparator (Appendix \@ref(ThiazidesMono)), and outcome (Appendix \@ref(Angioedema) and Appendix \@ref(Ami)) cohorts. When done, the dialog should look like Figure \@ref(fig:comparisons).
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/comparisons.png" alt="The comparison dialog" width="100%" />
-<p class="caption">(\#fig:comparisons)The comparison dialog</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/comparisons} 
+
+}
+
+\caption{The comparison dialog}(\#fig:comparisons)
+\end{figure}
 
 Note that we can select multiple outcomes for a target-comparator pair. Each outcome will be treated independently, and will result in a separate analysis.
 
@@ -228,10 +252,14 @@ Note that we can select multiple outcomes for a target-comparator pair. Each out
 
 Negative controls outcomes are outcomes that are not believed to be caused by either the target or the comparator, and where therefore the true hazard ratio equals 1. Ideally, we would have proper cohort definitions for each outcome cohort. However, typically, we only have a concept set, with one concept per negative control outcome, and some standard logic to turn these into outcome cohorts. Here we assume the concept set has already been created as described in Chapter \@ref(MethodValidity) and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure \@ref(fig:ncConceptSet) shows the negative control concept set used for this study.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/ncConceptSet.png" alt="Negative Control concept set." width="100%" />
-<p class="caption">(\#fig:ncConceptSet)Negative Control concept set.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/ncConceptSet} 
+
+}
+
+\caption{Negative Control concept set.}(\#fig:ncConceptSet)
+\end{figure}
 
 **Concepts to include**
 
@@ -243,17 +271,25 @@ When selecting concept to include, we can specify which covariates we would like
 
 Rather than specifying which concepts to include, we can instead specify concepts to *exclude*. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, and any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \@ref(fig:covsToExclude) shows we select a concept set that includes all these concepts. 
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/covsToExclude.png" alt="The concept set defining the concepts to exclude." width="100%" />
-<p class="caption">(\#fig:covsToExclude)The concept set defining the concepts to exclude.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/covsToExclude} 
+
+}
+
+\caption{The concept set defining the concepts to exclude.}(\#fig:covsToExclude)
+\end{figure}
 
 After selecting the negative controls and covariates to exclude, the lower half of the comparisons dialog should look like Figure \@ref(fig:comparisons2).
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/comparisons2.png" alt="The comparison window showing concept sets for negative controls and concepts to exclude." width="100%" />
-<p class="caption">(\#fig:comparisons2)The comparison window showing concept sets for negative controls and concepts to exclude.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/comparisons2} 
+
+}
+
+\caption{The comparison window showing concept sets for negative controls and concepts to exclude.}(\#fig:comparisons2)
+\end{figure}
 
 ### Effect estimation analysis settings
 
@@ -275,19 +311,27 @@ The option "**Should only the first exposure per subject be included?**" can be 
 
 If the options "keep all" or "keep first" are selected, we may wish to censor the time when a person is in both cohorts. This is illustrated in Figure \@ref(fig:tar). By default, the time-at-risk is defined relative to the cohort start and end date. In this example, the time-at-risk starts one day after cohort entry, and stops at cohort end. Without censoring the time-at-risk for the two cohorts might overlap. This is especially problematic if we choose to keep all, because any outcome that occurs during this overlap (as shown) will be counted twice. If we choose to censor, the first cohort's time-at-risk ends when the second cohort's time-at-risk starts. 
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/tar.png" alt="Time-at-risk (TAR) for subjects who are in both cohorts, assuming time-at-risk starts the day after treatment initiation, and stops at exposure end." width="80%" />
-<p class="caption">(\#fig:tar)Time-at-risk (TAR) for subjects who are in both cohorts, assuming time-at-risk starts the day after treatment initiation, and stops at exposure end.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/tar} 
+
+}
+
+\caption{Time-at-risk (TAR) for subjects who are in both cohorts, assuming time-at-risk starts the day after treatment initiation, and stops at exposure end.}(\#fig:tar)
+\end{figure}
 
 We can choose to **remove subjects that have the outcome prior to the risk window start**, because often a second outcome occurrence is the continuation of the first one. For instance, when someone develops heart failure, a second occurrence is likely, which means the heart failure probably never fully resolved in between. On the other hand, some outcomes are episodic, and it would be expected for patients to have more than one independent occurrence, like an upper respiratory infection. If we  choose to remove people that had the outcome before, we can select **how many days we should look back when identifying prior outcomes**.
 
 Our choices for our example study are shown in Figure \@ref(fig:studyPopulation). Because our target and comparator cohort definitions already restrict to the first exposure and require observation time prior to treatment initiation, we do not apply these criteria here.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/studyPopulation.png" alt="Study population settings.." width="100%" />
-<p class="caption">(\#fig:studyPopulation)Study population settings..</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/studyPopulation} 
+
+}
+
+\caption{Study population settings..}(\#fig:studyPopulation)
+\end{figure}
 
 **Covariate settings**
 
@@ -299,10 +343,14 @@ The choice to **add descendants to include or exclude** affects this union of th
 
 Figure \@ref(fig:covariateSettings) shows our choices for this study. Note that we have selected to add descendants to the concept to exclude, which we defined in the comparison settings in Figure \@ref(fig:comparisons2).  
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/covariateSettings.png" alt="Covariate settings." width="100%" />
-<p class="caption">(\#fig:covariateSettings)Covariate settings.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/covariateSettings} 
+
+}
+
+\caption{Covariate settings.}(\#fig:covariateSettings)
+\end{figure}
 
 **Time at risk**
 
@@ -314,10 +362,14 @@ A patient with zero days at risk adds no information, so the **minimum days at r
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">A golden rule in designing a cohort study is to never use information that falls after the cohort start date to define the study population, as this may introduce bias. For example, if we require everyone to have at least a year of time-at-risk, we will likely have limited our analyses to those who tolerate the treatment well. This setting should therefore be used with extreme care.</div>\EndKnitrBlock{rmdimportant}
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/timeAtRisk.png" alt="Time-at-risk settings." width="100%" />
-<p class="caption">(\#fig:timeAtRisk)Time-at-risk settings.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/timeAtRisk} 
+
+}
+
+\caption{Time-at-risk settings.}(\#fig:timeAtRisk)
+\end{figure}
 
 **Propensity score adjustment**
 
@@ -337,10 +389,14 @@ Fitting large-scale propensity models can be computationally expensive, so we ma
 
 Figure \@ref(fig:psSettings) shows our choices for this study. Note that we select variable-ratio matching by setting the maximum number of people to match to 100.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/psSettings.png" alt="Propenstity score adjustment settings." width="100%" />
-<p class="caption">(\#fig:psSettings)Propenstity score adjustment settings.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/psSettings} 
+
+}
+
+\caption{Propenstity score adjustment settings.}(\#fig:psSettings)
+\end{figure}
 
 **Outcome model settings**
 
@@ -352,10 +408,14 @@ Instead of stratifying or matching on the propensity score we can also choose to
 
 Figure \@ref(fig:psSettings) shows our choices for this study. Because we use variable-ratio matching, we must condition the regression on the strata (i.e. the matched sets).
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/outcomeModelSettings.png" alt="Outcome model settings." width="100%" />
-<p class="caption">(\#fig:outcomeModelSettings)Outcome model settings.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/outcomeModelSettings} 
+
+}
+
+\caption{Outcome model settings.}(\#fig:outcomeModelSettings)
+\end{figure}
 
 ### Evaluation settings {#evaluationSettings}
 
@@ -365,10 +425,14 @@ As described in Chapter \@ref(MethodValidity), negative and positive controls sh
 
 In Section \@ref(ComparisonSettings) we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic with three choices The first choice is whether to **use all occurrences** or just  the **first occurrence** of the concept. The second choice determines **whether occurrences of descendant concepts should be considered**. For example, occurrences of the descendant "ingrown nail of foot" can also be counted as an occurrence of the ancestor "ingrown nail". The third choice specifies which domains should be considered when looking for the concepts.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/ncSettings.png" alt="Negative control outcome cohort definition settings." width="100%" />
-<p class="caption">(\#fig:ncSettings)Negative control outcome cohort definition settings.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/ncSettings} 
+
+}
+
+\caption{Negative control outcome cohort definition settings.}(\#fig:ncSettings)
+\end{figure}
 
 **Positive control synthesis**
 
@@ -743,10 +807,14 @@ Our estimates are only valid if several assumptions have been met. We use a wide
 
 We first need to evaluate whether the target and comparator cohort are to some extend comparable. For this we can compute the Area Under the Receiver Operator Curve (AUC) statistic for the propensity model. An AUC of 1 indicates the treatment assignment was completely predictable based on baseline covariates, and that the two groups are therefore incomparable. We can use the `computePsAuc` function to compute the AUC, which in our example is 0.79. Using the `plotPs` function, we can also generate the preference score distribution as shown in Figure \@ref(fig:ps). Here we see that for many people the treatment they received was predictable, but there is also a large amount of overlap, indicating that adjustment can be used to select comparable groups.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/ps.png" alt="Preference score distribution." width="80%" />
-<p class="caption">(\#fig:ps)Preference score distribution.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/ps} 
+
+}
+
+\caption{Preference score distribution.}(\#fig:ps)
+\end{figure}
 
 In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive. Table \@ref(tab:psModel) shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive. 
 
@@ -771,37 +839,53 @@ Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and TH
 
 The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure \@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
-<p class="caption">(\#fig:balance)Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{images/PopulationLevelEstimation/balance} 
+
+}
+
+\caption{Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.}(\#fig:balance)
+\end{figure}
 
 ### Follow up and power
 
 Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. We can view the attrition of subjects in our study using the `drawAttritionDiagram` function as shown in Figure \@ref(fig:attrition).
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/attrition.png" alt="Attrition diagram. The counts shown at the top are those that meet our target and comparator cohort definitions. The counts at the bottom are those that enter our outcome model, in  this case a Cox regression." width="70%" />
-<p class="caption">(\#fig:attrition)Attrition diagram. The counts shown at the top are those that meet our target and comparator cohort definitions. The counts at the bottom are those that enter our outcome model, in  this case a Cox regression.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{images/PopulationLevelEstimation/attrition} 
+
+}
+
+\caption{Attrition diagram. The counts shown at the top are those that meet our target and comparator cohort definitions. The counts at the bottom are those that enter our outcome model, in  this case a Cox regression.}(\#fig:attrition)
+\end{figure}
 
 Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, it is therefore less meaningful to compute the power given an expected effect size. Instead, the CohortMethod package provides the `computeMdrr` function to compute the minimum detectable relative risk (MDRR). In our example study the MDRR is 1.69. 
 
 To gain a better understanding of the amount of follow-up available we can also inspect the distribution of follow-up time. We defined follow-up time as time at risk, so not censored by the occurrence of the outcome. The `getFollowUpDistribution` can provide a simple overview as shown in Figure \@ref(fig:followUp), which suggests the follow-up time for both cohorts is comparable.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/followUp.png" alt="Distribution of follow-up time for the target and comparator cohorts." width="80%" />
-<p class="caption">(\#fig:followUp)Distribution of follow-up time for the target and comparator cohorts.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/followUp} 
+
+}
+
+\caption{Distribution of follow-up time for the target and comparator cohorts.}(\#fig:followUp)
+\end{figure}
 
 ### Kaplan Meier
 
 One last check is to review the Kaplan Meier plot, showing the survival over time in both cohorts. Using the `plotKaplanMeier` function we can create \@ref(fig:kmPlot), which we can check for example if our assumption of proportionality of hazards holds. The Kaplan-Meier plot automatically adjusts for stratification or weighting by PS. In this case, because variable-ratio matching is used, the survival curve for the comparator groups is adjusted to mimick what the curve had looked like for the target group had they been exposued to the comparator instead.
 
-<div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/kmPlot.png" alt="Kaplan Meier plot." width="100%" />
-<p class="caption">(\#fig:kmPlot)Kaplan Meier plot.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/kmPlot} 
+
+}
+
+\caption{Kaplan Meier plot.}(\#fig:kmPlot)
+\end{figure}
 
 ### Effect size estimate
 
