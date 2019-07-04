@@ -3193,7 +3193,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.rmhpfvidchildren ;"
+## [1] "SELECT * FROM temp_schema.dg94e9xochildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -5461,17 +5461,17 @@ using this code:
                                        \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
 
 \NormalTok{cdmDbSchema <-}\StringTok{ "my_cdm_data"}
-\NormalTok{cohortsDbSchema <-}\StringTok{ "scratch"}
-\NormalTok{cohortsDbTable <-}\StringTok{ "my_cohorts"}
+\NormalTok{cohortDbSchema <-}\StringTok{ "scratch"}
+\NormalTok{cohortTable <-}\StringTok{ "my_cohorts"}
 \NormalTok{cdmVersion <-}\StringTok{ "5"}
 \end{Highlighting}
 \end{Shaded}
 
 The last four lines define the \texttt{cdmDbSchema},
-\texttt{cohortsDbSchema}, and \texttt{cohortsDbTable} variables, as well
-as the CDM version. We will use these later to tell R where the data in
-CDM format live, where the cohorts of interest have been created, and
-what version CDM is used. Note that for Microsoft SQL Server, database
+\texttt{cohortDbSchema}, and \texttt{cohortTable} variables, as well as
+the CDM version. We will use these later to tell R where the data in CDM
+format live, where the cohorts of interest have been created, and what
+version CDM is used. Note that for Microsoft SQL Server, database
 schemas need to specify both the database and the schema, so for example
 \texttt{cdmDbSchema\ \textless{}-\ "my\_cdm\_data.dbo"}.
 
@@ -5499,10 +5499,10 @@ covariates, and extract all necessary data for our analysis:
                                 \DataTypeTok{outcomeIds =} \DecValTok{3}\NormalTok{,}
                                 \DataTypeTok{studyStartDate =} \StringTok{""}\NormalTok{,}
                                 \DataTypeTok{studyEndDate =} \StringTok{""}\NormalTok{,}
-                                \DataTypeTok{exposureDatabaseSchema =}\NormalTok{ cohortsDbSchema,}
-                                \DataTypeTok{exposureTable =}\NormalTok{ cohortsDbTable,}
-                                \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortsDbSchema,}
-                                \DataTypeTok{outcomeTable =}\NormalTok{ cohortsDbTable,}
+                                \DataTypeTok{exposureDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+                                \DataTypeTok{exposureTable =}\NormalTok{ cohortTable,}
+                                \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+                                \DataTypeTok{outcomeTable =}\NormalTok{ cohortTable,}
                                 \DataTypeTok{cdmVersion =}\NormalTok{ cdmVersion,}
                                 \DataTypeTok{firstExposureOnly =} \OtherTok{FALSE}\NormalTok{,}
                                 \DataTypeTok{removeDuplicateSubjects =} \OtherTok{FALSE}\NormalTok{,}
@@ -5854,10 +5854,10 @@ settings:
 \begin{Highlighting}[]
 \NormalTok{result <-}\StringTok{ }\KeywordTok{runCmAnalyses}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
                         \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDatabaseSchema,}
-                        \DataTypeTok{exposureDatabaseSchema =}\NormalTok{ cohortsDbSchema,}
-                        \DataTypeTok{exposureTable =}\NormalTok{ cohortsDbTable,}
-                        \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortsDbSchema,}
-                        \DataTypeTok{outcomeTable =}\NormalTok{ cohortsDbTable,}
+                        \DataTypeTok{exposureDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+                        \DataTypeTok{exposureTable =}\NormalTok{ cohortTable,}
+                        \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+                        \DataTypeTok{outcomeTable =}\NormalTok{ cohortTable,}
                         \DataTypeTok{cdmVersion =}\NormalTok{ cdmVersion,}
                         \DataTypeTok{outputFolder =}\NormalTok{ outputFolder,}
                         \DataTypeTok{cmAnalysisList =}\NormalTok{ cmAnalysisList,}
@@ -9605,7 +9605,7 @@ When considering method validity we aim to answer the question
 Is this method valid for answering this question?
 \end{quote}
 
-Where ``method'' includes not only the study design, but als the data
+Where ``method'' includes not only the study design, but also the data
 and the implementation of the design. Method validity is therefore
 somewhat of a catch-all; It is often not possible to observe good method
 validity without good data quality, clinical validity, and software
@@ -9619,9 +9619,9 @@ comparable, but we need to evaluate whether this is the case. Where
 possible, empirical tests should be performed to verify these
 assumptions. We can for example generate diagnostics to show that our
 two populations are indeed comparable on a wide range of characteristics
-after matching. In OHDSI we have developed a wide range of standardized
-diagnostics that should be generated and evaluated whenever an analysis
-is performed.
+after matching. In OHDSI we have developed many standardized diagnostics
+that should be generated and evaluated whenever an analysis is
+performed.
 
 In this chapter we will focus on the validity of methods use in
 population-level estimation. We will first briefly highlight some study
@@ -9655,9 +9655,9 @@ including:
   adjustment has made the cohorts comparable (as measured through
   baseline covariates).
 \item
-  \textbf{Attrition} to observe how many subjects were excluded, which
-  may inform on the generalizability of the results to the initial
-  cohorts of interest.
+  \textbf{Attrition} to observe how many subjects were excluded in the
+  various analysis steps, which may inform on the generalizability of
+  the results to the initial cohorts of interest.
 \item
   \textbf{Power} to assess whether enough data is available to answer
   the question.
@@ -9673,7 +9673,7 @@ of observation is independent of the outcome. This assumption is often
 violated in the case of serious, potentially lethal, events such as
 myocardial infarction. We can evaluate whether the assumption holds by
 generating the plot shown in Figure \ref{fig:timeToObsEnd}, which shows
-a histograms of the time to obsevation period end for those that are
+histograms of the time to observation period end for those that are
 censored, and those that uncensored. In our data we consider those whose
 observation period ends at the end date of data capture (the date when
 observation stopped for the entire data base, for example the date of
@@ -9725,8 +9725,8 @@ negative controls should further meet these criteria:
 \begin{itemize}
 \tightlist
 \item
-  The exposure \textbf{cannot cause} the outcome. One way to think of
-  causation is to think of the counterfactual: could the outcome be
+  The exposure \textbf{should not cause} the outcome. One way to think
+  of causation is to think of the counterfactual: could the outcome be
   caused (or prevented) if a patient was not exposed, compared to if the
   patient had been exposed? Sometimes this is clear, for example ACEi
   are known to cause angioedema. Other times this is far less obvious.
@@ -9739,8 +9739,8 @@ negative controls should further meet these criteria:
   are to believe the true effect size (e.g.~the hazard ratio) is 1.
 \item
   The negative control should \textbf{exist in the data}, ideally with
-  sufficient numbers. We try to achieve this by rank-ordering the
-  candidate list by prevalence.
+  sufficient numbers. We try to achieve this by prioritizing candidate
+  negative controls based on prevalence.
 \item
   Negative controls should ideally be \textbf{independent}. For example,
   we should avoid having negative controls that are either ancestors of
@@ -9754,6 +9754,17 @@ negative controls should further meet these criteria:
   should therefore not be used as a negative control.
 \end{itemize}
 
+Some argue that negative controls should also have the same confounding
+structure as the exposure-outcome pair of interest.
+\citep{lipsitch_2010} However, we believe this confounding structure is
+unknowable; The relationships between variables found in reality is
+often far more complex than people imagine. Also, even if the confounder
+structure were known, it is unlikely that a negative control exists
+having that exact same confounding structure, but lacking the direct
+causal effect. For this reason in OHDSI we rely on a large number of
+negative controls, assuming that such a set represents many different
+types of bias, including the ones present in the hypothesis of interest.
+
 The absence of a causal relationship between an exposure and an outcome
 is rarely documented. Instead, we often make the assumption that a lack
 of evidence of a relationship implies the lack of a relationship. This
@@ -9761,7 +9772,7 @@ assumption is more likely to hold if the exposure and outcome have both
 been studies extensively, so a relationship could have been detected.
 For example, the lack of evidence for a completely novel drug likely
 implies a lack of knowledge, not the lack of a relationship. With this
-principe in mind we have developed a semi-automated procedure for
+Principe in mind we have developed a semi-automated procedure for
 selecting negative controls \citep{voss_2016}. In brief, information
 from literature, product labels, and spontaneous reporting is
 automatically extracted and synthesized to produce a candidate list of
@@ -9789,27 +9800,35 @@ means for evaluation. \citep{noren_2014}
 In OHDSI we therefore use synthetic positive controls,
 \citep{schuemie_2018} created by modifying a negative control through
 injection of additional, simulated occurrences of the outcome during the
-time at risk of the exposure. One issue that stands important is the
-preservation of confounding. The negative controls may show strong
-confounding, but if we inject additional outcomes randomly, these new
-outcomes will not be confounded, and we may therefore be optimistic in
-our evaluation of our capacity to deal with confounding for positive
-controls. To preserve confounding, we want the new outcomes to show
-similar associations with baseline subject-specific covariates as the
-original outcomes. To achieve this, for each outcome we train a model to
-predict the survival rate with respect to the outcome during exposure
-using covariates captured prior to exposure. These covariates include
-demographics, as well as all recorded diagnoses, drug exposures,
-measurements, and medical procedures. An L1-regularized Poisson
-regression \citep{suchard_2013} using 10-fold cross-validation to select
-the regularization hyperparameter fits the prediction model. We then use
-the predicted rates to sample simulated outcomes during exposure to
-increase the true effect size to the desired magnitude. The resulting
-positive control thus contains both real and simulated outcomes. Figure
-\ref{fig:posControlSynth} depicts this process. Note that although this
-procedure simulates several important sources of bias, it does not
-capture all. For example, some effects of measurement error are not
-present. The synthetic positive controls imply constant positive
+time at risk of the exposure. For example, assume that, during exposure
+to ACEi, n occurrences of our negative control outcome ``ingrowing
+nail'' were observed. If we now add an additional n simulated
+occurrences during exposure, we have doubled the risk. Since this was a
+negative control, the relative risk compared to the counterfactual was
+one, but after injection, it becomes two.
+
+One issue that stands important is the preservation of confounding. The
+negative controls may show strong confounding, but if we inject
+additional outcomes randomly, these new outcomes will not be confounded,
+and we may therefore be optimistic in our evaluation of our capacity to
+deal with confounding for positive controls. To preserve confounding, we
+want the new outcomes to show similar associations with baseline
+subject-specific covariates as the original outcomes. To achieve this,
+for each outcome we train a model to predict the survival rate with
+respect to the outcome during exposure using covariates captured prior
+to exposure. These covariates include demographics, as well as all
+recorded diagnoses, drug exposures, measurements, and medical
+procedures. An L1-regularized Poisson regression \citep{suchard_2013}
+using 10-fold cross-validation to select the regularization
+hyperparameter fits the prediction model. We then use the predicted
+rates to sample simulated outcomes during exposure to increase the true
+effect size to the desired magnitude. The resulting positive control
+thus contains both real and simulated outcomes.
+
+Figure \ref{fig:posControlSynth} depicts this process. Note that
+although this procedure simulates several important sources of bias, it
+does not capture all. For example, some effects of measurement error are
+not present. The synthetic positive controls imply constant positive
 predictive value and sensitivity, which may not be true in reality.
 
 \begin{figure}
@@ -9877,20 +9896,20 @@ by computing a range of metrics, for example:
 \end{itemize}
 
 Depending on our use case, we can evaluate whether these operating
-characterists are suitable for our goal. For example, if we wish to
-perform signal detection, we may care about type I and type II error, or
+characteristics are suitable for our goal. For example, if we wish to
+perform signal detection, we may care about type 1 and type 2 error, or
 if we are willing to modify our \(\alpha\) threshold, we may inspect the
 AUC instead.
 
 \subsection{P-value calibration}\label{p-value-calibration}
 
-Often the type I error (at \(\alpha = 0.05\)) is larger than 5\%. In
+Often the type 1 error (at \(\alpha = 0.05\)) is larger than 5\%. In
 other words, we are often more likely than 5\% to reject the null
 hypothesis when in fact the null hypothesis is true. The reason is that
 the p-value only reflects random error, the error due to having a
 limited sample size. It does not reflect systematic error, for example
 the error due to confounding. OHDSI has developed a process for
-calibrating p-values to restore the type I error to nominal.
+calibrating p-values to restore the type 1 error to nominal.
 \citep{schuemie_2014} We derive an empirical null distribution from the
 actual effect estimates for the negative controls. These negative
 control estimates give us an indication of what can be expected when the
@@ -10021,10 +10040,10 @@ between-study heterogeneity. \citep{schuemie_2018}
 One way to express between-database heterogeneity is the \(I^2\) score,
 describing the percentage of total variation across studies that is due
 to heterogeneity rather than chance. \citep{higgins_2003} A naive
-categorisation of values for \(I^2\) would not be appropriate for all
+categorization of values for \(I^2\) would not be appropriate for all
 circumstances, although one could tentatively assign adjectives of low,
 moderate, and high to \(I^2\) values of 25\%, 50\%, and 75\%. In a study
-estimation many effects for depression treatments using a new-user
+estimating the effects for many depression treatments using a new-user
 cohort design with large-scale propensity score adjustment,
 \citet{schuemie_2018b} observed only 58\% of the estimates to have an
 \(I^2\) below 25\%. After empirical calibration this increased to 83\%.
@@ -10083,9 +10102,9 @@ fortunately ATLAS provides features to aid the selection of negative
 controls using data from literature, product labels, and spontaneous
 reports.
 
-To generate a canidate list of negative controls, we first must create a
-concept set containing all exposures of interest. In this case we select
-all ingredients in the ACEi and THZ classes, as shown in Figure
+To generate a candidate list of negative controls, we first must create
+a concept set containing all exposures of interest. In this case we
+select all ingredients in the ACEi and THZ classes, as shown in Figure
 \ref{fig:exposuresConceptSet}.
 
 \begin{figure}
@@ -10120,7 +10139,7 @@ the outcomes found in PubMed using various strategies, the number of
 product labels of our exposures of interest that list the condition as a
 possible adverse effect, and the number of spontaneous reports. By
 default the list is sorted to show candidate negative controls first. It
-is then sorted by the ``Sort Order'', which represents the prevalance of
+is then sorted by the ``Sort Order'', which represents the prevalence of
 the condition in a collection of observational databases. The higher the
 Sort Order, the higher the prevalence. Although the prevalence in these
 databases might not correspond with the prevalence in the database we
@@ -10129,8 +10148,9 @@ wish to run the study, it is likely a good approximation.
 The next step is to manually review the candidate list, typically
 starting at the top, so with the most prevalent condition, and working
 our way down until we are satisfied we have enough. One typical way to
-do this is to export the list to CSV, and have clinicians review these,
-considering the criteria mentioned in Section \ref{NegativeControls}.
+do this is to export the list to a CSV (comma separated values) file,
+and have clinicians review these, considering the criteria mentioned in
+Section \ref{NegativeControls}.
 
 For our example study we select the 76 negative controls listed in
 Appendix \ref{AceiThzNsc}.
@@ -10157,7 +10177,49 @@ described in Section \ref{evaluationSettings}, and is implemented in the
 \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation}
 package. Here we generate three positive controls for each negative
 control, with true effect sizes of 1.5, 2, and 4, using a survival
-model.
+model:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(MethodEvaluation)}
+\CommentTok{# Create a data frame with all negative control exposure-}
+\CommentTok{# outcome pairs, using only the target exposure (ACEi = 1).}
+\NormalTok{eoPairs <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{exposureId =} \DecValTok{1}\NormalTok{,}
+                      \DataTypeTok{outcomeId =}\NormalTok{ ncs)}
+
+\NormalTok{pcs <-}\StringTok{ }\KeywordTok{injectSignals}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+                     \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDbSchema,}
+                     \DataTypeTok{exposureDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+                     \DataTypeTok{exposureTable =}\NormalTok{ cohortTable,}
+                     \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+                     \DataTypeTok{outcomeTable =}\NormalTok{ cohortTable,}
+                     \DataTypeTok{outputDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+                     \DataTypeTok{outputTable =}\NormalTok{ cohortTable,}
+                     \DataTypeTok{createOutputTable =} \OtherTok{FALSE}\NormalTok{,}
+                     \DataTypeTok{modelType =} \StringTok{"survival"}\NormalTok{,}
+                     \DataTypeTok{firstExposureOnly =} \OtherTok{TRUE}\NormalTok{,}
+                     \DataTypeTok{firstOutcomeOnly =} \OtherTok{TRUE}\NormalTok{,}
+                     \DataTypeTok{removePeopleWithPriorOutcomes =} \OtherTok{TRUE}\NormalTok{,}
+                     \DataTypeTok{washoutPeriod =} \DecValTok{365}\NormalTok{,}
+                     \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
+                     \DataTypeTok{riskWindowEnd =} \DecValTok{0}\NormalTok{,}
+                     \DataTypeTok{addExposureDaysToEnd =} \OtherTok{TRUE}\NormalTok{,}
+                     \DataTypeTok{exposureOutcomePairs =}\NormalTok{ eoPairs,}
+                     \DataTypeTok{effectSizes =} \KeywordTok{c}\NormalTok{(}\FloatTok{1.5}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{),}
+                     \DataTypeTok{cdmVersion =}\NormalTok{ cdmVersion,}
+                     \DataTypeTok{workFolder =} \KeywordTok{file.path}\NormalTok{(outputFolder,}
+                                            \StringTok{"pcSynthesis"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Note that we must mimic the time-at-risk settings used in our estimation
+study design. The \texttt{injectSignals} function will extract
+information about the exposures and negative controls outcomes, fit
+outcome models per exposure-outcome pair, and synthesize outcomes. The
+positive control outcome cohorts will be added to the cohort table
+specified by \texttt{cohortDbSchema} and \texttt{cohortTable}. The
+resulting \texttt{pcs} data frame contains the information on the
+synthesized positive controls.
 
 Next we must execute the same study used to estimate the effect of
 interest to also estimate effects for the negative and positive
@@ -10227,7 +10289,7 @@ error in Table \ref{tab:exampleMetrics} is 0\%. This is an exceptional
 situation, caused by the fact that confidence intervals in the
 \href{https://ohdsi.github.io/Cyclops/}{Cyclops} package are estimated
 using likelihood profiling, which is more accurate than traditional
-methods but can result in assymmetric confidence intervals. The p-value
+methods but can result in asymmetric confidence intervals. The p-value
 instead is computed assuming symmetrical confidence intervals, and this
 is what was used to compute the type 1 error.
 
@@ -10329,12 +10391,12 @@ and AMI respectively. The calibrated hazard ratios are 4.75 (2.52 -
 heterogeneity}\label{between-database-heterogeneity}
 
 Just as we executed our analysis on one database, in this case the IBM
-MarketScan Medicaid (MDCD) database, we can also run our analysis on
-other databases that adhere to the Common Data Model (CDM). Figure
-\ref{fig:forest} shows the forest plot and meta-analytic estimates
-(assuming random effects) \citep{dersimonian_1986} across a total of
-five databases for the outcome of angioedema. This figure was generated
-using the \texttt{plotMetaAnalysisForest} function in the
+MarketScan Medicaid (MDCD) database, we can also run the same analysis
+code on other databases that adhere to the Common Data Model (CDM).
+Figure \ref{fig:forest} shows the forest plot and meta-analytic
+estimates (assuming random effects) \citep{dersimonian_1986} across a
+total of five databases for the outcome of angioedema. This figure was
+generated using the \texttt{plotMetaAnalysisForest} function in the
 \href{https://ohdsi.github.io/EvidenceSynthesis/}{EvidenceSynthesis}
 package.
 
@@ -10354,7 +10416,7 @@ Although all confidence intervals are above one, suggesting agreement on
 the fact that there is an effect, the \(I^2\) suggests between-database
 heterogeneity. However, if we compute the \(I^2\) using the calibrated
 confidence intervals as shown in Figure \ref{fig:forestCal}, we see that
-this heterogeneity can be explained by the bias observed in each
+this heterogeneity can be explained by the bias measured in each
 database through the negative and positive controls. The empirical
 calibration appears to properly taken this bias into account.
 
@@ -10378,7 +10440,7 @@ stratification on the propensity score. Because we we are uncertain
 about this choice, we may decide to use both. Table
 \ref{tab:sensAnalysis} shows the effect size estimates for AMI and
 angioedema, both calibrated and uncalibrated, when using variable-ratio
-matching and stratification (10 equally-sized strata).
+matching and stratification (with 10 equally-sized strata).
 
 \begin{longtable}[]{@{}llll@{}}
 \caption{\label{tab:sensAnalysis} Uncalibrated and calibrated hazard ratios
@@ -10463,7 +10525,7 @@ Study diagnostics allow us to evaluate design choices even before fully
 executing a study. It is recommended not to finalize the protocol before
 generating and reviewing all study diagnostics. To avoid p-hacking
 (adjusting the design to achieve a desired result), this should be done
-before estimating the effect of interest.
+while blinded to the effect size estimate of interest.
 \EndKnitrBlock{rmdimportant}
 
 \section{OHDSI Methods Benchmark}\label{ohdsi-methods-benchmark}
@@ -10472,22 +10534,23 @@ Although the recommended practice is to empirically evaluate a method's
 performance within the context that it is applied, using negative and
 positive controls that are in ways similar to the exposures-outcomes
 pairs of interest (for example using the same exposure or the same
-outcome), there is also value in evaluating a method's performance in
-general. This is why the OHDSI Methods Evaluation Benchmark was
-developed. The benchmark evaluates performance using a wide range of
-control questions, including those with chronic or acute outcomes, and
-long-term or short-term exposures. The results on this benchmark can
-help demonstrate the overall userfulness of a method, and can be used as
-a prior belief about the performance of a method when a context-specific
-empirical evaluation is not (yet) available. The benchmark consists of
-200 carefully selected negative controls that can be stratified into
-eight categories, with the controls in each category either sharing the
-same exposure or the same outcome. From these 200 negative controls, 600
-synthetic positive controls are derived as described in Section
-\ref{PositiveControls}. To evaluate a method, it must be used to produce
-effect size estimates for all controls, after which the metrics
-described in Section \ref{metrics} can be computed. The benchmark is
-publicly available, and can be deployed as described in the
+outcome) and on the database used in the study, there is also value in
+evaluating a method's performance in general. This is why the OHDSI
+Methods Evaluation Benchmark was developed. The benchmark evaluates
+performance using a wide range of control questions, including those
+with chronic or acute outcomes, and long-term or short-term exposures.
+The results on this benchmark can help demonstrate the overall
+usefulness of a method, and can be used to form a prior belief about the
+performance of a method when a context-specific empirical evaluation is
+not (yet) available. The benchmark consists of 200 carefully selected
+negative controls that can be stratified into eight categories, with the
+controls in each category either sharing the same exposure or the same
+outcome. From these 200 negative controls, 600 synthetic positive
+controls are derived as described in Section \ref{PositiveControls}. To
+evaluate a method, it must be used to produce effect size estimates for
+all controls, after which the metrics described in Section \ref{metrics}
+can be computed. The benchmark is publicly available, and can be
+deployed as described in the
 \href{https://ohdsi.github.io/MethodEvaluation/articles/OhdsiMethodsBenchmark.html}{Running
 the OHDSI Methods Benchmark vignette} in the
 \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation}
@@ -10518,15 +10581,16 @@ Gastrointestinal, IBD = inflammatory bowel disease.\}\label{fig:methodEval}
 \textbackslash{}end\{figure\}
 
 This emphasizes the need for empirical evaluation and calibration: if no
-empirical evaluation is performed, wich is true for almost all published
-observational studies, we must assume a prior informed by the results in
-Figure \ref{fig:methodEval}, and conclude that it is likely that the
-true effect size is not contained in the 95\% confidence interval!
+empirical evaluation is performed, which is true for almost all
+published observational studies, we must assume a prior informed by the
+results in Figure \ref{fig:methodEval}, and conclude that it is likely
+that the true effect size is not contained in the 95\% confidence
+interval!
 
 Our evaluation of the designs in the Methods Library also shows that
 empirical calibration restores type 1 error and coverage to their
 nominal values, although often at the cost of increasing type 2 error
-and descreasing precision.
+and decreasing precision.
 
 \section{Summary}\label{summary-5}
 

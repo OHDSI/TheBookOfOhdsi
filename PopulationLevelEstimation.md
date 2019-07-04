@@ -409,12 +409,12 @@ connDetails <- createConnectionDetails(dbms = "postgresql",
                                        password = "supersecret")
 
 cdmDbSchema <- "my_cdm_data"
-cohortsDbSchema <- "scratch"
-cohortsDbTable <- "my_cohorts"
+cohortDbSchema <- "scratch"
+cohortTable <- "my_cohorts"
 cdmVersion <- "5"
 ```
 
-The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbTable` variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
+The last four lines define the `cdmDbSchema`, `cohortDbSchema`, and `cohortTable` variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
 
 Now we can tell CohortMethod to extract the cohorts, construct covariates, and extract all necessary data for our analysis:
 
@@ -439,10 +439,10 @@ cmData <- getDbCohortMethodData(connectionDetails = connectionDetails,
                                 outcomeIds = 3,
                                 studyStartDate = "",
                                 studyEndDate = "",
-                                exposureDatabaseSchema = cohortsDbSchema,
-                                exposureTable = cohortsDbTable,
-                                outcomeDatabaseSchema = cohortsDbSchema,
-                                outcomeTable = cohortsDbTable,
+                                exposureDatabaseSchema = cohortDbSchema,
+                                exposureTable = cohortTable,
+                                outcomeDatabaseSchema = cohortDbSchema,
+                                outcomeTable = cohortTable,
                                 cdmVersion = cdmVersion,
                                 firstExposureOnly = FALSE,
                                 removeDuplicateSubjects = FALSE,
@@ -685,10 +685,10 @@ We can now run the study including all comparisons and analysis settings:
 ```r
 result <- runCmAnalyses(connectionDetails = connectionDetails,
                         cdmDatabaseSchema = cdmDatabaseSchema,
-                        exposureDatabaseSchema = cohortsDbSchema,
-                        exposureTable = cohortsDbTable,
-                        outcomeDatabaseSchema = cohortsDbSchema,
-                        outcomeTable = cohortsDbTable,
+                        exposureDatabaseSchema = cohortDbSchema,
+                        exposureTable = cohortTable,
+                        outcomeDatabaseSchema = cohortDbSchema,
+                        outcomeTable = cohortTable,
                         cdmVersion = cdmVersion,
                         outputFolder = outputFolder,
                         cmAnalysisList = cmAnalysisList,

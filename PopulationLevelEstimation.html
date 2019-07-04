@@ -928,10 +928,10 @@ connDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetai
                                        <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)
 
 cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span>
-cohortsDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span>
-cohortsDbTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span>
+cohortDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span>
+cohortTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span>
 cdmVersion &lt;-<span class="st"> &quot;5&quot;</span></code></pre></div>
-<p>The last four lines define the <code>cdmDbSchema</code>, <code>cohortsDbSchema</code>, and <code>cohortsDbTable</code> variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- &quot;my_cdm_data.dbo&quot;</code>.</p>
+<p>The last four lines define the <code>cdmDbSchema</code>, <code>cohortDbSchema</code>, and <code>cohortTable</code> variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- &quot;my_cdm_data.dbo&quot;</code>.</p>
 <p>Now we can tell CohortMethod to extract the cohorts, construct covariates, and extract all necessary data for our analysis:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># target and comparator ingredient concepts:</span>
 aceI &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1335471</span>,<span class="dv">1340128</span>,<span class="dv">1341927</span>,<span class="dv">1363749</span>,<span class="dv">1308216</span>,<span class="dv">1310756</span>,<span class="dv">1373225</span>,
@@ -952,10 +952,10 @@ cmData &lt;-<span class="st"> </span><span class="kw">getDbCohortMethodData</spa
                                 <span class="dt">outcomeIds =</span> <span class="dv">3</span>,
                                 <span class="dt">studyStartDate =</span> <span class="st">&quot;&quot;</span>,
                                 <span class="dt">studyEndDate =</span> <span class="st">&quot;&quot;</span>,
-                                <span class="dt">exposureDatabaseSchema =</span> cohortsDbSchema,
-                                <span class="dt">exposureTable =</span> cohortsDbTable,
-                                <span class="dt">outcomeDatabaseSchema =</span> cohortsDbSchema,
-                                <span class="dt">outcomeTable =</span> cohortsDbTable,
+                                <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,
+                                <span class="dt">exposureTable =</span> cohortTable,
+                                <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,
+                                <span class="dt">outcomeTable =</span> cohortTable,
                                 <span class="dt">cdmVersion =</span> cdmVersion,
                                 <span class="dt">firstExposureOnly =</span> <span class="ot">FALSE</span>,
                                 <span class="dt">removeDuplicateSubjects =</span> <span class="ot">FALSE</span>,
@@ -1128,10 +1128,10 @@ cmAnalysisList &lt;-<span class="st"> </span><span class="kw">list</span>(cmAnal
 <p>We can now run the study including all comparisons and analysis settings:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">result &lt;-<span class="st"> </span><span class="kw">runCmAnalyses</span>(<span class="dt">connectionDetails =</span> connectionDetails,
                         <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,
-                        <span class="dt">exposureDatabaseSchema =</span> cohortsDbSchema,
-                        <span class="dt">exposureTable =</span> cohortsDbTable,
-                        <span class="dt">outcomeDatabaseSchema =</span> cohortsDbSchema,
-                        <span class="dt">outcomeTable =</span> cohortsDbTable,
+                        <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,
+                        <span class="dt">exposureTable =</span> cohortTable,
+                        <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,
+                        <span class="dt">outcomeTable =</span> cohortTable,
                         <span class="dt">cdmVersion =</span> cdmVersion,
                         <span class="dt">outputFolder =</span> outputFolder,
                         <span class="dt">cmAnalysisList =</span> cmAnalysisList,
