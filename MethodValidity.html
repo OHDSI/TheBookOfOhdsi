@@ -59,41 +59,69 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -455,23 +483,23 @@ Figure 19.1: Time to observation end for those that are censored, and those that
 <p>Next to the design-specific diagnostics, there are also several diagnostics that are applicable across all causal effect estimation methods. Many of these rely on the use of control hypotheses, research questions where the answer is already known. Using control hypotheses we can then evaluate whether our design produces results in line with the truth. Controls can be divided into negative controls and positive controls.</p>
 <div id="NegativeControls" class="section level3">
 <h3><span class="header-section-number">19.2.1</span> Negative controls</h3>
-<p>Negative controls are exposure-outcome pairs where one believes no causal effect exists, and including negative controls or “falsification endpoints” <span class="citation">(Prasad and Jena <a href="#ref-prased_2013">2013</a>)</span> has been recommended as a means to detect confounding, <span class="citation">(Lipsitch, Tchetgen Tchetgen, and Cohen <a href="#ref-lipsitch_2010">2010</a>)</span> selection bias and measurement error. <span class="citation">(Arnold et al. <a href="#ref-arnold_2016">2016</a>)</span> For example, in one study <span class="citation">(Zaadstra et al. <a href="#ref-zaadstra_2008">2008</a>)</span> investigating the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased.</p>
+<p>Negative controls are exposure-outcome pairs where one believes no causal effect exists, and including negative controls or “falsification endpoints” <span class="citation">(Prasad and Jena <a href="#ref-prased_2013" role="doc-biblioref">2013</a>)</span> has been recommended as a means to detect confounding, <span class="citation">(Lipsitch, Tchetgen Tchetgen, and Cohen <a href="#ref-lipsitch_2010" role="doc-biblioref">2010</a>)</span> selection bias and measurement error. <span class="citation">(Arnold et al. <a href="#ref-arnold_2016" role="doc-biblioref">2016</a>)</span> For example, in one study <span class="citation">(Zaadstra et al. <a href="#ref-zaadstra_2008" role="doc-biblioref">2008</a>)</span> investigating the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased.</p>
 <p>We should select negative controls that are comparable to our hypothesis of interest, which means we typically select exposure-outcome pairs that either have the same exposure as the hypothesis of interest (so-called “outcome controls”) or the same outcome (“exposure controls”). Our negative controls should further meet these criteria:</p>
 <ul>
 <li>The exposure <strong>should not cause</strong> the outcome. One way to think of causation is to think of the counterfactual: could the outcome be caused (or prevented) if a patient was not exposed, compared to if the patient had been exposed? Sometimes this is clear, for example ACEi are known to cause angioedema. Other times this is far less obvious. For example, a drug that may cause hypertension can therefore indirectly cause cardiovascular diseases that are a consequence of the hypertension.</li>
 <li>The exposure should also <strong>not prevent or treat</strong> the outcome. This is just another causal relationship that should be absent if we are to believe the true effect size (e.g. the hazard ratio) is 1.</li>
 <li>The negative control should <strong>exist in the data</strong>, ideally with sufficient numbers. We try to achieve this by prioritizing candidate negative controls based on prevalence.</li>
-<li>Negative controls should ideally be <strong>independent</strong>. For example, we should avoid having negative controls that are either ancestors of each other (e.g. “ingrown nail” and “ingrown nail of foot”) or siblings (e.g. “fracture of left femur” and “fracture of right femur”).</li>
+<li>Negative controls should ideally be <strong>independent</strong>. For example, we should avoid having negative controls that are either ancestors of each other (e.g. “ingrown nail” and “ingrown nail of foot”) or siblings (e.g. “fracture of left femur” and “fracture of right femur”).</li>
 <li>Negative controls should ideally have <strong>some potential for bias</strong>. For example, the last digit of someone’s social security number is basically a random number, and is unlikely to show confounding. It should therefore not be used as a negative control.</li>
 </ul>
-<p>Some argue that negative controls should also have the same confounding structure as the exposure-outcome pair of interest. <span class="citation">(Lipsitch, Tchetgen Tchetgen, and Cohen <a href="#ref-lipsitch_2010">2010</a>)</span> However, we believe this confounding structure is unknowable; The relationships between variables found in reality is often far more complex than people imagine. Also, even if the confounder structure were known, it is unlikely that a negative control exists having that exact same confounding structure, but lacking the direct causal effect. For this reason in OHDSI we rely on a large number of negative controls, assuming that such a set represents many different types of bias, including the ones present in the hypothesis of interest.</p>
-<p>The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studies extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this Principe in mind we have developed a semi-automated procedure for selecting negative controls <span class="citation">(Voss et al. <a href="#ref-voss_2016">2016</a>)</span>. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.</p>
+<p>Some argue that negative controls should also have the same confounding structure as the exposure-outcome pair of interest. <span class="citation">(Lipsitch, Tchetgen Tchetgen, and Cohen <a href="#ref-lipsitch_2010" role="doc-biblioref">2010</a>)</span> However, we believe this confounding structure is unknowable; The relationships between variables found in reality is often far more complex than people imagine. Also, even if the confounder structure were known, it is unlikely that a negative control exists having that exact same confounding structure, but lacking the direct causal effect. For this reason in OHDSI we rely on a large number of negative controls, assuming that such a set represents many different types of bias, including the ones present in the hypothesis of interest.</p>
+<p>The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studies extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this Principe in mind we have developed a semi-automated procedure for selecting negative controls <span class="citation">(Voss et al. <a href="#ref-voss_2016" role="doc-biblioref">2016</a>)</span>. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.</p>
 </div>
 <div id="PositiveControls" class="section level3">
 <h3><span class="header-section-number">19.2.2</span> Positive controls</h3>
-<p>To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls, where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. <span class="citation">(Noren et al. <a href="#ref-noren_2014">2014</a>)</span></p>
-<p>In OHDSI we therefore use synthetic positive controls, <span class="citation">(Schuemie, Hripcsak, et al. <a href="#ref-schuemie_2018">2018</a>)</span> created by modifying a negative control through injection of additional, simulated occurrences of the outcome during the time at risk of the exposure. For example, assume that, during exposure to ACEi, n occurrences of our negative control outcome “ingrowing nail” were observed. If we now add an additional n simulated occurrences during exposure, we have doubled the risk. Since this was a negative control, the relative risk compared to the counterfactual was one, but after injection, it becomes two.</p>
-<p>One issue that stands important is the preservation of confounding. The negative controls may show strong confounding, but if we inject additional outcomes randomly, these new outcomes will not be confounded, and we may therefore be optimistic in our evaluation of our capacity to deal with confounding for positive controls. To preserve confounding, we want the new outcomes to show similar associations with baseline subject-specific covariates as the original outcomes. To achieve this, for each outcome we train a model to predict the survival rate with respect to the outcome during exposure using covariates captured prior to exposure. These covariates include demographics, as well as all recorded diagnoses, drug exposures, measurements, and medical procedures. An L1-regularized Poisson regression <span class="citation">(Suchard et al. <a href="#ref-suchard_2013">2013</a>)</span> using 10-fold cross-validation to select the regularization hyperparameter fits the prediction model. We then use the predicted rates to sample simulated outcomes during exposure to increase the true effect size to the desired magnitude. The resulting positive control thus contains both real and simulated outcomes.</p>
+<p>To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls, where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. <span class="citation">(Noren et al. <a href="#ref-noren_2014" role="doc-biblioref">2014</a>)</span></p>
+<p>In OHDSI we therefore use synthetic positive controls, <span class="citation">(Schuemie, Hripcsak, et al. <a href="#ref-schuemie_2018" role="doc-biblioref">2018</a>)</span> created by modifying a negative control through injection of additional, simulated occurrences of the outcome during the time at risk of the exposure. For example, assume that, during exposure to ACEi, n occurrences of our negative control outcome “ingrowing nail” were observed. If we now add an additional n simulated occurrences during exposure, we have doubled the risk. Since this was a negative control, the relative risk compared to the counterfactual was one, but after injection, it becomes two.</p>
+<p>One issue that stands important is the preservation of confounding. The negative controls may show strong confounding, but if we inject additional outcomes randomly, these new outcomes will not be confounded, and we may therefore be optimistic in our evaluation of our capacity to deal with confounding for positive controls. To preserve confounding, we want the new outcomes to show similar associations with baseline subject-specific covariates as the original outcomes. To achieve this, for each outcome we train a model to predict the survival rate with respect to the outcome during exposure using covariates captured prior to exposure. These covariates include demographics, as well as all recorded diagnoses, drug exposures, measurements, and medical procedures. An L1-regularized Poisson regression <span class="citation">(Suchard et al. <a href="#ref-suchard_2013" role="doc-biblioref">2013</a>)</span> using 10-fold cross-validation to select the regularization hyperparameter fits the prediction model. We then use the predicted rates to sample simulated outcomes during exposure to increase the true effect size to the desired magnitude. The resulting positive control thus contains both real and simulated outcomes.</p>
 <p>Figure <a href="MethodValidity.html#fig:posControlSynth">19.2</a> depicts this process. Note that although this procedure simulates several important sources of bias, it does not capture all. For example, some effects of measurement error are not present. The synthetic positive controls imply constant positive predictive value and sensitivity, which may not be true in reality.</p>
 <div class="figure" style="text-align: center"><span id="fig:posControlSynth"></span>
 <img src="images/MethodValidity/posControlSynth.png" alt="Synthesizing positive controls from negative controls." width="90%" />
@@ -497,7 +525,7 @@ Figure 19.2: Synthesizing positive controls from negative controls.
 </div>
 <div id="p-value-calibration" class="section level3">
 <h3><span class="header-section-number">19.2.4</span> P-value calibration</h3>
-<p>Often the type 1 error (at <span class="math inline">\(\alpha = 0.05\)</span>) is larger than 5%. In other words, we are often more likely than 5% to reject the null hypothesis when in fact the null hypothesis is true. The reason is that the p-value only reflects random error, the error due to having a limited sample size. It does not reflect systematic error, for example the error due to confounding. OHDSI has developed a process for calibrating p-values to restore the type 1 error to nominal. <span class="citation">(Schuemie et al. <a href="#ref-schuemie_2014">2014</a>)</span> We derive an empirical null distribution from the actual effect estimates for the negative controls. These negative control estimates give us an indication of what can be expected when the null hypothesis is true, and we use them to estimate an empirical null distribution.</p>
+<p>Often the type 1 error (at <span class="math inline">\(\alpha = 0.05\)</span>) is larger than 5%. In other words, we are often more likely than 5% to reject the null hypothesis when in fact the null hypothesis is true. The reason is that the p-value only reflects random error, the error due to having a limited sample size. It does not reflect systematic error, for example the error due to confounding. OHDSI has developed a process for calibrating p-values to restore the type 1 error to nominal. <span class="citation">(Schuemie et al. <a href="#ref-schuemie_2014" role="doc-biblioref">2014</a>)</span> We derive an empirical null distribution from the actual effect estimates for the negative controls. These negative control estimates give us an indication of what can be expected when the null hypothesis is true, and we use them to estimate an empirical null distribution.</p>
 <p>Formally, we fit a Gaussian probability distribution to the estimates, taking into account the sampling error of each estimate. Let <span class="math inline">\(\hat{\theta}_i\)</span> denote the estimated log effect estimate (relative risk, odds or incidence rate ratio) from the <span class="math inline">\(i\)</span>th negative control drug–outcome pair, and let <span class="math inline">\(\hat{\tau}_i\)</span> denote the corresponding estimated standard error, <span class="math inline">\(i=1,\ldots,n\)</span>. Let <span class="math inline">\(\theta_i\)</span> denote the true log effect size (assumed 0 for negative controls), and let <span class="math inline">\(\beta_i\)</span> denote the true (but unknown) bias associated with pair <span class="math inline">\(i\)</span> , that is, the difference between the log of the true effect size and the log of the estimate that the study would have returned for control <span class="math inline">\(i\)</span> had it been infinitely large. As in the standard p-value computation, we assume that <span class="math inline">\(\hat{\theta}_i\)</span> is normally distributed with mean <span class="math inline">\(\theta_i + \beta_i\)</span> and standard deviation <span class="math inline">\(\hat{\tau}_i^2\)</span>. Note that in traditional p-value calculation, <span class="math inline">\(\beta_i\)</span> is always assumed to be equal to zero, but that we assume the <span class="math inline">\(\beta_i\)</span>’s, arise from a normal distribution with mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>. This represents the null (bias) distribution. We estimate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> via maximum likelihood. In summary, we assume the following:</p>
 <p><span class="math display">\[\beta_i \sim N(\mu,\sigma^2) \text{  and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)\]</span></p>
 <p>where <span class="math inline">\(N(a,b)\)</span> denotes a Gaussian distribution with mean <span class="math inline">\(a\)</span> and variance <span class="math inline">\(b\)</span>, and estimate <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> by maximizing the following likelihood:</p>
@@ -511,7 +539,7 @@ Figure 19.2: Synthesizing positive controls from negative controls.
 </div>
 <div id="confidence-interval-calibration" class="section level3">
 <h3><span class="header-section-number">19.2.5</span> Confidence interval calibration</h3>
-<p>Similarly, we typically observe that the coverage of the 95% confidence interval is less than 95%: the true effect size is inside the 95% confidence interval less than 95% of the time. For confidence interval calibration <span class="citation">(Schuemie, Hripcsak, et al. <a href="#ref-schuemie_2018">2018</a>)</span> we extend the framework for p-value calibration by also making use of our positive controls. Typically, but not necessarily, the calibrated confidence interval is wider than the nominal confidence interval, reflecting the problems unaccounted for in the standard procedure (such as unmeasured confounding, selection bias and measurement error) but accounted for in the calibration.</p>
+<p>Similarly, we typically observe that the coverage of the 95% confidence interval is less than 95%: the true effect size is inside the 95% confidence interval less than 95% of the time. For confidence interval calibration <span class="citation">(Schuemie, Hripcsak, et al. <a href="#ref-schuemie_2018" role="doc-biblioref">2018</a>)</span> we extend the framework for p-value calibration by also making use of our positive controls. Typically, but not necessarily, the calibrated confidence interval is wider than the nominal confidence interval, reflecting the problems unaccounted for in the standard procedure (such as unmeasured confounding, selection bias and measurement error) but accounted for in the calibration.</p>
 <p>Formally, we assume that <span class="math inline">\(beta_i\)</span>, the bias associated with pair <span class="math inline">\(i\)</span>, again comes from a Gaussian distribution, but this time using a mean and standard deviation that are linearly related to <span class="math inline">\(theta_i\)</span>, the true effect size:</p>
 <p><span class="math display">\[\beta_i \sim N(\mu(\theta_i) , \sigma^2(\theta_i))\]</span></p>
 <p>where</p>
@@ -534,8 +562,8 @@ Figure 19.2: Synthesizing positive controls from negative controls.
 </div>
 <div id="replication-across-sites" class="section level3">
 <h3><span class="header-section-number">19.2.6</span> Replication across sites</h3>
-<p>Another form of method validation comes from executing the study across several different databases that represent different populations, different health care systems, and/or different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates, <span class="citation">(Madigan et al. <a href="#ref-madigan_2013">2013</a>)</span> suggesting that either the effect differs greatly for different populations, or that the design does not adequately address the different biases found in the different databases. In fact, we observe that accounting for residual bias in a database through empirical calibration of confidence intervals can greatly reduce between-study heterogeneity. <span class="citation">(Schuemie, Hripcsak, et al. <a href="#ref-schuemie_2018">2018</a>)</span></p>
-<p>One way to express between-database heterogeneity is the <span class="math inline">\(I^2\)</span> score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. <span class="citation">(Higgins et al. <a href="#ref-higgins_2003">2003</a>)</span> A naive categorization of values for <span class="math inline">\(I^2\)</span> would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to <span class="math inline">\(I^2\)</span> values of 25%, 50%, and 75%. In a study estimating the effects for many depression treatments using a new-user cohort design with large-scale propensity score adjustment, <span class="citation">Schuemie, Ryan, et al. (<a href="#ref-schuemie_2018b">2018</a>)</span> observed only 58% of the estimates to have an <span class="math inline">\(I^2\)</span> below 25%. After empirical calibration this increased to 83%.</p>
+<p>Another form of method validation comes from executing the study across several different databases that represent different populations, different health care systems, and/or different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates, <span class="citation">(Madigan et al. <a href="#ref-madigan_2013" role="doc-biblioref">2013</a>)</span> suggesting that either the effect differs greatly for different populations, or that the design does not adequately address the different biases found in the different databases. In fact, we observe that accounting for residual bias in a database through empirical calibration of confidence intervals can greatly reduce between-study heterogeneity. <span class="citation">(Schuemie, Hripcsak, et al. <a href="#ref-schuemie_2018" role="doc-biblioref">2018</a>)</span></p>
+<p>One way to express between-database heterogeneity is the <span class="math inline">\(I^2\)</span> score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. <span class="citation">(Higgins et al. <a href="#ref-higgins_2003" role="doc-biblioref">2003</a>)</span> A naive categorization of values for <span class="math inline">\(I^2\)</span> would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to <span class="math inline">\(I^2\)</span> values of 25%, 50%, and 75%. In a study estimating the effects for many depression treatments using a new-user cohort design with large-scale propensity score adjustment, <span class="citation">Schuemie, Ryan, et al. (<a href="#ref-schuemie_2018b" role="doc-biblioref">2018</a>)</span> observed only 58% of the estimates to have an <span class="math inline">\(I^2\)</span> below 25%. After empirical calibration this increased to 83%.</p>
 
 <div class="rmdimportant">
 Observing between-database heterogeneity casts doubt on the validity of the estimates. Unfortunately, the inverse is not true. Not observing heterogeneity does not guarantee an unbiased estimate. It is not unlikely that all databases share a similar bias, and that all estimates are therefore consistently wrong.
@@ -545,7 +573,7 @@ Observing between-database heterogeneity casts doubt on the validity of the esti
 <div id="sensitivity-analyses" class="section level3">
 <h3><span class="header-section-number">19.2.7</span> Sensitivity analyses</h3>
 <p>When designing a study there are often design choices that are uncertain. For example, should propensity score matching of stratification be used? If stratification is used, how many strata? What is the appropriate time-at-risk? When faced with such uncertainty, one solution is to evaluate various options, and observe the sensitivity of the results to the design choice. If the estimate remains the same under various options, we can say the study is robust to the uncertainty.</p>
-<p>This definition of sensitivity analysis should not be confused with the definitions used by others such as <span class="citation">Rosenbaum (<a href="#ref-rosenbaum_2005">2005</a>)</span>, who define sensitivity analysis to “appraise how the conclusions of a study might be altered by hidden biases of various magnitudes”.</p>
+<p>This definition of sensitivity analysis should not be confused with the definitions used by others such as <span class="citation">Rosenbaum (<a href="#ref-rosenbaum_2005" role="doc-biblioref">2005</a>)</span>, who define sensitivity analysis to “appraise how the conclusions of a study might be altered by hidden biases of various magnitudes”.</p>
 </div>
 </div>
 <div id="method-validation-in-practice" class="section level2">
@@ -576,34 +604,34 @@ Figure 19.4: Candidate control outcomes with an overview of the evidence found i
 <h3><span class="header-section-number">19.3.2</span> Including controls</h3>
 <p>Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section <a href="PopulationLevelEstimation.html#evaluationSettings">13.7.3</a> discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter <a href="SqlAndR.html#SqlAndR">10</a> describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.</p>
 <p>The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section <a href="PopulationLevelEstimation.html#evaluationSettings">13.7.3</a>, and is implemented in the <code>injectSignals</code> function in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MethodEvaluation)
-<span class="co"># Create a data frame with all negative control exposure-</span>
-<span class="co"># outcome pairs, using only the target exposure (ACEi = 1).</span>
-eoPairs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">exposureId =</span> <span class="dv">1</span>,
-                      <span class="dt">outcomeId =</span> ncs)
-
-pcs &lt;-<span class="st"> </span><span class="kw">injectSignals</span>(<span class="dt">connectionDetails =</span> connectionDetails,
-                     <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,
-                     <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,
-                     <span class="dt">exposureTable =</span> cohortTable,
-                     <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,
-                     <span class="dt">outcomeTable =</span> cohortTable,
-                     <span class="dt">outputDatabaseSchema =</span> cohortDbSchema,
-                     <span class="dt">outputTable =</span> cohortTable,
-                     <span class="dt">createOutputTable =</span> <span class="ot">FALSE</span>,
-                     <span class="dt">modelType =</span> <span class="st">&quot;survival&quot;</span>,
-                     <span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>,
-                     <span class="dt">firstOutcomeOnly =</span> <span class="ot">TRUE</span>,
-                     <span class="dt">removePeopleWithPriorOutcomes =</span> <span class="ot">TRUE</span>,
-                     <span class="dt">washoutPeriod =</span> <span class="dv">365</span>,
-                     <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,
-                     <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,
-                     <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>,
-                     <span class="dt">exposureOutcomePairs =</span> eoPairs,
-                     <span class="dt">effectSizes =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">4</span>),
-                     <span class="dt">cdmVersion =</span> cdmVersion,
-                     <span class="dt">workFolder =</span> <span class="kw">file.path</span>(outputFolder,
-                                            <span class="st">&quot;pcSynthesis&quot;</span>))</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="MethodValidity.html#cb107-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
+<span id="cb107-2"><a href="MethodValidity.html#cb107-2"></a><span class="co"># Create a data frame with all negative control exposure-</span></span>
+<span id="cb107-3"><a href="MethodValidity.html#cb107-3"></a><span class="co"># outcome pairs, using only the target exposure (ACEi = 1).</span></span>
+<span id="cb107-4"><a href="MethodValidity.html#cb107-4"></a>eoPairs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">exposureId =</span> <span class="dv">1</span>,</span>
+<span id="cb107-5"><a href="MethodValidity.html#cb107-5"></a>                      <span class="dt">outcomeId =</span> ncs)</span>
+<span id="cb107-6"><a href="MethodValidity.html#cb107-6"></a></span>
+<span id="cb107-7"><a href="MethodValidity.html#cb107-7"></a>pcs &lt;-<span class="st"> </span><span class="kw">injectSignals</span>(<span class="dt">connectionDetails =</span> connectionDetails,</span>
+<span id="cb107-8"><a href="MethodValidity.html#cb107-8"></a>                     <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb107-9"><a href="MethodValidity.html#cb107-9"></a>                     <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb107-10"><a href="MethodValidity.html#cb107-10"></a>                     <span class="dt">exposureTable =</span> cohortTable,</span>
+<span id="cb107-11"><a href="MethodValidity.html#cb107-11"></a>                     <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb107-12"><a href="MethodValidity.html#cb107-12"></a>                     <span class="dt">outcomeTable =</span> cohortTable,</span>
+<span id="cb107-13"><a href="MethodValidity.html#cb107-13"></a>                     <span class="dt">outputDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb107-14"><a href="MethodValidity.html#cb107-14"></a>                     <span class="dt">outputTable =</span> cohortTable,</span>
+<span id="cb107-15"><a href="MethodValidity.html#cb107-15"></a>                     <span class="dt">createOutputTable =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb107-16"><a href="MethodValidity.html#cb107-16"></a>                     <span class="dt">modelType =</span> <span class="st">&quot;survival&quot;</span>,</span>
+<span id="cb107-17"><a href="MethodValidity.html#cb107-17"></a>                     <span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb107-18"><a href="MethodValidity.html#cb107-18"></a>                     <span class="dt">firstOutcomeOnly =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb107-19"><a href="MethodValidity.html#cb107-19"></a>                     <span class="dt">removePeopleWithPriorOutcomes =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb107-20"><a href="MethodValidity.html#cb107-20"></a>                     <span class="dt">washoutPeriod =</span> <span class="dv">365</span>,</span>
+<span id="cb107-21"><a href="MethodValidity.html#cb107-21"></a>                     <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,</span>
+<span id="cb107-22"><a href="MethodValidity.html#cb107-22"></a>                     <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,</span>
+<span id="cb107-23"><a href="MethodValidity.html#cb107-23"></a>                     <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb107-24"><a href="MethodValidity.html#cb107-24"></a>                     <span class="dt">exposureOutcomePairs =</span> eoPairs,</span>
+<span id="cb107-25"><a href="MethodValidity.html#cb107-25"></a>                     <span class="dt">effectSizes =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb107-26"><a href="MethodValidity.html#cb107-26"></a>                     <span class="dt">cdmVersion =</span> cdmVersion,</span>
+<span id="cb107-27"><a href="MethodValidity.html#cb107-27"></a>                     <span class="dt">workFolder =</span> <span class="kw">file.path</span>(outputFolder,</span>
+<span id="cb107-28"><a href="MethodValidity.html#cb107-28"></a>                                            <span class="st">&quot;pcSynthesis&quot;</span>))</span></code></pre>
 <p>Note that we must mimic the time-at-risk settings used in our estimation study design. The <code>injectSignals</code> function will extract information about the exposures and negative controls outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by <code>cohortDbSchema</code> and <code>cohortTable</code>. The resulting <code>pcs</code> data frame contains the information on the synthesized positive controls.</p>
 <p>Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the <a href="https://ohdsi.github.io/MethodsLibrary/">OHDSI Methods Library</a> readily allow estimation of many effects in an efficient manner.</p>
 </div>
@@ -662,16 +690,16 @@ Figure 19.5: Estimates for the negative (true hazard ratio = 1) and positive con
 <div id="p-value-calibration-1" class="section level3">
 <h3><span class="header-section-number">19.3.4</span> P-value calibration</h3>
 <p>We can use the estimates for our negative controls to calibrate our p-values. This is done automatically in the Shiny app, and can be done manually in R. Assuming we have created the summary object <code>summ</code> as described in Section <a href="PopulationLevelEstimation.html#MultipleAnalyses">13.8.6</a>, we can plot the empirical calibration effect plot:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Estimates for negative controls (ncs) and outcomes of interest (ois):</span>
-ncEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ncs, ]
-oiEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ois, ]
-
-<span class="kw">library</span>(EmpiricalCalibration)
-<span class="kw">plotCalibrationEffect</span>(<span class="dt">logRrNegatives =</span> ncEstimates<span class="op">$</span>logRr,
-                      <span class="dt">seLogRrNegatives =</span> ncEstimates<span class="op">$</span>seLogRr,
-                      <span class="dt">logRrPositives =</span> oiEstimates<span class="op">$</span>logRr,
-                      <span class="dt">seLogRrPositives =</span> oiEstimates<span class="op">$</span>seLogRr,
-                      <span class="dt">showCis =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="MethodValidity.html#cb108-1"></a><span class="co"># Estimates for negative controls (ncs) and outcomes of interest (ois):</span></span>
+<span id="cb108-2"><a href="MethodValidity.html#cb108-2"></a>ncEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ncs, ]</span>
+<span id="cb108-3"><a href="MethodValidity.html#cb108-3"></a>oiEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ois, ]</span>
+<span id="cb108-4"><a href="MethodValidity.html#cb108-4"></a></span>
+<span id="cb108-5"><a href="MethodValidity.html#cb108-5"></a><span class="kw">library</span>(EmpiricalCalibration)</span>
+<span id="cb108-6"><a href="MethodValidity.html#cb108-6"></a><span class="kw">plotCalibrationEffect</span>(<span class="dt">logRrNegatives =</span> ncEstimates<span class="op">$</span>logRr,</span>
+<span id="cb108-7"><a href="MethodValidity.html#cb108-7"></a>                      <span class="dt">seLogRrNegatives =</span> ncEstimates<span class="op">$</span>seLogRr,</span>
+<span id="cb108-8"><a href="MethodValidity.html#cb108-8"></a>                      <span class="dt">logRrPositives =</span> oiEstimates<span class="op">$</span>logRr,</span>
+<span id="cb108-9"><a href="MethodValidity.html#cb108-9"></a>                      <span class="dt">seLogRrPositives =</span> oiEstimates<span class="op">$</span>seLogRr,</span>
+<span id="cb108-10"><a href="MethodValidity.html#cb108-10"></a>                      <span class="dt">showCis =</span> <span class="ot">TRUE</span>)</span></code></pre>
 <div class="figure" style="text-align: center"><span id="fig:pValueCal"></span>
 <img src="images/MethodValidity/pValueCal.png" alt="P-value calibration: estimates below the dashed line have a conventional p &lt; 0.05. Estimates in the orange area have calibrated p &lt; 0.05. The pink area denotes the 95\% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest." width="70%" />
 <p class="caption">
@@ -680,14 +708,14 @@ Figure 19.6: P-value calibration: estimates below the dashed line have a convent
 </div>
 <p>In Figure <a href="MethodValidity.html#fig:pValueCal">19.6</a> we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicated hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.</p>
 <p>We can compute the calibrated p-values:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null &lt;-<span class="st"> </span><span class="kw">fitNull</span>(<span class="dt">logRr =</span> ncEstimates<span class="op">$</span>logRr,
-                <span class="dt">seLogRr =</span> ncEstimates<span class="op">$</span>seLogRr)
-<span class="kw">calibrateP</span>(null,
-           <span class="dt">logRr=</span> oiEstimates<span class="op">$</span>logRr,
-           <span class="dt">seLogRr =</span> oiEstimates<span class="op">$</span>seLogRr)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="MethodValidity.html#cb109-1"></a>null &lt;-<span class="st"> </span><span class="kw">fitNull</span>(<span class="dt">logRr =</span> ncEstimates<span class="op">$</span>logRr,</span>
+<span id="cb109-2"><a href="MethodValidity.html#cb109-2"></a>                <span class="dt">seLogRr =</span> ncEstimates<span class="op">$</span>seLogRr)</span>
+<span id="cb109-3"><a href="MethodValidity.html#cb109-3"></a><span class="kw">calibrateP</span>(null,</span>
+<span id="cb109-4"><a href="MethodValidity.html#cb109-4"></a>           <span class="dt">logRr=</span> oiEstimates<span class="op">$</span>logRr,</span>
+<span id="cb109-5"><a href="MethodValidity.html#cb109-5"></a>           <span class="dt">seLogRr =</span> oiEstimates<span class="op">$</span>seLogRr)</span></code></pre>
 <pre><code>## [1] 1.604351e-06 7.159506e-01</code></pre>
 <p>And contrast these with the uncalibrated p-values:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oiEstimates<span class="op">$</span>p</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="MethodValidity.html#cb111-1"></a>oiEstimates<span class="op">$</span>p</span></code></pre>
 <pre><code>## [1] [1] 1.483652e-06 7.052822e-01</code></pre>
 <p>As expected, because little to no bias was observed, the uncalibrated and calibrated p-values are very similar.</p>
 </div>
@@ -698,7 +726,7 @@ Figure 19.6: P-value calibration: estimates below the dashed line have a convent
 </div>
 <div id="between-database-heterogeneity" class="section level3">
 <h3><span class="header-section-number">19.3.6</span> Between-database heterogeneity</h3>
-<p>Just as we executed our analysis on one database, in this case the IBM MarketScan Medicaid (MDCD) database, we can also run the same analysis code on other databases that adhere to the Common Data Model (CDM). Figure <a href="MethodValidity.html#fig:forest">19.7</a> shows the forest plot and meta-analytic estimates (assuming random effects) <span class="citation">(DerSimonian and Laird <a href="#ref-dersimonian_1986">1986</a>)</span> across a total of five databases for the outcome of angioedema. This figure was generated using the <code>plotMetaAnalysisForest</code> function in the <a href="https://ohdsi.github.io/EvidenceSynthesis/">EvidenceSynthesis</a> package.</p>
+<p>Just as we executed our analysis on one database, in this case the IBM MarketScan Medicaid (MDCD) database, we can also run the same analysis code on other databases that adhere to the Common Data Model (CDM). Figure <a href="MethodValidity.html#fig:forest">19.7</a> shows the forest plot and meta-analytic estimates (assuming random effects) <span class="citation">(DerSimonian and Laird <a href="#ref-dersimonian_1986" role="doc-biblioref">1986</a>)</span> across a total of five databases for the outcome of angioedema. This figure was generated using the <code>plotMetaAnalysisForest</code> function in the <a href="https://ohdsi.github.io/EvidenceSynthesis/">EvidenceSynthesis</a> package.</p>
 <div class="figure" style="text-align: center"><span id="fig:forest"></span>
 <img src="images/MethodValidity/forest.png" alt="Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema." width="90%" />
 <p class="caption">
@@ -716,13 +744,13 @@ Figure 19.8: Calibrated Effect size estimates and 95% confidence intervals (CI) 
 <div id="sensitivity-analyses-1" class="section level3">
 <h3><span class="header-section-number">19.3.7</span> Sensitivity analyses</h3>
 <p>One of the design choices in our analysis was to use variable-ratio matching on the propensity score. However, we could have also used stratification on the propensity score. Because we we are uncertain about this choice, we may decide to use both. Table <a href="MethodValidity.html#tab:sensAnalysis">19.2</a> shows the effect size estimates for AMI and angioedema, both calibrated and uncalibrated, when using variable-ratio matching and stratification (with 10 equally-sized strata).</p>
-<table style="width:86%;">
+<table>
 <caption><span id="tab:sensAnalysis">Table 19.2: </span> Uncalibrated and calibrated hazard ratios (95% confidence interval) for the two analysis variants.</caption>
 <colgroup>
-<col width="30%" />
-<col width="16%" />
-<col width="19%" />
-<col width="19%" />
+<col width="36%" />
+<col width="18%" />
+<col width="22%" />
+<col width="22%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -770,7 +798,7 @@ Study diagnostics allow us to evaluate design choices even before fully executin
 <div id="ohdsi-methods-benchmark" class="section level2">
 <h2><span class="header-section-number">19.4</span> OHDSI Methods Benchmark</h2>
 <p>Although the recommended practice is to empirically evaluate a method’s performance within the context that it is applied, using negative and positive controls that are in ways similar to the exposures-outcomes pairs of interest (for example using the same exposure or the same outcome) and on the database used in the study, there is also value in evaluating a method’s performance in general. This is why the OHDSI Methods Evaluation Benchmark was developed. The benchmark evaluates performance using a wide range of control questions, including those with chronic or acute outcomes, and long-term or short-term exposures. The results on this benchmark can help demonstrate the overall usefulness of a method, and can be used to form a prior belief about the performance of a method when a context-specific empirical evaluation is not (yet) available. The benchmark consists of 200 carefully selected negative controls that can be stratified into eight categories, with the controls in each category either sharing the same exposure or the same outcome. From these 200 negative controls, 600 synthetic positive controls are derived as described in Section <a href="MethodValidity.html#PositiveControls">19.2.2</a>. To evaluate a method, it must be used to produce effect size estimates for all controls, after which the metrics described in Section <a href="MethodValidity.html#metrics">19.2.3</a> can be computed. The benchmark is publicly available, and can be deployed as described in the <a href="https://ohdsi.github.io/MethodEvaluation/articles/OhdsiMethodsBenchmark.html">Running the OHDSI Methods Benchmark vignette</a> in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> package.</p>
-<p>We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app<a href="#fn15" class="footnoteRef" id="fnref15"><sup>15</sup></a>, show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95% confidence interval, as shown in Figure <a href="MethodValidity.html#fig:methodEval">19.9</a>.</p>
+<p>We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app<a href="references.html#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>, show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95% confidence interval, as shown in Figure <a href="MethodValidity.html#fig:methodEval">19.9</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:methodEval"></span>
 <img src="images/MethodValidity/methodEval.png" alt="Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease." width="100%" />
 <p class="caption">
@@ -790,7 +818,7 @@ Figure 19.9: Coverage of the 95% confidence interval for the methods in the Meth
 <li><p>Control hypotheses, questions where the answer is known, should be used to evaluate whether a specific study design produces answers in line with the truth.</p></li>
 <li><p>Often, p-values and confidence intervals do not demonstrate nominal characteristics as measured using control hypotheses.</p></li>
 <li><p>These characteristics can often be restored to nominal using empirical calibration.</p></li>
-<li>Study diagnostics can be used to guide analytic design choices and adapt the protocol, as long as the researcher remains blinded to the effect of interest to avoid p-hacking.</li>
+<li><p>Study diagnostics can be used to guide analytic design choices and adapt the protocol, as long as the researcher remains blinded to the effect of interest to avoid p-hacking.</p></li>
 </ul>
 </div>
 
@@ -828,7 +856,7 @@ Figure 19.9: Coverage of the 95% confidence interval for the methods in the Meth
 <p>Prasad, V., and A. B. Jena. 2013. “Prespecified falsification end points: can they validate true observational associations?” <em>JAMA</em> 309 (3): 241–42.</p>
 </div>
 <div id="ref-rosenbaum_2005">
-<p>Rosenbaum, P. 2005. “Sensitivity Analysis in Observational Studies.” In <em>Encyclopedia of Statistics in Behavioral Science</em>. American Cancer Society. doi:<a href="https://doi.org/10.1002/0470013192.bsa606">10.1002/0470013192.bsa606</a>.</p>
+<p>Rosenbaum, P. 2005. “Sensitivity Analysis in Observational Studies.” In <em>Encyclopedia of Statistics in Behavioral Science</em>. American Cancer Society. <a href="https://doi.org/10.1002/0470013192.bsa606">https://doi.org/10.1002/0470013192.bsa606</a>.</p>
 </div>
 <div id="ref-schuemie_2018">
 <p>Schuemie, M. 2018. “Empirical confidence interval calibration for population-level effect estimation studies in observational healthcare data.” <em>Proc. Natl. Acad. Sci. U.S.A.</em> 115 (11): 2571–7.</p>
@@ -840,7 +868,7 @@ Figure 19.9: Coverage of the 95% confidence interval for the methods in the Meth
 <p>Schuemie, M. J., P. B. Ryan, G. Hripcsak, D. Madigan, and M. A. Suchard. 2018. “Improving reproducibility by using high-throughput observational studies with empirical calibration.” <em>Philos Trans A Math Phys Eng Sci</em> 376 (2128).</p>
 </div>
 <div id="ref-suchard_2013">
-<p>Suchard, M. A., S. E. Simpson, Ivan Zorych, P. B. Ryan, and David Madigan. 2013. “Massive Parallelization of Serial Inference Algorithms for a Complex Generalized Linear Model.” <em>ACM Trans. Model. Comput. Simul.</em> 23 (1). New York, NY, USA: ACM: 10:1–10:17. doi:<a href="https://doi.org/10.1145/2414416.2414791">10.1145/2414416.2414791</a>.</p>
+<p>Suchard, M. A., S. E. Simpson, Ivan Zorych, P. B. Ryan, and David Madigan. 2013. “Massive Parallelization of Serial Inference Algorithms for a Complex Generalized Linear Model.” <em>ACM Trans. Model. Comput. Simul.</em> 23 (1): 10:1–10:17. <a href="https://doi.org/10.1145/2414416.2414791">https://doi.org/10.1145/2414416.2414791</a>.</p>
 </div>
 <div id="ref-voss_2016">
 <p>Voss, E. A., R. D. Boyce, P. B. Ryan, J. van der Lei, P. R. Rijnbeek, and M. J. Schuemie. 2016. “Accuracy of an Automated Knowledge Base for Identifying Drug Adverse Reactions.” <em>J Biomed Inform</em>, December.</p>
@@ -848,12 +876,6 @@ Figure 19.9: Coverage of the 95% confidence interval for the methods in the Meth
 <div id="ref-zaadstra_2008">
 <p>Zaadstra, B. M., A. M. Chorus, S. van Buuren, H. Kalsbeek, and J. M. van Noort. 2008. “Selective association of multiple sclerosis with infectious mononucleosis.” <em>Mult. Scler.</em> 14 (3): 307–13.</p>
 </div>
-</div>
-<div class="footnotes">
-<hr />
-<ol start="15">
-<li id="fn15"><p><a href="http://data.ohdsi.org/MethodEvalViewer/" class="uri">http://data.ohdsi.org/MethodEvalViewer/</a><a href="MethodValidity.html#fnref15">↩</a></p></li>
-</ol>
 </div>
             </section>
 
@@ -911,7 +933,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

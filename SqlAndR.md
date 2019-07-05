@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.bt9rsx0bchildren ;"
+## [1] "SELECT * FROM temp_schema.r4u5le8pchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
