@@ -613,7 +613,7 @@ conventions.}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.34\columnwidth}\raggedright\strut
 Notation\strut
-\end{minipage} & \begin{minipage}[b]{0.61\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.60\columnwidth}\raggedright\strut
 Description\strut
 \end{minipage}\tabularnewline
 \midrule
@@ -621,14 +621,14 @@ Description\strut
 \toprule
 \begin{minipage}[b]{0.34\columnwidth}\raggedright\strut
 Notation\strut
-\end{minipage} & \begin{minipage}[b]{0.61\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.60\columnwidth}\raggedright\strut
 Description\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
 \begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_id\strut
-\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\raggedright\strut
 Unique identifiers for key entities, which can serve as foreign keys to
 establish relationships across entities. For example, person\_id
 uniquely identifies each individual. visit\_occurrence\_id uniquely
@@ -636,7 +636,7 @@ identifies a PERSON encounter at a point of care.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_source\_value\strut
-\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\raggedright\strut
 Verbatim information from the source data, typically used in ETL to map
 to concept\_id, and not to be used by any standard analytics. For
 example, condition\_source\_value = `787.02' was the ICD-9 code captured
@@ -644,7 +644,7 @@ as a diagnosis from the administrative claim.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_concept\_id\strut
-\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\raggedright\strut
 Foreign key into the Standardized Vocabularies (i.e.~the standard
 concept attribute for the corresponding term is true), which serves as
 the primary basis for all standardized analytics. For example,
@@ -654,7 +654,7 @@ the reference value for the SNOMED concept of ``Nausea''.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_source\_concept\_id\strut
-\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\raggedright\strut
 Foreign key into the Standardized Vocabularies representing the concept
 and terminology used in the source data, when applicable. For example,
 condition\_source\_concept\_id =
@@ -667,7 +667,7 @@ findings.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.34\columnwidth}\raggedright\strut
 {[}entity{]}\_type\_concept\_id\strut
-\end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.60\columnwidth}\raggedright\strut
 Delineates the origin of the source information, standardized within the
 Standardized Vocabularies. For example, drug\_type\_concept\_id can
 allow analysts to discriminate between ``Pharmacy dispensing'' and
@@ -3196,7 +3196,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.ret5ip33children ;"
+## [1] "SELECT * FROM temp_schema.x5o941aochildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -9939,11 +9939,13 @@ the \(\beta_i\)'s, arise from a normal distribution with mean \(\mu\)
 and variance \(\sigma^2\). This represents the null (bias) distribution.
 We estimate \(\mu\) and \(\sigma^2\) via maximum likelihood. In summary,
 we assume the following:
+
 \[\beta_i \sim N(\mu,\sigma^2) \text{  and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)\]
 
 where \(N(a,b)\) denotes a Gaussian distribution with mean \(a\) and
 variance \(b\), and estimate \(\mu\) and \(\sigma^2\) by maximizing the
 following likelihood:
+
 \[L(\mu, \sigma | \theta, \tau) \propto \prod_{i=1}^{n}\int p(\hat{\theta}_i|\beta_i, \theta_i, \hat{\tau}_i)p(\beta_i|\mu, \sigma) \text{d}\beta_i\]
 
 yielding maximum likelihood estimates \(\hat{\mu}\) and
@@ -9964,6 +9966,7 @@ calibrated p-value for the new pair is then
 where \(\phi(\cdot)\) denotes the cumulative distribution function of
 the standard normal distribution. When \(\hat{\theta}_{n+1}\) is bigger
 than \(\hat{\mu}\), the one-sided calibrated p-value is then
+
 \[1-\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)\]
 
 \subsection{Confidence interval
@@ -9995,6 +9998,7 @@ We estimate \(a\), \(b\), \(c\) and \(d\) by maximizing the marginalized
 likelihood in which we integrate out the unobserved \(\beta_i\):
 
 \[l(a,b,c,d | \theta, \hat{\theta}, \hat{\tau} ) \propto \prod_{i=1}^{n}\int p(\hat{\theta}_i|\beta_i, \theta_i, \hat{\tau}_i)p(\beta_i|a,b,c,d,\theta_i) \text{d}\beta_i ,\]
+
 yielding maximum likelihood estimates
 \((\hat{a}, \hat{b}, \hat{c}, \hat{d})\).
 

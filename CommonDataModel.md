@@ -54,12 +54,10 @@ In most cases, the first field in each table ends in "_id", containing a record 
 
 Variable names across all tables follow one convention:
 
-<!-- To fix relative width of tables in LaTex, change relative size of --|---- below -->
-
 Table: (\#tab:fieldConventions) Field name conventions.
 
-Notation|Description
-------------------------------|-------------------------------------------------------
+|Notation|Description|
+|:------------------------------|:-------------------------------------------------------|
 |[entity]_id|Unique identifiers for key entities, which can serve as foreign keys to establish relationships across entities. For example, person_id uniquely identifies each individual. visit_occurrence_id uniquely identifies a PERSON encounter at a point of care.|
 |[entity]_source_value|Verbatim information from the source data, typically used in ETL to map to concept_id, and not to be used by any standard analytics. For example, condition_source_value = '787.02' was the ICD-9 code captured as a diagnosis from the administrative claim.|
 |[entity]_concept_id|Foreign key into the Standardized Vocabularies (i.e. the standard concept attribute for the corresponding term is true), which serves as the primary basis for all standardized analytics. For example, condition_concept_id = [31967](http://athena.ohdsi.org/search-terms/terms/31967) contains the reference value for the SNOMED concept of "Nausea".|
