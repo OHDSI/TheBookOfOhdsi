@@ -242,17 +242,23 @@ TODO: Find out if Broadsea is still maintained
 
 ### Amazon AWS
 
-Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box[^ohdsiInaBoxUrl] and OHDSIonAWS[^ohdsiOnAwsUrl]. OHDSI-in-a-Box is specifically created as a learning environment, and is used in most of the tutorials provided by the OHDSI community. OHDSIonAWS is intended as a starting point to create an enterprise class, multi-user, scalable and fault tolerant environment that can be used by organizations to perform their data analytics. Both follow the architecture depicted in Figure \@ref(fig:awsDiagram).
+Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box[^ohdsiInaBoxUrl] and OHDSIonAWS[^ohdsiOnAwsUrl]. 
+
+OHDSI-in-a-Box is specifically created as a learning environment, and is used in most of the tutorials provided by the OHDSI community. It includes many OHDSI tools, sample data sets, RStudio and other supporting software in a single, low cost Windows virtual machine.  A PostgreSQL database is used to store the CDM and also to store the intermediary results from ATLAS. The OMOP CDM data mapping and ETL tools are also included in OHDSI-in-a-Box. The architecture for OHDSI-in-a-Box is depicted in Figure \@ref(fig:ohdsiinaboxDiagram).
 
 [^ohdsiInaBoxUrl]: https://github.com/OHDSI/OHDSI-in-a-Box
 
-[^ohdsiOnAwsUrl]: https://github.com/OHDSI/OHDSIonAWS
-
-```{r awsDiagram, fig.cap='The Amazon Web Services architecure for OHDSI-in-a-Box and OHDSIonAWS.',echo=FALSE, out.width='100%', fig.align='center'}
-knitr::include_graphics("images/OhdsiAnalyticsTools/awsDiagram.png")
+```{r ohdsiinaboxDiagram, fig.cap='The Amazon Web Services architecure for OHDSI-in-a-Box.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/OhdsiAnalyticsTools/OHDSI-in-a-BoxDiagram.png")
 ```
 
-On the back end there is data in the CDM. By default several simulated datasets are provided alongside the Standardized Vocabularies, although of course for OHDSIonAWS it is likely organizations will want to include real healthcare data taht they have access to as well. The data is placed in the Amazon's RedShift database platform, which is supported by the OHDSI tools. Intermediary results of ATLAS are stored in a PostgreSQL database. On the front end, users have access to ATLAS and to RStudio through a web interface (leveraging RStudio Server). In RStudio the OHDSI Methods Library has already been installed, and can be used to connect to the databases.
+OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalable and fault tolerant OHDSI environments that can be used by organizations to perform their data analytics. It includes several sample datasets and can also automatically load your organization's real healthcare data. The data is placed in the Amazon Redshift database platform, which is supported by the OHDSI tools. Intermediary results of ATLAS are stored in a PostgreSQL database. On the front end, users have access to ATLAS and to RStudio through a web interface (leveraging RStudio Server). In RStudio the OHDSI Methods Library has already been installed, and can be used to connect to the databases. The automation to deploy OHDSIonAWS is open-source, and can be customized to include your organization's management tools and best practices.  The architecture for OHDSIonAWS is depicted in Figure \@ref(fig:ohdsionawsDiagram).
+
+[^ohdsiOnAwsUrl]: https://github.com/OHDSI/OHDSIonAWS
+
+```{r ohdsionawsDiagram, fig.cap='The Amazon Web Services architecure for OHDSIonAWS.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/OhdsiAnalyticsTools/OHDSIonAWSDiagram.png")
+```
 
 ## Summary
 
