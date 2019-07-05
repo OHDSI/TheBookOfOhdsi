@@ -1697,8 +1697,8 @@ OHDSI offers a wide range of open source tools to support the various data-analy
 
 In this chapter we first describe various ways in which we can choose to implement an analysis, and what strategies the analysis can employ. We then review the various OHDSI tools and how they fit the various use cases.
 
-\hypertarget{analysis-implementation}{%
-\section{Analysis implementation}\label{analysis-implementation}}
+\hypertarget{analysisImplementation}{%
+\section{Analysis implementation}\label{analysisImplementation}}
 
 Figure \ref{fig:implementations} shows the various ways in which we can choose to implement a study against a database using the CDM.
 
@@ -2384,7 +2384,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.t10rczu3children ;"
+## [1] "SELECT * FROM temp_schema.c6gs333tchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -6444,45 +6444,99 @@ A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study (\url{https:/
 
 \emph{Chapter lead: Martijn Schuemie}
 
-The central question of sofware validity is
+The central question of software validity is
 
 \begin{quote}
 Does the software do what it is expected to do?
 \end{quote}
 
-In broad strokes there are two approaches to ensure software validity: by using a software development process aimed at creating valid software, and by testing whether the software is valid. Here we focus specifically on the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}, the set of R packages used in population-level estimation and patient-level prediction. The OHDSI Population-Level Estimation Workgroup and the OHDSI Patient-Level Prediction Workgroup together are responsible for developing and maintaining the OHDSI Methods Library. The OHDSI Population-Level Estimation Workgroup is headed by Drs. Marc Suchard and Martijn Schuemie. The OHDSI Patient-Level Prediction Workgroup his headed by Drs. Peter Rijnbeek and Jenna Reps.
+Software validity is an essential component of evidence quality: only if our analysis software does what it is expected to do can we produce reliable evidence. As described in Section \ref{automation}, it is essential to view every study as a software development exercise, creating an automated script that executes the entire analysis, from data in the Common Data Model (CDM) to the results such as estimates, figures as tables. It is this script that must be validated. As described in Section \ref{analysisImplementation}, we can write this entire analysis script as custom code, or we can use the functionality available in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}. The advantage of using the Methods Library is that great care has already been taken to ensure its validity, so establishing the validity of the entire analysis becomes less burdensome.
 
-\hypertarget{software-development-process}{%
-\section{Software Development Process}\label{software-development-process}}
+In this chapter we first describe best practices for writing valid analysis code. After this we discuss how the Methods library is validated through its software development process and testing.
 
-The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers and the \href{http://forums.ohdsi.org/}{OHDSI Forums}. Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup and OHDSI Patient-Level Prediction Workgroup leadership only.
+\hypertarget{study-code-validity}{%
+\section{Study code validity}\label{study-code-validity}}
 
-Users can install the Methods Library in R directly from the master branches in the GitHub repositories, or through a system known as `drat' that is always up-to-date with the master branches. A number of the Methods Library packages are available through R's Comprehensive R Archive Network (CRAN), and this number is expected to increase over time.
+\hypertarget{automation}{%
+\subsection{Automation as a requirement for reproducibility}\label{automation}}
+
+Traditionally, observational studies are often viewed as a journey rather than a process: a database expert may extract a data set from the database and hands this over to the data analyst, who may open it in a spreadsheet editor or other interactive tool, and starts working on the analysis. In the end, a result is produced, but little is preserved of how it came about. The destination of the journey was reached, but it is not possible to retrace the exact steps taken to get there. This practice is entirely unacceptable, both because it is not reproducible, but also because it lacks transparency; we do not know exactly what was done to produce the result, so we also cannot verify whether mistakes were made.
+
+Every analysis generating evidence must therefore be fully automated. By automated we mean the analysis should be implemented as a single script, and we should be able to redo the entire analysis from database in CDM format to results, including tables and figures, with a single command. The analysis can be of arbitrary complexity, perhaps producing just a single count, or generating empirically calibrated estimates for millions of research questions, but the same principle applies. The script can invoke other scripts, which in turn can invoke even lower-level analysis processes.
+
+The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} package, we can connect directly to the data in CDM format, and many advanced analytic are available through the other packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}.
+
+\hypertarget{programming-best-practices}{%
+\subsection{Programming best practices}\label{programming-best-practices}}
+
+Observational analyses can become very complex, with many steps needed to produce the final results. This complexity can make it harder to maintain the analysis code, and increase the likelihood of making errors as well as making it harder to notice errors. Luckily, computer programmers have over many years developed best practices for writing code that can deal with complexity, and is easy to read, reuse, adapt, and verify. \citep{Martin_2008} A full discussion of these best practices could fill many books. Here, we highlight these four import principles:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Abstraction}: Rather than write a single large script that does everything, leading to so-call ``spaghetti code'' where dependencies between lines of code can go from anywhere to anywhere (e.g.~a value set on line 10 is used in line 1,000), we can organize our code in units called ``functions''. A function should have a clear goal, for example ``take random sample'', and once created we can then use this function in our larger script without having to think of the minutiae of what the function does; We can abstract the function to a simple-to-understand concept.
+\item
+  \textbf{Encapsulation}: For abstraction to work, we should make sure that dependencies of a function are minimized and clearly defined. Our example sampling function should have a few arguments (e.g.~a dataset and a sample size), and one output (e.g.~the sample). Nothing else should influence what the function does. So-called ``global variables'', variables that are set outside a function, are not arguments of a function, but are nevertheless used in the function, should be avoided.
+\item
+  \textbf{Clear naming}: Variables and functions should have clear names, making code read almost like natural language. For example, instead of \texttt{x\ \textless{}-\ spl(y,\ 100)}, we can write code that reads \texttt{sampledPatients\ \textless{}-\ takeSample(patients,\ sampleSize\ =\ 100)}. Try to resist the urge to abbreviate. Modern languages have no limits on the length of variable and function names.
+\item
+  \textbf{Reuse}: One advantage of writing clear, well encapsulated functions is that they can often be reused. This not only saves time, it also means there will be less code, so less complexity and fewer opportunities for errors.
+\end{itemize}
+
+\hypertarget{code-validation}{%
+\subsection{Code validation}\label{code-validation}}
+
+Several approaches exist to verify the validity of software code, but two are especially relevant for code implementing an observational study:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Code review}: One person writes the code, and another person reviews the code
+\item
+  \textbf{Double coding}: Two persons both independently write the analysis code, and afterwards the results of the two scripts are compared.
+\end{itemize}
+
+Code review has the advantage that it is usually less work, but the disadvantage is that the reviewer might miss some errors. Double coding on the other hand is usually very labor intensive, but it is less likely, although not impossible, that errors are missed. Another disadvantages of double coding is that two separate implementations \emph{almost always} produce different results, due to the many minor arbitrary choices that need to made (e.g.~should ``until exposure end'' be interpreted as including the exposure end date, or not?). As a consequence, the two supposedly independent programmers often need to work together to align their analyses, thus breaking their independence.
+
+Other software validation practices such as unit testing are less relevant here because a study is typically a one-time activity with highly complex relationship between input (the data in CDM) and outputs (the study results). Note that these practices are applied in the Methods Library.
+
+\hypertarget{using-the-methods-library}{%
+\subsection{Using the Methods Library}\label{using-the-methods-library}}
+
+The \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} provides a large set of functions, allowing most observational studies to be implemented using only a few lines of code. Using the Methods Library therefore shifts most of the burden of establishing the validity of one's study code to the Library. Validity of the Methods Library is ensured by its software development process, and by extensive testing.
+
+\hypertarget{methods-library-software-development-process}{%
+\section{Methods Library software development process}\label{methods-library-software-development-process}}
+
+The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers (for example the CohortMethod issue tracker\footnote{\url{https://github.com/OHDSI/CohortMethod/issues}}) and the OHDSI Forums\footnote{\url{http://forums.ohdsi.org/}}. Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup leadership (Drs. Marc Suchard and Martijn Schuemie) and OHDSI Patient-Level Prediction Workgroup leadership (Drs. Peter Rijnbeek and Jenna Reps) only.
+
+Users can install the Methods Library in R directly from the master branches in the GitHub repositories, or through a system known as ``drat'' that is always up-to-date with the master branches. A number of the Methods Library packages are available through R's Comprehensive R Archive Network (CRAN), and this number is expected to increase over time.
 
 Reasonable software development and testing methodologies are employed by OHDSI to maximize the accuracy, reliability and consistency of the Methods Library performance. Importantly, as the Methods Library is released under the terms of the Apache License V2, all source code underlying the Methods Library, whether it be in R, C++, SQL, or Java is available for peer review by all members of the OHDSI community, and the public in general. Thus, all the functionality embodied within Methods Library is subject to continuous critique and improvement relative to its accuracy, reliability and consistency.
 
 \hypertarget{source-code-management}{%
 \subsection{Source Code Management}\label{source-code-management}}
 
-All of the Methods Library's source code is managed in the source code version control system `git' publicly assessible via GitHub. The OHDSI Methods Library repositories are access controlled. Anyone in the world can view the source code, and any member of the OHDSI community can submit changes through so-called pull requests. Only the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can approve such request, make changes to the master branches, and release new versions. Continuous logs of code changes are maintained within the GitHub repositories and reflect all aspects of changes in code and documentation. These commit logs are available for public review.
+All of the Methods Library's source code is managed in the source code version control system ``git'' publicly accessible via GitHub. The OHDSI Methods Library repositories are access-controlled. Anyone in the world can view the source code, and any member of the OHDSI community can submit changes through so-called pull requests. Only the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can approve such request, make changes to the master branches, and release new versions. Continuous logs of code changes are maintained within the GitHub repositories and reflect all aspects of changes in code and documentation. These commit logs are available for public review.
 
 New versions are released by the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership as needed. A new release starts by pushing changes to a master branch with a package version number (as defined in the DESCRIPTION file inside the package) that is greater than the version number of the previous release. This automatically triggers checking and testing of the package. If all tests are passed, the new version is automatically tagged in the version control system and the package is automatically uploaded to the OHDSI drat repository. New versions are numbered using three-component version number:
 
 \begin{itemize}
 \tightlist
 \item
-  New micro versions (e.g.~from 4.3.2 to 4.3.3) indicate bug fixes only. No new functionality, and forward and backward compatibility are guaranteed
+  New \textbf{micro versions} (e.g.~from 4.3.2 to 4.3.3) indicate bug fixes only. No new functionality, and forward and backward compatibility are guaranteed
 \item
-  New minor versions (e.g.~from 4.3.3 to 4.4.0) indicate added functionality. Only backward compatibility is guaranteed
+  New \textbf{minor versions} (e.g.~from 4.3.3 to 4.4.0) indicate added functionality. Only backward compatibility is guaranteed
 \item
-  New major versions (e.g.~from 4.4.0 to 5.0.0) indicate major revisions. No guarantees are madef in terms of compatibility
+  New \textbf{major versions} (e.g.~from 4.4.0 to 5.0.0) indicate major revisions. No guarantees are made in terms of compatibility
 \end{itemize}
 
 \hypertarget{documentation-2}{%
 \subsection{Documentation}\label{documentation-2}}
 
-All packages in the Methods Library are documented through R's internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the roxygen2 software is used to combine a function's documentation and source code in a single file. The package manual is available on demand through R's command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package.
-All Method Library source code is available to end users. Feedback from the community is facilitated using GitHub's issue tracking system and the \href{http://forums.ohdsi.org/}{OHDSI Forums}.
+All packages in the Methods Library are documented through R's internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the \href{https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html}{roxygen2} software is used to combine a function's documentation and source code in a single file. The package manual is available on demand through R's command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package. All documentation can be viewed though the Methods Library website\footnote{\url{https://ohdsi.github.io/MethodsLibrary/}}.
+
+All Method Library source code is available to end users. Feedback from the community is facilitated using GitHub's issue tracking system and the OHDSI Forums.
 
 \hypertarget{availability-of-current-and-historical-archive-versions}{%
 \subsection{Availability of Current and Historical Archive Versions}\label{availability-of-current-and-historical-archive-versions}}
@@ -6504,29 +6558,47 @@ All leaders of the OHDSI Population-Level Estimation Workgroup and OHDSI Patient
 \hypertarget{physical-and-logical-security}{%
 \subsection{Physical and Logical Security}\label{physical-and-logical-security}}
 
-The OHDSI Methods Library is hosted on the \href{https://github.com/}{GitHub} system. GitHub's security measures are described at \url{https://github.com/security}. Usernames and passwords are required by all members of the OHDSI community contribute modifications to the Methods Library, and only the Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can makes changes to the master branches. User accounts are limited in access based upon standard security policies and functional requirements.
+The OHDSI Methods Library is hosted on the GitHub\footnote{\url{https://github.com/}} system. GitHub's security measures are described at \url{https://github.com/security}. Usernames and passwords are required by all members of the OHDSI community contribute modifications to the Methods Library, and only the Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can makes changes to the master branches. User accounts are limited in access based upon standard security policies and functional requirements.
 
 \hypertarget{disaster-recovery}{%
 \subsection{Disaster Recovery}\label{disaster-recovery}}
 
 The OHDSI Methods Library is hosted on the GitHub system. GitHub's disaster recovery facilities are described at \url{https://github.com/security}.
 
-\hypertarget{testing}{%
-\section{Testing}\label{testing}}
+\hypertarget{methods-library-testing}{%
+\section{Methods Library testing}\label{methods-library-testing}}
 
-We distinguish between two types of tests performed on the Methods Library: Tests for individual functions in the packages (so-called `unit tests'), and tests to determine whether analyses implemented using the Methods Library produce reliable and accurate results (we will call this `method tests').
+We distinguish between two types of tests performed on the Methods Library: Tests for individual functions in the packages (so-called ``unit tests''), and tests for more complex functionality using simulations.
 
 \hypertarget{unit-test}{%
 \subsection{Unit test}\label{unit-test}}
 
-A large set of automated validation tests is maintained and upgraded by OHDSI to enable the testing of source code against known data and known results. Each test begins with specifying some simple input data, then executes a function in one of the packages on this input, and evaluates whether the output is exactly what would be expected. For simple functions, the expected result is often obvious (for example when performing propensity score matching on example data containing only a few subjects), for more complicated functions the expected result may be generated using combinations of other functions available in R (for example, Cyclops, our large-scale regression engine, is tested amongst others by comparing results on simple problems with other regression routines in R). We aim for these tests in total to cover 100\% of the lines of executable source code.
-Appendix A lists the locations of the tests in each package. These tests are automatically performed when changes are made to a package (specifically, when changes are pushed to the package repository). Any errors noted during testing automatically trigger emails to the leadership of the Workgroups, and must be resolved prior to release of a new version of a package. The results of the unit tests can be found in the locations specified in Appendix A.
-The source code and expected results for these tests are available for review and use in other applications as may be appropriate. These tests are also available to end users and/or system administrators and can be run as part of their installation process to provide further documentation and objective evidence as to the accuracy, reliability and consistency of their installation of the Methods Library.
+A large set of automated validation tests is maintained and upgraded by OHDSI to enable the testing of source code against known data and known results. Each test begins with specifying some simple input data, then executes a function in one of the packages on this input, and evaluates whether the output is exactly what would be expected. For simple functions, the expected result is often obvious (for example when performing propensity score matching on example data containing only a few subjects), for more complicated functions the expected result may be generated using combinations of other functions available in R (for example, Cyclops, our large-scale regression engine, is tested among others by comparing results on simple problems with other regression routines in R). We aim for these tests in total to cover 100\% of the lines of executable source code.
 
-\hypertarget{conclusions}{%
-\section{Conclusions}\label{conclusions}}
+These tests are automatically performed when changes are made to a package (specifically, when changes are pushed to the package repository). Any errors noted during testing automatically trigger emails to the leadership of the Workgroups, and must be resolved prior to release of a new version of a package. The source code and expected results for these tests are available for review and use in other applications as may be appropriate. These tests are also available to end users and/or system administrators and can be run as part of their installation process to provide further documentation and objective evidence as to the accuracy, reliability and consistency of their installation of the Methods Library.
 
-The purpose of this chapter is to document evidence to provide a high degree of assurance that the Methods Library can be used in observational studies to consistently produce reliable and accurate estimates. Both through adoption of best software development practices during the software lifecycle, as well as continuous extensive testing of individual components of the software and the start-to-finish application of the methods library on a gold standard aim to ensure the validity of the Methods Library. However, use of the Methods Library does not guarantee validity of a study, since validity depends on many other components outside of the Methods Library as well, including appropriate study design, exposure and outcome definitions, and data quality. It is important to note that there is a significant obligation on the part of the end-user's organization to define, create, implement and enforce the Method Library installation, validation and utilization related Standard Operating Procedures (SOPs) within the end-user's environment. These SOPs should define appropriate and reasonable quality control processes to manage end-user related risk within the applicable operating framework. The details and content of any such SOPs are beyond the scope of this document.
+\hypertarget{simulation}{%
+\subsection{Simulation}\label{simulation}}
+
+For more complex functionality it is not always obvious what the expected output should be given the input. In these cases simulations are sometimes deployed, generating input given a specific statistical model, and establishing whether the functionality produces results in line with this known model. For example, in the \href{https://ohdsi.github.io/SelfControlledCaseSeries/}{SelfControlledCaseSeries} package simulations are used to verify that the method is able to detect and appropriately model temporal trends in simulated data.
+
+\hypertarget{summary-5}{%
+\section{Summary}\label{summary-5}}
+
+\BeginKnitrBlock{rmdsummary}
+\begin{itemize}
+\item
+  An observational study should be implemented as an automated script that executes the entire analysis, from data in the CDM to the results, to ensure reproducability and transparancy.
+\item
+  Custom study code should adhere to best programming practices, including abstraction, encapsulation, clear naming, and code reuse.
+\item
+  Custom study code can be validated using code review or double coding.
+\item
+  The Methods Library provided validated functionality that can be used in observational studies.
+\item
+  The Methods Library is valdated by using a software development process aimed at creating valid software, and by testing.
+\end{itemize}
+\EndKnitrBlock{rmdsummary}
 
 \hypertarget{MethodValidity}{%
 \chapter{Method Validity}\label{MethodValidity}}
@@ -7045,8 +7117,8 @@ This emphasizes the need for empirical evaluation and calibration: if no empiric
 
 Our evaluation of the designs in the Methods Library also shows that empirical calibration restores type 1 error and coverage to their nominal values, although often at the cost of increasing type 2 error and decreasing precision.
 
-\hypertarget{summary-5}{%
-\section{Summary}\label{summary-5}}
+\hypertarget{summary-6}{%
+\section{Summary}\label{summary-6}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
