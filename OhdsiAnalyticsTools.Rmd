@@ -6,7 +6,7 @@ OHDSI offers a wide range of open source tools to support the various data-analy
 
 In this chapter we first describe various ways in which we can choose to implement an analysis, and what strategies the analysis can employ. We then review the various OHDSI tools and how they fit the various use cases.
 
-## Analysis implementation
+## Analysis implementation {#analysisImplementation}
 
 Figure \@ref(fig:implementations) shows the various ways in which we can choose to implement a study against a database using the CDM. 
 
