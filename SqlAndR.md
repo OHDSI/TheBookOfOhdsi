@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.smvfw4lochildren ;"
+## [1] "SELECT * FROM temp_schema.jeeq6b9achildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -359,14 +359,10 @@ launchSqlRenderDeveloper()
 
 Which will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web[^sqlDeveloperUrl]. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/sqlDeveloper} 
-
-}
-
-\caption{The SqlDeveloper Shiny app.}(\#fig:sqlDeveloper)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
+<p class="caption">(\#fig:sqlDeveloper)The SqlDeveloper Shiny app.</p>
+</div>
 
 In the app you can enter OHDSI SQL, select the target dialect as well as provide values for the parameters that appear in your SQL, and the translation will automatically appear at the bottom.
 
@@ -672,14 +668,10 @@ QueryLibrary is a library of commonly-used SQL queries for the CDM. It is availa
 
 [^queryLibraryPackageUrl]: https://github.com/OHDSI/QueryLibrary
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/queryLibrary} 
-
-}
-
-\caption{QueryLibrary: a library of SQL queries against the CDM.}(\#fig:queryLibrary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SqlAndR/queryLibrary.png" alt="QueryLibrary: a library of SQL queries against the CDM." width="100%" />
+<p class="caption">(\#fig:queryLibrary)QueryLibrary: a library of SQL queries against the CDM.</p>
+</div>
 
 The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but is also a valuable resource for experienced users.
 
@@ -909,8 +901,7 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
   xlab("Age") +
   ylab("Incidence (per 1,000 patient weeks)")
 ```
-
-\begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
+<img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" />
 
 ### Clean up
 

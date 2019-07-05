@@ -45,9 +45,10 @@ In our paper [@reps2018], we propose a standardised framework for patient-level 
 
 Figure \@ref(fig:figure1), illustrates the prediction problem we address. Among a population at risk, we aim to predict which patients at a defined moment in time (t = 0) will experience some outcome during a time-at-risk. Prediction is done using only information about the patients in an observation window prior to that moment in time.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/Figure1} \caption{The prediction problem.}(\#fig:figure1)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/Figure1.png" alt="The prediction problem." width="100%" />
+<p class="caption">(\#fig:figure1)The prediction problem.</p>
+</div>
 
 As shown in Table \@ref(tab:plpDesign), to define a prediction problem we have to define t=0 by a target Cohort (T), the outcome we like to predict by an outcome cohort (O), and the time-at-risk (TAR). We define the standard prediction question as:
 
@@ -71,40 +72,45 @@ This conceptual framework works for all type of prediction problems, see [introd
 ## Creating Labelled Data {#extracted}
 The observational datasets we use in OHDSI consist of timestamped records of patient medical interactions. These are represented by tables containing anonymised patient details such as gender and year of birth in addition to tables containing date stamped medical records.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/patienttimeline} \caption{Observational data.}(\#fig:figuretheory1)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/patienttimeline.png" alt="Observational data." width="100%" />
+<p class="caption">(\#fig:figuretheory1)Observational data.</p>
+</div>
 
 Applying supervised learning techniques for prediction requires having covariate and label pairs for a sufficient number of patients.  The covariates (also referred to as features or independant variables) describe a patient.  Example covariates could be: the patient's gender, age and health state based on the presence or absense of medical conditions.  Many of these covariates are time dependant, for example age changes over time, as do some medical conditions.  The labels correspond to whether a patient has a outcome of interest during some time interval.  The label is also time dependant.
 
 To convert the observational data into labelled data consisting of covariate and label pairs for a set of patients, we need to specify a point in time for each patient that will be used as a pivot. Covariates can be constructed at that pivot point in time (using all records up to that point), and we can can determine whether a patient has the outcome of interest during some time interval relative to the pivot point in time (the time at risk).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/dataplot1} \caption{Create laelled data from observational data.}(\#fig:figuretheory2)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/dataplot1.png" alt="Create laelled data from observational data." width="100%" />
+<p class="caption">(\#fig:figuretheory2)Create laelled data from observational data.</p>
+</div>
 
 This will then provide us with labelled data.  The definition of the target cohort population is what we use to define this pivot point in time.  For example, if the target cohort was new users of drug A, then the pivot point in time is the date a patient first had drug A recorded in the database.  Alternatively, if the target cohort was diagnoses of cardiovascular disease, then the pivot point in time is the date a patient first has a record indicating cardiovascular disease is present.  Our prediction specification directly links to how the labelled data are constructed.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/dataplot2} \caption{Create laelled data from observational data.}(\#fig:figuretheory3)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/dataplot2.png" alt="Create laelled data from observational data." width="100%" />
+<p class="caption">(\#fig:figuretheory3)Create laelled data from observational data.</p>
+</div>
 
 ## Supervised learning {#supervised}
 The idea of supervised learning is to be able to generalise what is observed in the labelled data so that when a new patient's covariates are known but their label is unknown, we can predict their label. 
 
 If we consider the situation where we have two covariates, then we can represent each patient as a plot in two dimensional space.  The shape/color of a data points corresponds to the patient's label.  The idea of supervised learning is to generalise the what we see and fill in where there are no current data points.  A supervised learning model will try to partition the space via a decision boundary, as seen in Figure \ref{fig:figuretheory4} that aims to minimise the cases where the data point labels do not match the models prediction.  Different supervised learning techniques lead to different decision boundaries and there are often hyper-parameters that can impact the complexity of the decision boundary. 
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/learning} \caption{Decision boundary.}(\#fig:figuretheory4)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/learning.png" alt="Decision boundary." width="100%" />
+<p class="caption">(\#fig:figuretheory4)Decision boundary.</p>
+</div>
 
 In Figure Figure \ref{fig:figuretheory4} you can see three different decision boundaries.  The boundaries are used to infer the class of any new data point.  In figure Figure \ref{fig:figuretheory5} the decision boundaries are used to shade the 2 dimentional space into red regions and green regions.  If a new data point falls into the green shaded area then the model will predict 'no outcome', otherwise it will predict 'has outcome'.
 
 Ideally a decision boundary should partition the two classes with no error.  However, generlizability is an issue, as complex models can 'overfit' where they can correctly partition each data points in the labelled data by using very complex boundaries:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/noise} \caption{Overfitting issues.}(\#fig:figuretheory5)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/noise.png" alt="Overfitting issues." width="100%" />
+<p class="caption">(\#fig:figuretheory5)Overfitting issues.</p>
+</div>
 
 The issue here is that these boundaries may be fit too closely to the labelled data used to learn them and may not work for new data.  For example, noise causing incorrectly positioned data points can cause issues.  This is shown in Figure Figure \ref{fig:figuretheory5} where the decision boundary goes around a data point that was incorrectly positioned due to noise and this impacts predictions near this region.
 
@@ -152,15 +158,17 @@ Cross validation is useful when the data are limited.  A user needs to specify t
 
 Bootstrapping is useful when calculating confidence intervals.  In bootstrapping multiple sample sets are drawn with replacement from the whole labelled dataset to generate hold out sets, the unsampled patient data are used to develop the models and then evaluated on the sample sets.  This gives a range for each metric.  We currently do not use bootstrapping in the patient-level prediction framework.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/validationTypes} \caption{Types of internal valdiation.}(\#fig:figuretheoryval)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/validationTypes.png" alt="Types of internal valdiation." width="100%" />
+<p class="caption">(\#fig:figuretheoryval)Types of internal valdiation.</p>
+</div>
 
 External validation is when a model trained on one dataset is validated on a new dataset or set of patients.  This is important as it helps model developers understand which types of patients the model will transport to.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/externalValidation} \caption{Visulisation of external validation.}(\#fig:figuretheoryextval)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/externalValidation.png" alt="Visulisation of external validation." width="100%" />
+<p class="caption">(\#fig:figuretheoryextval)Visulisation of external validation.</p>
+</div>
 
 Temporal validation is a type of validation where a model is validated on data that were collected after the data used to develop the model.  This can help identify situations where they may be temporal shifts in the data that impact the transportability of the model across time.  Another type of validation, spatial validation, is location based where a model is developed on patients for some locations (perhaps certain hospitals or doctor surgeries) and validated on patients at a different location.
 
@@ -196,14 +204,10 @@ Note that these values can either decrease or increase if the threshold is lower
 
 Figure \@ref(fig:plpPrecisionRecall) shows the tradeoff between positive predictive value (precision) and sensitivity (recall).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/precisionRecall} 
-
-}
-
-\caption{Positive predictive value-sensitivy aka Precision-recall plot.}(\#fig:plpPrecisionRecall)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/precisionRecall.png" alt="Positive predictive value-sensitivy aka Precision-recall plot." width="80%" />
+<p class="caption">(\#fig:plpPrecisionRecall)Positive predictive value-sensitivy aka Precision-recall plot.</p>
+</div>
 
 ** Overal Performance **
 There are two main criteria used to assess the overal performance of a prediction model; discrimination and calibration.  
@@ -212,28 +216,26 @@ There are two main criteria used to assess the overal performance of a predictio
 
 Discrimination is the ability to assign a higher risk to patients who will experience the outcome during the time at risk. The Receiver Operating Characteristics (ROC) is determined by plotting 1 – specificity on the x-axis and sensitivity on the y-axis at all possible thresholds, see Figure \@ref(fig:figuretheoryroc). The dashed diagonal line in Figure \@ref(fig:figuretheoryroc) is the performance of a model that randomly assigns predictions. The area under the receiver operating characteristic curve (AUROC) gives an overall measure of discrimination where a value of 0.5 corresponds to randomly assigning the risk and a value of 1 means perfect discrimination.  In reality, most prediction models obtain AUCs between 0.6-0.8.   The AUROC is invariant to class imbalance, unlike accuracy, but for rare outcomes even a model with a high AUROC may not be practical.  When the outcome is rare another measure known as the area under the precision recall curve (AUPRC) is recommended. A model may obtain a high AUC when the outcome is rare but have a very low positive predictive value.  This would mean may false positives.  Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a low false positive rate may result in a non-practical model.  The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. 
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/discrimination} \caption{Example discrimination plots generated by the patient-level prediction framework.}(\#fig:figuretheoryroc)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/discrimination.png" alt="Example discrimination plots generated by the patient-level prediction framework." width="100%" />
+<p class="caption">(\#fig:figuretheoryroc)Example discrimination plots generated by the patient-level prediction framework.</p>
+</div>
 
 The AUROC provides a way to determine how different the predicted risk distributions are between the patients who experience the outcome during the time at risk and those who do not. If the AUROC is high, then the distributions will be mostly disjointed, whereas when there is a lot of overlap, the AUROC will be closer to 0.5, see Figure \@ref(fig:figuretheoryroctheory).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/roctheory} \caption{How the ROC plots are linked to discrimination.}(\#fig:figuretheoryroctheory)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/roctheory.png" alt="How the ROC plots are linked to discrimination." width="100%" />
+<p class="caption">(\#fig:figuretheoryroctheory)How the ROC plots are linked to discrimination.</p>
+</div>
 
 *Preference distribution*
 
 The preference distribution plot (Figure \@ref(fig:plpPreference)) shows the preference score distributions for people in the test set with the outcome (red) without the outcome (blue).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/preferencePDF} 
-
-}
-
-\caption{Preference distribution plot.}(\#fig:plpPreference)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/preferencePDF.png" alt="Preference distribution plot." width="90%" />
+<p class="caption">(\#fig:plpPreference)Preference distribution plot.</p>
+</div>
 
 *Predicted probability distribution*
 
@@ -241,14 +243,10 @@ The prediction distribution box plot shows the predicted risks of the people in 
 
 The box plots in Figure \@ref(fig:plpPredProb) show that the predicted probability of the outcome is indeed higher for those with the outcome but there is also overlap between the two distribution which lead to an imperfect discrimination.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/PatientLevelPrediction/predictionDistribution} 
-
-}
-
-\caption{Predicted probability distribution.}(\#fig:plpPredProb)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/predictionDistribution.png" alt="Predicted probability distribution." width="90%" />
+<p class="caption">(\#fig:plpPredProb)Predicted probability distribution.</p>
+</div>
 
 
 ** Calibration **
@@ -257,9 +255,10 @@ Calibration is the ability of the model to assign a correct risk.  For example, 
 
 AN example calibration plot generated by the Patient-level prediction package is shown in Figure \@ref(fig:figuretheorycal). The diagonal dashed line thus indicates a perfectly calibrated model. The ten (or fewer) dots represent the mean predicted values for each quantile plotted against the observed fraction of people in that quantile who had the outcome (observed fraction). The straight black line is the linear regression using these 10 plotted quantile mean predicted vs observed fraction points. The straight vertical lines represented the 95% lower and upper confidence intervals of the slope of the fitted line.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/theory/calibration} \caption{Example calibration plots generated by the patient-level prediction framework.}(\#fig:figuretheorycal)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/theory/calibration.png" alt="Example calibration plots generated by the patient-level prediction framework." width="100%" />
+<p class="caption">(\#fig:figuretheorycal)Example calibration plots generated by the patient-level prediction framework.</p>
+</div>
 
 *Smooth Calibration*
 
@@ -267,27 +266,19 @@ Similar to the traditional calibration shown above the Smooth Calibration plot s
 
 Figure \@ref(fig:plpSmoothCal) shows an example that better demonstrates the impact of using a smooth calibration plot. The default line fit would not highlight the miss-calibration at the lower predicted probability levels that well.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/smoothCalibration} 
-
-}
-
-\caption{Smooth calibration plot.}(\#fig:plpSmoothCal)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/smoothCalibration.jpeg" alt="Smooth calibration plot." width="100%" />
+<p class="caption">(\#fig:plpSmoothCal)Smooth calibration plot.</p>
+</div>
 
 
 *Demographic summary*
 It can also be useful to determine how well calibrated a model is for different demographics (age and gender groups).  This can be calculated by partitioning the patients into groups of similar age and gender and comparing the mean predicted risk within the group with the observed fraction of the patients who experience the outcome during the time at risk.  This can identify demographic groups where the model does not perform well when applied. Figure \@ref(fig:plpDemoSummary) shows for females and males the expected and observed risk in different age groups together with a confidence area. This example shows that the model is well calibrated across gender and age groups.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/demographicSummary} 
-
-}
-
-\caption{Precision-recall plot.}(\#fig:plpDemoSummary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/demographicSummary.png" alt="Precision-recall plot." width="100%" />
+<p class="caption">(\#fig:plpDemoSummary)Precision-recall plot.</p>
+</div>
 
 ### Inspecting the model
 
@@ -297,27 +288,19 @@ The test-train similarity is assessed by plotting the mean covariate values in t
 
 The results in Figure \@ref(fig:plpTestTrain) show that the mean values of the covariates in both the test and train sets are comparable as the points are on the diagonal.  If some of the points were off the diagonal then this would tell us the test and train datasets differed.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/generalizability} 
-
-}
-
-\caption{Predicted probability distribution.}(\#fig:plpTestTrain)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/generalizability.png" alt="Predicted probability distribution." width="100%" />
+<p class="caption">(\#fig:plpTestTrain)Predicted probability distribution.</p>
+</div>
 
 *Variable scatter plot*
 
 The variable scatter plot shows the mean covariate value for the people with the outcome against the mean covariate value for the people without the outcome. The color of the dots corresponds to the inclusion (green) or exclusion in the model (blue), respectively. Figure \@ref(fig:plpVarScatter) shows that the mean of most of the covariates is higher for subjects with the outcome compared to those without.  This would indicate that the patients with the outcome are generally sicker.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/PatientLevelPrediction/variableScatterplot} 
-
-}
-
-\caption{Predicted probability distribution.}(\#fig:plpVarScatter)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/variableScatterplot.png" alt="Predicted probability distribution." width="100%" />
+<p class="caption">(\#fig:plpVarScatter)Predicted probability distribution.</p>
+</div>
 
 
 
@@ -411,21 +394,24 @@ The interface for designing a prediction study can be opened by clicking on the 
 
 Once in the 'Prediction' view you should see Figure \@ref(fig:figure2b)
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/prediction_page} \caption{The Atlas prediction page.}(\#fig:figure2b)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/prediction_page.png" alt="The Atlas prediction page." width="100%" />
+<p class="caption">(\#fig:figure2b)The Atlas prediction page.</p>
+</div>
 
 You can create a new study by clicking on the blue 'New Patient Level Prediction'' button or by clicking on a row in the table with the name of the study you want to open.  Once inside the prediction study (either by clicking the blue 'New Patient Level Prediction'' button or an existing row in the table) you should see a specification options as shown in \@ref(fig:specification1)-\@ref(fig:specification2) with the top stating 'Patient Level Prediction ' with a number such as '#46', as highlighed by the red A.  This tells us the cohort definition id is 46.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/specification_p1} \caption{The atlas prediction specification part 1.}(\#fig:specification1)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/specification_p1.png" alt="The atlas prediction specification part 1." width="100%" />
+<p class="caption">(\#fig:specification1)The atlas prediction specification part 1.</p>
+</div>
 
 To the right of the 'Patient Level Prediction #46' there are buttons to save (green button), exit (blue button with x), copy (blue button with double paper) and delete (red button with bin) the current study highlighted by C-F respectively in Figure \@ref(fig:specification1).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/specification_p2} \caption{The atlas prediction specification part 2}(\#fig:specification2)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/specification_p2.png" alt="The atlas prediction specification part 2" width="100%" />
+<p class="caption">(\#fig:specification2)The atlas prediction specification part 2</p>
+</div>
 
 Below these is a white text form where you can name the study (B in Figure \@ref(fig:specification1)). The 'Specification' tab (G in Figure \@ref(fig:specification1)) contains all the settings a user needs to define for the prediction study.  The first part is the 'Prediction Problem Settings' (J in Figure \@ref(fig:specification1)), this is where the user defines the Target cohorts and Outcome cohorts for the prediction analyses.  These cohorts need to be created in atlas using the 'Cohort Definition' view and can then be imported into the Prediction study. Instantiating cohorts is described in Chapter \@ref(Cohorts). 
 
@@ -469,15 +455,17 @@ To select a target population cohort you need to have previously defined it atla
 
 This will open up a table of cohorts that have been created in atlas, see Figure \@ref(fig:figure2k).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/target_pop_cohort_table} \caption{The Training Settings area}(\#fig:figure2k)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/target_pop_cohort_table.png" alt="The Training Settings area" width="100%" />
+<p class="caption">(\#fig:figure2k)The Training Settings area</p>
+</div>
 
 You can simple click on any row in the table to add that cohort.  If you have many cohorts, using the filter option on the top right may help (just make sure to remember the cohort name).  We filtered the book of ohdsi cohorts by adding 'book' to the filter as the cohort names all included the work 'book', see Figure \@ref(fig:figure2l).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/target_pop_cohort_filter} \caption{The Training Settings area}(\#fig:figure2l)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/target_pop_cohort_filter.png" alt="The Training Settings area" width="100%" />
+<p class="caption">(\#fig:figure2l)The Training Settings area</p>
+</div>
 
 By clicking on the row '[BookOfOHDSI] New users of ACE inhibitors as first-line monotherapy for hypertension' this is now added as a target population cohort in the study. This process can be repeated to add more target population cohorts.  Adding outcome cohorts is a similar process, but requires click on the blue '+ Add Outcome Cohort' button (M in Figure \@ref(fig:specification1)).
 
@@ -493,28 +481,32 @@ You can pick one or more supervised learning models to investigate using for mod
 
 You can select the supervised learning model you want to include in the study by clicking on the name in the dropdown menu.  This will then take you to a view for that specific model and the hyper-parameters you can include into a grid search.  For example, if I click on 'Lasso Logistic Regression' the following view shown in  Figure \@ref(fig:figureAS2) will appear.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/analysis_lasso_lr_view} \caption{The lasso logistic regression view}(\#fig:figureAS2)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/analysis_lasso_lr_view.png" alt="The lasso logistic regression view" width="100%" />
+<p class="caption">(\#fig:figureAS2)The lasso logistic regression view</p>
+</div>
 
 As the Lasso Logistic Regression model only has one hyper-parameter, we do an automatic search for the optimal value rather than a grid search so a user just needs to specify the starting value, see Figure \@ref(fig:figureAS2).  Once you are happy with the hyper-parameter settings you can return to the main settings view by clicking on the grey '<' button.
 
 You will now see your chosen supervised learning model added tosection N in Figure \@ref(fig:specification1). To edit the model you added, click on the corresponding row and it will take you back to the model view where you can edit the hyper-parameter settings.
 
 To add a gradient boosting machine model we can follow the same process and click on 'Gradient Boosting Machine' in the drop down menu.  This will take us into the gradient boosting machine view:
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/analysis_gbm_view} \caption{The gradient boosting machine view}(\#fig:figureAS5)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/analysis_gbm_view.png" alt="The gradient boosting machine view" width="100%" />
+<p class="caption">(\#fig:figureAS5)The gradient boosting machine view</p>
+</div>
 
 The gradient boosting machine model has four hyper-parameters you can define a grid search for (boosting learn rate, maximum number of interactions, minimum number of trees and number of trees to build).  Initially the default values are shown, but a user can add a new value by typing it into the text field at the bottom of the hyper-parameter box and clicking on the blue 'Add' button.  
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/analysis_adding_hyper} \caption{Adding a hyper-parameter value into the grid search}(\#fig:figureAS6)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/analysis_adding_hyper.png" alt="Adding a hyper-parameter value into the grid search" width="100%" />
+<p class="caption">(\#fig:figureAS6)Adding a hyper-parameter value into the grid search</p>
+</div>
 
 It is also possible to remove a hyper-parameter value from the grid search by clicking on 'Remove' for the corresponding row:
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/analysis_removing_hyper} \caption{Removing a hyper-parameter value into the grid search}(\#fig:figureAS7)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/analysis_removing_hyper.png" alt="Removing a hyper-parameter value into the grid search" width="100%" />
+<p class="caption">(\#fig:figureAS7)Removing a hyper-parameter value into the grid search</p>
+</div>
 
 Once happy with the hyper-parameters, click on the grey '<' button on the top left to add the model into the prediction study.  You will now see you model and hyper-parameter settings in the 'Model Setttings' table.  Repeat the process to include all the supervised learning models you want to investigate.
 
@@ -523,13 +515,15 @@ Once happy with the hyper-parameters, click on the grey '<' button on the top le
 We have defined a set of *standard* covariates that can be extracted from the observational data in the OMOP CDM format.  In the covariate settings view, it is possible to select which of the standard covariates to include.  It is possible to add many different types of covariate settings.
 
 To add a covariate setting into the study, click on the blue '+ Add Covariate Settings' button (P in Figure \@ref(fig:specification2)). This will take you into the covariate setting view:
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/covariates_p1} \caption{The covariate settings view part 1}(\#fig:covariate1)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/covariates_p1.png" alt="The covariate settings view part 1" width="100%" />
+<p class="caption">(\#fig:covariate1)The covariate settings view part 1</p>
+</div>
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/covariates_p2} \caption{The covariate settings view part 2}(\#fig:covariate2)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/covariates_p2.png" alt="The covariate settings view part 2" width="100%" />
+<p class="caption">(\#fig:covariate2)The covariate settings view part 2</p>
+</div>
 
 The *standard* OHDSI covariates includes indicator covariates corresponding to any concept id that is recorded in the database.  The indicator covariates are binary and indicate whether a patient had a concept id recorded during some time interval relative to the target cohort start date.  The user can specify up to three time intervals, longterm, mediumterm and shortterm in addition to using anytime prior.  There is also the option of whether to include the target cohort start date.
 
@@ -622,9 +616,10 @@ The population settings is where addition inclusion criteria can be applied to t
 
 This will open up the population setting view containing various setting to define, see Figure \@ref(fig:figureAS19).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/analysis_population_settings} \caption{The population setting options}(\#fig:figureAS19)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/analysis_population_settings.png" alt="The population setting options" width="100%" />
+<p class="caption">(\#fig:figureAS19)The population setting options</p>
+</div>
 
 The first set of options, A and B, enable the user to specify the time-at-risk period.  This is a time interval relative to the target cohort dates where we look to see whether the outcome of interest occurs.  If a patient has the outcome during the time at risk period then we will class them as 'outcome', otherwise they are classed as 'non-outcome'.
 
@@ -634,9 +629,10 @@ The second option labelled with a red B is: "Define the time-at-risk window end:
 
 See Figure \@ref(fig:figureAS20) for an illustration of how these settings define the time-at-risk period:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/analysis_population_plot} \caption{How the population setting options define the time-at-risk}(\#fig:figureAS20)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/analysis_population_plot.png" alt="How the population setting options define the time-at-risk" width="100%" />
+<p class="caption">(\#fig:figureAS20)How the population setting options define the time-at-risk</p>
+</div>
 
 The next option, marked by the red C, is "Minimum lookback period applied to target cohort:". This is where you can specify the minimum baseline period, specifically the minimum number of days prior to the cohort start date that a patient has been continuously observed.  The default is 365 days.  Expanding the minimum lookback will give a more complete picture of a patient (as they must have been observed for longer) but will filter many patienst (who do not have the minimum number of days prior observation).
 
@@ -681,15 +677,17 @@ The Utilities tab (H in Figure \@ref(fig:specification1)) is where a user can re
 
 If you have not completed all pre-requisites needed to run the study, you will see the same as Figure \@ref(fig:insuf).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/utilities_review_insuf} \caption{Reviewing when insufficient design}(\#fig:insuf)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/utilities_review_insuf.png" alt="Reviewing when insufficient design" width="100%" />
+<p class="caption">(\#fig:insuf)Reviewing when insufficient design</p>
+</div>
 
 Assuming your study contains all necessary components, you will see Figure \@ref(fig:utilities), showing the tabs Full Analysis List, Prediction Problem Settings, and Analysis Settings.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/utilities_p1} \caption{The utilities tab reviewing valid study}(\#fig:utilities)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/utilities_p1.png" alt="The utilities tab reviewing valid study" width="100%" />
+<p class="caption">(\#fig:utilities)The utilities tab reviewing valid study</p>
+</div>
 
 Clicking on the Prediction Problem Settings (see Y in Figure \@ref(fig:utilities)) will show all the combinations of the Target Cohort and Outcome Cohort names specfied in the analysis.
 
@@ -699,9 +697,10 @@ Finally, clicking on the Analysis Settings tab (see Z in Figure \@ref(fig:utilit
 
 To export a study, click on the Export tab under utilities (see V in Figure \@ref(fig:utilities)).  ATLAS will produce JSON file that can be directly copied and pasted into a file that contains all of the data (study name, cohort definitions, models selected, covariates, settings, etc.) needed to run the study.  This is displayed in Figure \@ref(fig:export).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/utilities_export} \caption{Exporting a study design}(\#fig:export)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/utilities_export.png" alt="Exporting a study design" width="100%" />
+<p class="caption">(\#fig:export)Exporting a study design</p>
+</div>
 
 To import a study, first go back to the main ATLAS menu and click on Prediction.  Click on the New Patient Level Prediction button, give your study a name, and Save.  Next, click on the Utilities tab, then the Import tab (see U in Figure \@ref(fig:utilities)). Paste the contents of a  Patient Level Prediction JSON file into this window, then click on the Import button below the other tab buttons.
 
@@ -711,9 +710,10 @@ The Download Study button is available at the bottom of the Utilities screen (se
 
 ATLAS will generate an R package for the study, see Figure \@ref(fig:figureU9).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/utilities_downloading} \caption{The downloaded study design R package}(\#fig:figureU9)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/utilities_downloading.png" alt="The downloaded study design R package" width="100%" />
+<p class="caption">(\#fig:figureU9)The downloaded study design R package</p>
+</div>
 
 
 ### Building Atlas created prediction study R package
@@ -726,48 +726,55 @@ To run the atlas generated prediction R package study requires having R studio (
 
 Atlas generates a zipped directory containing the R package.  This zipped directory needs to be extracted. Once extracted the directory will look like:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/download_folder} \caption{The directory of study design R package}(\#fig:figureU10)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/download_folder.png" alt="The directory of study design R package" width="100%" />
+<p class="caption">(\#fig:figureU10)The directory of study design R package</p>
+</div>
 
 **Opening package project in R**
 
 The easiest way to open the atlas created package in R is to double click on the project file:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/download_folder_project} \caption{Opening the study design R package}(\#fig:figureU11)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/download_folder_project.png" alt="Opening the study design R package" width="100%" />
+<p class="caption">(\#fig:figureU11)Opening the study design R package</p>
+</div>
 
 
 This will then open a new R studio session:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/rstudio_start} \caption{Rstudio open with the study design project}(\#fig:figureU12)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/rstudio_start.png" alt="Rstudio open with the study design project" width="100%" />
+<p class="caption">(\#fig:figureU12)Rstudio open with the study design project</p>
+</div>
 
 **Building project**
 
 Once R studio has opened the project, you can then build the package by clicking on the ‘build’ option in the top right hand side:
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/building} \caption{Building the R project into a local R library}(\#fig:figureU13)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/building.png" alt="Building the R project into a local R library" width="100%" />
+<p class="caption">(\#fig:figureU13)Building the R project into a local R library</p>
+</div>
 
 If you find a message like (but with the text in red matching the name you called your study):
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/buildComplete} \caption{Building the R project completed}(\#fig:figureU14)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/buildComplete.png" alt="Building the R project completed" width="100%" />
+<p class="caption">(\#fig:figureU14)Building the R project completed</p>
+</div>
 
 Your package has now been created and will be available to run.  If you have a message with an error then there was an issue with building the package and the package did not get built.  Common issues causing the build to fail are missing dependencies, to find out the R packages required for your built, open the ‘DESCRIPTION’ file in the main directory:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/download_folder_desc} \caption{Finding the DECSRIPTION file}(\#fig:figureU15)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/download_folder_desc.png" alt="Finding the DECSRIPTION file" width="100%" />
+<p class="caption">(\#fig:figureU15)Finding the DECSRIPTION file</p>
+</div>
 
 This will open up in R studio and show what R packages are required (the packages in the Imports section)
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/description} \caption{The DECSRIPTION file content}(\#fig:figureU16)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/description.png" alt="The DECSRIPTION file content" width="100%" />
+<p class="caption">(\#fig:figureU16)The DECSRIPTION file content</p>
+</div>
 
 If you do not have any of the packages listed in ‘Imports:’ then you will need to install them before building the atlas generated package.
 
@@ -776,23 +783,26 @@ If you do not have any of the packages listed in ‘Imports:’ then you will ne
 
 The key file in the atlas generated package directory is the one that contains code for running the study, the CodeToRun.R file found in the extras directory:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/download_folder_extras} \caption{The CodeToRun.R file is in the extras folder}(\#fig:figureU17)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/download_folder_extras.png" alt="The CodeToRun.R file is in the extras folder" width="100%" />
+<p class="caption">(\#fig:figureU17)The CodeToRun.R file is in the extras folder</p>
+</div>
 
 We recommend opening the file CodeToRun.R
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/code_to_run} \caption{The CodeToRun.R file}(\#fig:figureU18)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/code_to_run.png" alt="The CodeToRun.R file" width="100%" />
+<p class="caption">(\#fig:figureU18)The CodeToRun.R file</p>
+</div>
 
 **CodeToRun.R Settings**
 
 The final step to running the study is to connect to the database through R and specify where the results should be saved.,
 
 The CodeToRun.R file looks like:
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/code_to_run_open} \caption{The CodeToRun.R default setting}(\#fig:figureU19)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/code_to_run_open.png" alt="The CodeToRun.R default setting" width="100%" />
+<p class="caption">(\#fig:figureU19)The CodeToRun.R default setting</p>
+</div>
 
 The inputs for the CodeToRun file are:
 
@@ -809,9 +819,10 @@ The inputs for the CodeToRun file are:
 - cohortTable: the name of the cohort table (if using atlas cohorts then this will be 'cohort')
 
 Once the settings are filled out, the final step is to pick what parts of the study to execute:
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/atlasImplementation/execute} \caption{Executing the study}(\#fig:figureU20)
-\end{figure}
+<div class="figure">
+<img src="images/PatientLevelPrediction/atlasImplementation/execute.png" alt="Executing the study" width="100%" />
+<p class="caption">(\#fig:figureU20)Executing the study</p>
+</div>
 
 The following options specify:
 
@@ -1010,8 +1021,7 @@ gbmResults <- loadPlpResult("gbmResults")
 
 Once we execute the study, the `runPlp` function returns the trained model and the evaluation of the model on the train/test sets. You can interactively view the results by running: `viewPlp(runPlp = gbmResults)`. This will open a Shiny App in your browser in which you can view all performance measures created by the framework, including interactive plots, as shown in Figure \@ref(fig:shinysummary).
 
-
-\includegraphics[width=1\linewidth]{images/PatientLevelPrediction/shinysummary} 
+<img src="images/PatientLevelPrediction/shinysummary.png" width="100%" />
 
 To generate and save all the evaluation plots to a folder run the following code:
 
@@ -1109,79 +1119,51 @@ viewPlp(plpResult)
 
 The shiny launches with a summary of the performance metrics on the test and train sets, see Figure \@ref(fig:shinySum).  The results show that the AUROC on the train set was 0.78 and this dropped to 0.74 on the test set.  The test set AUC is the more accurrate measure.  Overal, the model appears to be able to discriminate those who will develop AMI in new users of ACE inhibitors but it slightly over fit as the performance on the train set is higher than the test set.  The ROC plot is presented in Figure \@ref(fig:shinyROC).
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/singleShiny/singleShinySummary.png" alt="The starting summary page of the viewPlp() shiny app" width="80%" />
+<p class="caption">(\#fig:shinySum)The starting summary page of the viewPlp() shiny app</p>
+</div>
 
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/singleShiny/singleShinySummary} 
-
-}
-
-\caption{The starting summary page of the viewPlp() shiny app}(\#fig:shinySum)
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/singleShiny/singleShinyRoc} 
-
-}
-
-\caption{The ROC plot for predicting AMI within a year in new users of ACE inhibitors}(\#fig:shinyROC)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/singleShiny/singleShinyRoc.png" alt="The ROC plot for predicting AMI within a year in new users of ACE inhibitors" width="80%" />
+<p class="caption">(\#fig:shinyROC)The ROC plot for predicting AMI within a year in new users of ACE inhibitors</p>
+</div>
 
 The calibration plot in Figure \@ref(fig:shinyCal) shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line.  The demographic calibration plot in Figure \@ref(fig:shinyDemo) however shows that the model is not well calibrated for the younger patients, as the blue line (the predicted risk) differs from the red line (the observed risk) for those aged below 40.  This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/singleShiny/singleShinyCal.png" alt="The calibration of the model" width="80%" />
+<p class="caption">(\#fig:shinyCal)The calibration of the model</p>
+</div>
 
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/singleShiny/singleShinyCal} 
-
-}
-
-\caption{The calibration of the model}(\#fig:shinyCal)
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/singleShiny/singleShinyDemo} 
-
-}
-
-\caption{The demographic calibration of the model}(\#fig:shinyDemo)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/singleShiny/singleShinyDemo.png" alt="The demographic calibration of the model" width="80%" />
+<p class="caption">(\#fig:shinyDemo)The demographic calibration of the model</p>
+</div>
 
 Finally, the attrition plot shows the loss of patients from the labelled data based on inclusion/exclusion criteria, see Figure \@ref(fig:shinyAtt).  The plot shows that we lost a large portion of the target population due to them not being observed for the whole time at risk (1 year follow up).  Interestingly, not as many patients with the outcome lacked the complete time at risk.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/singleShiny/singleShinyAtt} 
-
-}
-
-\caption{The attrition plot for the prediction problem}(\#fig:shinyAtt)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/singleShiny/singleShinyAtt.png" alt="The attrition plot for the prediction problem" width="80%" />
+<p class="caption">(\#fig:shinyAtt)The attrition plot for the prediction problem</p>
+</div>
 
 
 ## Exploring the Atlas PLP Shiny App
 To view the atlas generated analysis results via an interactive shiny app, run:
 `PatientLevelPrediction::viewMultiplePlp(outputFolder)` where *outputFolder* is the directory path containing the analysis results (e.g., 'C:/atlasResults/Example'), it will look like:
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyResults} 
-
-}
-
-\caption{The directory where the atlas models and results were saved}(\#fig:shinyResults)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyResults.png" alt="The directory where the atlas models and results were saved" width="80%" />
+<p class="caption">(\#fig:shinyResults)The directory where the atlas models and results were saved</p>
+</div>
 
 The interactive shiny app will start at the summary page:
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinySummary} 
-
-}
-
-\caption{The shiny summary page containing key hold out set performance metrics for each model trained}(\#fig:shinySummary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinySummary.png" alt="The shiny summary page containing key hold out set performance metrics for each model trained" width="80%" />
+<p class="caption">(\#fig:shinySummary)The shiny summary page containing key hold out set performance metrics for each model trained</p>
+</div>
 
 This summary page table contains:
 
@@ -1190,165 +1172,105 @@ This summary page table contains:
 - discrimination metrics: AUC, AUPRC
 
 To the left of the table is the filter option:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyFilter} 
-
-}
-
-\caption{Demonstration of the filter option}(\#fig:shinyFilter)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyFilter.png" alt="Demonstration of the filter option" width="80%" />
+<p class="caption">(\#fig:shinyFilter)Demonstration of the filter option</p>
+</div>
 
 Here a user can specify the development/valdiation databases to focus on, the type of model, the time at risk settings of interest and/or the cohorts of interest.  For example, to pick the models corresponding to the target population "New users of ACE inhibitors as first line monotherapy for hypertension", select this in the *Target Cohort* option.
 
 To explore a model click on the corresponding row, a selected row will be highlighted.  To unselect simply click on the selected row again or select a new row.
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinySelect} 
-
-}
-
-\caption{The highlighted row shows a selected model.  We can then use other tab to explore the settings and results for the selected model}(\#fig:shinySelect)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinySelect.png" alt="The highlighted row shows a selected model.  We can then use other tab to explore the settings and results for the selected model" width="80%" />
+<p class="caption">(\#fig:shinySelect)The highlighted row shows a selected model.  We can then use other tab to explore the settings and results for the selected model</p>
+</div>
 
 With a row selected, you can now explore the model settings used when developing the model by clicking on the *Model Settings* tab:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyModel} 
-
-}
-
-\caption{To view the model settings used when developing the model.}(\#fig:shinyModel)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyModel.png" alt="To view the model settings used when developing the model." width="80%" />
+<p class="caption">(\#fig:shinyModel)To view the model settings used when developing the model.</p>
+</div>
 
 To explore the population settings, click on the *Population Settings* tab to display the settings used when developing the model:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyPopSet} 
-
-}
-
-\caption{To view the model settings used when developing the model.}(\#fig:shinyPopSet)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyPopSet.png" alt="To view the model settings used when developing the model." width="80%" />
+<p class="caption">(\#fig:shinyPopSet)To view the model settings used when developing the model.</p>
+</div>
 
 Simialrly, to explore the covariates settings, click on the *Covariate Settings* tab to display which covariates were used as candidate covariates in the model:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyCovSet} 
-
-}
-
-\caption{To view the covariate settings used when developing the model.}(\#fig:shinyCovSet)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyCovSet.png" alt="To view the covariate settings used when developing the model." width="80%" />
+<p class="caption">(\#fig:shinyCovSet)To view the covariate settings used when developing the model.</p>
+</div>
 
 The row selection also works for displaying the model performance.  To view the performance you need to select 'Performance' from the left menu:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyBar} 
-
-}
-
-\caption{The shiny option bar for navigating around the interface.}(\#fig:shinyBar)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyBar.png" alt="The shiny option bar for navigating around the interface." width="80%" />
+<p class="caption">(\#fig:shinyBar)The shiny option bar for navigating around the interface.</p>
+</div>
 
 By clicking the 'Performance' option from the menu you will be taken to a threshold performance summary:
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyPerformanceSum} 
-
-}
-
-\caption{The summary performance measures at a set threshold.}(\#fig:shinyPerformanceSum)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyPerformanceSum.png" alt="The summary performance measures at a set threshold." width="80%" />
+<p class="caption">(\#fig:shinyPerformanceSum)The summary performance measures at a set threshold.</p>
+</div>
 
 This summary view shows the selected prediction question in the standard format, a threshold selector and a dashboard containing key threshold based metrics such as positive predictive value (PPV), negative predictive value (NPV), sensitivity and specificity.  See Section ... for more details about these measurements.  In Figure \@ref(fig:shinyPerformanceSum) we see the selected prediction model is: "within new users of ACE inhibitors as first line monotherapy for hypertension predict who will developed acute myocardial infarction during 1 day after cohort start and 365 days after cohort start". At a threshold of 0.00482 the sensitivity is 83.4% (83.4% of patients with the acute MI in the following year have a risk greater than or equal to 0.00482) and the PPV is 1.2% (1.2% of patients with a risk greater than or equal to 0.00482 have an acute MI in the following year).  As the incidence of the acute MI within the year is 0.741%, identifying patients with a risk greater than or equal to 0.00482 would find a subgroup of patients that have nearly double the risk of the population average risk. 
 
 You can adjust the threshold by moving the dot in the *Input* box:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyPerformanceThres} 
-
-}
-
-\caption{Moving this changes the threshold and the values in the Dashboard will update.}(\#fig:shinyPerformanceThres)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyPerformanceThres.png" alt="Moving this changes the threshold and the values in the Dashboard will update." width="80%" />
+<p class="caption">(\#fig:shinyPerformanceThres)Moving this changes the threshold and the values in the Dashboard will update.</p>
+</div>
 
 To look at the overal discrimination ability of the model click on the 'Discrimination' tab, this then takes you to a view with the ROC plot, PR plot, and distribution plots (the line on the plots corresponds to the selected threshold point):
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyPerformanceDisc} 
-
-}
-
-\caption{The ROC and PR plots used to access the overal discrimination ability of the model.}(\#fig:shinyPerformanceDisc)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyPerformanceDisc.png" alt="The ROC and PR plots used to access the overal discrimination ability of the model." width="80%" />
+<p class="caption">(\#fig:shinyPerformanceDisc)The ROC and PR plots used to access the overal discrimination ability of the model.</p>
+</div>
 
 We see in Figure \@ref(fig:shinyPerformanceDisc) that the ROC plot shows the model was able to discriminate between those who will have the acute MI within the year and those who will not.  However, the performance looks less impressive when we see the PR plot, as the low incidence of the acute MI means there is a high false positive rate.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyPerformanceDist} 
-
-}
-
-\caption{The predicted risk distribtion for those with and without the outcome.  The more these overlap the worse the discrimination}(\#fig:shinyPerformanceDist)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyPerformanceDist.png" alt="The predicted risk distribtion for those with and without the outcome.  The more these overlap the worse the discrimination" width="80%" />
+<p class="caption">(\#fig:shinyPerformanceDist)The predicted risk distribtion for those with and without the outcome.  The more these overlap the worse the discrimination</p>
+</div>
 
 
 Finally, you can also inspect the calibration of the model by clicking on the 'Calibration' tab.  This displays the calibration plot and the demographic calibration:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyPerformanceCal} 
-
-}
-
-\caption{The risk stratified calibration and demographic calibration}(\#fig:shinyPerformanceCal)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyPerformanceCal.png" alt="The risk stratified calibration and demographic calibration" width="80%" />
+<p class="caption">(\#fig:shinyPerformanceCal)The risk stratified calibration and demographic calibration</p>
+</div>
 
 Figure \@ref(fig:shinyPerformanceCal) shows the average predicted risk appears to match the observed fraction who experienced the acute MI within a year, so the model is well calibrated.  Interestingly, the demographic calibration shows that the blue line is higher than the red line for young patients, so we are predicting a higher risk for young age groups.  Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk.  This may prompt us to develop seperate models for the younger or older patients.
 
 To inspect the final model, select the "Model" option from the left hand menu. This will open a view containing plots for each variable in the model and a table summarising all the candidate covariates.  The variable plots are seperated into binary variables and continuous variables.  The x-axis is the prevalance/mean in patients without the outcome and the y-axis is the prevalance/mean in patients with the outcome.  Therefore, any variable's dot falling above the diagonal is more common in patients with the outcome and any variable's dot falling below the diagonal is less common in patients with the outcome:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyModelPlots} 
-
-}
-
-\caption{Each dot corresponds to a varible included in the model.}(\#fig:shinyModelPlots)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyModelPlots.png" alt="Each dot corresponds to a varible included in the model." width="80%" />
+<p class="caption">(\#fig:shinyModelPlots)Each dot corresponds to a varible included in the model.</p>
+</div>
 
 The table below displays the Name, Value (coefficient if using a glm or variable importance otherwise) all the candidate covariates, Outcome mean (the mean value for those who have the outcome) and non-outcome mean (the mean value for those who do not have the outcome):
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyModelTable} 
-
-}
-
-\caption{Each dot corresponds to a varible included in the model.}(\#fig:shinyModelTable)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyModelTable.png" alt="Each dot corresponds to a varible included in the model." width="80%" />
+<p class="caption">(\#fig:shinyModelTable)Each dot corresponds to a varible included in the model.</p>
+</div>
 
 You can click on the columns headers to order by the chosen column.  For example, to order by Value, click on the 'Value' heading.
 
 The shiny interface also enables you to view the model development and evaluation log file.  Click on 'Log' in the left hand option bar:
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyLog} 
-
-}
-
-\caption{Example log display.}(\#fig:shinyLog)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyLog.png" alt="Example log display." width="80%" />
+<p class="caption">(\#fig:shinyLog)Example log display.</p>
+</div>
 
 Finally, for instructions on accessing a youtube video demonstrating how to use the interactive shiny result viewer click on "Help" in the left hand option bar: 
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/PatientLevelPrediction/shiny/shinyHelp} 
-
-}
-
-\caption{Instructions for viewing a demo video.}(\#fig:shinyHelp)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/PatientLevelPrediction/shiny/shinyHelp.png" alt="Instructions for viewing a demo video." width="80%" />
+<p class="caption">(\#fig:shinyHelp)Instructions for viewing a demo video.</p>
+</div>
 
 \newpage
 

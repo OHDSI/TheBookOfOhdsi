@@ -126,10 +126,15 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-07-04}
+    \date{2019-07-05}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
+
+\usepackage{makeidx}
+\makeindex
+\usepackage[nottoc]{tocbibind}
+
 \makeatletter
 \def\thm@space@setup{%
   \thm@preskip=8pt plus 2pt minus 4pt
@@ -3191,7 +3196,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.cowxc37kchildren ;"
+## [1] "SELECT * FROM temp_schema.o4sr8zjqchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on
@@ -4192,12 +4197,12 @@ consider two different estimation tasks:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Direct effect estimation}: estimating the effect of an
+  \textbf{\index{Direct effect estimation}}: estimating the effect of an
   exposure on the risk of an outcome, as compared to no exposure.
 \item
-  \textbf{Comparative effect estimation}: estimating the effect of an
-  exposure (the target exposure) on the risk of an outcome, as compared
-  to another exposure (the comparator exposure).
+  \textbf{\index{Comparative effect estimation}}: estimating the effect
+  of an exposure (the target exposure) on the risk of an outcome, as
+  compared to another exposure (the comparator exposure).
 \end{itemize}
 
 In both cases, the patient-level causal effect contrasts a factual
@@ -4235,8 +4240,8 @@ study diagnostics and effect size estimates.
 \caption{The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation.}\label{fig:cohortMethod}
 \end{figure}
 
-The cohort method attempts to emulate a randomized clinical trial
-\citep{hernan_2016}. Subjects that are observed to initiate one
+The \index{cohort method} attempts to emulate a randomized clinical
+trial \citep{hernan_2016}. Subjects that are observed to initiate one
 treatment (the target) are compared to subjects initiating another
 treatment (the comparator) and are followed for a specific amount of
 time following treatment initiation, for example the time they stay on
@@ -4346,9 +4351,9 @@ essentially \emph{cannot} differ systematically with respect to
 for characteristics that the trial measured (such as age) as well as
 characteristics that the trial failed to measure.
 
-For a given patient, the \emph{propensity score} (PS) is the probability
-that that patient received the target treatment as against the
-comparator. \citep{rosenbaum_1983} In a balanced two-arm randomized
+For a given patient, the \emph{\index{propensity score}} (PS) is the
+probability that that patient received the target treatment as against
+the comparator. \citep{rosenbaum_1983} In a balanced two-arm randomized
 trial, the propensity score is 0.5 for every patient. In a propensity
 score-adjusted observational study, we estimate the probability of a
 patient receiving the target treatment based on what we can observe in
@@ -4434,20 +4439,21 @@ identify most problems related to colliders and instrumental variables.
 Since propensity scores fall on a continuum from 0 to 1, exact matching
 is rarely possible. Instead, the matching process finds patients that
 match the propensity score of a target patient(s) within some tolerance
-known as a ``caliper.'' Following \citet{austin_2011}, we use a default
-caliper of 0.2 standard deviations on the logit scale.
+known as a ``\index{caliper}.'' Following \citet{austin_2011}, we use a
+default caliper of 0.2 standard deviations on the logit scale.
 
 \subsection{Overlap: preference scores}\label{overlap-preference-scores}
 
 The propensity method requires that matching patients exist! As such, a
 key diagnostic shows the distribution of the propensity scores in the
 two groups. To facilitate interpretation, the OHDSI tools plot a
-transformation of the propensity score called the ``preference score''.
-\citep{walker_2013} The preference score adjusts for the ``market
-share'' of the two treatments. For example, if 10\% of patients receive
-the target treatment (and 90\% receive the comparator treatment), then
-patients with a preference score of 0.5 have a 10\% probability of
-receiving the target treatment. Mathematically, the preference score is
+transformation of the propensity score called the
+``\index{preference score}''. \citep{walker_2013} The preference score
+adjusts for the ``market share'' of the two treatments. For example, if
+10\% of patients receive the target treatment (and 90\% receive the
+comparator treatment), then patients with a preference score of 0.5 have
+a 10\% probability of receiving the target treatment. Mathematically,
+the preference score is
 
 \[\ln\left(\frac{F}{1-F}\right)=\ln\left(\frac{S}{1-S}\right)-\ln\left(\frac{P}{1-P}\right)\]
 
@@ -10698,7 +10704,7 @@ the cohort ID there?
 
 A:
 
-\appendix
+\appendix \addcontentsline{toc}{chapter}{\appendixname}
 
 
 \chapter{Glossary}\label{Glossary}
@@ -11435,11 +11441,13 @@ infection\tabularnewline
 140641 & Verruca vulgaris\tabularnewline
 440193 & Wristdrop\tabularnewline
 4115367 & Wrist joint pain\tabularnewline
-&\tabularnewline
 \bottomrule
 \end{longtable}
 
 \bibliography{book.bib,packages.bib}
+
+\backmatter
+\printindex
 
 
 \end{document}
