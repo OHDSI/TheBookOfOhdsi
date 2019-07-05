@@ -2395,7 +2395,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.rmfc3v66children ;"
+## [1] "SELECT * FROM temp_schema.dayswhq0children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -3197,14 +3197,16 @@ Example .. \url{http://www.pnas.org/content/113/27/7329}
 
 \emph{Chapter leads: Martijn Schuemie, David Madigan, Marc Suchard \& Patrick Ryan}
 
+\index{population-level estimation}
+
 Observational healthcare data, such as administrative claims and electronic health records, offer opportunities to generate real-world evidence about the effect of treatments that can meaningfully improve the lives of patients. In this chapter we focus on population-level effect estimation, that is, the estimation of average causal effects of exposures (e.g.~medical interventions such as drug exposures or procedures) on specific health outcomes of interest. In what follows, we consider two different estimation tasks:
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{\index{Direct effect estimation}}: estimating the effect of an exposure on the risk of an outcome, as compared to no exposure.
+  \textbf{Direct effect estimation}: estimating the effect of an exposure on the risk of an outcome, as compared to no exposure. \index{direct effect estimation}
 \item
-  \textbf{\index{Comparative effect estimation}}: estimating the effect of an exposure (the target exposure) on the risk of an outcome, as compared to another exposure (the comparator exposure).
+  \textbf{Comparative effect estimation}: estimating the effect of an exposure (the target exposure) on the risk of an outcome, as compared to another exposure (the comparator exposure). \textbackslash index\{comparative effect estimation
 \end{itemize}
 
 In both cases, the patient-level causal effect contrasts a factual outcome, i.e., what happened to the exposed patient, with a counterfactual outcome, i.e., what would have happened had the exposure not occurred (direct) or had a different exposure occurred (comparative). Since any one patient reveals only the factual outcome (the fundamental problem of causal inference), the various effect estimation designs employ different analytic devices to shed light on the counterfactual outcomes.
@@ -3216,6 +3218,8 @@ In this chapter we first describe various population-level estimation study desi
 \hypertarget{CohortMethod}{%
 \section{The cohort method design}\label{CohortMethod}}
 
+\index{cohort method}
+
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/cohortMethod} 
@@ -3225,7 +3229,7 @@ In this chapter we first describe various population-level estimation study desi
 \caption{The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation.}\label{fig:cohortMethod}
 \end{figure}
 
-The \index{cohort method} attempts to emulate a randomized clinical trial \citep{hernan_2016}. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \ref{tab:cmChoices}.
+The cohort method attempts to emulate a randomized clinical trial \citep{hernan_2016}. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \ref{tab:cmChoices}.
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:cmChoices} Main design choices in a comparative cohort design.}\tabularnewline
@@ -3284,9 +3288,11 @@ A key concern is that the patients receiving the target treatment may systematic
 \hypertarget{propensity-scores}{%
 \subsection{Propensity scores}\label{propensity-scores}}
 
+\index{propensity score}
+
 In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what's more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially \emph{cannot} differ systematically with respect to \emph{any} patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure.
 
-For a given patient, the \emph{\index{propensity score}} (PS) is the probability that that patient received the target treatment as against the comparator. \citep{rosenbaum_1983} In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received). This a straightforward predictive modeling application; we fit a model (e.g.~a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. \citep{rassen_2012}
+For a given patient, the \emph{propensity score} (PS) is the probability that that patient received the target treatment as against the comparator. \citep{rosenbaum_1983} In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received). This a straightforward predictive modeling application; we fit a model (e.g.~a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. \citep{rassen_2012}
 
 For example, suppose we use one-on-one PS matching, and that Jan has a priori probability of 0.4 of receiving the target treatment and in fact receives the target treatment. If we can find a patient (named Jun) that also had an a priori probability of 0.4 of receiving the target treatment but in fact received the comparator, the comparison of Jan and Jun's outcomes is like a mini-randomized trial, at least with respect to measured confounders. This comparison will yield an estimate of the Jan-Jun causal contrast that is as good as the one randomization would have produced. Estimation then proceeds as follows: for every patient that received the target, find one or more matched patients that received the comparator but had the same a priori probability of receiving the target. Compare the outcome for the target patient with the outcomes for the comparator patients within each of these matched groups.
 
@@ -3306,12 +3312,16 @@ Some have argued that a data-driven approach to covariate selection that does no
 \hypertarget{caliper}{%
 \subsection{Caliper}\label{caliper}}
 
-Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) within some tolerance known as a ``\index{caliper}.'' Following \citet{austin_2011}, we use a default caliper of 0.2 standard deviations on the logit scale.
+\index{caliper}
+
+Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) within some tolerance known as a ``caliper.'' Following \citet{austin_2011}, we use a default caliper of 0.2 standard deviations on the logit scale.
 
 \hypertarget{overlap-preference-scores}{%
 \subsection{Overlap: preference scores}\label{overlap-preference-scores}}
 
-The propensity method requires that matching patients exist! As such, a key diagnostic shows the distribution of the propensity scores in the two groups. To facilitate interpretation, the OHDSI tools plot a transformation of the propensity score called the ``\index{preference score}''. \citep{walker_2013} The preference score adjusts for the ``market share'' of the two treatments. For example, if 10\% of patients receive the target treatment (and 90\% receive the comparator treatment), then patients with a preference score of 0.5 have a 10\% probability of receiving the target treatment. Mathematically, the preference score is
+\index{preference score}
+
+The propensity method requires that matching patients exist! As such, a key diagnostic shows the distribution of the propensity scores in the two groups. To facilitate interpretation, the OHDSI tools plot a transformation of the propensity score called the ``preference score''. \citep{walker_2013} The preference score adjusts for the ``market share'' of the two treatments. For example, if 10\% of patients receive the target treatment (and 90\% receive the comparator treatment), then patients with a preference score of 0.5 have a 10\% probability of receiving the target treatment. Mathematically, the preference score is
 
 \[\ln\left(\frac{F}{1-F}\right)=\ln\left(\frac{S}{1-S}\right)-\ln\left(\frac{P}{1-P}\right)\]
 
