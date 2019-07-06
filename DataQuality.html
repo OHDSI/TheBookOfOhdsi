@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 16 Data Quality | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.11.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.11.3 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 16 Data Quality | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-07-05" />
+<meta name="date" content="2019-07-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -64,7 +64,6 @@ code.sourceCode > span { color: inherit; text-decoration: inherit; }
 code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -365,6 +364,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.3.1" data-path="DataQuality.html"><a href="DataQuality.html#outcomes"><i class="fa fa-check"></i><b>16.3.1</b> Outcomes</a></li>
 <li class="chapter" data-level="16.3.2" data-path="DataQuality.html"><a href="DataQuality.html#laboratory-data"><i class="fa fa-check"></i><b>16.3.2</b> Laboratory data</a></li>
 </ul></li>
+<li class="chapter" data-level="16.4" data-path="DataQuality.html"><a href="DataQuality.html#etl-unit-testing"><i class="fa fa-check"></i><b>16.4</b> ETL unit testing</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="DataQuality.html"><a href="DataQuality.html#unit-testing-framwork-in-rabbit-in-a-hat"><i class="fa fa-check"></i><b>16.4.1</b> Unit testing framwork in Rabbit-in-a-Hat</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="ClinicalValidity.html"><a href="ClinicalValidity.html"><i class="fa fa-check"></i><b>17</b> Clinical Validity</a></li>
 <li class="chapter" data-level="18" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html"><i class="fa fa-check"></i><b>18</b> Software Validity</a><ul>
@@ -462,6 +464,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">16.1</span> Introduction</h2>
 <p>Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance); (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) <span class="citation">(Kahn et al. <a href="#ref-kahn_harmonized_2016" role="doc-biblioref">2016</a>)</span></p>
 <p>Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge.</p>
+<p>Table below shows examples of the above defined data quality (DQ) constructs.</p>
 <table>
 <colgroup>
 <col width="8%" />
@@ -519,7 +522,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>general checks</li>
 <li>study-specific checks</li>
 </ul>
-<p>From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. <em>ETL data errors</em> are errors introduced during extract-tranform-load proces. A special type of ETL data error is <em>mapping error</em> that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model’s standard terminology (e.g., RxNorm and RxNorm Extension). A <em>source data error</em> is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).</p>
+<p>From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. <em>ETL data errors</em> are errors introduced during extract-tranform-load proces. A special type of ETL data error is <em>mapping error</em> that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model’s standard terminology (e.g., RxNorm and RxNorm Extension). A <em>source data error</em> is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).<span class="citation">(Huser et al. <a href="#ref-huser_multisite_2016" role="doc-biblioref">2016</a>)</span></p>
 <p>Data quality can also be seen as a component in a larger effort refered to as <em>evidence quality</em> or <em>evidence validation</em>. Data quality would fall in this framework under <em>data validation</em>.</p>
 </div>
 <div id="achilles-heel-tool" class="section level2">
@@ -552,12 +555,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="laboratory-data" class="section level3">
 <h3><span class="header-section-number">16.3.2</span> Laboratory data</h3>
 <p>A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study (<a href="https://www.ncbi.nlm.nih.gov/pubmed/30646124" class="uri">https://www.ncbi.nlm.nih.gov/pubmed/30646124</a>) defined a cohort ‘HbA1c8Moderate’ (see <a href="https://github.com/rohit43/DiabetesTxPath/blob/master/inst/settings/CohortsToCreate.csv" class="uri">https://github.com/rohit43/DiabetesTxPath/blob/master/inst/settings/CohortsToCreate.csv</a>)</p>
+</div>
+</div>
+<div id="etl-unit-testing" class="section level2">
+<h2><span class="header-section-number">16.4</span> ETL unit testing</h2>
+<p>Extract Transform Load (ETL) process that transforms data from source (in EHR system or claims sys) to target (OMOP CDM) can contain errors. Unit testing of ETL code allows for preventing coding errors in ETL to cause data errors.</p>
+<div id="unit-testing-framwork-in-rabbit-in-a-hat" class="section level3">
+<h3><span class="header-section-number">16.4.1</span> Unit testing framwork in Rabbit-in-a-Hat</h3>
+<p>OHDSI tool Rabbit-in-a-Hat includes an ETL unit testing framwork. This framework defines an a set of function for each table in the source schema and a set of functions for each table in target OMOP CDM schema. Detailed description is available at <a href="https://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit:test_framework" class="uri">https://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit:test_framework</a>.</p>
 
 </div>
 </div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-huser_multisite_2016">
+<p>Huser, Vojtech, Frank J. DeFalco, Martijn Schuemie, Patrick B. Ryan, Ning Shang, Mark Velez, Rae Woong Park, et al. 2016. “Multisite Evaluation of a Data Quality Tool for Patient-Level Clinical Data Sets.” <em>EGEMS (Washington, DC)</em> 4 (1): 1239. <a href="https://doi.org/10.13063/2327-9214.1239">https://doi.org/10.13063/2327-9214.1239</a>.</p>
+</div>
 <div id="ref-huser_methods_2018">
 <p>Huser, Vojtech, Michael G. Kahn, Jeffrey S. Brown, and Ramkiran Gouripeddi. 2018. “Methods for Examining Data Quality in Healthcare Integrated Data Repositories.” <em>Pacific Symposium on Biocomputing. Pacific Symposium on Biocomputing</em> 23: 628–33.</p>
 </div>

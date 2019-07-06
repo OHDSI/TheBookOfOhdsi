@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-07-05}
+    \date{2019-07-06}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -2395,7 +2395,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.dayswhq0children ;"
+## [1] "SELECT * FROM temp_schema.xem6cqvuchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -6335,6 +6335,8 @@ Kahn et al.~define data quality as consisting of three components: (1) conforman
 
 Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge.
 
+Table below shows examples of the above defined data quality (DQ) constructs.
+
 \begin{longtable}[]{@{}lll@{}}
 \toprule
 \begin{minipage}[b]{0.08\columnwidth}\raggedright
@@ -6410,7 +6412,7 @@ Two types of DQ checks can be distinguished\citep{weiskopf_methods_2013}
   study-specific checks
 \end{itemize}
 
-From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. \emph{ETL data errors} are errors introduced during extract-tranform-load proces. A special type of ETL data error is \emph{mapping error} that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model's standard terminology (e.g., RxNorm and RxNorm Extension). A \emph{source data error} is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).
+From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. \emph{ETL data errors} are errors introduced during extract-tranform-load proces. A special type of ETL data error is \emph{mapping error} that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model's standard terminology (e.g., RxNorm and RxNorm Extension). A \emph{source data error} is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).\citep{huser_multisite_2016}
 
 Data quality can also be seen as a component in a larger effort refered to as \emph{evidence quality} or \emph{evidence validation}. Data quality would fall in this framework under \emph{data validation}.
 
@@ -6456,6 +6458,16 @@ For an international analysis, part of OHDSI study diagnostics (for a give datas
 \subsection{Laboratory data}\label{laboratory-data}}
 
 A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study (\url{https://www.ncbi.nlm.nih.gov/pubmed/30646124}) defined a cohort `HbA1c8Moderate' (see \url{https://github.com/rohit43/DiabetesTxPath/blob/master/inst/settings/CohortsToCreate.csv})
+
+\hypertarget{etl-unit-testing}{%
+\section{ETL unit testing}\label{etl-unit-testing}}
+
+Extract Transform Load (ETL) process that transforms data from source (in EHR system or claims sys) to target (OMOP CDM) can contain errors. Unit testing of ETL code allows for preventing coding errors in ETL to cause data errors.
+
+\hypertarget{unit-testing-framwork-in-rabbit-in-a-hat}{%
+\subsection{Unit testing framwork in Rabbit-in-a-Hat}\label{unit-testing-framwork-in-rabbit-in-a-hat}}
+
+OHDSI tool Rabbit-in-a-Hat includes an ETL unit testing framwork. This framework defines an a set of function for each table in the source schema and a set of functions for each table in target OMOP CDM schema. Detailed description is available at \url{https://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit:test_framework}.
 
 \hypertarget{ClinicalValidity}{%
 \chapter{Clinical Validity}\label{ClinicalValidity}}

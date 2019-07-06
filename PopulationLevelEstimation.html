@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 Population-level estimation | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.11.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.11.3 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 Population-level estimation | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-07-05" />
+<meta name="date" content="2019-07-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -64,7 +64,6 @@ code.sourceCode > span { color: inherit; text-decoration: inherit; }
 code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -364,6 +363,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.3" data-path="DataQuality.html"><a href="DataQuality.html#study-specific-checks"><i class="fa fa-check"></i><b>16.3</b> Study-specific checks</a><ul>
 <li class="chapter" data-level="16.3.1" data-path="DataQuality.html"><a href="DataQuality.html#outcomes"><i class="fa fa-check"></i><b>16.3.1</b> Outcomes</a></li>
 <li class="chapter" data-level="16.3.2" data-path="DataQuality.html"><a href="DataQuality.html#laboratory-data"><i class="fa fa-check"></i><b>16.3.2</b> Laboratory data</a></li>
+</ul></li>
+<li class="chapter" data-level="16.4" data-path="DataQuality.html"><a href="DataQuality.html#etl-unit-testing"><i class="fa fa-check"></i><b>16.4</b> ETL unit testing</a><ul>
+<li class="chapter" data-level="16.4.1" data-path="DataQuality.html"><a href="DataQuality.html#unit-testing-framwork-in-rabbit-in-a-hat"><i class="fa fa-check"></i><b>16.4.1</b> Unit testing framwork in Rabbit-in-a-Hat</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="ClinicalValidity.html"><a href="ClinicalValidity.html"><i class="fa fa-check"></i><b>17</b> Clinical Validity</a></li>
@@ -961,7 +963,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <div id="data-extraction" class="section level3">
 <h3><span class="header-section-number">13.8.2</span> Data extraction</h3>
 <p>We first need to tell R how to connect to the server. <a href="https://ohdsi.github.io/CohortMethod/">CohortMethod</a> uses the <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> package, which provides a function called <code>createConnectionDetails</code>. Type <code>?createConnectionDetails</code> for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="PopulationLevelEstimation.html#cb65-1"></a><span class="kw">library</span>(CohortMethod)</span>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="PopulationLevelEstimation.html#cb65-1"></a><span class="kw">library</span>(CohortMethod)</span>
 <span id="cb65-2"><a href="PopulationLevelEstimation.html#cb65-2"></a>connDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
 <span id="cb65-3"><a href="PopulationLevelEstimation.html#cb65-3"></a>                                       <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,</span>
 <span id="cb65-4"><a href="PopulationLevelEstimation.html#cb65-4"></a>                                       <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
@@ -970,10 +972,10 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb65-7"><a href="PopulationLevelEstimation.html#cb65-7"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span></span>
 <span id="cb65-8"><a href="PopulationLevelEstimation.html#cb65-8"></a>cohortDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span></span>
 <span id="cb65-9"><a href="PopulationLevelEstimation.html#cb65-9"></a>cohortTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span></span>
-<span id="cb65-10"><a href="PopulationLevelEstimation.html#cb65-10"></a>cdmVersion &lt;-<span class="st"> &quot;5&quot;</span></span></code></pre>
+<span id="cb65-10"><a href="PopulationLevelEstimation.html#cb65-10"></a>cdmVersion &lt;-<span class="st"> &quot;5&quot;</span></span></code></pre></div>
 <p>The last four lines define the <code>cdmDbSchema</code>, <code>cohortDbSchema</code>, and <code>cohortTable</code> variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- "my_cdm_data.dbo"</code>.</p>
 <p>Now we can tell CohortMethod to extract the cohorts, construct covariates, and extract all necessary data for our analysis:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="PopulationLevelEstimation.html#cb66-1"></a><span class="co"># target and comparator ingredient concepts:</span></span>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="PopulationLevelEstimation.html#cb66-1"></a><span class="co"># target and comparator ingredient concepts:</span></span>
 <span id="cb66-2"><a href="PopulationLevelEstimation.html#cb66-2"></a>aceI &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1335471</span>,<span class="dv">1340128</span>,<span class="dv">1341927</span>,<span class="dv">1363749</span>,<span class="dv">1308216</span>,<span class="dv">1310756</span>,<span class="dv">1373225</span>,</span>
 <span id="cb66-3"><a href="PopulationLevelEstimation.html#cb66-3"></a>          <span class="dv">1331235</span>,<span class="dv">1334456</span>,<span class="dv">1342439</span>)</span>
 <span id="cb66-4"><a href="PopulationLevelEstimation.html#cb66-4"></a>thz &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1395058</span>,<span class="dv">974166</span>,<span class="dv">978555</span>,<span class="dv">907013</span>)</span>
@@ -1002,7 +1004,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb66-27"><a href="PopulationLevelEstimation.html#cb66-27"></a>                                <span class="dt">restrictToCommonPeriod =</span> <span class="ot">FALSE</span>,</span>
 <span id="cb66-28"><a href="PopulationLevelEstimation.html#cb66-28"></a>                                <span class="dt">washoutPeriod =</span> <span class="dv">0</span>,</span>
 <span id="cb66-29"><a href="PopulationLevelEstimation.html#cb66-29"></a>                                <span class="dt">covariateSettings =</span> cs)</span>
-<span id="cb66-30"><a href="PopulationLevelEstimation.html#cb66-30"></a>cmData</span></code></pre>
+<span id="cb66-30"><a href="PopulationLevelEstimation.html#cb66-30"></a>cmData</span></code></pre></div>
 <pre><code>## CohortMethodData object
 ## 
 ## Treatment concept ID: 1
@@ -1011,7 +1013,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <p>There are many parameters, but they are all documented in the <a href="https://ohdsi.github.io/CohortMethod/reference/">CohortMethod manual</a>. The <code>createDefaultCovariateSettings</code> function is described in the <a href="https://ohdsi.github.io/FeatureExtraction/">FeatureExtraction</a> package. In short, we are pointing the function to the table containing our cohorts and specify which cohort definition IDs in that table identify the target, comparator and outcome. We instruct that the default set of covariates should be constructed, including covariates for all conditions, drug exposures, and procedures that were found on or before the index date. As mentioned in Section <a href="PopulationLevelEstimation.html#CohortMethod">13.1</a> we must exclude the target and comparator treatments from the set of covariates, and here we achieve this by listing all ingredients in the two classes, and tell FeatureExtraction to also exclude all descendants, thus excluding all drugs that contain these ingredients.</p>
 <p>All data about the cohorts, outcomes, and covariates are extracted from the server and stored in the <code>cohortMethodData</code> object. This object uses the package <code>ff</code> to store information in a way that ensures R does not run out of memory, even when the data are large, as mentioned in Section <a href="OhdsiAnalyticsTools.html#BigDataSupport">9.4.2</a>.</p>
 <p>We can use the generic <code>summary()</code> function to view some more information of the data we extracted:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="PopulationLevelEstimation.html#cb68-1"></a><span class="kw">summary</span>(cmData)</span></code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="PopulationLevelEstimation.html#cb68-1"></a><span class="kw">summary</span>(cmData)</span></code></pre></div>
 <pre><code>## CohortMethodData object summary
 ## 
 ## Treatment concept ID: 1
@@ -1029,7 +1031,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 ## Number of covariates: 58349
 ## Number of non-zero covariate values: 24484665</code></pre>
 <p>Creating the <code>cohortMethodData</code> file can take considerable computing time, and it is probably a good idea to save it for future sessions. Because <code>cohortMethodData</code> uses <code>ff</code>, we cannot use R’s regular save function. Instead, we’ll have to use the <code>saveCohortMethodData()</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="PopulationLevelEstimation.html#cb70-1"></a><span class="kw">saveCohortMethodData</span>(cmData, <span class="st">&quot;AceiVsThzForAngioedema&quot;</span>)</span></code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="PopulationLevelEstimation.html#cb70-1"></a><span class="kw">saveCohortMethodData</span>(cmData, <span class="st">&quot;AceiVsThzForAngioedema&quot;</span>)</span></code></pre></div>
 <p>We can use the <code>loadCohortMethodData()</code> function to load the data in a future session.</p>
 <p><strong>Defining new users</strong></p>
 <p>Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior first use) is used to increase the probability that it is truly first use. When using the CohortMethod package, you can enforce the necessary requirements for new use in three ways:</p>
@@ -1043,7 +1045,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <div id="defining-the-study-population" class="section level3">
 <h3><span class="header-section-number">13.8.3</span> Defining the study population</h3>
 <p>Typically, the exposure cohorts and outcome cohorts will be defined independently of each other. When we want to produce an effect size estimate, we need to further restrict these cohorts and put them together, for example by removing exposed subjects that had the outcome prior to exposure, and only keeping outcomes that fall within a defined risk window. For this we can use the <code>createStudyPopulation</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="PopulationLevelEstimation.html#cb71-1"></a>studyPop &lt;-<span class="st"> </span><span class="kw">createStudyPopulation</span>(<span class="dt">cohortMethodData =</span> cmData,</span>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="PopulationLevelEstimation.html#cb71-1"></a>studyPop &lt;-<span class="st"> </span><span class="kw">createStudyPopulation</span>(<span class="dt">cohortMethodData =</span> cmData,</span>
 <span id="cb71-2"><a href="PopulationLevelEstimation.html#cb71-2"></a>                                  <span class="dt">outcomeId =</span> <span class="dv">3</span>,</span>
 <span id="cb71-3"><a href="PopulationLevelEstimation.html#cb71-3"></a>                                  <span class="dt">firstExposureOnly =</span> <span class="ot">FALSE</span>,</span>
 <span id="cb71-4"><a href="PopulationLevelEstimation.html#cb71-4"></a>                                  <span class="dt">restrictToCommonPeriod =</span> <span class="ot">FALSE</span>,</span>
@@ -1054,9 +1056,9 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb71-9"><a href="PopulationLevelEstimation.html#cb71-9"></a>                                  <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,</span>
 <span id="cb71-10"><a href="PopulationLevelEstimation.html#cb71-10"></a>                                  <span class="dt">addExposureDaysToStart =</span> <span class="ot">FALSE</span>,</span>
 <span id="cb71-11"><a href="PopulationLevelEstimation.html#cb71-11"></a>                                  <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,</span>
-<span id="cb71-12"><a href="PopulationLevelEstimation.html#cb71-12"></a>                                  <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>)</span></code></pre>
+<span id="cb71-12"><a href="PopulationLevelEstimation.html#cb71-12"></a>                                  <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>Note that we’ve set <code>firstExposureOnly</code> and <code>removeDuplicateSubjects</code> to FALSE, and <code>washoutPeriod</code> to 0 because we already applied those criteria in the cohort definitions. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting on the day after the cohort start date (<code>riskWindowStart = 1</code> and <code>addExposureDaysToStart = FALSE</code>), and the risk windows ends when the cohort exposure ends (<code>riskWindowEnd = 0</code> and <code>addExposureDaysToEnd = TRUE</code>), which was defined as the end of exposure in the cohort definition. Note that the risk windows are automatically truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the <code>getAttritionTable</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="PopulationLevelEstimation.html#cb72-1"></a><span class="kw">getAttritionTable</span>(studyPop)</span></code></pre>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="PopulationLevelEstimation.html#cb72-1"></a><span class="kw">getAttritionTable</span>(studyPop)</span></code></pre></div>
 <pre><code>##                    description targetPersons comparatorPersons           ...
 ## 1             Original cohorts         67212             35379           ...
 ## 2 Removed subs in both cohorts         67166             35333           ...
@@ -1066,20 +1068,20 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <div id="propensity-scores-1" class="section level3">
 <h3><span class="header-section-number">13.8.4</span> Propensity scores</h3>
 <p>We can fit a propensity model using the covariates constructed by the <code>getDbcohortMethodData()</code> function, and compute a PS for each person:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="PopulationLevelEstimation.html#cb74-1"></a>ps &lt;-<span class="st"> </span><span class="kw">createPs</span>(<span class="dt">cohortMethodData =</span> cmData, <span class="dt">population =</span> studyPop)</span></code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="PopulationLevelEstimation.html#cb74-1"></a>ps &lt;-<span class="st"> </span><span class="kw">createPs</span>(<span class="dt">cohortMethodData =</span> cmData, <span class="dt">population =</span> studyPop)</span></code></pre></div>
 <p>The <code>createPs</code> function uses the <a href="https://ohdsi.github.io/Cyclops/">Cyclops</a> package to fit a large-scale regularized logistic regression. To fit the propensity model, Cyclops needs to know the hyperparameter value which specifies the variance of the prior. By default Cyclops will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the <code>prior</code> and <code>control</code> parameters of the <code>createPs</code> function to specify Cyclops’ behavior, including using multiple CPUs to speed-up the cross-validation.</p>
 <p>Here we use the PS to perform variable-ratio matching:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="PopulationLevelEstimation.html#cb75-1"></a>matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(<span class="dt">population =</span> ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>, </span>
-<span id="cb75-2"><a href="PopulationLevelEstimation.html#cb75-2"></a>                        <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, <span class="dt">maxRatio =</span> <span class="dv">100</span>)</span></code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="PopulationLevelEstimation.html#cb75-1"></a>matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(<span class="dt">population =</span> ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>, </span>
+<span id="cb75-2"><a href="PopulationLevelEstimation.html#cb75-2"></a>                        <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, <span class="dt">maxRatio =</span> <span class="dv">100</span>)</span></code></pre></div>
 <p>Alternatively, we could have used the PS in the <code>trimByPs</code>, <code>trimByPsToEquipoise</code>, or <code>stratifyByPs</code> functions.</p>
 </div>
 <div id="outcome-models" class="section level3">
 <h3><span class="header-section-number">13.8.5</span> Outcome models</h3>
 <p>The outcome model is a model describing which variables are associated with the outcome. Under strict assumptions, the coefficient for the treatment variable can be interpreted as the causal effect. In this case we fit a Cox proportional hazards model, conditioned (stratified) on the matched sets:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="PopulationLevelEstimation.html#cb76-1"></a>outcomeModel &lt;-<span class="st"> </span><span class="kw">fitOutcomeModel</span>(<span class="dt">population =</span> matchedPop,</span>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="PopulationLevelEstimation.html#cb76-1"></a>outcomeModel &lt;-<span class="st"> </span><span class="kw">fitOutcomeModel</span>(<span class="dt">population =</span> matchedPop,</span>
 <span id="cb76-2"><a href="PopulationLevelEstimation.html#cb76-2"></a>                                <span class="dt">modelType =</span> <span class="st">&quot;cox&quot;</span>,</span>
 <span id="cb76-3"><a href="PopulationLevelEstimation.html#cb76-3"></a>                                <span class="dt">stratified =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb76-4"><a href="PopulationLevelEstimation.html#cb76-4"></a>outcomeModel</span></code></pre>
+<span id="cb76-4"><a href="PopulationLevelEstimation.html#cb76-4"></a>outcomeModel</span></code></pre></div>
 <pre><code>## Model type: cox
 ## Stratified: TRUE
 ## Use covariates: FALSE
@@ -1092,7 +1094,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <div id="MultipleAnalyses" class="section level3">
 <h3><span class="header-section-number">13.8.6</span> Running multiple analyses</h3>
 <p>Often we want to perform more than one analyses, for example for multiple outcomes including negative controls. The <a href="https://ohdsi.github.io/CohortMethod/">CohortMethod</a> offers functions for performing such studies efficiently. This is described in detail in the <a href="https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html">package vignette on running multiple analyses</a>. Briefly, assuming the outcome of interest and negative control cohorts have already been created, we can specify all target-comparator-outcome combinations we wish to analyse:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="PopulationLevelEstimation.html#cb78-1"></a><span class="co"># Outcomes of interest:</span></span>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="PopulationLevelEstimation.html#cb78-1"></a><span class="co"># Outcomes of interest:</span></span>
 <span id="cb78-2"><a href="PopulationLevelEstimation.html#cb78-2"></a>ois &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">4</span>) <span class="co"># Angioedema, AMI</span></span>
 <span id="cb78-3"><a href="PopulationLevelEstimation.html#cb78-3"></a></span>
 <span id="cb78-4"><a href="PopulationLevelEstimation.html#cb78-4"></a><span class="co"># Negative controls:</span></span>
@@ -1110,9 +1112,9 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb78-16"><a href="PopulationLevelEstimation.html#cb78-16"></a>                                       <span class="dt">comparatorId =</span> <span class="dv">2</span>,</span>
 <span id="cb78-17"><a href="PopulationLevelEstimation.html#cb78-17"></a>                                       <span class="dt">outcomeIds =</span> <span class="kw">c</span>(ois, ncs))</span>
 <span id="cb78-18"><a href="PopulationLevelEstimation.html#cb78-18"></a></span>
-<span id="cb78-19"><a href="PopulationLevelEstimation.html#cb78-19"></a>tcosList &lt;-<span class="st"> </span><span class="kw">list</span>(tcos)</span></code></pre>
+<span id="cb78-19"><a href="PopulationLevelEstimation.html#cb78-19"></a>tcosList &lt;-<span class="st"> </span><span class="kw">list</span>(tcos)</span></code></pre></div>
 <p>Next, we specify what arguments should be used when calling the various functions described previously in our example with one outcome:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="PopulationLevelEstimation.html#cb79-1"></a>aceI &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1335471</span>,<span class="dv">1340128</span>,<span class="dv">1341927</span>,<span class="dv">1363749</span>,<span class="dv">1308216</span>,<span class="dv">1310756</span>,<span class="dv">1373225</span>,</span>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="PopulationLevelEstimation.html#cb79-1"></a>aceI &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1335471</span>,<span class="dv">1340128</span>,<span class="dv">1341927</span>,<span class="dv">1363749</span>,<span class="dv">1308216</span>,<span class="dv">1310756</span>,<span class="dv">1373225</span>,</span>
 <span id="cb79-2"><a href="PopulationLevelEstimation.html#cb79-2"></a>          <span class="dv">1331235</span>,<span class="dv">1334456</span>,<span class="dv">1342439</span>)</span>
 <span id="cb79-3"><a href="PopulationLevelEstimation.html#cb79-3"></a>thz &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1395058</span>,<span class="dv">974166</span>,<span class="dv">978555</span>,<span class="dv">907013</span>)</span>
 <span id="cb79-4"><a href="PopulationLevelEstimation.html#cb79-4"></a></span>
@@ -1150,9 +1152,9 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb79-36"><a href="PopulationLevelEstimation.html#cb79-36"></a></span>
 <span id="cb79-37"><a href="PopulationLevelEstimation.html#cb79-37"></a>fomArgs &lt;-<span class="st"> </span><span class="kw">createFitOutcomeModelArgs</span>(</span>
 <span id="cb79-38"><a href="PopulationLevelEstimation.html#cb79-38"></a>  <span class="dt">modelType =</span> <span class="st">&quot;cox&quot;</span>,</span>
-<span id="cb79-39"><a href="PopulationLevelEstimation.html#cb79-39"></a>  <span class="dt">stratified =</span> <span class="ot">TRUE</span>)</span></code></pre>
+<span id="cb79-39"><a href="PopulationLevelEstimation.html#cb79-39"></a>  <span class="dt">stratified =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>We then combine these into a single analysis settings object, which we provide a unique analysis ID and some description. We can combine one or more analysis settings objects into a list:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="PopulationLevelEstimation.html#cb80-1"></a>cmAnalysis &lt;-<span class="st"> </span><span class="kw">createCmAnalysis</span>(</span>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="PopulationLevelEstimation.html#cb80-1"></a>cmAnalysis &lt;-<span class="st"> </span><span class="kw">createCmAnalysis</span>(</span>
 <span id="cb80-2"><a href="PopulationLevelEstimation.html#cb80-2"></a>  <span class="dt">analysisId =</span> <span class="dv">1</span>,</span>
 <span id="cb80-3"><a href="PopulationLevelEstimation.html#cb80-3"></a>  <span class="dt">description =</span> <span class="st">&quot;Propensity score matching&quot;</span>,</span>
 <span id="cb80-4"><a href="PopulationLevelEstimation.html#cb80-4"></a>  <span class="dt">getDbCohortMethodDataArgs =</span> cmdArgs,</span>
@@ -1164,9 +1166,9 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb80-10"><a href="PopulationLevelEstimation.html#cb80-10"></a>  <span class="dt">fitOutcomeModel =</span> <span class="ot">TRUE</span>,</span>
 <span id="cb80-11"><a href="PopulationLevelEstimation.html#cb80-11"></a>  <span class="dt">fitOutcomeModelArgs =</span> fomArgs)</span>
 <span id="cb80-12"><a href="PopulationLevelEstimation.html#cb80-12"></a></span>
-<span id="cb80-13"><a href="PopulationLevelEstimation.html#cb80-13"></a>cmAnalysisList &lt;-<span class="st"> </span><span class="kw">list</span>(cmAnalysis)</span></code></pre>
+<span id="cb80-13"><a href="PopulationLevelEstimation.html#cb80-13"></a>cmAnalysisList &lt;-<span class="st"> </span><span class="kw">list</span>(cmAnalysis)</span></code></pre></div>
 <p>We can now run the study including all comparisons and analysis settings:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="PopulationLevelEstimation.html#cb81-1"></a>result &lt;-<span class="st"> </span><span class="kw">runCmAnalyses</span>(<span class="dt">connectionDetails =</span> connectionDetails,</span>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="PopulationLevelEstimation.html#cb81-1"></a>result &lt;-<span class="st"> </span><span class="kw">runCmAnalyses</span>(<span class="dt">connectionDetails =</span> connectionDetails,</span>
 <span id="cb81-2"><a href="PopulationLevelEstimation.html#cb81-2"></a>                        <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,</span>
 <span id="cb81-3"><a href="PopulationLevelEstimation.html#cb81-3"></a>                        <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,</span>
 <span id="cb81-4"><a href="PopulationLevelEstimation.html#cb81-4"></a>                        <span class="dt">exposureTable =</span> cohortTable,</span>
@@ -1175,14 +1177,14 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb81-7"><a href="PopulationLevelEstimation.html#cb81-7"></a>                        <span class="dt">cdmVersion =</span> cdmVersion,</span>
 <span id="cb81-8"><a href="PopulationLevelEstimation.html#cb81-8"></a>                        <span class="dt">outputFolder =</span> outputFolder,</span>
 <span id="cb81-9"><a href="PopulationLevelEstimation.html#cb81-9"></a>                        <span class="dt">cmAnalysisList =</span> cmAnalysisList,</span>
-<span id="cb81-10"><a href="PopulationLevelEstimation.html#cb81-10"></a>                        <span class="dt">targetComparatorOutcomesList =</span> tcosList)</span></code></pre>
+<span id="cb81-10"><a href="PopulationLevelEstimation.html#cb81-10"></a>                        <span class="dt">targetComparatorOutcomesList =</span> tcosList)</span></code></pre></div>
 <p>The <code>result</code> object contains references to all the artifacts that were created. For example, we can retrieve the outcome model for AMI:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="PopulationLevelEstimation.html#cb82-1"></a>omFile &lt;-<span class="st"> </span>result<span class="op">$</span>outcomeModelFile[result<span class="op">$</span>targetId <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span></span>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="PopulationLevelEstimation.html#cb82-1"></a>omFile &lt;-<span class="st"> </span>result<span class="op">$</span>outcomeModelFile[result<span class="op">$</span>targetId <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span></span>
 <span id="cb82-2"><a href="PopulationLevelEstimation.html#cb82-2"></a><span class="st">                                    </span>result<span class="op">$</span>comparatorId <span class="op">==</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span></span>
 <span id="cb82-3"><a href="PopulationLevelEstimation.html#cb82-3"></a><span class="st">                                    </span>result<span class="op">$</span>outcomeId <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
 <span id="cb82-4"><a href="PopulationLevelEstimation.html#cb82-4"></a><span class="st">                                    </span>result<span class="op">$</span>analysisId <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</span>
 <span id="cb82-5"><a href="PopulationLevelEstimation.html#cb82-5"></a>outcomeModel &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">file.path</span>(outputFolder, omFile))</span>
-<span id="cb82-6"><a href="PopulationLevelEstimation.html#cb82-6"></a>outcomeModel</span></code></pre>
+<span id="cb82-6"><a href="PopulationLevelEstimation.html#cb82-6"></a>outcomeModel</span></code></pre></div>
 <pre><code>## Model type: cox
 ## Stratified: TRUE
 ## Use covariates: FALSE
@@ -1192,8 +1194,8 @@ Figure 13.16: Negative control outcome cohort definition settings.
 ##           Estimate lower .95 upper .95   logRr seLogRr
 ## treatment   1.1338    0.5921    2.1765 0.1256   0.332</code></pre>
 <p>We can also retrieve the effect size estimates for all outcomes with one command:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="PopulationLevelEstimation.html#cb84-1"></a>summ &lt;-<span class="st"> </span><span class="kw">summarizeAnalyses</span>(result, <span class="dt">outputFolder =</span> outputFolder)</span>
-<span id="cb84-2"><a href="PopulationLevelEstimation.html#cb84-2"></a><span class="kw">head</span>(summ)</span></code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="PopulationLevelEstimation.html#cb84-1"></a>summ &lt;-<span class="st"> </span><span class="kw">summarizeAnalyses</span>(result, <span class="dt">outputFolder =</span> outputFolder)</span>
+<span id="cb84-2"><a href="PopulationLevelEstimation.html#cb84-2"></a><span class="kw">head</span>(summ)</span></code></pre></div>
 <pre><code>##     analysisId targetId comparatorId outcomeId        rr    ci95lb  ...
 ## 1            1        1            2     72748 0.9734698 0.5691589  ...
 ## 2            1        1            2     73241 0.7067981 0.4009951  ...
