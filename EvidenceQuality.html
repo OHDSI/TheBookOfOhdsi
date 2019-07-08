@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 16 Introduction to Evidence Quality | The Book of OHDSI</title>
+  <title>Chapter 16 Evidence Quality | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
   <meta name="generator" content="bookdown 0.11.3 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 16 Introduction to Evidence Quality | The Book of OHDSI" />
+  <meta property="og:title" content="Chapter 16 Evidence Quality | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 16 Introduction to Evidence Quality | The Book of OHDSI" />
+  <meta name="twitter:title" content="Chapter 16 Evidence Quality | The Book of OHDSI" />
   
   <meta name="twitter:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -365,7 +365,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.12" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#excercises-1"><i class="fa fa-check"></i><b>15.12</b> Excercises</a></li>
 </ul></li>
 <li class="part"><span><b>IV Evidence Quality</b></span></li>
-<li class="chapter" data-level="16" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html"><i class="fa fa-check"></i><b>16</b> Introduction to Evidence Quality</a></li>
+<li class="chapter" data-level="16" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html"><i class="fa fa-check"></i><b>16</b> Evidence Quality</a><ul>
+<li class="chapter" data-level="16.1" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html#communicating-evidence-quality"><i class="fa fa-check"></i><b>16.1</b> Communicating Evidence Quality</a></li>
+</ul></li>
 <li class="chapter" data-level="17" data-path="DataQuality.html"><a href="DataQuality.html"><i class="fa fa-check"></i><b>17</b> Data Quality</a><ul>
 <li class="chapter" data-level="17.1" data-path="DataQuality.html"><a href="DataQuality.html#introduction-2"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
 <li class="chapter" data-level="17.2" data-path="DataQuality.html"><a href="DataQuality.html#achilles-heel-tool"><i class="fa fa-check"></i><b>17.2</b> Achilles Heel tool</a><ul>
@@ -475,25 +477,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="EvidenceQuality" class="section level1">
-<h1><span class="header-section-number">Chapter 16</span> Introduction to Evidence Quality</h1>
+<h1><span class="header-section-number">Chapter 16</span> Evidence Quality</h1>
 <p><em>Chapter lead: Jon Duke</em></p>
+<p>How do we know if the results of a study are reliable? Can they be trusted for use in clinical settings? What about in regulatory decision-making? Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or other type of analysis.</p>
+<p>One of the concerns that is often raised around observational studies and the use of “real world data” is the topic of data quality <span class="citation">(Botsis et al. <a href="#ref-botsis2010secondary" role="doc-biblioref">2010</a>, @hersh2013caveats, @sherman2016real)</span>. Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well inherent biases. These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality <span class="citation">(Kahn et al. <a href="#ref-kahn2012pragmatic" role="doc-biblioref">2012</a>, @liaw2013towards, @weiskopf2013methods)</span>. The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network <span class="citation">(<span class="citeproc-not-found" data-reference-id="huser2016multisite"><strong>???</strong></span>)</span>.</p>
+<p>Given the findings of the past decade in this area, it has become apparent that data quality is not perfect and never will be. This notion is nicely reflected in this quote from Dr Clem McDonald, a pioneer in the field of medical informatics:</p>
 <blockquote>
 <p>Loss of fidelity begins with the movement of data from the doctor’s brain to the medical record.</p>
 </blockquote>
-<p><em>Clem McDonald, MD</em>
-<em>Director, Lister Hill Center for Biomedical Informatics</em>
-<em>National Library of Medicine, USA</em></p>
-<p>How do we know if the results of a study are reliable? Can they be trusted for use in clinical settings? What about in regulatory decision-making? Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or other type of analysis.</p>
-<p>One of the concerns that is often raised around observational studies and the use of “real world data” is the topic of data quality. As a community, OHDSI strives to take a holistic view on the subject of quality by focusing more broadly on the question of “evidence quality” rather than data quality alone. Specifically, OHDSI seeks to recognize, evaluate, and optimize the diverse set of processes necessary to achieve the highest quality reproducible evidence from diverse data sources.</p>
-<p>As such, we frame the discussion of evidence quality by considering the following four dimensions:</p>
-<ul>
-<li><a href="DataQuality.html">Data Quality</a> (ie data validity)</li>
-<li><a href="ClinicalValidity.html">Clinical Validity</a></li>
-<li><a href="SoftwareValidity.html">Software Validity</a></li>
-<li><a href="MethodValidity.html">Method Validity</a></li>
-</ul>
-<p>In this chapter, we will review each of these components and discuss how OHDSI tools, conventions, and community support their evaluation and improvement.</p>
+<p>Thus, as a community we must ask the question– <em>given imperfect data, how can we achieve the most reliable evidence?</em> The OHDSI community is seeking to address this question through a holistic focus on “evidence quality”. Evidence quality considers not only the quality of observational data but also the validity of the methods, software, and clinical definitions used in our observational analyses.</p>
+<p>In the following chapters, we will explore four components of evidence quality:</p>
+<table>
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Component of Evidence Quality</th>
+<th>What it Measures</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="DataQuality.html">Data Quality</a></td>
+<td>Are the data completely captured with plausible values in a manner that is conformant to agreed structure and conventions?</td>
+</tr>
+<tr class="even">
+<td><a href="ClinicalValidity.html">Clinical Validity</a></td>
+<td>To what extent does the analysis conducted match the clinical intention?</td>
+</tr>
+<tr class="odd">
+<td><a href="SoftwareValidity.html">Software Validity</a></td>
+<td>Can we trust that the process transforming and analyzing the data does what it is supposed to do?</td>
+</tr>
+<tr class="even">
+<td><a href="MethodValidity.html">Method Validity</a></td>
+<td>Is the methodology appropriate for the question, given the strengths and weaknesses of the data?</td>
+</tr>
+</tbody>
+</table>
+<div id="communicating-evidence-quality" class="section level2">
+<h2><span class="header-section-number">16.1</span> Communicating Evidence Quality</h2>
+<p>An important aspect of evidence quality is the ability to express the uncertainty that comes from the data being imperfect. Thus, our efforts around evidence quality include not only concepts but also specific tools and community processes. The overarching goal of OHDSI’s work around evidence quality is to produce confidence in health care decision-makers that the evidence generated by OHDSI– while undoubtedly imperfect in many ways– has been consistently measured for its weaknesses and strengths and that this information has been communicated in a rigorous and open manner.</p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-botsis2010secondary">
+<p>Botsis, Taxiarchis, Gunnar Hartvigsen, Fei Chen, and Chunhua Weng. 2010. “Secondary Use of Ehr: Data Quality Issues and Informatics Opportunities.” <em>Summit on Translational Bioinformatics</em> 2010: 1.</p>
+</div>
+<div id="ref-kahn2012pragmatic">
+<p>Kahn, Michael G, Marsha A Raebel, Jason M Glanz, Karen Riedlinger, and John F Steiner. 2012. “A Pragmatic Framework for Single-Site and Multisite Data Quality Assessment in Electronic Health Record-Based Clinical Research.” <em>Medical Care</em> 50.</p>
+</div>
 </div>
             </section>
 
