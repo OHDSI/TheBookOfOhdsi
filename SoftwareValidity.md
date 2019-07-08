@@ -6,7 +6,7 @@ The central question of software validity is
 
 > Does the software do what it is expected to do?
 
-Software validity is an essential component of evidence quality: only if our analysis software does what it is expected to do can we produce reliable evidence. As described in Section \@ref(automation), it is essential to view every study as a software development exercise, creating an automated script that executes the entire analysis, from data in the Common Data Model (CDM) to the results such as estimates, figures as tables. It is this script that must be validated. As described in Section \@ref(analysisImplementation), we can write this entire analysis script as custom code, or we can use the functionality available in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). The advantage of using the Methods Library is that great care has already been taken to ensure its validity, so establishing the validity of the entire analysis becomes less burdensome. 
+Software validity is an essential component of evidence quality: only if our analysis software does what it is expected to do can we produce reliable evidence. As described in Section \@ref(automation), it is essential to view every study as a software development exercise, creating an automated script that executes the entire analysis, from data in the Common Data Model (CDM) to the results such as estimates, figures as tables. It is this script, and any software used in this script, that must be validated. As described in Section \@ref(analysisImplementation), we can write te entire analysis as custom code, or we can use the functionality available in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). The advantage of using the Methods Library is that great care has already been taken to ensure its validity, so establishing the validity of the entire analysis becomes less burdensome. 
 
 In this chapter we first describe best practices for writing valid analysis code. After this we discuss how the Methods library is validated through its software development process and testing.
 
@@ -14,11 +14,11 @@ In this chapter we first describe best practices for writing valid analysis code
 
 ### Automation as a requirement for reproducibility {#automation}
 
-Traditionally, observational studies are often viewed as a journey rather than a process: a database expert may extract a data set from the database and hands this over to the data analyst, who may open it in a spreadsheet editor or other interactive tool, and starts working on the analysis. In the end, a result is produced, but little is preserved of how it came about. The destination of the journey was reached, but it is not possible to retrace the exact steps taken to get there. This practice is entirely unacceptable, both because it is not reproducible, but also because it lacks transparency; we do not know exactly what was done to produce the result, so we also cannot verify whether mistakes were made. 
+Traditionally, observational studies are often viewed as a journey rather than a process: a database expert may extract a data set from the database and hands this over to the data analyst, who may open it in a spreadsheet editor or other interactive tool, and starts working on the analysis. In the end, a result is produced, but little is preserved of how it came about. The destination of the journey was reached, but it is not possible to retrace the exact steps taken to get there. This practice is entirely unacceptable, both because it is not reproducible, but also because it lacks transparency; we do not know exactly what was done to produce the result, so we also cannot verify that no mistakes were made. 
 
 Every analysis generating evidence must therefore be fully automated. By automated we mean the analysis should be implemented as a single script, and we should be able to redo the entire analysis from database in CDM format to results, including tables and figures, with a single command. The analysis can be of arbitrary complexity, perhaps producing just a single count, or generating empirically calibrated estimates for millions of research questions, but the same principle applies. The script can invoke other scripts, which in turn can invoke even lower-level analysis processes. 
 
-The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, we can connect directly to the data in CDM format, and many advanced analytic are available through the other packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). 
+The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) R package, we can connect directly to the data in CDM format, and many advanced analytic are available through the other R packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). 
 
 ### Programming best practices
 
@@ -33,12 +33,12 @@ Observational analyses can become very complex, with many steps needed to produc
 
 Several approaches exist to verify the validity of software code, but two are especially relevant for code implementing an observational study:
 
-- **Code review**: One person writes the code, and another person reviews the code
+- **Code review**: One person writes the code, and another person reviews the code.
 - **Double coding**: Two persons both independently write the analysis code, and afterwards the results of the two scripts are compared.
 
 Code review has the advantage that it is usually less work, but the disadvantage is that the reviewer might miss some errors. Double coding on the other hand is usually very labor intensive, but it is less likely, although not impossible, that errors are missed. Another disadvantages of double coding is that two separate implementations *almost always*  produce different results, due to the many minor arbitrary choices that need to made (e.g. should "until exposure end" be interpreted as including the exposure end date, or not?). As a consequence, the two supposedly independent programmers often need to work together to align their analyses, thus breaking their independence. 
 
-Other software validation practices such as unit testing are less relevant here because a study is typically a one-time activity with highly complex relationship between input (the data in CDM) and outputs (the study results). Note that these practices are applied in the Methods Library.
+Other software validation practices such as unit testing are less relevant here because a study is typically a one-time activity with highly complex relationship between input (the data in CDM) and outputs (the study results), making these practices less usable. Note that these practices are applied in the Methods Library.
 
 ### Using the Methods Library
 
@@ -109,7 +109,7 @@ These tests are automatically performed when changes are made to a package (spec
 
 ### Simulation
 
-For more complex functionality it is not always obvious what the expected output should be given the input. In these cases simulations are sometimes deployed, generating input given a specific statistical model, and establishing whether the functionality produces results in line with this known model. For example, in the [SelfControlledCaseSeries](https://ohdsi.github.io/SelfControlledCaseSeries/) package simulations are used to verify that the method is able to detect and appropriately model temporal trends in simulated data.
+For more complex functionality it is not always obvious what the expected output should be given the input. In these cases simulations are sometimes used, generating input given a specific statistical model, and establishing whether the functionality produces results in line with this known model. For example, in the [SelfControlledCaseSeries](https://ohdsi.github.io/SelfControlledCaseSeries/) package simulations are used to verify that the method is able to detect and appropriately model temporal trends in simulated data.
 
 ## Summary
 
