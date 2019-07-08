@@ -218,7 +218,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.4.2" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#BigDataSupport"><i class="fa fa-check"></i><b>10.4.2</b> Support for big data</a></li>
 <li class="chapter" data-level="10.4.3" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#documentation-1"><i class="fa fa-check"></i><b>10.4.3</b> Documentation</a></li>
 <li class="chapter" data-level="10.4.4" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#system-requirements-1"><i class="fa fa-check"></i><b>10.4.4</b> System requirements</a></li>
-<li class="chapter" data-level="10.4.5" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#how-to-install-1"><i class="fa fa-check"></i><b>10.4.5</b> How to install</a></li>
+<li class="chapter" data-level="10.4.5" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#installR"><i class="fa fa-check"></i><b>10.4.5</b> How to install</a></li>
 </ul></li>
 <li class="chapter" data-level="10.5" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#installing-java"><i class="fa fa-check"></i><b>10.5</b> Installing Java</a></li>
 <li class="chapter" data-level="10.6" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#deployment-strategies"><i class="fa fa-check"></i><b>10.6</b> Deployment strategies</a><ul>
@@ -449,6 +449,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="C" data-path="NegativeControlsAppendix.html"><a href="NegativeControlsAppendix.html"><i class="fa fa-check"></i><b>C</b> Negative controls</a><ul>
 <li class="chapter" data-level="C.1" data-path="NegativeControlsAppendix.html"><a href="NegativeControlsAppendix.html#AceiThzNsc"><i class="fa fa-check"></i><b>C.1</b> ACEi and THZ</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html"><i class="fa fa-check"></i><b>D</b> Suggested Answers</a><ul>
+<li class="chapter" data-level="D.1" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#sql-and-r"><i class="fa fa-check"></i><b>D.1</b> SQL and R</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -723,7 +726,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="SqlAndR.html#cb27-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb27-2"><a href="SqlAndR.html#cb27-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.j7pgm3smchildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.nw1dzxohchildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters, <strong>temp table names are only allowed to be at most 22 characters long</strong> because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -1043,7 +1046,7 @@ Figure 11.1: The SqlDeveloper Shiny app.
 <span id="cb58-4"><a href="SqlAndR.html#cb58-4"></a>  <span class="kw">ON</span> drug_concept_id <span class="op">=</span> descendant_concept_id</span>
 <span id="cb58-5"><a href="SqlAndR.html#cb58-5"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept ingredient</span>
 <span id="cb58-6"><a href="SqlAndR.html#cb58-6"></a>  <span class="kw">ON</span> ancestor_concept_id <span class="op">=</span> ingredient.concept_id</span>
-<span id="cb58-7"><a href="SqlAndR.html#cb58-7"></a><span class="kw">WHERE</span> ingredient.concept_name <span class="op">=</span> <span class="st">&#39;Ibuprofen&#39;</span></span>
+<span id="cb58-7"><a href="SqlAndR.html#cb58-7"></a><span class="kw">WHERE</span> <span class="fu">LOWER</span>(ingredient.concept_name) <span class="op">=</span> <span class="st">&#39;ibuprofen&#39;</span></span>
 <span id="cb58-8"><a href="SqlAndR.html#cb58-8"></a>  <span class="kw">AND</span> ingredient.concept_class_id <span class="op">=</span> <span class="st">&#39;Ingredient&#39;</span></span>
 <span id="cb58-9"><a href="SqlAndR.html#cb58-9"></a>  <span class="kw">AND</span> ingredient.standard_concept <span class="op">=</span> <span class="st">&#39;S&#39;</span>;</span></code></pre></div>
 <table>
@@ -1308,6 +1311,18 @@ Figure 11.2: QueryLibrary: a library of SQL queries against the CDM.
 </div>
 <div id="exercises-2" class="section level2">
 <h2><span class="header-section-number">11.9</span> Exercises</h2>
+<p><strong>Prerequisites</strong></p>
+<p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">10.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="SqlAndR.html#cb65-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
+<span id="cb65-2"><a href="SqlAndR.html#cb65-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>)</span></code></pre></div>
+<p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="SqlAndR.html#cb66-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
+<p>The CDM database schema is “main”.</p>
+
+<div class="exercise">
+<span id="exr:exerciseCelecoxibUsers" class="exercise"><strong>Exercise 11.1  </strong></span>Using SQL and R, compute how many people have at least one prescription of celecoxib.
+</div>
+
 
 </div>
 </div>

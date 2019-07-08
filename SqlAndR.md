@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.b1c45962children ;"
+## [1] "SELECT * FROM temp_schema.w751d5a2children ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -649,7 +649,7 @@ INNER JOIN @cdm.concept_ancestor
   ON drug_concept_id = descendant_concept_id
 INNER JOIN @cdm.concept ingredient
   ON ancestor_concept_id = ingredient.concept_id
-WHERE ingredient.concept_name = 'Ibuprofen'
+WHERE LOWER(ingredient.concept_name) = 'ibuprofen'
   AND ingredient.concept_class_id = 'Ingredient'
   AND ingredient.standard_concept = 'S';
 ```
@@ -939,8 +939,27 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 - The **QueryLibrary** provides a collection of re-usable SQL queries for the CDM.
 </div>\EndKnitrBlock{rmdsummary}
 
-
-
-
 ## Exercises
+
+**Prerequisites**
+
+For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+
+
+```r
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Eunomia")
+```
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
+
+```r
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
+
+The CDM database schema is "main".
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCelecoxibUsers"><strong>(\#exr:exerciseCelecoxibUsers) </strong></span>Using SQL and R, compute how many people have at least one prescription of celecoxib.</div>\EndKnitrBlock{exercise}
+
 
