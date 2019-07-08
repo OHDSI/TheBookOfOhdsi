@@ -2,12 +2,6 @@
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
 date: "`r Sys.Date()`"
-output:
-  bookdown::pdf_book:
-  - latex_engine: xelatex
-  - keep_tex: yes
-  - includes:
-      in_header: preamble.tex   
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -83,8 +77,12 @@ contributors <- read.csv("Contributors.csv")
 contributors <- contributors[order(contributors$lastName), ]
 names <- paste(contributors$firstName, contributors$lastName)
 colCount <- 3
-names <- c(names, rep("", colCount - length(names) %% colCount))
+if (length(names) %% colCount != 0) {
+  names <- c(names, rep("", colCount - length(names) %% colCount))
+}
 table <- matrix(names, ncol = colCount, byrow = TRUE)
-knitr::kable(table)
+table <- as.data.frame(table)
+knitr::kable(table, col.names = NULL)
+# knitr::kable(table, col.names = rep("Contributor", colCount))
 ```
 

@@ -7,6 +7,7 @@ Kahn et al. define data quality as consisting of three components: (1) conforman
 
 Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge. 
 
+Table below shows examples of the above defined data quality (DQ) constructs.
 
 | Term         | Subtype                   | Validation example                                                                                                 |
 |--------------|---------------------------|--------------------------------------------------------------------------------------------------------------------|
@@ -17,6 +18,7 @@ Kahn additionaly defines two contexts: verification and validation. Verification
 | Plausibility | Uniqueness                | A zip code for a location does not refer to vastly conflicting geographical areas.                                 |
 |              | Atemporal                 | Use of a medication (by age group) for a specific disease agrees with the age pattern for that disease.            |
 |              | Temporal                  | Temporal pattern of an outbreak of a disease (e.g., Zika) agrees with external source pattern.                     |
+
 Kahn introduces the term *data quality check* (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines *data quality measure* (sometimes refered to as pre-computed analysis) as data analysis that  supports evaluation of a check. For example, distribution of days of supply by drug concept. 
 
 Two types of DQ checks can be distinguished[@weiskopf_methods_2013]
@@ -24,7 +26,7 @@ Two types of DQ checks can be distinguished[@weiskopf_methods_2013]
 * general checks
 * study-specific checks
 
-From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. *ETL data errors* are errors introduced during extract-tranform-load proces. A special type of ETL data error is *mapping error* that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model's standard terminology (e.g., RxNorm and RxNorm Extension).  A *source data error* is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).
+From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. *ETL data errors* are errors introduced during extract-tranform-load proces. A special type of ETL data error is *mapping error* that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model's standard terminology (e.g., RxNorm and RxNorm Extension).  A *source data error* is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).[@huser_multisite_2016]
 
 Data quality can also be seen as a component in a larger effort refered to as *evidence quality* or *evidence validation*. Data quality would fall in this framework under *data validation*.
 
@@ -70,4 +72,12 @@ For an international analysis, part of OHDSI study diagnostics (for a give datas
 A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study (https://www.ncbi.nlm.nih.gov/pubmed/30646124) defined a cohort 'HbA1c8Moderate' (see https://github.com/rohit43/DiabetesTxPath/blob/master/inst/settings/CohortsToCreate.csv)
 
 
+
+## ETL unit testing
+
+Extract Transform Load (ETL) process that transforms data from source (in EHR system or claims sys) to target (OMOP CDM) can contain errors. Unit testing of ETL code allows for preventing coding errors in ETL to cause data errors.
+
+### Unit testing framwork in Rabbit-in-a-Hat
+
+OHDSI tool Rabbit-in-a-Hat includes an ETL unit testing framwork. This framework defines an a set of function for each table in the source schema and a set of functions for each table in target OMOP CDM schema. Detailed description is available at https://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit:test_framework. 
 

@@ -1,5 +1,7 @@
 # Collaborators {#Collaborators}
 
+*Chapter lead: Patrick Ryan*
+
 History of OHDSI
 
 Map of collaborators
