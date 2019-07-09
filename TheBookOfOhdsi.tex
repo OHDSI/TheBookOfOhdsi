@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-07-08}
+    \date{2019-07-09}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -2633,7 +2633,7 @@ Simple comparisons are also supported:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{sql <-}\StringTok{ "SELECT * FROM cohort \{@x == 1\} ? \{WHERE subject_id = 1\};"}
-\KeywordTok{render}\NormalTok{(sql,}\DataTypeTok{x =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{x =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2643,7 +2643,7 @@ Simple comparisons are also supported:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{render}\NormalTok{(sql,}\DataTypeTok{x =} \DecValTok{2}\NormalTok{)}
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{x =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2656,7 +2656,7 @@ As well as the \texttt{IN} operator:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{sql <-}\StringTok{ "SELECT * FROM cohort \{@x IN (1,2,3)\} ? \{WHERE subject_id = 1\};"}
-\KeywordTok{render}\NormalTok{(sql,}\DataTypeTok{x =} \DecValTok{2}\NormalTok{)}
+\KeywordTok{render}\NormalTok{(sql, }\DataTypeTok{x =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2838,7 +2838,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.bsajqhj9children ;"
+## [1] "SELECT * FROM temp_schema.vyq6h1wschildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -3633,21 +3633,159 @@ The Eunomia package provides a simulated dataset in the CDM that will run inside
 The CDM database schema is ``main''.
 
 \BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exercisePeopleCount}{}{\label{exr:exercisePeopleCount} }Using SQL and R, compute how many people are in the database.
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
 \protect\hypertarget{exr:exerciseCelecoxibUsers}{}{\label{exr:exerciseCelecoxibUsers} }Using SQL and R, compute how many people have at least one prescription of celecoxib.
 \EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseGiBleedsDuringCelecoxib}{}{\label{exr:exerciseGiBleedsDuringCelecoxib} }Using SQL and R, compute how many diagnoses of gastrointestinal haemorrhage occur during exposure to celecoxib. (Hint: the concept ID for gastrointestinal haemorrhage is \href{http://athena.ohdsi.org/search-terms/terms/192671}{192671}.)
+\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \ref{SqlAndRanswers}.
 
 \hypertarget{Cohorts}{%
 \chapter{Building the building blocks: cohorts}\label{Cohorts}}
 
-Introduction: a cohort is a group of people that meet a set of criteria for a particular span of time etc. Cohorts are used throughout OHDSIs analytical tools as the primary building blocks.
+Contributors: Kristin Kostka, Patrick Ryan, Jon Duke, Juan Banda \& Joel Swerdel
 
-Using ATLAS: use material from Patrick's tutorial on cohort building
+Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for running high quality, systematic research. Cohort definitions vary from study to study depending on the research question of interest. Each cohort defines a specific way to represent a person with a condition or exposure using data in an observational health database. Thus, cohorts are an important component in documenting the methods of an observational research study.
 
-Using SQL: For advanced users, explain how cohorts can be created programmatically.
+The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and examples of how to build your own cohorts using ATLAS (see Chapter \ref{OhdsiAnalyticsTools}) and SQL queries against the Common Data Model (CDM).
 
-Probabilistic cohorts: Aphrodite?
+\hypertarget{theory}{%
+\section{Theory}\label{theory}}
 
-Case study: some example cohort definitions
+\BeginKnitrBlock{rmdimportant}
+\textbf{OHDSI Cohort Definition:} A cohort is defined as a set of persons who satisfy one or more inclusion criteria for a duration of time.
+\EndKnitrBlock{rmdimportant}
+
+In many peer-reviewed scientific manuscripts, a cohort definition is suggested to be analogous to a codeset of specific clinical codes (e.g.~ICD-9/ICD-10, NDC, HCPCS, etc). While codesets are an important piece to assembling a cohort, a cohort definition is not simply a codesets. A cohort definition requires logic for how to use the codeset in a criteria. A well documented cohort specifies how a patient enters a cohort, a patient exits a cohort and any additional inclusion criteria that impacts how to observe a patient's time-at-risk.
+
+\BeginKnitrBlock{rmdimportant}
+The term \emph{cohort} is often interchanged with the term phenotype. The term \emph{phenotype} is applied to patient characteristics inferred from electronic health record (EHR) data (Hripcsak citation). The goal is to draw conclusions about a target concept based on raw EHR data, claims data, or other clinically relevant data. Thus, a \emph{cohort} is a set of persons who satisfy one or more inclusion criteria (a phenotype) for a duration of time. A cohort in itself is not a phenotype but a phenotype can be used to create a cohort.
+\EndKnitrBlock{rmdimportant}
+
+There are two main approaches to constructing a cohort: \textbf{1) rules-based design} or \textbf{2) probabilistic design}. A rules-based cohort design relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules to qualify potential cohort membership. Conversely, a probabilistic design mines already available data to identify and qualify potential cohort membership through machine-suggested patterns. The next sections will discuss these approaches in further detail.
+
+\hypertarget{rules-based-cohort-design}{%
+\subsection{Rules-based cohort design}\label{rules-based-cohort-design}}
+
+A rules-based OHDSI cohort definition begins by an expert-consensus stating one or more inclusion criteria (e.g.~``people with angioedema'') in a specific duration of time (e.g.~``who developed this condition within the last 6 months'').
+
+When creating a cohort definition, you need to ask yourself the following questions:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{What initial event(s) define cohort entry?}
+\item
+  \emph{What inclusion criteria are applied to the initial events?}
+\item
+  \emph{What defines a person's cohort exit?}
+\end{itemize}
+
+To visualize the importance of these criteria, think of how this information comes together in a person's timeline. The OBSERVATION\_PERIOD table creates the window for which we see the person in the data.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/Cohorts/cohort-build} \caption{Cohort Creation}\label{fig:cohortBuild}
+\end{figure}
+
+\emph{Cohort entry criteria:} The cohort entry event can be one or many clinical attributes which dictate an individual patient's eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain, concept set, and any domain-specific attributes required.
+
+\emph{Inclusion criteria:} The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.
+
+\emph{Cohort exit criteria:} The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.
+
+\emph{Time-at-risk:} In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you're observing an acute/short term trend or a chronic/long term trend.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/Cohorts/cohort-TAR} \caption{Time-at-Risk Construction}\label{fig:cohortTar}
+\end{figure}
+
+In traditional study design, we would categorize time-at-risk for `on treatment' as the entirety of the time between when a person meets cohort entry through the cohort exit criteria. An `intent-to-treat' design would be the entirety of the time from the cohort start through the observation period ending (e.g.~when the person leaves the data because they've switched physicians, insurance carriers, etc).
+
+The use of these criteria may present a number of unique nuances to an OHDSI cohort including:
+
+\begin{itemize}
+\tightlist
+\item
+  One person may belong to multiple cohorts
+\item
+  One person may belong to the same cohort at multiple different time periods
+\item
+  One person may not belong to the same cohort multiple times during the same period of time
+\item
+  One cohort may have zero or more members
+\end{itemize}
+
+Throughout the Book of OHDSI, we will detail how to address these consequences in your overall study design. In each respective methodology, we will discuss how you can configure a methods package to address how one person shows up in multiple cohorts being studied.
+
+\hypertarget{probabilistic-cohort-design-using-aphrodite}{%
+\subsection{Probabilistic cohort design using APHRODITE}\label{probabilistic-cohort-design-using-aphrodite}}
+
+Rules-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria.
+
+To apply this approach on OMOP data, OHDSI community researchers created Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation (APHRODITE), an R-package cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM (reference: \url{https://www.ncbi.nlm.nih.gov/pubmed/28815104}). APHRODITE is an open-source package (\url{https://github.com/OHDSI/Aphrodite}) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building.
+
+\hypertarget{phenotype-evaluation}{%
+\section{Phenotype Evaluation}\label{phenotype-evaluation}}
+
+The systematic reuse of cohort definitions and the subsequent evaluation of phenotypes to characterize components of disease remains an ongoing piece of work within the OHDSI Community. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results (Swerdel reference). In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases).
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/Cohorts/cohort-PPV} \caption{Algorithm Evaluation}\label{fig:cohortPpv}
+\end{figure}
+
+For a complete validation of an algorithm, we need to calculate:
+
+\begin{itemize}
+\item
+  \textbf{Sensitivity} = True Positive (TP) / (True Positive + False Negative)
+\item
+  \textbf{Specificity} = True Negative (TN) / (True Negative + False Positive)
+\item
+  \textbf{Positive Predictive Value} = TP / (True Positive + False Positive)
+\end{itemize}
+
+This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data.
+
+\hypertarget{ohdsi-gold-standard-phenotype-library}{%
+\section{OHDSI Gold Standard Phenotype Library}\label{ohdsi-gold-standard-phenotype-library}}
+
+To assist the community in evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GPSL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These ``gold standard'' definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (\url{https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg}).
+
+\hypertarget{practice}{%
+\section{Practice}\label{practice}}
+
+Building a cohort starts with asking a question: ``I want to find patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension.''
+
+Before you can define a cohort, you will need to construct OMOP concept sets. OMOP concept sets represent the sets of clinical codes that are strung together with other logical expressions to create your cohort. A detailed discussion of OMOP concept sets can be found \ref{StandardizedVocabularies}. Cohort inclusion criteria are created using specific attributes of data in the OMOP CDM (e.g.~condition occurrence, drug era, drug exposure, observation period, visit, etc). OHDSI domains are analogous to building blocks to contribute cohort attributes:
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/Cohorts/cohort-legos} \caption{Building Blocks of Cohorts}\label{fig:cohortLegos}
+\end{figure}
+
+Prior to building a cohort, refer to the Common Data Model (Chapter \ref{CommonDataModel}) to understand what data elements are available for defining a cohort. When you are building a cohort, you should consider which of these is more important to you, finding all the eligible patients? \emph{vs.} Getting only the ones you are confident about?
+
+Your strategy to construct your cohort will depend on your definition stringency. The right cohort design will depend on the question you're trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share or is a compromise of the two. It is ultimately at the researcher's discretion what, threshold of stringency is necessary to adequately study the cohort of interest.
+
+\hypertarget{using-atlas}{%
+\subsection{Using ATLAS}\label{using-atlas}}
+
+Missing: need to add high quality screenshots.
+
+\hypertarget{using-sql}{%
+\subsection{Using SQL}\label{using-sql}}
+
+Missing: need to build tables for equivalent code.
+
+\hypertarget{exercises-3}{%
+\section{Exercises}\label{exercises-3}}
+
+To be created.
 
 \hypertarget{Characterization}{%
 \chapter{Characterization}\label{Characterization}}
@@ -6298,9 +6436,8 @@ For example, if we use the following settings for the gradientBoostingMachine: n
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gbmModel <-}\StringTok{ }\KeywordTok{setGradientBoostingMachine}\NormalTok{(}\DataTypeTok{ntrees =} \DecValTok{5000}\NormalTok{, }
-                                       \DataTypeTok{maxDepth =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{), }
-                                       \DataTypeTok{learnRate =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.01}\NormalTok{,}\FloatTok{0.1}\NormalTok{,}\FloatTok{0.9}\NormalTok{))}
+\NormalTok{gbmModel <-}\StringTok{ }\KeywordTok{setGradientBoostingMachine}\NormalTok{(}\DataTypeTok{ntrees =} \DecValTok{5000}\NormalTok{, }\DataTypeTok{maxDepth =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{10}\NormalTok{), }
+    \DataTypeTok{learnRate =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{, }\FloatTok{0.01}\NormalTok{, }\FloatTok{0.1}\NormalTok{, }\FloatTok{0.9}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6408,17 +6545,10 @@ To make things easier we also provide the \texttt{externalValidatePlp} function 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{valResult <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }
-                    \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                    \DataTypeTok{validationSchemaTarget =} \StringTok{'mainschema.dob'}\NormalTok{,}
-                    \DataTypeTok{validationSchemaOutcome =} \StringTok{'mainschema.dob'}\NormalTok{,}
-                    \DataTypeTok{validationSchemaCdm =} \StringTok{'cdmschema.dbo'}\NormalTok{,}
-                    \DataTypeTok{databaseNames =} \StringTok{'new database'}\NormalTok{,}
-                    \DataTypeTok{validationTableTarget =} \StringTok{'cohort'}\NormalTok{,}
-                    \DataTypeTok{validationTableOutcome =} \StringTok{'cohort'}\NormalTok{,}
-                    \DataTypeTok{validationIdTarget =} \DecValTok{1}\NormalTok{,}
-                    \DataTypeTok{validationIdOutcome =} \DecValTok{2}
-\NormalTok{                    )}
+\NormalTok{valResult <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails, }
+    \DataTypeTok{validationSchemaTarget =} \StringTok{"mainschema.dob"}\NormalTok{, }\DataTypeTok{validationSchemaOutcome =} \StringTok{"mainschema.dob"}\NormalTok{, }
+    \DataTypeTok{validationSchemaCdm =} \StringTok{"cdmschema.dbo"}\NormalTok{, }\DataTypeTok{databaseNames =} \StringTok{"new database"}\NormalTok{, }\DataTypeTok{validationTableTarget =} \StringTok{"cohort"}\NormalTok{, }
+    \DataTypeTok{validationTableOutcome =} \StringTok{"cohort"}\NormalTok{, }\DataTypeTok{validationIdTarget =} \DecValTok{1}\NormalTok{, }\DataTypeTok{validationIdOutcome =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6426,17 +6556,14 @@ If you have multiple databases to validate the model on then you can run:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{valResults <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }
-                    \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                    \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}\StringTok{'difschema.dob'}\NormalTok{, }\StringTok{'anotherschema.dob'}\NormalTok{),}
-                    \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}\StringTok{'difschema.dob'}\NormalTok{, }\StringTok{'anotherschema.dob'}\NormalTok{),}
-                    \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{'cdms1chema.dbo'}\NormalTok{,}\StringTok{'cdm2schema.dbo'}\NormalTok{,}\StringTok{'cdm3schema.dbo'}\NormalTok{),}
-                    \DataTypeTok{databaseNames =} \KeywordTok{list}\NormalTok{(}\StringTok{'new database 1'}\NormalTok{,}\StringTok{'new database 2'}\NormalTok{,}\StringTok{'new database 3'}\NormalTok{)}
-                    \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}\StringTok{'cohort2'}\NormalTok{,}\StringTok{'cohort3'}\NormalTok{),}
-                    \DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}\StringTok{'cohort2'}\NormalTok{,}\StringTok{'cohort3'}\NormalTok{),}
-                    \DataTypeTok{validationIdTarget =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{),}
-                    \DataTypeTok{validationIdOutcome =} \KeywordTok{list}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{)}
-\NormalTok{                    )}
+\NormalTok{valResults <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails, }
+    \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{"mainschema.dob"}\NormalTok{, }\StringTok{"difschema.dob"}\NormalTok{, }\StringTok{"anotherschema.dob"}\NormalTok{), }
+    \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{"mainschema.dob"}\NormalTok{, }\StringTok{"difschema.dob"}\NormalTok{, }\StringTok{"anotherschema.dob"}\NormalTok{), }
+    \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{"cdms1chema.dbo"}\NormalTok{, }\StringTok{"cdm2schema.dbo"}\NormalTok{, }\StringTok{"cdm3schema.dbo"}\NormalTok{), }
+    \DataTypeTok{databaseNames =} \KeywordTok{list}\NormalTok{(}\StringTok{"new database 1"}\NormalTok{, }\StringTok{"new database 2"}\NormalTok{, }\StringTok{"new database 3"}\NormalTok{), }
+    \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{"cohort1"}\NormalTok{, }\StringTok{"cohort2"}\NormalTok{, }\StringTok{"cohort3"}\NormalTok{), }\DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{"cohort1"}\NormalTok{, }
+        \StringTok{"cohort2"}\NormalTok{, }\StringTok{"cohort3"}\NormalTok{), }\DataTypeTok{validationIdTarget =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{), }\DataTypeTok{validationIdOutcome =} \KeywordTok{list}\NormalTok{(}\DecValTok{2}\NormalTok{, }
+        \DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6449,7 +6576,7 @@ Exploring the performance of a single plp model is easiest with the \texttt{view
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(outputFolder, }\StringTok{'Analysis_1'}\NormalTok{, }\StringTok{'plpResult'}\NormalTok{))}
+\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(outputFolder, }\StringTok{"Analysis_1"}\NormalTok{, }\StringTok{"plpResult"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6767,7 +6894,7 @@ For more details see the help page of the function.
 
 How do we know if the results of a study are reliable? Can they be trusted for use in clinical settings? What about in regulatory decision-making? Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or other type of analysis.
 
-One of the concerns that is often raised around observational studies and the use of ``real world data'' is the topic of data quality \citep[\citet{hersh2013caveats}, \citet{sherman2016real}]{botsis2010secondary}. Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well inherent biases. These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality \citep[\citet{liaw2013towards}, \citet{weiskopf2013methods}]{kahn2012pragmatic}. The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network \citep[\citet{kahn2015transparent}, \citet{callahan2017comparison}, \citet{yoon2016conversion}]{huser2016multisite}.
+One of the concerns that is often raised around observational studies and the use of ``real world data'' is the topic of data quality \citep{botsis2010secondary, hersh2013caveats, sherman2016real}. Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well inherent biases. These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality \citep{kahn2012pragmatic, liaw2013towards, weiskopf2013methods}. The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network \citep{huser_multisite_2016, kahn_transparent_2015, callahan2017comparison, yoon_2016}.
 
 Given the findings of the past decade in this area, it has become apparent that data quality is not perfect and never will be. This notion is nicely reflected in this quote from Dr Clem McDonald, a pioneer in the field of medical informatics:
 
@@ -6962,6 +7089,176 @@ OHDSI tool Rabbit-in-a-Hat includes an ETL unit testing framwork. This framework
 
 \hypertarget{ClinicalValidity}{%
 \chapter{Clinical Validity}\label{ClinicalValidity}}
+
+\emph{Chapter leads: Joel N. Swerdel, Seng Chan You}
+
+\begin{quote}
+The likelihood of transforming matter into energey is something akin to shooting birds in the dark in a country where there are only a few birds. \emph{Einstein, 1935}
+\end{quote}
+
+The goal of the Research Network is to lower the barrier to performing large-scale collaborative research using observational data to generate high-quality evidence through peer review across study design, execution, and data analysis \citep{Hripcsak2015}. Patient care and policy decisions demand high-quality evidence. Some have hypothesized that the volume, velocity, and veracity of observational data from electronic health records, administrative claims, and investment in data networks can be positioned to meet this demand. Analyses in large data sets are not necessarily correct simply because they are larger. Deficient studies may lead to misuse of resources and result in poor health care oucomes for patients (Morton et al). This chapter will focus on the question: `To what extent does the analysis conducted match the clinical intention?'
+
+Studies using observational data usually begin by developing cohorts of subjects to compare for determining some effect estimate. During the development of these cohorts certain assumptions are made concerning the validity of the created cohorts, the most important of which is that the subjects in the cohorts have the characteristic that is the basis of the study. For example, if the study involves subjects with myocardial infarction (MI) each of the subjects in the cohort must have had an MI. Ideally, we would definitive evidence of the diagnosis of MI. However, with observational data, we use subject records derived from limited data collected for a specific purpose. In some cases, the data may be derived from data sets specifically collected from subjects with the health condition of interest such as disease registries. While this is high quality data, it is usually a subset of all the subject's data. For example, the data for subjects with MI may include the interpretation of the electrocardiogram (ECG) and not the actual data from the ECG. Subjects are included in these registries based on a clinical review of each subject's health record. In other cases, the data is derived from administrative datasets from insurance claims. These data are usually much more limited than data from health registries but have the advantage of usually including a larger number of subjects from a broader population which may be more generalizable to the overall population. In the case of administrative data, determination of the health claim for a subject is based on administrative codes for the health condition. In the US, for example, these codes are from the International Classification of Diseases (ICD). Regardless of the origin of the data, the validity of the health conditions based on this data need to be validated.
+An example of a typical epidemiological study is shown in the diagram below:
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure1} \end{center}
+
+In this example, we are comparing the rates of the occurrence of MI in one year in cohorts of subjects who initiated either Drug A or Drug B. In this example, it is critical for the validity of the study to have valid measures of the rate of MI occurrence. For studies where administrative data is used, the determination of MI is typically from the use of a phenotype algorithm (PA). A PA is a heuristic-based set of rules used to determine the health condition with good precision. These algorithms are often derived from prior research some of which may have been validated. Examples of typical PAs for MI are illustrated below:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  One or more occurrences of MI in the subject's record
+\end{enumerate}
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure2} \end{center}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  One occurrence of MI in the subject's record followed by a second occurrence within 30 days
+\end{enumerate}
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure3} \end{center}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  One or more occurrences of MI in the subject's record from a hospital in-patient setting
+\end{enumerate}
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure4} \end{center}
+
+Once the PA for the study has been determined, the validity of the definition needs to be determined. To determine the validity of the different algorithms, we need to examine several performance characteristics of the PA including:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\item
+  Sensitivity of the PA -- what proportion of the subjects with the health condition in the whole cohort were determined to have the health outcome based on the PA?
+\item
+  Specificity of the PA - what proportion of the subjects without the health condition in the whole cohort were determined to not have the health outcome based on the PA?
+\item
+  Positive predictive value of the PA - what proportion of the subjects determined by the PA to have the health condition actually had the health condition?
+\item
+  Negative predictive value of the PA - what proportion of the subjects determined by the PA to not have the health condition actually did not have the health condition?
+\end{enumerate}
+
+The methods used to determine these performance characteristics are described in the remainder of this section.
+Validation Methods for Phenotype Algorithms
+The traditional method that has been used to validate PAs has been through a thorough examination of subject records by one or more people with sufficient clinical knowledge to accurately determine the health condition of interest. The method generally follows these steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\item
+  Select a random subset of subjects from the overall cohort.
+\item
+  Obtain permission from these subjects to receive health records.
+\item
+  Obtain the health records from those subjects who have granted permission to do so from their physicians.
+\item
+  Select one or more persons with sufficient clinical expertise to review subject records.
+\item
+  Determine the guidelines for adjudicating whether a subject is positive or negative for the health condition.
+\item
+  Use the results from the clinical adjudication to calculate the performance characteristics of the PA used in the study.
+\end{enumerate}
+
+Each step in the above process has the potential to bias the results of the study. For example, obtaining permission from subjects may be difficult and may introduce selection bias if those subjects who provide permission differ from those who do not. In addition, obtaining the patient records and conducting a clinical review of those records is a time consuming and costly process. In order to complete this process, many studies only examine the records of those subjects the PA identified as cases for the health conditions. Under those conditions, the only performance characteristic that can be calculated is positive predictive value.
+In the OHDSI community, we were in the process of developing a different approach. We are attempting to use diagnostic predictive models as an alternative method for cohort validation. The general idea is to simulate the ascertainment of the health outcome similar to the way clinicians would in a traditional phenotype algorithm validation but at scale. In this process we develop a diagnostic predictive model for a health outcome and then use that model to determine the probability of a health outcome in a large set of subjects, the ``evaluation'' cohort, within the data set. We then use that evaluation cohort to test our phenotype algorithms. Using this method, we are able to determine the full set of performance characteristics (i.e., sensitivity, specificity, and positive and negative predictive value) at scale. The tool is being developed as an open-source R package called \href{https://github.com/OHDSI/PheValuator}{\textbf{PheValuator}}.
+
+The process is as follows:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\item
+  Develop a diagnostic predictive model for a phenotype: Diagnostic predictive models are used to estimate the probability that a specific outcome or disease is present in an individual.\citep{moons_transparent_2015} The output of the model is a set of weighted predictors for diagnosing a phenotype.
+\item
+  Determine the probability of a phenotype for each individual in a large group of subjects: The set of predictors from the model can be used to estimate the probability of the presence of a phenotype in an individual. We use these predictions as a `probabilistic gold standard'.
+\item
+  Evaluate the performance characteristics of the PAs: We compare the predicted probability to the binary classification of a PA (the test conditions for the confusion matrix). Using the test conditions and the estimates for the true conditions, we can fully populate the confusion matrix and determine the full set of performance characteristics, i.e., sensitivity, specific, and predictive values.
+  There are limitations using this approach. First, we can only use data that is in dataset; we are limited to diagnoses, procedures, observations, measurements, and drug exposures. Moreover, measurements are usually incomplete in administrative datasets as these do not include the actual values for the measures and, as such, we are limited to the existence or absence of the measurements as part of the model. Clinical notes are also not usually present in our data sets. Patient complaints or symptoms may not be recorded in administrative data sets. These may include things like lethargy and acute pain.
+  In diagnostic predictive modeling we create a model that discriminates between those with the disease and those without the disease. For the PheValuator process, we use an extremely specific cohort definition, the ``xSpec'' cohort, to determine the cases for the models. The xSpec cohort uses a definition to find those with the disease with a very high probability of having the disease of interest. The xSpec cohort is may be defined as those subjects who have multiple condition code codes in their record for the health outcome of interest. For example, for atrial fibrillation, we may have subjects who have 10 or more codes for atrial fibrillation in their record. For MI, an acute outcome, we may use 5 occurrences of MI and include the requirement of having at least two occurrences from a hospital inpatient setting. For our non-cases, we exclude anybody from the data set who have any of the condition occurrences for the health outcome of interest. There are limitations to this method. It is possible that these xSpec cohort subjects may have may be more severe than other cases of the disease. It may also be that these subjects had longer observation time after initial diagnosis than the average patient. We use logistic regression to create these models, using the LASSO method.\citep{tibshirani_regression_1996} This method produces a parsimonious model. In so doing it removes many of the collinear covariates which may be present in many subjects. In the current version of our software we also do not include the temporality of events in the patient's record.
+\end{enumerate}
+
+\textbf{Practice of Phenotype Algorithm Validation}
+
+An example of the process to conduct a PA validation using chart review is provided by Cutrona and colleagues who validated their PA for MI for the US Food and Drug Administration's (FDA) Sentinel program.\citep{cutrona_validation_2013} The steps this group used to conduct the validation were as follows:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\item
+  Develop a PA for MI: They used the PA ``those with an ICD-9-CM code for AMI (410.x0, 410.x1) in the principal or primary position on facility claims for hospitalizations.''
+\item
+  Randomly select enough cases to be requested from the primary health care providers in order to achieve a sufficient successful return of records to achieve appropriate statistical precision for their performance measure, in this case PPV.
+\item
+  Request approximately an equal number of patient records from each of their four data providers.
+\item
+  Receive records from data providers redacted to ensure patient confidentiality.
+\item
+  Abstract the data from the records using the clinical expertise of two nurses. Abstracted information included EKG images, cardiac biomarkers, information on ischemic symptoms and results of cardiac diagnostic tests.
+\item
+  Test inter-rater reliability of the two data abstractors.
+\item
+  Develop an adjudication protocol based on standardized criteria from the joint European Society of Cardiology and American College of Cardiology Global Task Force
+\item
+  Review abstracted records using the clinical expertise of two cardiologists. The cardiologists were provided with all abstracted information listed above and an abstracted case summary. Detailed discharge information was not provided to the reviewers.
+\item
+  Classify each subject as: (1) definite MI; (2) probable MI; (3) no MI; or (4) unable to determine. Distinguishing between definite and probable was not defined for the clinicians but was to based on their own clinical judgement. Subjects were considered cases if the clinicians determined the subject to be definite or probable for MI.
+\item
+  Disagreement between the two clinicians, i.e., one clinician determining the subject to be definite or probable and the other either not an MI or unable to determine, was settled through a joint discussion between the clinicians until agreement could be reached.
+\end{enumerate}
+
+It appears evident that the above process is both very thorough as well as very time consuming and costly. In this example neither sensitivity nor specificity of the PA was determined likely owing to the cost of including records from a random selection of patients not determined to have an MI based on the PA. Overall the process examined the records of 143 of the 153 records requested. One advantage this group had was that patient permission was not required as the FDA Sentinel Initiative activities did not require institutional review board (IRB) approval. At the end of this process the researchers determined the PPV for this algorithm to be 86.0\% (95\% confidence interval; 79.2\%, 91.2\%).
+The above study was included in a review of validation efforts for MI PAs by Rubbo et al.\citep{rubbo_use_2015} In this review, the authors examined 33 studies involving validation of phenotype algorithms for acute myocardial infarction. They found that there was significant heterogeneity in the phenotype algorithms used in the studies as well as in the validation methods and the results reported. The authors concluded that for acute myocardial infarction there is no gold standard phenotype algorithm available. They noted that the process was both costly and time consuming. Due to that limitation most studies had small sample sizes in their validation leading to wide variations in the estimates for the performance characteristics. They also noted that in the 33 studies, while all the studies reported positive predictive value, only 11 studies reported sensitivity and only five studies reported specificity. The question then needs to be asked is this really validation of the phenotype algorithm?
+As discussed previously an alternative approach currently being developed in the OHDSI community is through the use of diagnostic predictive modeling tool using a tool called PheValuator. The following are the steps for testing PAs for MI using PheValuator:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\tightlist
+\item
+  Develop an extremely specific, xSpec, cohort to determine those with MI with a high probability. For MI, we used an occurrence of MI with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. The following illustrates this PA for MI:
+\end{enumerate}
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure5} \end{center}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Develop the diagnostic predictive model for MI
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Create a sample of subjects labeled as cases (from the xSpec cohort for MI) or non-cases in approximate proportion to the prevalence of MI in the population.
+\item
+  Use the OHDSI Patient Level Prediction package to develop a LASSO logistic regression model using all available data in the subject record.
+\end{itemize}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
+\setcounter{enumi}{2}
+\item
+  Randomly select 2M subjects from the database, the evaluation cohort, and apply the model to this cohort to determine the probability of MI in each subject.
+\item
+  Test possible algorithms for MI, e.g., 1 occurrence of MI in the patient record, using the evaluation cohort.
+\item
+  Compare performance characteristics for the various algorithms to determine the PA for MI for use within a study.
+\end{enumerate}
+
+Using this process, Table 1 displays the performance characteristics for four PAs for MI across five datasets. For a PA similar to the one evaluated by Cutrona and colleagues, ``\textgreater=1 X HOI, In-Patient'', we found a mean PPV of 67\% (range: 59\%-74\%).
+
+Table 1: Performance Characteristics of Four Phenotype Algorithms using Diagnostic Condition Codes to Determine Myocardial Infarction on Multiple Datasets using PheValuator. The continuous 3-color heat map for the data in the table was defined as Red (value = 0), Yellow (value = 0.5), and Green (value = 1).
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure6} \end{center}
+
+Sens -- Sensitivity ; PPV -- Positive Predictive Value ; Spec -- Specificity; NPV -- Negative Predictive Value; Dx Code -- Diagnosis code for the phenotype; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database -- Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater
 
 \hypertarget{SoftwareValidity}{%
 \chapter{Software Validity}\label{SoftwareValidity}}
@@ -7661,8 +7958,8 @@ Our evaluation of the designs in the Methods Library also shows that empirical c
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-3}{%
-\section{Exercises}\label{exercises-3}}
+\hypertarget{exercises-4}{%
+\section{Exercises}\label{exercises-4}}
 
 Todo
 
@@ -7679,84 +7976,174 @@ Study reproducibility (Martijn has some slides that might help: \url{http://www.
 \hypertarget{NetworkResearch}{%
 \chapter{OHDSI Network Research}\label{NetworkResearch}}
 
-Contributors: Greg Klebanov, Vojtech Huser, list others
+Contributors: Greg Klebanov, Kristin Kostka \& Vojtech Huser
 
-What is OHDSI Network?
+The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including Standardized Vocabularies , the Common Data Model (CDM) , analytical methods packages, ATLAS and the study steps (Chapter\ref{StudySteps}) to run a retrospective database study. OHDSI Network Studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
+
+\hypertarget{what-is-the-ohdsi-research-network}{%
+\section{What is the OHDSI Research Network?}\label{what-is-the-ohdsi-research-network}}
+
+The OHDSI Research Network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 1.2 billion patient records (\textasciitilde650 million de-duplicated patient records) in the OMOP CDM. This includes more than 200 researchers and 82 observational health databases across 17 countries with regional central coordinating centers housed at Columbia University (USA), Erasmus Medical Center (Europe) and Ajou University (South Korea). The OHDSI community continues to grow rapidly across Europe (in collaboration with the IMI EHDEN project), Central America (e.g.~Argentina, Brazil, Colombia), and Asia (e.g.~China, Japan, Singapore).
+
+OHDSI is open network, inviting healthcare institutions across the globe with active patient data to join the network and convert data to the OMOP CDM. As OMOP data conversions are complete, collaborators are invited to report site information in the Data Network census maintained by the OHDSI Program Manager (\href{mailto:beaton@ohdsi.org}{\nolinkurl{beaton@ohdsi.org}}). Each OHDSI network site participates voluntarily. There are no hard obligations. Each site opts-in to each respective network study. In each study, data remains at the site behind a firewall. No data pooling across network sites. Only aggregate results are shared.
+
+\BeginKnitrBlock{rmdimportant}
+\textbf{Benefits of Joining the OHDSI Network}
+Unlock the power of institutional data: Transforming institutional EHR data in the OMOP Common Data Model enables clinical research on populations of your patients, something EHR systems don't support.
+Access to free tools: OHDSI publishes free, open source tools for data characterization and analytics (e.g.~browsing the clinical concepts, defining and characterizing cohorts, running Population-Level Estimation and Patient-Level Prediction studies).
+Participate in a premier research community: Author and publish network research, gain access to eminent leaders in global real-world evidence community.
+Buildout Quality Benchmarks: Network can validate quality improvement benchmarks against other institutions (e.g.~On average how long does it take to get an appendectomy discharged?)
+\EndKnitrBlock{rmdimportant}
+
+\hypertarget{what-is-an-ohdsi-network-study}{%
+\section{What is an OHDSI Network Study?}\label{what-is-an-ohdsi-network-study}}
+
+In the study steps chapter (Chapter\ref{StudySteps}), we discussed the steps to execute a retrospective database study using the OMOP CDM. A study may be conducted on a single OMOP CDM or on multiple OMOP CDMs. It can be conducted within a single institution's OMOP CDM data or across many institutions. There is no requirement that an OHDSI research study package be shared across the entire OMOP network. In fact, there may be legitimate instances when a study protocol is written for specific clinical practice that cannot be generalized to the entirety of the network. The principal investigator of each OHDSI research study will determine which, if any, sites they would like to include in an analysis.
+
+\BeginKnitrBlock{rmdimportant}
+\textbf{When is a study considered a network study?} An OHDSI research project becomes a network study when it is published and shared for execution across the OHDSI community.
+
+Elements of a Network Study:
+- Must have a protocol (a description of the analysis to be performed)
+- Must have a study code package designed for the OMOP CDM
+- Must be executed across two or more network sites (not just 2 or more databases at a single site)
+- Encouraged to publish all documentation on GitHub
+- At the end of the analysis, the results are made available in Github or other public repository (e.g.~a Shiny Application)
+\EndKnitrBlock{rmdimportant}
+
+\hypertarget{executing-an-ohdsi-network-study}{%
+\section{Executing an OHDSI Network Study}\label{executing-an-ohdsi-network-study}}
+
+Conducting an OHDSI Network Study requires a substantial amount of preparation to ensure success.
+
+\begin{quote}
+''You'll never walk alone in your OHDSI journey.'' - Peter Rijnbeek
+\end{quote}
+
+\BeginKnitrBlock{rmdimportant}
+\textbf{New to Network Studies?} The OHDSI Study Nurture Committee is a resource for you as you navigate your journey. This committee helps train and guide researchers to complete OHDSI Studies including how to effectively use OHDSI tools, providing guidance to the OHDSI study design for increase reproducibility and reliability and assisting with helping study investigators recruit data partners to run study packages.
+\EndKnitrBlock{rmdimportant}
+
+Running an OHDSI Network Study has three distinct stages:
 
 \begin{itemize}
 \tightlist
 \item
-  OHDSI Community and Network Research
+  Study Feasibility and Design
 \item
-  International Open Science Networks
-
-  \begin{itemize}
-  \tightlist
-  \item
-    OHDSI US
-  \item
-    OHDSI EU and EHDEN
-  \item
-    OHDSI APAC
-  \end{itemize}
+  Study Execution
+\item
+  Results Dissemination and Publication
 \end{itemize}
 
-OHDSI Network Study Process
+\hypertarget{study-feasibility-and-design}{%
+\subsection{Study Feasibility and Design}\label{study-feasibility-and-design}}
+
+The study feasibility stage \emph{(pre-study stage)} is focused on supporting a definition of a study and a creation of the study protocol, \emph{e.g.~undertaking activities to make sure the study is feasible to be executed as described in the formal protocol.}
+
+The feasibility stage does not have a well-defined process but rather is driven by various supporting activities, including identification and enrollment of relevant databases that contain the targeted patient population with required drug exposure, procedure information, condition or demographics information through data characterization, validating and agreeing on target analytical methods and algorithms. These activities may involve sharing JSON files of cohort definitions from ATLAS and provisional test of study R packages. A study lead may have enough data to do this inside their own organization or may opt for support from other OHDSI network sites.
+
+The outcome of the feasibility stage is generation of a final protocol as well as a list of target collaborators. The formal protocol will detail the study team, including the designated study lead (often the corresponding author for publication purposes), and information on the timeline for the study. The protocol is a critical component for additional network sites to review, approve and execute the study package on their OMOP CDM data. A protocol must include information on study population, the methods being used, how the results will be stored and analyzed as well as how the study results will be disseminated after completion (e.g.~a publication, a poster, etc).
+
+\hypertarget{study-execution}{%
+\subsection{Study Execution}\label{study-execution}}
+
+After completing feasibility, a study advances to the execution phase. The key activities in executing a network study include the following:
 
 \begin{itemize}
 \tightlist
 \item
-  Goals
+  The study lead formally initiates a new OHDSI network study with the OHDSI Coordinating Center. \emph{In tandem, this may include undertaking other organization-specific processes to approve an OHDSI study.}
 \item
-  Workflow Overview
+  The study lead publishes the study protocol to the OHDSI GitHub.
 \item
-  Structure of Studies
+  The study lead announces the study on the OHDSI Community Call and OHDSI Forum, inviting participating centers and collaborators.
 \item
-  Protocol and IRB issues
+  Study participating organizations assemble teams within each site, assign study roles (e.g.~data analyst(s) executing the study package, site leadership reviewing the study design and manuscript).
 \item
-  Existing framework (de-identified {[}time shifted{]} OMOP dataset under existing IRB protocol
+  The data scientist/statisticians for the study lead will use a study protocol to design study analyses and generate study code.
 \item
-  Overcoming Network Study Challenges
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Data Privacy, Security and Compliance
-  \item
-    Data Quality
-  \item
-    Running OHDSI Methods in Isolated Environment
-  \item
-    OMOP CDM Versioning
-  \end{itemize}
+  The data scientist/statisticians will conduct a feasibility test of study code within their own environment. The package will be shared to 1-2 network sites for additional validation.
+\item
+  The data scientist/statistician will publish the validated study code in the OHDSI GitHub for execution at participating sites.
+\item
+  Site data scientists/statisticians access the OHDSI study package and generate results in the standardized format following OHDSI guidelines. Each participating site will follow internal institutional processes regarding data sharing rules. \textbf{Sites should not share results unless approval is obtained from IRB or other institutional approval processes.}
+\item
+  Data scientist/statisticians and Study Lead collect and review the analysis execution results.
+\item
+  Iterate steps 5-7, if reasonable adjustments required.
+\item
+  Collaboratively finalize study results. Study lead disseminates study results (e.g.~a Shiny Application).
+\item
+  Study lead formally closes the study out with OHDSI Coordinating Center.
 \end{itemize}
 
-Tools, Platforms and Study Automation
-* OHDSI Methods support for Network Studies
-* LEGEND (should we have it here?)
-* OHDSI ARACHNE Network Platform
+While OHDSI processes can be executed rapidly, it is advised to allow for a few weeks to months for all participating sites to execute the study and receive appropriate approvals to publish results. A study leads should set study milestones and anticipated closure date in advance to assist with managing the overall study timeline.
 
-Opportunities, future trends and Roadmap
+\hypertarget{results-dissemination-and-publication}{%
+\subsection{Results Dissemination and Publication}\label{results-dissemination-and-publication}}
 
-\hypertarget{ohdsi-network-study-examples}{%
-\section{OHDSI Network Study Examples}\label{ohdsi-network-study-examples}}
+During this stage, the study lead will collaborate with other sites on various administrative tasks, such as manuscript development and optimizing data visualizations.
 
-\hypertarget{endometriosis-study}{%
-\subsection{Endometriosis study}\label{endometriosis-study}}
+\BeginKnitrBlock{rmdimportant}
+Not sure where to publish your OHDSI network study? Consult JANE (Journal/Author Name Estimator), a tool which takes your abstract and scans publications for relevance and fit (\url{http://jane.biosemantics.org/}).
+\EndKnitrBlock{rmdimportant}
 
-An endometriosis characterization study (available at \url{https://github.com/molliemckillop/Endometriosis-Phenotype-Characterization}) works with two cohorts. They are defined in cohorts.csv file (see here \url{https://github.com/molliemckillop/Endometriosis-Phenotype-Characterization/blob/master/inst/settings/cohorts.csv}).
+Researchers are also invited to present OHDSI Network Studies on weekly OHDSI community calls and at OHDSI Symposiums across the globe.
 
-After creating a cohort table, it is populated by executing this command here by infering a name of a `.sql' file from the previously defined cohort file. A createCohorts function is executed next. (see \url{https://github.com/molliemckillop/Endometriosis-Phenotype-Characterization/blob/master/R/createCohorts.R}). An SQL file that is generated by Atlas populates the cohort table with specific person\_ids that fulfill the cohort definition.
+\hypertarget{types-of-network-studies}{%
+\section{Types of Network Studies}\label{types-of-network-studies}}
 
-\hypertarget{excercises-2}{%
-\section{Excercises}\label{excercises-2}}
+The network studies can be of different types - ranging from simple characterization questions to more advanced predictive studies. A large number of studies conducted today are focused on epidemiology and drug efficacy and safety and thus carry different type of characterization analyses such as patient population characterization, incidence rates of certain outcomes/conditions, comparative drug effectiveness comparison, prevalence of disease and similar. However, more and more studies cary predictive nature including the probability of an outcome for a certain type of a patient (personalized medicine).
 
-\hypertarget{defining-a-cohort}{%
-\subsection{Defining a cohort}\label{defining-a-cohort}}
+\hypertarget{forward-looking-using-network-study-automation}{%
+\section{Forward Looking: Using Network Study Automation}\label{forward-looking-using-network-study-automation}}
 
-Q: Study the code for the x study and determine whether the cohort definition is available on the public OHDSI server. It if it, what is the cohort ID there?
+The current network study process is manual and rudimentary - with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, share code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes. The ARACHNE Research Network platform is a community-driven solution to streamline and automate the process of network studies.
 
-A:
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNE} \caption{The ARACHNE Network Study Process.}\label{fig:arachne}
+\end{figure}
+
+The ARACHNE Platform includes multiple core components:
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{ARACHNE Data Catalog} where different network participants register and maintain information about data sets available for network research
+\item
+  The \textbf{Study Workflow Manager} that allows study teams to orchestrate and end to end network study process. The ARACHNE Research Network platform It is taking full advantage of OHDSI standards and establishes a consistent, transparent, secure and compliant observational research process, across multiple organizations. ARACHNE standardizes the communication protocol to access the data and exchange analysis results, while enabling authentication and authorization for restricted content. It brings participating organizations - data providers, investigators, sponsors and data scientists - into a single collaborative study team and facilitates an end-to-end observational study. The tool enables the creation of a complete, standards-based R, Python and SQL execution environment including approval workflows controlled by the data custodian.
+\end{itemize}
+
+ARACHNE is built to provide a seamless integration with other OHDSI tools, including ACHILLES reports and an ability to import ATLAS design artefacts, create self-contained packages and automatically execute those across multiple sites. The future vision is to eventually enable multiple networks to be linked together for the purpose of conducting research not only between organizations within a single network, but also between organizations across multiple networks.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNENON} \caption{The ARACHNE Network of Networks.}\label{fig:arachneNon}
+\end{figure}
+
+\hypertarget{best-practices-for-network-research}{%
+\section{Best Practices for Network Research}\label{best-practices-for-network-research}}
+
+There are multiple best practices that study teams should be following while executing the network study:
+
+\begin{itemize}
+\tightlist
+\item
+  Make sure that study questions can be supported by data available. Perform study feasibility to identify the best databases.
+\item
+  Write code in generic way and parametrize all functions and variables e.g.~do not hard database connection, local hard drive path, assume a certain operating system.
+\item
+  Ensure the target databases have required OMOP CDM version and OMOP Standardized Vocabularies.
+\item
+  Ensure the target database ETL has followed THEMIS business rules and conventions and correct data was placed into correct CDM tables and fields.
+\item
+  Do not tweak the study code to get desired results
+\end{itemize}
+
+\hypertarget{example-legend---hypertension}{%
+\section{Example: LEGEND - Hypertension}\label{example-legend---hypertension}}
+
+To be added.
 
 \hypertarget{appendix-appendix}{%
 \appendix \addcontentsline{toc}{chapter}{\appendixname}}
@@ -8426,12 +8813,32 @@ Concept ID & Concept Name\tabularnewline
 
 This Appendix contains suggested answers for the exercises in the book.
 
-\hypertarget{sql-and-r}{%
-\section{SQL and R}\label{sql-and-r}}
+\hypertarget{SqlAndRanswers}{%
+\section{SQL and R}\label{SqlAndRanswers}}
+
+\textbf{Exercise \ref{exr:exercisePeopleCount}}
+
+To compute the number of people we can simply query the PERSON table:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(DatabaseConnector)}
+\NormalTok{connection <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connectionDetails)}
+\NormalTok{sql <-}\StringTok{ "SELECT COUNT(*) AS person_count}
+\StringTok{FROM @cdm.person;"}
+
+\KeywordTok{renderTranslateQuerySql}\NormalTok{(connection, sql, }\DataTypeTok{cdm =} \StringTok{"main"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   PERSON_COUNT
+## 1         2694
+\end{verbatim}
 
 \textbf{Exercise \ref{exr:exerciseCelecoxibUsers}}
 
-To compute the number of people with at least one prescription of celecoxib, we need to query the DRUG\_EXPOSURE table. To find all drugs containing the ingredient celecoxib, we join to the CONCEPT\_ANCESTOR and CONCEPT tables:
+To compute the number of people with at least one prescription of celecoxib, we can query the DRUG\_EXPOSURE table. To find all drugs containing the ingredient celecoxib, we join to the CONCEPT\_ANCESTOR and CONCEPT tables:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -8457,6 +8864,63 @@ To compute the number of people with at least one prescription of celecoxib, we 
 \end{verbatim}
 
 Note that we use \texttt{COUNT(DISTINCT(person\_id))} to find the number of distinct persons, considering that a person might have more than one prescription. Also note that we use the \texttt{LOWER} function to make our search for ``celecoxib'' case-insensitive.
+
+Alternatively, we can use the DRUG\_ERA table, which is already rolled up to the ingredient level:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(DatabaseConnector)}
+\NormalTok{connection <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connectionDetails)}
+
+\NormalTok{sql <-}\StringTok{ "SELECT COUNT(DISTINCT(person_id)) AS person_count}
+\StringTok{FROM @cdm.drug_era}
+\StringTok{INNER JOIN @cdm.concept ingredient}
+\StringTok{  ON drug_concept_id = ingredient.concept_id}
+\StringTok{WHERE LOWER(ingredient.concept_name) = 'celecoxib'}
+\StringTok{  AND ingredient.concept_class_id = 'Ingredient'}
+\StringTok{  AND ingredient.standard_concept = 'S';"}
+
+\KeywordTok{renderTranslateQuerySql}\NormalTok{(connection, sql, }\DataTypeTok{cdm =} \StringTok{"main"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   PERSON_COUNT
+## 1         1844
+\end{verbatim}
+
+\textbf{Exercise \ref{exr:exerciseGiBleedsDuringCelecoxib}}
+
+To compute the number of diagnoses during exposure we extend our previous query by joining to the CONDITION\_OCCURRENCE table. We join to the CONCEPT\_ANCESTOR table to find all condition concepts that imply a gastrointestinal haemorrhage:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(DatabaseConnector)}
+\NormalTok{connection <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connectionDetails)}
+\NormalTok{sql <-}\StringTok{ "SELECT COUNT(*) AS diagnose_count}
+\StringTok{FROM @cdm.drug_era}
+\StringTok{INNER JOIN @cdm.concept ingredient}
+\StringTok{  ON drug_concept_id = ingredient.concept_id}
+\StringTok{INNER JOIN @cdm.condition_occurrence}
+\StringTok{  ON condition_start_date >= drug_era_start_date}
+\StringTok{    AND condition_start_date <= drug_era_end_date}
+\StringTok{INNER JOIN @cdm.concept_ancestor }
+\StringTok{  ON condition_concept_id =descendant_concept_id}
+\StringTok{WHERE LOWER(ingredient.concept_name) = 'celecoxib'}
+\StringTok{  AND ingredient.concept_class_id = 'Ingredient'}
+\StringTok{  AND ingredient.standard_concept = 'S'}
+\StringTok{  AND ancestor_concept_id = 192671;"}
+
+\KeywordTok{renderTranslateQuerySql}\NormalTok{(connection, sql, }\DataTypeTok{cdm =} \StringTok{"main"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   DIAGNOSE_COUNT
+## 1         41
+\end{verbatim}
+
+Note that in this case it is essential to use the DRUG\_ERA table instead of the DRUG\_EXPOSURE table, because drug exposures with the same ingredient can overlap, but drug eras can. This could lead to double counting. For example, imagine a person received two drug drugs containing celecoxib at the same time. This would be recorded as two drug exposures, so any diagnoses occurring during the exposure would be counted twice. The two exposures will be merged into a single non-overlapping drug era.
 
 \bibliography{book.bib,packages.bib}
 

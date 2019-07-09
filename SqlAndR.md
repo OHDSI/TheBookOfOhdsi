@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.snxjinzhchildren ;"
+## [1] "SELECT * FROM temp_schema.ryu5puxpchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -965,7 +965,7 @@ The CDM database schema is "main".
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCelecoxibUsers"><strong>(\#exr:exerciseCelecoxibUsers) </strong></span>Using SQL and R, compute how many people have at least one prescription of celecoxib.
 </div>\EndKnitrBlock{exercise}
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseGiBleedsDuringCelecoxib"><strong>(\#exr:exerciseGiBleedsDuringCelecoxib) </strong></span>Using SQL and R, compute how many diagnoses of gastrointestinal haemorrhage occur during exposure to celecoxib. (Hint: the concept ID for gastrointestinal haemorrhage is [192671.](http://athena.ohdsi.org/search-terms/terms/192671).)
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseGiBleedsDuringCelecoxib"><strong>(\#exr:exerciseGiBleedsDuringCelecoxib) </strong></span>Using SQL and R, compute how many diagnoses of gastrointestinal haemorrhage occur during exposure to celecoxib. (Hint: the concept ID for gastrointestinal haemorrhage is [192671](http://athena.ohdsi.org/search-terms/terms/192671).)
 </div>\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(SqlAndRanswers).

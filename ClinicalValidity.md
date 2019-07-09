@@ -115,8 +115,3 @@ Table 1: Performance Characteristics of Four Phenotype Algorithms using Diagnost
 <img src="images/ClinicalValidity/figure6.jpg" width="75%" style="display: block; margin: auto;" />
 
 Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the phenotype; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database – Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater
-
-1.	Collins GS, Reitsma JB, Altman DG, Moons KM. Transparent reporting of a multivariable prediction model for individual prognosis or diagnosis (tripod): The tripod statement. Ann Intern Med. 2015;162(1):55-63.
-2.	Tibshirani R. Regression shrinkage and selection via the lasso. Journal of the Royal Statistical Society Series B (Methodological). 1996;58(1):267-88.
-3.	Cutrona SL, Toh S, Iyer A, Foy S, Daniel GW, Nair VP, et al. Validation of Acute Myocardial Infarction in the Food and Drug Administration’s Mini-Sentinel program. Pharmacoepidemiol Drug Saf. 2013 06/29;22(1):40-54.
-4.	Rubbo B, Fitzpatrick NK, Denaxas S, Daskalopoulou M, Yu N, Patel RS, et al. Use of electronic health records to ascertain, validate and phenotype acute myocardial infarction: A systematic review and recommendations. Int J Cardiol. 2015;187:705-11.
