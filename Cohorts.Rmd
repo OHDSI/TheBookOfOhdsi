@@ -1,11 +1,96 @@
 # Building the building blocks: cohorts {#Cohorts}
 
-Introduction: a cohort is a group of people that meet a set of criteria for a particular span of time etc. Cohorts are used throughout OHDSIs analytical tools as the primary building blocks.
+Contributors: Kristin Kostka, Patrick Ryan, Jon Duke, Juan Banda, Joel Swerdel
 
-Using ATLAS: use material from Patrick’s tutorial on cohort building
+#Introduction
+Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for running high quality, systematic research. Cohort definitions vary from study to study depending on the research question of interest. Each cohort defines a specific way to represent a person with a condition or exposure using data in an observational health database. Thus, cohorts are an important component in documenting the methods of an observational research study. 
 
-Using SQL: For advanced users, explain how cohorts can be created programmatically.
+The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and examples of how to build your own cohorts using \@ref(OhdsiAnalyticsTools) and SQL queries against the \@ref(CommonDataModel),
+#Theory
+```{block2, type='rmdimportant'}
+**OHDSI Cohort Definition:** A cohort is defined as a set of persons who satisfy one or more inclusion criteria for a duration of time. 
+```
+In many peer-reviewed scientific manuscripts, a cohort definition is suggested to be analogous to a codeset of specific clinical codes (e.g. ICD-9/ICD-10, NDC, HCPCS, etc). While codesets are an important piece to assembling a cohort, a cohort definition is not simply a codesets. A cohort definition requires logic for how to use the codeset in a criteria. A well documented cohort specifies how a patient enters a cohort, a patient exits a cohort and any additional inclusion criteria that impacts how to observe a patient’s time-at-risk. 
 
-Probabilistic cohorts: Aphrodite?
+```{block2, type='rmdimportant'}
+The term *cohort* is often interchanged with the term phenotype. The term *phenotype* is applied to patient characteristics inferred from electronic health record (EHR) data (Hripcsak citation). The goal is to draw conclusions about a target concept based on raw EHR data, claims data, or other clinically relevant data. Thus, a *cohort* is a set of persons who satisfy one or more inclusion criteria (a phenotype) for a duration of time. A cohort in itself is not a phenotype but a phenotype can be used to create a cohort.
+```
 
-Case study: some example cohort definitions
+There are two main approaches to constructing a cohort: **1) rules-based design** or **2) probabilistic design**. A rules-based cohort design relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules to qualify potential cohort membership. Conversely, a probabilistic design mines already available data to identify and qualify potential cohort membership through machine-suggested patterns. The next sections will discuss these approaches in further detail.
+
+## Rules-based cohort design
+A rules-based OHDSI cohort definition begins by an expert-consensus stating one or more inclusion criteria (e.g. “people with angioedema”) in a specific duration of time (e.g. “who developed this condition within the last 6 months”). 
+
+When creating a cohort definition, you need to ask yourself the following questions:
+*What initial event(s) define cohort entry?*
+*What inclusion criteria are applied to the initial events?*
+*What defines a person’s cohort exit?*
+
+To visualize the importance of these criteria, think of how this information comes together in a person’s timeline. The \@ref(CommonDataModell#data-model-conventions#OBSERVATION_PERIOD table] creates the window for which we see the person in the data. 
+```{r figure1, fig.cap='Cohort Creation',echo=FALSE, out.width='100%'}
+knitr::include_graphics("images/Cohorts/cohort-build.png")
+```
+
+*Cohort entry criteria:* The cohort entry event can be one or many clinical attributes which dictate an individual patient’s eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain, concept set, and any domain-specific attributes required. 
+
+*Inclusion criteria:* The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.
+
+*Cohort exit criteria:* The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g. persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.
+
+*Time-at-risk:* In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you’re observing an acute/short term trend or a chronic/long term trend.
+
+```{r figure2, fig.cap='Time-at-Risk Construction',echo=FALSE, out.width='100%'}
+knitr::include_graphics("images/Cohorts/cohort-TAR.png")
+```
+
+In traditional study design, we would categorize time-at-risk for ‘on treatment’ as the entirety of the  time between when a person meets cohort entry through the cohort exit criteria. An ‘intent-to-treat’ design would be the entirety of the time from the cohort start through the observation period ending (e.g. when the person leaves the data because they’ve switched physicians, insurance carriers, etc).
+
+The use of these criteria may present a number of unique nuances to an OHDSI cohort including:
+- One person may belong to multiple cohorts
+- One person may belong to the same cohort at multiple different time periods
+- One person may not belong to the same cohort multiple times during the same period of time
+- One cohort may have zero or more members
+
+Throughout the Book of OHDSI, we will detail how to address these consequences in your overall study design. In each respective methodology, we will discuss how you can configure a methods package to address how one person shows up in multiple cohorts being studied.
+
+## Probabilistic cohort design using APHRODITE
+Rules-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria.
+
+To apply this approach on OMOP data, OHDSI community researchers created Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation (APHRODITE), an R-package cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM (reference: https://www.ncbi.nlm.nih.gov/pubmed/28815104). APHRODITE is an open-source package (https://github.com/OHDSI/Aphrodite) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building. 
+## Phenotype Evaluation
+The systematic reuse of cohort definitions and the subsequent evaluation of phenotypes to characterize components of disease remains an ongoing piece of work within the OHDSI Community. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results (Swerdel reference). In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases).
+
+```{r figure3, fig.cap='Algorithm Evaluation',echo=FALSE, out.width='100%'}
+knitr::include_graphics("images/Cohorts/cohort-PPV.png")
+```
+
+For a complete validation of an algorithm, we need to calculate:
+**Sensitivity** = True Positive (TP) / (True Positive + False Negative)
+**Specificity** = True Negative (TN) / (True Negative + False Positive)
+**Positive Predictive Value** = TP / (True Positive + False Positive)
+
+This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. 
+## OHDSI Gold Standard Phenotype Library
+To assist the community in evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GPSL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg).
+
+# Practice
+Building a cohort starts with asking a question: “I want to find patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension.”
+
+Before you can define a cohort, you will need to construct OMOP concept sets. OMOP concept sets represent the sets of clinical codes that are strung together with other logical expressions to create your cohort. A detailed discussion of OMOP concept sets can be found \@ref(StandardizedVocabularies). Cohort inclusion criteria are created using specific attributes of data in the OMOP CDM (e.g. condition occurrence, drug era, drug exposure, observation period, visit, etc). OHDSI domains are analogous to building blocks to contribute cohort attributes:
+
+```{r figure4, fig.cap='Building Blocks of Cohorts',echo=FALSE, out.width='100%'}
+knitr::include_graphics("images/Cohorts/cohort-legos.png")
+```
+Prior to building a cohort, refer to the \@ref(CommonDataModel) to understand what data elements are available for defining a cohort.  When you are building a cohort, you should consider which of these is more important to you, finding all the eligible patients? *vs.* Getting only the ones you are confident about?
+
+Your strategy to construct your cohort will depend on your definition stringency. The right cohort design will depend on the question you’re trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share or is a compromise of the two. It is ultimately at the researcher’s discretion what, threshold of stringency is necessary to adequately study the cohort of interest.
+
+## Using ATLAS
+Missing: need to add high quality screenshots.
+
+## Using SQL
+Missing: need to build tables for equivalent code.
+
+# Exercises
+To be created.
+
