@@ -108,7 +108,7 @@ Simple comparisons are also supported:
 
 ```r
 sql <- "SELECT * FROM cohort {@x == 1} ? {WHERE subject_id = 1};"
-render(sql,x = 1)
+render(sql, x = 1)
 ```
 
 ```
@@ -116,7 +116,7 @@ render(sql,x = 1)
 ```
 
 ```r
-render(sql,x = 2)
+render(sql, x = 2)
 ```
 
 ```
@@ -128,7 +128,7 @@ As well as the `IN` operator:
 
 ```r
 sql <- "SELECT * FROM cohort {@x IN (1,2,3)} ? {WHERE subject_id = 1};"
-render(sql,x = 2)
+render(sql, x = 2)
 ```
 
 ```
@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.qncmrcbachildren ;"
+## [1] "SELECT * FROM temp_schema.y09qhgxpchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.

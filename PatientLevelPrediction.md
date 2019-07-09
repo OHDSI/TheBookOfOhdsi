@@ -957,9 +957,8 @@ For example, if we use the following settings for the gradientBoostingMachine: n
 
 
 ```r
-gbmModel <- setGradientBoostingMachine(ntrees = 5000, 
-                                       maxDepth = c(4,7,10), 
-                                       learnRate = c(0.001,0.01,0.1,0.9))
+gbmModel <- setGradientBoostingMachine(ntrees = 5000, maxDepth = c(4, 7, 10), 
+    learnRate = c(0.001, 0.01, 0.1, 0.9))
 ```
 
 The `runPlP` function uses the population, `plpData`, and model settings to train and evaluate the model. We can use the testSplit (person/time) and testFraction parameters to split the data in a 75%-25% split and run the patient-level prediction pipeline:
@@ -1059,17 +1058,10 @@ To make things easier we also provide the `externalValidatePlp` function for per
 
 
 ```r
-valResult <- externalValidatePlp(plpResult = result, 
-                    connectionDetails = connectionDetails,
-                    validationSchemaTarget = 'mainschema.dob',
-                    validationSchemaOutcome = 'mainschema.dob',
-                    validationSchemaCdm = 'cdmschema.dbo',
-                    databaseNames = 'new database',
-                    validationTableTarget = 'cohort',
-                    validationTableOutcome = 'cohort',
-                    validationIdTarget = 1,
-                    validationIdOutcome = 2
-                    )
+valResult <- externalValidatePlp(plpResult = result, connectionDetails = connectionDetails, 
+    validationSchemaTarget = "mainschema.dob", validationSchemaOutcome = "mainschema.dob", 
+    validationSchemaCdm = "cdmschema.dbo", databaseNames = "new database", validationTableTarget = "cohort", 
+    validationTableOutcome = "cohort", validationIdTarget = 1, validationIdOutcome = 2)
 ```
 
 If you have multiple databases to validate the model on then you can run:
@@ -1096,7 +1088,7 @@ Exploring the performance of a single plp model is easiest with the `viewPlp()` 
 
 
 ```r
-plpResult <- loadPlpResult(file.path(outputFolder, 'Analysis_1', 'plpResult'))
+plpResult <- loadPlpResult(file.path(outputFolder, "Analysis_1", "plpResult"))
 ```
 
 Analysis_1 corresponds to the lasso logistic regression for the prediction problem: **Withing new users of ACE inhibitors as first-line monotherapy for hypertension who will develop Acute myocardial infarction (AMI) events within a year.**
