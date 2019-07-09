@@ -2,6 +2,8 @@
 
 # Mission, vision, values {#MissionVissionValues}
 
+*Chapter lead: George Hripcsak* 
+
 ## Our Mission
 
 > To improve health by empowering a community to collaboratively generate the evidence that promotes better health decisions and better care.

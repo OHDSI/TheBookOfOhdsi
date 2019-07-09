@@ -1,8 +1,79 @@
 \usepackage{booktabs}
 \usepackage{amsthm}
+
+\usepackage{makeidx}
+\makeindex
+\usepackage[nottoc]{tocbibind}
+
 \makeatletter
 \def\thm@space@setup{%
   \thm@preskip=8pt plus 2pt minus 4pt
   \thm@postskip=\thm@preskip
 }
 \makeatother
+
+
+\makeatletter
+\newenvironment{kframe}{%
+\medskip{}
+\setlength{\fboxsep}{.8em}
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\makeatletter
+\@ifundefined{Shaded}{
+}{\renewenvironment{Shaded}{\begin{kframe}}{\end{kframe}}}
+\makeatother
+
+\newenvironment{rmdblock}[1]
+  {
+  \begin{itemize}
+  \renewcommand{\labelitemi}{
+    \raisebox{-.7\height}[0pt][0pt]{
+      {\setkeys{Gin}{width=3em,keepaspectratio}\includegraphics{images/#1}}
+    }
+  }
+  \setlength{\fboxsep}{1em}
+  \begin{kframe}
+  \item
+  }
+  {
+  \end{kframe}
+  \end{itemize}
+  }
+\newenvironment{rmdimportant}
+  {\begin{rmdblock}{important}}
+  {\end{rmdblock}}
+\newenvironment{rmdsummary}
+  {\begin{rmdblock}{summary}}
+  {\end{rmdblock}}
+
+%\sloppy % helps with poorly wrapped URLs, but can look ugly in places
+%\AtBeginDocument{\raggedright}
+
+%\usepackage{fontspec} % Requires xelatex
+%\setmainfont{Arial}
+
+%\usepackage{titlesec}
+%\titleformat{\chapter}[runin]{}{}{}{}[]
+%\titleformat{\chapter}% reformat chapter headings
+%     [hang]% like section, with number on same line
+%     {\Huge\bfseries}% formatting applied to whole
+%     {\thechapter}% Chapter number
+%     {0.5em}% space between # and title
+%     {}% formatting applied just to title
+
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}

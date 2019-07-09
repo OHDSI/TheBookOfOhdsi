@@ -1,0 +1,76 @@
+{
+	"skeletonType": "ComparativeEffectStudy",
+	"skeletonVersion": "v0.0.1",
+	"requiredHydraVersion": "v0.0.1",
+	"actions":[{
+		"type": "fileNameFindAndReplace",
+		"input": "packageName",
+		"find": "CohortMethodAceiVsThz"
+	},{
+		"type": "stringFindAndReplace",
+		"input": "packageName",
+		"find": "CohortMethodAceiVsThz"
+	},{
+		"type": "jsonArrayToCsv",
+		"input": "cohortDefinitions",
+		"mapping": [{"source": "id", "target": "atlasId"},
+					{"source": "name", "target": "atlasName"},
+					{"source": "id", "target": "cohortId"},
+					{"source": "name", "target": "name", "modifiers": ["convertToFileName"]}],
+		"output": "inst/settings/CohortsToCreate.csv"
+	},{
+		"type": "jsonArrayToCsv",
+		"input": "estimationAnalysisSettings.analysisSpecification.targetComparatorOutcomes",
+		"mapping": [{"source": "targetId", "target": "targetId"},
+					{"source": "comparatorId", "target": "comparatorId"},
+					{"source": "outcomeIds", "target": "outcomeIds", "separator": ";"},
+					{"source": "excludedCovariateConceptIds", "target": "excludedCovariateConceptIds", "separator": ";"},
+					{"source": "includedCovariateConceptIds", "target": "includedCovariateConceptIds", "separator": ";"}],
+		"output": "inst/settings/TcosOfInterest.csv"
+	},{
+		"type": "jsonArrayToCsv",
+		"input": "negativeControls",
+		"mapping": [{"source": "targetId", "target": "targetId"},
+					{"source": "comparatorId", "target": "comparatorId"},
+					{"source": "outcomeId", "target": "outcomeId"},
+					{"source": "outcomeName", "target": "outcomeName"},
+					{"source": "type", "target": "type"}],
+		"output": "inst/settings/NegativeControls.csv"
+	},{
+		"type": "jsonArrayToJson",
+		"input": "cohortDefinitions",
+		"fileName": "name",
+		"payload": "expression",
+		"output": "inst/cohorts"
+	},{
+		"type": "jsonArrayToSql",
+		"input": "cohortDefinitions",
+		"fileName": "name",
+		"payload": "expression",
+		"output": "inst/sql/sql_server"
+	},{
+		"type": "jsonToSql",
+		"input": "negativeControlOutcomeCohortDefinition",
+		"expressionType": "outcome",
+		"output": "inst/sql/sql_server/NegativeControlOutcomes.sql"
+	},{
+		"type": "jsonToJson",
+		"input": "estimationAnalysisSettings.analysisSpecification.cohortMethodAnalysisList",
+		"output": "inst/settings/cmAnalysisList.json"
+	},{
+		"type": "jsonToJson",
+		"input": "",
+		"output": "inst/settings/StudySpecification.json"
+	},{
+		"type": "jsonToRargs",
+		"input": "doPositiveControlSynthesis",
+		"file": "R/Main.R",
+		"startTag": "# Start doPositiveControlSynthesis",
+		"endTag": "# End doPositiveControlSynthesis"
+	},{
+		"type": "jsonToJson",
+		"input": "positiveControlSynthesisArgs",
+		"condition": "doPositiveControlSynthesis",
+		"output": "inst/settings/positiveControlSynthArgs.json"
+	}]
+}

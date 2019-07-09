@@ -1,8 +1,21 @@
 language: r
 cache: packages
-pandoc_version: 1.19.2.1
+pandoc_version: 2.7.3
 
-r_github_packages: r-lib/remotes#340
+r_packages:
+  - devtools
+  - knitr
+  - formatR
+
+before_install:
+  - sudo apt-get update -qq
+  - echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+  - sudo apt-get install ttf-mscorefonts-installer
+  - sudo fc-cache
+#  - sudo apt-get install -y texlive-full
+#  - mkdir -p ~/.fonts/
+#  - cp -rf fonts/* ~/.fonts/
+#  - sudo fc-cache -f -v
 
 before_script:
   - chmod +x ./_build.sh
