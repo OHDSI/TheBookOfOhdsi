@@ -98,7 +98,7 @@ The ARACHNE Platform includes multiple core components:
 ARACHNE is built to provide a seamless integration with other OHDSI tools, including ACHILLES reports and an ability to import ATLAS design artefacts, create self-contained packages and automatically execute those across multiple sites. The future vision is to eventually enable multiple networks to be linked together for the purpose of conducting research not only between organizations within a single network, but also between organizations across multiple networks. 
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNENoN} \caption{The ARACHNE Network of Networks.}(\#fig:arachneNon)
+\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNENON} \caption{The ARACHNE Network of Networks.}(\#fig:arachneNon)
 \end{figure}
  
 ## Best Practices for Network Research
