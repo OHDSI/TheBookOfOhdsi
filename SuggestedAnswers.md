@@ -2,11 +2,30 @@
 
 This Appendix contains suggested answers for the exercises in the book.
 
-## SQL and R
+## SQL and R {#SqlAndRanswers}
+
+**Exercise \@ref(exr:exercisePeopleCount)**
+
+To compute the number of people we can simply query the PERSON table:
+
+
+```r
+library(DatabaseConnector)
+connection <- connect(connectionDetails)
+sql <- "SELECT COUNT(*) AS person_count
+FROM @cdm.person;"
+
+renderTranslateQuerySql(connection, sql, cdm = "main")
+```
+
+```
+##   PERSON_COUNT
+## 1         2694
+```
 
 **Exercise \@ref(exr:exerciseCelecoxibUsers)**
 
-To compute the number of people with at least one prescription of celecoxib, we need to query the DRUG_EXPOSURE table. To find all drugs containing the ingredient celecoxib, we join to the CONCEPT_ANCESTOR and CONCEPT tables:
+To compute the number of people with at least one prescription of celecoxib, we can query the DRUG_EXPOSURE table. To find all drugs containing the ingredient celecoxib, we join to the CONCEPT_ANCESTOR and CONCEPT tables:
 
 
 ```r
@@ -31,5 +50,60 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 ```
 
 Note that we use `COUNT(DISTINCT(person_id))` to find the number of distinct persons, considering that a person might have more than one prescription. Also note that we use the `LOWER` function to make our search for "celecoxib" case-insensitive.
+
+Alternatively, we can use the DRUG_ERA table, which is already rolled up to the ingredient level:
+
+
+```r
+library(DatabaseConnector)
+connection <- connect(connectionDetails)
+
+sql <- "SELECT COUNT(DISTINCT(person_id)) AS person_count
+FROM @cdm.drug_era
+INNER JOIN @cdm.concept ingredient
+  ON drug_concept_id = ingredient.concept_id
+WHERE LOWER(ingredient.concept_name) = 'celecoxib'
+  AND ingredient.concept_class_id = 'Ingredient'
+  AND ingredient.standard_concept = 'S';"
+
+renderTranslateQuerySql(connection, sql, cdm = "main")
+```
+
+```
+##   PERSON_COUNT
+## 1         1844
+```
+
+**Exercise \@ref(exr:exerciseGiBleedsDuringCelecoxib)**
+
+To compute the number of diagnoses during exposure we extend our previous query by joining to the CONDITION_OCCURRENCE table. We join to the CONCEPT_ANCESTOR table to find all condition concepts that imply a gastrointestinal haemorrhage:
+
+
+```r
+library(DatabaseConnector)
+connection <- connect(connectionDetails)
+sql <- "SELECT COUNT(*) AS diagnose_count
+FROM @cdm.drug_era
+INNER JOIN @cdm.concept ingredient
+  ON drug_concept_id = ingredient.concept_id
+INNER JOIN @cdm.condition_occurrence
+  ON condition_start_date >= drug_era_start_date
+    AND condition_start_date <= drug_era_end_date
+INNER JOIN @cdm.concept_ancestor 
+  ON condition_concept_id =descendant_concept_id
+WHERE LOWER(ingredient.concept_name) = 'celecoxib'
+  AND ingredient.concept_class_id = 'Ingredient'
+  AND ingredient.standard_concept = 'S'
+  AND ancestor_concept_id = 192671;"
+
+renderTranslateQuerySql(connection, sql, cdm = "main")
+```
+
+```
+##   DIAGNOSE_COUNT
+## 1         41
+```
+
+Note that in this case it is essential to use the DRUG_ERA table instead of the DRUG_EXPOSURE table, because drug exposures with the same ingredient can overlap, but drug eras can. This could lead to double counting. For example, imagine a person received two drug drugs containing celecoxib at the same time. This would be recorded as two drug exposures, so any diagnoses occurring during the exposure would be counted twice. The two exposures will be merged into a single non-overlapping drug era.
 
 
