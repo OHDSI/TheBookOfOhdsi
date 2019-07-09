@@ -243,11 +243,10 @@ Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, 
 
 ### Broadsea
 
-BroadSea uses Docker container technology[^dockerUrl]. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image ...
+BroadSea[^broadseaUrl] uses Docker container technology[^dockerUrl]. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS.
 
+[^broadseaUrl]: https://github.com/OHDSI/Broadsea
 [^dockerUrl]: https://www.docker.com/
-
-TODO: Find out if Broadsea is still maintained
 
 ### Amazon AWS
 
