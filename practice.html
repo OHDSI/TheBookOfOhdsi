@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 18 Evidence Quality | The Book of OHDSI</title>
+  <title>Chapter 13 Practice | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
   <meta name="generator" content="bookdown 0.11.3 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 18 Evidence Quality | The Book of OHDSI" />
+  <meta property="og:title" content="Chapter 13 Practice | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 18 Evidence Quality | The Book of OHDSI" />
+  <meta name="twitter:title" content="Chapter 13 Practice | The Book of OHDSI" />
   
   <meta name="twitter:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-<link rel="prev" href="PatientLevelPrediction.html">
-<link rel="next" href="DataQuality.html">
+<link rel="prev" href="Cohorts.html">
+<link rel="next" href="exercises-3.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -477,60 +477,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="EvidenceQuality" class="section level1">
-<h1><span class="header-section-number">Chapter 18</span> Evidence Quality</h1>
-<p><em>Chapter lead: Jon Duke</em></p>
-<p>How do we know if the results of a study are reliable? Can they be trusted for use in clinical settings? What about in regulatory decision-making? Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or other type of analysis.</p>
-<p>One of the concerns that is often raised around observational studies and the use of “real world data” is the topic of data quality <span class="citation">(Botsis et al. <a href="#ref-botsis2010secondary" role="doc-biblioref">2010</a>, @hersh2013caveats, @sherman2016real)</span>. Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well inherent biases. These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality <span class="citation">(Kahn et al. <a href="#ref-kahn2012pragmatic" role="doc-biblioref">2012</a>, @liaw2013towards, @weiskopf2013methods)</span>. The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network <span class="citation">(<span class="citeproc-not-found" data-reference-id="huser2016multisite"><strong>???</strong></span>)</span>.</p>
-<p>Given the findings of the past decade in this area, it has become apparent that data quality is not perfect and never will be. This notion is nicely reflected in this quote from Dr Clem McDonald, a pioneer in the field of medical informatics:</p>
-<blockquote>
-<p>Loss of fidelity begins with the movement of data from the doctor’s brain to the medical record.</p>
-</blockquote>
-<p>Thus, as a community we must ask the question– <em>given imperfect data, how can we achieve the most reliable evidence?</em> The OHDSI community is seeking to address this question through a holistic focus on “evidence quality”. Evidence quality considers not only the quality of observational data but also the validity of the methods, software, and clinical definitions used in our observational analyses.</p>
-<p>In the following chapters, we will explore four components of evidence quality:</p>
-<table>
-<colgroup>
-<col width="20%" />
-<col width="80%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Component of Evidence Quality</th>
-<th>What it Measures</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="DataQuality.html">Data Quality</a></td>
-<td>Are the data completely captured with plausible values in a manner that is conformant to agreed structure and conventions?</td>
-</tr>
-<tr class="even">
-<td><a href="ClinicalValidity.html">Clinical Validity</a></td>
-<td>To what extent does the analysis conducted match the clinical intention?</td>
-</tr>
-<tr class="odd">
-<td><a href="SoftwareValidity.html">Software Validity</a></td>
-<td>Can we trust that the process transforming and analyzing the data does what it is supposed to do?</td>
-</tr>
-<tr class="even">
-<td><a href="MethodValidity.html">Method Validity</a></td>
-<td>Is the methodology appropriate for the question, given the strengths and weaknesses of the data?</td>
-</tr>
-</tbody>
-</table>
-<div id="communicating-evidence-quality" class="section level2">
-<h2><span class="header-section-number">18.1</span> Communicating Evidence Quality</h2>
-<p>An important aspect of evidence quality is the ability to express the uncertainty that comes from the data being imperfect. Thus, our efforts around evidence quality include not only concepts but also specific tools and community processes. The overarching goal of OHDSI’s work around evidence quality is to produce confidence in health care decision-makers that the evidence generated by OHDSI– while undoubtedly imperfect in many ways– has been consistently measured for its weaknesses and strengths and that this information has been communicated in a rigorous and open manner.</p>
-
+<div id="practice" class="section level1">
+<h1><span class="header-section-number">Chapter 13</span> Practice</h1>
+<p>Building a cohort starts with asking a question: “I want to find patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension.”</p>
+<p>Before you can define a cohort, you will need to construct OMOP concept sets. OMOP concept sets represent the sets of clinical codes that are strung together with other logical expressions to create your cohort. A detailed discussion of OMOP concept sets can be found <a href="StandardizedVocabularies.html#StandardizedVocabularies">7</a>. Cohort inclusion criteria are created using specific attributes of data in the OMOP CDM (e.g. condition occurrence, drug era, drug exposure, observation period, visit, etc). OHDSI domains are analogous to building blocks to contribute cohort attributes:</p>
+<div class="figure"><span id="fig:figure4"></span>
+<img src="images/Cohorts/cohort-legos.png" alt="Building Blocks of Cohorts" width="100%" />
+<p class="caption">
+Figure 13.1: Building Blocks of Cohorts
+</p>
 </div>
+<p>Prior to building a cohort, refer to the <a href="CommonDataModel.html#CommonDataModel">6</a> to understand what data elements are available for defining a cohort. When you are building a cohort, you should consider which of these is more important to you, finding all the eligible patients? <em>vs.</em> Getting only the ones you are confident about?</p>
+<p>Your strategy to construct your cohort will depend on your definition stringency. The right cohort design will depend on the question you’re trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share or is a compromise of the two. It is ultimately at the researcher’s discretion what, threshold of stringency is necessary to adequately study the cohort of interest.</p>
+<div id="using-atlas" class="section level2">
+<h2><span class="header-section-number">13.1</span> Using ATLAS</h2>
+<p>Missing: need to add high quality screenshots.</p>
 </div>
-<h3>References</h3>
-<div id="refs" class="references">
-<div id="ref-botsis2010secondary">
-<p>Botsis, Taxiarchis, Gunnar Hartvigsen, Fei Chen, and Chunhua Weng. 2010. “Secondary Use of Ehr: Data Quality Issues and Informatics Opportunities.” <em>Summit on Translational Bioinformatics</em> 2010: 1.</p>
-</div>
-<div id="ref-kahn2012pragmatic">
-<p>Kahn, Michael G, Marsha A Raebel, Jason M Glanz, Karen Riedlinger, and John F Steiner. 2012. “A Pragmatic Framework for Single-Site and Multisite Data Quality Assessment in Electronic Health Record-Based Clinical Research.” <em>Medical Care</em> 50.</p>
+<div id="using-sql" class="section level2">
+<h2><span class="header-section-number">13.2</span> Using SQL</h2>
+<p>Missing: need to build tables for equivalent code.</p>
 </div>
 </div>
             </section>
@@ -538,8 +503,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="PatientLevelPrediction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="DataQuality.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="Cohorts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exercises-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -569,7 +534,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/EvidenceQuality.Rmd",
+"link": "https://github.com/OHDSI/TheBookOfOhdsi/edit/master/Cohorts.Rmd",
 "text": "Edit"
 },
 "history": {
