@@ -2,10 +2,12 @@
 
 *Chapter leads: Martijn Schuemie, David Madigan, Marc Suchard & Patrick Ryan*
 
+\index{population-level estimation}
+
 Observational healthcare data, such as administrative claims and electronic health records, offer opportunities to generate real-world evidence about the effect of treatments that can meaningfully improve the lives of patients. In this chapter we focus on population-level effect estimation, that is, the estimation of average causal effects of exposures (e.g. medical interventions such as drug exposures or procedures) on specific health outcomes of interest. In what follows, we consider two different estimation tasks:
 
-- **Direct effect estimation**: estimating the effect of an exposure on the risk of an outcome, as compared to no exposure.
-- **Comparative effect estimation**: estimating the effect of an exposure (the target exposure) on the risk of an outcome, as compared to another exposure (the comparator exposure).
+- **Direct effect estimation**: estimating the effect of an exposure on the risk of an outcome, as compared to no exposure. \index{direct effect estimation}
+- **Comparative effect estimation**: estimating the effect of an exposure (the target exposure) on the risk of an outcome, as compared to another exposure (the comparator exposure). \index{comparative effect estimation
 
 In both cases, the patient-level causal effect contrasts a factual outcome, i.e., what happened to the exposed patient, with a counterfactual outcome, i.e., what would have happened had the exposure not occurred (direct) or had a different exposure occurred (comparative). Since any one patient reveals only the factual outcome (the fundamental problem of causal inference), the various effect estimation designs employ different analytic devices to shed light on the counterfactual outcomes.
 
@@ -15,11 +17,13 @@ In this chapter we first describe various population-level estimation study desi
 
 ## The cohort method design {#CohortMethod}
 
+\index{cohort method} 
+
 ```{r cohortMethod, fig.cap='The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation.',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/PopulationLevelEstimation/cohortMethod.png")
 ```
 
-The cohort method attempts to emulate a randomized clinical trial [@hernan_2016]. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \@ref(tab:cmChoices).
+The cohort method attempts to emulate a randomized clinical trial [@hernan_2016]. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \@ref(tab:cmChoices). 
 
 Table: (\#tab:cmChoices) Main design choices in a comparative cohort design.
 
@@ -41,6 +45,8 @@ A key concern is that the patients receiving the target treatment may systematic
 
 ### Propensity scores
 
+\index{propensity score}
+
 In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what’s more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially *cannot* differ systematically with respect to *any* patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure.
 
 For a given patient, the *propensity score* (PS) is the probability that that patient received the target treatment as against the comparator. [@rosenbaum_1983] In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received).  This a straightforward predictive modeling application; we fit a model (e.g. a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. [@rassen_2012]
@@ -61,9 +67,13 @@ Some have argued that a data-driven approach to covariate selection that does no
 
 ### Caliper
 
-Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) within some tolerance known as a “caliper.” Following @austin_2011, we use a default caliper of 0.2 standard deviations on the logit scale.
+\index{caliper}
+
+Since propensity scores fall on a continuum from 0 to 1, exact matching is rarely possible. Instead, the matching process finds patients that match the propensity score of a target patient(s) within some tolerance known as a “caliper.” Following @austin_2011, we use a default caliper of 0.2 standard deviations on the logit scale. 
 
 ### Overlap: preference scores
+
+\index{preference score}
 
 The propensity method requires that matching patients exist! As such, a key diagnostic shows the distribution of the propensity scores in the two groups. To facilitate interpretation, the OHDSI tools plot a transformation of the propensity score called the “preference score”. [@walker_2013] The preference score adjusts for the "market share" of the two treatments. For example, if 10% of patients receive the target treatment (and 90% receive the comparator treatment), then patients with a preference score of 0.5 have a 10% probability of receiving the target treatment. Mathematically, the preference score is
 
@@ -205,7 +215,7 @@ Table: (\#tab:aceChoices) Main design choices four our comparative cohort study.
 To evaluate whether our study design produces estimates in line with the truth, we additionally include a set of control questions where the true effect size is known. Control questions can be divided in negative controls, having a hazard ratio of 1, and positive controls, having a known hazard ratio greater than 1. For several reasons we use real negative controls, and synthesize positive controls based on these negative controls. How to define and use control questions is discussed in detail in Chapter \@ref(MethodValidity).
 
 
-## Implementing the study using ATLAS
+## Implementing the study using ATLAS {#PleAtlas}
 
 Here we demonstrate how this study can be implemented using the Estimation function in ATLAS. Click on ![](images/PopulationLevelEstimation/estimation.png) in the left bar of ATLAS, and create a new estimation study. Make sure to give the study an easy-to-recognize name. The study design can be saved at any time by clicking the ![](images/PopulationLevelEstimation/save.png) button.
 
@@ -376,7 +386,7 @@ Once you have opened the project in R Studio, you can open the README file, and 
 
 A common error message that may appear when running the study is "High correlation between covariate(s) and treatment detected". This indicates that when fitting the propensity model, some covariates were observed to be highly correlated with the exposure. Please review the covariates mentioned in the error message, and exclude them from the set of covariates if appropriate (see Section \@ref(VariableSelection)).
 
-## Implementing the study using R
+## Implementing the study using R {#pleR}
 
 Instead of using ATLAS to write the R code that executes the study, we can also write the R code ourselves. One reason we might want to do this is because R offers far greater flexibility than is exposed in ATLAS. If we for example wish to use custom covariates, or a linear outcome model, we will need to write some custom R code, and combine it with the functionality provided by the OHDSI R packages. 
 
@@ -398,12 +408,12 @@ connDetails <- createConnectionDetails(dbms = "postgresql",
                                        password = "supersecret")
 
 cdmDbSchema <- "my_cdm_data"
-cohortsDbSchema <- "scratch"
-cohortsDbTable <- "my_cohorts"
+cohortDbSchema <- "scratch"
+cohortTable <- "my_cohorts"
 cdmVersion <- "5"
 ```
 
-The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbTable` variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
+The last four lines define the `cdmDbSchema`, `cohortDbSchema`, and `cohortTable` variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
 
 Now we can tell CohortMethod to extract the cohorts, construct covariates, and extract all necessary data for our analysis:
 
@@ -427,10 +437,10 @@ cmData <- getDbCohortMethodData(connectionDetails = connectionDetails,
                                 outcomeIds = 3,
                                 studyStartDate = "",
                                 studyEndDate = "",
-                                exposureDatabaseSchema = cohortsDbSchema,
-                                exposureTable = cohortsDbTable,
-                                outcomeDatabaseSchema = cohortsDbSchema,
-                                outcomeTable = cohortsDbTable,
+                                exposureDatabaseSchema = cohortDbSchema,
+                                exposureTable = cohortTable,
+                                outcomeDatabaseSchema = cohortDbSchema,
+                                outcomeTable = cohortTable,
                                 cdmVersion = cdmVersion,
                                 firstExposureOnly = FALSE,
                                 removeDuplicateSubjects = FALSE,
@@ -569,7 +579,7 @@ treatment   4.3203    2.4531    8.0771 1.4633   0.304")
 
 ### Running multiple analyses {#MultipleAnalyses}
 
-Often we want to perform more than one analyses, for example for multiple outcomes including negative controls. The [CohortMethod](https://ohdsi.github.io/CohortMethod/) offers functions for performing such studies efficiently. This is described in detail in the [package vignette on running multiple analyses](https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html). Briefly, we can first specify all target-comparator-outcome combinations we wish to analyse:
+Often we want to perform more than one analyses, for example for multiple outcomes including negative controls. The [CohortMethod](https://ohdsi.github.io/CohortMethod/) offers functions for performing such studies efficiently. This is described in detail in the [package vignette on running multiple analyses](https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html). Briefly, assuming the outcome of interest and negative control cohorts have already been created, we can specify all target-comparator-outcome combinations we wish to analyse:
 
 ```{r tidy=FALSE,eval=FALSE}
 # Outcomes of interest:
@@ -588,12 +598,12 @@ ncs <- c(434165,436409,199192,4088290,4092879,44783954,75911,137951,77965,
 
 tcos <- createTargetComparatorOutcomes(targetId = 1,
                                        comparatorId = 2,
-                                       outcomeIds = c(ois, ncs)
+                                       outcomeIds = c(ois, ncs))
 
 tcosList <- list(tcos)
 ```
 
-We assume the outcome of interest and negative control cohorts have already been created. Next, we specify what arguments should be used when calling the various functions described previously in our example with one outcome:
+Next, we specify what arguments should be used when calling the various functions described previously in our example with one outcome:
 
 ```{r tidy=FALSE,eval=FALSE}
 aceI <- c(1335471,1340128,1341927,1363749,1308216,1310756,1373225,
@@ -660,10 +670,10 @@ We can now run the study including all comparisons and analysis settings:
 ```{r tidy=FALSE,eval=FALSE}
 result <- runCmAnalyses(connectionDetails = connectionDetails,
                         cdmDatabaseSchema = cdmDatabaseSchema,
-                        exposureDatabaseSchema = cohortsDbSchema,
-                        exposureTable = cohortsDbTable,
-                        outcomeDatabaseSchema = cohortsDbSchema,
-                        outcomeTable = cohortsDbTable,
+                        exposureDatabaseSchema = cohortDbSchema,
+                        exposureTable = cohortTable,
+                        outcomeDatabaseSchema = cohortDbSchema,
+                        outcomeTable = cohortTable,
                         cdmVersion = cdmVersion,
                         outputFolder = outputFolder,
                         cmAnalysisList = cmAnalysisList,
@@ -691,9 +701,24 @@ Status: OK
 treatment   1.1338    0.5921    2.1765 0.1256   0.332")
 ```
 
+We can also retrieve the effect size estimates for all outcomes with one command:
+```{r tidy=FALSE,eval=FALSE}
+summ <- summarizeAnalyses(result, outputFolder = outputFolder)
+head(summ)
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("    analysisId targetId comparatorId outcomeId        rr    ci95lb  ...
+1            1        1            2     72748 0.9734698 0.5691589  ...
+2            1        1            2     73241 0.7067981 0.4009951  ...
+3            1        1            2     73560 1.0623951 0.7187302  ...
+4            1        1            2     75911 0.9952184 0.6190344  ...
+5            1        1            2     76786 1.0861746 0.6730408  ...
+6            1        1            2     77965 1.1439772 0.5173222  ...")
+```
+
 ## Study outputs {#studyOutputs}
 
-Our estimate is only valid if several assumptions have been met. We use a wide set of diagnostics to evaluate whether this is the case. These are available in the results produced by the R package generated by ATLAS, or can be generated on the fly using specific R functions.
+Our estimates are only valid if several assumptions have been met. We use a wide set of diagnostics to evaluate whether this is the case. These are available in the results produced by the R package generated by ATLAS, or can be generated on the fly using specific R functions.
 
 ### Propensity scores and model
 

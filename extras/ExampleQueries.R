@@ -94,7 +94,7 @@ INNER JOIN @cdm.concept_ancestor
   ON drug_concept_id = descendant_concept_id
 INNER JOIN @cdm.concept ingredient
   ON ancestor_concept_id = ingredient.concept_id
-WHERE ingredient.concept_name = 'Ibuprofen'
+WHERE LOWER(ingredient.concept_name) = 'ibuprofen'
   AND ingredient.concept_class_id = 'Ingredient'
   AND ingredient.standard_concept = 'S';"
 renderTranslateQuerySql(conn, sql, cdm = cdmDbSchema)
