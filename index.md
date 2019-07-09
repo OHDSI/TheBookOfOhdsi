@@ -11,7 +11,7 @@ geometry:
 - right=0.6in
 - top=1in
 - bottom=0.6in
-mainfont: Times New Roman
+mainfont: Utopia
 bibliography:
 - book.bib
 - packages.bib
