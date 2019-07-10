@@ -153,7 +153,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="Collaborators.html"><a href="Collaborators.html"><i class="fa fa-check"></i><b>2</b> Collaborators</a></li>
 <li class="chapter" data-level="3" data-path="OpenScience.html"><a href="OpenScience.html"><i class="fa fa-check"></i><b>3</b> Open Science</a><ul>
 <li class="chapter" data-level="3.1" data-path="OpenScience.html"><a href="OpenScience.html#open-science"><i class="fa fa-check"></i><b>3.1</b> Open Science</a></li>
-<li class="chapter" data-level="3.2" data-path="OpenScience.html"><a href="OpenScience.html#fair-guiding-principles"><i class="fa fa-check"></i><b>3.2</b> FAIR Guiding Principles</a></li>
+<li class="chapter" data-level="3.2" data-path="OpenScience.html"><a href="OpenScience.html#open-science-in-action-the-study-a-thon"><i class="fa fa-check"></i><b>3.2</b> Open Science in Action: the Study-a-thon</a></li>
+<li class="chapter" data-level="3.3" data-path="OpenScience.html"><a href="OpenScience.html#open-standards"><i class="fa fa-check"></i><b>3.3</b> Open Standards</a></li>
+<li class="chapter" data-level="3.4" data-path="OpenScience.html"><a href="OpenScience.html#open-source"><i class="fa fa-check"></i><b>3.4</b> Open Source</a></li>
+<li class="chapter" data-level="3.5" data-path="OpenScience.html"><a href="OpenScience.html#open-data"><i class="fa fa-check"></i><b>3.5</b> Open Data</a></li>
+<li class="chapter" data-level="3.6" data-path="OpenScience.html"><a href="OpenScience.html#ohdsi-and-the-fair-guiding-principles"><i class="fa fa-check"></i><b>3.6</b> OHDSI and the FAIR Guiding Principles</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="OpenScience.html"><a href="OpenScience.html#findability"><i class="fa fa-check"></i><b>3.6.1</b> Findability</a></li>
+<li class="chapter" data-level="3.6.2" data-path="OpenScience.html"><a href="OpenScience.html#accessibility"><i class="fa fa-check"></i><b>3.6.2</b> Accessibility</a></li>
+<li class="chapter" data-level="3.6.3" data-path="OpenScience.html"><a href="OpenScience.html#interoperability"><i class="fa fa-check"></i><b>3.6.3</b> Interoperability</a></li>
+<li class="chapter" data-level="3.6.4" data-path="OpenScience.html"><a href="OpenScience.html#reusability"><i class="fa fa-check"></i><b>3.6.4</b> Reusability</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="OpenScience.html"><a href="OpenScience.html#conclusions"><i class="fa fa-check"></i><b>3.7</b> Conclusions</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="WhereToBegin.html"><a href="WhereToBegin.html"><i class="fa fa-check"></i><b>4</b> Where to begin</a><ul>
 <li class="chapter" data-level="4.1" data-path="WhereToBegin.html"><a href="WhereToBegin.html#joining-the-journey"><i class="fa fa-check"></i><b>4.1</b> Joining the Journey</a><ul>
@@ -590,9 +600,9 @@ Figure 7.4: Example tab from a scan report
 <div id="rabbit-in-a-hat" class="section level3">
 <h3><span class="header-section-number">7.2.2</span> Rabbit-In-a-Hat</h3>
 <p>Rabbit-In-a-Hat comes with WhiteRabbit and is designed to read and display a WhiteRabbit scan document. WhiteRabbit generates information about the source data while Rabbit-In-a-Hat uses that information and through a graphical user interface to allow a user to connect source data to tables and columns within the CDM. Rabbit-In-a-Hat generates documentation for the ETL process it does not generate code to create an ETL.</p>
-<p>Similar to WhiteRabbit, installation information can be found on the github<a href="references.html#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> and information about the different options available in the application can be found on the wiki<a href="references.html#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>.</p>
+<p>Similar to WhiteRabbit, installation information can be found on the github<a href="references.html#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a> and information about the different options available in the application can be found on the wiki<a href="references.html#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>.</p>
 <p><strong>Writing ETL Logic</strong></p>
-<p>Once you have opened your WhiteRabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea<sup>TM</sup><a href="references.html#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> database might look during conversion.</p>
+<p>Once you have opened your WhiteRabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea<sup>TM</sup><a href="references.html#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a> database might look during conversion.</p>
 <p><strong>General Flow of an ETL</strong></p>
 <p>Since the OMOP CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers back to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person’s patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.</p>
 <div class="figure"><span id="fig:etlFlow"></span>
@@ -640,7 +650,7 @@ Figure 7.6: Mapping of Synthea Patients table to CDM PERSON table.
 <td align="left">gender_concept_id</td>
 <td align="left">gender</td>
 <td>When gender = ‘M’ then set gender_concept_id to 8507, when gender = ‘F’ then set to 8532. Drop any rows with missing/unknown gender.</td>
-<td align="left">These two concepts were chosen as they are the only two standard concepts in the gender domain<a href="references.html#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.</td>
+<td align="left">These two concepts were chosen as they are the only two standard concepts in the gender domain<a href="references.html#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a>. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.</td>
 </tr>
 <tr class="odd">
 <td align="left">year_of_birth</td>
@@ -670,7 +680,7 @@ Figure 7.6: Mapping of Synthea Patients table to CDM PERSON table.
 <td align="left">race_concept_id</td>
 <td align="left">race</td>
 <td>When race = ‘WHITE’ then set as 8527, when race = ‘BLACK’ then set as 8516, when race = ‘ASIAN’ then set as 8515, otherwise set as 0</td>
-<td align="left">These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source<a href="references.html#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>.</td>
+<td align="left">These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source<a href="references.html#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>.</td>
 </tr>
 <tr class="even">
 <td align="left">ethnicity_concept_id</td>
