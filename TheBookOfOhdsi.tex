@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-07-09}
+    \date{2019-07-10}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -851,7 +851,7 @@ Clinical characterization\strut
 
 \emph{Chapter lead: Clair Blacketer}
 
-No single observational data source provides a comprehensive view of the clinical data a patient accumulates while receiving healthcare, and therefore none can be sufficient to meet all expected outcome analysis needs. This explains the need for assessing and analyzing multiple data sources concurrently using a common data standard. This standard is provided by the OMOP Common Data Model (CDM).
+No single observational data source provides a comprehensive view of the clinical data a patient accumulates while receiving healthcare, and therefore none can be sufficient to meet all expected outcome analysis needs. This explains the need for assessing and analyzing multiple data sources concurrently using a common data standard. This standard is provided by the OMOP Common Data Model (CDM). In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables.
 
 The CDM is designed to support the conduct of research to identify and evaluate associations between interventions (drug exposure, procedures, healthcare policy changes etc.) and outcomes caused by these interventions (condition occurrences, procedures, drug exposure etc.). Outcomes can be efficacious (benefit) or adverse (safety risk). Often times, specific patient cohorts (e.g., those taking a certain drug or suffering from a certain disease) may be defined for treatments or outcomes, using clinical events (diagnoses, observations, procedures, etc.) that occur in predefined temporal relationships to each other. The CDM, combined with its standardized content (via the Standardized Vocabularies), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results.
 
@@ -875,9 +875,9 @@ Therefore, the CDM is designed to store observational data to allow for research
 \item
   \textbf{Data protection}: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible where the research expressly requires more detailed information, such as precise birth dates for the study of infants.
 \item
-  \textbf{Design of domains}: The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum.
+  \textbf{Design of domains}: The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum. Here, a relational data model is one where the data is represented as a collection of tables linked by primary and foreign keys.
 \item
-  \textbf{Rationale for domains}: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case and the domain has specific attributes that are not otherwise applicable. All other data can be preserved as an observation in an entity-attribute-value structure.
+  \textbf{Rationale for domains}: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case (conditions, for example) and the domain has specific attributes that are not otherwise applicable. All other data can be preserved as an observation in the observation table in an entity-attribute-value structure.
 \item
   \textbf{Standardized Vocabularies}: To standardize the content of those records, the CDM relies on the Standardized Vocabularies containing all necessary and appropriate corresponding standard healthcare concepts.
 \item
@@ -889,7 +889,7 @@ Therefore, the CDM is designed to store observational data to allow for research
 \item
   \textbf{Scalability}: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations.
 \item
-  \textbf{Backwards compatibility}: All changes from previous CDMs are clearly delineated in the github repository \href{https://github.com/OHDSI/CommonDataModel}{(https://github.com/OHDSI/CommonDataModel)}. Older versions of the CDM can be easily created from the CDMv5, and no information is lost that was present previously.
+  \textbf{Backwards compatibility}: All changes from previous CDMs are clearly delineated in the github repository \href{https://github.com/OHDSI/CommonDataModel}{(https://github.com/OHDSI/CommonDataModel)}. Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously.
 \end{itemize}
 
 \hypertarget{data-model-conventions}{%
@@ -905,7 +905,7 @@ The OMOP CDM is considered a ``person-centric'' model, meaning that the people (
 \hypertarget{general-conventions-of-schemas}{%
 \subsection{General conventions of schemas}\label{general-conventions-of-schemas}}
 
-New to CDM v6.0 is the concept of schemas. This allows for more separation between read-only and writeable tables. The clinical data, event, and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user. This means that the tables can be queried but no information can be accidentally removed or written over except by the database administrator. Tables that need to be manipulated by web-based tools or end users have moved to the ``Results'' schema. Currently the only two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITON, \textbf{Todo: add a sentence explaining that these tables describe groups of interest that the user might define, put in links to the later sections} though likely more will be added over the course of v6.0 point releases. These tables can be written to, meaning that a cohort created in ATLAS or by a user can be stored in the COHORT table and accessed at a later date. This does mean that cohorts in the COHORT table can be manipulated by anyone so it is always recommended that the SQL code used to create the cohort be saved along with the project or analysis in the event it needs to be regenerated.
+New to CDM v6.0 is the concept of schemas. This allows for more separation between read-only and writeable tables. The clinical data, event, and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user. This means that the tables can be queried but no information can be accidentally removed or written over except by the database administrator. Tables that need to be manipulated by web-based tools or end users have moved to the ``Results'' schema. Currently the only two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITON, though likely more will be added over the course of v6.0 point releases. The COHORT and COHORT\_DEFINITION tables are meant to describe groups of interest that the user might define, as detailed in chapter \ref{Cohorts}. These tables can be written to, meaning that a cohort created in ATLAS or by a user can be stored in the COHORT table and accessed at a later date. This does mean that cohorts in the COHORT table can be manipulated by anyone so it is always recommended that the SQL code used to create the cohort be saved along with the project or analysis in the event it needs to be regenerated.
 
 \hypertarget{general-conventions-of-data-tables}{%
 \subsection{General conventions of data tables}\label{general-conventions-of-data-tables}}
@@ -913,6 +913,56 @@ New to CDM v6.0 is the concept of schemas. This allows for more separation betwe
 The CDM is platform-independent. Data types are defined generically using ANSI SQL data types (VARCHAR, INTEGER, FLOAT, DATE, DATETIME, CLOB). Precision is provided only for VARCHAR. It reflects the minimal required string length and can be expanded within a CDM instantiation. The CDM does not prescribe the date and datetime format. Standard queries against CDM may vary for local instantiations and date/datetime configurations.
 
 In most cases, the first field in each table ends in "\_id", containing a record identifier that can be used as a foreign key in another table. For example, the CONDITION\_OCCURRENCE table contains the field visit\_occurrence\_id which is a foreign key to the VISIT\_OCCURRENCE table where visit\_occurrence\_id is the primary key.
+
+\emph{Note}: While the data model itself is platform independent, many of the tools that have been built to work with it require certain specifications. For more about this please see chapter \ref{OhdsiAnalyticsTools}
+
+\hypertarget{general-conventions-of-domains}{%
+\subsection{General conventions of domains}\label{general-conventions-of-domains}}
+
+One of the ways in which the CDM is standardized is by the use of concept domains. Domains refer to the nature of a clinical entity and define the event table or field in an event table where a data record should be stored. This idea is covered fully in chapter \ref{StandardizedVocabularies} but it is important to the understanding of the data model that we touch on them here. All standard concepts in the OMOP vocabularies are organized into 30 domains, as shown in table \ref{tab:domains}. Domains, like concepts, are a major reason why every researcher who uses the OMOP CDM is considered to be ``speaking the same language''. Once source codes from a native database are mapped to standard concepts (see section \ref{concepts-sources}) the concepts themselves dictate which table they belong in by use of domains. In this way, a researcher using the CDM always knows where a record should be located rather than having to guess.
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:domains} Number of standard concepts belonging to each domain.}\tabularnewline
+\toprule
+Concept Count & Domain\_Id\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Count & Domain\_Id\tabularnewline
+\midrule
+\endhead
+1731378 & Drug\tabularnewline
+477597 & Device\tabularnewline
+257000 & Procedure\tabularnewline
+163807 & Condition\tabularnewline
+145898 & Observation\tabularnewline
+89645 & Measurement\tabularnewline
+33759 & Spec Anatomic Site\tabularnewline
+17302 & Meas Value\tabularnewline
+1799 & Specimen\tabularnewline
+1215 & Provider Specialty\tabularnewline
+1046 & Unit\tabularnewline
+944 & Metadata\tabularnewline
+538 & Revenue Code\tabularnewline
+336 & Type Concept\tabularnewline
+194 & Relationship\tabularnewline
+183 & Route\tabularnewline
+180 & Currency\tabularnewline
+158 & Payer\tabularnewline
+123 & Visit\tabularnewline
+51 & Cost\tabularnewline
+50 & Race\tabularnewline
+13 & Plan Stop Reason\tabularnewline
+11 & Plan\tabularnewline
+6 & Episode\tabularnewline
+6 & Sponsor\tabularnewline
+5 & Meas Value Operator\tabularnewline
+3 & Spec Disease Status\tabularnewline
+2 & Gender\tabularnewline
+2 & Ethnicity\tabularnewline
+1 & Observation Type\tabularnewline
+\bottomrule
+\end{longtable}
 
 \hypertarget{general-conventions-of-fields}{%
 \subsection{General conventions of fields}\label{general-conventions-of-fields}}
@@ -972,8 +1022,8 @@ In CDM data tables the content of each record is represented using Concepts. Con
 
 Records in the CONCEPT table contain detailed information about each concept (name, domain, class etc.). Concepts, Concept Relationships, Concept Ancestors and other information relating to Concepts is contained in the tables of the Standardized Vocabularies.
 
-\hypertarget{difference-between-concept-ids-and-source-values}{%
-\subsection{Difference between Concept IDs and Source Values}\label{difference-between-concept-ids-and-source-values}}
+\hypertarget{concepts-sources}{%
+\subsection{Difference between Concept IDs and Source Values}\label{concepts-sources}}
 
 Many tables contain equivalent information in multiple places: As a Source Value, a Source Concept and as a Standard Concept.
 
@@ -1006,12 +1056,12 @@ Without the use of a standard way to represent TB the code 011 could be interpre
 \includegraphics[width=1\linewidth]{images/CommonDataModel/pulmTubMap} \caption{SNOMED code for Pulmonary Tuberculosis}\label{fig:pulmTubMap}
 \end{figure}
 
-An example of how this relationship is depicted in the tables is shown in Table \ref{tab:conditionOccurrence}.
+An example of how the standard concept-source code relationship is depicted in the tables is shown in Table \ref{tab:conditionOccurrence}.
 
 \hypertarget{omop-cdm-standardized-tables}{%
 \section{OMOP CDM Standardized Tables}\label{omop-cdm-standardized-tables}}
 
-The OMOP CDM contains 16 Clinical data tables, 10 Vocabulary tables, 2 Metadata tables, 4 Health System data tables, 2 Health Economics data tables, 3 standardized derived elements, and 2 results schema tables. These tables are fully specified in the CDM Wiki\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}{]}(\url{https://github.com/OHDSI/CommonDataModel/wiki}}.
+The OMOP CDM contains 16 Clinical data tables, 10 Vocabulary tables, 2 Metadata tables, 4 Health System data tables, 2 Health Economics data tables, 3 standardized derived elements, and 2 results schema tables. These tables are fully specified in the CDM Wiki\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}}.
 
 To illustrate how these tables are used in practice the data of one person will be used as a common thread throughout the rest of the chapter. While part of the CDM the Vocabulary tables are not covered here, rather, they are detailed in depth in Chapter \ref{StandardizedVocabularies}.
 
@@ -1450,7 +1500,11 @@ The visit\_occurrence\_id for the visit immediately preceding the current one in
 \bottomrule
 \end{longtable}
 
-*A patient may interact with multiple health care providers during one visit, as is often the case with inpatient stays. These interactions can be recorded in the VISIT\_DETAIL table. While not covered in depth in this chapter, you can read more about the VISIT\_DETAIL table in the \href{https://github.com/OHDSI/CommonDataModel/wiki/VISIT_DETAIL}{CDM wiki}.
+\begin{itemize}
+\tightlist
+\item
+  A patient may interact with multiple health care providers during one visit, as is often the case with inpatient stays. These interactions can be recorded in the VISIT\_DETAIL table. While not covered in depth in this chapter, you can read more about the VISIT\_DETAIL table in the \href{https://github.com/OHDSI/CommonDataModel/wiki/VISIT_DETAIL}{CDM wiki}.
+\end{itemize}
 
 \hypertarget{conditionOccurrence}{%
 \subsection{CONDITION\_OCCURRENCE}\label{conditionOccurrence}}
@@ -1940,14 +1994,22 @@ The source code for the modifier as it appears in the source data.\strut
 \bottomrule
 \end{longtable}
 
+\hypertarget{additional-information}{%
+\section{Additional Information}\label{additional-information}}
+
+This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site \url{https://github.com/OHDSI/CommonDataModel/wiki} for more information.
+
 \hypertarget{summary-1}{%
 \section{Summary}\label{summary-1}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
-\tightlist
 \item
-  TODO: add
+  The OMOP CDM is designed to support the conduct of research to identify and evaluate associations between interventions and outcomes
+\item
+  The OMOP CDM is a ``person-centric'' model
+\item
+  Source codes are represented as standard concept ids
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
@@ -1964,7 +2026,362 @@ The OMOP Standardized Vocabulary: Christian's (almost) finished paper + \url{htt
 \hypertarget{ExtractTransformLoad}{%
 \chapter{Extract Transform Load}\label{ExtractTransformLoad}}
 
-Leads: Mui van Zandt \& Clair Blacketer
+\emph{Chapter lead: Clair Blacketer}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+In order to get from the native/raw data to the OMOP CDM an extract, transform, and load (ETL) process has been designed and developed. This process consists of four major steps:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Data experts and CDM experts together design the ETL
+\item
+  People with medical knowledge create the code mappings
+\item
+  A technical person implements the ETL
+\item
+  All are involved in quality control
+\end{enumerate}
+
+There are tools available that have been developed by the community and this chapter will cover the steps in the process and the three tools available to facilitate those steps.
+
+\textbf{Chapter Objectives:}
+
+\begin{itemize}
+\tightlist
+\item
+  Examine best practices around designing an ETL specification
+\item
+  Introduce community tools available for facilitating the ETL process
+\item
+  Discuss CDM and ETL maintenance
+\end{itemize}
+
+\hypertarget{etl-step-1---data-experts-and-cdm-experts-together-design-the-etl}{%
+\section{ETL Step 1 - Data experts and CDM experts together design the ETL}\label{etl-step-1---data-experts-and-cdm-experts-together-design-the-etl}}
+
+\hypertarget{white-rabbit}{%
+\subsection{White Rabbit}\label{white-rabbit}}
+
+\textbf{Description}
+
+To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the White Rabbit tool comes in; it scans your data and creates a report containing all the information necessary to begin writing ETL logic.
+
+\textbf{Scope and Purpose}
+
+WhiteRabbit's main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon RedShift). The resulting scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.
+
+\textbf{Process Overview}
+
+The typical sequence for using the software to scan source data in preparation of developing an ETL into an OMOP CDM:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Set working folder, the location on the local desktop computer where results will be exported.
+\item
+  Connect to the source database or CSV text file and test connection.
+\item
+  Select the tables of interest for the scan and scan the tables.
+\item
+  WhiteRabbit creates an export of information about the source data.
+\end{enumerate}
+
+\textbf{Installation and support}
+
+All source code and installation instructions available on GitHub: \url{https://github.com/OHDSI/WhiteRabbit}
+
+Additional information available on the OHDSI wiki: \url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit}
+
+\textbf{Setting a Working Folder}
+
+After downloading and installing the WhiteRabbit application, the first thing you need to do is set a working folder. Any files that WhiteRabbit creates will be exported to this local folder. Use the ``Pick Folder'' button to navigate in your local environment where you would like the scan document to go.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitLocation} \caption{The "Pick Folder" button allows the specification of a working folder for the WhiteRabbit application}\label{fig:WhiteRabbitLocation}
+\end{figure}
+
+\textbf{Connection to a Database}
+
+WhiteRabbit supports delimited text files, Oracle, Sql Server, MySQL, and PostgreSQL. More detailed information for how to connect can be found on the wiki.
+
+\textbf{Scanning the Tables in a Database}
+
+After connecting to a database, you can scan the tables contained therein. A scan generates a report containing information on the source data that can be used to help design the ETL. Using the Scan tab in WhiteRabbit you can either select individual tables in the selected source database by clicking on `Add' (Ctrl + mouse click), or automatically select all tables in the database by clicking on `Add all in DB'.
+
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitAddTables}
+
+There are a few setting options as well with the scan:
+
+\begin{itemize}
+\tightlist
+\item
+  Checking the `Scan field values' tells WhiteRabbit that you would like to investigate raw data items within tables selected for a scan (i.e.~if you select Table A, WhiteRabbit will review the contents in each column in Table A).
+\item
+  `Min cell count' is an option when scanning field values. By default this is set to 5, meaning values in the source data that appear less than 5 times will not appear in the report.
+\item
+  `Rows per table' is an option when scanning field values. By default, WhiteRabbit will random 1 million rows in the table. There are other options to review 100,000 or all rows within the table.
+\item
+  Unchecking the `Scan field values' tells WhiteRabbit to not review or report on any of the raw data items.
+\item
+  Once all settings are completed, press the ``Scan tables'' button. After the scan is completed the report will be written to the working folder.
+\end{itemize}
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitScanSettings} \caption{WhiteRabbit scan settings}\label{fig:WhiteRabbitScanSettings}
+\end{figure}
+
+\textbf{Interpreting the Scan Report}
+
+Once the scan is complete, an excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/ScanOverviewTab} \caption{Example overview tab from a scan report}\label{fig:ScanOverviewTab}
+\end{figure}
+
+The tabs for each of the tables, for example the conditions table in the raw\_synthea database, show each field, the values in each field, and the frequency of each value.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/ScanConditionsTab} \caption{Example tab from a scan report}\label{fig:ScanConditionsTab}
+\end{figure}
+
+\hypertarget{rabbit-in-a-hat}{%
+\subsection{Rabbit-In-a-Hat}\label{rabbit-in-a-hat}}
+
+Rabbit-In-a-Hat comes with WhiteRabbit and is designed to read and display a WhiteRabbit scan document. WhiteRabbit generates information about the source data while Rabbit-In-a-Hat uses that information and through a graphical user interface to allow a user to connect source data to tables and columns within the CDM. Rabbit-In-a-Hat generates documentation for the ETL process it does not generate code to create an ETL.
+
+Similar to WhiteRabbit, installation information can be found on the github\footnote{\url{https://github.com/OHDSI/WhiteRabbit}} and information about the different options available in the application can be found on the wiki\footnote{\url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit}}.
+
+\textbf{Writing ETL Logic}
+
+Once you have opened your WhiteRabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea\textsuperscript{TM}\footnote{Synthea\textsuperscript{T}M is a patient generator that aims to model real patients. Data are created based on parameters passed to the application.The structure of the data can be found here: \url{https://github.com/synthetichealth/synthea/wiki}.} database might look during conversion.
+
+\textbf{General Flow of an ETL}
+
+Since the OMOP CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION\_OCCURRENCE, DRUG\_EXPOSURE, PROCEDURE\_OCCURRENCE, etc.) refers back to the PERSON table by way of the person\_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION\_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION\_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION\_PERIOD tables are done the dimensional tables like PROVIDER, CARE\_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT\_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person's patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/flowOfEtl} \caption{General flow of an ETL and which tables to map first}\label{fig:etlFlow}
+\end{figure}
+
+\emph{Note}
+
+It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct visit\_occurrence\_ids to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). This is 100\% allowed and encouraged. What is discouraged is the persistence and reliance on these tables once the conversion is complete.
+
+\hypertarget{mapping-example-person-table}{%
+\subsubsection{Mapping Example: Person table}\label{mapping-example-person-table}}
+
+The Synthea data structure contains 20 columns in the patients table (\url{https://github.com/synthetichealth/synthea/wiki/CSV-File-Data-Dictionary\#patients}) but not all were needed to populate the PERSON table, as seen in figure \ref{fig:syntheaPerson}. This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver's license number, and passport number.
+
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/syntheaPersonTable} \caption{Mapping of Synthea Patients table to CDM PERSON table.}\label{fig:syntheaPerson}
+\end{figure}
+
+The table below shows the logic that was imposed on the Synthea patients table to convert it to the CDM PERSON table. The `Comment field' column gives explanations for why the logic was chosen.
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:syntheaEtlPerson} ETL logic to convert the Synthea Patients table to CDM PERSON table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.24\columnwidth}\raggedright
+Destination Field\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright
+Source field\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+Logic\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedright
+Comment field\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.24\columnwidth}\raggedright
+Destination Field\strut
+\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright
+Source field\strut
+\end{minipage} & \begin{minipage}[b]{0.12\columnwidth}\raggedright
+Logic\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\raggedright
+Comment field\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+person\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Autogenerate\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+The person\_id will be generated at the time of implementation. This is because the id value from the source is a varchar value while the person\_id is an integer. The id field from the source is set as the person\_source\_value to preserve that value and allow for error-checking if necessary.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+gender\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+gender\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+When gender = `M' then set gender\_concept\_id to 8507, when gender = `F' then set to 8532. Drop any rows with missing/unknown gender.\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+These two concepts were chosen as they are the only two standard concepts in the gender domain\footnote{\url{http://athena.ohdsi.org/search-terms/terms?domain=Gender\&standardConcept=Standard\&page=1\&pageSize=15\&query=}}. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+year\_of\_birth\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+birthdate\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Take year from birthdate\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+month\_of\_birth\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+birthdate\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Take month from birthdate\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+day\_of\_birth\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+birthdate\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+Take day from birthdate\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+birth\_datetime\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+birthdate\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+With midnight as time 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+Here, the source did not supply a time of birth so the choice was made to set it at midnight.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+race\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+race\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+When race = `WHITE' then set as 8527, when race = `BLACK' then set as 8516, when race = `ASIAN' then set as 8515, otherwise set as 0\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source\footnote{\url{http://athena.ohdsi.org/search-terms/terms?domain=Race\&standardConcept=Standard\&page=1\&pageSize=15\&query=}}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+ethnicity\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+race ethnicity\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+When race = `HISPANIC', or when ethnicity in (`CENTRAL\_AMERICAN', `DOMINICAN', `MEXICAN', `PUERTO\_RICAN', `SOUTH\_AMERICAN') then set as 38003563, otherwise set as 0\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+This is a good example of how multiple source columns can contribute to one CDM column. In the CDM ethnicity is represented as either hispanic or not hispanice so values from both the source column race and source column ethnicity will determine this value.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+location\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+provider\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+care\_site\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+person\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+id\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+gender\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+gender\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+gender\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+race\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+race\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+race\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+ethnicity\_source\_value\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+ethnicity\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+In this case the ethnicity\_source\_value will have more granularity than the ethnicity\_concept\_id.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.24\columnwidth}\raggedright
+ethnicity\_source\_concept\_id\strut
+\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{etl-step-2---people-with-medical-knowledge-create-the-code-mappings}{%
+\section{ETL Step 2 - People with medical knowledge create the code mappings}\label{etl-step-2---people-with-medical-knowledge-create-the-code-mappings}}
+
+\hypertarget{etl-step-3---a-technical-person-implements-the-etl}{%
+\section{ETL Step 3 - A technical person implements the ETL}\label{etl-step-3---a-technical-person-implements-the-etl}}
+
+\hypertarget{etl-step-4---all-are-involved-in-quality-control}{%
+\section{ETL Step 4 - All are involved in quality control}\label{etl-step-4---all-are-involved-in-quality-control}}
 
 Business Rules and Conventions: From the CDM Wiki + Themis
 
@@ -2836,7 +3253,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.ieccqdpxchildren ;"
+## [1] "SELECT * FROM temp_schema.whppzxexchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -5070,8 +5487,8 @@ Note: The excercises still have to be defined. The idea is to require readers to
 
 \emph{Chapter leads: Peter Rijnbeek \& Jenna Reps}
 
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
+\hypertarget{introduction-1}{%
+\section{Introduction}\label{introduction-1}}
 
 It is widely excepted in medicine that prevention is better than cure. If we could identify patients who are at a high risk of developing some illness, then it might be possible to intervene and slow down the progression of, or even prevent, the illness. Big observational healthcare data capture rich information across a diverse and often large patient population. These data are collected retrospectively. It may be possible to learn associations from the data that can be used to calculate patient-level predictions for various illnesses or health outcomes. In this chapter we consider predicting the general tasks:
 
@@ -5720,8 +6137,8 @@ We define the target cohort as the first exposure to any ACE inhibitor. Patients
 \hypertarget{implementing-the-study-in-atlas}{%
 \section{Implementing the study in Atlas}\label{implementing-the-study-in-atlas}}
 
-\hypertarget{introduction-1}{%
-\subsection{Introduction}\label{introduction-1}}
+\hypertarget{introduction-2}{%
+\subsection{Introduction}\label{introduction-2}}
 
 The atlas interface to patient-level prediction enables a users to design a prediction study analysis containing multiple prediction questions and analyses settings. The atlas interface creates a prediction study R package populated with all the code ready to develop and evaluate the specified models. All a user needs to develop the models is R studio with:
 
@@ -6947,8 +7364,8 @@ An important aspect of evidence quality is the ability to express the uncertaint
 \hypertarget{DataQuality}{%
 \chapter{Data Quality}\label{DataQuality}}
 
-\hypertarget{introduction-2}{%
-\section{Introduction}\label{introduction-2}}
+\hypertarget{introduction-3}{%
+\section{Introduction}\label{introduction-3}}
 
 Kahn et al.~define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance); (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) \citep{kahn_harmonized_2016}
 
