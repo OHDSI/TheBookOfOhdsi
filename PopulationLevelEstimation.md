@@ -224,7 +224,7 @@ In the Estimation design function, there are three sections: Comparisons, Analys
 
 ### Comparative cohort settings {#ComparisonSettings}
 
-A study can have one or more comparisons. Click on "Add Comparison", which will open a new dialog. Click on ![](images/PopulationLevelEstimation/open.png) to the select the target and  comparator cohorts. By clicking on "Add Outcome" we can add our two outcome cohorts. We assume the cohorts have already been created in ATLAS  as described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitorsMono)) , comparator (Appendix \@ref(ThiazidesMono)), and outcome (Appendix \@ref(Angioedema) and Appendix \@ref(Ami)) cohorts. When done, the dialog should look like Figure \@ref(fig:comparisons).
+A study can have one or more comparisons. Click on "Add Comparison", which will open a new dialog. Click on ![](images/PopulationLevelEstimation/open.png) to the select the target and  comparator cohorts. By clicking on "Add Outcome" we can add our two outcome cohorts. We assume the cohorts have already been created in ATLAS  as described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitorsMono)), comparator (Appendix \@ref(ThiazidesMono)), and outcome (Appendix \@ref(Angioedema) and Appendix \@ref(Ami)) cohorts. When done, the dialog should look like Figure \@ref(fig:comparisons).
 
 <div class="figure" style="text-align: center">
 <img src="images/PopulationLevelEstimation/comparisons.png" alt="The comparison dialog" width="100%" />
