@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-07-11"
+date: "2019-07-12"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
