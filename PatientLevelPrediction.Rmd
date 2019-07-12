@@ -519,7 +519,7 @@ Click on the "Review & Download" tab under "Utilities". In the "Download Study P
 
 To run the R package requires having R, RStudio, and Java installed as described in Section \@ref(installR). Also required is the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package, which can be installed in R using:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 install.packages("drat")
 drat::addRepo("OHDSI")
 install.packages("PatientLevelPrediction")
@@ -532,7 +532,7 @@ To use the study R package we recommend using R Studio. If you are running R Stu
 TODO: full instructions for running the package should be in the package README, not in the book.
 
 After running the R package analysis we can view the results in an interactive shiny app by running:
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 PatientLevelPrediction::viewMultiplePlp(outputFolder)
 ```
 
@@ -613,7 +613,7 @@ There are many additional parameters for the `getPlpData` function which are all
 
 Creating the `plpData` object can take considerable computing time, and it is probably a good idea to save it for future sessions. Because `plpData` uses `ff`, we cannot use R's regular save function. Instead, we'll have to use the `savePlpData` function:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 savePlpData(plpData, "angio_in_ace_data")
 ```
 
@@ -672,25 +672,25 @@ In the `runPlp` function there are several parameters to save the `plpData`, `pl
 
 We can save the model using:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 savePlpModel(gbmResults$model, dirPath = "model")
 ```
 
 We can load the model using:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 plpModel <- loadPlpModel("model")
 ```
 
 You can also save the full results structure using:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 savePlpResult(gbmResults, location = "gbmResults")
 ```
 
 To load the full results structure use:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 gbmResults <- loadPlpResult("gbmResults")
 ```
 
@@ -700,7 +700,7 @@ Once we execute the study, the `runPlp` function returns the trained model and t
 
 To generate and save all the evaluation plots to a folder run the following code:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 plotPlp(gbmResults, "plots")
 ```
 
@@ -739,7 +739,7 @@ validationResults <- applyModel(population, plpData, plpModel)
 To make things easier we also provide the `externalValidatePlp` function for performing external validation that also extracts the required data. Assuming we ran `result <- runPlp(...)` then we can extract the data required for the model and evaluated it on new data. Assuming the validation cohorts are in the table `mainschema.dob.cohort` with IDs 1 and 2 and the CDM data is in the schema `cdmschema.dob`:
 
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 valResult <- externalValidatePlp(plpResult = result, 
                                  connectionDetails = connectionDetails,
                                  validationSchemaTarget = 'mainschema.dob',
@@ -755,15 +755,27 @@ valResult <- externalValidatePlp(plpResult = result,
 
 If we have multiple databases to validate the model on then we can run:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 valResults <- externalValidatePlp(plpResult = result, 
                                   connectionDetails = connectionDetails,
-                                  validationSchemaTarget = list('mainschema.dob','difschema.dob', 'anotherschema.dob'),
-                                  validationSchemaOutcome = list('mainschema.dob','difschema.dob', 'anotherschema.dob'),
-                                  validationSchemaCdm = list('cdms1chema.dbo','cdm2schema.dbo','cdm3schema.dbo'),
-                                  databaseNames = list('new database 1','new database 2','new database 3'),
-                                  validationTableTarget = list('cohort1','cohort2','cohort3'),
-                                  validationTableOutcome = list('cohort1','cohort2','cohort3'),
+                                  validationSchemaTarget = list('mainschema.dob',
+                                                                'difschema.dob', 
+                                                                'anotherschema.dob'),
+                                  validationSchemaOutcome = list('mainschema.dob',
+                                                                 'difschema.dob', 
+                                                                 'anotherschema.dob'),
+                                  validationSchemaCdm = list('cdms1chema.dbo',
+                                                             'cdm2schema.dbo',
+                                                             'cdm3schema.dbo'),
+                                  databaseNames = list('new database 1',
+                                                       'new database 2',
+                                                       'new database 3'),
+                                  validationTableTarget = list('cohort1',
+                                                               'cohort2',
+                                                               'cohort3'),
+                                  validationTableOutcome = list('cohort1',
+                                                                'cohort2',
+                                                                'cohort3'),
                                   validationIdTarget = list(1,3,5),
                                   validationIdOutcome = list(2,4,6)
           )
@@ -773,7 +785,7 @@ valResults <- externalValidatePlp(plpResult = result,
 
 Exploring the performance of a prediction model is easiest with the `viewPlp` function. This requires a results object as the input. If developing models in R we can use the result of `runPLp` as the input. If using the ATLAS-generated study package, then we need to load one of the models (in this example we will load Analysis_1):
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 plpResult <- loadPlpResult(file.path(outputFolder, 
                                      'Analysis_1', 
                                      'plpResult'))
@@ -783,7 +795,7 @@ Here "Analysis_1" corresponds to the analysis we specified earlier.
 
 We can then launch the shiny app by running:
 
-```{r tidy=TRUE,eval=FALSE}
+```{r tidy=FALSE,eval=FALSE}
 viewPlp(plpResult)
 ```
 
