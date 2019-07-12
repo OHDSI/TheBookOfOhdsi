@@ -2,7 +2,7 @@
 
 # The Common Data Model {#CommonDataModel}
 
-*Chapter leads: Clair Blacketer*
+*Chapter lead: Clair Blacketer*
 
 No single observational data source provides a comprehensive view of the clinical data a patient accumulates while receiving healthcare, and therefore none can be sufficient to meet all expected outcome analysis needs. This explains the need for assessing and analyzing multiple data sources concurrently using a common data standard. This standard is provided by the OMOP Common Data Model (CDM). In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables. 
 
@@ -94,12 +94,10 @@ Concept Count|Domain_Id
 
 Variable names across all tables follow one convention:
 
-<!-- To fix relative width of tables in LaTex, change relative size of --|---- below -->
-
 Table: (\#tab:fieldConventions) Field name conventions.
 
-Notation|Description
-------------------------------|-------------------------------------------------------
+|Notation|Description|
+|:------------------------------|:-------------------------------------------------------|
 |[entity]_id|Unique identifiers for key entities, which can serve as foreign keys to establish relationships across entities. For example, person_id uniquely identifies each individual. visit_occurrence_id uniquely identifies a PERSON encounter at a point of care.|
 |[entity]_source_value|Verbatim information from the source data, typically used in ETL to map to concept_id, and not to be used by any standard analytics. For example, condition_source_value = '787.02' was the ICD-9 code captured as a diagnosis from the administrative claim.|
 |[entity]_concept_id|Foreign key into the Standardized Vocabularies (i.e. the standard concept attribute for the corresponding term is true), which serves as the primary basis for all standardized analytics. For example, condition_concept_id = [31967](http://athena.ohdsi.org/search-terms/terms/31967) contains the reference value for the SNOMED concept of "Nausea".|
