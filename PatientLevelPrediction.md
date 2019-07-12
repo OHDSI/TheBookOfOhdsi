@@ -773,24 +773,46 @@ To make things easier we also provide the `externalValidatePlp` function for per
 
 
 ```r
-valResult <- externalValidatePlp(plpResult = result, connectionDetails = connectionDetails, 
-    validationSchemaTarget = "mainschema.dob", validationSchemaOutcome = "mainschema.dob", 
-    validationSchemaCdm = "cdmschema.dbo", databaseNames = "new database", validationTableTarget = "cohort", 
-    validationTableOutcome = "cohort", validationIdTarget = 1, validationIdOutcome = 2)
+valResult <- externalValidatePlp(plpResult = result, 
+                                 connectionDetails = connectionDetails,
+                                 validationSchemaTarget = 'mainschema.dob',
+                                 validationSchemaOutcome = 'mainschema.dob',
+                                 validationSchemaCdm = 'cdmschema.dbo',
+                                 databaseNames = 'new database',
+                                 validationTableTarget = 'cohort',
+                                 validationTableOutcome = 'cohort',
+                                 validationIdTarget = 1,
+                                 validationIdOutcome = 2
+          )
 ```
 
 If we have multiple databases to validate the model on then we can run:
 
 
 ```r
-valResults <- externalValidatePlp(plpResult = result, connectionDetails = connectionDetails, 
-    validationSchemaTarget = list("mainschema.dob", "difschema.dob", "anotherschema.dob"), 
-    validationSchemaOutcome = list("mainschema.dob", "difschema.dob", "anotherschema.dob"), 
-    validationSchemaCdm = list("cdms1chema.dbo", "cdm2schema.dbo", "cdm3schema.dbo"), 
-    databaseNames = list("new database 1", "new database 2", "new database 3"), 
-    validationTableTarget = list("cohort1", "cohort2", "cohort3"), validationTableOutcome = list("cohort1", 
-        "cohort2", "cohort3"), validationIdTarget = list(1, 3, 5), validationIdOutcome = list(2, 
-        4, 6))
+valResults <- externalValidatePlp(plpResult = result, 
+                                  connectionDetails = connectionDetails,
+                                  validationSchemaTarget = list('mainschema.dob',
+                                                                'difschema.dob', 
+                                                                'anotherschema.dob'),
+                                  validationSchemaOutcome = list('mainschema.dob',
+                                                                 'difschema.dob', 
+                                                                 'anotherschema.dob'),
+                                  validationSchemaCdm = list('cdms1chema.dbo',
+                                                             'cdm2schema.dbo',
+                                                             'cdm3schema.dbo'),
+                                  databaseNames = list('new database 1',
+                                                       'new database 2',
+                                                       'new database 3'),
+                                  validationTableTarget = list('cohort1',
+                                                               'cohort2',
+                                                               'cohort3'),
+                                  validationTableOutcome = list('cohort1',
+                                                                'cohort2',
+                                                                'cohort3'),
+                                  validationIdTarget = list(1,3,5),
+                                  validationIdOutcome = list(2,4,6)
+          )
 ```
 
 ## Single model viewer app
@@ -799,7 +821,9 @@ Exploring the performance of a prediction model is easiest with the `viewPlp` fu
 
 
 ```r
-plpResult <- loadPlpResult(file.path(outputFolder, "Analysis_1", "plpResult"))
+plpResult <- loadPlpResult(file.path(outputFolder, 
+                                     'Analysis_1', 
+                                     'plpResult'))
 ```
 
 Here "Analysis_1" corresponds to the analysis we specified earlier.

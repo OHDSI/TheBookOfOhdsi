@@ -3286,7 +3286,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.yr4u45pochildren ;"
+## [1] "SELECT * FROM temp_schema.rkq8xmxnchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -6813,10 +6813,17 @@ To make things easier we also provide the \texttt{externalValidatePlp} function 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{valResult <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails, }
-    \DataTypeTok{validationSchemaTarget =} \StringTok{"mainschema.dob"}\NormalTok{, }\DataTypeTok{validationSchemaOutcome =} \StringTok{"mainschema.dob"}\NormalTok{, }
-    \DataTypeTok{validationSchemaCdm =} \StringTok{"cdmschema.dbo"}\NormalTok{, }\DataTypeTok{databaseNames =} \StringTok{"new database"}\NormalTok{, }\DataTypeTok{validationTableTarget =} \StringTok{"cohort"}\NormalTok{, }
-    \DataTypeTok{validationTableOutcome =} \StringTok{"cohort"}\NormalTok{, }\DataTypeTok{validationIdTarget =} \DecValTok{1}\NormalTok{, }\DataTypeTok{validationIdOutcome =} \DecValTok{2}\NormalTok{)}
+\NormalTok{valResult <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }
+                                 \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+                                 \DataTypeTok{validationSchemaTarget =} \StringTok{'mainschema.dob'}\NormalTok{,}
+                                 \DataTypeTok{validationSchemaOutcome =} \StringTok{'mainschema.dob'}\NormalTok{,}
+                                 \DataTypeTok{validationSchemaCdm =} \StringTok{'cdmschema.dbo'}\NormalTok{,}
+                                 \DataTypeTok{databaseNames =} \StringTok{'new database'}\NormalTok{,}
+                                 \DataTypeTok{validationTableTarget =} \StringTok{'cohort'}\NormalTok{,}
+                                 \DataTypeTok{validationTableOutcome =} \StringTok{'cohort'}\NormalTok{,}
+                                 \DataTypeTok{validationIdTarget =} \DecValTok{1}\NormalTok{,}
+                                 \DataTypeTok{validationIdOutcome =} \DecValTok{2}
+\NormalTok{          )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6824,14 +6831,29 @@ If we have multiple databases to validate the model on then we can run:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{valResults <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails, }
-    \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{"mainschema.dob"}\NormalTok{, }\StringTok{"difschema.dob"}\NormalTok{, }\StringTok{"anotherschema.dob"}\NormalTok{), }
-    \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{"mainschema.dob"}\NormalTok{, }\StringTok{"difschema.dob"}\NormalTok{, }\StringTok{"anotherschema.dob"}\NormalTok{), }
-    \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{"cdms1chema.dbo"}\NormalTok{, }\StringTok{"cdm2schema.dbo"}\NormalTok{, }\StringTok{"cdm3schema.dbo"}\NormalTok{), }
-    \DataTypeTok{databaseNames =} \KeywordTok{list}\NormalTok{(}\StringTok{"new database 1"}\NormalTok{, }\StringTok{"new database 2"}\NormalTok{, }\StringTok{"new database 3"}\NormalTok{), }
-    \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{"cohort1"}\NormalTok{, }\StringTok{"cohort2"}\NormalTok{, }\StringTok{"cohort3"}\NormalTok{), }\DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{"cohort1"}\NormalTok{, }
-        \StringTok{"cohort2"}\NormalTok{, }\StringTok{"cohort3"}\NormalTok{), }\DataTypeTok{validationIdTarget =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{), }\DataTypeTok{validationIdOutcome =} \KeywordTok{list}\NormalTok{(}\DecValTok{2}\NormalTok{, }
-        \DecValTok{4}\NormalTok{, }\DecValTok{6}\NormalTok{))}
+\NormalTok{valResults <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }
+                                  \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+                                  \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
+                                                                \StringTok{'difschema.dob'}\NormalTok{, }
+                                                                \StringTok{'anotherschema.dob'}\NormalTok{),}
+                                  \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
+                                                                 \StringTok{'difschema.dob'}\NormalTok{, }
+                                                                 \StringTok{'anotherschema.dob'}\NormalTok{),}
+                                  \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{'cdms1chema.dbo'}\NormalTok{,}
+                                                             \StringTok{'cdm2schema.dbo'}\NormalTok{,}
+                                                             \StringTok{'cdm3schema.dbo'}\NormalTok{),}
+                                  \DataTypeTok{databaseNames =} \KeywordTok{list}\NormalTok{(}\StringTok{'new database 1'}\NormalTok{,}
+                                                       \StringTok{'new database 2'}\NormalTok{,}
+                                                       \StringTok{'new database 3'}\NormalTok{),}
+                                  \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}
+                                                               \StringTok{'cohort2'}\NormalTok{,}
+                                                               \StringTok{'cohort3'}\NormalTok{),}
+                                  \DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}
+                                                                \StringTok{'cohort2'}\NormalTok{,}
+                                                                \StringTok{'cohort3'}\NormalTok{),}
+                                  \DataTypeTok{validationIdTarget =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{),}
+                                  \DataTypeTok{validationIdOutcome =} \KeywordTok{list}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{)}
+\NormalTok{          )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6842,7 +6864,9 @@ Exploring the performance of a prediction model is easiest with the \texttt{view
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(outputFolder, }\StringTok{"Analysis_1"}\NormalTok{, }\StringTok{"plpResult"}\NormalTok{))}
+\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(outputFolder, }
+                                     \StringTok{'Analysis_1'}\NormalTok{, }
+                                     \StringTok{'plpResult'}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
