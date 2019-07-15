@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-07-12}
+    \date{2019-07-15}
 
 \usepackage{booktabs}
 \usepackage{amsthm}
@@ -2407,48 +2407,125 @@ ethnicity\_source\_concept\_id\strut
 \bottomrule
 \end{longtable}
 
+For more examples on how the Synthea dataset was mapped to the CDM please see the full specification document \url{https://ohdsi.github.io/ETL-Synthea/}.
+
+Many of the choices made for Synthea follow the THEMIS agreed upon conventions, found here \url{https://github.com/ohdsi/themis}.
+
 \hypertarget{etl-step-2---people-with-medical-knowledge-create-the-code-mappings}{%
 \section{ETL Step 2 - People with medical knowledge create the code mappings}\label{etl-step-2---people-with-medical-knowledge-create-the-code-mappings}}
+
+Often the source data uses coding systems that are not in the OMOP Vocabulary. In this case, a mapping has to be created from the source coding system to one of the appropriate OMOP standard vocabularies (for example, for drugs the OMOP standard vocabulary is RxNorm, and for conditions it is SNOMED).
+
+Mapping can be a daunting task, especially when there are many codes in the source coding system. There are several things that can be done to make the task easier:
+
+\begin{itemize}
+\tightlist
+\item
+  Focus on the most frequently used codes. A code that is never used or maybe just once or twice is not worth the effort of mapping, since it will never be used in a real study.
+\item
+  Make use of existing information whenever possible. For example, many national drug coding systems have been mapped to ATC. Although ATC is not detailed enough for many purposes, the concept relationships between ATC and RxNorm can be used to make good guesses of what the right RxNorm codes are.
+\item
+  Use Usagi\footnote{\url{https://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:usagi}}.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL.
+  \end{itemize}
+\end{itemize}
 
 \hypertarget{etl-step-3---a-technical-person-implements-the-etl}{%
 \section{ETL Step 3 - A technical person implements the ETL}\label{etl-step-3---a-technical-person-implements-the-etl}}
 
+Implementation usually varies site to site and it largely depends on many factors including infrastructure, size of the database, the complexity of the ETL, and the technical expertise available. A few examples of different ETLs:
+
+\begin{itemize}
+\tightlist
+\item
+  ETL-CDMBuilder - A .NET application designed to transform multiple databases
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://github.com/OHDSI/etl-cdmbuilder}
+  \end{itemize}
+\item
+  ETL-Synthea - A SQL builder written to convert the Synthea database
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://github.com/OHDSI/etl-synthea}
+  \end{itemize}
+\item
+  ETL-LambdaBuilder - A builder using the AWS lambda functionality
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \url{https://github.com/OHDSI/etl-lambdabuilder}
+  \end{itemize}
+\end{itemize}
+
 \hypertarget{etl-step-4---all-are-involved-in-quality-control}{%
 \section{ETL Step 4 - All are involved in quality control}\label{etl-step-4---all-are-involved-in-quality-control}}
 
-Business Rules and Conventions: From the CDM Wiki + Themis
-
-Conversion to OMOP CDM (ETL - Extract, Transform, Load): \url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:etl_best_practices}
+For the extract, transform, load process, quality control is iterative. The typical pattern is to write logic -\textgreater{} implement logic -\textgreater{} test logic -\textgreater{} fix/write logic. There are different ways to approach data quality as detailed in chapter \ref{DataQuality} but we recommend at least the following steps in quality control:
 
 \begin{itemize}
 \tightlist
 \item
-  WhiteRabbit and Rabbit-in-a-Hat: \url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit}
+  Review of the ETL design document, computer code, and code mappings. Any one person can make mistakes, so always at least one other person should review what the first person did.
 \item
-  Usagi: \url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:usagi}
+  Manually compare all information on a sample of persons in the source and target data.
 \item
-  Achilles: \url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:achilles}
+  Compare overall counts in the source and target data.
 \item
-  Athena: \url{http://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary_etl}
+  Replicate a study that has already been performed on the source data on the CDM version.
+\item
+  Create unit tests meant to replicate a pattern in the source data that should be addressed in the ETL. For example, if your ETL specifies that patients without gender information should be dropped, create a unit test of a person without a gender and assess how the builder handles it.
 \end{itemize}
 
-Mapping and QA of codes to Standard Concepts
+\hypertarget{final-thoughts-on-etl}{%
+\section{Final thoughts on ETL}\label{final-thoughts-on-etl}}
+
+The ETL process is a difficult one to master for many reasons, not the least of which the fact that we are all working off of unique source data, making it hard to create a ``one-size-fits-all'' solution. However, there are some hard won lessons we have learned over the years.
 
 \begin{itemize}
 \tightlist
 \item
-  Mapping codes locally versus through the OHDSI Standard Vocabularies
+  The 80/20 rule. If you can avoid it don't spend too much time manually mapping source codes to concepts sets. Ideally, map the source codes that cover the majority of your data. This should be enough to get you started and you can address any remaining codes in the future based on use cases.
 \item
-  Usagi
+  It's ok if you lose data that is not of research quality. Often these are the records that would be discarded before starting an analysis anyway, we just remove them during the ETL process instead.
 \item
-  Systematic mapping of Drug codes
-\item
-  Systematic mapping of Condition codes
-\item
-  Systematic mapping of Procedure codes
-\item
-  Systematic mapping of other codes
+  A CDM requires maintenance. Just because you complete an ETL does not mean you don't need to touch it ever again. Your raw data might change, there might be a bug in the code, there may be new vocabulary or an update to the CDM. Plan for an allocate resources to these changes so your ETL is always up-to-date.
 \end{itemize}
+
+\hypertarget{summary-2}{%
+\section{Summary}\label{summary-2}}
+
+\BeginKnitrBlock{rmdsummary}
+\begin{itemize}
+\item
+  There is a generally agreed upon process for how to approach an ETL, including
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Data experts and CDM experts together design the ETL
+  \item
+    People with medical knowledge create the code mappings
+  \item
+    A technical person implements the ETL
+  \item
+    All are involved in quality control
+  \end{itemize}
+\item
+  Tools have been developed by the OHDSI community to facilitae these steps and are freely available for use
+\item
+  There are many ETL examples and agreed upon conventions you can use as a guide
+\end{itemize}
+\EndKnitrBlock{rmdsummary}
 
 \hypertarget{part-data-analytics}{%
 \part{Data Analytics}\label{part-data-analytics}}
@@ -2563,8 +2640,8 @@ There are many important healthcare questions for which OHDSI databases cannot p
 
 Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn't, is ``missing.'' The statistics literature distinguishes between types of missingness such as ``missing completely at random,'' ``missing at random'', and ``missing not at random'' and methods of increasing complexity attempt to address these types. \citet{perkins2017principled} provide a useful introduction to this topic.
 
-\hypertarget{summary-2}{%
-\section{Summary}\label{summary-2}}
+\hypertarget{summary-3}{%
+\section{Summary}\label{summary-3}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -2945,8 +3022,8 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
 \caption{The Amazon Web Services architecure for OHDSIonAWS.}\label{fig:ohdsionawsDiagram}
 \end{figure}
 
-\hypertarget{summary-3}{%
-\section{Summary}\label{summary-3}}
+\hypertarget{summary-4}{%
+\section{Summary}\label{summary-4}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -3286,7 +3363,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.rkq8xmxnchildren ;"
+## [1] "SELECT * FROM temp_schema.k3uxabtcchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4038,8 +4115,8 @@ Because we use OHDSI SQL together with DatabaseConnector and SqlRender throughou
 
 Note that for demonstration purposes we chose to create our cohorts using hand-crafted SQL. It would probably have been more convenient to construct cohort definition in ATLAS, and use the SQL generated by ATLAS to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can therefore easily be used together with SqlRender and DatabaseConnector.
 
-\hypertarget{summary-4}{%
-\section{Summary}\label{summary-4}}
+\hypertarget{summary-5}{%
+\section{Summary}\label{summary-5}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -5494,8 +5571,8 @@ One last check is to review the Kaplan Meier plot, showing the survival over tim
 
 We observe a hazard ratio of 4.32 (95\% confidence interval: 2.45 - 8.08) for angioedema, which tells us that ACEi appear to increase the risk of angioedema compared to THZ. Similarly, we observe a hazard ratio of 1.13 (95\% confidence interval: 0.59 - 2.18) for AMI, suggesting little or no effect for AMI. Our diagnostics, as reviewed earlier, give no reason for doubt. However, ultimately the quality of this evidence, and whether we choose to trust it, depends on many factors that are not covererd by the study diagnostics as described in Chapter \ref{EvidenceQuality}.
 
-\hypertarget{summary-5}{%
-\section{Summary}\label{summary-5}}
+\hypertarget{summary-6}{%
+\section{Summary}\label{summary-6}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -7079,8 +7156,8 @@ We have added functionality to automatically generate a word document we can use
 
 For more details see the help page of the function.
 
-\hypertarget{summary-6}{%
-\section{Summary}\label{summary-6}}
+\hypertarget{summary-7}{%
+\section{Summary}\label{summary-7}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -7617,8 +7694,8 @@ These tests are automatically performed when changes are made to a package (spec
 
 For more complex functionality it is not always obvious what the expected output should be given the input. In these cases simulations are sometimes used, generating input given a specific statistical model, and establishing whether the functionality produces results in line with this known model. For example, in the \href{https://ohdsi.github.io/SelfControlledCaseSeries/}{SelfControlledCaseSeries} package simulations are used to verify that the method is able to detect and appropriately model temporal trends in simulated data.
 
-\hypertarget{summary-7}{%
-\section{Summary}\label{summary-7}}
+\hypertarget{summary-8}{%
+\section{Summary}\label{summary-8}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -8152,8 +8229,8 @@ This emphasizes the need for empirical evaluation and calibration: if no empiric
 
 Our evaluation of the designs in the Methods Library also shows that empirical calibration restores type 1 error and coverage to their nominal values, although often at the cost of increasing type 2 error and decreasing precision.
 
-\hypertarget{summary-8}{%
-\section{Summary}\label{summary-8}}
+\hypertarget{summary-9}{%
+\section{Summary}\label{summary-9}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
