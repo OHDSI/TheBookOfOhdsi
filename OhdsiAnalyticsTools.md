@@ -199,7 +199,7 @@ Once completed, you should be able to select R from your Start Menu.
 
 2. After downloading, start the installer, and use the default options everywhere.
 
-## Installing Java
+**Installing Java**
 
 1. Go to [https://java.com/en/download/manual.jsp](https://java.com/en/download/manual.jsp), and select the Windows 64-bit installer as shown in Figure \@ref(fig:downloadJava). If you also installed the 32-bit version of R, you *must* also install the other (32-bit) version of Java.
 
