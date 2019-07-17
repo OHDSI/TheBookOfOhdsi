@@ -10,10 +10,9 @@ The CDM is designed to support the conduct of research to identify and evaluate 
 
 An overview of all the tables in the CDM is provided in Figure \@ref(fig:cdmDiagram).
 
-<div class="figure">
-<img src="images/CommonDataModel/cdmDiagram.png" alt="Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown." width="100%" />
-<p class="caption">(\#fig:cdmDiagram)Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/CommonDataModel/cdmDiagram} \caption{Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.}(\#fig:cdmDiagram)
+\end{figure}
 
 ## Design Principles
 
@@ -122,17 +121,20 @@ Many tables contain equivalent information in multiple places: As a Source Value
 
 Source Values are only provided for convenience and quality assurance (QA) purposes. Source Values and Source Concepts are optional, while **Standard Concepts are mandatory**. Source Values may contain information that is only meaningful in the context of a specific data source. This mandatory use of Standard Concepts is what allows all OHDSI collaborators to speak the same language. For example, let's look at the condition "Pulmonary Tuberculosis" (TB). Figure \@ref(fig:pulmTubICD9) shows that the ICD9CM code for TB is 011. 
 
-<div class="figure" style="text-align: center">
-<img src="images/CommonDataModel/pulmTubICD9.png" alt="ICD9CM code for Pulmonary Tuberculosis" width="75%" />
-<p class="caption">(\#fig:pulmTubICD9)ICD9CM code for Pulmonary Tuberculosis</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{images/CommonDataModel/pulmTubICD9} 
+
+}
+
+\caption{ICD9CM code for Pulmonary Tuberculosis}(\#fig:pulmTubICD9)
+\end{figure}
 
 Without the use of a standard way to represent TB the code 011 could be interpreted as "Hospital Inpatient (Including Medicare Part A)" in the UB04 vocabulary, or as "Nervous System Neoplasms without Complications, Comorbidities" in the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The Concept ID that represents the 011 ICD9CM code is [44828631](http://athena.ohdsi.org/search-terms/terms/44828631). This differentiates the ICD9CM from the UBO4 and from the DRG. The Standard Concept that ICD9CM code maps to is [253954](http://athena.ohdsi.org/search-terms/terms/253954) as shown in figure \@ref(fig:pulmTubMap) by the relationship "Non-standard to Standard map (OMOP)". This same mapping relationship exists between Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes. 
 
-<div class="figure">
-<img src="images/CommonDataModel/pulmTubMap.png" alt="SNOMED code for Pulmonary Tuberculosis" width="100%" />
-<p class="caption">(\#fig:pulmTubMap)SNOMED code for Pulmonary Tuberculosis</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/CommonDataModel/pulmTubMap} \caption{SNOMED code for Pulmonary Tuberculosis}(\#fig:pulmTubMap)
+\end{figure}
 
 An example of how the standard concept-source code relationship is depicted in the tables is shown in Table \@ref(tab:conditionOccurrence).
 
@@ -148,7 +150,8 @@ To illustrate how these tables are used in practice the data of one person will 
 
 Endometriosis is a painful condition whereby cells normally found in the lining of a woman's uterus occur elsewhere in the body. Severe cases can lead to infertility, bowel, and bladder problems. The following sections will detail one patient's experience with this disease and how her clinical experience might be represented in the Common Data Model. 
 
-<img src="images/CommonDataModel/Lauren.jpg" width="50%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.5\linewidth]{images/CommonDataModel/Lauren} \end{center}
 
 > Every step of this painfull journey I had to convince everyone how much pain I was in.
 
