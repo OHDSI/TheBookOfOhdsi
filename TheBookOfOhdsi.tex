@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-07-17}
+    \date{2019-07-18}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -210,6 +210,20 @@
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
 
 \frontmatter
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -3367,7 +3381,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.btzateswchildren ;"
+## [1] "SELECT * FROM temp_schema.uw9955m6children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -5060,51 +5074,22 @@ In this chapter we first describe various population-level estimation study desi
 
 The cohort method attempts to emulate a randomized clinical trial \citep{hernan_2016}. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \ref{tab:cmChoices}. \index{target cohort!cohort method} \index{comparator cohort} \index{outcome cohort!cohort method}
 
-\begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:cmChoices} Main design choices in a comparative cohort design.}\tabularnewline
+\begin{table}[t]
+
+\caption{\label{tab:cmChoices}Main design choices in a comparative cohort design.}
+\centering
+\begin{tabular}{l>{\raggedright\arraybackslash}p{8.5cm}}
 \toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
+Choice & Description\\
 \midrule
-\endfirsthead
-\toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Target cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the target treatment\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Comparator cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the comparator treatment\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Outcome cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the outcome of interest\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Time-at-risk\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-At what time (often relative to the target and comparator cohort start and end dates) do we consider the risk of the outcome?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Model\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-The model used to estimate the effect while adjusting for differences between the target and comparator\strut
-\end{minipage}\tabularnewline
+Target cohort & A cohort representing the target treatment\\
+Comparator cohort & A cohort representing the comparator treatment\\
+Outcome cohort & A cohort representing the outcome of interest\\
+Time-at-risk & At what time (often relative to the target and comparator cohort start and end dates) do we consider the risk of the outcome?\\
+Model & The model used to estimate the effect while adjusting for differences between the target and comparator\\
 \bottomrule
-\end{longtable}
+\end{tabular}
+\end{table}
 
 The choice of model specifies, among others, the type of model. For example, we could use a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or is irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards between target and comparator. \index{logistic regression} \index{Poisson regression} \index{Cox regression} \index{Cox proportional hazards model|see {Cox regression}}
 
@@ -5659,9 +5644,9 @@ A golden rule in designing a cohort study is to never use information that falls
 
 \textbf{Propensity score adjustment}
 
-We can opt to \textbf{trim} the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score falls outside the range we specify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW.
+We can opt to \textbf{trim} the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score falls outside the range we specify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW. \index{propensity score!trimming}
 
-In addition to, or instead of trimming, we can choose to \textbf{stratify} or \textbf{match} on the propensity score. When stratifying we need to specify the \textbf{number of strata} and whether to select the strata based on the target, comparator, or entire study population. When matching we need to specify the \textbf{maximum number of people from the comparator group to match to each person in the target group}. Typical values are 1 for one-on-one matching, or a large number (e.g.~100) for variable-ratio matching. We also need to specify the \textbf{caliper}: the maximum allowed difference between propensity scores to allow a match. The caliper can be defined on difference \textbf{caliper scales}:
+In addition to, or instead of trimming, we can choose to \textbf{stratify} or \textbf{match} on the propensity score. When stratifying we need to specify the \textbf{number of strata} and whether to select the strata based on the target, comparator, or entire study population. When matching we need to specify the \textbf{maximum number of people from the comparator group to match to each person in the target group}. Typical values are 1 for one-on-one matching, or a large number (e.g.~100) for variable-ratio matching. We also need to specify the \textbf{caliper}: the maximum allowed difference between propensity scores to allow a match. The caliper can be defined on difference \textbf{caliper scales}: \index{caliper!scale}
 
 \begin{itemize}
 \tightlist
@@ -5692,7 +5677,7 @@ Figure \ref{fig:psSettings} shows our choices for this study. Note that we selec
 
 \textbf{Outcome model settings}
 
-First, we need to \textbf{specify the statistical model we will use to estimate the relative risk of the outcome between target and comparator cohorts}. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \ref{CohortMethod}. For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify \textbf{whether the regression should be conditioned on the strata}. One way to understand conditioning is to imagine a separate estimate is produced in each stratum, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable-ratio matching it is required.
+First, we need to \textbf{specify the statistical model we will use to estimate the relative risk of the outcome between target and comparator cohorts}. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \ref{CohortMethod}. For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify \textbf{whether the regression should be conditioned on the strata}. One way to understand conditioning is to imagine a separate estimate is produced in each stratum, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable-ratio matching it is required. \index{conditioned model} \index{stratified model|see {conditioned model}}
 
 We can also choose to \textbf{add all covariates to the outcome model} to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend keeping the outcome model as simple as possible and not include additional covariates.
 
@@ -5742,7 +5727,7 @@ We must provide a name for our package, after which we can click on ``Download''
 
 Once you have opened the project in R Studio, you can open the README file, and follow the instructions. Make sure to change all file paths to existing paths on your system.
 
-A common error message that may appear when running the study is ``High correlation between covariate(s) and treatment detected''. This indicates that when fitting the propensity model, some covariates were observed to be highly correlated with the exposure. Please review the covariates mentioned in the error message, and exclude them from the set of covariates if appropriate (see Section \ref{VariableSelection}).
+A common error message that may appear when running the study is ``High correlation between covariate(s) and treatment detected''. This indicates that when fitting the propensity model, some covariates were observed to be highly correlated with the exposure. Please review the covariates mentioned in the error message, and exclude them from the set of covariates if appropriate (see Section \ref{VariableSelection}). \index{high correlation}
 
 \hypertarget{pleR}{%
 \section{Implementing the study using R}\label{pleR}}
@@ -6131,7 +6116,7 @@ Our estimates are only valid if several assumptions have been met. We use a wide
 \hypertarget{propensity-scores-and-model}{%
 \subsection{Propensity scores and model}\label{propensity-scores-and-model}}
 
-We first need to evaluate whether the target and comparator cohort are to some extend comparable. For this we can compute the Area Under the Receiver Operator Curve (AUC) statistic for the propensity model. An AUC of 1 indicates the treatment assignment was completely predictable based on baseline covariates, and that the two groups are therefore incomparable. We can use the \texttt{computePsAuc} function to compute the AUC, which in our example is 0.79. Using the \texttt{plotPs} function, we can also generate the preference score distribution as shown in Figure \ref{fig:ps}. Here we see that for many people the treatment they received was predictable, but there is also a large amount of overlap, indicating that adjustment can be used to select comparable groups.
+We first need to evaluate whether the target and comparator cohort are to some extend comparable. For this we can compute the Area Under the Receiver Operator Curve (AUC) statistic for the propensity model. An AUC of 1 indicates the treatment assignment was completely predictable based on baseline covariates, and that the two groups are therefore incomparable. We can use the \texttt{computePsAuc} function to compute the AUC, which in our example is 0.79. Using the \texttt{plotPs} function, we can also generate the preference score distribution as shown in Figure \ref{fig:ps}. Here we see that for many people the treatment they received was predictable, but there is also a large amount of overlap, indicating that adjustment can be used to select comparable groups. \index{preference score!example}
 
 \begin{figure}
 
@@ -6142,7 +6127,7 @@ We first need to evaluate whether the target and comparator cohort are to some e
 \caption{Preference score distribution.}\label{fig:ps}
 \end{figure}
 
-In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive. Table \ref{tab:psModel} shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive.
+In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive. Table \ref{tab:psModel} shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive. \index{propensity model!example}
 
 \begin{longtable}[]{@{}rl@{}}
 \caption{\label{tab:psModel} Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment.}\tabularnewline
@@ -6222,7 +6207,7 @@ If a variable is found to be highly predictive, there are two possible conclusio
 \hypertarget{covariate-balance}{%
 \subsection{Covariate balance}\label{covariate-balance}}
 
-The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the \texttt{computeCovariateBalance} and \texttt{plotCovariateBalanceScatterPlot} functions to generate Figure \ref{fig:balance}. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion.
+The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the \texttt{computeCovariateBalance} and \texttt{plotCovariateBalanceScatterPlot} functions to generate Figure \ref{fig:balance}. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion. \index{covariate balance!example}
 
 \begin{figure}
 
@@ -6236,7 +6221,7 @@ The goal of using PS is to make the two groups comparable (or at least to select
 \hypertarget{follow-up-and-power}{%
 \subsection{Follow up and power}\label{follow-up-and-power}}
 
-Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. We can view the attrition of subjects in our study using the \texttt{drawAttritionDiagram} function as shown in Figure \ref{fig:attrition}.
+Before fitting an outcome model, we might be interested to know whether we have sufficient power to detect a particular effect size. It makes sense to perform these power calculations once the study population has been fully defined, so taking into account loss to the various inclusion and exclusion criteria (such as no prior outcomes), and loss due to matching and/or trimming. We can view the attrition of subjects in our study using the \texttt{drawAttritionDiagram} function as shown in Figure \ref{fig:attrition}. \index{attrition diagram}
 
 \begin{figure}
 
@@ -6247,7 +6232,7 @@ Before fitting an outcome model, we might be interested to know whether we have 
 \caption{Attrition diagram. The counts shown at the top are those that meet our target and comparator cohort definitions. The counts at the bottom are those that enter our outcome model, in  this case a Cox regression.}\label{fig:attrition}
 \end{figure}
 
-Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, it is therefore less meaningful to compute the power given an expected effect size. Instead, the CohortMethod package provides the \texttt{computeMdrr} function to compute the minimum detectable relative risk (MDRR). In our example study the MDRR is 1.69.
+Since the sample size is fixed in retrospective studies (the data has already been collected), and the true effect size is unknown, it is therefore less meaningful to compute the power given an expected effect size. Instead, the CohortMethod package provides the \texttt{computeMdrr} function to compute the minimum detectable relative risk (MDRR). In our example study the MDRR is 1.69. \index{minimum detectable relative risk (MDRR)} \index{power}
 
 To gain a better understanding of the amount of follow-up available we can also inspect the distribution of follow-up time. We defined follow-up time as time at risk, so not censored by the occurrence of the outcome. The \texttt{getFollowUpDistribution} can provide a simple overview as shown in Figure \ref{fig:followUp}, which suggests the follow-up time for both cohorts is comparable.
 
@@ -6261,9 +6246,9 @@ To gain a better understanding of the amount of follow-up available we can also 
 \end{figure}
 
 \hypertarget{kaplan-meier}{%
-\subsection{Kaplan Meier}\label{kaplan-meier}}
+\subsection{Kaplan-Meier}\label{kaplan-meier}}
 
-One last check is to review the Kaplan Meier plot, showing the survival over time in both cohorts. Using the \texttt{plotKaplanMeier} function we can create \ref{fig:kmPlot}, which we can check for example if our assumption of proportionality of hazards holds. The Kaplan-Meier plot automatically adjusts for stratification or weighting by PS. In this case, because variable-ratio matching is used, the survival curve for the comparator groups is adjusted to mimick what the curve had looked like for the target group had they been exposued to the comparator instead.
+One last check is to review the Kaplan-Meier plot, showing the survival over time in both cohorts. Using the \texttt{plotKaplanMeier} function we can create \ref{fig:kmPlot}, which we can check for example if our assumption of proportionality of hazards holds. The Kaplan-Meier plot automatically adjusts for stratification or weighting by PS. In this case, because variable-ratio matching is used, the survival curve for the comparator groups is adjusted to mimick what the curve had looked like for the target group had they been exposued to the comparator instead. \index{Kaplan-Meier plot} \index{survival plot|see {Kaplan-Meier plot}}
 
 \begin{figure}
 

@@ -28,9 +28,10 @@ When creating a cohort definition, you need to ask yourself the following questi
 
 To visualize the importance of these criteria, think of how this information comes together in a person’s timeline. The OBSERVATION_PERIOD table creates the window for which we see the person in the data.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/Cohorts/cohort-build} \caption{Cohort Creation}(\#fig:cohortBuild)
-\end{figure}
+<div class="figure">
+<img src="images/Cohorts/cohort-build.png" alt="Cohort Creation" width="100%" />
+<p class="caption">(\#fig:cohortBuild)Cohort Creation</p>
+</div>
 
 *Cohort entry criteria:* The cohort entry event can be one or many clinical attributes which dictate an individual patient’s eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain, concept set, and any domain-specific attributes required. 
 
@@ -40,9 +41,10 @@ To visualize the importance of these criteria, think of how this information com
 
 *Time-at-risk:* In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you’re observing an acute/short term trend or a chronic/long term trend.
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/Cohorts/cohort-TAR} \caption{Time-at-Risk Construction}(\#fig:cohortTar)
-\end{figure}
+<div class="figure">
+<img src="images/Cohorts/cohort-TAR.png" alt="Time-at-Risk Construction" width="100%" />
+<p class="caption">(\#fig:cohortTar)Time-at-Risk Construction</p>
+</div>
 
 In traditional study design, we would categorize time-at-risk for ‘on treatment’ as the entirety of the  time between when a person meets cohort entry through the cohort exit criteria. An ‘intent-to-treat’ design would be the entirety of the time from the cohort start through the observation period ending (e.g. when the person leaves the data because they’ve switched physicians, insurance carriers, etc).
 
@@ -65,9 +67,10 @@ To apply this approach on OMOP data, OHDSI community researchers created Automat
 
 The systematic reuse of cohort definitions and the subsequent evaluation of phenotypes to characterize components of disease remains an ongoing piece of work within the OHDSI Community. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results (Swerdel reference). In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases).
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/Cohorts/cohort-PPV} \caption{Algorithm Evaluation}(\#fig:cohortPpv)
-\end{figure}
+<div class="figure">
+<img src="images/Cohorts/cohort-PPV.png" alt="Algorithm Evaluation" width="100%" />
+<p class="caption">(\#fig:cohortPpv)Algorithm Evaluation</p>
+</div>
 
 For a complete validation of an algorithm, we need to calculate:
 
@@ -89,9 +92,10 @@ Building a cohort starts with asking a question: “I want to find patients who 
 
 Before you can define a cohort, you will need to construct OMOP concept sets. OMOP concept sets represent the sets of clinical codes that are strung together with other logical expressions to create your cohort. A detailed discussion of OMOP concept sets can be found \@ref(StandardizedVocabularies). Cohort inclusion criteria are created using specific attributes of data in the OMOP CDM (e.g. condition occurrence, drug era, drug exposure, observation period, visit, etc). OHDSI domains are analogous to building blocks to contribute cohort attributes:
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/Cohorts/cohort-legos} \caption{Building Blocks of Cohorts}(\#fig:cohortLegos)
-\end{figure}
+<div class="figure">
+<img src="images/Cohorts/cohort-legos.png" alt="Building Blocks of Cohorts" width="100%" />
+<p class="caption">(\#fig:cohortLegos)Building Blocks of Cohorts</p>
+</div>
 
 Prior to building a cohort, refer to the Common Data Model (Chapter \@ref(CommonDataModel)) to understand what data elements are available for defining a cohort.  When you are building a cohort, you should consider which of these is more important to you, finding all the eligible patients? *vs.* Getting only the ones you are confident about?
 
