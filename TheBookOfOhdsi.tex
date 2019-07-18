@@ -210,20 +210,6 @@
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
 
 \frontmatter
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{wrapfig}
-\usepackage{float}
-\usepackage{colortbl}
-\usepackage{pdflscape}
-\usepackage{tabu}
-\usepackage{threeparttable}
-\usepackage{threeparttablex}
-\usepackage[normalem]{ulem}
-\usepackage{makecell}
-\usepackage{xcolor}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -3381,7 +3367,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.uw9955m6children ;"
+## [1] "SELECT * FROM temp_schema.son09iwvchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -5074,22 +5060,51 @@ In this chapter we first describe various population-level estimation study desi
 
 The cohort method attempts to emulate a randomized clinical trial \citep{hernan_2016}. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \ref{tab:cmChoices}. \index{target cohort!cohort method} \index{comparator cohort} \index{outcome cohort!cohort method}
 
-\begin{table}[t]
-
-\caption{\label{tab:cmChoices}Main design choices in a comparative cohort design.}
-\centering
-\begin{tabular}{l>{\raggedright\arraybackslash}p{8.5cm}}
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:cmChoices} Main design choices in a comparative cohort design.}\tabularnewline
 \toprule
-Choice & Description\\
+\begin{minipage}[b]{0.23\columnwidth}\raggedright
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
 \midrule
-Target cohort & A cohort representing the target treatment\\
-Comparator cohort & A cohort representing the comparator treatment\\
-Outcome cohort & A cohort representing the outcome of interest\\
-Time-at-risk & At what time (often relative to the target and comparator cohort start and end dates) do we consider the risk of the outcome?\\
-Model & The model used to estimate the effect while adjusting for differences between the target and comparator\\
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright
+Choice\strut
+\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
+Description\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+Target cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+A cohort representing the target treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+Comparator cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+A cohort representing the comparator treatment\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+Outcome cohort\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+A cohort representing the outcome of interest\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+Time-at-risk\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+At what time (often relative to the target and comparator cohort start and end dates) do we consider the risk of the outcome?\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+Model\strut
+\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
+The model used to estimate the effect while adjusting for differences between the target and comparator\strut
+\end{minipage}\tabularnewline
 \bottomrule
-\end{tabular}
-\end{table}
+\end{longtable}
 
 The choice of model specifies, among others, the type of model. For example, we could use a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or is irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards between target and comparator. \index{logistic regression} \index{Poisson regression} \index{Cox regression} \index{Cox proportional hazards model|see {Cox regression}}
 
@@ -5773,7 +5788,7 @@ Now we can tell CohortMethod to extract the cohorts, construct covariates, and e
 \NormalTok{thz <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1395058}\NormalTok{,}\DecValTok{974166}\NormalTok{,}\DecValTok{978555}\NormalTok{,}\DecValTok{907013}\NormalTok{)}
 
 \CommentTok{# Define which types of covariates must be constructed:}
-\NormalTok{cs <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{(}\DataTypeTok{excludedCovariateConceptIds =} \KeywordTok{c}\NormalTok{(aceI, }
+\NormalTok{cs <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{(}\DataTypeTok{excludedCovariateConceptIds =} \KeywordTok{c}\NormalTok{(aceI,}
 \NormalTok{                                                                     thz),}
                                      \DataTypeTok{addDescendantsToExclude =} \OtherTok{TRUE}\NormalTok{)}
 
@@ -5921,7 +5936,7 @@ Here we use the PS to perform variable-ratio matching:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }
+\NormalTok{matchedPop <-}\StringTok{ }\KeywordTok{matchOnPs}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ ps, }\DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{,}
                         \DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }\DataTypeTok{maxRatio =} \DecValTok{100}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -5990,7 +6005,7 @@ Next, we specify what arguments should be used when calling the various function
           \DecValTok{1331235}\NormalTok{,}\DecValTok{1334456}\NormalTok{,}\DecValTok{1342439}\NormalTok{)}
 \NormalTok{thz <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1395058}\NormalTok{,}\DecValTok{974166}\NormalTok{,}\DecValTok{978555}\NormalTok{,}\DecValTok{907013}\NormalTok{)}
 
-\NormalTok{cs <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{(}\DataTypeTok{excludedCovariateConceptIds =} \KeywordTok{c}\NormalTok{(aceI, }
+\NormalTok{cs <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{(}\DataTypeTok{excludedCovariateConceptIds =} \KeywordTok{c}\NormalTok{(aceI,}
 \NormalTok{                                                                     thz),}
                                      \DataTypeTok{addDescendantsToExclude =} \OtherTok{TRUE}\NormalTok{)}
 
@@ -6018,8 +6033,8 @@ Next, we specify what arguments should be used when calling the various function
 \NormalTok{psArgs <-}\StringTok{ }\KeywordTok{createCreatePsArgs}\NormalTok{()}
 
 \NormalTok{matchArgs <-}\StringTok{ }\KeywordTok{createMatchOnPsArgs}\NormalTok{(}
-  \DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{, }
-  \DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{, }
+  \DataTypeTok{caliper =} \FloatTok{0.2}\NormalTok{,}
+  \DataTypeTok{caliperScale =} \StringTok{"standardized logit"}\NormalTok{,}
   \DataTypeTok{maxRatio =} \DecValTok{100}\NormalTok{)}
 
 \NormalTok{fomArgs <-}\StringTok{ }\KeywordTok{createFitOutcomeModelArgs}\NormalTok{(}
@@ -6069,8 +6084,8 @@ The \texttt{result} object contains references to all the artifacts that were cr
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{omFile <-}\StringTok{ }\NormalTok{result}\OperatorTok{$}\NormalTok{outcomeModelFile[result}\OperatorTok{$}\NormalTok{targetId }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{&}\StringTok{ }
-\StringTok{                                    }\NormalTok{result}\OperatorTok{$}\NormalTok{comparatorId }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{&}\StringTok{ }
+\NormalTok{omFile <-}\StringTok{ }\NormalTok{result}\OperatorTok{$}\NormalTok{outcomeModelFile[result}\OperatorTok{$}\NormalTok{targetId }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{&}
+\StringTok{                                    }\NormalTok{result}\OperatorTok{$}\NormalTok{comparatorId }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{&}
 \StringTok{                                    }\NormalTok{result}\OperatorTok{$}\NormalTok{outcomeId }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{&}
 \StringTok{                                    }\NormalTok{result}\OperatorTok{$}\NormalTok{analysisId }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{]}
 \NormalTok{outcomeModel <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(outputFolder, omFile))}

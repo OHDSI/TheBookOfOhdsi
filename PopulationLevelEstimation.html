@@ -571,7 +571,11 @@ Figure 13.1: The new-user cohort design. Subjects observed to initiate the targe
 </div>
 <p>The cohort method attempts to emulate a randomized clinical trial <span class="citation">(Hernan and Robins <a href="#ref-hernan_2016" role="doc-biblioref">2016</a>)</span>. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table <a href="PopulationLevelEstimation.html#tab:cmChoices">13.1</a>.   </p>
 <table>
-<caption><span id="tab:cmChoices">Table 13.1: </span>Main design choices in a comparative cohort design.</caption>
+<caption><span id="tab:cmChoices">Table 13.1: </span> Main design choices in a comparative cohort design.</caption>
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Choice</th>
@@ -1072,7 +1076,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb75-4"><a href="PopulationLevelEstimation.html#cb75-4"></a>thz &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1395058</span>,<span class="dv">974166</span>,<span class="dv">978555</span>,<span class="dv">907013</span>)</span>
 <span id="cb75-5"><a href="PopulationLevelEstimation.html#cb75-5"></a></span>
 <span id="cb75-6"><a href="PopulationLevelEstimation.html#cb75-6"></a><span class="co"># Define which types of covariates must be constructed:</span></span>
-<span id="cb75-7"><a href="PopulationLevelEstimation.html#cb75-7"></a>cs &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>(<span class="dt">excludedCovariateConceptIds =</span> <span class="kw">c</span>(aceI, </span>
+<span id="cb75-7"><a href="PopulationLevelEstimation.html#cb75-7"></a>cs &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>(<span class="dt">excludedCovariateConceptIds =</span> <span class="kw">c</span>(aceI,</span>
 <span id="cb75-8"><a href="PopulationLevelEstimation.html#cb75-8"></a>                                                                     thz),</span>
 <span id="cb75-9"><a href="PopulationLevelEstimation.html#cb75-9"></a>                                     <span class="dt">addDescendantsToExclude =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb75-10"><a href="PopulationLevelEstimation.html#cb75-10"></a></span>
@@ -1162,7 +1166,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="PopulationLevelEstimation.html#cb83-1"></a>ps &lt;-<span class="st"> </span><span class="kw">createPs</span>(<span class="dt">cohortMethodData =</span> cmData, <span class="dt">population =</span> studyPop)</span></code></pre></div>
 <p>The <code>createPs</code> function uses the <a href="https://ohdsi.github.io/Cyclops/">Cyclops</a> package to fit a large-scale regularized logistic regression. To fit the propensity model, Cyclops needs to know the hyperparameter value which specifies the variance of the prior. By default Cyclops will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the <code>prior</code> and <code>control</code> parameters of the <code>createPs</code> function to specify Cyclops’ behavior, including using multiple CPUs to speed-up the cross-validation.</p>
 <p>Here we use the PS to perform variable-ratio matching:</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="PopulationLevelEstimation.html#cb84-1"></a>matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(<span class="dt">population =</span> ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>, </span>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="PopulationLevelEstimation.html#cb84-1"></a>matchedPop &lt;-<span class="st"> </span><span class="kw">matchOnPs</span>(<span class="dt">population =</span> ps, <span class="dt">caliper =</span> <span class="fl">0.2</span>,</span>
 <span id="cb84-2"><a href="PopulationLevelEstimation.html#cb84-2"></a>                        <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, <span class="dt">maxRatio =</span> <span class="dv">100</span>)</span></code></pre></div>
 <p>Alternatively, we could have used the PS in the <code>trimByPs</code>, <code>trimByPsToEquipoise</code>, or <code>stratifyByPs</code> functions.</p>
 </div>
@@ -1209,7 +1213,7 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb88-2"><a href="PopulationLevelEstimation.html#cb88-2"></a>          <span class="dv">1331235</span>,<span class="dv">1334456</span>,<span class="dv">1342439</span>)</span>
 <span id="cb88-3"><a href="PopulationLevelEstimation.html#cb88-3"></a>thz &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1395058</span>,<span class="dv">974166</span>,<span class="dv">978555</span>,<span class="dv">907013</span>)</span>
 <span id="cb88-4"><a href="PopulationLevelEstimation.html#cb88-4"></a></span>
-<span id="cb88-5"><a href="PopulationLevelEstimation.html#cb88-5"></a>cs &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>(<span class="dt">excludedCovariateConceptIds =</span> <span class="kw">c</span>(aceI, </span>
+<span id="cb88-5"><a href="PopulationLevelEstimation.html#cb88-5"></a>cs &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>(<span class="dt">excludedCovariateConceptIds =</span> <span class="kw">c</span>(aceI,</span>
 <span id="cb88-6"><a href="PopulationLevelEstimation.html#cb88-6"></a>                                                                     thz),</span>
 <span id="cb88-7"><a href="PopulationLevelEstimation.html#cb88-7"></a>                                     <span class="dt">addDescendantsToExclude =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb88-8"><a href="PopulationLevelEstimation.html#cb88-8"></a></span>
@@ -1237,8 +1241,8 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb88-30"><a href="PopulationLevelEstimation.html#cb88-30"></a>psArgs &lt;-<span class="st"> </span><span class="kw">createCreatePsArgs</span>()</span>
 <span id="cb88-31"><a href="PopulationLevelEstimation.html#cb88-31"></a></span>
 <span id="cb88-32"><a href="PopulationLevelEstimation.html#cb88-32"></a>matchArgs &lt;-<span class="st"> </span><span class="kw">createMatchOnPsArgs</span>(</span>
-<span id="cb88-33"><a href="PopulationLevelEstimation.html#cb88-33"></a>  <span class="dt">caliper =</span> <span class="fl">0.2</span>, </span>
-<span id="cb88-34"><a href="PopulationLevelEstimation.html#cb88-34"></a>  <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>, </span>
+<span id="cb88-33"><a href="PopulationLevelEstimation.html#cb88-33"></a>  <span class="dt">caliper =</span> <span class="fl">0.2</span>,</span>
+<span id="cb88-34"><a href="PopulationLevelEstimation.html#cb88-34"></a>  <span class="dt">caliperScale =</span> <span class="st">&quot;standardized logit&quot;</span>,</span>
 <span id="cb88-35"><a href="PopulationLevelEstimation.html#cb88-35"></a>  <span class="dt">maxRatio =</span> <span class="dv">100</span>)</span>
 <span id="cb88-36"><a href="PopulationLevelEstimation.html#cb88-36"></a></span>
 <span id="cb88-37"><a href="PopulationLevelEstimation.html#cb88-37"></a>fomArgs &lt;-<span class="st"> </span><span class="kw">createFitOutcomeModelArgs</span>(</span>
@@ -1270,8 +1274,8 @@ Figure 13.16: Negative control outcome cohort definition settings.
 <span id="cb90-9"><a href="PopulationLevelEstimation.html#cb90-9"></a>                        <span class="dt">cmAnalysisList =</span> cmAnalysisList,</span>
 <span id="cb90-10"><a href="PopulationLevelEstimation.html#cb90-10"></a>                        <span class="dt">targetComparatorOutcomesList =</span> tcosList)</span></code></pre></div>
 <p>The <code>result</code> object contains references to all the artifacts that were created. For example, we can retrieve the outcome model for AMI:</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="PopulationLevelEstimation.html#cb91-1"></a>omFile &lt;-<span class="st"> </span>result<span class="op">$</span>outcomeModelFile[result<span class="op">$</span>targetId <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span></span>
-<span id="cb91-2"><a href="PopulationLevelEstimation.html#cb91-2"></a><span class="st">                                    </span>result<span class="op">$</span>comparatorId <span class="op">==</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span></span>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="PopulationLevelEstimation.html#cb91-1"></a>omFile &lt;-<span class="st"> </span>result<span class="op">$</span>outcomeModelFile[result<span class="op">$</span>targetId <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span></span>
+<span id="cb91-2"><a href="PopulationLevelEstimation.html#cb91-2"></a><span class="st">                                    </span>result<span class="op">$</span>comparatorId <span class="op">==</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span></span>
 <span id="cb91-3"><a href="PopulationLevelEstimation.html#cb91-3"></a><span class="st">                                    </span>result<span class="op">$</span>outcomeId <span class="op">==</span><span class="st"> </span><span class="dv">4</span> <span class="op">&amp;</span></span>
 <span id="cb91-4"><a href="PopulationLevelEstimation.html#cb91-4"></a><span class="st">                                    </span>result<span class="op">$</span>analysisId <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</span>
 <span id="cb91-5"><a href="PopulationLevelEstimation.html#cb91-5"></a>outcomeModel &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">file.path</span>(outputFolder, omFile))</span>
