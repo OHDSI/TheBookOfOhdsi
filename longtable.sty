@@ -5,20 +5,20 @@
 %% The original source files were:
 %%
 %% longtable.dtx  (with options: `package')
-%% 
+%%
 %% This is a generated file.
-%% 
+%%
 %% The source is maintained by the LaTeX Project team and bug
 %% reports for it can be opened at https://latex-project.org/bugs/
 %% (but please observe conditions on bug reports sent to that address!)
-%% 
+%%
 %% Copyright 1993-2017
 %% The LaTeX3 Project and any individual authors listed elsewhere
 %% in this file.
-%% 
+%%
 %% This file was generated from file(s) of the Standard LaTeX `Tools Bundle'.
 %% --------------------------------------------------------------------------
-%% 
+%%
 %% It may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3c
 %% of this license or (at your option) any later version.
@@ -26,14 +26,14 @@
 %%    https://www.latex-project.org/lppl.txt
 %% and version 1.3c or later is part of all distributions of LaTeX
 %% version 2005/12/01 or later.
-%% 
+%%
 %% This file may only be distributed together with a copy of the LaTeX
 %% `Tools Bundle'. You may however distribute the LaTeX `Tools Bundle'
 %% without such generated files.
-%% 
+%%
 %% The list of all files belonging to the LaTeX `Tools Bundle' is
 %% given in the file `manifest.txt'.
-%% 
+%%
 %% File: longtable.dtx Copyright (C) 1990-2001 David Carlisle
 \NeedsTeXFormat{LaTeX2e}[1995/06/01]
 \ProvidesPackage{longtable}
@@ -164,7 +164,7 @@
   \ifdim \dimen@>\z@\vfil\break\fi
       \global\@colroom\@colht
   \ifvoid\LT@foot\else
-    \advance\vsize-\ht\LT@foot
+    \global\advance\vsize-\ht\LT@foot
     \global\advance\@colroom-\ht\LT@foot
     \dimen@\pagegoal\advance\dimen@-\ht\LT@foot\pagegoal\dimen@
     \maxdepth\z@
@@ -193,9 +193,13 @@
     \LT@final@warn
   \fi
   \endgraf\penalty -\LT@end@pen
+  \ifvoid\LT@foot\else
+    \global\advance\vsize\ht\LT@foot
+    \global\advance\@colroom\ht\LT@foot
+    \dimen@\pagegoal\advance\dimen@\ht\LT@foot\pagegoal\dimen@
+  \fi
   \endgroup
   \global\@mparbottom\z@
-  \pagegoal\vsize
   \endgraf\penalty\z@\addvspace\LTpost
   \ifvoid\footins\else\insert\footins{}\fi}
 \def\LT@nofcols#1&{%
@@ -392,18 +396,17 @@
       \setbox\z@\vbox{\unvbox\@cclv}%
       \ifdim \ht\LT@lastfoot>\ht\LT@foot
         \dimen@\pagegoal
+        \advance\dimen@\ht\LT@foot
         \advance\dimen@-\ht\LT@lastfoot
         \ifdim\dimen@<\ht\z@
           \setbox\@cclv\vbox{\unvbox\z@\copy\LT@foot\vss}%
           \@makecol
           \@outputpage
+            \global\vsize\@colroom
           \setbox\z@\vbox{\box\LT@head}%
         \fi
       \fi
-      \global\@colroom\@colht
-      \global\vsize\@colht
-      \vbox
-        {\unvbox\z@\box\ifvoid\LT@lastfoot\LT@foot\else\LT@lastfoot\fi}%
+      \unvbox\z@\ifvoid\LT@lastfoot\copy\LT@foot\else\box\LT@lastfoot\fi
     \fi
   \else
     \setbox\@cclv\vbox{\unvbox\@cclv\copy\LT@foot\vss}%
