@@ -172,6 +172,6 @@ In this section, we provide more real examples of questions as they have been su
 |What are the rates of chemotherapy-induced neutropenia and subsequent chemotherapy withdrawal in patients taking cisplatin?|Amongst patients who take cisplatin, what is the rate of developing chemotherapy-induced neutropenia _per 1,000 patient per year over the last 2 years of data_?|Clinical characterization|
 |Among outpatients, how many presented with ADHD were taking Ritalin for the last 6 months?|Amongst admitted patients in ambulatory setting _over the last year of data_, how many ADHD patients did use Ritalin within the last 6 months _prior to last visit_?|Clinical characterization|
 
-# Summary
+## Summary
 `**add if needed**`
 
