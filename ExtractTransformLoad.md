@@ -51,10 +51,9 @@ Additional information available on the OHDSI wiki: [http://www.ohdsi.org/web/wi
 
 After downloading and installing the WhiteRabbit application, the first thing you need to do is set a working folder. Any files that WhiteRabbit creates will be exported to this local folder. Use the "Pick Folder" button to navigate in your local environment where you would like the scan document to go. 
 
-<div class="figure">
-<img src="images/ExtractTransformLoad/WhiteRabbitLocation.png" alt="The &quot;Pick Folder&quot; button allows the specification of a working folder for the WhiteRabbit application" width="100%" />
-<p class="caption">(\#fig:WhiteRabbitLocation)The "Pick Folder" button allows the specification of a working folder for the WhiteRabbit application</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitLocation} \caption{The "Pick Folder" button allows the specification of a working folder for the WhiteRabbit application}(\#fig:WhiteRabbitLocation)
+\end{figure}
 
 **Connection to a Database**
 
@@ -64,7 +63,8 @@ WhiteRabbit supports delimited text files, Oracle, Sql Server, MySQL, and Postgr
 
 After connecting to a database, you can scan the tables contained therein. A scan generates a report containing information on the source data that can be used to help design the ETL. Using the Scan tab in WhiteRabbit you can either select individual tables in the selected source database by clicking on ‘Add’ (Ctrl + mouse click), or automatically select all tables in the database by clicking on ‘Add all in DB’.
 
-<img src="images/ExtractTransformLoad/WhiteRabbitAddTables.png" width="100%" />
+
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitAddTables} 
 
 There are a few setting options as well with the scan:
 
@@ -74,26 +74,23 @@ There are a few setting options as well with the scan:
 * Unchecking the 'Scan field values' tells WhiteRabbit to not review or report on any of the raw data items.
 * Once all settings are completed, press the “Scan tables” button. After the scan is completed the report will be written to the working folder.
 
-<div class="figure">
-<img src="images/ExtractTransformLoad/WhiteRabbitScanSettings.png" alt="WhiteRabbit scan settings" width="100%" />
-<p class="caption">(\#fig:WhiteRabbitScanSettings)WhiteRabbit scan settings</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitScanSettings} \caption{WhiteRabbit scan settings}(\#fig:WhiteRabbitScanSettings)
+\end{figure}
 
 **Interpreting the Scan Report**
 
 Once the scan is complete, an excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. 
 
-<div class="figure">
-<img src="images/ExtractTransformLoad/ScanOverviewTab.png" alt="Example overview tab from a scan report" width="100%" />
-<p class="caption">(\#fig:ScanOverviewTab)Example overview tab from a scan report</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/ScanOverviewTab} \caption{Example overview tab from a scan report}(\#fig:ScanOverviewTab)
+\end{figure}
 
 The tabs for each of the tables, for example the conditions table in the raw_synthea database, show each field, the values in each field, and the frequency of each value.
 
-<div class="figure">
-<img src="images/ExtractTransformLoad/ScanConditionsTab.png" alt="Example tab from a scan report" width="100%" />
-<p class="caption">(\#fig:ScanConditionsTab)Example tab from a scan report</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/ScanConditionsTab} \caption{Example tab from a scan report}(\#fig:ScanConditionsTab)
+\end{figure}
 
 ### Rabbit-In-a-Hat
 
@@ -114,10 +111,9 @@ Once you have opened your WhiteRabbit scan report in Rabbit-In-a-Hat you are rea
 
 Since the OMOP CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers back to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person's patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order. 
 
-<div class="figure">
-<img src="images/ExtractTransformLoad/flowOfEtl.png" alt="General flow of an ETL and which tables to map first" width="100%" />
-<p class="caption">(\#fig:etlFlow)General flow of an ETL and which tables to map first</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/flowOfEtl} \caption{General flow of an ETL and which tables to map first}(\#fig:etlFlow)
+\end{figure}
 
 *Note*
 
@@ -127,10 +123,9 @@ It is often the case that, during CDM conversion, you will need to make provisio
 
 The Synthea data structure contains 20 columns in the patients table ([https://github.com/synthetichealth/synthea/wiki/CSV-File-Data-Dictionary#patients](https://github.com/synthetichealth/synthea/wiki/CSV-File-Data-Dictionary#patients)) but not all were needed to populate the PERSON table, as seen in figure \@ref(fig:syntheaPerson). This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver's license number, and passport number. 
 
-<div class="figure">
-<img src="images/ExtractTransformLoad/syntheaPersonTable.png" alt="Mapping of Synthea Patients table to CDM PERSON table." width="100%" />
-<p class="caption">(\#fig:syntheaPerson)Mapping of Synthea Patients table to CDM PERSON table.</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/ExtractTransformLoad/syntheaPersonTable} \caption{Mapping of Synthea Patients table to CDM PERSON table.}(\#fig:syntheaPerson)
+\end{figure}
 
 The table below shows the logic that was imposed on the Synthea patients table to convert it to the CDM PERSON table. The 'Comment field' column gives explanations for why the logic was chosen. 
 
