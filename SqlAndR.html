@@ -157,13 +157,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="OpenScience.html"><a href="OpenScience.html#open-standards"><i class="fa fa-check"></i><b>3.3</b> Open Standards</a></li>
 <li class="chapter" data-level="3.4" data-path="OpenScience.html"><a href="OpenScience.html#open-source"><i class="fa fa-check"></i><b>3.4</b> Open Source</a></li>
 <li class="chapter" data-level="3.5" data-path="OpenScience.html"><a href="OpenScience.html#open-data"><i class="fa fa-check"></i><b>3.5</b> Open Data</a></li>
-<li class="chapter" data-level="3.6" data-path="OpenScience.html"><a href="OpenScience.html#ohdsi-and-the-fair-guiding-principles"><i class="fa fa-check"></i><b>3.6</b> OHDSI and the FAIR Guiding Principles</a><ul>
-<li class="chapter" data-level="3.6.1" data-path="OpenScience.html"><a href="OpenScience.html#findability"><i class="fa fa-check"></i><b>3.6.1</b> Findability</a></li>
-<li class="chapter" data-level="3.6.2" data-path="OpenScience.html"><a href="OpenScience.html#accessibility"><i class="fa fa-check"></i><b>3.6.2</b> Accessibility</a></li>
-<li class="chapter" data-level="3.6.3" data-path="OpenScience.html"><a href="OpenScience.html#interoperability"><i class="fa fa-check"></i><b>3.6.3</b> Interoperability</a></li>
-<li class="chapter" data-level="3.6.4" data-path="OpenScience.html"><a href="OpenScience.html#reusability"><i class="fa fa-check"></i><b>3.6.4</b> Reusability</a></li>
+<li class="chapter" data-level="3.6" data-path="OpenScience.html"><a href="OpenScience.html#open-discourse"><i class="fa fa-check"></i><b>3.6</b> Open Discourse</a></li>
+<li class="chapter" data-level="3.7" data-path="OpenScience.html"><a href="OpenScience.html#ohdsi-and-the-fair-guiding-principles"><i class="fa fa-check"></i><b>3.7</b> OHDSI and the FAIR Guiding Principles</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="OpenScience.html"><a href="OpenScience.html#findability"><i class="fa fa-check"></i><b>3.7.1</b> Findability</a></li>
+<li class="chapter" data-level="3.7.2" data-path="OpenScience.html"><a href="OpenScience.html#accessibility"><i class="fa fa-check"></i><b>3.7.2</b> Accessibility</a></li>
+<li class="chapter" data-level="3.7.3" data-path="OpenScience.html"><a href="OpenScience.html#interoperability"><i class="fa fa-check"></i><b>3.7.3</b> Interoperability</a></li>
+<li class="chapter" data-level="3.7.4" data-path="OpenScience.html"><a href="OpenScience.html#reusability"><i class="fa fa-check"></i><b>3.7.4</b> Reusability</a></li>
 </ul></li>
-<li class="chapter" data-level="3.7" data-path="OpenScience.html"><a href="OpenScience.html#conclusions"><i class="fa fa-check"></i><b>3.7</b> Conclusions</a></li>
+<li class="chapter" data-level="3.8" data-path="OpenScience.html"><a href="OpenScience.html#conclusions"><i class="fa fa-check"></i><b>3.8</b> Conclusions</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="WhereToBegin.html"><a href="WhereToBegin.html"><i class="fa fa-check"></i><b>4</b> Where to begin</a><ul>
 <li class="chapter" data-level="4.1" data-path="WhereToBegin.html"><a href="WhereToBegin.html#joining-the-journey"><i class="fa fa-check"></i><b>4.1</b> Joining the Journey</a><ul>
@@ -799,7 +800,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="SqlAndR.html#cb27-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb27-2"><a href="SqlAndR.html#cb27-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.nrrh55o7children ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.kcrarolwchildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters, <strong>temp table names are only allowed to be at most 22 characters long</strong> because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -831,7 +832,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>Debugging parameterized SQL can be a bit complicated; Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL.</p>
 <p>A Shiny app is included in the SqlRender package for interactively editing source SQL and generating rendered and translated SQL. The app can be started using:</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="SqlAndR.html#cb35-1"></a><span class="kw">launchSqlRenderDeveloper</span>()</span></code></pre></div>
-<p>Which will open the default browser with the app shown in Figure <a href="SqlAndR.html#fig:sqlDeveloper">10.1</a>. The app is also publicly available on the web<a href="references.html#fn22" class="footnote-ref" id="fnref22"><sup>22</sup></a>.</p>
+<p>Which will open the default browser with the app shown in Figure <a href="SqlAndR.html#fig:sqlDeveloper">10.1</a>. The app is also publicly available on the web<a href="references.html#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:sqlDeveloper"></span>
 <img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
 <p class="caption">
@@ -1138,7 +1139,7 @@ Figure 10.1: The SqlDeveloper Shiny app.
 <div id="querylibrary" class="section level2">
 <h2><span class="header-section-number">10.5</span> QueryLibrary</h2>
 <p>TODO: update this section when QueryLibrary is finalized.</p>
-<p>QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application<a href="references.html#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a> shown in Figure <a href="SqlAndR.html#fig:queryLibrary">10.2</a>, and as an R package<a href="references.html#fn24" class="footnote-ref" id="fnref24"><sup>24</sup></a>.</p>
+<p>QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application<a href="references.html#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a> shown in Figure <a href="SqlAndR.html#fig:queryLibrary">10.2</a>, and as an R package<a href="references.html#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:queryLibrary"></span>
 <img src="images/SqlAndR/queryLibrary.png" alt="QueryLibrary: a library of SQL queries against the CDM." width="100%" />
 <p class="caption">
