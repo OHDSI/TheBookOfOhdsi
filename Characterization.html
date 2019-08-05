@@ -520,6 +520,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="B.3" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#Ami"><i class="fa fa-check"></i><b>B.3</b> Acute myocardial infarction (AMI)</a></li>
 <li class="chapter" data-level="B.4" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#Angioedema"><i class="fa fa-check"></i><b>B.4</b> Angioedema</a></li>
 <li class="chapter" data-level="B.5" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#ThiazidesMono"><i class="fa fa-check"></i><b>B.5</b> New users of Thiazide-like diuretics as first-line monotherapy for hypertension</a></li>
+<li class="chapter" data-level="B.6" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#HTN1yrFO"><i class="fa fa-check"></i><b>B.6</b> Patients initiating first-line therapy for hypertension with &gt;1 yr follow-up</a></li>
+<li class="chapter" data-level="B.7" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#HTN3yrFO"><i class="fa fa-check"></i><b>B.7</b> Patients initiating first-line therapy for hypertension with &gt;3 yr follow-up</a></li>
+<li class="chapter" data-level="B.8" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#ACEiUse"><i class="fa fa-check"></i><b>B.8</b> ACE inhibitor use</a></li>
+<li class="chapter" data-level="B.9" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#ARBUse"><i class="fa fa-check"></i><b>B.9</b> Angiotensin receptor blocker (ARB) use</a></li>
+<li class="chapter" data-level="B.10" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#THZUse"><i class="fa fa-check"></i><b>B.10</b> Thiazide or thiazide-like diuretic use</a></li>
+<li class="chapter" data-level="B.11" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#dCCBUse"><i class="fa fa-check"></i><b>B.11</b> dihydropyridine Calcium Channel Blocker (dCCB) use</a></li>
+<li class="chapter" data-level="B.12" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#ndCCBUse"><i class="fa fa-check"></i><b>B.12</b> non-dihydropyridine Calcium Channel Blocker (ndCCB) use</a></li>
+<li class="chapter" data-level="B.13" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#BBUse"><i class="fa fa-check"></i><b>B.13</b> beta blocker use</a></li>
+<li class="chapter" data-level="B.14" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#DLoopUse"><i class="fa fa-check"></i><b>B.14</b> Diuretic-loop use</a></li>
+<li class="chapter" data-level="B.15" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#DPUse"><i class="fa fa-check"></i><b>B.15</b> Diuretic-potassium sparing use</a></li>
+<li class="chapter" data-level="B.16" data-path="CohortDefinitions.html"><a href="CohortDefinitions.html#A1BUse"><i class="fa fa-check"></i><b>B.16</b> alpha-1 blocker use</a></li>
 </ul></li>
 <li class="chapter" data-level="C" data-path="NegativeControlsAppendix.html"><a href="NegativeControlsAppendix.html"><i class="fa fa-check"></i><b>C</b> Negative controls</a><ul>
 <li class="chapter" data-level="C.1" data-path="NegativeControlsAppendix.html"><a href="NegativeControlsAppendix.html#AceiThzNsc"><i class="fa fa-check"></i><b>C.1</b> ACEi and THZ</a></li>
@@ -550,128 +561,121 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="Characterization" class="section level1">
 <h1><span class="header-section-number">Chapter 12</span> Characterization</h1>
-<p><em>Chapter leads: Anthony Sena, Daniel Prieto-Alhambra</em></p>
-<p>Observational healthcare data sources provide a valuable resource to understand variations in populations based on a host of characteristics. Characterizing populations through the use of descriptive statistics is an important first step in generating hypotheses about the determinants of health and disease. In this chapter we cover methods for characterization:</p>
+<p><em>Chapter leads: Anthony G. Sena, Daniel Prieto-Alhambra</em></p>
+<p>Observational healthcare databases provide a valuable resource to understand variations in populations based on a host of characteristics. Characterizing populations through the use of descriptive statistics is an important first step in generating hypotheses about the determinants of health and disease. In this chapter we cover methods for characterization:</p>
 <ul>
-<li><strong>Database-level characterization</strong>: provides a top-level set of summary statistics to understand the data profile of a data source in its totality.</li>
+<li><strong>Database-level characterization</strong>: provides a top-level set of summary statistics to understand the data profile of a database in its totality.</li>
 <li><strong>Cohort characterization</strong>: describes a population in terms of its aggregate medical history.</li>
 <li><strong>Treatment pathways</strong>: describes the sequence of interventions a person received for a duration of time.</li>
 <li><strong>Incidence</strong>: measures the occurrence rate of an outcome in a population for a time at risk.</li>
 </ul>
-<p>Broadly, these methods aim to describe what happens to persons during their history anchored on a given index date, based usually on the key diagnosis or treatment that makes them eligible for the cohort. Use-cases for characterization include disease natural history, treatment utilization and quality improvement.</p>
-<p>In this chapter will describe the methods for characterization. We will use a population of hypternsive persons to demonstrate how to use ATLAS and R to perform these characterization tasks.</p>
+<p>With the exception of database-level characterization, these methods aim to describe a population relative to an event referred to as the index date. This population of interest is defined as a cohort as described in chapter <a href="Cohorts.html#Cohorts">11</a>. The cohort defines the index date for each person in the population of interest. Using the index date as an anchor, we define the time preceding the index date as <strong>baseline</strong> time. The index date and all time after is called the <strong>post-index</strong> time.</p>
+<p>Use-cases for characterization include disease natural history, treatment utilization and quality improvement. In this chapter will describe the methods for characterization. We will use a population of hypertensive persons to demonstrate how to use ATLAS and R to perform these characterization tasks.</p>
 <div id="database-level-characterization" class="section level2">
 <h2><span class="header-section-number">12.1</span> Database Level Characterization</h2>
-<p>Before we can answer any characterization question about a population, we must first understand the characteristics of the data source we intend to utilize. Database level characterization seeks to describe the totality of a data set in terms of the temporal trends, distributions and data completeness. This quantitative assessment of a data set will typically include questions such as:</p>
+<p>Before we can answer any characterization question about a population of interest, we must first understand the characteristics of the database we intend to utilize. Database level characterization seeks to describe the totality of a database in terms of the temporal trends and distributions. This quantitative assessment of a database will typically include questions such as:</p>
 <ul>
-<li>What is the total count of persons in this data set?</li>
+<li>What is the total count of persons in this database?</li>
 <li>What is the distribution of age for persons?</li>
-<li>How long are persons in this data set observed for?</li>
+<li>How long are persons in this database observed for?</li>
 <li>What is the proportion of persons having a {treatment, condition, procedure, etc} recorded/prescribed over time?</li>
 </ul>
-<p>These database-level descriptive statistics also help a researcher to understand what data may be missing in a data set. Chapter <a href="DataQuality.html#DataQuality">16</a> goes into further detail on data quality.</p>
+<p>These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter <a href="DataQuality.html#DataQuality">16</a> goes into further detail on data quality.</p>
 </div>
 <div id="cohort-characterization" class="section level2">
 <h2><span class="header-section-number">12.2</span> Cohort characterization</h2>
-<p>Cohort characterization is the natural first step to explore the baseline and post-index characteristics of people in a cohort. We typically summarize the medical history of persons in a cohort in terms of socio-demographics, concomitant medications, procedures, comorbid conditions and other medical observations recorded in a data set. The dissemination of this characterization is recommended as a best practice for research papers by the Strengthening the Reporting of Observation Studies in Epidemiology (STROBE) guidelines <span class="citation">(Elm et al. <a href="#ref-VONELM2008344" role="doc-biblioref">2008</a>)</span>.</p>
-<p>OHDSI approaches characterization through descriptive statistics of all conditions, drug and device exposures, procedures and other clinical observations that are present in the person’s history. This approach provides a complete view of the persons recorded history. Importantly, this enables a full exploration of the cohort history with an eye towards variation in the data while also allowing for identification of potentially missing values. Cohort characterisation methods can be used for person-level drug utilisation studies (DUS) to estimate the prevalence of indications and contraindications amongst users of a given treatment.</p>
+<p>Cohort characterization describes the baseline and post-index characteristics of people in a cohort. OHDSI approaches characterization through descriptive statistics of all conditions, drug and device exposures, procedures and other clinical observations that are present in the person’s history. We also summarize the socio-demographics of members of the cohort at the index date. This approach provides a complete summary of the cohort of interest. Importantly, this enables a full exploration of the cohort with an eye towards variation in the data while also allowing for identification of potentially missing values.</p>
+<p>Cohort characterisation methods can be used for person-level drug utilisation studies (DUS) to estimate the prevalence of indications and contraindications amongst users of a given treatment. The dissemination of this cohort characterization is a recommended best practice for observational studies as detailed in the Strengthening the Reporting of Observation Studies in Epidemiology (STROBE) guidelines <span class="citation">(Elm et al. <a href="#ref-VONELM2008344" role="doc-biblioref">2008</a>)</span>.</p>
 </div>
 <div id="treatment-pathways" class="section level2">
 <h2><span class="header-section-number">12.3</span> Treatment Pathways</h2>
-<p>Another method to characterize a population is to describe the treatment sequence over time. Hripcsak et al. utilized the OHDSI common data standards to create descriptive statistics to characterize treatment pathways for type 2 diabetes, hypertension and depression persons <span class="citation">(Hripcsak et al. <a href="#ref-Hripcsak7329" role="doc-biblioref">2016</a>)</span>. By standardizing this analytic approach, Hripcsak and colleagues were able to run the same analysis across the OHDSI network to describe the characteristics of hypertensive persons across the network.</p>
-<div class="figure" style="text-align: center"><span id="fig:treatmentPathwaysEventFlow"></span>
-<img src="images/Characterization/pnasTreatmentPathwaysTimeline.png" alt="OHDSI Treatment Pathways event flow." width="100%" />
-<p class="caption">
-Figure 12.1: OHDSI Treatment Pathways event flow.
-</p>
-</div>
-<p>The design of the pathway analysis, as shown in the figure above, aims to summarize the treatments (events) received by persons diagnosed with an index condition or from the first prescription/dispensation of a specific therapy. In this particular example, treatments were described after the diagnosis of type 2 diabetes, hypertension and depression. The events for each person were then aggregated to a set of summary statistics and visualized for a data source:</p>
+<p>Another method to characterize a population is to describe the treatment sequence during the post-index time window. For example, <span class="citation">Hripcsak et al. (<a href="#ref-Hripcsak7329" role="doc-biblioref">2016</a>)</span> utilized the OHDSI common data standards to create descriptive statistics to characterize treatment pathways for type 2 diabetes, hypertension and depression. By standardizing this analytic approach, Hripcsak and colleagues were able to run the same analysis across the OHDSI network to describe the characteristics of these populations of interest.</p>
+<p>The pathway analysis aims to summarize the treatments (events) received by persons diagnosed with a specific condition from the first drug prescription/dispensation. In this study, treatments were described after the diagnosis of type 2 diabetes, hypertension and depression respectively. The events for each person were then aggregated to a set of summary statistics and visualized for each condition and for each database.</p>
 <div class="figure" style="text-align: center"><span id="fig:treatmentPathwaysSunburstDataViz"></span>
-<img src="images/Characterization/pnasTreatmentPathwaysSunburst.png" alt="OHDSI Treatment Pathways “sunburst” visualization for hypertension" width="100%" />
+<img src="images/Characterization/pnasTreatmentPathwaysSunburst.png" alt="OHDSI Treatment Pathways “sunburst” visualization for hypertension" width="90%" />
 <p class="caption">
-Figure 12.2: OHDSI Treatment Pathways “sunburst” visualization for hypertension
+Figure 12.1: OHDSI Treatment Pathways “sunburst” visualization for hypertension
 </p>
 </div>
-<p>The figure represents a population of persons initiating treatment for hypertension. The first ring in the center shows the proportion of persons based on their first-line therapy. In this example, Hydrochlorothiazide is the most common first-line therapy for this population. The boxes that extend from the Hydrochlorothiazide section represent the 2nd and 3rd line therapies recorded for persons in the cohort.</p>
-<p>A pathways analysis provides important evidence about treatment utilization amongst a population. From this analysis we can describe the most prevalent first-line therapies utilized, the proportion of persons that discontinue treatment, switch treatments or augment their therapy.</p>
+<p>As an example, figure <a href="Characterization.html#fig:treatmentPathwaysSunburstDataViz">12.1</a> represents a population of persons initiating treatment for hypertension. The first ring in the center shows the proportion of persons based on their first-line therapy. In this example, Hydrochlorothiazide is the most common first-line therapy for this population. The boxes that extend from the Hydrochlorothiazide section represent the 2nd and 3rd line therapies recorded for persons in the cohort.</p>
+<p>A pathways analysis provides important evidence about treatment utilization amongst a population. From this analysis we can describe the most prevalent first-line therapies utilized, the proportion of persons that discontinue treatment, switch treatments or augment their therapy. Using the pathway analysis, <span class="citation">Hripcsak et al. (<a href="#ref-Hripcsak7329" role="doc-biblioref">2016</a>)</span> found that metformin is the most commonly prescribed medication for diabetes thus confirming general adoption of the first-line recommendation of the American Association of Clinical Endocrinologists diabetes treatment algorithm. Additionally, they noted that 10% of diabetes patients, 24% of hypertension patients, and 11% of depression patients followed a treatment pathway that was shared with no one else in any of the data sources.</p>
 <p>In classic DUS terminology, treatment pathway analyses include some population-level DUS estimates such as prevalence of use of one or more medications in a specified population, as well as some person-level DUS including measures of persistence and switching between different therapies.</p>
 </div>
 <div id="incidence" class="section level2">
 <h2><span class="header-section-number">12.4</span> Incidence</h2>
-<p>Incidence rates and proportions are statistics that are used in public health to assess the occurrence of an outcome in a population during a time-at-risk. The figure below aims to show the components of an incidence calculation for a single person:</p>
+<p>Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk. Figure <a href="Characterization.html#fig:incidenceTimeline">12.2</a> aims to show the components of an incidence calculation for a single person:</p>
 <div class="figure" style="text-align: center"><span id="fig:incidenceTimeline"></span>
 <img src="images/Characterization/incidenceTimeline.png" alt="Person-level view of incidence calculation components" width="100%" />
 <p class="caption">
-Figure 12.3: Person-level view of incidence calculation components
+Figure 12.2: Person-level view of incidence calculation components
 </p>
 </div>
-<p>In the figure above, a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the time-at-risk, we count that as an incidence of the outcome.</p>
+<p>In figure <a href="Characterization.html#fig:incidenceTimeline">12.2</a>, a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the time-at-risk, we count that as an incidence of the outcome.</p>
 <p>There are two metrics for calculating incidence:</p>
 <p><span class="math display">\[\begin{equation} 
 Incidence\;Proportion = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{\#\;persons\;in\;the\;cohort\;with\;time\;at\;risk}
 \end{equation}\]</span></p>
+<p>An incidence propoprtion provides a mesure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a stated timeframe.</p>
 <p><span class="math display">\[\begin{equation} 
 Incidence\;Rate = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{person\;time\;at\;risk\;contributed\;by\;persons\;in\;the\;cohort}
 \end{equation}\]</span></p>
-<p>When calculated for certain therapies, incidence proportions and incidence rates of use of a given therapy/ies are classic population-level DUS.</p>
+<p>An incidence rate is a mesure of the number of new outcomes during the cumulative time-at-risk for the population. When a person experiences the outcome in the time-at-risk, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative time-at-risk is referred to as <strong>person-time</strong> and is expressed in days, months or years.</p>
+<p>When calculated for therapies, incidence proportions and incidence rates of use of a given therapy are classic population-level DUS.</p>
 </div>
 <div id="characterizing-hypertensive-persons" class="section level2">
 <h2><span class="header-section-number">12.5</span> Characterizing hypertensive persons</h2>
-<p>Per the World Health Organization’s global brief on hypertension <span class="citation">(Organization <a href="#ref-WHOHypertension" role="doc-biblioref">2013</a>)</span>, there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. Treating the complications of hypertension entails interventions such as cardiac bypass surgery, carotid artery surgery and dialysis. In the subsequent sections of this chapter, we’ll explore the ways that we make use of ATLAS and R to explore a data set to understand its composition for studying hypertensive persons. Then, we will use these same tools to describe the natural history and treatment patterns of hypertensive persons.</p>
+<p>Per the World Health Organization’s (WHO) global brief on hypertension <span class="citation">(Organization <a href="#ref-WHOHypertension" role="doc-biblioref">2013</a>)</span>, there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. The WHO brief provides an overview of hypertension and characterizes the burden ofthe diesease across different countries. The WHO provides descriptive statistics around hypertension for geographic regions, socio-economic class and gender.</p>
+<p>Observational data sources provide a way to characterize hypertensive populations as was done by the WHO. In the subsequent sections of this chapter, we’ll explore the ways that we make use of ATLAS and R to explore a database to understand its composition for studying hypertensive populations. Then, we will use these same tools to describe the natural history and treatment patterns of hypertensive populations.</p>
 </div>
 <div id="database-characterization-in-atlas" class="section level2">
 <h2><span class="header-section-number">12.6</span> Database characterization in ATLAS</h2>
-<p>Observational data housed in the OMOP common data model (CDM) are characterized using ACHILLES (<strong>A</strong>utomated <strong>C</strong>haracterization of <strong>H</strong>ealth <strong>I</strong>nformation at <strong>L</strong>arge-scale <strong>L</strong>ongitudinal <strong>E</strong>xploration <strong>S</strong>ystem). ACHILLES facilitates the characterization, quality assessment and visualization of observational health databases.</p>
-<p><code>Are there any references to other chapters we should included here?</code></p>
-<p>Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with ACHILLES to find database level characteristics related to hypertensive persons. Start by clicking on <img src="images/Characterization/atlasDataSourcesMenuItem.png" /> in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the data source to explore. Next, use the drop down below the data source to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:</p>
+<p>Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with ACHILLES to find database level characteristics related to hypertensive persons. Start by clicking on <img src="images/Characterization/atlasDataSourcesMenuItem.png" /> in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the database to explore. Next, use the drop down below the database to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasDataSourcesConditionTreemap"></span>
 <img src="images/Characterization/atlasDataSourcesConditionTreemap.png" alt="Atlas Data Sources: Condition Occurrence Treemap" width="100%" />
 <p class="caption">
-Figure 12.4: Atlas Data Sources: Condition Occurrence Treemap
+Figure 12.3: Atlas Data Sources: Condition Occurrence Treemap
 </p>
 </div>
-<p>To search for a specific condition of interest, click on the Table tab to reveal the full list of conditions in the data set with person count, prevalence and records per person. Using the filter box on the top, we can filter down the entries in the table based on concept name containing the term “hypertension”:</p>
+<p>To search for a specific condition of interest, click on the Table tab to reveal the full list of conditions in the database with person count, prevalence and records per person. Using the filter box on the top, we can filter down the entries in the table based on concept name containing the term “hypertension”:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasDataSourcesConditionFiltered"></span>
 <img src="images/Characterization/atlasDataSourcesConditionFiltered.png" alt="Atlas Data Sources: Conditions with “hypertension” found in the concept name" width="100%" />
 <p class="caption">
-Figure 12.5: Atlas Data Sources: Conditions with “hypertension” found in the concept name
+Figure 12.4: Atlas Data Sources: Conditions with “hypertension” found in the concept name
 </p>
 </div>
-<p>We can explore a detailed drill down report of a condition by clicking on a row. In this case, we will select “essential hypertension” to get a breakdown of the trends of the selected condition over time and by gender, the prevalence of the condition by month, the type recorded with the condition and the age at first occurrence of the diagnosis:</p>
+<p>We can explore a detailed drill-down report of a condition by clicking on a row. In this case, we will select “essential hypertension” to get a breakdown of the trends of the selected condition over time and by gender, the prevalence of the condition by month, the type recorded with the condition and the age at first occurrence of the diagnosis:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasDataSourcesDrillDownReport"></span>
 <img src="images/Characterization/atlasDataSourcesDrillDownReport.png" alt="Atlas Data Sources: Essential hypertension drill down report" width="100%" />
 <p class="caption">
-Figure 12.6: Atlas Data Sources: Essential hypertension drill down report
+Figure 12.5: Atlas Data Sources: Essential hypertension drill down report
 </p>
 </div>
-<p>Now that we have reviewed the database’s characteristics for the presence of hypertension concepts and the trends over time, we can also explore drugs used to treat hypertensive persons. The process to do this follows the steps except we could use the Drug Era report to review characteristics of drugs summarized to their RxNorm Ingredient. Once we have explored the database characteristics to review items of interest, we are ready to move forward with constructing cohorts to identify the hypertensive persons to characterize.</p>
+<p>Now that we have reviewed the database’s characteristics for the presence of hypertension concepts and the trends over time, we can also explore drugs used to treat hypertensive persons. The process to do this follows the same steps except we use the Drug Era report to review characteristics of drugs summarized to their RxNorm Ingredient. Once we have explored the database characteristics to review items of interest, we are ready to move forward with constructing cohorts to identify the hypertensive persons to characterize.</p>
 </div>
 <div id="cohort-characterization-in-atlas" class="section level2">
 <h2><span class="header-section-number">12.7</span> Cohort characterization in ATLAS</h2>
 <p>Here we demonstrate how to use ATLAS to perform large-scale cohort characterization for several cohorts. Click on the <img src="images/Characterization/atlasCharacterizationMenuItem.png" /> in the left bar of ATLAS and create a new characterization analysis. Give the analysis a name a save using the <img src="images/PopulationLevelEstimation/save.png" /> button.</p>
-<p><code>Note: should we move the save button to an "atlas" folder?</code></p>
 <div id="design" class="section level3">
 <h3><span class="header-section-number">12.7.1</span> Design</h3>
-<p>A characterization analysis requires at least one cohort and at least one feature to characterize. For this example, we will use two cohorts. The first cohort will define persons initiating a treatment for hypertension as their index date with at least one diagnosis of hypertension in the year prior. We will also require that persons in this cohort have at least one year of observation after initiating the hypertensive drug. The second cohort is identical to the first cohort described with a requirement having at least three years of observation instead of one.</p>
-<p><code>The cohort definitions used in this chapter are found in Appendix X.</code></p>
+<p>A characterization analysis requires at least one cohort and at least one feature to characterize. For this example, we will use two cohorts. The first cohort will define persons initiating a treatment for hypertension as their index date with at least one diagnosis of hypertension in the year prior. We will also require that persons in this cohort have at least one year of observation after initiating the hypertensive drug (Appendix <a href="CohortDefinitions.html#HTN1yrFO">B.6</a>). The second cohort is identical to the first cohort described with a requirement having at least three years of observation instead of one (Appendix <a href="CohortDefinitions.html#HTN3yrFO">B.7</a>).</p>
 <div id="cohort-definitions" class="section level4">
 <h4><span class="header-section-number">12.7.1.1</span> Cohort definitions</h4>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationCohortSelection"></span>
 <img src="images/Characterization/atlasCharacterizationCohortSelection.png" alt="Characterization design tab - cohort definition selection" width="100%" />
 <p class="caption">
-Figure 12.7: Characterization design tab - cohort definition selection
+Figure 12.6: Characterization design tab - cohort definition selection
 </p>
 </div>
-<p>We assume the cohorts have already been created in ATLAS as described in Chapter <a href="Cohorts.html#Cohorts">11</a>. Click on the and select the cohorts as shown in the figure above. Next, we’ll define the features to use for characterizing these two cohorts.</p>
+<p>We assume the cohorts have already been created in ATLAS as described in Chapter <a href="Cohorts.html#Cohorts">11</a>. Click on <img src="images/Characterization/atlasImportButton.png" /> and select the cohorts as shown in figure <a href="Characterization.html#fig:atlasCharacterizationCohortSelection">12.6</a>. Next, we’ll define the features to use for characterizing these two cohorts.</p>
 </div>
 <div id="feature-selection" class="section level4">
 <h4><span class="header-section-number">12.7.1.2</span> Feature Selection</h4>
-<p>ATLAS comes with nearly 100 preset features that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section.</p>
-<p>Click on to select the feature to characterize. Below is a list of features we will use to characterize these cohorts:</p>
+<p>ATLAS comes with nearly 100 preset feature analyses that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Each of these preset feature analyses perform aggregation and summarization functions on clinical observations for the selected target cohorts. These calculations provide potentially thousands of features to describe the cohorts baseline and post-index characteristics. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section.</p>
+<p>Click on <img src="images/Characterization/atlasImportButton.png" /> to select the feature to characterize. Below is a list of features we will use to characterize these cohorts:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationFeatureSelection"></span>
 <img src="images/Characterization/atlasCharacterizationFeatureSelection.png" alt="Characterization design tab - feature selection." width="100%" />
 <p class="caption">
-Figure 12.8: Characterization design tab - feature selection.
+Figure 12.7: Characterization design tab - feature selection.
 </p>
 </div>
 <p>The figure above shows the list of features selected along with a description of what each feature will characterize for each cohort. The features that start with the name “Demographics” will calculate the demographic information for each person at the cohort start date. For the features that start with a domain name (i.e. Visit, Procedure, Condition, Drug, etc), these will characterize all recorded observations in that domain. Each domain feature has four options of time window preceding the cohort star, namely:</p>
@@ -689,23 +693,23 @@ Figure 12.8: Characterization design tab - feature selection.
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationSubgroup"></span>
 <img src="images/Characterization/atlasCharacterizationSubgroup.png" alt="Characterization design with female sub group analysis." width="100%" />
 <p class="caption">
-Figure 12.9: Characterization design with female sub group analysis.
+Figure 12.8: Characterization design with female sub group analysis.
 </p>
 </div>
 
 <div class="rmdimportant">
-IMPORTANT: Subgroup analyses in ATLAS are not the same as strata. Strata are mutually exclusive while subgroups may include the same persons based on the criteria chosen.
+Subgroup analyses in ATLAS are not the same as strata. Strata are mutually exclusive while subgroups may include the same persons based on the criteria chosen.
 </div>
 
 </div>
 </div>
 <div id="executions" class="section level3">
 <h3><span class="header-section-number">12.7.2</span> Executions</h3>
-<p>Once we have our characterization designed, we can execute this design against one or more CDMs in our environment. Navigate to the Executions tab and click on the Generate button to start the analysis on a data source:</p>
+<p>Once we have our characterization designed, we can execute this design against one or more databases in our environment. Navigate to the Executions tab and click on the Generate button to start the analysis on a database:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationExecutions"></span>
 <img src="images/Characterization/atlasCharacterizationExecutions.png" alt="Characterization design execution - CDM source selection." width="100%" />
 <p class="caption">
-Figure 12.10: Characterization design execution - CDM source selection.
+Figure 12.9: Characterization design execution - CDM source selection.
 </p>
 </div>
 <p>Once the analysis is complete, we can view reports by clicking on the “All Executions” button and from the list of executions, select “View Reports”. Alternatively, you can click “View latest result” to view the last execution performed.</p>
@@ -715,37 +719,37 @@ Figure 12.10: Characterization design execution - CDM source selection.
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationResultsSummary"></span>
 <img src="images/Characterization/atlasCharacterizationResultsSummary.png" alt="Characterization results - condition occurrence long term." width="100%" />
 <p class="caption">
-Figure 12.11: Characterization results - condition occurrence long term.
+Figure 12.10: Characterization results - condition occurrence long term.
 </p>
 </div>
-<p>The results provide a tabular view of the different features for each cohort selected in the design. In the example above, a table provides a summary of all conditions present in the two cohorts in the preceding 365 days from the cohort start. Each covariate has a count and percentage for each cohort and the female subgroup we defined within each cohort.</p>
-<p>We used the search box to filter the results to see what proportion of persons have a <code>cardiac arrhythmia</code> in their history in an effort to understand what cardiovascular-related diagnoses are observed in the populations. We can use the <code>Explore</code> link next to the cardiac arrhythmia concept to open a new window with more details about the concept for a single cohort:</p>
+<p>The results provide a tabular view of the different features for each cohort selected in the design. In figure <a href="Characterization.html#fig:atlasCharacterizationResultsSummary">12.10</a>, a table provides a summary of all conditions present in the two cohorts in the preceding 365 days from the cohort start. Each covariate has a count and percentage for each cohort and the female subgroup we defined within each cohort.</p>
+<p>We used the search box to filter the results to see what proportion of persons have a <code>cardiac arrhythmia</code> in their history in an effort to understand what cardiovascular-related diagnoses are observed in the populations. We can use the <code>Explore</code> link next to the cardiac arrhythmia concept to open a new window with more details about the concept for a single cohort as shown in figure <a href="Characterization.html#fig:atlasCharacterizationResultsExplore">12.11</a>:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationResultsExplore"></span>
 <img src="images/Characterization/atlasCharacterizationResultsExplore.png" alt="Characterization results - exploring a single concept." width="100%" />
 <p class="caption">
-Figure 12.12: Characterization results - exploring a single concept.
+Figure 12.11: Characterization results - exploring a single concept.
 </p>
 </div>
-<p>Since we have characterized all condition concepts for our cohorts, the explore option enables a view of all ancestor and descendant concepts for the selected concept, in this case cardiac arrhythmia. This exploration allows us to navigate the hierarchy of concepts to explore other cardiac diseases that may appear for our hypertensive persons. Like in the summary view, the count and percentage is displayed.</p>
-<p>We can also use the same characterization results to find conditions that are contraindicated for some anti-hypertensive treatment such as angioedema. To do this, we’ll follow the same steps above but this time search for ‘edema’:</p>
+<p>Since we have characterized all condition concepts for our cohorts, the explore option enables a view of all ancestor and descendant concepts for the selected concept, in this case cardiac arrhythmia. This exploration allows us to navigate the hierarchy of concepts to explore other cardiac diseases that may appear for our hypertensive persons. Like in the summary view, the count and percentage are displayed.</p>
+<p>We can also use the same characterization results to find conditions that are contraindicated for some anti-hypertensive treatment such as angioedema. To do this, we’ll follow the same steps above but this time search for ‘edema’ as shown in figure <a href="Characterization.html#fig:atlasCharacterizationResultsContra">12.12</a>:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationResultsContra"></span>
 <img src="images/Characterization/atlasCharacterizationResultsContra.png" alt="Characterization results - exploring a contraindicated condition." width="100%" />
 <p class="caption">
-Figure 12.13: Characterization results - exploring a contraindicated condition.
+Figure 12.12: Characterization results - exploring a contraindicated condition.
 </p>
 </div>
 <p>Once again, we’ll use the explore feature to see the characteristics of Edema in the hypertension population to find the prevalence of angioedema:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationResultsContraExplore"></span>
 <img src="images/Characterization/atlasCharacterizationResultsContraExplore.png" alt="Characterization results - exploring a contraindicated condition details." width="100%" />
 <p class="caption">
-Figure 12.14: Characterization results - exploring a contraindicated condition details.
+Figure 12.13: Characterization results - exploring a contraindicated condition details.
 </p>
 </div>
 <p>Here we find that a portion of this population has a record of angioedema in the year prior to starting an anti-hypertensive medication.</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationResultsContinuous"></span>
 <img src="images/Characterization/atlasCharacterizationResultsContinuous.png" alt="Characterization results of age for each cohort and sub group." width="100%" />
 <p class="caption">
-Figure 12.15: Characterization results of age for each cohort and sub group.
+Figure 12.14: Characterization results of age for each cohort and sub group.
 </p>
 </div>
 <p>While domain covariates are computed using a binary indicator (i.e. was a record of the code present in the prior timeframe), some variables provide a continuous value such as the age of persons at cohort start. In the example above, we show the age for the 2 cohorts characterized expressed with the count of persons, mean age, median age and standard deviation.</p>
@@ -753,27 +757,25 @@ Figure 12.15: Characterization results of age for each cohort and sub group.
 <div id="defining-custom-features" class="section level3">
 <h3><span class="header-section-number">12.7.4</span> Defining custom features</h3>
 <p>In addition to the preset features, ATLAS supports the ability to allow for user-defined custom features. To do this, click the <strong>Characterization</strong> left-hand menu item, then click the <strong>Feature Analysis</strong> tab and click the <strong>New Feature Analysis</strong> button. Provide a name for the custom feature and save it using the <img src="images/PopulationLevelEstimation/save.png" /> button.</p>
-<p><code>Note: should we move the save button to an "atlas" folder?</code></p>
 <p>In this example, we will define a custom feature that will identify the count of persons in each cohort that have a drug era of ACE inhibitors in their history after cohort start:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationCustomFeature"></span>
 <img src="images/Characterization/atlasCharacterizationCustomFeature.png" alt="Custom feature definition in ATLAS." width="100%" />
 <p class="caption">
-Figure 12.16: Custom feature definition in ATLAS.
+Figure 12.15: Custom feature definition in ATLAS.
 </p>
 </div>
-<p>The criteria defined above assumes that it will be applied to a cohort start date. Once we have defined the criteria and saved it, we can apply it to the characterization design we created in the previous section. To do this, open the characterization design and navigate to the Feature Analysis section. Click the <img src="images/Characterization/atlasImportButton.png" /> button and from the menu select the new custom features. They will now appear in the feature list for the characterization design. As described earlier, we can execute this design against a data source to produce the characterization for this custom feature:</p>
+<p>The criteria defined above assumes that it will be applied to a cohort start date. Once we have defined the criteria and saved it, we can apply it to the characterization design we created in the previous section. To do this, open the characterization design and navigate to the Feature Analysis section. Click the <img src="images/Characterization/atlasImportButton.png" /> button and from the menu select the new custom features. They will now appear in the feature list for the characterization design. As described earlier, we can execute this design against a database to produce the characterization for this custom feature:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasCharacterizationCustomFeatureResults"></span>
 <img src="images/Characterization/atlasCharacterizationCustomFeatureResults.png" alt="Custom feature results display." width="100%" />
 <p class="caption">
-Figure 12.17: Custom feature results display.
+Figure 12.16: Custom feature results display.
 </p>
 </div>
 </div>
 </div>
 <div id="cohort-characterization-in-r" class="section level2">
 <h2><span class="header-section-number">12.8</span> Cohort characterization in R</h2>
-<p>We may also choose to characterize cohorts using R. Here we’ll describe how to use the OHDSI R package FeatureExtraction to generate baseline features (covariates) for our hypertension cohorts <code>(Appendix X)</code>.
-FeatureExtraction provides users with the ability to construct covariates in three ways:</p>
+<p>We may also choose to characterize cohorts using R. Here we’ll describe how to use the OHDSI R package FeatureExtraction to generate baseline features (covariates) for our hypertension cohorts. FeatureExtraction provides users with the ability to construct covariates in three ways:</p>
 <ul>
 <li>Choose the default set of covariates</li>
 <li>Choose from a set of prespecified analyses</li>
@@ -782,7 +784,7 @@ FeatureExtraction provides users with the ability to construct covariates in thr
 <p>FeatureExtraction creates covariates in two distinct ways: person-level features and aggregate features. Person-level features are useful for machine learning applications. In this section, we’ll focus on using aggregate features that are useful for generating baseline covariates that describe the cohort of interest. Additionally, we’ll focus on the second two ways of constructing covariates: prespecified and custom analyses and leave using the default set as an exercise for the reader.</p>
 <div id="cohort-instantiation" class="section level3">
 <h3><span class="header-section-number">12.8.1</span> Cohort instantiation</h3>
-<p>We first need to instantiate the cohort to characterize it. Instantiating cohorts is described in Chapter <a href="Cohorts.html#Cohorts">11</a>. In this example, we’ll use the persons initiating a first-line therapy for hypertension with 1 year follow up (<code>Appendix X</code>). We leave characterizing the other cohorts in <code>Appendix X</code> as an exercise for the reader. We will assume the cohort has been instantiated in a table called <code>scratch.my_cohorts</code> with cohort definition ID equal to 1.</p>
+<p>We first need to instantiate the cohort to characterize it. Instantiating cohorts is described in Chapter <a href="Cohorts.html#Cohorts">11</a>. In this example, we’ll use the persons initiating a first-line therapy for hypertension with 1 year follow up (Appendix <a href="CohortDefinitions.html#HTN1yrFO">B.6</a>). We leave characterizing the other cohorts in Appendix <a href="CohortDefinitions.html#CohortDefinitions">B</a> as an exercise for the reader. We will assume the cohort has been instantiated in a table called <code>scratch.my_cohorts</code> with cohort definition ID equal to 1.</p>
 </div>
 <div id="data-extraction" class="section level3">
 <h3><span class="header-section-number">12.8.2</span> Data extraction</h3>
@@ -834,7 +836,7 @@ FeatureExtraction provides users with the ability to construct covariates in thr
 <span id="cb70-10"><a href="Characterization.html#cb70-10"></a>                                    <span class="dt">aggregated =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
 
 <div class="rmdimportant">
-IMPORTANT: the use of <code>aggregated = TRUE</code> for all of the examples above indicate to FeatureExtraction to provide summary statistics. Excluding this flag will compute covariates for each person in the cohort.
+The use of <code>aggregated = TRUE</code> for all of the examples above indicate to FeatureExtraction to provide summary statistics. Excluding this flag will compute covariates for each person in the cohort.
 </div>
 
 </div>
@@ -871,30 +873,30 @@ IMPORTANT: the use of <code>aggregated = TRUE</code> for all of the examples abo
 </div>
 <div id="cohort-pathways-in-atlas" class="section level2">
 <h2><span class="header-section-number">12.9</span> Cohort pathways in ATLAS</h2>
-<p>The goal with a pathway analysis is to understand the sequencing of treatments along in one or more cohorts of interest. The methods applied are based on the design reported by <span class="citation">(Hripcsak et al. <a href="#ref-Hripcsak7329" role="doc-biblioref">2016</a>)</span>. These methods were generalized and codified into a feature called Cohort Pathways in ATLAS.</p>
+<p>The goal with a pathway analysis is to understand the sequencing of treatments along in one or more cohorts of interest. The methods applied are based on the design reported by <span class="citation">Hripcsak et al. (<a href="#ref-Hripcsak7329" role="doc-biblioref">2016</a>)</span>. These methods were generalized and codified into a feature called Cohort Pathways in ATLAS.</p>
 <p>Cohort pathways aims to provide analytic capabilities to summarize the events following the cohort start date of one or more target cohorts. To do this, we create a set of cohorts to identify the clinical events of interest for the target population called event cohort. Focusing on how this might look for a person in the target cohort:</p>
 <div class="figure" style="text-align: center"><span id="fig:pathwaysPersonEventView"></span>
 <img src="images/Characterization/pathwaysPersonEventView.png" alt="Pathways analysis in the context of a single person." width="100%" />
 <p class="caption">
-Figure 12.18: Pathways analysis in the context of a single person.
+Figure 12.17: Pathways analysis in the context of a single person.
 </p>
 </div>
-<p>In the figure above, the person is part of the target cohort with a defined start and end date. Then, the numbered line segments represent where that person also is identified in an event cohort for a duration of time. Event cohorts allow us to describe any clinical event of interest that is represented in the CDM such that we are not constrained to creating a pathway for a single domain or concept.</p>
+<p>In figure <a href="Characterization.html#fig:pathwaysPersonEventView">12.17</a>, the person is part of the target cohort with a defined start and end date. Then, the numbered line segments represent where that person also is identified in an event cohort for a duration of time. Event cohorts allow us to describe any clinical event of interest that is represented in the CDM such that we are not constrained to creating a pathway for a single domain or concept.</p>
 <p>To start, click on <img src="images/Characterization/atlasPathwaysMenuItem.png" /> in the left bar of ATLAS to create a new cohort pathways study. Provide a descriptive name and press the save button .</p>
 <div id="design-1" class="section level3">
 <h3><span class="header-section-number">12.9.1</span> Design</h3>
-<p>To start, we will continue to use the cohorts initiating a first-line therapy for hypertension with 1 and 3 years follow up (<code>Appendix X</code>). Use the button to import the 2 cohorts.</p>
+<p>To start, we will continue to use the cohorts initiating a first-line therapy for hypertension with 1 and 3 years follow up (Appendix <a href="CohortDefinitions.html#HTN1yrFO">B.6</a>, <a href="CohortDefinitions.html#HTN3yrFO">B.7</a>). Use the button to import the 2 cohorts.</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasPathwaysTargetCohorts"></span>
 <img src="images/Characterization/atlasPathwaysTargetCohorts.png" alt="Pathways analysis with target cohorts selected." width="100%" />
 <p class="caption">
-Figure 12.19: Pathways analysis with target cohorts selected.
+Figure 12.18: Pathways analysis with target cohorts selected.
 </p>
 </div>
-<p>Next we’ll define the event cohorts by creating a cohort for each first-line hypertensive drug of interest. For this, we’ll start by creating a cohort of ACE inhibitor users and define the cohort end date as the end of continuous exposure. We’ll do the same for 8 other hypertensive medications and note that these definitions are found in <code>Appendix X</code>. Once complete use the <img src="images/Characterization/atlasImportButton.png" /> button to import these into the Event Cohort section of the pathway design:</p>
+<p>Next we’ll define the event cohorts by creating a cohort for each first-line hypertensive drug of interest. For this, we’ll start by creating a cohort of ACE inhibitor users and define the cohort end date as the end of continuous exposure. We’ll do the same for 8 other hypertensive medications and note that these definitions are found in Appendix <a href="CohortDefinitions.html#ACEiUse">B.8</a>-<a href="CohortDefinitions.html#A1BUse">B.16</a>. Once complete use the <img src="images/Characterization/atlasImportButton.png" /> button to import these into the Event Cohort section of the pathway design:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasPathwaysEventCohorts"></span>
 <img src="images/Characterization/atlasPathwaysEventCohorts.png" alt="Event cohorts for pathway design for initiating a first-line antihypertensive therapy." width="100%" />
 <p class="caption">
-Figure 12.20: Event cohorts for pathway design for initiating a first-line antihypertensive therapy.
+Figure 12.19: Event cohorts for pathway design for initiating a first-line antihypertensive therapy.
 </p>
 </div>
 <p>When complete, your design should look like the one above. Next, we’ll need to decide on a few additional analysis settings:</p>
@@ -906,85 +908,85 @@ Figure 12.20: Event cohorts for pathway design for initiating a first-line antih
 </div>
 <div id="executions-1" class="section level3">
 <h3><span class="header-section-number">12.9.2</span> Executions</h3>
-<p>Once we have our pathway analysis designed, we can execute this design against one or more CDMs in our environment. This works the same way as we described for cohort characterization in ATLAS. Once complete, we can review the results of the analysis.</p>
+<p>Once we have our pathway analysis designed, we can execute this design against one or more databases in our environment. This works the same way as we described for cohort characterization in ATLAS. Once complete, we can review the results of the analysis.</p>
 </div>
 <div id="viewing-results" class="section level3">
 <h3><span class="header-section-number">12.9.3</span> Viewing Results</h3>
 <div class="figure" style="text-align: center"><span id="fig:atlasPathwaysResults"></span>
 <img src="images/Characterization/atlasPathwaysResults.png" alt="Pathways results legend and sunburst visualization." width="100%" />
 <p class="caption">
-Figure 12.21: Pathways results legend and sunburst visualization.
+Figure 12.20: Pathways results legend and sunburst visualization.
 </p>
 </div>
 <p>The results of a pathway analysis are broken into 3 sections: The legend section displays the total number of persons in the target cohort along with the number of persons that had 1 or more events in the pathway analysis. Below that summary are the color designations for each of the cohorts that appear in the sunburst plot in the center section.</p>
-<p>The sunburst plot is a visualization that represents the various event pathways taken by persons over time. The center of the plot represents the cohort entry and the first color-coded ring shows the proportion of persons in each event cohort. In our example, the center of the circle represents hypternsive persons initiating a first line therapy. Then, the first ring in the sunburst plot shows the proportion of persons that initiated a type of first-line therapy defined by the event cohorts (i.e. ACE inhibitors, ARBs, etc). The second set of rings represents the 2nd event cohort for persons. In certain event sequences, a person may never have a 2nd event cohort observed in the data and that proportion is represented by the grey portion of the ring.</p>
+<p>The sunburst plot is a visualization that represents the various event pathways taken by persons over time. The center of the plot represents the cohort entry and the first color-coded ring shows the proportion of persons in each event cohort. In our example, the center of the circle represents hypertensive persons initiating a first line therapy. Then, the first ring in the sunburst plot shows the proportion of persons that initiated a type of first-line therapy defined by the event cohorts (i.e. ACE inhibitors, Angiotensin receptor blockers, etc). The second set of rings represents the 2nd event cohort for persons. In certain event sequences, a person may never have a 2nd event cohort observed in the data and that proportion is represented by the grey portion of the ring.</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasPathwaysResultsPathDetails"></span>
 <img src="images/Characterization/atlasPathwaysResultsPathDetails.png" alt="Pathways results displaying path details." width="100%" />
 <p class="caption">
-Figure 12.22: Pathways results displaying path details.
+Figure 12.21: Pathways results displaying path details.
 </p>
 </div>
-<p>Clicking on a section of the sunburst plot will display the path details on the right. Here we can see that the largest proportion of people in our target cohort initiated a first-line therapy with ACE inhibitors and from that group, a smaller proportion started a Thiazide diuretic.</p>
+<p>Clicking on a section of the sunburst plot will display the path details on the right. Here we can see that the largest proportion of people in our target cohort initiated a first-line therapy with ACE inhibitors and from that group, a smaller proportion started a Thiazide or thiazide diuretics.</p>
 </div>
 </div>
 <div id="incidence-analysis-in-atlas" class="section level2">
 <h2><span class="header-section-number">12.10</span> Incidence analysis in ATLAS</h2>
-<p>In an incidence calculation, we describe: amongst the persons in the target cohort, who experienced the outcome cohort during the time at risk period. Here we will design an incidence analysis to characterize angioedema and acute myocardial infarction outcomes amongst new users of ACE inhibitors and Thiazide-like diuretics. We will assess these outcomes during the time-at-risk that a person was exposed to the drug. Additionally, we will add an outcome of drug exposure to Angiotensin receptor blockers (ARBs) to measure the incidence of new use of ARBs during exposure to the target cohorts (ACEi and Thiazides). This outcome definition provides an understanding of how ARBs are utilized amongst the target populations.</p>
+<p>In an incidence calculation, we describe: amongst the persons in the target cohort, who experienced the outcome cohort during the time at risk period. Here we will design an incidence analysis to characterize angioedema and acute myocardial infarction outcomes amongst new users of ACE inhibitors (ACEi) and Thiazides and thiazide-like diuretics (THZ). We will assess these outcomes during the time-at-risk that a person was exposed to the drug. Additionally, we will add an outcome of drug exposure to Angiotensin receptor blockers (ARBs) to measure the incidence of new use of ARBs during exposure to the target cohorts (ACEi and THZ). This outcome definition provides an understanding of how ARBs are utilized amongst the target populations.</p>
 <p>To start, click on <img src="images/Characterization/atlasIncidenceMenuItem.png" /> in the left bar of ATLAS to create a new incidence analysis. Provide a descriptive name and press the save button <img src="images/PopulationLevelEstimation/save.png" />.</p>
 <div id="design-2" class="section level3">
 <h3><span class="header-section-number">12.10.1</span> Design</h3>
-<p>We assume the cohorts used in this example have already been created in ATLAS as described in Chapter <a href="Cohorts.html#Cohorts">11</a>. The Appendix provides the full definitions of the target cohorts (<code>Appendix B.2, B.5</code>), and outcomes (<code>Appendix B.4 and Appendix B.3, Appendix X for ARB Exposure</code>) cohorts.</p>
+<p>We assume the cohorts used in this example have already been created in ATLAS as described in Chapter <a href="Cohorts.html#Cohorts">11</a>. The Appendix provides the full definitions of the target cohorts (Appendix <a href="CohortDefinitions.html#AceInhibitorsMono">B.2</a>, <a href="CohortDefinitions.html#ThiazidesMono">B.5</a>), and outcomes (Appendix <a href="CohortDefinitions.html#Angioedema">B.4</a>, <a href="CohortDefinitions.html#Ami">B.3</a>, @(ARBUse)) cohorts.</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasIncidenceCohortSelection"></span>
 <img src="images/Characterization/atlasIncidenceCohortSelection.png" alt="Incidence Rate target and outcome definition." width="100%" />
+<p class="caption">
+Figure 12.22: Incidence Rate target and outcome definition.
+</p>
+</div>
+<p>On the definition tab, click to choose the <em>New users of ACE inhibitors</em> cohort and the <em>New users of Thiazide or Thiazide-like diuretics</em> cohort. Close the dialog to view that these cohorts are added to the design. Next we add our outcome cohorts by clicking on and from the dialog box, select the outcome cohorts of <em>acute myocardial infarction events</em>, <em>angioedema events</em> and <em>Angiotensin receptor blocker (ARB) use</em>. Again, close the window to view that these cohorts are added to the outcome cohorts section of the design.</p>
+<div class="figure" style="text-align: center"><span id="fig:atlasIncidenceTimeAtRisk"></span>
+<img src="images/Characterization/atlasIncidenceTimeAtRisk.png" alt="Incidence Rate target and outcome definition." width="100%" />
 <p class="caption">
 Figure 12.23: Incidence Rate target and outcome definition.
 </p>
 </div>
-<p>On the definition tab, click to choose the ACE inhibitor cohort and the Thiazide-like diuretics cohorts. Close the dialog to view that these cohorts are added to the design. Next we add our outcome cohorts by clicking on and from the dialog box, select the outcome cohorts of <em>acute myocardial infarction events</em>, <em>angioedema events</em> and <em>Angiotensin receptor blocker (ARB) use</em>. Again, close the window to view that these cohorts are added to the outcome cohorts section of the design.</p>
-<div class="figure" style="text-align: center"><span id="fig:atlasIncidenceTimeAtRisk"></span>
-<img src="images/Characterization/atlasIncidenceTimeAtRisk.png" alt="Incidence Rate target and outcome definition." width="100%" />
-<p class="caption">
-Figure 12.24: Incidence Rate target and outcome definition.
-</p>
-</div>
-<p>Next, we will define the time at risk window for the analysis. As shown above, the time at risk window is defined relative to the cohort start and end dates. Here we will define the time at risk start as 1 day after cohort start for our target cohorts. Next, we’ll define the time at risk to end at the cohort end date. In this case, the definition of the ACE and Thiazide cohorts have a cohort end date when the drug exposure ends.</p>
+<p>Next, we will define the time at risk window for the analysis. As shown above, the time at risk window is defined relative to the cohort start and end dates. Here we will define the time at risk start as 1 day after cohort start for our target cohorts. Next, we’ll define the time at risk to end at the cohort end date. In this case, the definition of the ACEi and THZ cohorts have a cohort end date when the drug exposure ends.</p>
 <p>ATLAS also provides a way to stratify the target cohorts as part of the analysis specification:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasIncidenceStratifyFemale"></span>
 <img src="images/Characterization/atlasIncidenceStratifyFemale.png" alt="Incidence Rate strata definition for females." width="100%" />
 <p class="caption">
-Figure 12.25: Incidence Rate strata definition for females.
+Figure 12.24: Incidence Rate strata definition for females.
 </p>
 </div>
-<p>To do this, click the New Stratify Criteria button and follow the same steps described in Chapter 11. Now that we have completed the design, we can move to executing our design against one or more data sources.</p>
+<p>To do this, click the New Stratify Criteria button and follow the same steps described in Chapter 11. Now that we have completed the design, we can move to executing our design against one or more databases.</p>
 </div>
 <div id="executions-2" class="section level3">
 <h3><span class="header-section-number">12.10.2</span> Executions</h3>
-<p>Click the Generation tab and then the button to reveal a list of data sources to use to execute the analysis:</p>
+<p>Click the Generation tab and then the <img src="images/Characterization/atlasIncidenceGenerate.png" /> button to reveal a list of databases to use to execute the analysis:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasIncidenceSourceSelection"></span>
 <img src="images/Characterization/atlasIncidenceSourceSelection.png" alt="Incidence Rate analysis execution." width="100%" />
 <p class="caption">
-Figure 12.26: Incidence Rate analysis execution.
+Figure 12.25: Incidence Rate analysis execution.
 </p>
 </div>
-<p>Select one or more data sources and click the Generate button to start the analysis to analyze all combinations of targets and outcomes specified in the design.</p>
+<p>Select one or more databases and click the Generate button to start the analysis to analyze all combinations of targets and outcomes specified in the design.</p>
 </div>
 <div id="viewing-results-1" class="section level3">
 <h3><span class="header-section-number">12.10.3</span> Viewing Results</h3>
-<p>On the Generation tab, the top portion of the screen allows you to select a target and outcome to use when viewing the results. Just below this a summary of the incidence is shown for each data source used in the analysis.</p>
-<p>Select the target cohort of New ACEi users and the Acute Myocardial Infarction (AMI) from the respective dropdown lists. Click the <img src="images/Characterization/atlasIncidenceReportButton.png" /> button to reveal the incidence analysis results:</p>
+<p>On the Generation tab, the top portion of the screen allows you to select a target and outcome to use when viewing the results. Just below this a summary of the incidence is shown for each database used in the analysis.</p>
+<p>Select the target cohort of ACEi users and the Acute Myocardial Infarction (AMI) from the respective dropdown lists. Click the <img src="images/Characterization/atlasIncidenceReportButton.png" /> button to reveal the incidence analysis results:</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasIncidenceResults"></span>
 <img src="images/Characterization/atlasIncidenceResults.png" alt="Incidence Rate analysis output - New ACEi users with AMI outcome." width="100%" />
 <p class="caption">
-Figure 12.27: Incidence Rate analysis output - New ACEi users with AMI outcome.
+Figure 12.26: Incidence Rate analysis output - New ACEi users with AMI outcome.
 </p>
 </div>
-<p>A summary for the data source shows the total persons in the cohort that were observed during the time-at-risk along with the total number of cases. The proportion shows the number of cases per 1000 people. The time at risk, in years, is calculated for the target cohort. The incidence rate is expressed as the number of cases per 1000 person years.</p>
-<p>We can also view the incidence metrics for the strata that we defined in the design. The same metrics mentioned above are calculated for each strata. Additionally, a treemap visualization provides a representation of the proportion of each strata represented by the boxed areas. The color represents the incidence rate as shown in the scale along the bottom.</p>
+<p>A summary for the database shows the total persons in the cohort that were observed during the time-at-risk along with the total number of cases. The proportion shows the number of cases per 1000 people. The time at risk, in years, is calculated for the target cohort. The incidence rate is expressed as the number of cases per 1000 person-years.</p>
+<p>We can also view the incidence metrics for the strata that we defined in the design. The same metrics mentioned above are calculated for each stratum. Additionally, a treemap visualization provides a representation of the proportion of each stratum represented by the boxed areas. The color represents the incidence rate as shown in the scale along the bottom.</p>
 <p>We can gather the same information to see the incidence of new use of ARBs amongst the ACEi population. Using the dropdown at the top, change the outcome to ARBs use and click the <img src="images/Characterization/atlasIncidenceReportButton.png" /> button to reveal the details.</p>
 <div class="figure" style="text-align: center"><span id="fig:atlasIncidenceResultsARB"></span>
 <img src="images/Characterization/atlasIncidenceResultsARB.png" alt="Incidence Rate - New users of ACEi receiving ARBs treatment during ACEi exposure." width="100%" />
 <p class="caption">
-Figure 12.28: Incidence Rate - New users of ACEi receiving ARBs treatment during ACEi exposure.
+Figure 12.27: Incidence Rate - New users of ACEi receiving ARBs treatment during ACEi exposure.
 </p>
 </div>
 <p>As shown, the metrics calculated are the same but the interpretation is different since the input (ARB use) references a drug utilization estimate instead of a health outcome.</p>
@@ -992,16 +994,24 @@ Figure 12.28: Incidence Rate - New users of ACEi receiving ARBs treatment during
 </div>
 <div id="summary-6" class="section level2">
 <h2><span class="header-section-number">12.11</span> Summary</h2>
-<p>Characterization aims to answer describe populations of interest to understand the who, what, when and where associated to their medical experience. These descriptive statistics generate evidence to inform the disease natural history, treatment utilization and quality improvement.</p>
+
+<div class="rmdsummary">
+<ul>
+<li><p>Characterization describes a cohort of interest during the time preceding the index date (<strong>baseline</strong>) and the time after index (<strong>post-index</strong>).</p></li>
+<li><p>ATLAS’ characterization module and the OHDSI Methods Library provide the capability to calculate baseline characteristics for multiple time windows.</p></li>
+<li><p>ATLAS’ pathways and incidence rate modules provide descriptive statistics during the post-index time period.</p></li>
+</ul>
+</div>
+
 </div>
 <div id="exercises-4" class="section level2">
 <h2><span class="header-section-number">12.12</span> Exercises</h2>
-<ul>
+<ol style="list-style-type: decimal">
 <li>We would like to understand how hypertensive treatments are utilized in a real world setting. To start, we would like to understand the composition of data that a source has for a hypertensive medication such as Lisinopril. How would you use ATLAS data source module to find information on Lisinopril?</li>
-<li>In the chapter we characterized new users of any hypertensive medication and utilized the cohort pathways tool in ATLAS to find that ACE Inhibitors and Thiazides were the most commonly used first-line drug therapy. To better understand the disease natural history of patients initiating ACE inhibitors and Thiazides, use ATLAS to construct a cohort characterization for these populations to understand their demographics, concomitant medications and comorbid conditions.</li>
-<li>In the chapter, we used the cohort pathways module ATLAS to characterize treatment sequences of hypternsive drugs. How might we use the same approach to characterize procedure sequences used to treat hypertension (i.e. cardiac bypass surgery, carotid artery surgery and dialysis)?</li>
-<li>Using the preceding conditions found in exercise #2, construct an incidence rate analysis to find the rate of an outcome in the ACEi and Thiazide populations.</li>
-</ul>
+<li>In the chapter we characterized new users of any hypertensive medication and utilized the cohort pathways tool in ATLAS to find that ACE Inhibitors and thiazides were the most commonly used first-line drug therapy. To better understand the disease natural history of patients initiating ACE inhibitors and Thiazides, use ATLAS to construct a cohort characterization for these populations to understand their demographics, concomitant medications and comorbid conditions.</li>
+<li>How might we design a pathways analysis to characterize procedure sequences used to treat hypertension (i.e. cardiac bypass surgery, carotid artery surgery and dialysis)?</li>
+<li>Using the preceding conditions found in exercise #2, construct an incidence rate analysis to find the rate of an outcome in the ACEi and THZ populations.</li>
+</ol>
 <p><code>**TODO: Define exercises using Eunomia.**</code></p>
 <p><code>Per chapter 13: Note: The excercises still have to be defined. The idea is to require readers to define a study that estimates the effect of celecoxib on GI bleed, compared to diclofenac. For this they must use the Eunomia package, which is still under development.</code></p>
 
@@ -1010,7 +1020,7 @@ Figure 12.28: Incidence Rate - New users of ACEi receiving ARBs treatment during
 <h3>References</h3>
 <div id="refs" class="references">
 <div id="ref-VONELM2008344">
-<p>Elm, Erik von, Douglas G. Altman, Matthias Egger, Stuart J. Pocock, Peter C. Gøtzsche, and Jan P. Vandenbroucke. 2008. “The Strengthening the Reporting of Observational Studies in Epidemiology (Strobe) Statement: Guidelines for Reporting Observational Studies.” <em>Journal of Clinical Epidemiology</em> 61 (4): 344–49. <a href="https://doi.org/https://doi.org/10.1016/j.jclinepi.2007.11.008">https://doi.org/https://doi.org/10.1016/j.jclinepi.2007.11.008</a>.</p>
+<p>Elm, Erik von, Douglas G. Altman, Matthias Egger, Stuart J. Pocock, Peter C. Gøtzsche, and Jan P. Vandenbroucke. 2008. “The Strengthening the Reporting of Observational Studies in Epidemiology (Strobe) Statement: Guidelines for Reporting Observational Studies.” <em>Journal of Clinical Epidemiology</em> 61 (4): 344–49. <a href="https://doi.org/10.1016/j.jclinepi.2007.11.008">https://doi.org/10.1016/j.jclinepi.2007.11.008</a>.</p>
 </div>
 <div id="ref-Hripcsak7329">
 <p>Hripcsak, George, Patrick B. Ryan, Jon D. Duke, Nigam H. Shah, Rae Woong Park, Vojtech Huser, Marc A. Suchard, et al. 2016. “Characterizing treatment pathways at scale using the OHDSI network.” <em>Proceedings of the National Academy of Sciences</em> 113 (27): 7329–36. <a href="https://doi.org/10.1073/pnas.1510502113">https://doi.org/10.1073/pnas.1510502113</a>.</p>
