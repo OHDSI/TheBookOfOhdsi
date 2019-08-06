@@ -73,27 +73,29 @@ Greg Klebanov & Kristin Kostka & Bob Lanese\\
 \hline
 Wanda Lattimore & Chun Li & David Madigan\\
 \hline
-Sindhoosha  Malay & Harry Menegay & Akihiko Nishimura\\
+Sindhoosha Malay & Harry Menegay & Akihiko Nishimura\\
 \hline
 Ellen Palmer & Nirav Patil & Jose Posada\\
 \hline
-Dani Prieto-Alhambra & Christian Reich & Jenna Reps\\
+Nicole Pratt & Dani Prieto-Alhambra & Christian Reich\\
 \hline
-Peter Rijnbeek & Patrick Ryan & Craig Sachson\\
+Jenna Reps & Peter Rijnbeek & Patrick Ryan\\
 \hline
-Izzy Saridakis & Paula Saroufim & Martijn Schuemie\\
+Craig Sachson & Izzy Saridakis & Paula Saroufim\\
 \hline
-Sarah Seager & Chan Seng You & Anthony Senna\\
+Martijn Schuemie & Sarah Seager & Chan Seng You\\
 \hline
-Sunah Song & Matt Spotnitz & Marc Suchard\\
+Anthony Senna & Sunah Song & Matt Spotnitz\\
 \hline
-Joel Swerdel & Devin Tian & Don Torok\\
+Marc Suchard & Joel Swerdel & Devin Tian\\
 \hline
-Kees van Bochove & Mui Van Zandt & Kristin Waite\\
+Don Torok & Kees van Bochove & Mui Van Zandt\\
 \hline
-Mike Warfe & Jamie Weaver & James Wiggins\\
+Erica Voss & Kristin Waite & Mike Warfe\\
 \hline
-Andrew Williams & Chan You Seng & \\
+Jamie Weaver & James Wiggins & Andrew Williams\\
+\hline
+Chan You Seng &  & \\
 \hline
 \end{tabular}
 

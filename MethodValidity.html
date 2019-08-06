@@ -208,13 +208,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="StandardizedVocabularies.html"><a href="StandardizedVocabularies.html"><i class="fa fa-check"></i><b>6</b> Standardized Vocabularies</a></li>
 <li class="chapter" data-level="7" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html"><i class="fa fa-check"></i><b>7</b> Extract Transform Load</a><ul>
 <li class="chapter" data-level="7.1" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#introduction"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.2" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-1---data-experts-and-cdm-experts-together-design-the-etl"><i class="fa fa-check"></i><b>7.2</b> ETL Step 1 - Data experts and CDM experts together design the ETL</a><ul>
+<li class="chapter" data-level="7.2" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-1-design-the-etl"><i class="fa fa-check"></i><b>7.2</b> Step 1: Design the ETL</a><ul>
 <li class="chapter" data-level="7.2.1" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#white-rabbit"><i class="fa fa-check"></i><b>7.2.1</b> White Rabbit</a></li>
 <li class="chapter" data-level="7.2.2" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#rabbit-in-a-hat"><i class="fa fa-check"></i><b>7.2.2</b> Rabbit-In-a-Hat</a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-2---people-with-medical-knowledge-create-the-code-mappings"><i class="fa fa-check"></i><b>7.3</b> ETL Step 2 - People with medical knowledge create the code mappings</a></li>
-<li class="chapter" data-level="7.4" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-3---a-technical-person-implements-the-etl"><i class="fa fa-check"></i><b>7.4</b> ETL Step 3 - A technical person implements the ETL</a></li>
-<li class="chapter" data-level="7.5" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-4---all-are-involved-in-quality-control"><i class="fa fa-check"></i><b>7.5</b> ETL Step 4 - All are involved in quality control</a></li>
+<li class="chapter" data-level="7.3" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-2-create-the-code-mappings"><i class="fa fa-check"></i><b>7.3</b> Step 2: Create the code mappings</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#usagi"><i class="fa fa-check"></i><b>7.3.1</b> Usagi</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-3-implement-the-etl"><i class="fa fa-check"></i><b>7.4</b> Step 3: Implement the ETL</a></li>
+<li class="chapter" data-level="7.5" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-4-quality-control"><i class="fa fa-check"></i><b>7.5</b> Step 4: Quality control</a></li>
 <li class="chapter" data-level="7.6" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#final-thoughts-on-etl"><i class="fa fa-check"></i><b>7.6</b> Final thoughts on ETL</a></li>
 <li class="chapter" data-level="7.7" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#summary-2"><i class="fa fa-check"></i><b>7.7</b> Summary</a></li>
 </ul></li>
@@ -714,34 +716,34 @@ Figure 19.4: Candidate control outcomes with an overview of the evidence found i
 <h3><span class="header-section-number">19.3.2</span> Including controls</h3>
 <p>Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section <a href="PopulationLevelEstimation.html#evaluationSettings">13.7.3</a> discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter <a href="SqlAndR.html#SqlAndR">10</a> describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.</p>
 <p>The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section <a href="PopulationLevelEstimation.html#evaluationSettings">13.7.3</a>, and is implemented in the <code>injectSignals</code> function in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="MethodValidity.html#cb117-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
-<span id="cb117-2"><a href="MethodValidity.html#cb117-2"></a><span class="co"># Create a data frame with all negative control exposure-</span></span>
-<span id="cb117-3"><a href="MethodValidity.html#cb117-3"></a><span class="co"># outcome pairs, using only the target exposure (ACEi = 1).</span></span>
-<span id="cb117-4"><a href="MethodValidity.html#cb117-4"></a>eoPairs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">exposureId =</span> <span class="dv">1</span>,</span>
-<span id="cb117-5"><a href="MethodValidity.html#cb117-5"></a>                      <span class="dt">outcomeId =</span> ncs)</span>
-<span id="cb117-6"><a href="MethodValidity.html#cb117-6"></a></span>
-<span id="cb117-7"><a href="MethodValidity.html#cb117-7"></a>pcs &lt;-<span class="st"> </span><span class="kw">injectSignals</span>(<span class="dt">connectionDetails =</span> connectionDetails,</span>
-<span id="cb117-8"><a href="MethodValidity.html#cb117-8"></a>                     <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb117-9"><a href="MethodValidity.html#cb117-9"></a>                     <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,</span>
-<span id="cb117-10"><a href="MethodValidity.html#cb117-10"></a>                     <span class="dt">exposureTable =</span> cohortTable,</span>
-<span id="cb117-11"><a href="MethodValidity.html#cb117-11"></a>                     <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,</span>
-<span id="cb117-12"><a href="MethodValidity.html#cb117-12"></a>                     <span class="dt">outcomeTable =</span> cohortTable,</span>
-<span id="cb117-13"><a href="MethodValidity.html#cb117-13"></a>                     <span class="dt">outputDatabaseSchema =</span> cohortDbSchema,</span>
-<span id="cb117-14"><a href="MethodValidity.html#cb117-14"></a>                     <span class="dt">outputTable =</span> cohortTable,</span>
-<span id="cb117-15"><a href="MethodValidity.html#cb117-15"></a>                     <span class="dt">createOutputTable =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb117-16"><a href="MethodValidity.html#cb117-16"></a>                     <span class="dt">modelType =</span> <span class="st">&quot;survival&quot;</span>,</span>
-<span id="cb117-17"><a href="MethodValidity.html#cb117-17"></a>                     <span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb117-18"><a href="MethodValidity.html#cb117-18"></a>                     <span class="dt">firstOutcomeOnly =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb117-19"><a href="MethodValidity.html#cb117-19"></a>                     <span class="dt">removePeopleWithPriorOutcomes =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb117-20"><a href="MethodValidity.html#cb117-20"></a>                     <span class="dt">washoutPeriod =</span> <span class="dv">365</span>,</span>
-<span id="cb117-21"><a href="MethodValidity.html#cb117-21"></a>                     <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,</span>
-<span id="cb117-22"><a href="MethodValidity.html#cb117-22"></a>                     <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,</span>
-<span id="cb117-23"><a href="MethodValidity.html#cb117-23"></a>                     <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb117-24"><a href="MethodValidity.html#cb117-24"></a>                     <span class="dt">exposureOutcomePairs =</span> eoPairs,</span>
-<span id="cb117-25"><a href="MethodValidity.html#cb117-25"></a>                     <span class="dt">effectSizes =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">4</span>),</span>
-<span id="cb117-26"><a href="MethodValidity.html#cb117-26"></a>                     <span class="dt">cdmVersion =</span> cdmVersion,</span>
-<span id="cb117-27"><a href="MethodValidity.html#cb117-27"></a>                     <span class="dt">workFolder =</span> <span class="kw">file.path</span>(outputFolder,</span>
-<span id="cb117-28"><a href="MethodValidity.html#cb117-28"></a>                                            <span class="st">&quot;pcSynthesis&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="MethodValidity.html#cb118-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
+<span id="cb118-2"><a href="MethodValidity.html#cb118-2"></a><span class="co"># Create a data frame with all negative control exposure-</span></span>
+<span id="cb118-3"><a href="MethodValidity.html#cb118-3"></a><span class="co"># outcome pairs, using only the target exposure (ACEi = 1).</span></span>
+<span id="cb118-4"><a href="MethodValidity.html#cb118-4"></a>eoPairs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">exposureId =</span> <span class="dv">1</span>,</span>
+<span id="cb118-5"><a href="MethodValidity.html#cb118-5"></a>                      <span class="dt">outcomeId =</span> ncs)</span>
+<span id="cb118-6"><a href="MethodValidity.html#cb118-6"></a></span>
+<span id="cb118-7"><a href="MethodValidity.html#cb118-7"></a>pcs &lt;-<span class="st"> </span><span class="kw">injectSignals</span>(<span class="dt">connectionDetails =</span> connectionDetails,</span>
+<span id="cb118-8"><a href="MethodValidity.html#cb118-8"></a>                     <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb118-9"><a href="MethodValidity.html#cb118-9"></a>                     <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb118-10"><a href="MethodValidity.html#cb118-10"></a>                     <span class="dt">exposureTable =</span> cohortTable,</span>
+<span id="cb118-11"><a href="MethodValidity.html#cb118-11"></a>                     <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb118-12"><a href="MethodValidity.html#cb118-12"></a>                     <span class="dt">outcomeTable =</span> cohortTable,</span>
+<span id="cb118-13"><a href="MethodValidity.html#cb118-13"></a>                     <span class="dt">outputDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb118-14"><a href="MethodValidity.html#cb118-14"></a>                     <span class="dt">outputTable =</span> cohortTable,</span>
+<span id="cb118-15"><a href="MethodValidity.html#cb118-15"></a>                     <span class="dt">createOutputTable =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb118-16"><a href="MethodValidity.html#cb118-16"></a>                     <span class="dt">modelType =</span> <span class="st">&quot;survival&quot;</span>,</span>
+<span id="cb118-17"><a href="MethodValidity.html#cb118-17"></a>                     <span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb118-18"><a href="MethodValidity.html#cb118-18"></a>                     <span class="dt">firstOutcomeOnly =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb118-19"><a href="MethodValidity.html#cb118-19"></a>                     <span class="dt">removePeopleWithPriorOutcomes =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb118-20"><a href="MethodValidity.html#cb118-20"></a>                     <span class="dt">washoutPeriod =</span> <span class="dv">365</span>,</span>
+<span id="cb118-21"><a href="MethodValidity.html#cb118-21"></a>                     <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,</span>
+<span id="cb118-22"><a href="MethodValidity.html#cb118-22"></a>                     <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,</span>
+<span id="cb118-23"><a href="MethodValidity.html#cb118-23"></a>                     <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb118-24"><a href="MethodValidity.html#cb118-24"></a>                     <span class="dt">exposureOutcomePairs =</span> eoPairs,</span>
+<span id="cb118-25"><a href="MethodValidity.html#cb118-25"></a>                     <span class="dt">effectSizes =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb118-26"><a href="MethodValidity.html#cb118-26"></a>                     <span class="dt">cdmVersion =</span> cdmVersion,</span>
+<span id="cb118-27"><a href="MethodValidity.html#cb118-27"></a>                     <span class="dt">workFolder =</span> <span class="kw">file.path</span>(outputFolder,</span>
+<span id="cb118-28"><a href="MethodValidity.html#cb118-28"></a>                                            <span class="st">&quot;pcSynthesis&quot;</span>))</span></code></pre></div>
 <p>Note that we must mimic the time-at-risk settings used in our estimation study design. The <code>injectSignals</code> function will extract information about the exposures and negative controls outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by <code>cohortDbSchema</code> and <code>cohortTable</code>. The resulting <code>pcs</code> data frame contains the information on the synthesized positive controls.</p>
 <p>Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the <a href="https://ohdsi.github.io/MethodsLibrary/">OHDSI Methods Library</a> readily allow estimation of many effects in an efficient manner.</p>
 </div>
@@ -800,16 +802,16 @@ Figure 19.5: Estimates for the negative (true hazard ratio = 1) and positive con
 <div id="p-value-calibration-1" class="section level3">
 <h3><span class="header-section-number">19.3.4</span> P-value calibration</h3>
 <p>We can use the estimates for our negative controls to calibrate our p-values. This is done automatically in the Shiny app, and can be done manually in R. Assuming we have created the summary object <code>summ</code> as described in Section <a href="PopulationLevelEstimation.html#MultipleAnalyses">13.8.6</a>, we can plot the empirical calibration effect plot:</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="MethodValidity.html#cb118-1"></a><span class="co"># Estimates for negative controls (ncs) and outcomes of interest (ois):</span></span>
-<span id="cb118-2"><a href="MethodValidity.html#cb118-2"></a>ncEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ncs, ]</span>
-<span id="cb118-3"><a href="MethodValidity.html#cb118-3"></a>oiEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ois, ]</span>
-<span id="cb118-4"><a href="MethodValidity.html#cb118-4"></a></span>
-<span id="cb118-5"><a href="MethodValidity.html#cb118-5"></a><span class="kw">library</span>(EmpiricalCalibration)</span>
-<span id="cb118-6"><a href="MethodValidity.html#cb118-6"></a><span class="kw">plotCalibrationEffect</span>(<span class="dt">logRrNegatives =</span> ncEstimates<span class="op">$</span>logRr,</span>
-<span id="cb118-7"><a href="MethodValidity.html#cb118-7"></a>                      <span class="dt">seLogRrNegatives =</span> ncEstimates<span class="op">$</span>seLogRr,</span>
-<span id="cb118-8"><a href="MethodValidity.html#cb118-8"></a>                      <span class="dt">logRrPositives =</span> oiEstimates<span class="op">$</span>logRr,</span>
-<span id="cb118-9"><a href="MethodValidity.html#cb118-9"></a>                      <span class="dt">seLogRrPositives =</span> oiEstimates<span class="op">$</span>seLogRr,</span>
-<span id="cb118-10"><a href="MethodValidity.html#cb118-10"></a>                      <span class="dt">showCis =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="MethodValidity.html#cb119-1"></a><span class="co"># Estimates for negative controls (ncs) and outcomes of interest (ois):</span></span>
+<span id="cb119-2"><a href="MethodValidity.html#cb119-2"></a>ncEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ncs, ]</span>
+<span id="cb119-3"><a href="MethodValidity.html#cb119-3"></a>oiEstimates &lt;-<span class="st"> </span>summ[summ<span class="op">$</span>outcomeId <span class="op">%in%</span><span class="st"> </span>ois, ]</span>
+<span id="cb119-4"><a href="MethodValidity.html#cb119-4"></a></span>
+<span id="cb119-5"><a href="MethodValidity.html#cb119-5"></a><span class="kw">library</span>(EmpiricalCalibration)</span>
+<span id="cb119-6"><a href="MethodValidity.html#cb119-6"></a><span class="kw">plotCalibrationEffect</span>(<span class="dt">logRrNegatives =</span> ncEstimates<span class="op">$</span>logRr,</span>
+<span id="cb119-7"><a href="MethodValidity.html#cb119-7"></a>                      <span class="dt">seLogRrNegatives =</span> ncEstimates<span class="op">$</span>seLogRr,</span>
+<span id="cb119-8"><a href="MethodValidity.html#cb119-8"></a>                      <span class="dt">logRrPositives =</span> oiEstimates<span class="op">$</span>logRr,</span>
+<span id="cb119-9"><a href="MethodValidity.html#cb119-9"></a>                      <span class="dt">seLogRrPositives =</span> oiEstimates<span class="op">$</span>seLogRr,</span>
+<span id="cb119-10"><a href="MethodValidity.html#cb119-10"></a>                      <span class="dt">showCis =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:pValueCal"></span>
 <img src="images/MethodValidity/pValueCal.png" alt="P-value calibration: estimates below the dashed line have a conventional p &lt; 0.05. Estimates in the orange area have calibrated p &lt; 0.05. The pink area denotes the 95\% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest." width="70%" />
 <p class="caption">
@@ -818,14 +820,14 @@ Figure 19.6: P-value calibration: estimates below the dashed line have a convent
 </div>
 <p>In Figure <a href="MethodValidity.html#fig:pValueCal">19.6</a> we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicated hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.</p>
 <p>We can compute the calibrated p-values:</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="MethodValidity.html#cb119-1"></a>null &lt;-<span class="st"> </span><span class="kw">fitNull</span>(<span class="dt">logRr =</span> ncEstimates<span class="op">$</span>logRr,</span>
-<span id="cb119-2"><a href="MethodValidity.html#cb119-2"></a>                <span class="dt">seLogRr =</span> ncEstimates<span class="op">$</span>seLogRr)</span>
-<span id="cb119-3"><a href="MethodValidity.html#cb119-3"></a><span class="kw">calibrateP</span>(null,</span>
-<span id="cb119-4"><a href="MethodValidity.html#cb119-4"></a>           <span class="dt">logRr=</span> oiEstimates<span class="op">$</span>logRr,</span>
-<span id="cb119-5"><a href="MethodValidity.html#cb119-5"></a>           <span class="dt">seLogRr =</span> oiEstimates<span class="op">$</span>seLogRr)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="MethodValidity.html#cb120-1"></a>null &lt;-<span class="st"> </span><span class="kw">fitNull</span>(<span class="dt">logRr =</span> ncEstimates<span class="op">$</span>logRr,</span>
+<span id="cb120-2"><a href="MethodValidity.html#cb120-2"></a>                <span class="dt">seLogRr =</span> ncEstimates<span class="op">$</span>seLogRr)</span>
+<span id="cb120-3"><a href="MethodValidity.html#cb120-3"></a><span class="kw">calibrateP</span>(null,</span>
+<span id="cb120-4"><a href="MethodValidity.html#cb120-4"></a>           <span class="dt">logRr=</span> oiEstimates<span class="op">$</span>logRr,</span>
+<span id="cb120-5"><a href="MethodValidity.html#cb120-5"></a>           <span class="dt">seLogRr =</span> oiEstimates<span class="op">$</span>seLogRr)</span></code></pre></div>
 <pre><code>## [1] 1.604351e-06 7.159506e-01</code></pre>
 <p>And contrast these with the uncalibrated p-values:</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="MethodValidity.html#cb121-1"></a>oiEstimates<span class="op">$</span>p</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="MethodValidity.html#cb122-1"></a>oiEstimates<span class="op">$</span>p</span></code></pre></div>
 <pre><code>## [1] [1] 1.483652e-06 7.052822e-01</code></pre>
 <p>As expected, because little to no bias was observed, the uncalibrated and calibrated p-values are very similar.</p>
 </div>
@@ -908,7 +910,7 @@ Study diagnostics allow us to evaluate design choices even before fully executin
 <div id="ohdsi-methods-benchmark" class="section level2">
 <h2><span class="header-section-number">19.4</span> OHDSI Methods Benchmark</h2>
 <p>Although the recommended practice is to empirically evaluate a method’s performance within the context that it is applied, using negative and positive controls that are in ways similar to the exposures-outcomes pairs of interest (for example using the same exposure or the same outcome) and on the database used in the study, there is also value in evaluating a method’s performance in general. This is why the OHDSI Methods Evaluation Benchmark was developed. The benchmark evaluates performance using a wide range of control questions, including those with chronic or acute outcomes, and long-term or short-term exposures. The results on this benchmark can help demonstrate the overall usefulness of a method, and can be used to form a prior belief about the performance of a method when a context-specific empirical evaluation is not (yet) available. The benchmark consists of 200 carefully selected negative controls that can be stratified into eight categories, with the controls in each category either sharing the same exposure or the same outcome. From these 200 negative controls, 600 synthetic positive controls are derived as described in Section <a href="MethodValidity.html#PositiveControls">19.2.2</a>. To evaluate a method, it must be used to produce effect size estimates for all controls, after which the metrics described in Section <a href="MethodValidity.html#metrics">19.2.3</a> can be computed. The benchmark is publicly available, and can be deployed as described in the <a href="https://ohdsi.github.io/MethodEvaluation/articles/OhdsiMethodsBenchmark.html">Running the OHDSI Methods Benchmark vignette</a> in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> package.</p>
-<p>We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app<a href="references.html#fn35" class="footnote-ref" id="fnref35"><sup>35</sup></a>, show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95% confidence interval, as shown in Figure <a href="MethodValidity.html#fig:methodEval">19.9</a>.</p>
+<p>We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app<a href="references.html#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a>, show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95% confidence interval, as shown in Figure <a href="MethodValidity.html#fig:methodEval">19.9</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:methodEval"></span>
 <img src="images/MethodValidity/methodEval.png" alt="Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease." width="100%" />
 <p class="caption">

@@ -208,13 +208,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="StandardizedVocabularies.html"><a href="StandardizedVocabularies.html"><i class="fa fa-check"></i><b>6</b> Standardized Vocabularies</a></li>
 <li class="chapter" data-level="7" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html"><i class="fa fa-check"></i><b>7</b> Extract Transform Load</a><ul>
 <li class="chapter" data-level="7.1" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#introduction"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
-<li class="chapter" data-level="7.2" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-1---data-experts-and-cdm-experts-together-design-the-etl"><i class="fa fa-check"></i><b>7.2</b> ETL Step 1 - Data experts and CDM experts together design the ETL</a><ul>
+<li class="chapter" data-level="7.2" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-1-design-the-etl"><i class="fa fa-check"></i><b>7.2</b> Step 1: Design the ETL</a><ul>
 <li class="chapter" data-level="7.2.1" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#white-rabbit"><i class="fa fa-check"></i><b>7.2.1</b> White Rabbit</a></li>
 <li class="chapter" data-level="7.2.2" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#rabbit-in-a-hat"><i class="fa fa-check"></i><b>7.2.2</b> Rabbit-In-a-Hat</a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-2---people-with-medical-knowledge-create-the-code-mappings"><i class="fa fa-check"></i><b>7.3</b> ETL Step 2 - People with medical knowledge create the code mappings</a></li>
-<li class="chapter" data-level="7.4" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-3---a-technical-person-implements-the-etl"><i class="fa fa-check"></i><b>7.4</b> ETL Step 3 - A technical person implements the ETL</a></li>
-<li class="chapter" data-level="7.5" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#etl-step-4---all-are-involved-in-quality-control"><i class="fa fa-check"></i><b>7.5</b> ETL Step 4 - All are involved in quality control</a></li>
+<li class="chapter" data-level="7.3" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-2-create-the-code-mappings"><i class="fa fa-check"></i><b>7.3</b> Step 2: Create the code mappings</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#usagi"><i class="fa fa-check"></i><b>7.3.1</b> Usagi</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-3-implement-the-etl"><i class="fa fa-check"></i><b>7.4</b> Step 3: Implement the ETL</a></li>
+<li class="chapter" data-level="7.5" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#step-4-quality-control"><i class="fa fa-check"></i><b>7.5</b> Step 4: Quality control</a></li>
 <li class="chapter" data-level="7.6" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#final-thoughts-on-etl"><i class="fa fa-check"></i><b>7.6</b> Final thoughts on ETL</a></li>
 <li class="chapter" data-level="7.7" data-path="ExtractTransformLoad.html"><a href="ExtractTransformLoad.html#summary-2"><i class="fa fa-check"></i><b>7.7</b> Summary</a></li>
 </ul></li>
@@ -564,9 +566,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><em>Chapter leads: Martijn Schuemie &amp; Peter Rijnbeek</em></p>
 <p>The Common Data Model (CDM) is a relational database model (all data is represented as records in tables that have fields), which means that the data will typically be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with greater risk of making mistakes, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.</p>
 <p>The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server one would type:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="SqlAndR.html#cb4-1"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> <span class="op">*</span> <span class="kw">FROM</span> person;</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="SqlAndR.html#cb5-1"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> <span class="op">*</span> <span class="kw">FROM</span> person;</span></code></pre></div>
 <p>Whereas the same query on PostgreSQL would be:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="SqlAndR.html#cb5-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> person <span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="SqlAndR.html#cb6-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> person <span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div>
 <p>In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to ‘speak’ the same SQL language across all OHDSI databases. For this reason OHDSI developed the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - <strong>OHDSI SQL</strong> - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL.</p>
 <p>Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter.</p>
 <p>So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots.</p>
@@ -574,47 +576,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="SqlRender" class="section level2">
 <h2><span class="header-section-number">10.1</span> SqlRender</h2>
 <p>The <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="SqlAndR.html#cb6-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;SqlRender&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="SqlAndR.html#cb7-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;SqlRender&quot;</span>)</span></code></pre></div>
 <p>SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.</p>
 <div id="sql-parameterization" class="section level3">
 <h3><span class="header-section-number">10.1.1</span> SQL parameterization</h3>
 <p>One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the <code>render()</code> function.</p>
 <p><strong>Substituting parameter values</strong></p>
 <p>The <code>@</code> character can be used to indicate parameter names that need to be exchange for actual parameter values when rendering. In the following example, a variable called <code>a</code> is mentioned in the SQL. In the call to the render function the value of this parameter is defined:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="SqlAndR.html#cb7-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM concept WHERE concept_id = @a;&quot;</span></span>
-<span id="cb7-2"><a href="SqlAndR.html#cb7-2"></a><span class="kw">render</span>(sql, <span class="dt">a =</span> <span class="dv">123</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="SqlAndR.html#cb8-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM concept WHERE concept_id = @a;&quot;</span></span>
+<span id="cb8-2"><a href="SqlAndR.html#cb8-2"></a><span class="kw">render</span>(sql, <span class="dt">a =</span> <span class="dv">123</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM concept WHERE concept_id = 123;&quot;</code></pre>
 <p>Note that, unlike the parameterization offered by most database management systems, it is just as easy to parameterize table or field names as values:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="SqlAndR.html#cb9-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM @x WHERE person_id = @a;&quot;</span></span>
-<span id="cb9-2"><a href="SqlAndR.html#cb9-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="st">&quot;observation&quot;</span>, <span class="dt">a =</span> <span class="dv">123</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="SqlAndR.html#cb10-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM @x WHERE person_id = @a;&quot;</span></span>
+<span id="cb10-2"><a href="SqlAndR.html#cb10-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="st">&quot;observation&quot;</span>, <span class="dt">a =</span> <span class="dv">123</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM observation WHERE person_id = 123;&quot;</code></pre>
 <p>The parameter values can be numbers, strings, booleans, as well as vectors, which are converted to comma-delimited lists:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="SqlAndR.html#cb11-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM concept WHERE concept_id IN (@a);&quot;</span></span>
-<span id="cb11-2"><a href="SqlAndR.html#cb11-2"></a><span class="kw">render</span>(sql, <span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">123</span>, <span class="dv">234</span>, <span class="dv">345</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="SqlAndR.html#cb12-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM concept WHERE concept_id IN (@a);&quot;</span></span>
+<span id="cb12-2"><a href="SqlAndR.html#cb12-2"></a><span class="kw">render</span>(sql, <span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">123</span>, <span class="dv">234</span>, <span class="dv">345</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM concept WHERE concept_id IN (123,234,345);&quot;</code></pre>
 <p><strong>If-then-else</strong></p>
 <p>Sometimes blocks of codes need to be turned on or off based on the values of one or more parameters. This is done using the <code>{Condition} ? {if true} : {if false}</code> syntax. If the <em>condition</em> evaluates to true or 1, the <em>if true</em> block is used, else the <em>if false</em> block is shown (if present).</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="SqlAndR.html#cb13-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM cohort {@x} ? {WHERE subject_id = 1}&quot;</span></span>
-<span id="cb13-2"><a href="SqlAndR.html#cb13-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="SqlAndR.html#cb14-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM cohort {@x} ? {WHERE subject_id = 1}&quot;</span></span>
+<span id="cb14-2"><a href="SqlAndR.html#cb14-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM cohort &quot;</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="SqlAndR.html#cb15-1"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="SqlAndR.html#cb16-1"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM cohort WHERE subject_id = 1&quot;</code></pre>
 <p>Simple comparisons are also supported:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="SqlAndR.html#cb17-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM cohort {@x == 1} ? {WHERE subject_id = 1};&quot;</span></span>
-<span id="cb17-2"><a href="SqlAndR.html#cb17-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="SqlAndR.html#cb18-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM cohort {@x == 1} ? {WHERE subject_id = 1};&quot;</span></span>
+<span id="cb18-2"><a href="SqlAndR.html#cb18-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM cohort WHERE subject_id = 1;&quot;</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="SqlAndR.html#cb19-1"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="SqlAndR.html#cb20-1"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM cohort ;&quot;</code></pre>
 <p>As well as the <code>IN</code> operator:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="SqlAndR.html#cb21-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM cohort {@x IN (1,2,3)} ? {WHERE subject_id = 1};&quot;</span></span>
-<span id="cb21-2"><a href="SqlAndR.html#cb21-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="SqlAndR.html#cb22-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM cohort {@x IN (1,2,3)} ? {WHERE subject_id = 1};&quot;</span></span>
+<span id="cb22-2"><a href="SqlAndR.html#cb22-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM cohort WHERE subject_id = 1;&quot;</code></pre>
 </div>
 <div id="translation-to-other-sql-dialects" class="section level3">
 <h3><span class="header-section-number">10.1.2</span> Translation to other SQL dialects</h3>
 <p>Another function of the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package is to translate from OHDSI SQL to other SQL dialects. For example:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="SqlAndR.html#cb23-1"></a>sql &lt;-<span class="st"> &quot;SELECT TOP 10 * FROM person;&quot;</span></span>
-<span id="cb23-2"><a href="SqlAndR.html#cb23-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;postgresql&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="SqlAndR.html#cb24-1"></a>sql &lt;-<span class="st"> &quot;SELECT TOP 10 * FROM person;&quot;</span></span>
+<span id="cb24-2"><a href="SqlAndR.html#cb24-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;postgresql&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT  * FROM person LIMIT 10;&quot;</code></pre>
 <p>The <code>targetDialect</code> parameter can have the following values: “oracle”, “postgresql”, “pdw”, “redshift”, “impala”, “netezza”, “bigquery”, “sqlite”, and “sql server”.</p>
 
@@ -729,78 +731,78 @@ There are limits to what SQL functions and constructs can be translated properly
 </table>
 <p>* Requires special privileges on Oracle. Has no equivalent on SQLite.</p>
 <p>Similarly, many SQL syntax structures are supported. Here is a non-exhaustive lists of expressions that we know will translate well:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb25-1"><a href="SqlAndR.html#cb25-1"></a><span class="co">-- Simple selects:</span></span>
-<span id="cb25-2"><a href="SqlAndR.html#cb25-2"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb25-3"><a href="SqlAndR.html#cb25-3"></a></span>
-<span id="cb25-4"><a href="SqlAndR.html#cb25-4"></a><span class="co">-- Selects with joins:</span></span>
-<span id="cb25-5"><a href="SqlAndR.html#cb25-5"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> table_1 <span class="kw">INNER</span> <span class="kw">JOIN</span> table_2 <span class="kw">ON</span> a <span class="op">=</span> b;</span>
-<span id="cb25-6"><a href="SqlAndR.html#cb25-6"></a></span>
-<span id="cb25-7"><a href="SqlAndR.html#cb25-7"></a><span class="co">-- Nested queries:</span></span>
-<span id="cb25-8"><a href="SqlAndR.html#cb25-8"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> (<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> table_1) tmp <span class="kw">WHERE</span> a <span class="op">=</span> b;</span>
-<span id="cb25-9"><a href="SqlAndR.html#cb25-9"></a></span>
-<span id="cb25-10"><a href="SqlAndR.html#cb25-10"></a><span class="co">-- Limiting to top rows:</span></span>
-<span id="cb25-11"><a href="SqlAndR.html#cb25-11"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb25-12"><a href="SqlAndR.html#cb25-12"></a></span>
-<span id="cb25-13"><a href="SqlAndR.html#cb25-13"></a><span class="co">-- Selecting into a new table:</span></span>
-<span id="cb25-14"><a href="SqlAndR.html#cb25-14"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">INTO</span> new_table <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb25-15"><a href="SqlAndR.html#cb25-15"></a></span>
-<span id="cb25-16"><a href="SqlAndR.html#cb25-16"></a><span class="co">-- Creating tables:</span></span>
-<span id="cb25-17"><a href="SqlAndR.html#cb25-17"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="kw">table</span> (field <span class="dt">INT</span>);</span>
-<span id="cb25-18"><a href="SqlAndR.html#cb25-18"></a></span>
-<span id="cb25-19"><a href="SqlAndR.html#cb25-19"></a><span class="co">-- Inserting verbatim values:</span></span>
-<span id="cb25-20"><a href="SqlAndR.html#cb25-20"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> other_table (field_1) <span class="kw">VALUES</span> (<span class="dv">1</span>);</span>
-<span id="cb25-21"><a href="SqlAndR.html#cb25-21"></a></span>
-<span id="cb25-22"><a href="SqlAndR.html#cb25-22"></a><span class="co">-- Inserting from SELECT:</span></span>
-<span id="cb25-23"><a href="SqlAndR.html#cb25-23"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> other_table (field_1) <span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb25-24"><a href="SqlAndR.html#cb25-24"></a>  </span>
-<span id="cb25-25"><a href="SqlAndR.html#cb25-25"></a><span class="co">-- Simple drop commands:</span></span>
-<span id="cb25-26"><a href="SqlAndR.html#cb25-26"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> <span class="kw">table</span>;</span>
-<span id="cb25-27"><a href="SqlAndR.html#cb25-27"></a></span>
-<span id="cb25-28"><a href="SqlAndR.html#cb25-28"></a><span class="co">-- Drop table if it exists:</span></span>
-<span id="cb25-29"><a href="SqlAndR.html#cb25-29"></a><span class="cf">IF</span> OBJECT_ID(<span class="st">&#39;ACHILLES_analysis&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb25-30"><a href="SqlAndR.html#cb25-30"></a>  <span class="kw">DROP</span> <span class="kw">TABLE</span> ACHILLES_analysis;</span>
-<span id="cb25-31"><a href="SqlAndR.html#cb25-31"></a>  </span>
-<span id="cb25-32"><a href="SqlAndR.html#cb25-32"></a><span class="co">-- Drop temp table if it exists:</span></span>
-<span id="cb25-33"><a href="SqlAndR.html#cb25-33"></a><span class="cf">IF</span> OBJECT_ID(<span class="st">&#39;tempdb..#cohorts&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb25-34"><a href="SqlAndR.html#cb25-34"></a>  <span class="kw">DROP</span> <span class="kw">TABLE</span> #cohorts;  </span>
-<span id="cb25-35"><a href="SqlAndR.html#cb25-35"></a></span>
-<span id="cb25-36"><a href="SqlAndR.html#cb25-36"></a><span class="co">-- Common table expressions:</span></span>
-<span id="cb25-37"><a href="SqlAndR.html#cb25-37"></a><span class="kw">WITH</span> cte <span class="kw">AS</span> (<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span>) <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> cte;</span>
-<span id="cb25-38"><a href="SqlAndR.html#cb25-38"></a></span>
-<span id="cb25-39"><a href="SqlAndR.html#cb25-39"></a><span class="co">-- OVER clauses:</span></span>
-<span id="cb25-40"><a href="SqlAndR.html#cb25-40"></a><span class="kw">SELECT</span> <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> a <span class="kw">ORDER</span> <span class="kw">BY</span> b)</span>
-<span id="cb25-41"><a href="SqlAndR.html#cb25-41"></a>  <span class="kw">AS</span> <span class="ot">&quot;Row Number&quot;</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb25-42"><a href="SqlAndR.html#cb25-42"></a>  </span>
-<span id="cb25-43"><a href="SqlAndR.html#cb25-43"></a><span class="co">-- CASE WHEN clauses:</span></span>
-<span id="cb25-44"><a href="SqlAndR.html#cb25-44"></a><span class="kw">SELECT</span> <span class="cf">CASE</span> <span class="cf">WHEN</span> a<span class="op">=</span><span class="dv">1</span> <span class="cf">THEN</span> a <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="fu">value</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb25-45"><a href="SqlAndR.html#cb25-45"></a></span>
-<span id="cb25-46"><a href="SqlAndR.html#cb25-46"></a><span class="co">-- UNIONs:</span></span>
-<span id="cb25-47"><a href="SqlAndR.html#cb25-47"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> a <span class="kw">UNION</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> b;</span>
-<span id="cb25-48"><a href="SqlAndR.html#cb25-48"></a></span>
-<span id="cb25-49"><a href="SqlAndR.html#cb25-49"></a><span class="co">-- INTERSECTIONs:</span></span>
-<span id="cb25-50"><a href="SqlAndR.html#cb25-50"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> a <span class="kw">INTERSECT</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> b;</span>
-<span id="cb25-51"><a href="SqlAndR.html#cb25-51"></a></span>
-<span id="cb25-52"><a href="SqlAndR.html#cb25-52"></a><span class="co">-- EXCEPT:</span></span>
-<span id="cb25-53"><a href="SqlAndR.html#cb25-53"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> a <span class="kw">EXCEPT</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> b;</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="SqlAndR.html#cb26-1"></a><span class="co">-- Simple selects:</span></span>
+<span id="cb26-2"><a href="SqlAndR.html#cb26-2"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
+<span id="cb26-3"><a href="SqlAndR.html#cb26-3"></a></span>
+<span id="cb26-4"><a href="SqlAndR.html#cb26-4"></a><span class="co">-- Selects with joins:</span></span>
+<span id="cb26-5"><a href="SqlAndR.html#cb26-5"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> table_1 <span class="kw">INNER</span> <span class="kw">JOIN</span> table_2 <span class="kw">ON</span> a <span class="op">=</span> b;</span>
+<span id="cb26-6"><a href="SqlAndR.html#cb26-6"></a></span>
+<span id="cb26-7"><a href="SqlAndR.html#cb26-7"></a><span class="co">-- Nested queries:</span></span>
+<span id="cb26-8"><a href="SqlAndR.html#cb26-8"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> (<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> table_1) tmp <span class="kw">WHERE</span> a <span class="op">=</span> b;</span>
+<span id="cb26-9"><a href="SqlAndR.html#cb26-9"></a></span>
+<span id="cb26-10"><a href="SqlAndR.html#cb26-10"></a><span class="co">-- Limiting to top rows:</span></span>
+<span id="cb26-11"><a href="SqlAndR.html#cb26-11"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
+<span id="cb26-12"><a href="SqlAndR.html#cb26-12"></a></span>
+<span id="cb26-13"><a href="SqlAndR.html#cb26-13"></a><span class="co">-- Selecting into a new table:</span></span>
+<span id="cb26-14"><a href="SqlAndR.html#cb26-14"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">INTO</span> new_table <span class="kw">FROM</span> <span class="kw">table</span>;</span>
+<span id="cb26-15"><a href="SqlAndR.html#cb26-15"></a></span>
+<span id="cb26-16"><a href="SqlAndR.html#cb26-16"></a><span class="co">-- Creating tables:</span></span>
+<span id="cb26-17"><a href="SqlAndR.html#cb26-17"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> <span class="kw">table</span> (field <span class="dt">INT</span>);</span>
+<span id="cb26-18"><a href="SqlAndR.html#cb26-18"></a></span>
+<span id="cb26-19"><a href="SqlAndR.html#cb26-19"></a><span class="co">-- Inserting verbatim values:</span></span>
+<span id="cb26-20"><a href="SqlAndR.html#cb26-20"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> other_table (field_1) <span class="kw">VALUES</span> (<span class="dv">1</span>);</span>
+<span id="cb26-21"><a href="SqlAndR.html#cb26-21"></a></span>
+<span id="cb26-22"><a href="SqlAndR.html#cb26-22"></a><span class="co">-- Inserting from SELECT:</span></span>
+<span id="cb26-23"><a href="SqlAndR.html#cb26-23"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> other_table (field_1) <span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
+<span id="cb26-24"><a href="SqlAndR.html#cb26-24"></a>  </span>
+<span id="cb26-25"><a href="SqlAndR.html#cb26-25"></a><span class="co">-- Simple drop commands:</span></span>
+<span id="cb26-26"><a href="SqlAndR.html#cb26-26"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> <span class="kw">table</span>;</span>
+<span id="cb26-27"><a href="SqlAndR.html#cb26-27"></a></span>
+<span id="cb26-28"><a href="SqlAndR.html#cb26-28"></a><span class="co">-- Drop table if it exists:</span></span>
+<span id="cb26-29"><a href="SqlAndR.html#cb26-29"></a><span class="cf">IF</span> OBJECT_ID(<span class="st">&#39;ACHILLES_analysis&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb26-30"><a href="SqlAndR.html#cb26-30"></a>  <span class="kw">DROP</span> <span class="kw">TABLE</span> ACHILLES_analysis;</span>
+<span id="cb26-31"><a href="SqlAndR.html#cb26-31"></a>  </span>
+<span id="cb26-32"><a href="SqlAndR.html#cb26-32"></a><span class="co">-- Drop temp table if it exists:</span></span>
+<span id="cb26-33"><a href="SqlAndR.html#cb26-33"></a><span class="cf">IF</span> OBJECT_ID(<span class="st">&#39;tempdb..#cohorts&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb26-34"><a href="SqlAndR.html#cb26-34"></a>  <span class="kw">DROP</span> <span class="kw">TABLE</span> #cohorts;  </span>
+<span id="cb26-35"><a href="SqlAndR.html#cb26-35"></a></span>
+<span id="cb26-36"><a href="SqlAndR.html#cb26-36"></a><span class="co">-- Common table expressions:</span></span>
+<span id="cb26-37"><a href="SqlAndR.html#cb26-37"></a><span class="kw">WITH</span> cte <span class="kw">AS</span> (<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span>) <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> cte;</span>
+<span id="cb26-38"><a href="SqlAndR.html#cb26-38"></a></span>
+<span id="cb26-39"><a href="SqlAndR.html#cb26-39"></a><span class="co">-- OVER clauses:</span></span>
+<span id="cb26-40"><a href="SqlAndR.html#cb26-40"></a><span class="kw">SELECT</span> <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> a <span class="kw">ORDER</span> <span class="kw">BY</span> b)</span>
+<span id="cb26-41"><a href="SqlAndR.html#cb26-41"></a>  <span class="kw">AS</span> <span class="ot">&quot;Row Number&quot;</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
+<span id="cb26-42"><a href="SqlAndR.html#cb26-42"></a>  </span>
+<span id="cb26-43"><a href="SqlAndR.html#cb26-43"></a><span class="co">-- CASE WHEN clauses:</span></span>
+<span id="cb26-44"><a href="SqlAndR.html#cb26-44"></a><span class="kw">SELECT</span> <span class="cf">CASE</span> <span class="cf">WHEN</span> a<span class="op">=</span><span class="dv">1</span> <span class="cf">THEN</span> a <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="fu">value</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
+<span id="cb26-45"><a href="SqlAndR.html#cb26-45"></a></span>
+<span id="cb26-46"><a href="SqlAndR.html#cb26-46"></a><span class="co">-- UNIONs:</span></span>
+<span id="cb26-47"><a href="SqlAndR.html#cb26-47"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> a <span class="kw">UNION</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> b;</span>
+<span id="cb26-48"><a href="SqlAndR.html#cb26-48"></a></span>
+<span id="cb26-49"><a href="SqlAndR.html#cb26-49"></a><span class="co">-- INTERSECTIONs:</span></span>
+<span id="cb26-50"><a href="SqlAndR.html#cb26-50"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> a <span class="kw">INTERSECT</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> b;</span>
+<span id="cb26-51"><a href="SqlAndR.html#cb26-51"></a></span>
+<span id="cb26-52"><a href="SqlAndR.html#cb26-52"></a><span class="co">-- EXCEPT:</span></span>
+<span id="cb26-53"><a href="SqlAndR.html#cb26-53"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> a <span class="kw">EXCEPT</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> b;</span></code></pre></div>
 <p><strong>String concatenation</strong></p>
 <p>String concatenation is one area where SQL Server is less specific than other dialects. In SQL Server, one would write <code>SELECT first_name + ' ' + last_name AS full_name FROM table</code>, but this should be <code>SELECT first_name || ' ' || last_name AS full_name FROM table</code> in PostgreSQL and Oracle. SqlRender tries to guess when values that are being concatenated are strings. In the example above, because we have an explicit string (the space surrounded by single quotation marks), the translation will be correct. However, if the query had been <code>SELECT first_name + last_name AS full_name FROM table</code>, SqlRender would have had no clue the two fields were strings, and would incorrectly leave the plus sign. Another clue that a value is a string is an explicit cast to VARCHAR, so <code>SELECT last_name + CAST(age AS VARCHAR(3)) AS full_name FROM table</code> would also be translated correctly. To avoid ambiguity altogether, it is probable best to use the <code>CONCAT()</code> function to concatenate two or more strings.</p>
 <p><strong>Table aliases and the AS keyword</strong></p>
 <p>Many SQL dialects allow the use of the <code>AS</code> keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="SqlAndR.html#cb26-1"></a><span class="co">-- Using AS keyword</span></span>
-<span id="cb26-2"><a href="SqlAndR.html#cb26-2"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
-<span id="cb26-3"><a href="SqlAndR.html#cb26-3"></a><span class="kw">FROM</span> my_table <span class="kw">AS</span> table_1</span>
-<span id="cb26-4"><a href="SqlAndR.html#cb26-4"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> (</span>
-<span id="cb26-5"><a href="SqlAndR.html#cb26-5"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> other_table</span>
-<span id="cb26-6"><a href="SqlAndR.html#cb26-6"></a>) <span class="kw">AS</span> table_2</span>
-<span id="cb26-7"><a href="SqlAndR.html#cb26-7"></a><span class="kw">ON</span> table_1.person_id <span class="op">=</span> table_2.person_id;</span>
-<span id="cb26-8"><a href="SqlAndR.html#cb26-8"></a></span>
-<span id="cb26-9"><a href="SqlAndR.html#cb26-9"></a><span class="co">-- Not using AS keyword</span></span>
-<span id="cb26-10"><a href="SqlAndR.html#cb26-10"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
-<span id="cb26-11"><a href="SqlAndR.html#cb26-11"></a><span class="kw">FROM</span> my_table table_1</span>
-<span id="cb26-12"><a href="SqlAndR.html#cb26-12"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> (</span>
-<span id="cb26-13"><a href="SqlAndR.html#cb26-13"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> other_table</span>
-<span id="cb26-14"><a href="SqlAndR.html#cb26-14"></a>) table_2</span>
-<span id="cb26-15"><a href="SqlAndR.html#cb26-15"></a><span class="kw">ON</span> table_1.person_id <span class="op">=</span> table_2.person_id;</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb27-1"><a href="SqlAndR.html#cb27-1"></a><span class="co">-- Using AS keyword</span></span>
+<span id="cb27-2"><a href="SqlAndR.html#cb27-2"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
+<span id="cb27-3"><a href="SqlAndR.html#cb27-3"></a><span class="kw">FROM</span> my_table <span class="kw">AS</span> table_1</span>
+<span id="cb27-4"><a href="SqlAndR.html#cb27-4"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> (</span>
+<span id="cb27-5"><a href="SqlAndR.html#cb27-5"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> other_table</span>
+<span id="cb27-6"><a href="SqlAndR.html#cb27-6"></a>) <span class="kw">AS</span> table_2</span>
+<span id="cb27-7"><a href="SqlAndR.html#cb27-7"></a><span class="kw">ON</span> table_1.person_id <span class="op">=</span> table_2.person_id;</span>
+<span id="cb27-8"><a href="SqlAndR.html#cb27-8"></a></span>
+<span id="cb27-9"><a href="SqlAndR.html#cb27-9"></a><span class="co">-- Not using AS keyword</span></span>
+<span id="cb27-10"><a href="SqlAndR.html#cb27-10"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
+<span id="cb27-11"><a href="SqlAndR.html#cb27-11"></a><span class="kw">FROM</span> my_table table_1</span>
+<span id="cb27-12"><a href="SqlAndR.html#cb27-12"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> (</span>
+<span id="cb27-13"><a href="SqlAndR.html#cb27-13"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> other_table</span>
+<span id="cb27-14"><a href="SqlAndR.html#cb27-14"></a>) table_2</span>
+<span id="cb27-15"><a href="SqlAndR.html#cb27-15"></a><span class="kw">ON</span> table_1.person_id <span class="op">=</span> table_2.person_id;</span></code></pre></div>
 <p>However, Oracle will throw an error when the <code>AS</code> keyword is used. In the above example, the first query will fail. It is therefore recommended to not use the <code>AS</code> keyword when aliasing tables. (Note: we can’t make SqlRender handle this, because it can’t easily distinguish between table aliases where Oracle doesn’t allow <code>AS</code> to be used, and field aliases, where Oracle requires <code>AS</code> to be used.)</p>
 <p><strong>Temp tables</strong></p>
 <p>Temp tables can be very useful to store intermediate results, and when used correctly can be used to dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they’re only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by</p>
@@ -809,41 +811,41 @@ There are limits to what SQL functions and constructs can be translated properly
 <li>Allowing the user to specify the schema where the temp tables will be created.</li>
 </ol>
 <p>For example:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="SqlAndR.html#cb27-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
-<span id="cb27-2"><a href="SqlAndR.html#cb27-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.mp97ihdrchildren ;&quot;</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="SqlAndR.html#cb28-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
+<span id="cb28-2"><a href="SqlAndR.html#cb28-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.xunilmoechildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters, <strong>temp table names are only allowed to be at most 22 characters long</strong> because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
 <p><strong>Implicit casts</strong></p>
 <p>One of the few points where SQL Server is less explicit than other dialects is that it allows implicit casts. For example, this code will work on SQL Server:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb29-1"><a href="SqlAndR.html#cb29-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> #temp (txt <span class="dt">VARCHAR</span>);</span>
-<span id="cb29-2"><a href="SqlAndR.html#cb29-2"></a></span>
-<span id="cb29-3"><a href="SqlAndR.html#cb29-3"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> #temp</span>
-<span id="cb29-4"><a href="SqlAndR.html#cb29-4"></a><span class="kw">SELECT</span> <span class="st">&#39;1&#39;</span>;</span>
-<span id="cb29-5"><a href="SqlAndR.html#cb29-5"></a></span>
-<span id="cb29-6"><a href="SqlAndR.html#cb29-6"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> txt <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb30-1"><a href="SqlAndR.html#cb30-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> #temp (txt <span class="dt">VARCHAR</span>);</span>
+<span id="cb30-2"><a href="SqlAndR.html#cb30-2"></a></span>
+<span id="cb30-3"><a href="SqlAndR.html#cb30-3"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> #temp</span>
+<span id="cb30-4"><a href="SqlAndR.html#cb30-4"></a><span class="kw">SELECT</span> <span class="st">&#39;1&#39;</span>;</span>
+<span id="cb30-5"><a href="SqlAndR.html#cb30-5"></a></span>
+<span id="cb30-6"><a href="SqlAndR.html#cb30-6"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> txt <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
 <p>Even though <code>txt</code> is a VARCHAR field and we are comparing it with an integer, SQL Server will automatically cast one of the two to the correct type to allow the comparison. In contrast, other dialects such as PostgreSQL will throw an error when trying to compare a VARCHAR with an INT.</p>
 <p>You should therefore always make casts explicit. In the above example, the last statement should be replaced with either</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb30-1"><a href="SqlAndR.html#cb30-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> txt <span class="op">=</span> <span class="fu">CAST</span>(<span class="dv">1</span> <span class="kw">AS</span> <span class="dt">VARCHAR</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb31-1"><a href="SqlAndR.html#cb31-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> txt <span class="op">=</span> <span class="fu">CAST</span>(<span class="dv">1</span> <span class="kw">AS</span> <span class="dt">VARCHAR</span>);</span></code></pre></div>
 <p>or</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb31-1"><a href="SqlAndR.html#cb31-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> <span class="fu">CAST</span>(txt <span class="kw">AS</span> <span class="dt">INT</span>) <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb32-1"><a href="SqlAndR.html#cb32-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> <span class="fu">CAST</span>(txt <span class="kw">AS</span> <span class="dt">INT</span>) <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
 <p><strong>Case sensitivity in string comparisons</strong></p>
 <p>Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb32-1"><a href="SqlAndR.html#cb32-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> concep_class_id <span class="op">=</span> <span class="st">&#39;Clinical Finding&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb33-1"><a href="SqlAndR.html#cb33-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> concep_class_id <span class="op">=</span> <span class="st">&#39;Clinical Finding&#39;</span></span></code></pre></div>
 <p>it is preferred to use</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb33-1"><a href="SqlAndR.html#cb33-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> <span class="fu">LOWER</span>(concep_class_id) <span class="op">=</span> <span class="st">&#39;clinical finding&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb34-1"><a href="SqlAndR.html#cb34-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> <span class="fu">LOWER</span>(concep_class_id) <span class="op">=</span> <span class="st">&#39;clinical finding&#39;</span></span></code></pre></div>
 <p><strong>Schemas and databases</strong></p>
 <p>In SQL Server, tables are located in a schema, and schemas reside in a database. For example, <code>cdm_data.dbo.person</code> refers to the <code>person</code> table in the <code>dbo</code> schema in the <code>cdm_data</code> database. In other dialects, even though a similar hierarchy often exists they are used very differently. In SQL Server, there is typically one schema per database (often called <code>dbo</code>), and users can easily use data in different databases. On other platforms, for example in PostgreSQL, it is not possible to use data across databases in a single session, but there are often many schemas in a database. In PostgreSQL one could say that the equivalent of SQL Server’s database is the schema.</p>
 <p>We therefore recommend concatenating SQL Server’s database and schema into a single parameter, which we typically call <code>@databaseSchema</code>. For example, we could have the parameterized SQL</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb34-1"><a href="SqlAndR.html#cb34-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> @databaseSchema.person</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb35-1"><a href="SqlAndR.html#cb35-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> @databaseSchema.person</span></code></pre></div>
 <p>where on SQL Server we can include both database and schema names in the value: <code>databaseSchema = "cdm_data.dbo"</code>. On other platforms, we can use the same code, but now only specify the schema as the parameter value: <code>databaseSchema = "cdm_data"</code>.</p>
 <p>The one situation where this will fail is the <code>USE</code> command, since <code>USE cdm_data.dbo;</code> will throw an error. It is therefore preferred not to use the <code>USE</code> command, but always specify the database / schema where a table is located.</p>
 <p><strong>Debugging parameterized SQL</strong></p>
 <p>Debugging parameterized SQL can be a bit complicated; Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL.</p>
 <p>A Shiny app is included in the SqlRender package for interactively editing source SQL and generating rendered and translated SQL. The app can be started using:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="SqlAndR.html#cb35-1"></a><span class="kw">launchSqlRenderDeveloper</span>()</span></code></pre></div>
-<p>Which will open the default browser with the app shown in Figure <a href="SqlAndR.html#fig:sqlDeveloper">10.1</a>. The app is also publicly available on the web<a href="references.html#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="SqlAndR.html#cb36-1"></a><span class="kw">launchSqlRenderDeveloper</span>()</span></code></pre></div>
+<p>Which will open the default browser with the app shown in Figure <a href="SqlAndR.html#fig:sqlDeveloper">10.1</a>. The app is also publicly available on the web<a href="references.html#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:sqlDeveloper"></span>
 <img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
 <p class="caption">
@@ -856,67 +858,67 @@ Figure 10.1: The SqlDeveloper Shiny app.
 <div id="DatabaseConnector" class="section level2">
 <h2><span class="header-section-number">10.2</span> DatabaseConnector</h2>
 <p><a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> is an R package for connecting to various database platforms using Java’s JDBC drivers. The DatabaseConnector package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="SqlAndR.html#cb36-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;DatabaseConnector&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="SqlAndR.html#cb37-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;DatabaseConnector&quot;</span>)</span></code></pre></div>
 <p>DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type <code>?jdbcDrivers</code> for instructions on how to download these drivers. Once downloaded, you can use the <code>pathToDriver</code> argument of the <code>connect</code>, <code>dbConnect</code>, and <code>createConnectionDetails</code> functions.</p>
 <div id="creating-a-connection" class="section level3">
 <h3><span class="header-section-number">10.2.1</span> Creating a connection</h3>
 <p>To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the <code>connect</code> function and specify these details directly:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="SqlAndR.html#cb37-1"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
-<span id="cb37-2"><a href="SqlAndR.html#cb37-2"></a>                <span class="dt">server =</span> <span class="st">&quot;localhost/postgres&quot;</span>,</span>
-<span id="cb37-3"><a href="SqlAndR.html#cb37-3"></a>                <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
-<span id="cb37-4"><a href="SqlAndR.html#cb37-4"></a>                <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>,</span>
-<span id="cb37-5"><a href="SqlAndR.html#cb37-5"></a>                <span class="dt">schema =</span> <span class="st">&quot;cdm&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="SqlAndR.html#cb38-1"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
+<span id="cb38-2"><a href="SqlAndR.html#cb38-2"></a>                <span class="dt">server =</span> <span class="st">&quot;localhost/postgres&quot;</span>,</span>
+<span id="cb38-3"><a href="SqlAndR.html#cb38-3"></a>                <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
+<span id="cb38-4"><a href="SqlAndR.html#cb38-4"></a>                <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>,</span>
+<span id="cb38-5"><a href="SqlAndR.html#cb38-5"></a>                <span class="dt">schema =</span> <span class="st">&quot;cdm&quot;</span>)</span></code></pre></div>
 <pre><code>## Connecting using PostgreSQL driver</code></pre>
 <p>See <code>?connect</code> for information on which details are required for each platform. Don’t forget to close any connection afterwards:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="SqlAndR.html#cb39-1"></a><span class="kw">disconnect</span>(conn)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="SqlAndR.html#cb40-1"></a><span class="kw">disconnect</span>(conn)</span></code></pre></div>
 <p>Note that, instead of providing the server name, it is also possible to provide the JDBC connection string if this is more convenient:</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="SqlAndR.html#cb40-1"></a>connString &lt;-<span class="st"> &quot;jdbc:postgresql://localhost:5432/postgres&quot;</span></span>
-<span id="cb40-2"><a href="SqlAndR.html#cb40-2"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
-<span id="cb40-3"><a href="SqlAndR.html#cb40-3"></a>                <span class="dt">connectionString =</span> connString,</span>
-<span id="cb40-4"><a href="SqlAndR.html#cb40-4"></a>                <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
-<span id="cb40-5"><a href="SqlAndR.html#cb40-5"></a>                <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>,</span>
-<span id="cb40-6"><a href="SqlAndR.html#cb40-6"></a>                <span class="dt">schema =</span> <span class="st">&quot;cdm&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="SqlAndR.html#cb41-1"></a>connString &lt;-<span class="st"> &quot;jdbc:postgresql://localhost:5432/postgres&quot;</span></span>
+<span id="cb41-2"><a href="SqlAndR.html#cb41-2"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
+<span id="cb41-3"><a href="SqlAndR.html#cb41-3"></a>                <span class="dt">connectionString =</span> connString,</span>
+<span id="cb41-4"><a href="SqlAndR.html#cb41-4"></a>                <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
+<span id="cb41-5"><a href="SqlAndR.html#cb41-5"></a>                <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>,</span>
+<span id="cb41-6"><a href="SqlAndR.html#cb41-6"></a>                <span class="dt">schema =</span> <span class="st">&quot;cdm&quot;</span>)</span></code></pre></div>
 <pre><code>## Connecting using PostgreSQL driver</code></pre>
 <p>Sometimes we may want to first specify the connection details, and defer connecting until later. This may be convenient for example when the connection is established inside a function, and the details need to be passed as an argument. We can use the <code>createConnectionDetails</code> function for this purpose:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="SqlAndR.html#cb42-1"></a>details &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
-<span id="cb42-2"><a href="SqlAndR.html#cb42-2"></a>                                   <span class="dt">server =</span> <span class="st">&quot;localhost/postgres&quot;</span>,</span>
-<span id="cb42-3"><a href="SqlAndR.html#cb42-3"></a>                                   <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
-<span id="cb42-4"><a href="SqlAndR.html#cb42-4"></a>                                   <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>,</span>
-<span id="cb42-5"><a href="SqlAndR.html#cb42-5"></a>                                   <span class="dt">schema =</span> <span class="st">&quot;cdm&quot;</span>)</span>
-<span id="cb42-6"><a href="SqlAndR.html#cb42-6"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(details)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="SqlAndR.html#cb43-1"></a>details &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
+<span id="cb43-2"><a href="SqlAndR.html#cb43-2"></a>                                   <span class="dt">server =</span> <span class="st">&quot;localhost/postgres&quot;</span>,</span>
+<span id="cb43-3"><a href="SqlAndR.html#cb43-3"></a>                                   <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
+<span id="cb43-4"><a href="SqlAndR.html#cb43-4"></a>                                   <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>,</span>
+<span id="cb43-5"><a href="SqlAndR.html#cb43-5"></a>                                   <span class="dt">schema =</span> <span class="st">&quot;cdm&quot;</span>)</span>
+<span id="cb43-6"><a href="SqlAndR.html#cb43-6"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(details)</span></code></pre></div>
 <pre><code>## Connecting using PostgreSQL driver</code></pre>
 </div>
 <div id="querying" class="section level3">
 <h3><span class="header-section-number">10.2.2</span> Querying</h3>
 <p>The main functions for querying database are the <code>querySql</code> and <code>executeSql</code> functions. The difference between these functions is that <code>querySql</code> expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, <code>executeSql</code> does not expect data to be returned, and accepts multiple SQL statements in a single SQL string.</p>
 <p>Some examples:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="SqlAndR.html#cb44-1"></a><span class="kw">querySql</span>(conn, <span class="st">&quot;SELECT TOP 3 * FROM person&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="SqlAndR.html#cb45-1"></a><span class="kw">querySql</span>(conn, <span class="st">&quot;SELECT TOP 3 * FROM person&quot;</span>)</span></code></pre></div>
 <pre><code>##   PERSON_ID GENDER_CONCEPT_ID YEAR_OF_BIRTH
 ## 1         1              8507          1975
 ## 2         2              8507          1976
 ## 3         3              8507          1977</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="SqlAndR.html#cb46-1"></a><span class="kw">executeSql</span>(conn, <span class="st">&quot;TRUNCATE TABLE foo; DROP TABLE foo;&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="SqlAndR.html#cb47-1"></a><span class="kw">executeSql</span>(conn, <span class="st">&quot;TRUNCATE TABLE foo; DROP TABLE foo;&quot;</span>)</span></code></pre></div>
 <p>Both function provide extensive error reporting: When an error is thrown by the server, the error message and the offending piece of SQL are written to a text file to allow better debugging. The <code>executeSql</code> function also by default shows a progress bar, indicating the percentage of SQL statements that has been executed. If those attributes are not desired, the package also offers the <code>lowLevelQuerySql</code> and <code>lowLevelExecuteSql</code> functions.</p>
 </div>
 <div id="querying-using-ffdf-objects" class="section level3">
 <h3><span class="header-section-number">10.2.3</span> Querying using ffdf objects</h3>
 <p>Sometimes the data to be fetched from the database is too large to fit into memory. As mentioned in Section <a href="OhdsiAnalyticsTools.html#BigDataSupport">9.4.2</a>, in such a case we can use the <code>ff</code> package to store R data objects on file, and use them as if they are available in memory. <code>DatabaseConnector</code> can download data directly into ffdf objects:</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="SqlAndR.html#cb47-1"></a>x &lt;-<span class="st"> </span><span class="kw">querySql.ffdf</span>(conn, <span class="st">&quot;SELECT * FROM person&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="SqlAndR.html#cb48-1"></a>x &lt;-<span class="st"> </span><span class="kw">querySql.ffdf</span>(conn, <span class="st">&quot;SELECT * FROM person&quot;</span>)</span></code></pre></div>
 <p>Where x is now an ffdf object.</p>
 </div>
 <div id="querying-different-platforms-using-the-same-sql" class="section level3">
 <h3><span class="header-section-number">10.2.4</span> Querying different platforms using the same SQL</h3>
 <p>The following convenience functions are available that first call the <code>render</code> and <code>translate</code> functions in the SqlRender package: <code>renderTranslateExecuteSql</code>, <code>renderTranslateQuerySql</code>, <code>renderTranslateQuerySql.ffdf</code>. For example:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="SqlAndR.html#cb48-1"></a>x &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, </span>
-<span id="cb48-2"><a href="SqlAndR.html#cb48-2"></a>                             <span class="dt">sql =</span> <span class="st">&quot;SELECT TOP 10 * FROM @schema.person&quot;</span>,</span>
-<span id="cb48-3"><a href="SqlAndR.html#cb48-3"></a>                             <span class="dt">schema =</span> <span class="st">&quot;cdm_synpuf&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="SqlAndR.html#cb49-1"></a>x &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, </span>
+<span id="cb49-2"><a href="SqlAndR.html#cb49-2"></a>                             <span class="dt">sql =</span> <span class="st">&quot;SELECT TOP 10 * FROM @schema.person&quot;</span>,</span>
+<span id="cb49-3"><a href="SqlAndR.html#cb49-3"></a>                             <span class="dt">schema =</span> <span class="st">&quot;cdm_synpuf&quot;</span>)</span></code></pre></div>
 <p>Note that the SQL Server-specific ‘TOP 10’ syntax will be translated to for example ‘LIMIT 10’ on PostgreSQL, and that the SQL parameter <code>@schema</code> will be instantiated with the provided value ‘cdm_synpuf’.</p>
 </div>
 <div id="inserting-tables" class="section level3">
 <h3><span class="header-section-number">10.2.5</span> Inserting tables</h3>
 <p>Although it is also possible to insert data in the database by sending SQL statements using the <code>executeSql</code> function, it is often more convenient and faster (due to some optimization) to use the <code>insertTable</code> function:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="SqlAndR.html#cb49-1"></a><span class="kw">data</span>(mtcars)</span>
-<span id="cb49-2"><a href="SqlAndR.html#cb49-2"></a><span class="kw">insertTable</span>(conn, <span class="st">&quot;mtcars&quot;</span>, mtcars, <span class="dt">createTable =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="SqlAndR.html#cb50-1"></a><span class="kw">data</span>(mtcars)</span>
+<span id="cb50-2"><a href="SqlAndR.html#cb50-2"></a><span class="kw">insertTable</span>(conn, <span class="st">&quot;mtcars&quot;</span>, mtcars, <span class="dt">createTable =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>In this example, we’re uploading the mtcars data frame to a table called ‘mtcars’ on the server, which will be automatically created.</p>
 </div>
 </div>
@@ -924,7 +926,7 @@ Figure 10.1: The SqlDeveloper Shiny app.
 <h2><span class="header-section-number">10.3</span> Querying the CDM</h2>
 <p>In the following examples we use OHDSI SQL to query a database that adheres to the CDM. These queries use <code>@cdm</code> to denote the database schema where the data in CDM can be found.</p>
 <p>We can start by just querying how many people are in the database:</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb50-1"><a href="SqlAndR.html#cb50-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> person_count <span class="kw">FROM</span> @cdm.person;</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb51-1"><a href="SqlAndR.html#cb51-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> person_count <span class="kw">FROM</span> @cdm.person;</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -938,10 +940,10 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </tbody>
 </table>
 <p>Or perhaps we’re interested in the average length of an observation period:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb51-1"><a href="SqlAndR.html#cb51-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(DATEDIFF(<span class="dt">DAY</span>, </span>
-<span id="cb51-2"><a href="SqlAndR.html#cb51-2"></a>                    observation_period_start_date, </span>
-<span id="cb51-3"><a href="SqlAndR.html#cb51-3"></a>                    observation_period_end_date) <span class="op">/</span> <span class="fl">365.25</span>) <span class="kw">AS</span> num_years</span>
-<span id="cb51-4"><a href="SqlAndR.html#cb51-4"></a><span class="kw">FROM</span> @cdm.observation_period;</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb52-1"><a href="SqlAndR.html#cb52-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(DATEDIFF(<span class="dt">DAY</span>, </span>
+<span id="cb52-2"><a href="SqlAndR.html#cb52-2"></a>                    observation_period_start_date, </span>
+<span id="cb52-3"><a href="SqlAndR.html#cb52-3"></a>                    observation_period_end_date) <span class="op">/</span> <span class="fl">365.25</span>) <span class="kw">AS</span> num_years</span>
+<span id="cb52-4"><a href="SqlAndR.html#cb52-4"></a><span class="kw">FROM</span> @cdm.observation_period;</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -955,11 +957,11 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </tbody>
 </table>
 <p>We can join tables to produce additional statistics. A join combines fields from multiple tables, typically by requiring specific fields in the tables to have the same value. For example, here we join the PERSON table to the OBSERVATION_PERIOD table on the person_id fields in both tables. In other words, the result of the join is a new table-like set that has all the fields of the two tables, but in all rows the person_id fields from the two tables must have the same value. We can now for example compute the maximum age at observation end by using the observation_period_end_date field from the OBSERVATION_PERIOD table together with the year_of_birth field of the PERSON table:</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb52-1"><a href="SqlAndR.html#cb52-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">YEAR</span>(observation_period_end_date) <span class="op">-</span></span>
-<span id="cb52-2"><a href="SqlAndR.html#cb52-2"></a>           year_of_birth) <span class="kw">AS</span> max_age</span>
-<span id="cb52-3"><a href="SqlAndR.html#cb52-3"></a><span class="kw">FROM</span> @cdm.person</span>
-<span id="cb52-4"><a href="SqlAndR.html#cb52-4"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.observation_period</span>
-<span id="cb52-5"><a href="SqlAndR.html#cb52-5"></a>  <span class="kw">ON</span> person.person_id <span class="op">=</span> observation_period.person_id;</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb53-1"><a href="SqlAndR.html#cb53-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">YEAR</span>(observation_period_end_date) <span class="op">-</span></span>
+<span id="cb53-2"><a href="SqlAndR.html#cb53-2"></a>           year_of_birth) <span class="kw">AS</span> max_age</span>
+<span id="cb53-3"><a href="SqlAndR.html#cb53-3"></a><span class="kw">FROM</span> @cdm.person</span>
+<span id="cb53-4"><a href="SqlAndR.html#cb53-4"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.observation_period</span>
+<span id="cb53-5"><a href="SqlAndR.html#cb53-5"></a>  <span class="kw">ON</span> person.person_id <span class="op">=</span> observation_period.person_id;</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -973,41 +975,41 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </tbody>
 </table>
 <p>A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION_PERIOD table to compute age at start of observetion. We also compute the ordering for this joined set based on age, and store it as order_nr. Because we want to use the result of this join multiple times, we define it as a common table expression (CTE) (defined using <code>WITH ... AS</code>) that we call “ages”, meaning We can refer to ages as if it is an existing table. We count the number of rows in ages to produce “n”, and then for each quantile find the minimum age where the order_nr is smaller than the fraction times n. For example, median we use the minimum age where <span class="math inline">\(order\_nr &lt; .50 * n\)</span>. The minimum and maximum age are computed separately:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb53-1"><a href="SqlAndR.html#cb53-1"></a><span class="kw">WITH</span> ages</span>
-<span id="cb53-2"><a href="SqlAndR.html#cb53-2"></a><span class="kw">AS</span> (</span>
-<span id="cb53-3"><a href="SqlAndR.html#cb53-3"></a>    <span class="kw">SELECT</span> age,</span>
-<span id="cb53-4"><a href="SqlAndR.html#cb53-4"></a>        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (</span>
-<span id="cb53-5"><a href="SqlAndR.html#cb53-5"></a>            <span class="kw">ORDER</span> <span class="kw">BY</span> age</span>
-<span id="cb53-6"><a href="SqlAndR.html#cb53-6"></a>            ) order_nr</span>
-<span id="cb53-7"><a href="SqlAndR.html#cb53-7"></a>    <span class="kw">FROM</span> (</span>
-<span id="cb53-8"><a href="SqlAndR.html#cb53-8"></a>        <span class="kw">SELECT</span> <span class="dt">YEAR</span>(observation_period_start_date) <span class="op">-</span> year_of_birth <span class="kw">AS</span> age</span>
-<span id="cb53-9"><a href="SqlAndR.html#cb53-9"></a>        <span class="kw">FROM</span> @cdm.person</span>
-<span id="cb53-10"><a href="SqlAndR.html#cb53-10"></a>        <span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.observation_period</span>
-<span id="cb53-11"><a href="SqlAndR.html#cb53-11"></a>            <span class="kw">ON</span> person.person_id <span class="op">=</span> observation_period.person_id</span>
-<span id="cb53-12"><a href="SqlAndR.html#cb53-12"></a>        ) age_computed</span>
-<span id="cb53-13"><a href="SqlAndR.html#cb53-13"></a>    )</span>
-<span id="cb53-14"><a href="SqlAndR.html#cb53-14"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(age) <span class="kw">AS</span> min_age,</span>
-<span id="cb53-15"><a href="SqlAndR.html#cb53-15"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
-<span id="cb53-16"><a href="SqlAndR.html#cb53-16"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.25</span> <span class="op">*</span> n</span>
-<span id="cb53-17"><a href="SqlAndR.html#cb53-17"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
-<span id="cb53-18"><a href="SqlAndR.html#cb53-18"></a>            <span class="cf">ELSE</span> age</span>
-<span id="cb53-19"><a href="SqlAndR.html#cb53-19"></a>            <span class="cf">END</span>) <span class="kw">AS</span> q25_age,</span>
-<span id="cb53-20"><a href="SqlAndR.html#cb53-20"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
-<span id="cb53-21"><a href="SqlAndR.html#cb53-21"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.50</span> <span class="op">*</span> n</span>
-<span id="cb53-22"><a href="SqlAndR.html#cb53-22"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
-<span id="cb53-23"><a href="SqlAndR.html#cb53-23"></a>            <span class="cf">ELSE</span> age</span>
-<span id="cb53-24"><a href="SqlAndR.html#cb53-24"></a>            <span class="cf">END</span>) <span class="kw">AS</span> median_age,</span>
-<span id="cb53-25"><a href="SqlAndR.html#cb53-25"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
-<span id="cb53-26"><a href="SqlAndR.html#cb53-26"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.75</span> <span class="op">*</span> n</span>
-<span id="cb53-27"><a href="SqlAndR.html#cb53-27"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
-<span id="cb53-28"><a href="SqlAndR.html#cb53-28"></a>            <span class="cf">ELSE</span> age</span>
-<span id="cb53-29"><a href="SqlAndR.html#cb53-29"></a>            <span class="cf">END</span>) <span class="kw">AS</span> q75_age,</span>
-<span id="cb53-30"><a href="SqlAndR.html#cb53-30"></a>    <span class="fu">MAX</span>(age) <span class="kw">AS</span> max_age</span>
-<span id="cb53-31"><a href="SqlAndR.html#cb53-31"></a><span class="kw">FROM</span> ages</span>
-<span id="cb53-32"><a href="SqlAndR.html#cb53-32"></a><span class="kw">CROSS</span> <span class="kw">JOIN</span> (</span>
-<span id="cb53-33"><a href="SqlAndR.html#cb53-33"></a>    <span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> n</span>
-<span id="cb53-34"><a href="SqlAndR.html#cb53-34"></a>    <span class="kw">FROM</span> ages</span>
-<span id="cb53-35"><a href="SqlAndR.html#cb53-35"></a>    ) population_size;</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb54-1"><a href="SqlAndR.html#cb54-1"></a><span class="kw">WITH</span> ages</span>
+<span id="cb54-2"><a href="SqlAndR.html#cb54-2"></a><span class="kw">AS</span> (</span>
+<span id="cb54-3"><a href="SqlAndR.html#cb54-3"></a>    <span class="kw">SELECT</span> age,</span>
+<span id="cb54-4"><a href="SqlAndR.html#cb54-4"></a>        <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (</span>
+<span id="cb54-5"><a href="SqlAndR.html#cb54-5"></a>            <span class="kw">ORDER</span> <span class="kw">BY</span> age</span>
+<span id="cb54-6"><a href="SqlAndR.html#cb54-6"></a>            ) order_nr</span>
+<span id="cb54-7"><a href="SqlAndR.html#cb54-7"></a>    <span class="kw">FROM</span> (</span>
+<span id="cb54-8"><a href="SqlAndR.html#cb54-8"></a>        <span class="kw">SELECT</span> <span class="dt">YEAR</span>(observation_period_start_date) <span class="op">-</span> year_of_birth <span class="kw">AS</span> age</span>
+<span id="cb54-9"><a href="SqlAndR.html#cb54-9"></a>        <span class="kw">FROM</span> @cdm.person</span>
+<span id="cb54-10"><a href="SqlAndR.html#cb54-10"></a>        <span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.observation_period</span>
+<span id="cb54-11"><a href="SqlAndR.html#cb54-11"></a>            <span class="kw">ON</span> person.person_id <span class="op">=</span> observation_period.person_id</span>
+<span id="cb54-12"><a href="SqlAndR.html#cb54-12"></a>        ) age_computed</span>
+<span id="cb54-13"><a href="SqlAndR.html#cb54-13"></a>    )</span>
+<span id="cb54-14"><a href="SqlAndR.html#cb54-14"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(age) <span class="kw">AS</span> min_age,</span>
+<span id="cb54-15"><a href="SqlAndR.html#cb54-15"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
+<span id="cb54-16"><a href="SqlAndR.html#cb54-16"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.25</span> <span class="op">*</span> n</span>
+<span id="cb54-17"><a href="SqlAndR.html#cb54-17"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
+<span id="cb54-18"><a href="SqlAndR.html#cb54-18"></a>            <span class="cf">ELSE</span> age</span>
+<span id="cb54-19"><a href="SqlAndR.html#cb54-19"></a>            <span class="cf">END</span>) <span class="kw">AS</span> q25_age,</span>
+<span id="cb54-20"><a href="SqlAndR.html#cb54-20"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
+<span id="cb54-21"><a href="SqlAndR.html#cb54-21"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.50</span> <span class="op">*</span> n</span>
+<span id="cb54-22"><a href="SqlAndR.html#cb54-22"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
+<span id="cb54-23"><a href="SqlAndR.html#cb54-23"></a>            <span class="cf">ELSE</span> age</span>
+<span id="cb54-24"><a href="SqlAndR.html#cb54-24"></a>            <span class="cf">END</span>) <span class="kw">AS</span> median_age,</span>
+<span id="cb54-25"><a href="SqlAndR.html#cb54-25"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
+<span id="cb54-26"><a href="SqlAndR.html#cb54-26"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.75</span> <span class="op">*</span> n</span>
+<span id="cb54-27"><a href="SqlAndR.html#cb54-27"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
+<span id="cb54-28"><a href="SqlAndR.html#cb54-28"></a>            <span class="cf">ELSE</span> age</span>
+<span id="cb54-29"><a href="SqlAndR.html#cb54-29"></a>            <span class="cf">END</span>) <span class="kw">AS</span> q75_age,</span>
+<span id="cb54-30"><a href="SqlAndR.html#cb54-30"></a>    <span class="fu">MAX</span>(age) <span class="kw">AS</span> max_age</span>
+<span id="cb54-31"><a href="SqlAndR.html#cb54-31"></a><span class="kw">FROM</span> ages</span>
+<span id="cb54-32"><a href="SqlAndR.html#cb54-32"></a><span class="kw">CROSS</span> <span class="kw">JOIN</span> (</span>
+<span id="cb54-33"><a href="SqlAndR.html#cb54-33"></a>    <span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> n</span>
+<span id="cb54-34"><a href="SqlAndR.html#cb54-34"></a>    <span class="kw">FROM</span> ages</span>
+<span id="cb54-35"><a href="SqlAndR.html#cb54-35"></a>    ) population_size;</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1029,22 +1031,22 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </tbody>
 </table>
 <p>More complex computations can also be performed in R instead of using SQL. For example, we can get the same answer using this R code:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="SqlAndR.html#cb54-1"></a>sql &lt;-<span class="st"> &quot;SELECT YEAR(observation_period_start_date) -</span></span>
-<span id="cb54-2"><a href="SqlAndR.html#cb54-2"></a><span class="st">               year_of_birth AS age</span></span>
-<span id="cb54-3"><a href="SqlAndR.html#cb54-3"></a><span class="st">FROM @cdm.person</span></span>
-<span id="cb54-4"><a href="SqlAndR.html#cb54-4"></a><span class="st">INNER JOIN @cdm.observation_period</span></span>
-<span id="cb54-5"><a href="SqlAndR.html#cb54-5"></a><span class="st">  ON person.person_id = observation_period.person_id;&quot;</span></span>
-<span id="cb54-6"><a href="SqlAndR.html#cb54-6"></a>age &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, sql, <span class="dt">cdm =</span> <span class="st">&quot;cdm&quot;</span>)</span>
-<span id="cb54-7"><a href="SqlAndR.html#cb54-7"></a><span class="kw">quantile</span>(age[, <span class="dv">1</span>], <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="SqlAndR.html#cb55-1"></a>sql &lt;-<span class="st"> &quot;SELECT YEAR(observation_period_start_date) -</span></span>
+<span id="cb55-2"><a href="SqlAndR.html#cb55-2"></a><span class="st">               year_of_birth AS age</span></span>
+<span id="cb55-3"><a href="SqlAndR.html#cb55-3"></a><span class="st">FROM @cdm.person</span></span>
+<span id="cb55-4"><a href="SqlAndR.html#cb55-4"></a><span class="st">INNER JOIN @cdm.observation_period</span></span>
+<span id="cb55-5"><a href="SqlAndR.html#cb55-5"></a><span class="st">  ON person.person_id = observation_period.person_id;&quot;</span></span>
+<span id="cb55-6"><a href="SqlAndR.html#cb55-6"></a>age &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, sql, <span class="dt">cdm =</span> <span class="st">&quot;cdm&quot;</span>)</span>
+<span id="cb55-7"><a href="SqlAndR.html#cb55-7"></a><span class="kw">quantile</span>(age[, <span class="dv">1</span>], <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>))</span></code></pre></div>
 <pre><code>##   0%  25%  50%  75% 100% 
 ##    0    6   17   34   90</code></pre>
 <p>Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is therefore not very efficient. You will need to decide on a case-by-case basis whether a computation is best performed in SQL or in R.</p>
 <p>Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb56-1"><a href="SqlAndR.html#cb56-1"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> condition_source_value, </span>
-<span id="cb56-2"><a href="SqlAndR.html#cb56-2"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> code_count</span>
-<span id="cb56-3"><a href="SqlAndR.html#cb56-3"></a><span class="kw">FROM</span> @cdm.condition_occurrence</span>
-<span id="cb56-4"><a href="SqlAndR.html#cb56-4"></a><span class="kw">GROUP</span> <span class="kw">BY</span> condition_source_value</span>
-<span id="cb56-5"><a href="SqlAndR.html#cb56-5"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="op">-</span><span class="fu">COUNT</span>(<span class="op">*</span>);</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb57-1"><a href="SqlAndR.html#cb57-1"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> condition_source_value, </span>
+<span id="cb57-2"><a href="SqlAndR.html#cb57-2"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> code_count</span>
+<span id="cb57-3"><a href="SqlAndR.html#cb57-3"></a><span class="kw">FROM</span> @cdm.condition_occurrence</span>
+<span id="cb57-4"><a href="SqlAndR.html#cb57-4"></a><span class="kw">GROUP</span> <span class="kw">BY</span> condition_source_value</span>
+<span id="cb57-5"><a href="SqlAndR.html#cb57-5"></a><span class="kw">ORDER</span> <span class="kw">BY</span> <span class="op">-</span><span class="fu">COUNT</span>(<span class="op">*</span>);</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1100,12 +1102,12 @@ Figure 10.1: The SqlDeveloper Shiny app.
 <div id="using-the-vocabulary-when-querying" class="section level2">
 <h2><span class="header-section-number">10.4</span> Using the vocabulary when querying</h2>
 <p>Many operations require the vocabulary to be useful. The Vocabulary tables are part of the CDM, and are therefore available using SQL queries. Querying the Vocabulary is already described at length in Chapter <a href="StandardizedVocabularies.html#StandardizedVocabularies">6</a>. Here we show how queries against the Vocabulary can be combined with queries against the CDM. Many fields in the CDM contain concept IDs which can be resolved using the CONCEPT table. For example, we may wish to count the number of persons in the database stratified by gender, and it would be convenient to resolve the GENDER_CONCEPT_ID field to a concept name:</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb57-1"><a href="SqlAndR.html#cb57-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> subject_count,</span>
-<span id="cb57-2"><a href="SqlAndR.html#cb57-2"></a>  concept_name</span>
-<span id="cb57-3"><a href="SqlAndR.html#cb57-3"></a><span class="kw">FROM</span> @cdm.person</span>
-<span id="cb57-4"><a href="SqlAndR.html#cb57-4"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept</span>
-<span id="cb57-5"><a href="SqlAndR.html#cb57-5"></a>  <span class="kw">ON</span> person.gender_concept_id <span class="op">=</span> concept.concept_id</span>
-<span id="cb57-6"><a href="SqlAndR.html#cb57-6"></a><span class="kw">GROUP</span> <span class="kw">BY</span> concept_name;</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb58-1"><a href="SqlAndR.html#cb58-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> subject_count,</span>
+<span id="cb58-2"><a href="SqlAndR.html#cb58-2"></a>  concept_name</span>
+<span id="cb58-3"><a href="SqlAndR.html#cb58-3"></a><span class="kw">FROM</span> @cdm.person</span>
+<span id="cb58-4"><a href="SqlAndR.html#cb58-4"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept</span>
+<span id="cb58-5"><a href="SqlAndR.html#cb58-5"></a>  <span class="kw">ON</span> person.gender_concept_id <span class="op">=</span> concept.concept_id</span>
+<span id="cb58-6"><a href="SqlAndR.html#cb58-6"></a><span class="kw">GROUP</span> <span class="kw">BY</span> concept_name;</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1125,15 +1127,15 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </tbody>
 </table>
 <p>A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept <em>and all of its descendants</em>. For example, image we wish to count the number of prescriptions containing the ingredient ibuprofen:</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb58-1"><a href="SqlAndR.html#cb58-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> prescription_count</span>
-<span id="cb58-2"><a href="SqlAndR.html#cb58-2"></a><span class="kw">FROM</span> @cdm.drug_exposure</span>
-<span id="cb58-3"><a href="SqlAndR.html#cb58-3"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept_ancestor</span>
-<span id="cb58-4"><a href="SqlAndR.html#cb58-4"></a>  <span class="kw">ON</span> drug_concept_id <span class="op">=</span> descendant_concept_id</span>
-<span id="cb58-5"><a href="SqlAndR.html#cb58-5"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept ingredient</span>
-<span id="cb58-6"><a href="SqlAndR.html#cb58-6"></a>  <span class="kw">ON</span> ancestor_concept_id <span class="op">=</span> ingredient.concept_id</span>
-<span id="cb58-7"><a href="SqlAndR.html#cb58-7"></a><span class="kw">WHERE</span> <span class="fu">LOWER</span>(ingredient.concept_name) <span class="op">=</span> <span class="st">&#39;ibuprofen&#39;</span></span>
-<span id="cb58-8"><a href="SqlAndR.html#cb58-8"></a>  <span class="kw">AND</span> ingredient.concept_class_id <span class="op">=</span> <span class="st">&#39;Ingredient&#39;</span></span>
-<span id="cb58-9"><a href="SqlAndR.html#cb58-9"></a>  <span class="kw">AND</span> ingredient.standard_concept <span class="op">=</span> <span class="st">&#39;S&#39;</span>;</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb59-1"><a href="SqlAndR.html#cb59-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> prescription_count</span>
+<span id="cb59-2"><a href="SqlAndR.html#cb59-2"></a><span class="kw">FROM</span> @cdm.drug_exposure</span>
+<span id="cb59-3"><a href="SqlAndR.html#cb59-3"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept_ancestor</span>
+<span id="cb59-4"><a href="SqlAndR.html#cb59-4"></a>  <span class="kw">ON</span> drug_concept_id <span class="op">=</span> descendant_concept_id</span>
+<span id="cb59-5"><a href="SqlAndR.html#cb59-5"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> @cdm.concept ingredient</span>
+<span id="cb59-6"><a href="SqlAndR.html#cb59-6"></a>  <span class="kw">ON</span> ancestor_concept_id <span class="op">=</span> ingredient.concept_id</span>
+<span id="cb59-7"><a href="SqlAndR.html#cb59-7"></a><span class="kw">WHERE</span> <span class="fu">LOWER</span>(ingredient.concept_name) <span class="op">=</span> <span class="st">&#39;ibuprofen&#39;</span></span>
+<span id="cb59-8"><a href="SqlAndR.html#cb59-8"></a>  <span class="kw">AND</span> ingredient.concept_class_id <span class="op">=</span> <span class="st">&#39;Ingredient&#39;</span></span>
+<span id="cb59-9"><a href="SqlAndR.html#cb59-9"></a>  <span class="kw">AND</span> ingredient.standard_concept <span class="op">=</span> <span class="st">&#39;S&#39;</span>;</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1150,7 +1152,7 @@ Figure 10.1: The SqlDeveloper Shiny app.
 <div id="querylibrary" class="section level2">
 <h2><span class="header-section-number">10.5</span> QueryLibrary</h2>
 <p>TODO: update this section when QueryLibrary is finalized.</p>
-<p>QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application<a href="references.html#fn28" class="footnote-ref" id="fnref28"><sup>28</sup></a> shown in Figure <a href="SqlAndR.html#fig:queryLibrary">10.2</a>, and as an R package<a href="references.html#fn29" class="footnote-ref" id="fnref29"><sup>29</sup></a>.</p>
+<p>QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application<a href="references.html#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a> shown in Figure <a href="SqlAndR.html#fig:queryLibrary">10.2</a>, and as an R package<a href="references.html#fn27" class="footnote-ref" id="fnref27"><sup>27</sup></a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:queryLibrary"></span>
 <img src="images/SqlAndR/queryLibrary.png" alt="QueryLibrary: a library of SQL queries against the CDM." width="100%" />
 <p class="caption">
@@ -1185,194 +1187,194 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 <div id="implementing-the-study-using-sql-and-r" class="section level2">
 <h2><span class="header-section-number">10.7</span> Implementing the study using SQL and R</h2>
 <p>Although we are not bound to any of the OHDSI tool conventions, it is helpful to follow the same principles. In this case, we will use SQL to populate a cohort table, similarly to how the OHDSI tools work. The COHORT table is defined in the CDM, and has a predefined set of fields that we will also use. We first must create the COHORT table in a database schema where we have write access, which likely is not the same as the database schema that holds the data in CDM format.</p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="SqlAndR.html#cb59-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
-<span id="cb59-2"><a href="SqlAndR.html#cb59-2"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
-<span id="cb59-3"><a href="SqlAndR.html#cb59-3"></a>                <span class="dt">server =</span> <span class="st">&quot;localhost/postgres&quot;</span>,</span>
-<span id="cb59-4"><a href="SqlAndR.html#cb59-4"></a>                <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
-<span id="cb59-5"><a href="SqlAndR.html#cb59-5"></a>                <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>)</span>
-<span id="cb59-6"><a href="SqlAndR.html#cb59-6"></a>cdmDbSchema &lt;-<span class="st"> &quot;cdm&quot;</span></span>
-<span id="cb59-7"><a href="SqlAndR.html#cb59-7"></a>cohortDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span></span>
-<span id="cb59-8"><a href="SqlAndR.html#cb59-8"></a>cohortTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span></span>
-<span id="cb59-9"><a href="SqlAndR.html#cb59-9"></a></span>
-<span id="cb59-10"><a href="SqlAndR.html#cb59-10"></a>sql &lt;-<span class="st"> &quot;</span></span>
-<span id="cb59-11"><a href="SqlAndR.html#cb59-11"></a><span class="st">CREATE TABLE @cohort_db_schema.@cohort_table (</span></span>
-<span id="cb59-12"><a href="SqlAndR.html#cb59-12"></a><span class="st">  cohort_definition_id INT,</span></span>
-<span id="cb59-13"><a href="SqlAndR.html#cb59-13"></a><span class="st">  cohort_start_date DATE,</span></span>
-<span id="cb59-14"><a href="SqlAndR.html#cb59-14"></a><span class="st">  cohort_end_date DATE,</span></span>
-<span id="cb59-15"><a href="SqlAndR.html#cb59-15"></a><span class="st">  subject_id BIGINT</span></span>
-<span id="cb59-16"><a href="SqlAndR.html#cb59-16"></a><span class="st">);</span></span>
-<span id="cb59-17"><a href="SqlAndR.html#cb59-17"></a><span class="st">&quot;</span></span>
-<span id="cb59-18"><a href="SqlAndR.html#cb59-18"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
-<span id="cb59-19"><a href="SqlAndR.html#cb59-19"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
-<span id="cb59-20"><a href="SqlAndR.html#cb59-20"></a>                          <span class="dt">cohort_table =</span> cohortTable)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="SqlAndR.html#cb60-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
+<span id="cb60-2"><a href="SqlAndR.html#cb60-2"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
+<span id="cb60-3"><a href="SqlAndR.html#cb60-3"></a>                <span class="dt">server =</span> <span class="st">&quot;localhost/postgres&quot;</span>,</span>
+<span id="cb60-4"><a href="SqlAndR.html#cb60-4"></a>                <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
+<span id="cb60-5"><a href="SqlAndR.html#cb60-5"></a>                <span class="dt">password =</span> <span class="st">&quot;secret&quot;</span>)</span>
+<span id="cb60-6"><a href="SqlAndR.html#cb60-6"></a>cdmDbSchema &lt;-<span class="st"> &quot;cdm&quot;</span></span>
+<span id="cb60-7"><a href="SqlAndR.html#cb60-7"></a>cohortDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span></span>
+<span id="cb60-8"><a href="SqlAndR.html#cb60-8"></a>cohortTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span></span>
+<span id="cb60-9"><a href="SqlAndR.html#cb60-9"></a></span>
+<span id="cb60-10"><a href="SqlAndR.html#cb60-10"></a>sql &lt;-<span class="st"> &quot;</span></span>
+<span id="cb60-11"><a href="SqlAndR.html#cb60-11"></a><span class="st">CREATE TABLE @cohort_db_schema.@cohort_table (</span></span>
+<span id="cb60-12"><a href="SqlAndR.html#cb60-12"></a><span class="st">  cohort_definition_id INT,</span></span>
+<span id="cb60-13"><a href="SqlAndR.html#cb60-13"></a><span class="st">  cohort_start_date DATE,</span></span>
+<span id="cb60-14"><a href="SqlAndR.html#cb60-14"></a><span class="st">  cohort_end_date DATE,</span></span>
+<span id="cb60-15"><a href="SqlAndR.html#cb60-15"></a><span class="st">  subject_id BIGINT</span></span>
+<span id="cb60-16"><a href="SqlAndR.html#cb60-16"></a><span class="st">);</span></span>
+<span id="cb60-17"><a href="SqlAndR.html#cb60-17"></a><span class="st">&quot;</span></span>
+<span id="cb60-18"><a href="SqlAndR.html#cb60-18"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
+<span id="cb60-19"><a href="SqlAndR.html#cb60-19"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
+<span id="cb60-20"><a href="SqlAndR.html#cb60-20"></a>                          <span class="dt">cohort_table =</span> cohortTable)</span></code></pre></div>
 <p>Here we have parameterized the database schema and table names, so we can easily adapt them to different environments. The result is an empty table on the database server.</p>
 <div id="exposure-cohort" class="section level3">
 <h3><span class="header-section-number">10.7.1</span> Exposure cohort</h3>
 <p>Next we create our exposure cohort, and insert it into our COHORT table:</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="SqlAndR.html#cb60-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
-<span id="cb60-2"><a href="SqlAndR.html#cb60-2"></a><span class="st">INSERT INTO @cohort_db_schema.@cohort_table (</span></span>
-<span id="cb60-3"><a href="SqlAndR.html#cb60-3"></a><span class="st">  cohort_definition_id,</span></span>
-<span id="cb60-4"><a href="SqlAndR.html#cb60-4"></a><span class="st">  cohort_start_date,</span></span>
-<span id="cb60-5"><a href="SqlAndR.html#cb60-5"></a><span class="st">  cohort_end_date,</span></span>
-<span id="cb60-6"><a href="SqlAndR.html#cb60-6"></a><span class="st">  subject_id</span></span>
-<span id="cb60-7"><a href="SqlAndR.html#cb60-7"></a><span class="st">)</span></span>
-<span id="cb60-8"><a href="SqlAndR.html#cb60-8"></a><span class="st">SELECT 1 AS cohort_definition_id,</span></span>
-<span id="cb60-9"><a href="SqlAndR.html#cb60-9"></a><span class="st">  cohort_start_date,</span></span>
-<span id="cb60-10"><a href="SqlAndR.html#cb60-10"></a><span class="st">  cohort_end_date,</span></span>
-<span id="cb60-11"><a href="SqlAndR.html#cb60-11"></a><span class="st">  subject_id</span></span>
-<span id="cb60-12"><a href="SqlAndR.html#cb60-12"></a><span class="st">FROM (</span></span>
-<span id="cb60-13"><a href="SqlAndR.html#cb60-13"></a><span class="st">  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,</span></span>
-<span id="cb60-14"><a href="SqlAndR.html#cb60-14"></a><span class="st">    MIN(drug_exposure_end_date) AS cohort_end_date,</span></span>
-<span id="cb60-15"><a href="SqlAndR.html#cb60-15"></a><span class="st">    person_id AS subject_id</span></span>
-<span id="cb60-16"><a href="SqlAndR.html#cb60-16"></a><span class="st">  FROM @cdm_db_schema.drug_exposure</span></span>
-<span id="cb60-17"><a href="SqlAndR.html#cb60-17"></a><span class="st">  INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
-<span id="cb60-18"><a href="SqlAndR.html#cb60-18"></a><span class="st">    ON drug_concept_id = descendant_concept_id</span></span>
-<span id="cb60-19"><a href="SqlAndR.html#cb60-19"></a><span class="st">  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,</span></span>
-<span id="cb60-20"><a href="SqlAndR.html#cb60-20"></a><span class="st">    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,</span></span>
-<span id="cb60-21"><a href="SqlAndR.html#cb60-21"></a><span class="st">    1342439) -- ACE inhibitors</span></span>
-<span id="cb60-22"><a href="SqlAndR.html#cb60-22"></a><span class="st">  GROUP BY person_id</span></span>
-<span id="cb60-23"><a href="SqlAndR.html#cb60-23"></a><span class="st">) first_exposure</span></span>
-<span id="cb60-24"><a href="SqlAndR.html#cb60-24"></a><span class="st">INNER JOIN @cdm_db_schema.observation_period</span></span>
-<span id="cb60-25"><a href="SqlAndR.html#cb60-25"></a><span class="st">  ON subject_id = person_id</span></span>
-<span id="cb60-26"><a href="SqlAndR.html#cb60-26"></a><span class="st">    AND observation_period_start_date &lt; cohort_start_date</span></span>
-<span id="cb60-27"><a href="SqlAndR.html#cb60-27"></a><span class="st">    AND observation_period_end_date &gt; cohort_start_date</span></span>
-<span id="cb60-28"><a href="SqlAndR.html#cb60-28"></a><span class="st">WHERE DATEDIFF(DAY,</span></span>
-<span id="cb60-29"><a href="SqlAndR.html#cb60-29"></a><span class="st">               observation_period_start_date,</span></span>
-<span id="cb60-30"><a href="SqlAndR.html#cb60-30"></a><span class="st">               cohort_start_date) &gt;= 365;</span></span>
-<span id="cb60-31"><a href="SqlAndR.html#cb60-31"></a><span class="st">&quot;</span></span>
-<span id="cb60-32"><a href="SqlAndR.html#cb60-32"></a></span>
-<span id="cb60-33"><a href="SqlAndR.html#cb60-33"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
-<span id="cb60-34"><a href="SqlAndR.html#cb60-34"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
-<span id="cb60-35"><a href="SqlAndR.html#cb60-35"></a>                          <span class="dt">cohort_table =</span> cohortTable,</span>
-<span id="cb60-36"><a href="SqlAndR.html#cb60-36"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="SqlAndR.html#cb61-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
+<span id="cb61-2"><a href="SqlAndR.html#cb61-2"></a><span class="st">INSERT INTO @cohort_db_schema.@cohort_table (</span></span>
+<span id="cb61-3"><a href="SqlAndR.html#cb61-3"></a><span class="st">  cohort_definition_id,</span></span>
+<span id="cb61-4"><a href="SqlAndR.html#cb61-4"></a><span class="st">  cohort_start_date,</span></span>
+<span id="cb61-5"><a href="SqlAndR.html#cb61-5"></a><span class="st">  cohort_end_date,</span></span>
+<span id="cb61-6"><a href="SqlAndR.html#cb61-6"></a><span class="st">  subject_id</span></span>
+<span id="cb61-7"><a href="SqlAndR.html#cb61-7"></a><span class="st">)</span></span>
+<span id="cb61-8"><a href="SqlAndR.html#cb61-8"></a><span class="st">SELECT 1 AS cohort_definition_id,</span></span>
+<span id="cb61-9"><a href="SqlAndR.html#cb61-9"></a><span class="st">  cohort_start_date,</span></span>
+<span id="cb61-10"><a href="SqlAndR.html#cb61-10"></a><span class="st">  cohort_end_date,</span></span>
+<span id="cb61-11"><a href="SqlAndR.html#cb61-11"></a><span class="st">  subject_id</span></span>
+<span id="cb61-12"><a href="SqlAndR.html#cb61-12"></a><span class="st">FROM (</span></span>
+<span id="cb61-13"><a href="SqlAndR.html#cb61-13"></a><span class="st">  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,</span></span>
+<span id="cb61-14"><a href="SqlAndR.html#cb61-14"></a><span class="st">    MIN(drug_exposure_end_date) AS cohort_end_date,</span></span>
+<span id="cb61-15"><a href="SqlAndR.html#cb61-15"></a><span class="st">    person_id AS subject_id</span></span>
+<span id="cb61-16"><a href="SqlAndR.html#cb61-16"></a><span class="st">  FROM @cdm_db_schema.drug_exposure</span></span>
+<span id="cb61-17"><a href="SqlAndR.html#cb61-17"></a><span class="st">  INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
+<span id="cb61-18"><a href="SqlAndR.html#cb61-18"></a><span class="st">    ON drug_concept_id = descendant_concept_id</span></span>
+<span id="cb61-19"><a href="SqlAndR.html#cb61-19"></a><span class="st">  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,</span></span>
+<span id="cb61-20"><a href="SqlAndR.html#cb61-20"></a><span class="st">    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,</span></span>
+<span id="cb61-21"><a href="SqlAndR.html#cb61-21"></a><span class="st">    1342439) -- ACE inhibitors</span></span>
+<span id="cb61-22"><a href="SqlAndR.html#cb61-22"></a><span class="st">  GROUP BY person_id</span></span>
+<span id="cb61-23"><a href="SqlAndR.html#cb61-23"></a><span class="st">) first_exposure</span></span>
+<span id="cb61-24"><a href="SqlAndR.html#cb61-24"></a><span class="st">INNER JOIN @cdm_db_schema.observation_period</span></span>
+<span id="cb61-25"><a href="SqlAndR.html#cb61-25"></a><span class="st">  ON subject_id = person_id</span></span>
+<span id="cb61-26"><a href="SqlAndR.html#cb61-26"></a><span class="st">    AND observation_period_start_date &lt; cohort_start_date</span></span>
+<span id="cb61-27"><a href="SqlAndR.html#cb61-27"></a><span class="st">    AND observation_period_end_date &gt; cohort_start_date</span></span>
+<span id="cb61-28"><a href="SqlAndR.html#cb61-28"></a><span class="st">WHERE DATEDIFF(DAY,</span></span>
+<span id="cb61-29"><a href="SqlAndR.html#cb61-29"></a><span class="st">               observation_period_start_date,</span></span>
+<span id="cb61-30"><a href="SqlAndR.html#cb61-30"></a><span class="st">               cohort_start_date) &gt;= 365;</span></span>
+<span id="cb61-31"><a href="SqlAndR.html#cb61-31"></a><span class="st">&quot;</span></span>
+<span id="cb61-32"><a href="SqlAndR.html#cb61-32"></a></span>
+<span id="cb61-33"><a href="SqlAndR.html#cb61-33"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
+<span id="cb61-34"><a href="SqlAndR.html#cb61-34"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
+<span id="cb61-35"><a href="SqlAndR.html#cb61-35"></a>                          <span class="dt">cohort_table =</span> cohortTable,</span>
+<span id="cb61-36"><a href="SqlAndR.html#cb61-36"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema)</span></code></pre></div>
 <p>Here we use the DRUG_EXPOSURE table, and join it the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation_period_start_date and the cohort_start_date.</p>
 </div>
 <div id="outcome-cohort" class="section level3">
 <h3><span class="header-section-number">10.7.2</span> Outcome cohort</h3>
 <p>Finally, we must create our outcome cohort:</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="SqlAndR.html#cb61-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
-<span id="cb61-2"><a href="SqlAndR.html#cb61-2"></a><span class="st">INSERT INTO @cohort_db_schema.@cohort_table (</span></span>
-<span id="cb61-3"><a href="SqlAndR.html#cb61-3"></a><span class="st"> cohort_definition_id,</span></span>
-<span id="cb61-4"><a href="SqlAndR.html#cb61-4"></a><span class="st"> cohort_start_date,</span></span>
-<span id="cb61-5"><a href="SqlAndR.html#cb61-5"></a><span class="st"> cohort_end_date,</span></span>
-<span id="cb61-6"><a href="SqlAndR.html#cb61-6"></a><span class="st">subject_id</span></span>
-<span id="cb61-7"><a href="SqlAndR.html#cb61-7"></a><span class="st">)</span></span>
-<span id="cb61-8"><a href="SqlAndR.html#cb61-8"></a><span class="st">SELECT 2 AS cohort_definition_id,</span></span>
-<span id="cb61-9"><a href="SqlAndR.html#cb61-9"></a><span class="st">  cohort_start_date,</span></span>
-<span id="cb61-10"><a href="SqlAndR.html#cb61-10"></a><span class="st">  cohort_end_date,</span></span>
-<span id="cb61-11"><a href="SqlAndR.html#cb61-11"></a><span class="st">  subject_id</span></span>
-<span id="cb61-12"><a href="SqlAndR.html#cb61-12"></a><span class="st">FROM (</span></span>
-<span id="cb61-13"><a href="SqlAndR.html#cb61-13"></a><span class="st">  SELECT DISTINCT person_id AS subject_id,</span></span>
-<span id="cb61-14"><a href="SqlAndR.html#cb61-14"></a><span class="st">    condition_start_date AS cohort_start_date,</span></span>
-<span id="cb61-15"><a href="SqlAndR.html#cb61-15"></a><span class="st">    condition_end_date AS cohort_end_date</span></span>
-<span id="cb61-16"><a href="SqlAndR.html#cb61-16"></a><span class="st">  FROM @cdm_db_schema.condition_occurrence</span></span>
-<span id="cb61-17"><a href="SqlAndR.html#cb61-17"></a><span class="st">  INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
-<span id="cb61-18"><a href="SqlAndR.html#cb61-18"></a><span class="st">    ON condition_concept_id = descendant_concept_id</span></span>
-<span id="cb61-19"><a href="SqlAndR.html#cb61-19"></a><span class="st">  WHERE ancestor_concept_id = 432791 -- Angioedema</span></span>
-<span id="cb61-20"><a href="SqlAndR.html#cb61-20"></a><span class="st">) distinct_occurrence</span></span>
-<span id="cb61-21"><a href="SqlAndR.html#cb61-21"></a><span class="st">INNER JOIN @cdm_db_schema.visit_occurrence</span></span>
-<span id="cb61-22"><a href="SqlAndR.html#cb61-22"></a><span class="st">  ON subject_id = person_id</span></span>
-<span id="cb61-23"><a href="SqlAndR.html#cb61-23"></a><span class="st">  AND visit_start_date &lt;= cohort_start_date</span></span>
-<span id="cb61-24"><a href="SqlAndR.html#cb61-24"></a><span class="st">  AND visit_end_date &gt;= cohort_start_date</span></span>
-<span id="cb61-25"><a href="SqlAndR.html#cb61-25"></a><span class="st">WHERE visit_concept_id IN (262, 9203,</span></span>
-<span id="cb61-26"><a href="SqlAndR.html#cb61-26"></a><span class="st">    9201) -- Inpatient or ER;</span></span>
-<span id="cb61-27"><a href="SqlAndR.html#cb61-27"></a><span class="st">&quot;</span></span>
-<span id="cb61-28"><a href="SqlAndR.html#cb61-28"></a></span>
-<span id="cb61-29"><a href="SqlAndR.html#cb61-29"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
-<span id="cb61-30"><a href="SqlAndR.html#cb61-30"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
-<span id="cb61-31"><a href="SqlAndR.html#cb61-31"></a>                          <span class="dt">cohort_table =</span> cohortTable,</span>
-<span id="cb61-32"><a href="SqlAndR.html#cb61-32"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="SqlAndR.html#cb62-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
+<span id="cb62-2"><a href="SqlAndR.html#cb62-2"></a><span class="st">INSERT INTO @cohort_db_schema.@cohort_table (</span></span>
+<span id="cb62-3"><a href="SqlAndR.html#cb62-3"></a><span class="st"> cohort_definition_id,</span></span>
+<span id="cb62-4"><a href="SqlAndR.html#cb62-4"></a><span class="st"> cohort_start_date,</span></span>
+<span id="cb62-5"><a href="SqlAndR.html#cb62-5"></a><span class="st"> cohort_end_date,</span></span>
+<span id="cb62-6"><a href="SqlAndR.html#cb62-6"></a><span class="st">subject_id</span></span>
+<span id="cb62-7"><a href="SqlAndR.html#cb62-7"></a><span class="st">)</span></span>
+<span id="cb62-8"><a href="SqlAndR.html#cb62-8"></a><span class="st">SELECT 2 AS cohort_definition_id,</span></span>
+<span id="cb62-9"><a href="SqlAndR.html#cb62-9"></a><span class="st">  cohort_start_date,</span></span>
+<span id="cb62-10"><a href="SqlAndR.html#cb62-10"></a><span class="st">  cohort_end_date,</span></span>
+<span id="cb62-11"><a href="SqlAndR.html#cb62-11"></a><span class="st">  subject_id</span></span>
+<span id="cb62-12"><a href="SqlAndR.html#cb62-12"></a><span class="st">FROM (</span></span>
+<span id="cb62-13"><a href="SqlAndR.html#cb62-13"></a><span class="st">  SELECT DISTINCT person_id AS subject_id,</span></span>
+<span id="cb62-14"><a href="SqlAndR.html#cb62-14"></a><span class="st">    condition_start_date AS cohort_start_date,</span></span>
+<span id="cb62-15"><a href="SqlAndR.html#cb62-15"></a><span class="st">    condition_end_date AS cohort_end_date</span></span>
+<span id="cb62-16"><a href="SqlAndR.html#cb62-16"></a><span class="st">  FROM @cdm_db_schema.condition_occurrence</span></span>
+<span id="cb62-17"><a href="SqlAndR.html#cb62-17"></a><span class="st">  INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
+<span id="cb62-18"><a href="SqlAndR.html#cb62-18"></a><span class="st">    ON condition_concept_id = descendant_concept_id</span></span>
+<span id="cb62-19"><a href="SqlAndR.html#cb62-19"></a><span class="st">  WHERE ancestor_concept_id = 432791 -- Angioedema</span></span>
+<span id="cb62-20"><a href="SqlAndR.html#cb62-20"></a><span class="st">) distinct_occurrence</span></span>
+<span id="cb62-21"><a href="SqlAndR.html#cb62-21"></a><span class="st">INNER JOIN @cdm_db_schema.visit_occurrence</span></span>
+<span id="cb62-22"><a href="SqlAndR.html#cb62-22"></a><span class="st">  ON subject_id = person_id</span></span>
+<span id="cb62-23"><a href="SqlAndR.html#cb62-23"></a><span class="st">  AND visit_start_date &lt;= cohort_start_date</span></span>
+<span id="cb62-24"><a href="SqlAndR.html#cb62-24"></a><span class="st">  AND visit_end_date &gt;= cohort_start_date</span></span>
+<span id="cb62-25"><a href="SqlAndR.html#cb62-25"></a><span class="st">WHERE visit_concept_id IN (262, 9203,</span></span>
+<span id="cb62-26"><a href="SqlAndR.html#cb62-26"></a><span class="st">    9201) -- Inpatient or ER;</span></span>
+<span id="cb62-27"><a href="SqlAndR.html#cb62-27"></a><span class="st">&quot;</span></span>
+<span id="cb62-28"><a href="SqlAndR.html#cb62-28"></a></span>
+<span id="cb62-29"><a href="SqlAndR.html#cb62-29"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
+<span id="cb62-30"><a href="SqlAndR.html#cb62-30"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
+<span id="cb62-31"><a href="SqlAndR.html#cb62-31"></a>                          <span class="dt">cohort_table =</span> cohortTable,</span>
+<span id="cb62-32"><a href="SqlAndR.html#cb62-32"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema)</span></code></pre></div>
 <p>Here we join the CONDITION_OCCURRENCE table to the CONCEPT_ANCESTOR table to find all occurrences of angioedema or any of its descendants. We use DISTINCT to make sure we only select one record per day, as we believe multiple angioedema diagnoses on the same day are more likely to be the same occurrence rather than multiple angioedema events. We join these occurrences to the VISIT_OCCURRENCE table to ensure the diagnose was made in and inpatient or ER setting.</p>
 </div>
 <div id="incidence-rate-calculation" class="section level3">
 <h3><span class="header-section-number">10.7.3</span> Incidence rate calculation</h3>
 <p>Now that our cohorts are in place, we can compute the incidence rate, stratified by age and gender:</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="SqlAndR.html#cb62-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
-<span id="cb62-2"><a href="SqlAndR.html#cb62-2"></a><span class="st">WITH tar AS (</span></span>
-<span id="cb62-3"><a href="SqlAndR.html#cb62-3"></a><span class="st">  SELECT concept_name AS gender,</span></span>
-<span id="cb62-4"><a href="SqlAndR.html#cb62-4"></a><span class="st">    FLOOR((YEAR(cohort_start_date) -</span></span>
-<span id="cb62-5"><a href="SqlAndR.html#cb62-5"></a><span class="st">          year_of_birth) / 10) AS age,</span></span>
-<span id="cb62-6"><a href="SqlAndR.html#cb62-6"></a><span class="st">    subject_id,</span></span>
-<span id="cb62-7"><a href="SqlAndR.html#cb62-7"></a><span class="st">    cohort_start_date,</span></span>
-<span id="cb62-8"><a href="SqlAndR.html#cb62-8"></a><span class="st">    CASE WHEN DATEADD(DAY, 7, cohort_start_date) &gt;</span></span>
-<span id="cb62-9"><a href="SqlAndR.html#cb62-9"></a><span class="st">      observation_period_end_date</span></span>
-<span id="cb62-10"><a href="SqlAndR.html#cb62-10"></a><span class="st">    THEN observation_period_end_date</span></span>
-<span id="cb62-11"><a href="SqlAndR.html#cb62-11"></a><span class="st">    ELSE DATEADD(DAY, 7, cohort_start_date)</span></span>
-<span id="cb62-12"><a href="SqlAndR.html#cb62-12"></a><span class="st">    END AS cohort_end_date</span></span>
-<span id="cb62-13"><a href="SqlAndR.html#cb62-13"></a><span class="st">  FROM @cohort_db_schema.@cohort_table</span></span>
-<span id="cb62-14"><a href="SqlAndR.html#cb62-14"></a><span class="st">  INNER JOIN @cdm_db_schema.observation_period</span></span>
-<span id="cb62-15"><a href="SqlAndR.html#cb62-15"></a><span class="st">    ON subject_id = observation_period.person_id</span></span>
-<span id="cb62-16"><a href="SqlAndR.html#cb62-16"></a><span class="st">      AND observation_period_start_date &lt; cohort_start_date</span></span>
-<span id="cb62-17"><a href="SqlAndR.html#cb62-17"></a><span class="st">      AND observation_period_end_date &gt; cohort_start_date</span></span>
-<span id="cb62-18"><a href="SqlAndR.html#cb62-18"></a><span class="st">  INNER JOIN @cdm_db_schema.person</span></span>
-<span id="cb62-19"><a href="SqlAndR.html#cb62-19"></a><span class="st">    ON subject_id = person.person_id</span></span>
-<span id="cb62-20"><a href="SqlAndR.html#cb62-20"></a><span class="st">  INNER JOIN @cdm_db_schema.concept</span></span>
-<span id="cb62-21"><a href="SqlAndR.html#cb62-21"></a><span class="st">    ON gender_concept_id = concept_id</span></span>
-<span id="cb62-22"><a href="SqlAndR.html#cb62-22"></a><span class="st">  WHERE cohort_definition_id = 1 -- Exposure</span></span>
-<span id="cb62-23"><a href="SqlAndR.html#cb62-23"></a><span class="st">)</span></span>
-<span id="cb62-24"><a href="SqlAndR.html#cb62-24"></a><span class="st">SELECT days.gender,</span></span>
-<span id="cb62-25"><a href="SqlAndR.html#cb62-25"></a><span class="st">    days.age,</span></span>
-<span id="cb62-26"><a href="SqlAndR.html#cb62-26"></a><span class="st">    days,</span></span>
-<span id="cb62-27"><a href="SqlAndR.html#cb62-27"></a><span class="st">    CASE WHEN events IS NULL THEN 0 ELSE events END AS events</span></span>
-<span id="cb62-28"><a href="SqlAndR.html#cb62-28"></a><span class="st">FROM (</span></span>
-<span id="cb62-29"><a href="SqlAndR.html#cb62-29"></a><span class="st">  SELECT gender,</span></span>
-<span id="cb62-30"><a href="SqlAndR.html#cb62-30"></a><span class="st">    age,</span></span>
-<span id="cb62-31"><a href="SqlAndR.html#cb62-31"></a><span class="st">    SUM(DATEDIFF(DAY, cohort_start_date,</span></span>
-<span id="cb62-32"><a href="SqlAndR.html#cb62-32"></a><span class="st">      cohort_end_date)) AS days</span></span>
-<span id="cb62-33"><a href="SqlAndR.html#cb62-33"></a><span class="st">  FROM tar</span></span>
-<span id="cb62-34"><a href="SqlAndR.html#cb62-34"></a><span class="st">  GROUP BY gender,</span></span>
-<span id="cb62-35"><a href="SqlAndR.html#cb62-35"></a><span class="st">    age</span></span>
-<span id="cb62-36"><a href="SqlAndR.html#cb62-36"></a><span class="st">) days</span></span>
-<span id="cb62-37"><a href="SqlAndR.html#cb62-37"></a><span class="st">LEFT JOIN (</span></span>
-<span id="cb62-38"><a href="SqlAndR.html#cb62-38"></a><span class="st">  SELECT gender,</span></span>
-<span id="cb62-39"><a href="SqlAndR.html#cb62-39"></a><span class="st">      age,</span></span>
-<span id="cb62-40"><a href="SqlAndR.html#cb62-40"></a><span class="st">      COUNT(*) AS events</span></span>
-<span id="cb62-41"><a href="SqlAndR.html#cb62-41"></a><span class="st">  FROM tar</span></span>
-<span id="cb62-42"><a href="SqlAndR.html#cb62-42"></a><span class="st">  INNER JOIN @cohort_db_schema.@cohort_table angioedema</span></span>
-<span id="cb62-43"><a href="SqlAndR.html#cb62-43"></a><span class="st">    ON tar.subject_id = angioedema.subject_id</span></span>
-<span id="cb62-44"><a href="SqlAndR.html#cb62-44"></a><span class="st">      AND tar.cohort_start_date &lt;= angioedema.cohort_start_date</span></span>
-<span id="cb62-45"><a href="SqlAndR.html#cb62-45"></a><span class="st">      AND tar.cohort_end_date &gt;= angioedema.cohort_start_date</span></span>
-<span id="cb62-46"><a href="SqlAndR.html#cb62-46"></a><span class="st">  WHERE cohort_definition_id = 2 -- Outcome</span></span>
-<span id="cb62-47"><a href="SqlAndR.html#cb62-47"></a><span class="st">  GROUP BY gender,</span></span>
-<span id="cb62-48"><a href="SqlAndR.html#cb62-48"></a><span class="st">    age</span></span>
-<span id="cb62-49"><a href="SqlAndR.html#cb62-49"></a><span class="st">) events</span></span>
-<span id="cb62-50"><a href="SqlAndR.html#cb62-50"></a><span class="st">ON days.gender = events.gender</span></span>
-<span id="cb62-51"><a href="SqlAndR.html#cb62-51"></a><span class="st">  AND days.age = events.age;</span></span>
-<span id="cb62-52"><a href="SqlAndR.html#cb62-52"></a><span class="st">&quot;</span></span>
-<span id="cb62-53"><a href="SqlAndR.html#cb62-53"></a></span>
-<span id="cb62-54"><a href="SqlAndR.html#cb62-54"></a>results &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, sql,</span>
-<span id="cb62-55"><a href="SqlAndR.html#cb62-55"></a>                                   <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
-<span id="cb62-56"><a href="SqlAndR.html#cb62-56"></a>                                   <span class="dt">cohort_table =</span> cohortTable,</span>
-<span id="cb62-57"><a href="SqlAndR.html#cb62-57"></a>                                   <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
-<span id="cb62-58"><a href="SqlAndR.html#cb62-58"></a>                                   <span class="dt">snakeCaseToCamelCase =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="SqlAndR.html#cb63-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
+<span id="cb63-2"><a href="SqlAndR.html#cb63-2"></a><span class="st">WITH tar AS (</span></span>
+<span id="cb63-3"><a href="SqlAndR.html#cb63-3"></a><span class="st">  SELECT concept_name AS gender,</span></span>
+<span id="cb63-4"><a href="SqlAndR.html#cb63-4"></a><span class="st">    FLOOR((YEAR(cohort_start_date) -</span></span>
+<span id="cb63-5"><a href="SqlAndR.html#cb63-5"></a><span class="st">          year_of_birth) / 10) AS age,</span></span>
+<span id="cb63-6"><a href="SqlAndR.html#cb63-6"></a><span class="st">    subject_id,</span></span>
+<span id="cb63-7"><a href="SqlAndR.html#cb63-7"></a><span class="st">    cohort_start_date,</span></span>
+<span id="cb63-8"><a href="SqlAndR.html#cb63-8"></a><span class="st">    CASE WHEN DATEADD(DAY, 7, cohort_start_date) &gt;</span></span>
+<span id="cb63-9"><a href="SqlAndR.html#cb63-9"></a><span class="st">      observation_period_end_date</span></span>
+<span id="cb63-10"><a href="SqlAndR.html#cb63-10"></a><span class="st">    THEN observation_period_end_date</span></span>
+<span id="cb63-11"><a href="SqlAndR.html#cb63-11"></a><span class="st">    ELSE DATEADD(DAY, 7, cohort_start_date)</span></span>
+<span id="cb63-12"><a href="SqlAndR.html#cb63-12"></a><span class="st">    END AS cohort_end_date</span></span>
+<span id="cb63-13"><a href="SqlAndR.html#cb63-13"></a><span class="st">  FROM @cohort_db_schema.@cohort_table</span></span>
+<span id="cb63-14"><a href="SqlAndR.html#cb63-14"></a><span class="st">  INNER JOIN @cdm_db_schema.observation_period</span></span>
+<span id="cb63-15"><a href="SqlAndR.html#cb63-15"></a><span class="st">    ON subject_id = observation_period.person_id</span></span>
+<span id="cb63-16"><a href="SqlAndR.html#cb63-16"></a><span class="st">      AND observation_period_start_date &lt; cohort_start_date</span></span>
+<span id="cb63-17"><a href="SqlAndR.html#cb63-17"></a><span class="st">      AND observation_period_end_date &gt; cohort_start_date</span></span>
+<span id="cb63-18"><a href="SqlAndR.html#cb63-18"></a><span class="st">  INNER JOIN @cdm_db_schema.person</span></span>
+<span id="cb63-19"><a href="SqlAndR.html#cb63-19"></a><span class="st">    ON subject_id = person.person_id</span></span>
+<span id="cb63-20"><a href="SqlAndR.html#cb63-20"></a><span class="st">  INNER JOIN @cdm_db_schema.concept</span></span>
+<span id="cb63-21"><a href="SqlAndR.html#cb63-21"></a><span class="st">    ON gender_concept_id = concept_id</span></span>
+<span id="cb63-22"><a href="SqlAndR.html#cb63-22"></a><span class="st">  WHERE cohort_definition_id = 1 -- Exposure</span></span>
+<span id="cb63-23"><a href="SqlAndR.html#cb63-23"></a><span class="st">)</span></span>
+<span id="cb63-24"><a href="SqlAndR.html#cb63-24"></a><span class="st">SELECT days.gender,</span></span>
+<span id="cb63-25"><a href="SqlAndR.html#cb63-25"></a><span class="st">    days.age,</span></span>
+<span id="cb63-26"><a href="SqlAndR.html#cb63-26"></a><span class="st">    days,</span></span>
+<span id="cb63-27"><a href="SqlAndR.html#cb63-27"></a><span class="st">    CASE WHEN events IS NULL THEN 0 ELSE events END AS events</span></span>
+<span id="cb63-28"><a href="SqlAndR.html#cb63-28"></a><span class="st">FROM (</span></span>
+<span id="cb63-29"><a href="SqlAndR.html#cb63-29"></a><span class="st">  SELECT gender,</span></span>
+<span id="cb63-30"><a href="SqlAndR.html#cb63-30"></a><span class="st">    age,</span></span>
+<span id="cb63-31"><a href="SqlAndR.html#cb63-31"></a><span class="st">    SUM(DATEDIFF(DAY, cohort_start_date,</span></span>
+<span id="cb63-32"><a href="SqlAndR.html#cb63-32"></a><span class="st">      cohort_end_date)) AS days</span></span>
+<span id="cb63-33"><a href="SqlAndR.html#cb63-33"></a><span class="st">  FROM tar</span></span>
+<span id="cb63-34"><a href="SqlAndR.html#cb63-34"></a><span class="st">  GROUP BY gender,</span></span>
+<span id="cb63-35"><a href="SqlAndR.html#cb63-35"></a><span class="st">    age</span></span>
+<span id="cb63-36"><a href="SqlAndR.html#cb63-36"></a><span class="st">) days</span></span>
+<span id="cb63-37"><a href="SqlAndR.html#cb63-37"></a><span class="st">LEFT JOIN (</span></span>
+<span id="cb63-38"><a href="SqlAndR.html#cb63-38"></a><span class="st">  SELECT gender,</span></span>
+<span id="cb63-39"><a href="SqlAndR.html#cb63-39"></a><span class="st">      age,</span></span>
+<span id="cb63-40"><a href="SqlAndR.html#cb63-40"></a><span class="st">      COUNT(*) AS events</span></span>
+<span id="cb63-41"><a href="SqlAndR.html#cb63-41"></a><span class="st">  FROM tar</span></span>
+<span id="cb63-42"><a href="SqlAndR.html#cb63-42"></a><span class="st">  INNER JOIN @cohort_db_schema.@cohort_table angioedema</span></span>
+<span id="cb63-43"><a href="SqlAndR.html#cb63-43"></a><span class="st">    ON tar.subject_id = angioedema.subject_id</span></span>
+<span id="cb63-44"><a href="SqlAndR.html#cb63-44"></a><span class="st">      AND tar.cohort_start_date &lt;= angioedema.cohort_start_date</span></span>
+<span id="cb63-45"><a href="SqlAndR.html#cb63-45"></a><span class="st">      AND tar.cohort_end_date &gt;= angioedema.cohort_start_date</span></span>
+<span id="cb63-46"><a href="SqlAndR.html#cb63-46"></a><span class="st">  WHERE cohort_definition_id = 2 -- Outcome</span></span>
+<span id="cb63-47"><a href="SqlAndR.html#cb63-47"></a><span class="st">  GROUP BY gender,</span></span>
+<span id="cb63-48"><a href="SqlAndR.html#cb63-48"></a><span class="st">    age</span></span>
+<span id="cb63-49"><a href="SqlAndR.html#cb63-49"></a><span class="st">) events</span></span>
+<span id="cb63-50"><a href="SqlAndR.html#cb63-50"></a><span class="st">ON days.gender = events.gender</span></span>
+<span id="cb63-51"><a href="SqlAndR.html#cb63-51"></a><span class="st">  AND days.age = events.age;</span></span>
+<span id="cb63-52"><a href="SqlAndR.html#cb63-52"></a><span class="st">&quot;</span></span>
+<span id="cb63-53"><a href="SqlAndR.html#cb63-53"></a></span>
+<span id="cb63-54"><a href="SqlAndR.html#cb63-54"></a>results &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, sql,</span>
+<span id="cb63-55"><a href="SqlAndR.html#cb63-55"></a>                                   <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
+<span id="cb63-56"><a href="SqlAndR.html#cb63-56"></a>                                   <span class="dt">cohort_table =</span> cohortTable,</span>
+<span id="cb63-57"><a href="SqlAndR.html#cb63-57"></a>                                   <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
+<span id="cb63-58"><a href="SqlAndR.html#cb63-58"></a>                                   <span class="dt">snakeCaseToCamelCase =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>We first create “tar”, a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.</p>
 <p>We use <code>snakeCaseToCamelCase = TRUE</code> because in SQL we tend to use snake_case for field names (because SQL in case-insensitive), whereas in R we tend to use camelCase (because R is case-sensitive). The <code>results</code> data frame column names will now be in camelCase.</p>
 <p>With the help of the ggplot2 package we can easily plot our results:</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="SqlAndR.html#cb63-1"></a><span class="co"># Compute incidence rate (IR) :</span></span>
-<span id="cb63-2"><a href="SqlAndR.html#cb63-2"></a>results<span class="op">$</span>ir &lt;-<span class="st"> </span><span class="dv">1000</span> <span class="op">*</span><span class="st"> </span>results<span class="op">$</span>events <span class="op">/</span><span class="st"> </span>results<span class="op">$</span>days <span class="op">/</span><span class="st"> </span><span class="dv">7</span></span>
-<span id="cb63-3"><a href="SqlAndR.html#cb63-3"></a></span>
-<span id="cb63-4"><a href="SqlAndR.html#cb63-4"></a><span class="co"># Fix age scale:</span></span>
-<span id="cb63-5"><a href="SqlAndR.html#cb63-5"></a>results<span class="op">$</span>age &lt;-<span class="st"> </span>results<span class="op">$</span>age <span class="op">*</span><span class="st"> </span><span class="dv">10</span></span>
-<span id="cb63-6"><a href="SqlAndR.html#cb63-6"></a></span>
-<span id="cb63-7"><a href="SqlAndR.html#cb63-7"></a><span class="kw">library</span>(ggplot2)</span>
-<span id="cb63-8"><a href="SqlAndR.html#cb63-8"></a><span class="kw">ggplot</span>(results, <span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> ir, <span class="dt">group =</span> gender, <span class="dt">color =</span> gender)) <span class="op">+</span></span>
-<span id="cb63-9"><a href="SqlAndR.html#cb63-9"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
-<span id="cb63-10"><a href="SqlAndR.html#cb63-10"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Age&quot;</span>) <span class="op">+</span></span>
-<span id="cb63-11"><a href="SqlAndR.html#cb63-11"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Incidence (per 1,000 patient weeks)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="SqlAndR.html#cb64-1"></a><span class="co"># Compute incidence rate (IR) :</span></span>
+<span id="cb64-2"><a href="SqlAndR.html#cb64-2"></a>results<span class="op">$</span>ir &lt;-<span class="st"> </span><span class="dv">1000</span> <span class="op">*</span><span class="st"> </span>results<span class="op">$</span>events <span class="op">/</span><span class="st"> </span>results<span class="op">$</span>days <span class="op">/</span><span class="st"> </span><span class="dv">7</span></span>
+<span id="cb64-3"><a href="SqlAndR.html#cb64-3"></a></span>
+<span id="cb64-4"><a href="SqlAndR.html#cb64-4"></a><span class="co"># Fix age scale:</span></span>
+<span id="cb64-5"><a href="SqlAndR.html#cb64-5"></a>results<span class="op">$</span>age &lt;-<span class="st"> </span>results<span class="op">$</span>age <span class="op">*</span><span class="st"> </span><span class="dv">10</span></span>
+<span id="cb64-6"><a href="SqlAndR.html#cb64-6"></a></span>
+<span id="cb64-7"><a href="SqlAndR.html#cb64-7"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb64-8"><a href="SqlAndR.html#cb64-8"></a><span class="kw">ggplot</span>(results, <span class="kw">aes</span>(<span class="dt">x =</span> age, <span class="dt">y =</span> ir, <span class="dt">group =</span> gender, <span class="dt">color =</span> gender)) <span class="op">+</span></span>
+<span id="cb64-9"><a href="SqlAndR.html#cb64-9"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb64-10"><a href="SqlAndR.html#cb64-10"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Age&quot;</span>) <span class="op">+</span></span>
+<span id="cb64-11"><a href="SqlAndR.html#cb64-11"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Incidence (per 1,000 patient weeks)&quot;</span>)</span></code></pre></div>
 <p><img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="clean-up" class="section level3">
 <h3><span class="header-section-number">10.7.4</span> Clean up</h3>
 <p>Don’t forget to clean up the table we created, and to close the connection:</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="SqlAndR.html#cb64-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
-<span id="cb64-2"><a href="SqlAndR.html#cb64-2"></a><span class="st">TRUNCATE TABLE @cohort_db_schema.@cohort_table;</span></span>
-<span id="cb64-3"><a href="SqlAndR.html#cb64-3"></a><span class="st">DROP TABLE @cohort_db_schema.@cohort_table;</span></span>
-<span id="cb64-4"><a href="SqlAndR.html#cb64-4"></a><span class="st">&quot;</span></span>
-<span id="cb64-5"><a href="SqlAndR.html#cb64-5"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
-<span id="cb64-6"><a href="SqlAndR.html#cb64-6"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
-<span id="cb64-7"><a href="SqlAndR.html#cb64-7"></a>                          <span class="dt">cohort_table =</span> cohortTable)</span>
-<span id="cb64-8"><a href="SqlAndR.html#cb64-8"></a></span>
-<span id="cb64-9"><a href="SqlAndR.html#cb64-9"></a><span class="kw">disconnect</span>(conn)</span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="SqlAndR.html#cb65-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
+<span id="cb65-2"><a href="SqlAndR.html#cb65-2"></a><span class="st">TRUNCATE TABLE @cohort_db_schema.@cohort_table;</span></span>
+<span id="cb65-3"><a href="SqlAndR.html#cb65-3"></a><span class="st">DROP TABLE @cohort_db_schema.@cohort_table;</span></span>
+<span id="cb65-4"><a href="SqlAndR.html#cb65-4"></a><span class="st">&quot;</span></span>
+<span id="cb65-5"><a href="SqlAndR.html#cb65-5"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
+<span id="cb65-6"><a href="SqlAndR.html#cb65-6"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
+<span id="cb65-7"><a href="SqlAndR.html#cb65-7"></a>                          <span class="dt">cohort_table =</span> cohortTable)</span>
+<span id="cb65-8"><a href="SqlAndR.html#cb65-8"></a></span>
+<span id="cb65-9"><a href="SqlAndR.html#cb65-9"></a><span class="kw">disconnect</span>(conn)</span></code></pre></div>
 </div>
 <div id="compatibility" class="section level3">
 <h3><span class="header-section-number">10.7.5</span> Compatibility</h3>
@@ -1398,10 +1400,10 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 <h2><span class="header-section-number">10.9</span> Exercises</h2>
 <p><strong>Prerequisites</strong></p>
 <p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">9.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="SqlAndR.html#cb65-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
-<span id="cb65-2"><a href="SqlAndR.html#cb65-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="SqlAndR.html#cb66-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
+<span id="cb66-2"><a href="SqlAndR.html#cb66-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>)</span></code></pre></div>
 <p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="SqlAndR.html#cb66-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="SqlAndR.html#cb67-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
 <p>The CDM database schema is “main”.</p>
 
 <div class="exercise">
