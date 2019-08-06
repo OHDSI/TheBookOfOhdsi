@@ -87,17 +87,17 @@ When you build a cohort, you may start from your own knowledgebase or you may ch
 
 OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) [@Swerdel2019phevaluator].  For a complete validation of an algorithm, we need to calculate:
 
-\begin{equation} 
-Sensitivity\; = \frac{True\;Positives}{\(\;(True\;Positives\; + \;False\;Negatives)}
-\end{equation} 
+$$
+Sensitivity = \frac{True\ positives}{True\ positives+False\ negatives }
+$$
 
-\begin{equation} 
-Specificity\; = \frac{True\;Negatives}{\(\;(True\;Negatives\; + \;False\;Positives)}
-\end{equation} 
+$$
+Specificity = \frac{True\ negatives}{True\ negatives+False\ positives }
+$$
 
-\begin{equation} 
-Positive Predictive Value\; = \frac{True\;Positives}{\(\;(True\;Positives\; + \;False\;Positives)}
-\end{equation} 
+$$
+Positive\ preditive\ value = \frac{True\ positives}{True\ positives+False\ positives }
+$$
 
 This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool [@Swerdel2019phevaluator] is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation.
 
