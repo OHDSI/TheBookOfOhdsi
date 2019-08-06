@@ -211,7 +211,7 @@ The screen will update with your selected criteria but you are not done yet. You
 
 }
 
-\caption{Specifying a Concept Set - Step 1}(\#fig:ATLASimportaconcept)
+\caption{Specifying a Concept Set - Step 1}(\#fig:ATLASimportconcept)
 \end{figure}
 
 **Scenario 1: You have not built a concept set.** If you have not assembled your concept sets to retrieve to apply to your criteria, you will need to do this before you move forward. At a very basic level, this will require you to utilize the *Search* function to find and choose the concepts you would like to specify. You can refer back to (see Chapter \@ref(StandardizedVocabularies)) on how to navigate the OMOP vocabularies to find clinical concepts of interest. This chapter will not focus on the assembly of concept sets. You are encouraged to utilize the [OHDSI Resources](https://www.ohdsi.org/resources/) to find ATLAS tutorials that can help you understand how to search and build a concept set.
@@ -279,7 +279,7 @@ In Figure \@ref(fig:EarliestEventExplained), each line represents a single patie
 
 Once we have specified a cohort entry event, you could proceed to one of two places to add your additional qualifying events: *Restrict Initial Events* and *Inclusion Criteria*. The fundamental difference between these two options is what interim information you want ATLAS to serve back to you. If you add additional qualifying criteria into the Cohort Entry Event box by selecting *Restrict Initial Events*, when you choose to generate a count in ATLAS, you will only get back the number of people who meet ALL of these criteria. If you opt to add criteria into the *Inclusion Criteria*, you will get an attrition chart to show you how many patients are lost by applying additional inclusion criteria. It is highly encouraged to utilize the Inclusion Criteria section so you can understand the impact of each rule on the overall success of the cohort definition. You may find a certian inclusion criteria severely limits the number of people who end up in the cohort. You may choose to relax this criteria to get a larger cohort. This will ultimately be at the discretion of the expert consensus assembling this cohort.
 
-You will now want to click 'New Inclusion Criteria' to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: *With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLAS-IC1).
+You will now want to click 'New Inclusion Criteria' to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: *With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLASIC1).
 
 \begin{figure}
 
@@ -287,43 +287,43 @@ You will now want to click 'New Inclusion Criteria' to add a subsequent piece of
 
 }
 
-\caption{Additional Inclusion Criteria #1}(\#fig:ATLAS-IC1)
+\caption{Additional Inclusion Criteria 1}(\#fig:ATLASIC1)
 \end{figure}
 
-You will then want to add another criteria to look for patients: *with exactly 0 occurrences of hypertension drugs all days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLAS-IC2).
+You will then want to add another criteria to look for patients: *with exactly 0 occurrences of hypertension drugs all days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLASIC2).
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-IC2} 
 
 }
 
-\caption{Additional Inclusion Criteria #2}(\#fig:ATLAS-IC2)
+\caption{Additional Inclusion Criteria 2}(\#fig:ATLASIC2)
 \end{figure}
 
 You may be confused why "having no occurrences" is coded as "exactly 0 occurrences." This is a nuance of how ATLAS consumes knowledge. ATLAS only consumes inclusion criteria. You must use logical operators to indicate when you want the absence of a specific attribute such as: "Exactly 0." Over time you will become more familiar with the logical operators available in ATLAS criteria. 
 
-Lastly, you will want to add your another criteria to look for patients: *with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)*  Now check your logic against Figure \@ref(fig:ATLAS-IC3).
+Lastly, you will want to add your another criteria to look for patients: *with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)*  Now check your logic against Figure \@ref(fig:ATLASIC3).
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-IC3} 
 
 }
 
-\caption{Additional Inclusion Criteria #3}(\#fig:ATLAS-IC3)
+\caption{Additional Inclusion Criteria 3}(\#fig:ATLASIC3)
 \end{figure}
 
 You have now added all of your qualifying inclusion criteria. You must now specify your cohort exit criteria. You will ask yourself, *when are people no longer eligible to be included in this cohort?"* In this cohort, we are following new-users of a drug exposure. We want to look at continuous observation period as it relates to the drug exposure. As such, the exit criteria is specified to follow for the entirety of the continuous drug exposure. If there is a subsequent break in the drug exposure, the patient will exit the cohort at this time. We do this  as we cannot determine what happened to the person during the break in the drug exposure. We can also set a criteria on the persistence window to specify an "allowable" gap between drug exposures. In this case, our experts leading this study concluded that a maximum of 30 days between exposure records is allowable when inferring the era of persistence exposure. 
 
 *Why are gaps allowed?* In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can over a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have drug exposure. 
 
-We can configure this by selecting the Event will persist *until the end of a drug exposure*. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \@ref(fig:ATLAS-chortexit).
+We can configure this by selecting the Event will persist *until the end of a drug exposure*. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \@ref(fig:ATLASchortexit).
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-cohortexit} 
 
 }
 
-\caption{Cohort Exit Criteria}(\#fig:ATLAS-cohortexit)
+\caption{Cohort Exit Criteria}(\#fig:ATLAScohortexit)
 \end{figure}
 
 In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the Export tab to share your cohort definiton to other collaborators in the form of code or JSON files to load into ATLAS. For more information on how to utilize ATLAS, you should consult the [OHDSI Resources](https://www.ohdsi.org/resources/) as a reminder.

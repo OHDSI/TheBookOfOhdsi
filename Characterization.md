@@ -507,7 +507,7 @@ To start, click on ![](images/Characterization/atlasIncidenceMenuItem.png) in th
 
 ### Design
 
-We assume the cohorts used in this example have already been created in ATLAS as described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target cohorts (Appendix \@ref(AceInhibitorsMono), \@ref(ThiazidesMono)), and outcomes (Appendix \@ref(Angioedema), \@ref(Ami), @\ref(ARBUse)) cohorts.
+We assume the cohorts used in this example have already been created in ATLAS as described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target cohorts (Appendix \@ref(AceInhibitorsMono), \@ref(ThiazidesMono)), and outcomes (Appendix \@ref(Angioedema), \@ref(Ami), \@ref(ARBUse)) cohorts.
 
 
 \begin{figure}
