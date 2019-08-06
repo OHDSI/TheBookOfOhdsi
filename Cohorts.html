@@ -563,7 +563,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 11</span> Building the building blocks: cohorts</h1>
 <p><em>Lead: Kristin Kostka</em></p>
 <p>Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for running high quality, systematic research. Cohort definitions vary from study to study depending on the research question of interest. Each cohort definition provides a specific way to represent a person with a condition or exposure using data in an observational health database. Thus, cohorts are an important component in documenting the methods of an observational research study.</p>
-<p>The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS (see Chapter <a href="OhdsiAnalyticsTools.html#OhdsiAnalyticsTools">9</a>).</p>
+<p>The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS (for a detailed discussion on OHDSI Analytics Tools see Chapter <a href="OhdsiAnalyticsTools.html#OhdsiAnalyticsTools">9</a>).</p>
 <div id="theory" class="section level2">
 <h2><span class="header-section-number">11.1</span> Theory</h2>
 
@@ -588,9 +588,9 @@ The term <em>cohort</em> is often interchanged with the term phenotype. The term
 <li><em>What inclusion criteria are applied to the initial events?</em></li>
 <li><em>What defines a person’s cohort exit?</em></li>
 </ul>
-<p>To visualize the importance of these criteria, think of how this information comes together in a person’s timeline. The OBSERVATION_PERIOD table creates the window for which we see the person in the data.</p>
-<div class="figure"><span id="fig:cohortBuild"></span>
-<img src="images/Cohorts/cohort-build.png" alt="Cohort Creation" width="100%" />
+<p>To visualize the importance of these criteria, think of how this information comes together in a person’s timeline (Figure . The OBSERVATION_PERIOD table creates the window for which we see the person in the data.</p>
+<div class="figure" style="text-align: center"><span id="fig:cohortBuild"></span>
+<img src="images/Cohorts/cohort-build.png" alt="Cohort Creation" width="90%" />
 <p class="caption">
 Figure 11.1: Cohort Creation
 </p>
@@ -599,8 +599,8 @@ Figure 11.1: Cohort Creation
 <p><em>Inclusion criteria:</em> The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.</p>
 <p><em>Cohort exit criteria:</em> The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g. persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.</p>
 <p><em>Time-at-risk:</em> In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you’re observing an acute/short term trend or a chronic/long term trend.</p>
-<div class="figure"><span id="fig:cohortTar"></span>
-<img src="images/Cohorts/cohort-TAR.png" alt="Time-at-Risk Construction" width="100%" />
+<div class="figure" style="text-align: center"><span id="fig:cohortTar"></span>
+<img src="images/Cohorts/cohort-TAR.png" alt="Time-at-Risk Construction" width="90%" />
 <p class="caption">
 Figure 11.2: Time-at-Risk Construction
 </p>
@@ -632,23 +632,23 @@ Figure 11.3: Algorithm Evaluation
 </div>
 <p>OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) <span class="citation">(Swerdel, Hripcsak, and Ryan <a href="#ref-Swerdel2019phevaluator" role="doc-biblioref">2019</a>)</span>. For a complete validation of an algorithm, we need to calculate:</p>
 <p><span class="math display">\[\begin{equation} 
-Sensitivity\; = \frac{\True\;Positives}{\(\;(True\;Positives\; + \;False\;Negatives)}
+Sensitivity\; = \frac{True\;Positives}{\(\;(True\;Positives\; + \;False\;Negatives)}
 \end{equation}\]</span></p>
 <p><span class="math display">\[\begin{equation} 
-Specificity\; = \frac{\True\;Negatives}{\(\;(True\;Negatives\; + \;False\;Positives)}
+Specificity\; = \frac{True\;Negatives}{\(\;(True\;Negatives\; + \;False\;Positives)}
 \end{equation}\]</span></p>
 <p><span class="math display">\[\begin{equation} 
-Positive Predictive Value\; = \frac{\True\;Positives}{\(\;(True\;Positives\; + \;False\;Positives)}
+Positive Predictive Value\; = \frac{True\;Positives}{\(\;(True\;Positives\; + \;False\;Positives)}
 \end{equation}\]</span></p>
 <p>This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool <span class="citation">(Swerdel, Hripcsak, and Ryan <a href="#ref-Swerdel2019phevaluator" role="doc-biblioref">2019</a>)</span> is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation.</p>
 </div>
 <div id="ohdsi-gold-standard-phenotype-library" class="section level2">
 <h2><span class="header-section-number">11.3</span> OHDSI Gold Standard Phenotype Library</h2>
-<p>To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (<a href="https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg" class="uri">https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg</a>). Research within this workgroup includes APHRODITE <span class="citation">(Banda et al. <a href="#ref-Banda2017APHRODITE" role="doc-biblioref">2017</a>)</span> and the PheValuator tool, discussed in the prior section, <span class="citation">(Swerdel, Hripcsak, and Ryan <a href="#ref-Swerdel2019phevaluator" role="doc-biblioref">2019</a>)</span> as well as work done to share the Electronic Medical Records and Genomics <a href="https://emerge.mc.vanderbilt.edu/">eMERGE</a> <a href="https://phekb.org/phenotypes">Phenotype Library</a> across the OHDSI network <span class="citation">(Hripcsak et al. <a href="#ref-Hripcsak2019eMERGE" role="doc-biblioref">2019</a>)</span>. If phenotype curation is your interest, consider contributing to this workgroup.</p>
+<p>To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (<a href="https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg" class="uri">https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg</a>). Research within this workgroup includes APHRODITE <span class="citation">(Banda et al. <a href="#ref-Banda2017APHRODITE" role="doc-biblioref">2017</a>)</span> and the PheValuator tool <span class="citation">(Swerdel, Hripcsak, and Ryan <a href="#ref-Swerdel2019phevaluator" role="doc-biblioref">2019</a>)</span> , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics <a href="https://emerge.mc.vanderbilt.edu/">eMERGE</a> <a href="https://phekb.org/phenotypes">Phenotype Library</a> across the OHDSI network <span class="citation">(Hripcsak et al. <a href="#ref-Hripcsak2019eMERGE" role="doc-biblioref">2019</a>)</span>. If phenotype curation is your interest, consider contributing to this workgroup.</p>
 </div>
 <div id="practice" class="section level2">
 <h2><span class="header-section-number">11.4</span> Practice</h2>
-<p>Now that we’ve covered the basics, it’s time to put your cohort building skills to the test. <em>(Note: If you’ve gotten lost on your OHDSI journey and not sure where to start, you can always return to Where to Begin ((Chapter <a href="#WheretoBegin"><strong>??</strong></a>) to recall the way to translate a research question into an OHDSI standard analytics approach.)</em></p>
+<p>Now that we’ve covered the basics, it’s time to put your cohort building skills to the test. <em>Note: If you’ve gotten lost on your OHDSI journey and not sure where to start, you can always return to Where to Begin ((Chapter <a href="WhereToBegin.html#WhereToBegin">4</a>) to recall the way to translate a research question into an OHDSI standard analytics approach.</em></p>
 <p>When you are building a cohort, you should consider which of these is more important to you: <em>finding all the eligible patients?</em> <strong>vs.</strong> <em>Getting only the ones you are confident about?</em></p>
 <p>Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you’re trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher’s discretion what threshold of stringency is necessary to adequately study the cohort of interest.</p>
 <p>We begin to practice our cohort skills by putting together a cohort definition using a rules-based approach. In this example, we want to find <em>patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension</em></p>
@@ -659,9 +659,9 @@ Positive Predictive Value\; = \frac{\True\;Positives}{\(\;(True\;Positives\; + \
 <li><strong>Domain-specific attribute</strong>: Ex: DRUG_EXPOSURE: Days supply; MEASUREMENT: value_as_number, high_range</li>
 <li><strong>Temporal logic</strong>: the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)</li>
 </ul>
-<p>As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure <a href="Cohorts.html#fig:cohortLegos">11.4</a> that represent cohort attributes. You can always refer to the Common Data Model chapter ((Chapter <a href="CommonDataModel.html#CommonDataModel">5</a>) for help.</p>
+<p>As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure <a href="Cohorts.html#fig:cohortLegos">11.4</a> that represent cohort attributes. You can always refer to the Common Data Model chapter (Chapter <a href="CommonDataModel.html#CommonDataModel">5</a>) for help.</p>
 <div class="figure" style="text-align: center"><span id="fig:cohortLegos"></span>
-<img src="images/Cohorts/cohort-legos.png" alt="Building Blocks of Cohorts" width="90%" />
+<img src="images/Cohorts/cohort-legos.png" alt="Building Blocks of Cohorts" width="50%" />
 <p class="caption">
 Figure 11.4: Building Blocks of Cohorts
 </p>
