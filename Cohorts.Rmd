@@ -4,7 +4,7 @@
 
 Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for running high quality, systematic research. Cohort definitions vary from study to study depending on the research question of interest. Each cohort definition provides a specific way to represent a person with a condition or exposure using data in an observational health database. Thus, cohorts are an important component in documenting the methods of an observational research study. 
 
-The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS (see Chapter \@ref(OhdsiAnalyticsTools)).
+The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS (for a detailed discussion on OHDSI Analytics Tools see Chapter \@ref(OhdsiAnalyticsTools)).
 
 ## Theory
 
@@ -31,9 +31,9 @@ When creating a cohort definition, you need to ask yourself the following questi
 - *What inclusion criteria are applied to the initial events?*
 - *What defines a person’s cohort exit?*
 
-To visualize the importance of these criteria, think of how this information comes together in a person’s timeline. The OBSERVATION_PERIOD table creates the window for which we see the person in the data.
+To visualize the importance of these criteria, think of how this information comes together in a person’s timeline (Figure . The OBSERVATION_PERIOD table creates the window for which we see the person in the data.
 
-```{r cohortBuild, fig.cap='Cohort Creation',echo=FALSE, out.width='100%'}
+```{r cohortBuild, fig.cap='Cohort Creation',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/cohort-build.png")
 ```
 
@@ -45,7 +45,7 @@ knitr::include_graphics("images/Cohorts/cohort-build.png")
 
 *Time-at-risk:* In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you’re observing an acute/short term trend or a chronic/long term trend.
 
-```{r cohortTar, fig.cap='Time-at-Risk Construction',echo=FALSE, out.width='100%'}
+```{r cohortTar, fig.cap='Time-at-Risk Construction',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/cohort-TAR.png")
 ```
 
@@ -77,26 +77,26 @@ knitr::include_graphics("images/Cohorts/cohort-PPV.png")
 OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) [@Swerdel2019phevaluator].  For a complete validation of an algorithm, we need to calculate:
 
 \begin{equation} 
-Sensitivity\; = \frac{\True\;Positives}{\(\;(True\;Positives\; + \;False\;Negatives)}
+Sensitivity\; = \frac{True\;Positives}{\(\;(True\;Positives\; + \;False\;Negatives)}
 \end{equation} 
 
 \begin{equation} 
-Specificity\; = \frac{\True\;Negatives}{\(\;(True\;Negatives\; + \;False\;Positives)}
+Specificity\; = \frac{True\;Negatives}{\(\;(True\;Negatives\; + \;False\;Positives)}
 \end{equation} 
 
 \begin{equation} 
-Positive Predictive Value\; = \frac{\True\;Positives}{\(\;(True\;Positives\; + \;False\;Positives)}
+Positive Predictive Value\; = \frac{True\;Positives}{\(\;(True\;Positives\; + \;False\;Positives)}
 \end{equation} 
 
 This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool [@Swerdel2019phevaluator] is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation.
 
 ## OHDSI Gold Standard Phenotype Library
 
-To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg). Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool, discussed in the prior section, [@Swerdel2019phevaluator] as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup.
+To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg). Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool [@Swerdel2019phevaluator] , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup.
 
 ## Practice
 
-Now that we've covered the basics, it's time to put your cohort building skills to the test. *(Note: If you've gotten lost on your OHDSI journey and not sure where to start, you can always return to Where to Begin ((Chapter \@ref(WheretoBegin)) to recall the way to translate a research question into an OHDSI standard analytics approach.)*
+Now that we've covered the basics, it's time to put your cohort building skills to the test. *Note: If you've gotten lost on your OHDSI journey and not sure where to start, you can always return to Where to Begin ((Chapter \@ref(WhereToBegin)) to recall the way to translate a research question into an OHDSI standard analytics approach.*
 
 When you are building a cohort, you should consider which of these is more important to you: *finding all the eligible patients?* **vs.** *Getting only the ones you are confident about?* 
 
@@ -111,9 +111,9 @@ Recall, the components of building a cohort include:
 - **Domain-specific attribute**:  Ex:  DRUG_EXPOSURE: Days supply;  MEASUREMENT:  value_as_number, high_range
 - **Temporal logic**:  the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)
 
-As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure \@ref(fig:cohortLegos) that represent cohort attributes. You can always refer to the Common Data Model chapter ((Chapter \@ref(CommonDataModel)) for help.
+As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure \@ref(fig:cohortLegos) that represent cohort attributes. You can always refer to the Common Data Model chapter (Chapter \@ref(CommonDataModel)) for help.
 
-```{r cohortLegos, fig.cap='Building Blocks of Cohorts',echo=FALSE, out.width='90%', fig.align='center'}
+```{r cohortLegos, fig.cap='Building Blocks of Cohorts',echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/cohort-legos.png")
 ```
 
