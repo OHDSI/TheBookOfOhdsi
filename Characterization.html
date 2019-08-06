@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-08-05" />
+<meta name="date" content="2019-08-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -286,11 +286,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.1.1" data-path="Cohorts.html"><a href="Cohorts.html#rules-based-cohort-design"><i class="fa fa-check"></i><b>11.1.1</b> Rules-based cohort design</a></li>
 <li class="chapter" data-level="11.1.2" data-path="Cohorts.html"><a href="Cohorts.html#probabilistic-cohort-design-using-aphrodite"><i class="fa fa-check"></i><b>11.1.2</b> Probabilistic cohort design using APHRODITE</a></li>
 </ul></li>
-<li class="chapter" data-level="11.2" data-path="Cohorts.html"><a href="Cohorts.html#phenotype-evaluation"><i class="fa fa-check"></i><b>11.2</b> Phenotype Evaluation</a></li>
+<li class="chapter" data-level="11.2" data-path="Cohorts.html"><a href="Cohorts.html#phenotype-algorithm-evaluation"><i class="fa fa-check"></i><b>11.2</b> Phenotype Algorithm Evaluation</a></li>
 <li class="chapter" data-level="11.3" data-path="Cohorts.html"><a href="Cohorts.html#ohdsi-gold-standard-phenotype-library"><i class="fa fa-check"></i><b>11.3</b> OHDSI Gold Standard Phenotype Library</a></li>
 <li class="chapter" data-level="11.4" data-path="Cohorts.html"><a href="Cohorts.html#practice"><i class="fa fa-check"></i><b>11.4</b> Practice</a><ul>
 <li class="chapter" data-level="11.4.1" data-path="Cohorts.html"><a href="Cohorts.html#using-atlas"><i class="fa fa-check"></i><b>11.4.1</b> Using ATLAS</a></li>
-<li class="chapter" data-level="11.4.2" data-path="Cohorts.html"><a href="Cohorts.html#using-sql"><i class="fa fa-check"></i><b>11.4.2</b> Using SQL</a></li>
+<li class="chapter" data-level="11.4.2" data-path="Cohorts.html"><a href="Cohorts.html#cohort-building-at-the-database-layer-using-sql"><i class="fa fa-check"></i><b>11.4.2</b> Cohort Building at the Database Layer Using SQL</a></li>
 <li class="chapter" data-level="11.4.3" data-path="Cohorts.html"><a href="Cohorts.html#exercises-3"><i class="fa fa-check"></i><b>11.4.3</b> Exercises</a></li>
 </ul></li>
 </ul></li>
@@ -789,24 +789,24 @@ Figure 12.16: Custom feature results display.
 <div id="data-extraction" class="section level3">
 <h3><span class="header-section-number">12.8.2</span> Data extraction</h3>
 <p>We first need to tell R how to connect to the server. FeatureExtraction uses the DatabaseConnector package, which provides a function called <code>createConnectionDetails</code>. Type <code>?createConnectionDetails</code> for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="Characterization.html#cb68-1"></a><span class="kw">library</span>(FeatureExtraction)</span>
-<span id="cb68-2"><a href="Characterization.html#cb68-2"></a>connDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
-<span id="cb68-3"><a href="Characterization.html#cb68-3"></a>                                       <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,</span>
-<span id="cb68-4"><a href="Characterization.html#cb68-4"></a>                                       <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
-<span id="cb68-5"><a href="Characterization.html#cb68-5"></a>                                       <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)</span>
-<span id="cb68-6"><a href="Characterization.html#cb68-6"></a></span>
-<span id="cb68-7"><a href="Characterization.html#cb68-7"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span></span>
-<span id="cb68-8"><a href="Characterization.html#cb68-8"></a>cohortsDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span></span>
-<span id="cb68-9"><a href="Characterization.html#cb68-9"></a>cohortsDbTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span></span>
-<span id="cb68-10"><a href="Characterization.html#cb68-10"></a>cdmVersion &lt;-<span class="st"> &quot;5&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="Characterization.html#cb67-1"></a><span class="kw">library</span>(FeatureExtraction)</span>
+<span id="cb67-2"><a href="Characterization.html#cb67-2"></a>connDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
+<span id="cb67-3"><a href="Characterization.html#cb67-3"></a>                                       <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,</span>
+<span id="cb67-4"><a href="Characterization.html#cb67-4"></a>                                       <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
+<span id="cb67-5"><a href="Characterization.html#cb67-5"></a>                                       <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)</span>
+<span id="cb67-6"><a href="Characterization.html#cb67-6"></a></span>
+<span id="cb67-7"><a href="Characterization.html#cb67-7"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span></span>
+<span id="cb67-8"><a href="Characterization.html#cb67-8"></a>cohortsDbSchema &lt;-<span class="st"> &quot;scratch&quot;</span></span>
+<span id="cb67-9"><a href="Characterization.html#cb67-9"></a>cohortsDbTable &lt;-<span class="st"> &quot;my_cohorts&quot;</span></span>
+<span id="cb67-10"><a href="Characterization.html#cb67-10"></a>cdmVersion &lt;-<span class="st"> &quot;5&quot;</span></span></code></pre></div>
 <p>The last four lines define the <code>cdmDbSchema</code>, <code>cohortsDbSchema</code>, and <code>cohortsDbTable</code> variables, as well as the CDM version. We will use these later to tell R where the data in CDM format live, where the cohorts of interest have been created, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- "my_cdm_data.dbo"</code>.</p>
 </div>
 <div id="using-prespecified-analyses" class="section level3">
 <h3><span class="header-section-number">12.8.3</span> Using prespecified analyses</h3>
 <p>The function <code>createCovariateSettings</code> allow the user to choose from a large set of predefined covariates. Type <code>?createCovariateSettings</code> to get an overview of the available options. For example:</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="Characterization.html#cb69-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useDemographicsGender =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb69-2"><a href="Characterization.html#cb69-2"></a>                                    <span class="dt">useDemographicsAgeGroup =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb69-3"><a href="Characterization.html#cb69-3"></a>                                    <span class="dt">useConditionOccurrenceAnyTimePrior =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="Characterization.html#cb68-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useDemographicsGender =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb68-2"><a href="Characterization.html#cb68-2"></a>                                    <span class="dt">useDemographicsAgeGroup =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb68-3"><a href="Characterization.html#cb68-3"></a>                                    <span class="dt">useConditionOccurrenceAnyTimePrior =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
 <p>This will create binary covariates for gender, age (in 5 year age groups), and each concept observed in the condition_occurrence table any time prior to (and including) the cohort start date.</p>
 <p>Many of the prespecified analyses refer to a short, medium, or long term time window. By default, these windows are defined as:</p>
 <ul>
@@ -815,25 +815,25 @@ Figure 12.16: Custom feature results display.
 <li><strong>Short term</strong>: 30 days prior up to and including the cohort start date.</li>
 </ul>
 <p>However, the user can change these values. For example:</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="Characterization.html#cb69-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useConditionEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb69-2"><a href="Characterization.html#cb69-2"></a>                                    <span class="dt">useConditionEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb69-3"><a href="Characterization.html#cb69-3"></a>                                    <span class="dt">useDrugEraLongTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb69-4"><a href="Characterization.html#cb69-4"></a>                                    <span class="dt">useDrugEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb69-5"><a href="Characterization.html#cb69-5"></a>                                    <span class="dt">longTermStartDays =</span> <span class="dv">-180</span>, </span>
+<span id="cb69-6"><a href="Characterization.html#cb69-6"></a>                                    <span class="dt">shortTermStartDays =</span> <span class="dv">-14</span>, </span>
+<span id="cb69-7"><a href="Characterization.html#cb69-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>) </span></code></pre></div>
+<p>This redefines the long term window as 180 days prior up to (but not including) the cohort start date, and redefines the short term window as 14 days prior up to (but not including) the cohort start date.</p>
+<p>Again, we can also specify which concept IDs should or should not be used to construct covariates:</p>
 <div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="Characterization.html#cb70-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useConditionEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
 <span id="cb70-2"><a href="Characterization.html#cb70-2"></a>                                    <span class="dt">useConditionEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb70-3"><a href="Characterization.html#cb70-3"></a>                                    <span class="dt">useDrugEraLongTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb70-3"><a href="Characterization.html#cb70-3"></a>                                    <span class="dt">useDrugEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
 <span id="cb70-4"><a href="Characterization.html#cb70-4"></a>                                    <span class="dt">useDrugEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
 <span id="cb70-5"><a href="Characterization.html#cb70-5"></a>                                    <span class="dt">longTermStartDays =</span> <span class="dv">-180</span>, </span>
 <span id="cb70-6"><a href="Characterization.html#cb70-6"></a>                                    <span class="dt">shortTermStartDays =</span> <span class="dv">-14</span>, </span>
-<span id="cb70-7"><a href="Characterization.html#cb70-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>) </span></code></pre></div>
-<p>This redefines the long term window as 180 days prior up to (but not including) the cohort start date, and redefines the short term window as 14 days prior up to (but not including) the cohort start date.</p>
-<p>Again, we can also specify which concept IDs should or should not be used to construct covariates:</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="Characterization.html#cb71-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useConditionEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb71-2"><a href="Characterization.html#cb71-2"></a>                                    <span class="dt">useConditionEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb71-3"><a href="Characterization.html#cb71-3"></a>                                    <span class="dt">useDrugEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb71-4"><a href="Characterization.html#cb71-4"></a>                                    <span class="dt">useDrugEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb71-5"><a href="Characterization.html#cb71-5"></a>                                    <span class="dt">longTermStartDays =</span> <span class="dv">-180</span>, </span>
-<span id="cb71-6"><a href="Characterization.html#cb71-6"></a>                                    <span class="dt">shortTermStartDays =</span> <span class="dv">-14</span>, </span>
-<span id="cb71-7"><a href="Characterization.html#cb71-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>, </span>
-<span id="cb71-8"><a href="Characterization.html#cb71-8"></a>                                    <span class="dt">excludedCovariateConceptIds =</span> <span class="dv">1124300</span>, </span>
-<span id="cb71-9"><a href="Characterization.html#cb71-9"></a>                                    <span class="dt">addDescendantsToExclude =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb71-10"><a href="Characterization.html#cb71-10"></a>                                    <span class="dt">aggregated =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
+<span id="cb70-7"><a href="Characterization.html#cb70-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>, </span>
+<span id="cb70-8"><a href="Characterization.html#cb70-8"></a>                                    <span class="dt">excludedCovariateConceptIds =</span> <span class="dv">1124300</span>, </span>
+<span id="cb70-9"><a href="Characterization.html#cb70-9"></a>                                    <span class="dt">addDescendantsToExclude =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb70-10"><a href="Characterization.html#cb70-10"></a>                                    <span class="dt">aggregated =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
 
 <div class="rmdimportant">
 The use of <code>aggregated = TRUE</code> for all of the examples above indicate to FeatureExtraction to provide summary statistics. Excluding this flag will compute covariates for each person in the cohort.
@@ -843,17 +843,17 @@ The use of <code>aggregated = TRUE</code> for all of the examples above indicate
 <div id="creating-aggregated-covariates" class="section level3">
 <h3><span class="header-section-number">12.8.4</span> Creating aggregated covariates</h3>
 <p>The following code block will generate aggregated statistics for a cohort:</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="Characterization.html#cb72-1"></a>covariateSettings &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>() </span>
-<span id="cb72-2"><a href="Characterization.html#cb72-2"></a></span>
-<span id="cb72-3"><a href="Characterization.html#cb72-3"></a>covariateData2 &lt;-<span class="st"> </span><span class="kw">getDbCovariateData</span>(<span class="dt">connectionDetails =</span> connectionDetails, </span>
-<span id="cb72-4"><a href="Characterization.html#cb72-4"></a>                                    <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema, </span>
-<span id="cb72-5"><a href="Characterization.html#cb72-5"></a>                                    <span class="dt">cohortDatabaseSchema =</span> resultsDatabaseSchema, </span>
-<span id="cb72-6"><a href="Characterization.html#cb72-6"></a>                                    <span class="dt">cohortTable =</span> <span class="st">&quot;cohorts_of_interest&quot;</span>, </span>
-<span id="cb72-7"><a href="Characterization.html#cb72-7"></a>                                    <span class="dt">cohortId =</span> <span class="dv">1</span>, </span>
-<span id="cb72-8"><a href="Characterization.html#cb72-8"></a>                                    <span class="dt">covariateSettings =</span> covariateSettings, </span>
-<span id="cb72-9"><a href="Characterization.html#cb72-9"></a>                                    <span class="dt">aggregated =</span> <span class="ot">TRUE</span>) </span>
-<span id="cb72-10"><a href="Characterization.html#cb72-10"></a></span>
-<span id="cb72-11"><a href="Characterization.html#cb72-11"></a><span class="kw">summary</span>(covariateData2) </span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="Characterization.html#cb71-1"></a>covariateSettings &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>() </span>
+<span id="cb71-2"><a href="Characterization.html#cb71-2"></a></span>
+<span id="cb71-3"><a href="Characterization.html#cb71-3"></a>covariateData2 &lt;-<span class="st"> </span><span class="kw">getDbCovariateData</span>(<span class="dt">connectionDetails =</span> connectionDetails, </span>
+<span id="cb71-4"><a href="Characterization.html#cb71-4"></a>                                    <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema, </span>
+<span id="cb71-5"><a href="Characterization.html#cb71-5"></a>                                    <span class="dt">cohortDatabaseSchema =</span> resultsDatabaseSchema, </span>
+<span id="cb71-6"><a href="Characterization.html#cb71-6"></a>                                    <span class="dt">cohortTable =</span> <span class="st">&quot;cohorts_of_interest&quot;</span>, </span>
+<span id="cb71-7"><a href="Characterization.html#cb71-7"></a>                                    <span class="dt">cohortId =</span> <span class="dv">1</span>, </span>
+<span id="cb71-8"><a href="Characterization.html#cb71-8"></a>                                    <span class="dt">covariateSettings =</span> covariateSettings, </span>
+<span id="cb71-9"><a href="Characterization.html#cb71-9"></a>                                    <span class="dt">aggregated =</span> <span class="ot">TRUE</span>) </span>
+<span id="cb71-10"><a href="Characterization.html#cb71-10"></a></span>
+<span id="cb71-11"><a href="Characterization.html#cb71-11"></a><span class="kw">summary</span>(covariateData2) </span></code></pre></div>
 <p>And the output will look similar to the following:</p>
 <pre><code>## CovariateData object summary 
 ## 
@@ -863,8 +863,8 @@ The use of <code>aggregated = TRUE</code> for all of the examples above indicate
 <div id="output-format" class="section level3">
 <h3><span class="header-section-number">12.8.5</span> Output format</h3>
 <p>The two main components of the aggregated <code>covariateData</code> object are <code>covariates</code> and <code>covariatesContinuous</code> for binary and continuous covariates respectively:</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="Characterization.html#cb74-1"></a>covariateData2<span class="op">$</span>covariates</span>
-<span id="cb74-2"><a href="Characterization.html#cb74-2"></a>covariateData2<span class="op">$</span>covariatesContinuous</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="Characterization.html#cb73-1"></a>covariateData2<span class="op">$</span>covariates</span>
+<span id="cb73-2"><a href="Characterization.html#cb73-2"></a>covariateData2<span class="op">$</span>covariatesContinuous</span></code></pre></div>
 </div>
 <div id="custom-covariates" class="section level3">
 <h3><span class="header-section-number">12.8.6</span> Custom covariates</h3>
