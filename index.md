@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-08-06"
+date: "2019-08-07"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -57,25 +57,45 @@ TODO: make list of contributors complete
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
 
------------------  ---------------------  ------------------
-Hamed Abedtash     Mustafa Ascha          Mark Beno         
-Clair Blacketer    David Blatt            Brian Christian   
-Gino Cloft         Frank DeFalco          Sara Dempster     
-Jon Duke           Sergio Eslava          Clark Evans       
-Thomas Falconer    George Hripcsak        Mark Khayter      
-Greg Klebanov      Kristin Kostka         Bob Lanese        
-Wanda Lattimore    Chun Li                David Madigan     
-Sindhoosha Malay   Harry Menegay          Akihiko Nishimura 
-Ellen Palmer       Nirav Patil            Jose Posada       
-Nicole Pratt       Dani Prieto-Alhambra   Christian Reich   
-Jenna Reps         Peter Rijnbeek         Patrick Ryan      
-Craig Sachson      Izzy Saridakis         Paula Saroufim    
-Martijn Schuemie   Sarah Seager           Chan Seng You     
-Anthony Senna      Sunah Song             Matt Spotnitz     
-Marc Suchard       Joel Swerdel           Devin Tian        
-Don Torok          Kees van Bochove       Mui Van Zandt     
-Erica Voss         Kristin Waite          Mike Warfe        
-Jamie Weaver       James Wiggins          Andrew Williams   
-Chan You Seng                                               
------------------  ---------------------  ------------------
+\begin{tabular}{l|l|l}
+\hline
+Hamed Abedtash & Mustafa Ascha & Mark Beno\\
+\hline
+Clair Blacketer & David Blatt & Brian Christian\\
+\hline
+Gino Cloft & Frank DeFalco & Sara Dempster\\
+\hline
+Jon Duke & Sergio Eslava & Clark Evans\\
+\hline
+Thomas Falconer & George Hripcsak & Mark Khayter\\
+\hline
+Greg Klebanov & Kristin Kostka & Bob Lanese\\
+\hline
+Wanda Lattimore & Chun Li & David Madigan\\
+\hline
+Sindhoosha Malay & Harry Menegay & Akihiko Nishimura\\
+\hline
+Ellen Palmer & Nirav Patil & Jose Posada\\
+\hline
+Nicole Pratt & Dani Prieto-Alhambra & Christian Reich\\
+\hline
+Jenna Reps & Peter Rijnbeek & Patrick Ryan\\
+\hline
+Craig Sachson & Izzy Saridakis & Paula Saroufim\\
+\hline
+Martijn Schuemie & Sarah Seager & Chan Seng You\\
+\hline
+Anthony Senna & Sunah Song & Matt Spotnitz\\
+\hline
+Marc Suchard & Joel Swerdel & Devin Tian\\
+\hline
+Don Torok & Kees van Bochove & Mui Van Zandt\\
+\hline
+Erica Voss & Kristin Waite & Mike Warfe\\
+\hline
+Jamie Weaver & James Wiggins & Andrew Williams\\
+\hline
+Chan You Seng &  & \\
+\hline
+\end{tabular}
 
