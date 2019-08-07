@@ -899,9 +899,9 @@ Clinical characterization\strut
 
 \emph{Chapter lead: Clair Blacketer}
 
-No single observational data source provides a comprehensive view of the clinical data a patient accumulates while receiving healthcare, and therefore none can be sufficient to meet all expected outcome analysis needs. This explains the need for assessing and analyzing multiple data sources concurrently using a common data standard. This standard is provided by the OMOP Common Data Model (CDM). In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables.
+No single observational data source provides a comprehensive view of the clinical data a patient accumulates while receiving healthcare, and therefore none can be sufficient to meet all expected outcome analysis needs. This explains the need for assessing and analyzing multiple data sources concurrently using a common data standard. This standard is provided by the OMOP Common Data Model (CDM). In this chapter we provide an overview of the data model itself, as well as design, conventions, and discussion of select tables.
 
-The CDM is designed to support the conduct of research to identify and evaluate associations between interventions (drug exposure, procedures, healthcare policy changes etc.) and outcomes caused by these interventions (condition occurrences, procedures, drug exposure etc.). Outcomes can be efficacious (benefit) or adverse (safety risk). Often times, specific patient cohorts (e.g., those taking a certain drug or suffering from a certain disease) may be defined for treatments or outcomes, using clinical events (diagnoses, observations, procedures, etc.) that occur in predefined temporal relationships to each other. The CDM, combined with its standardized content (via the Standardized Vocabularies), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results.
+The CDM is designed to support the conduct of research to identify and evaluate associations between interventions (drug exposure, procedures, healthcare policy changes, etc.) and outcomes caused by these interventions (condition occurrences, procedures, drug exposure etc.). Outcomes can be efficacious (benefit) or adverse (safety risk). Often times, specific patient cohorts (e.g., those taking a certain drug or suffering from a certain disease) may be defined for treatments or outcomes using clinical events (diagnoses, observations, procedures, etc.) that occur in predefined temporal relationships to each other. The CDM, combined with its standardized content (via the Standardized Vocabularies), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results.
 
 An overview of all the tables in the CDM is provided in Figure \ref{fig:cdmDiagram}.
 
@@ -921,7 +921,7 @@ Therefore, the CDM is designed to store observational data to allow for research
 \item
   \textbf{Suitability for purpose}: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers.
 \item
-  \textbf{Data protection}: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible where the research expressly requires more detailed information, such as precise birth dates for the study of infants.
+  \textbf{Data protection}: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible when the research expressly requires more detailed information, such as precise birth dates for the study of infants.
 \item
   \textbf{Design of domains}: The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum. Here, a relational data model is one where the data is represented as a collection of tables linked by primary and foreign keys.
 \item
@@ -953,7 +953,7 @@ The OMOP CDM is considered a ``person-centric'' model, meaning that the people (
 \hypertarget{general-conventions-of-schemas}{%
 \subsection{General conventions of schemas}\label{general-conventions-of-schemas}}
 
-New to CDM v6.0 is the concept of schemas. This allows for more separation between read-only and writeable tables. The clinical data, event, and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user. This means that the tables can be queried but no information can be accidentally removed or written over except by the database administrator. Tables that need to be manipulated by web-based tools or end users have moved to the ``Results'' schema. Currently the only two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITON, though likely more will be added over the course of v6.0 point releases. The COHORT and COHORT\_DEFINITION tables are meant to describe groups of interest that the user might define, as detailed in chapter \ref{Cohorts}. These tables can be written to, meaning that a cohort created in ATLAS or by a user can be stored in the COHORT table and accessed at a later date. This does mean that cohorts in the COHORT table can be manipulated by anyone so it is always recommended that the SQL code used to create the cohort be saved along with the project or analysis in the event it needs to be regenerated.
+New to CDM v6.0 is the concept of schemas. This allows for more separation between read-only and writeable tables. The clinical data, event, and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user. This means that the tables can be queried but no information can be accidentally removed or written over except by the database administrator. Tables that need to be manipulated by web-based tools or end users have moved to the ``Results'' schema. Currently the only two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITON, though more will likely be added over the course of v6.0 point releases. The COHORT and COHORT\_DEFINITION tables are meant to describe groups of interest that the user might define, as detailed in chapter \ref{Cohorts}. These tables can be written to, meaning that a cohort created in ATLAS or by a user can be stored in the COHORT table and accessed at a later date. This does mean that cohorts in the COHORT table can be manipulated by anyone so it is always recommended that the SQL code used to create the cohort be saved along with the project or analysis in the event it needs to be regenerated.
 
 \hypertarget{general-conventions-of-data-tables}{%
 \subsection{General conventions of data tables}\label{general-conventions-of-data-tables}}
@@ -962,12 +962,12 @@ The CDM is platform-independent. Data types are defined generically using ANSI S
 
 In most cases, the first field in each table ends in "\_id", containing a record identifier that can be used as a foreign key in another table. For example, the CONDITION\_OCCURRENCE table contains the field visit\_occurrence\_id which is a foreign key to the VISIT\_OCCURRENCE table where visit\_occurrence\_id is the primary key.
 
-\emph{Note}: While the data model itself is platform independent, many of the tools that have been built to work with it require certain specifications. For more about this please see chapter \ref{OhdsiAnalyticsTools}
+\emph{Note}: While the data model itself is platform-independent, many of the tools that have been built to work with it require certain specifications. For more about this please see chapter \ref{OhdsiAnalyticsTools}.
 
 \hypertarget{general-conventions-of-domains}{%
 \subsection{General conventions of domains}\label{general-conventions-of-domains}}
 
-One of the ways in which the CDM is standardized is by the use of concept domains. Domains refer to the nature of a clinical entity and define the event table or field in an event table where a data record should be stored. This idea is covered fully in chapter \ref{StandardizedVocabularies} but it is important to the understanding of the data model that we touch on them here. All standard concepts in the OMOP vocabularies are organized into 30 domains, as shown in table \ref{tab:domains}. Domains, like concepts, are a major reason why every researcher who uses the OMOP CDM is considered to be ``speaking the same language''. Once source codes from a native database are mapped to standard concepts (see section \ref{concepts-sources}) the concepts themselves dictate which table they belong in by use of domains. In this way, a researcher using the CDM always knows where a record should be located rather than having to guess.
+One of the ways in which the CDM is standardized is by the use of concept domains. Domains refer to the nature of a clinical entity and define the event table or field in an event table where a data record should be stored. This idea is covered fully in chapter \ref{StandardizedVocabularies}, but it is also important to the understanding of the data model, so we touch on it here again. All standard concepts in the OMOP vocabularies are organized into 30 domains, as shown in table \ref{tab:domains}. Domains, like concepts, are a major reason why every researcher who uses the OMOP CDM is considered to be ``speaking the same language.'' Once source codes from a native database are mapped to standard concepts (see section \ref{concepts-sources}) the concepts themselves dictate which table they belong in by use of domains. In this way, a researcher using the CDM always knows where a record should be located rather than having to guess.
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:domains} Number of standard concepts belonging to each domain.}\tabularnewline
@@ -1058,7 +1058,7 @@ Foreign key into the Standardized Vocabularies representing the concept and term
 \begin{minipage}[t]{0.34\columnwidth}\raggedright
 {[}entity{]}\_type\_concept\_id\strut
 \end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright
-Delineates the origin of the source information, standardized within the Standardized Vocabularies. For example, drug\_type\_concept\_id can allow analysts to discriminate between ``Pharmacy dispensing'' and ``Prescription written''\strut
+Delineates the origin of the source information, standardized within the Standardized Vocabularies. For example, drug\_type\_concept\_id can allow analysts to discriminate between ``Pharmacy dispensing'' and ``Prescription written''.\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -1073,12 +1073,12 @@ Records in the CONCEPT table contain detailed information about each concept (na
 \hypertarget{concepts-sources}{%
 \subsection{Difference between Concept IDs and Source Values}\label{concepts-sources}}
 
-Many tables contain equivalent information in multiple places: As a Source Value, a Source Concept and as a Standard Concept.
+Many tables contain equivalent information in multiple places: as a Source Value, a Source Concept and as a Standard Concept.
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Source Values} contain the codes from public code systems such as ICD-9-CM, NDC, CPT-4, READ etc. or locally controlled vocabularies (such as F for female and M for male) copied from the source data. Source Values are stored in the {[}entity{]}\_source\_value fields in the data tables.
+  \textbf{Source Values} contain the codes from public code systems such as ICD-9-CM, NDC, CPT-4, READ, etc. or locally controlled vocabularies (such as F for female and M for male) copied from the source data. Source Values are stored in the {[}entity{]}\_source\_value fields in the data tables.
 \item
   \textbf{Concepts} are CDM-specific entities that represent the meaning of a clinical fact. Most concepts are based on code systems used in healthcare (called Source Concepts), while others were created de-novo (concept\_code = ``OMOP generated''). Concepts have unique IDs across all domains.
 \item
@@ -1121,10 +1121,10 @@ Endometriosis is a painful condition whereby cells normally found in the lining 
 \begin{center}\includegraphics[width=0.5\linewidth]{images/CommonDataModel/Lauren} \end{center}
 
 \begin{quote}
-Every step of this painfull journey I had to convince everyone how much pain I was in.
+Every step of this painful journey I had to convince everyone how much pain I was in.
 \end{quote}
 
-Lauren had been experiencing endometriosis symptoms for many year; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at \url{https://www.endometriosis-uk.org/laurens-story}.
+Lauren had been experiencing endometriosis symptoms for many years; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at \url{https://www.endometriosis-uk.org/laurens-story}.
 
 \hypertarget{person}{%
 \subsection{PERSON table}\label{person}}
@@ -1142,7 +1142,7 @@ As the Common Data Model is a person-centric model (see section \ref{model-conv}
 \item
   She is white
 \item
-  She is english
+  She is English
 \end{itemize}
 
 With that in mind, her PERSON table might look something like this:
@@ -1459,7 +1459,7 @@ visit\_start\_datetime\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2013-01-17 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-The date and time of the visit started. When time is unknown midnight is used.\strut
+The date and time of the visit start. When time is unknown midnight is used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 visit\_end\_date\strut
@@ -1480,7 +1480,7 @@ visit\_type\_concept\_ id\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 32034\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-This column is intended to provide information about the provenance of the visit record, i.e.~does it come from an insurance claim, hospital billing record, EHR record, etc. For this example the concept ID \href{http://athena.ohdsi.org/search-terms/terms/32035}{32035} (``Visit derived from EHR encounter record'') is used as the encounters are similar to electronic health records\strut
+This column is intended to provide information about the provenance of the visit record, i.e.~does it come from an insurance claim, hospital billing record, EHR record, etc. For this example the concept ID \href{http://athena.ohdsi.org/search-terms/terms/32035}{32035} (``Visit derived from EHR encounter record'') is used as the encounters are similar to electronic health records.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 provider\_id*\strut
@@ -1652,7 +1652,7 @@ condition\_status\_ concept\_id\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-If known, the this represents when and/or how the condition was diagnosed. For example, a condition could be an admitting diagnosis, in which case the concept ID \href{http://athena.ohdsi.org/search-terms/terms/4203942}{4203942} would be used.\strut
+If known, this represents when and/or how the condition was diagnosed. For example, a condition could be an admitting diagnosis, in which case the concept ID \href{http://athena.ohdsi.org/search-terms/terms/4203942}{4203942} would be used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 stop\_reason\strut
@@ -1765,7 +1765,7 @@ drug\_exposure\_start\_ date\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2010-01-06\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-The start date of the drug exposure\strut
+The start date of the drug exposure.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 drug\_exposure\_start\_ datetime\strut
@@ -1779,14 +1779,14 @@ drug\_exposure\_end\_ date\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2010-02-05\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-The end date of the drug exposure. Depending on different sources, it could be a known or an inferred date and denotes the last day at which the patient was still exposed to the drug. In this case the end is inferred since we know Lauren had a 30 days supply.\strut
+The end date of the drug exposure. Depending on different sources, it could be a known or an inferred date and denotes the last day at which the patient was still exposed to the drug. In this case the end is inferred since we know Lauren had a 30-day supply.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 drug\_exposure\_end\_ datetime\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2010-02-05 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-The end date and time of the drug exposure. Similar rules apply as to drug\_exposure\_end\_date. Midnight is used when time is unknown\strut
+The end date and time of the drug exposure. Similar rules apply as to drug\_exposure\_end\_date. Midnight is used when time is unknown.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 verbatim\_end\_date\strut
@@ -1814,7 +1814,7 @@ refills\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-The number of refills after the initial prescription. The initial prescription is not counted, values start with null. In the case of Lauren's acetaminophen she did not have any refills so the value is NULL.\strut
+The number of refills after the initial prescription. If the initial prescription is not counted, values start with null. In the case of Lauren's acetaminophen she did not have any refills so the value is NULL.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 quantity\strut
@@ -1842,7 +1842,7 @@ route\_concept\_id\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 4132161\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-This concept is meant to represent the route of the drug the patient was was exposed to. Lauren took her acetaminophen orally so the concept ID \href{http://athena.ohdsi.org/search-terms/terms/4132161}{4132161} (``Oral'') is used.\strut
+This concept is meant to represent the route of the drug the patient was exposed to. Lauren took her acetaminophen orally so the concept ID \href{http://athena.ohdsi.org/search-terms/terms/4132161}{4132161} (``Oral'') is used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 lot\_number\strut
@@ -1917,7 +1917,7 @@ The PROCEDURE\_OCCURRENCE table contains records of activities or processes orde
 \end{itemize}
 
 \textbf{What procedures did Lauren have?}
-From her description we know she had a ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE\_OCCURRENCE table:
+From her description we know she had an ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE\_OCCURRENCE table:
 
 \begin{longtable}[]{@{}lll@{}}
 \caption{\label{tab:procedureOccurrence} The PROCEDURE\_OCCURRENCE table.}\tabularnewline
@@ -2023,7 +2023,7 @@ procedure\_source\_ value\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 304435002\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-The source code for the procedure as it appears in the source data. This code is mapped to a standard procedure Concept in the Standardized Vocabularies and the original code is, stored here for reference.\strut
+The source code for the procedure as it appears in the source data. This code is mapped to a standard procedure Concept in the Standardized Vocabularies and the original code is stored here for reference.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 procedure\_source\_ concept\_id\strut
@@ -2060,11 +2060,6 @@ This chapter covers only a portion of the tables available in the OMOP CDM as ex
   Source codes are represented as standard concept ids
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
-
-\hypertarget{exercises}{%
-\section{Exercises}\label{exercises}}
-
-TODO
 
 \hypertarget{StandardizedVocabularies}{%
 \chapter{Standardized Vocabularies}\label{StandardizedVocabularies}}
@@ -2780,7 +2775,7 @@ There are many important healthcare questions for which OHDSI databases cannot p
 \hypertarget{missing-data}{%
 \subsection{Missing data}\label{missing-data}}
 
-Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn't, is ``missing.'' The statistics literature distinguishes between types of missingness such as ``missing completely at random,'' ``missing at random'', and ``missing not at random'' and methods of increasing complexity attempt to address these types. \citet{perkins2017principled} provide a useful introduction to this topic.
+Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn't, is ``missing.'' The statistics literature distinguishes between types of missingness such as ``missing completely at random,'' ``missing at random,'' and ``missing not at random'' and methods of increasing complexity attempt to address these types. \citet{perkins2017principled} provide a useful introduction to this topic.
 
 \hypertarget{summary-3}{%
 \section{Summary}\label{summary-3}}
@@ -3177,8 +3172,8 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-1}{%
-\section{Exercises}\label{exercises-1}}
+\hypertarget{exercises}{%
+\section{Exercises}\label{exercises}}
 
 Todo
 
@@ -3187,9 +3182,9 @@ Todo
 
 \emph{Chapter leads: Martijn Schuemie \& Peter Rijnbeek}
 
-The Common Data Model (CDM) is a relational database model (all data is represented as records in tables that have fields), which means that the data will typically be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with greater risk of making mistakes, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data, and direct queries do not provide such guidance.
+The Common Data Model (CDM) is a relational database model (all data is represented as records in tables that have fields), which means that the data will typically be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with greater risk of making mistakes, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data. Direct queries do not provide such guidance.
 
-The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server one would type:
+The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server, one would type:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3205,13 +3200,13 @@ Whereas the same query on PostgreSQL would be:
 \end{Highlighting}
 \end{Shaded}
 
-In OHDSI, we would like to be agnostic to the specific dialect a platform uses; We would like to `speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - \textbf{OHDSI SQL} - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL.
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to `speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - \textbf{OHDSI SQL} - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL.
 
 Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter.
 
 So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots.
 
-In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlight how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector.
+In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector.
 
 \hypertarget{SqlRender}{%
 \section{SqlRender}\label{SqlRender}}
@@ -3233,7 +3228,7 @@ One of the functions of the package is to support parameterization of SQL. Often
 
 \textbf{Substituting parameter values}
 
-The \texttt{@} character can be used to indicate parameter names that need to be exchange for actual parameter values when rendering. In the following example, a variable called \texttt{a} is mentioned in the SQL. In the call to the render function the value of this parameter is defined:
+The \texttt{@} character can be used to indicate parameter names that need to be exchanged for actual parameter values when rendering. In the following example, a variable called \texttt{a} is mentioned in the SQL. In the call to the render function the value of this parameter is defined:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3355,7 +3350,7 @@ The \texttt{targetDialect} parameter can have the following values: ``oracle'', 
 There are limits to what SQL functions and constructs can be translated properly, both because only a limited set of translation rules have been implemented in the package, but also some SQL features do not have an equivalent in all dialects. This is the primary reason why OHDSI SQL was developed as its own, new SQL dialect. However, whenever possible we have kept to the SQL Server syntax to avoid reinventing the wheel.
 \EndKnitrBlock{rmdimportant}
 
-Despite our best effords, there are quite a few things to consider when writing OHDSI SQL that will run without error on all supported platforms. In what follows we discuss these considerations in detail.
+Despite our best efforts, there are quite a few things to consider when writing OHDSI SQL that will run without error on all supported platforms. In what follows we discuss these considerations in detail.
 
 \textbf{Functions and structures supported by translate}
 
@@ -3394,7 +3389,7 @@ EOMONTH & POWER &\tabularnewline
 
 * Requires special privileges on Oracle. Has no equivalent on SQLite.
 
-Similarly, many SQL syntax structures are supported. Here is a non-exhaustive lists of expressions that we know will translate well:
+Similarly, many SQL syntax structures are supported. Here is a non-exhaustive list of expressions that we know will translate well:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3486,7 +3481,7 @@ However, Oracle will throw an error when the \texttt{AS} keyword is used. In the
 
 \textbf{Temp tables}
 
-Temp tables can be very useful to store intermediate results, and when used correctly can be used to dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they're only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by
+Temp tables can be very useful to store intermediate results, and when used correctly can dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they're only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -3507,12 +3502,12 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.w8dovrjechildren ;"
+## [1] "SELECT * FROM temp_schema.detkharhchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
 
-Also note that because Oracle has a limit on table names of 30 characters, \textbf{temp table names are only allowed to be at most 22 characters long} because else the name will become too long after appending the session ID.
+Also note that because Oracle has a limit on table names of 30 characters. \textbf{Temp table names are only allowed to be at most 22 characters long}, because else the name will become too long after appending the session ID.
 
 Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly \texttt{TRUNCATE} and \texttt{DROP} all temp tables once you're done with them to prevent orphan tables accumulating in the Oracle temp schema.
 
@@ -3585,7 +3580,7 @@ The one situation where this will fail is the \texttt{USE} command, since \textt
 
 \textbf{Debugging parameterized SQL}
 
-Debugging parameterized SQL can be a bit complicated; Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL.
+Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL.
 
 A Shiny app is included in the SqlRender package for interactively editing source SQL and generating rendered and translated SQL. The app can be started using:
 
@@ -3595,7 +3590,7 @@ A Shiny app is included in the SqlRender package for interactively editing sourc
 \end{Highlighting}
 \end{Shaded}
 
-Which will open the default browser with the app shown in Figure \ref{fig:sqlDeveloper}. The app is also publicly available on the web\footnote{\url{http://data.ohdsi.org/SqlDeveloper/}}.
+That will open the default browser with the app shown in Figure \ref{fig:sqlDeveloper}. The app is also publicly available on the web\footnote{\url{http://data.ohdsi.org/SqlDeveloper/}}.
 
 \begin{figure}
 
@@ -3708,7 +3703,7 @@ Some examples:
 \end{Highlighting}
 \end{Shaded}
 
-Both function provide extensive error reporting: When an error is thrown by the server, the error message and the offending piece of SQL are written to a text file to allow better debugging. The \texttt{executeSql} function also by default shows a progress bar, indicating the percentage of SQL statements that has been executed. If those attributes are not desired, the package also offers the \texttt{lowLevelQuerySql} and \texttt{lowLevelExecuteSql} functions.
+Both functions provide extensive error reporting: When an error is thrown by the server, the error message and the offending piece of SQL are written to a text file to allow better debugging. The \texttt{executeSql} function also by default shows a progress bar, indicating the percentage of SQL statements that has been executed. If those attributes are not desired, the package also offers the \texttt{lowLevelQuerySql} and \texttt{lowLevelExecuteSql} functions.
 
 \hypertarget{querying-using-ffdf-objects}{%
 \subsection{Querying using ffdf objects}\label{querying-using-ffdf-objects}}
@@ -3721,7 +3716,7 @@ Sometimes the data to be fetched from the database is too large to fit into memo
 \end{Highlighting}
 \end{Shaded}
 
-Where x is now an ffdf object.
+x is now an ffdf object.
 
 \hypertarget{querying-different-platforms-using-the-same-sql}{%
 \subsection{Querying different platforms using the same SQL}\label{querying-different-platforms-using-the-same-sql}}
@@ -3815,7 +3810,7 @@ MAX\_AGE\tabularnewline
 \bottomrule
 \end{longtable}
 
-A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION\_PERIOD table to compute age at start of observetion. We also compute the ordering for this joined set based on age, and store it as order\_nr. Because we want to use the result of this join multiple times, we define it as a common table expression (CTE) (defined using \texttt{WITH\ ...\ AS}) that we call ``ages'', meaning We can refer to ages as if it is an existing table. We count the number of rows in ages to produce ``n'', and then for each quantile find the minimum age where the order\_nr is smaller than the fraction times n.~For example, median we use the minimum age where \(order\_nr < .50 * n\). The minimum and maximum age are computed separately:
+A much more complicated query is needed to determine the distribution of age at the start of observation. In this query, we first join the PERSON to the OBSERVATION\_PERIOD table to compute age at start of observation. We also compute the ordering for this joined set based on age, and store it as order\_nr. Because we want to use the result of this join multiple times, we define it as a common table expression (CTE) (defined using \texttt{WITH\ ...\ AS}) that we call ``ages,'' meaning we can refer to ages as if it is an existing table. We count the number of rows in ages to produce ``n,'' and then for each quantile find the minimum age where the order\_nr is smaller than the fraction times n.~For example, to find the median we use the minimum age where \(order\_nr < .50 * n\). The minimum and maximum age are computed separately:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3945,7 +3940,7 @@ SUBJECT\_COUNT & CONCEPT\_NAME\tabularnewline
 \bottomrule
 \end{longtable}
 
-A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept \emph{and all of its descendants}. For example, image we wish to count the number of prescriptions containing the ingredient ibuprofen:
+A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept \emph{and all of its descendants}. For example, imagin e we wish to count the number of prescriptions containing the ingredient ibuprofen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3973,8 +3968,6 @@ PRESCRIPTION\_COUNT\tabularnewline
 \hypertarget{querylibrary}{%
 \section{QueryLibrary}\label{querylibrary}}
 
-TODO: update this section when QueryLibrary is finalized.
-
 QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application \footnote{\url{http:/data.ohdsi.org/QueryLibrary}} shown in Figure \ref{fig:queryLibrary}, and as an R package\footnote{\url{https://github.com/OHDSI/QueryLibrary}}.
 
 \begin{figure}
@@ -3986,7 +3979,7 @@ QueryLibrary is a library of commonly-used SQL queries for the CDM. It is availa
 \caption{QueryLibrary: a library of SQL queries against the CDM.}\label{fig:queryLibrary}
 \end{figure}
 
-The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but is also a valuable resource for experienced users.
+The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but it is also a valuable resource for experienced users.
 
 The QueryLibrary makes use of SqlRender to output the queries in the SQL dialect of choice. Users can also specify the CDM database schema, vocabulary database schema (if separate), and the Oracle temp schema (if needed), so the queries will be automatically rendered with these settings.
 
@@ -4010,7 +4003,7 @@ We'll define exposure as first exposure to a drug containing an ingredient in th
 \hypertarget{outcome}{%
 \subsection{Outcome}\label{outcome}}
 
-We define angioedema as any occurrence of an angioedema diagnose code during an inpatient or emergency room (ER) visit.
+We define angioedema as any occurrence of an angioedema diagnosis code during an inpatient or emergency room (ER) visit.
 
 \hypertarget{time-at-risk}{%
 \subsection{Time-at-risk}\label{time-at-risk}}
@@ -4095,7 +4088,7 @@ Next we create our exposure cohort, and insert it into our COHORT table:
 \end{Highlighting}
 \end{Shaded}
 
-Here we use the DRUG\_EXPOSURE table, and join it the CONCEPT\_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e.~all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION\_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation\_period\_start\_date and the cohort\_start\_date.
+Here we use the DRUG\_EXPOSURE table, and join it to the CONCEPT\_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e.~all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION\_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation\_period\_start\_date and the cohort\_start\_date.
 
 \hypertarget{outcome-cohort}{%
 \subsection{Outcome cohort}\label{outcome-cohort}}
@@ -4139,7 +4132,7 @@ Finally, we must create our outcome cohort:
 \end{Highlighting}
 \end{Shaded}
 
-Here we join the CONDITION\_OCCURRENCE table to the CONCEPT\_ANCESTOR table to find all occurrences of angioedema or any of its descendants. We use DISTINCT to make sure we only select one record per day, as we believe multiple angioedema diagnoses on the same day are more likely to be the same occurrence rather than multiple angioedema events. We join these occurrences to the VISIT\_OCCURRENCE table to ensure the diagnose was made in and inpatient or ER setting.
+Here we join the CONDITION\_OCCURRENCE table to the CONCEPT\_ANCESTOR table to find all occurrences of angioedema or any of its descendants. We use DISTINCT to make sure we only select one record per day, as we believe multiple angioedema diagnoses on the same day are more likely to be the same occurrence rather than multiple angioedema events. We join these occurrences to the VISIT\_OCCURRENCE table to ensure the diagnosis was made in and inpatient or ER setting.
 
 \hypertarget{incidence-rate-calculation}{%
 \subsection{Incidence rate calculation}\label{incidence-rate-calculation}}
@@ -4209,7 +4202,7 @@ Now that our cohorts are in place, we can compute the incidence rate, stratified
 \end{Highlighting}
 \end{Shaded}
 
-We first create ``tar'', a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation\_period\_end\_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
+We first create ``tar,'' a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation\_period\_end\_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
 
 We use \texttt{snakeCaseToCamelCase\ =\ TRUE} because in SQL we tend to use snake\_case for field names (because SQL in case-insensitive), whereas in R we tend to use camelCase (because R is case-sensitive). The \texttt{results} data frame column names will now be in camelCase.
 
@@ -4277,8 +4270,8 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-2}{%
-\section{Exercises}\label{exercises-2}}
+\hypertarget{exercises-1}{%
+\section{Exercises}\label{exercises-1}}
 
 \textbf{Prerequisites}
 
@@ -4711,8 +4704,8 @@ While it is encouraged to use the OHDSI analytical tools to build and share coho
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-3}{%
-\subsection{Exercises}\label{exercises-3}}
+\hypertarget{exercises-2}{%
+\subsection{Exercises}\label{exercises-2}}
 
 (Need help on syntax for how we format these\ldots{} can you point me to a good example of an exercise in the BoO?)
 
@@ -5397,8 +5390,8 @@ As shown, the metrics calculated are the same but the interpretation is differen
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-4}{%
-\section{Exercises}\label{exercises-4}}
+\hypertarget{exercises-3}{%
+\section{Exercises}\label{exercises-3}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -5418,13 +5411,13 @@ As shown, the metrics calculated are the same but the interpretation is differen
 \texttt{Per\ chapter\ 13:\ Note:\ The\ excercises\ still\ have\ to\ be\ defined.\ The\ idea\ is\ to\ require\ readers\ to\ define\ a\ study\ that\ estimates\ the\ effect\ of\ celecoxib\ on\ GI\ bleed,\ compared\ to\ diclofenac.\ For\ this\ they\ must\ use\ the\ Eunomia\ package,\ which\ is\ still\ under\ development.}
 
 \hypertarget{PopulationLevelEstimation}{%
-\chapter{Population-level estimation}\label{PopulationLevelEstimation}}
+\chapter{Population-Level Estimation}\label{PopulationLevelEstimation}}
 
 \emph{Chapter leads: Martijn Schuemie, David Madigan, Marc Suchard \& Patrick Ryan}
 
 \index{population-level estimation}
 
-Observational healthcare data, such as administrative claims and electronic health records, offer opportunities to generate real-world evidence about the effect of treatments that can meaningfully improve the lives of patients. In this chapter we focus on population-level effect estimation, that is, the estimation of average causal effects of exposures (e.g.~medical interventions such as drug exposures or procedures) on specific health outcomes of interest. In what follows, we consider two different estimation tasks:
+Observational healthcare data, such as administrative claims and electronic health records, offer opportunities to generate real-world evidence about the effect of treatments that can meaningfully improve the lives of patients. In this chapter we focus on population-level effect estimation, which refers to the estimation of average causal effects of exposures (e.g.~medical interventions such as drug exposures or procedures) on specific health outcomes of interest. In what follows, we consider two different estimation tasks:
 
 \begin{itemize}
 \tightlist
@@ -5436,7 +5429,7 @@ Observational healthcare data, such as administrative claims and electronic heal
 
 In both cases, the patient-level causal effect contrasts a factual outcome, i.e., what happened to the exposed patient, with a counterfactual outcome, i.e., what would have happened had the exposure not occurred (direct) or had a different exposure occurred (comparative). Since any one patient reveals only the factual outcome (the fundamental problem of causal inference), the various effect estimation designs employ different analytic devices to shed light on the counterfactual outcomes. \index{counterfactual}
 
-Use-cases for population-level effect estimation include treatment selection, safety surveillance, and comparative effectiveness. Methods can test specific hypotheses one-at-a-time (e.g.~`signal evaluation') or explore multiple-hypotheses-at-once (e.g.~`signal detection'). In all cases, the objective remains the same: to produce a high-quality estimate of the causal effect. \index{safety surveillance} \index{comparative effectiveness|see {comparative effect estimation}}
+Use-cases for population-level effect estimation include treatment selection, safety surveillance, and comparative effectiveness. Methods can test specific hypotheses one at a time (e.g.~`signal evaluation') or explore multiple-hypotheses-at-once (e.g.~`signal detection'). In all cases, the objective remains the same: to produce a high-quality estimate of the causal effect. \index{safety surveillance} \index{comparative effectiveness|see {comparative effect estimation}}
 
 In this chapter we first describe various population-level estimation study designs, all of which are implemented as R packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}. We then detail the design of an example estimation study, followed by step-by-step guides of how to implement the design using ATLAS and R. Finally, we review the various outputs generated by the study, including study diagnostics and effect size estimates.
 
@@ -5451,7 +5444,7 @@ In this chapter we first describe various population-level estimation study desi
 
 }
 
-\caption{The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characateristcs to the outcome model. The chararacteristics included in the propensity model or outcome model are captured prior to treatment initiation.}\label{fig:cohortMethod}
+\caption{The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characteristcs to the outcome model. The characteristics included in the propensity model or outcome model are captured prior to treatment initiation.}\label{fig:cohortMethod}
 \end{figure}
 
 The cohort method attempts to emulate a randomized clinical trial \citep{hernan_2016}. Subjects that are observed to initiate one treatment (the target) are compared to subjects initiating another treatment (the comparator) and are followed for a specific amount of time following treatment initiation, for example the time they stay on the treatment. We can specify the questions we wish to answer in a cohort study by making the five choices highlighted in Table \ref{tab:cmChoices}. \index{target cohort!cohort method} \index{comparator cohort} \index{outcome cohort!cohort method}
@@ -5508,7 +5501,7 @@ The choice of model specifies, among others, the type of model. For example, we 
 The new-user cohort method inherently is a method for comparative effect estimation, comparing one treatment to another. It is difficult to use this method to compare a treatment against no treatment, since it is hard to define a group of unexposed people that is comparable with the exposed group. If one wants to use this design for direct effect estimation, the preferred way is to select a comparator treatment for the same indication as the exposure of interest, where the comparator treatment is believed to have no effect on the outcome. Unfortunately, such a comparator might not always be available.
 \EndKnitrBlock{rmdimportant}
 
-A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is, on average, 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.~stroke) might then show substantial differences. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a ``confounder''. \index{confounder}
+A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is on average 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.~stroke) might then show substantial differences. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a ``confounder.'' \index{confounder}
 
 \hypertarget{propensity-scores}{%
 \subsection{Propensity scores}\label{propensity-scores}}
@@ -5517,9 +5510,9 @@ A key concern is that the patients receiving the target treatment may systematic
 
 In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what's more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially \emph{cannot} differ systematically with respect to \emph{any} patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure. \index{randomized trial}
 
-For a given patient, the \emph{propensity score} (PS) is the probability that that patient received the target treatment as against the comparator. \citep{rosenbaum_1983} In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received). This a straightforward predictive modeling application; we fit a model (e.g.~a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways, for example by matching target subjects to comparator subjects with similar PS, by stratifying the study population based on the PS, or by weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. \citep{rassen_2012} \index{propensity model} \index{propensity score!matching} \index{propensity score!stratification} \index{propensity score!weighting} \index{inverse probability of treatment weighting (IPTW)|see {propensity score!weighting}} \index{variable ratio matching}
+For a given patient, the \emph{propensity score} (PS) is the probability that that patient received the target treatment as against the comparator. \citep{rosenbaum_1983} In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received). This is a straightforward predictive modeling application; we fit a model (e.g.~a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways including matching target subjects to comparator subjects with similar PS, stratifying the study population based on the PS, or weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. \citep{rassen_2012} \index{propensity model} \index{propensity score!matching} \index{propensity score!stratification} \index{propensity score!weighting} \index{inverse probability of treatment weighting (IPTW)|see {propensity score!weighting}} \index{variable ratio matching}
 
-For example, suppose we use one-on-one PS matching, and that Jan has a priori probability of 0.4 of receiving the target treatment and in fact receives the target treatment. If we can find a patient (named Jun) that also had an a priori probability of 0.4 of receiving the target treatment but in fact received the comparator, the comparison of Jan and Jun's outcomes is like a mini-randomized trial, at least with respect to measured confounders. This comparison will yield an estimate of the Jan-Jun causal contrast that is as good as the one randomization would have produced. Estimation then proceeds as follows: for every patient that received the target, find one or more matched patients that received the comparator but had the same a priori probability of receiving the target. Compare the outcome for the target patient with the outcomes for the comparator patients within each of these matched groups.
+For example, suppose we use one-on-one PS matching, and that Jan has a priori probability of 0.4 of receiving the target treatment and in fact receives the target treatment. If we can find a patient (named Jun) that also had an a priori probability of 0.4 of receiving the target treatment but in fact received the comparator, the comparison of Jan and Jun's outcomes is like a mini-randomized trial, at least with respect to measured confounders. This comparison will yield an estimate of the Jan-Jun causal contrast that is as good as the one randomization would have produced. Estimation then proceeds as follows: for every patient that received the target, find one or more matched patients that received the comparator but had the same prior probability of receiving the target. Compare the outcome for the target patient with the outcomes for the comparator patients within each of these matched groups.
 
 Propensity scoring controls for measured confounders. In fact, if treatment assignment is ``strongly ignorable'' given measured characteristics, propensity scoring will yield an unbiased estimate of the causal effect. ``Strongly ignorable'' essentially means that there are no unmeasured confounders, and that the measured confounders are adjusted for appropriately. Unfortunately this is not a testable assumption. See Chapter \ref{MethodValidity} for further discussion of this issue. \index{strongly ignorable}
 
@@ -5552,7 +5545,7 @@ The propensity method requires that matching patients exist! As such, a key diag
 
 Where \(F\) is the preference score, \(S\) is the propensity score, and \(P\) is the proportion of patients receiving the target treatment.
 
-\citet{walker_2013} discuss the concept of ``empirical equipoise''. They accept exposure pairs as emerging from empirical equipoise if at least half of the exposures are to patients with a preference score of between 0.3 and 0.7. \index{clinical equipoise}
+\citet{walker_2013} discuss the concept of ``empirical equipoise.'' They accept exposure pairs as emerging from empirical equipoise if at least half of the exposures are to patients with a preference score of between 0.3 and 0.7. \index{clinical equipoise}
 
 \hypertarget{balance}{%
 \subsection{Balance}\label{balance}}
@@ -5634,7 +5627,7 @@ Because the same subject that make up the exposed group are also used as the con
 \caption{The case-control design. Subjects with the outcome (‘cases’) are compared to subjects without the outcome (‘controls’) in terms of their exposure status. Often, cases and controls are matched on various characteristics such as age and sex.}\label{fig:caseControl}
 \end{figure}
 
-Case-control studies \citep{vandenbroucke_2012} consider the question ``are persons with a specific disease outcome exposed more frequently to a specific agent than those without the disease?'' Thus, the central idea is to compare ``cases'', i.e., subjects that experience the outcome of interest with ``controls'', i.e., subjects that did not experience the outcome of interest. The choices in Table \ref{tab:ccChoices} define a case-control question. \index{outcome cohort!case-control design} \index{target cohort!case-control design} \index{nesting cohort!case-control design}
+Case-control studies \citep{vandenbroucke_2012} consider the question ``are persons with a specific disease outcome exposed more frequently to a specific agent than those without the disease?'' Thus, the central idea is to compare ``cases,'' i.e., subjects that experience the outcome of interest, with ``controls,'' i.e., subjects that did not experience the outcome of interest. The choices in Table \ref{tab:ccChoices} define a case-control question. \index{outcome cohort!case-control design} \index{target cohort!case-control design} \index{nesting cohort!case-control design}
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:ccChoices} Main design choices in a case-control design.}\tabularnewline
@@ -5670,7 +5663,7 @@ Target cohort\strut
 A cohort representing the treatment\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.22\columnwidth}\raggedright
-{[}Nesting cohort{]}\strut
+Nesting cohort\strut
 \end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
 Optionally, a cohort defining the subpopulation from which cases and controls are drawn\strut
 \end{minipage}\tabularnewline
@@ -5741,7 +5734,7 @@ The time period used as the control time\strut
 \bottomrule
 \end{longtable}
 
-Since cases serve as their own control, it is a self-controlled design, and should therefore be robust to confounding due to between-person differences. One concern is that, because the outcome date is always later than the control date, the method will be positively biased if the overall frequency of exposure increases over time (or negatively biased if there is a decrease). To address this, the case-time-control design \citep{suissa_1995} was developed, which adds controls, matched for example on age and sex, to the case-crossover design to adjust for exposure trends. \index{case-time-control design}
+Cases serve as their own controls. As self-controlled designs, they should be robust to confounding due to between-person differences. One concern is that, because the outcome date is always later than the control date, the method will be positively biased if the overall frequency of exposure increases over time (or negatively biased if there is a decrease). To address this, the case-time-control design \citep{suissa_1995} was developed, which adds controls, matched for example on age and sex, to the case-crossover design to adjust for exposure trends. \index{case-time-control design}
 
 \hypertarget{the-self-controlled-case-series-design}{%
 \section{The self-controlled case series design}\label{the-self-controlled-case-series-design}}
@@ -5757,7 +5750,7 @@ Since cases serve as their own control, it is a self-controlled design, and shou
 \caption{The Self-Controlled Case Series design. The rate of outcomes during exposure is compared to the rate of outcomes when not exposed.}\label{fig:selfControlledCaseSeries}
 \end{figure}
 
-The Self-Controlled Case Series (SCCS) design \citep{farrington_1995, whitaker_2006} compares the rate of outcomes during exposure to the rate of outcomes during all unexposed time, both before, between, and after exposures. It is a Poisson regression that is conditioned on the person. Thus, it seeks to answer the question: ``Given that a patient has the outcome, is the outcome more likely during exposed time compared to non-exposed time?''. The choices in Table \ref{tab:sccsChoices} define an SCCS question. \index{outcome cohort!SCCS design} \index{target cohort!SCCS design}
+The Self-Controlled Case Series (SCCS) design \citep{farrington_1995, whitaker_2006} compares the rate of outcomes during exposure to the rate of outcomes during all unexposed time, including before, between, and after exposures. It is a Poisson regression that is conditioned on the person. Thus, it seeks to answer the question: ``Given that a patient has the outcome, is the outcome more likely during exposed time compared to non-exposed time?''. The choices in Table \ref{tab:sccsChoices} define an SCCS question. \index{outcome cohort!SCCS design} \index{target cohort!SCCS design}
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:sccsChoices} Main design choices in a self-controlled case series design.}\tabularnewline
@@ -5800,9 +5793,9 @@ The model to estimate the effect, including any adjustments for time-varying con
 \bottomrule
 \end{longtable}
 
-Like other self-controlled designs, the SCCS is robust to confounding due to between-person differences, but vulnerable to confounding due to time-varying effects. Several adjustments are possible to attempt to account for these, for example by including age and season. A special variant of the SCCS includes not just the exposure of interest, but all other exposures to drugs recorded in the database, \citep{simpson_2013} potentially adding thousands of additional variables to the model. L1-regularization using cross-validation to select the regularization hyperparameter is applied to the coefficients of all exposures except the exposure of interest.
+Like other self-controlled designs, the SCCS is robust to confounding due to between-person differences, but vulnerable to confounding due to time-varying effects. Several adjustments are possible to attempt to account for these, for example by including age and season. A special variant of the SCCS includes not just the exposure of interest, but all other exposures to drugs recorded in the database \citep{simpson_2013} potentially adding thousands of additional variables to the model. L1-regularization using cross-validation to select the regularization hyperparameter is applied to the coefficients of all exposures except the exposure of interest.
 
-One important assumption underlying the SCCS is that the observation period end is independent of the date of the outcome. Because for some outcomes, especially ones that can be fatal such as stroke, this assumption can be violated. An extension to the SCCS has been developed that corrects for any such dependency. \citep{farrington_2011}
+One important assumption underlying the SCCS is that the observation period end is independent of the date of the outcome. For some outcomes, especially ones that can be fatal such as stroke, this assumption can be violated. An extension to the SCCS has been developed that corrects for any such dependency. \citep{farrington_2011}
 
 \hypertarget{designing-a-hypertension-study}{%
 \section{Designing a hypertension study}\label{designing-a-hypertension-study}}
@@ -5810,7 +5803,7 @@ One important assumption underlying the SCCS is that the observation period end 
 \hypertarget{problem-definition-1}{%
 \subsection{Problem definition}\label{problem-definition-1}}
 
-ACE inhibitors (ACEi) are widely used in patients with hypertension or ischemic heart disease, especially those with other comorbidities such as congestive heart failure, diabetes mellitus, or chronic kidney disease. \citep{zaman_2002} Angioedema, a serious and sometimes life-threatening adverse event that usually manifests as swelling of the lips, tongue, mouth, larynx, pharynx, or periorbital region, has been linked to the use of these medications. \citep{sabroe_1997} However, limited information is available about the absolute and relative risks for angioedema associated with the use of these medications. Existing evidence is primarily based on investigations of specific cohorts (e.g., predominantly male veterans or Medicaid beneficiaries), whose findings may not be generalizable to other populations, or based on investigations with few events, which provide unstable risk estimates \citep{powers_2012}. Several observational studies compare ACEi to beta-blockers for the risk of angioedema, \citep{magid_2010, toh_2012} but beta-blockers are no longer recommend as first-line treatment of hypertension. \citep{whelton_2018} A viable alternative treatment could be thiazides or thiazide-like diuretics (THZ), which could be just as effective in managing hypertension and its associated risks such as acute myocardial infarction (AMI), but without increasing the risk of angioedema.
+ACE inhibitors (ACEi) are widely used in patients with hypertension or ischemic heart disease, especially those with other comorbidities such as congestive heart failure, diabetes mellitus, or chronic kidney disease. \citep{zaman_2002} Angioedema, a serious and sometimes life-threatening adverse event that usually manifests as swelling of the lips, tongue, mouth, larynx, pharynx, or periorbital region, has been linked to the use of these medications. \citep{sabroe_1997} However, limited information is available about the absolute and relative risks for angioedema associated with the use of these medications. Existing evidence is primarily based on investigations of specific cohorts (e.g., predominantly male veterans or Medicaid beneficiaries) whose findings may not be generalizable to other populations, or based on investigations with few events, which provide unstable risk estimates \citep{powers_2012}. Several observational studies compare ACEi to beta-blockers for the risk of angioedema, \citep{magid_2010, toh_2012} but beta-blockers are no longer recommended as first-line treatment of hypertension. \citep{whelton_2018} A viable alternative treatment could be thiazides or thiazide-like diuretics (THZ), which could be just as effective in managing hypertension and its associated risks such as acute myocardial infarction (AMI), but without increasing the risk of angioedema.
 
 The following will demonstrate how to apply our population-level estimation framework to observational healthcare data to address the following comparative estimation questions:
 
@@ -5848,7 +5841,7 @@ We fit a PS model using the default set of covariates, including demographics, c
 \subsection{Study summary}\label{study-summary}}
 
 \begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:aceChoices} Main design choices four our comparative cohort study.}\tabularnewline
+\caption{\label{tab:aceChoices} Main design choices for our comparative cohort study.}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.23\columnwidth}\raggedright
 Choice\strut
@@ -5908,7 +5901,7 @@ In the Estimation design function, there are three sections: Comparisons, Analys
 \hypertarget{ComparisonSettings}{%
 \subsection{Comparative cohort settings}\label{ComparisonSettings}}
 
-A study can have one or more comparisons. Click on ``Add Comparison'', which will open a new dialog. Click on \includegraphics{images/PopulationLevelEstimation/open.png} to the select the target and comparator cohorts. By clicking on ``Add Outcome'' we can add our two outcome cohorts. We assume the cohorts have already been created in ATLAS as described in Chapter \ref{Cohorts}. The Appendix provides the full definitions of the target (Appendix \ref{AceInhibitorsMono}), comparator (Appendix \ref{ThiazidesMono}), and outcome (Appendix \ref{Angioedema} and Appendix \ref{Ami}) cohorts. When done, the dialog should look like Figure \ref{fig:comparisons}.
+A study can have one or more comparisons. Click on ``Add Comparison,'' which will open a new dialog. Click on \includegraphics{images/PopulationLevelEstimation/open.png} to select the target and comparator cohorts. By clicking on ``Add Outcome'' we can add our two outcome cohorts. We assume the cohorts have already been created in ATLAS as described in Chapter \ref{Cohorts}. The Appendix provides the full definitions of the target (Appendix \ref{AceInhibitorsMono}), comparator (Appendix \ref{ThiazidesMono}), and outcome (Appendix \ref{Angioedema} and Appendix \ref{Ami}) cohorts. When done, the dialog should look like Figure \ref{fig:comparisons}.
 
 \begin{figure}
 
@@ -5923,7 +5916,7 @@ Note that we can select multiple outcomes for a target-comparator pair. Each out
 
 \textbf{Negative control outcomes}
 
-Negative controls outcomes are outcomes that are not believed to be caused by either the target or the comparator, and where therefore the true hazard ratio equals 1. Ideally, we would have proper cohort definitions for each outcome cohort. However, typically, we only have a concept set, with one concept per negative control outcome, and some standard logic to turn these into outcome cohorts. Here we assume the concept set has already been created as described in Chapter \ref{MethodValidity} and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure \ref{fig:ncConceptSet} shows the negative control concept set used for this study.
+Negative control outcomes are outcomes that are not believed to be caused by either the target or the comparator, and where therefore the true hazard ratio equals 1. Ideally, we would have proper cohort definitions for each outcome cohort. However, typically, we only have a concept set, with one concept per negative control outcome, and some standard logic to turn these into outcome cohorts. Here we assume the concept set has already been created as described in Chapter \ref{MethodValidity} and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure \ref{fig:ncConceptSet} shows the negative control concept set used for this study.
 
 \begin{figure}
 
@@ -5936,13 +5929,11 @@ Negative controls outcomes are outcomes that are not believed to be caused by ei
 
 \textbf{Concepts to include}
 
-TODO: Update these sections when ATLAS interface has been updated.
-
 When selecting concept to include, we can specify which covariates we would like to generate, for example to use in a propensity model. When specifying covariates here, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the regularized regression build a model that balances all covariates. The only reason we might want to specify particular covariates is to replicate an existing study that manually picked covariates. These inclusions can be specified in this comparison section or in the analysis section, because sometimes they pertain to a specific comparison (e.g.~know confounders in a comparison), or sometimes they pertain to an analysis (e.g.~when evaluating a particular covariate selection strategy).
 
 \textbf{Concepts to exclude}
 
-Rather than specifying which concepts to include, we can instead specify concepts to \emph{exclude}. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, and any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \ref{fig:covsToExclude} shows we select a concept set that includes all these concepts.
+Rather than specifying which concepts to include, we can instead specify concepts to \emph{exclude}. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, as well as any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \ref{fig:covsToExclude} shows we select a concept set that includes all these concepts.
 
 \begin{figure}
 
@@ -5967,17 +5958,17 @@ After selecting the negative controls and covariates to exclude, the lower half 
 \hypertarget{effect-estimation-analysis-settings}{%
 \subsection{Effect estimation analysis settings}\label{effect-estimation-analysis-settings}}
 
-After closing the comparisons dialog we can click on ``Add Analysis Settings''. In the box labeled ``Analysis Name'', we can give the analysis a unique name that is easy to remember and locate in the future. For example, we could set the name to ``Propensity score matching''.
+After closing the comparisons dialog we can click on ``Add Analysis Settings.'' In the box labeled ``Analysis Name,'' we can give the analysis a unique name that is easy to remember and locate in the future. For example, we could set the name to ``Propensity score matching.''
 
 \textbf{Study population}
 
-There are a wide range of options to specify the study population; the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts in the cohort definition tool. One reason for using the options in Estimation instead of in the cohort definition is re-usability: We can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).
+There are a wide range of options to specify the study population, which is the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts in the cohort definition tool. One reason for using the options in Estimation instead of in the cohort definition is re-usability; we can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).
 
 The \textbf{study start and end dates} can be used to limit the analyses to a specific period. The study end date also truncates risk windows, meaning no outcomes beyond the study end date will be considered. One reason for selecting a study start date might be that one of the drugs being studied is new and did not exist in an earlier time. Automatically adjusting for this can be done by answering ``yes'' to the question ``\textbf{Restrict the analysis to the period when both exposures are observed?}''. Another reason to adjust study start and end dates might be that medical practice changed over time (e.g., due to a drug warning) and we are only interested in the time where medicine was practiced a specific way.
 
 The option ``\textbf{Should only the first exposure per subject be included?}'' can be used to restrict to the first exposure per patient. Often this is already done in the cohort definition, as is the case in this example. Similarly, the option ``\textbf{The minimum required continuous observation time prior to index date for a person to be included in the cohort}'' is often already set in the cohort definition, and can therefore be left at 0 here. Having observed time (as defined in the OBSERVATION\_PERIOD table) before the index date ensures that there is sufficient information about the patient to calculate a propensity score, and is also often used to ensure the patient is truly a new user, and therefore was not exposed before.
 
-``\textbf{Remove subjects that are in both the target and comparator cohort?}'' defines, together with the option ``\textbf{If a subject is in multiple cohorts, should time-at-risk be censored when the new time-at-risk starts to prevent overlap?}'' what happens when a subject is in both target and comparator cohort. The first setting has three choices:
+``\textbf{Remove subjects that are in both the target and comparator cohort?}'' defines, together with the option ``\textbf{If a subject is in multiple cohorts, should time-at-risk be censored when the new time-at-risk starts to prevent overlap?}'' what happens when a subject is in both target and comparator cohorts. The first setting has three choices:
 
 \begin{itemize}
 \tightlist
@@ -6010,7 +6001,7 @@ Our choices for our example study are shown in Figure \ref{fig:studyPopulation}.
 
 }
 
-\caption{Study population settings..}\label{fig:studyPopulation}
+\caption{Study population settings.}\label{fig:studyPopulation}
 \end{figure}
 
 \textbf{Covariate settings}
@@ -6083,7 +6074,7 @@ Figure \ref{fig:psSettings} shows our choices for this study. Note that we selec
 
 }
 
-\caption{Propenstity score adjustment settings.}\label{fig:psSettings}
+\caption{Propensity score adjustment settings.}\label{fig:psSettings}
 \end{figure}
 
 \textbf{Outcome model settings}
@@ -6094,7 +6085,7 @@ We can also choose to \textbf{add all covariates to the outcome model} to adjust
 
 Instead of stratifying or matching on the propensity score we can also choose to \textbf{use inverse probability of treatment weighting} (IPTW). If weighting is used it is often recommended to use some form of trimming to avoid extreme weights and therefore unstable estimates.
 
-Figure \ref{fig:psSettings} shows our choices for this study. Because we use variable-ratio matching, we must condition the regression on the strata (i.e.~the matched sets).
+Figure \ref{fig:outcomeModelSettings} shows our choices for this study. Because we use variable-ratio matching, we must condition the regression on the strata (i.e.~the matched sets).
 
 \begin{figure}
 
@@ -6112,7 +6103,7 @@ As described in Chapter \ref{MethodValidity}, negative and positive controls sho
 
 \textbf{Negative control outcome cohort definition}
 
-In Section \ref{ComparisonSettings} we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic with three choices The first choice is whether to \textbf{use all occurrences} or just the \textbf{first occurrence} of the concept. The second choice determines \textbf{whether occurrences of descendant concepts should be considered}. For example, occurrences of the descendant ``ingrown nail of foot'' can also be counted as an occurrence of the ancestor ``ingrown nail''. The third choice specifies which domains should be considered when looking for the concepts.
+In Section \ref{ComparisonSettings} we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic with three choices. The first choice is whether to \textbf{use all occurrences} or just the \textbf{first occurrence} of the concept. The second choice determines \textbf{whether occurrences of descendant concepts should be considered}. For example, occurrences of the descendant ``ingrown nail of foot'' can also be counted as an occurrence of the ancestor ``ingrown nail.'' The third choice specifies which domains should be considered when looking for the concepts.
 
 \begin{figure}
 
@@ -6127,18 +6118,16 @@ In Section \ref{ComparisonSettings} we selected a concept set representing the n
 
 In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \ref{MethodValidity}. Positive control synthesis is an advanced topic that we will skip for now.
 
-TODO: Add positive control synthesis settings when ATLAS interface is updated.
-
 \hypertarget{running-the-study-package}{%
 \subsection{Running the study package}\label{running-the-study-package}}
 
-Now that we have fully defined our study, we can export it as an executable R package. This package contains everything that is needed to execute the study at a site that has data in CDM. This includes the cohort definitions that can be used to instantiate the target, comparator and outcome cohorts, the negative control concept set and logic to create the negative control outcome cohorts, as well as the R code to execute the analysis. Before generating the package make sure to save your study, then click on the \textbf{Utilities} tab. Here we can review the set of analyses that will be performed. As mentioned before, every combination of a comparison and an analysis setting will results in a separate analysis. In our example we have specified two analyses: ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using propensity score matching.
+Now that we have fully defined our study, we can export it as an executable R package. This package contains everything that is needed to execute the study at a site that has data in CDM. This includes the cohort definitions that can be used to instantiate the target, comparator and outcome cohorts, the negative control concept set and logic to create the negative control outcome cohorts, as well as the R code to execute the analysis. Before generating the package make sure to save your study, then click on the \textbf{Utilities} tab. Here we can review the set of analyses that will be performed. As mentioned before, every combination of a comparison and an analysis setting will result in a separate analysis. In our example we have specified two analyses: ACEi versus THZ for AMI, and ACEi versus THZ for angioedema, both using propensity score matching.
 
 We must provide a name for our package, after which we can click on ``Download'' to download the zip file. The zip file contains an R package, with the usual required folder structure for R packages. \citep{Wickham_2015} To use this package we recommend using R Studio. If you are running R Studio locally, unzip the file, and double click the .Rproj file to open it in R Studio. If you are running R Studio on an R studio server, click \includegraphics{images/PopulationLevelEstimation/upload.png} to upload and unzip the file, then click on the .Rproj file to open the project.
 
 Once you have opened the project in R Studio, you can open the README file, and follow the instructions. Make sure to change all file paths to existing paths on your system.
 
-A common error message that may appear when running the study is ``High correlation between covariate(s) and treatment detected''. This indicates that when fitting the propensity model, some covariates were observed to be highly correlated with the exposure. Please review the covariates mentioned in the error message, and exclude them from the set of covariates if appropriate (see Section \ref{VariableSelection}). \index{high correlation}
+A common error message that may appear when running the study is ``High correlation between covariate(s) and treatment detected.'' This indicates that when fitting the propensity model, some covariates were observed to be highly correlated with the exposure. Please review the covariates mentioned in the error message, and exclude them from the set of covariates if appropriate (see Section \ref{VariableSelection}). \index{high correlation}
 
 \hypertarget{pleR}{%
 \section{Implementing the study using R}\label{pleR}}
@@ -6150,7 +6139,7 @@ For our example study we will rely on the \href{https://ohdsi.github.io/CohortMe
 \hypertarget{cohort-instantiation-1}{%
 \subsection{Cohort instantiation}\label{cohort-instantiation-1}}
 
-We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter \ref{Cohorts}. The Appendix provides the full definitions of the target (Appendix \ref{AceInhibitorsMono}), comparator (Appendix \ref{ThiazidesMono}), and outcome (Appendix \ref{Angioedema} ) cohorts. We will assume the ACEi, THZ, and angioedema cohorts have been instantiated in a table called \texttt{scratch.my\_cohorts} with cohort definition IDs 1,2, and 3 respectively.
+We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter \ref{Cohorts}. The Appendix provides the full definitions of the target (Appendix \ref{AceInhibitorsMono}), comparator (Appendix \ref{ThiazidesMono}), and outcome (Appendix \ref{Angioedema} ) cohorts. We will assume the ACEi, THZ, and angioedema cohorts have been instantiated in a table called \texttt{scratch.my\_cohorts} with cohort definition IDs 1, 2, and 3 respectively.
 
 \hypertarget{data-extraction-1}{%
 \subsection{Data extraction}\label{data-extraction-1}}
@@ -6262,7 +6251,7 @@ We can use the \texttt{loadCohortMethodData()} function to load the data in a fu
 
 \textbf{Defining new users}
 
-Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior first use) is used to increase the probability that it is truly first use. When using the CohortMethod package, you can enforce the necessary requirements for new use in three ways:
+Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior to first use) is used to increase the probability that it is truly first use. When using the CohortMethod package, you can enforce the necessary requirements for new use in three ways:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -6367,7 +6356,7 @@ The outcome model is a model describing which variables are associated with the 
 \hypertarget{MultipleAnalyses}{%
 \subsection{Running multiple analyses}\label{MultipleAnalyses}}
 
-Often we want to perform more than one analyses, for example for multiple outcomes including negative controls. The \href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} offers functions for performing such studies efficiently. This is described in detail in the \href{https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html}{package vignette on running multiple analyses}. Briefly, assuming the outcome of interest and negative control cohorts have already been created, we can specify all target-comparator-outcome combinations we wish to analyse:
+Often we want to perform more than one analysis, for example for multiple outcomes including negative controls. The \href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} offers functions for performing such studies efficiently. This is described in detail in the \href{https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html}{package vignette on running multiple analyses}. Briefly, assuming the outcome of interest and negative control cohorts have already been created, we can specify all target-comparator-outcome combinations we wish to analyze:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6527,7 +6516,7 @@ Our estimates are only valid if several assumptions have been met. We use a wide
 \hypertarget{propensity-scores-and-model}{%
 \subsection{Propensity scores and model}\label{propensity-scores-and-model}}
 
-We first need to evaluate whether the target and comparator cohort are to some extend comparable. For this we can compute the Area Under the Receiver Operator Curve (AUC) statistic for the propensity model. An AUC of 1 indicates the treatment assignment was completely predictable based on baseline covariates, and that the two groups are therefore incomparable. We can use the \texttt{computePsAuc} function to compute the AUC, which in our example is 0.79. Using the \texttt{plotPs} function, we can also generate the preference score distribution as shown in Figure \ref{fig:ps}. Here we see that for many people the treatment they received was predictable, but there is also a large amount of overlap, indicating that adjustment can be used to select comparable groups. \index{preference score!example}
+We first need to evaluate whether the target and comparator cohort are to some extent comparable. For this we can compute the Area Under the Receiver Operator Curve (AUC) statistic for the propensity model. An AUC of 1 indicates the treatment assignment was completely predictable based on baseline covariates, and that the two groups are therefore incomparable. We can use the \texttt{computePsAuc} function to compute the AUC, which in our example is 0.79. Using the \texttt{plotPs} function, we can also generate the preference score distribution as shown in Figure \ref{fig:ps}. Here we see that for many people the treatment they received was predictable, but there is also a large amount of overlap, indicating that adjustment can be used to select comparable groups. \index{preference score!example}
 
 \begin{figure}
 
@@ -6618,7 +6607,7 @@ If a variable is found to be highly predictive, there are two possible conclusio
 \hypertarget{covariate-balance}{%
 \subsection{Covariate balance}\label{covariate-balance}}
 
-The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checked whether the baseline covariates are indeed balanced after adjustment. We can use the \texttt{computeCovariateBalance} and \texttt{plotCovariateBalanceScatterPlot} functions to generate Figure \ref{fig:balance}. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion. \index{covariate balance!example}
+The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checking whether the baseline covariates are indeed balanced after adjustment. We can use the \texttt{computeCovariateBalance} and \texttt{plotCovariateBalanceScatterPlot} functions to generate Figure \ref{fig:balance}. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion. \index{covariate balance!example}
 
 \begin{figure}
 
@@ -6667,13 +6656,13 @@ One last check is to review the Kaplan-Meier plot, showing the survival over tim
 
 }
 
-\caption{Kaplan Meier plot.}\label{fig:kmPlot}
+\caption{Kaplan-Meier plot.}\label{fig:kmPlot}
 \end{figure}
 
 \hypertarget{effect-size-estimate}{%
 \subsection{Effect size estimate}\label{effect-size-estimate}}
 
-We observe a hazard ratio of 4.32 (95\% confidence interval: 2.45 - 8.08) for angioedema, which tells us that ACEi appear to increase the risk of angioedema compared to THZ. Similarly, we observe a hazard ratio of 1.13 (95\% confidence interval: 0.59 - 2.18) for AMI, suggesting little or no effect for AMI. Our diagnostics, as reviewed earlier, give no reason for doubt. However, ultimately the quality of this evidence, and whether we choose to trust it, depends on many factors that are not covererd by the study diagnostics as described in Chapter \ref{EvidenceQuality}.
+We observe a hazard ratio of 4.32 (95\% confidence interval: 2.45 - 8.08) for angioedema, which tells us that ACEi appears to increase the risk of angioedema compared to THZ. Similarly, we observe a hazard ratio of 1.13 (95\% confidence interval: 0.59 - 2.18) for AMI, suggesting little or no effect for AMI. Our diagnostics, as reviewed earlier, give no reason for doubt. However, ultimately the quality of this evidence, and whether we choose to trust it, depends on many factors that are not covererd by the study diagnostics as described in Chapter \ref{EvidenceQuality}.
 
 \hypertarget{summary-8}{%
 \section{Summary}\label{summary-8}}
@@ -6694,7 +6683,7 @@ We observe a hazard ratio of 4.32 (95\% confidence interval: 2.45 - 8.08) for an
 \hypertarget{excercises}{%
 \section{Excercises}\label{excercises}}
 
-Note: The excercises still have to be defined. The idea is to require readers to define a study that estimates the effect of celecoxib on GI bleed, compared to diclofenac. For this they must use the Eunomia package, which is still under development.
+Note: The exercises still have to be defined. The idea is to require readers to define a study that estimates the effect of celecoxib on GI bleed, compared to diclofenac. For this they must use the Eunomia package, which is still under development.
 
 \hypertarget{PatientLevelPrediction}{%
 \chapter{Patient Level Prediction}\label{PatientLevelPrediction}}
@@ -8666,7 +8655,7 @@ The central question of software validity is
 Does the software do what it is expected to do?
 \end{quote}
 
-Software validity is an essential component of evidence quality: only if our analysis software does what it is expected to do can we produce reliable evidence. As described in Section \ref{automation}, it is essential to view every study as a software development exercise, creating an automated script that executes the entire analysis, from data in the Common Data Model (CDM) to the results such as estimates, figures as tables. It is this script, and any software used in this script, that must be validated. As described in Section \ref{analysisImplementation}, we can write te entire analysis as custom code, or we can use the functionality available in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}. The advantage of using the Methods Library is that great care has already been taken to ensure its validity, so establishing the validity of the entire analysis becomes less burdensome.
+Software validity is an essential component of evidence quality: only if our analysis software does what it is expected to do can we produce reliable evidence. As described in Section \ref{automation}, it is essential to view every study as a software development exercise, creating an automated script that executes the entire analysis, from data in the Common Data Model (CDM) to the results such as estimates, figures as tables. It is this script, and any software used in this script, that must be validated. As described in Section \ref{analysisImplementation}, we can write the entire analysis as custom code, or we can use the functionality available in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}. The advantage of using the Methods Library is that great care has already been taken to ensure its validity, so establishing the validity of the entire analysis becomes less burdensome.
 
 In this chapter we first describe best practices for writing valid analysis code. After this we discuss how the Methods library is validated through its software development process and testing.
 
@@ -8676,21 +8665,21 @@ In this chapter we first describe best practices for writing valid analysis code
 \hypertarget{automation}{%
 \subsection{Automation as a requirement for reproducibility}\label{automation}}
 
-Traditionally, observational studies are often viewed as a journey rather than a process: a database expert may extract a data set from the database and hands this over to the data analyst, who may open it in a spreadsheet editor or other interactive tool, and starts working on the analysis. In the end, a result is produced, but little is preserved of how it came about. The destination of the journey was reached, but it is not possible to retrace the exact steps taken to get there. This practice is entirely unacceptable, both because it is not reproducible, but also because it lacks transparency; we do not know exactly what was done to produce the result, so we also cannot verify that no mistakes were made.
+Traditionally, observational studies are often viewed as a journey rather than a process: a database expert may extract a data set from the database and hand this over to the data analyst, who may open it in a spreadsheet editor or other interactive tool, and start working on the analysis. In the end, a result is produced, but little is preserved of how it came about. The destination of the journey was reached, but it is not possible to retrace the exact steps taken to get there. This practice is entirely unacceptable, both because it is not reproducible, but also because it lacks transparency; we do not know exactly what was done to produce the result, so we also cannot verify that no mistakes were made.
 
 Every analysis generating evidence must therefore be fully automated. By automated we mean the analysis should be implemented as a single script, and we should be able to redo the entire analysis from database in CDM format to results, including tables and figures, with a single command. The analysis can be of arbitrary complexity, perhaps producing just a single count, or generating empirically calibrated estimates for millions of research questions, but the same principle applies. The script can invoke other scripts, which in turn can invoke even lower-level analysis processes.
 
-The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} R package, we can connect directly to the data in CDM format, and many advanced analytic are available through the other R packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}.
+The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} R package, we can connect directly to the data in CDM format, and many advanced analytics are available through the other R packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}.
 
 \hypertarget{programming-best-practices}{%
 \subsection{Programming best practices}\label{programming-best-practices}}
 
-Observational analyses can become very complex, with many steps needed to produce the final results. This complexity can make it harder to maintain the analysis code, and increase the likelihood of making errors as well as making it harder to notice errors. Luckily, computer programmers have over many years developed best practices for writing code that can deal with complexity, and is easy to read, reuse, adapt, and verify. \citep{Martin_2008} A full discussion of these best practices could fill many books. Here, we highlight these four import principles:
+Observational analyses can become very complex, with many steps needed to produce the final results. This complexity can make it harder to maintain the analysis code and increase the likelihood of making errors, as well as making it harder to notice errors. Luckily, computer programmers have over many years developed best practices for writing code that can deal with complexity, which are easy to read, reuse, adapt, and verify. \citep{Martin_2008} A full discussion of these best practices could fill many books. Here, we highlight these four important principles:
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Abstraction}: Rather than write a single large script that does everything, leading to so-call ``spaghetti code'' where dependencies between lines of code can go from anywhere to anywhere (e.g.~a value set on line 10 is used in line 1,000), we can organize our code in units called ``functions''. A function should have a clear goal, for example ``take random sample'', and once created we can then use this function in our larger script without having to think of the minutiae of what the function does; We can abstract the function to a simple-to-understand concept.
+  \textbf{Abstraction}: Rather than write a single large script that does everything, leading to so-called ``spaghetti code'' where dependencies between lines of code can go from anywhere to anywhere (e.g.~a value set on line 10 is used in line 1,000), we can organize our code in units called ``functions.'' A function should have a clear goal, for example ``take random sample,'' and once created we can then use this function in our larger script without having to think of the minutiae of what the function does; we can abstract the function to a simple-to-understand concept.
 \item
   \textbf{Encapsulation}: For abstraction to work, we should make sure that dependencies of a function are minimized and clearly defined. Our example sampling function should have a few arguments (e.g.~a dataset and a sample size), and one output (e.g.~the sample). Nothing else should influence what the function does. So-called ``global variables'', variables that are set outside a function, are not arguments of a function, but are nevertheless used in the function, should be avoided.
 \item
@@ -8712,14 +8701,14 @@ Several approaches exist to verify the validity of software code, but two are es
   \textbf{Double coding}: Two persons both independently write the analysis code, and afterwards the results of the two scripts are compared.
 \end{itemize}
 
-Code review has the advantage that it is usually less work, but the disadvantage is that the reviewer might miss some errors. Double coding on the other hand is usually very labor intensive, but it is less likely, although not impossible, that errors are missed. Another disadvantages of double coding is that two separate implementations \emph{almost always} produce different results, due to the many minor arbitrary choices that need to made (e.g.~should ``until exposure end'' be interpreted as including the exposure end date, or not?). As a consequence, the two supposedly independent programmers often need to work together to align their analyses, thus breaking their independence.
+Code review has the advantage that it is usually less work, but the disadvantage is that the reviewer might miss some errors. Double coding on the other hand is usually very labor intensive, but it is less likely, although not impossible, that errors are missed. Another disadvantage of double coding is that two separate implementations \emph{almost always} produce different results, due to the many minor arbitrary choices that need to made (e.g.~should ``until exposure end'' be interpreted as including the exposure end date, or not?). As a consequence, the two supposedly independent programmers often need to work together to align their analyses, thus breaking their independence.
 
-Other software validation practices such as unit testing are less relevant here because a study is typically a one-time activity with highly complex relationship between input (the data in CDM) and outputs (the study results), making these practices less usable. Note that these practices are applied in the Methods Library.
+Other software validation practices such as unit testing are less relevant here because a study is typically a one-time activity with highly complex relationships between input (the data in CDM) and outputs (the study results), making these practices less usable. Note that these practices are applied in the Methods Library.
 
 \hypertarget{using-the-methods-library}{%
 \subsection{Using the Methods Library}\label{using-the-methods-library}}
 
-The \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} provides a large set of functions, allowing most observational studies to be implemented using only a few lines of code. Using the Methods Library therefore shifts most of the burden of establishing the validity of one's study code to the Library. Validity of the Methods Library is ensured by its software development process, and by extensive testing.
+The \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} provides a large set of functions, allowing most observational studies to be implemented using only a few lines of code. Using the Methods Library therefore shifts most of the burden of establishing the validity of one's study code to the Library. Validity of the Methods Library is ensured by its software development process and by extensive testing.
 
 \hypertarget{methods-library-software-development-process}{%
 \section{Methods Library software development process}\label{methods-library-software-development-process}}
@@ -8728,12 +8717,12 @@ The OHDSI Methods Library is developed by the OHDSI community. Proposed changes 
 
 Users can install the Methods Library in R directly from the master branches in the GitHub repositories, or through a system known as ``drat'' that is always up-to-date with the master branches. A number of the Methods Library packages are available through R's Comprehensive R Archive Network (CRAN), and this number is expected to increase over time.
 
-Reasonable software development and testing methodologies are employed by OHDSI to maximize the accuracy, reliability and consistency of the Methods Library performance. Importantly, as the Methods Library is released under the terms of the Apache License V2, all source code underlying the Methods Library, whether it be in R, C++, SQL, or Java is available for peer review by all members of the OHDSI community, and the public in general. Thus, all the functionality embodied within Methods Library is subject to continuous critique and improvement relative to its accuracy, reliability and consistency.
+Reasonable software development and testing methodologies are employed by OHDSI to maximize the accuracy, reliability and consistency of the Methods Library performance. Importantly, as the Methods Library is released under the terms of the Apache License V2, all source code underlying the Methods Library, whether it be in R, C++, SQL, or Java is available for peer review by all members of the OHDSI community, and the public in general. Thus, all the functionality embodied within the Methods Library is subject to continuous critique and improvement relative to its accuracy, reliability and consistency.
 
 \hypertarget{source-code-management}{%
 \subsection{Source Code Management}\label{source-code-management}}
 
-All of the Methods Library's source code is managed in the source code version control system ``git'' publicly accessible via GitHub. The OHDSI Methods Library repositories are access-controlled. Anyone in the world can view the source code, and any member of the OHDSI community can submit changes through so-called pull requests. Only the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can approve such request, make changes to the master branches, and release new versions. Continuous logs of code changes are maintained within the GitHub repositories and reflect all aspects of changes in code and documentation. These commit logs are available for public review.
+All of the Methods Library's source code is managed in the source code version control system ``git'' publicly accessible via GitHub. The OHDSI Methods Library repositories are access-controlled. Anyone in the world can view the source code, and any member of the OHDSI community can submit changes through so-called pull requests. Only the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can approve such requests, make changes to the master branches, and release new versions. Continuous logs of code changes are maintained within the GitHub repositories and reflect all aspects of changes in code and documentation. These commit logs are available for public review.
 
 New versions are released by the OHDSI Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership as needed. A new release starts by pushing changes to a master branch with a package version number (as defined in the DESCRIPTION file inside the package) that is greater than the version number of the previous release. This automatically triggers checking and testing of the package. If all tests are passed, the new version is automatically tagged in the version control system and the package is automatically uploaded to the OHDSI drat repository. New versions are numbered using three-component version number:
 
@@ -8752,12 +8741,12 @@ New versions are released by the OHDSI Population-Level Estimation Workgroup and
 
 All packages in the Methods Library are documented through R's internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the \href{https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html}{roxygen2} software is used to combine a function's documentation and source code in a single file. The package manual is available on demand through R's command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package. All documentation can be viewed though the Methods Library website\footnote{\url{https://ohdsi.github.io/MethodsLibrary/}}.
 
-All Method Library source code is available to end users. Feedback from the community is facilitated using GitHub's issue tracking system and the OHDSI Forums.
+All Method Library source code is available to end users. Feedback from the community is facilitated using GitHub's issue tracking system and the OHDSI forums.
 
 \hypertarget{availability-of-current-and-historical-archive-versions}{%
 \subsection{Availability of Current and Historical Archive Versions}\label{availability-of-current-and-historical-archive-versions}}
 
-Current and historical versions of the Methods Library packages are available in two locations: First, the GitHub version control system contains the full development history of each package, and the state of a package at each point in time can be reconstructed and retrieved. Most importantly, each released version is tagged in GitHub. Second, the released R source packages are stored in the OHDSI GitHub drat repository.
+Current and historical versions of the Methods Library packages are available in two locations. First, the GitHub version control system contains the full development history of each package, and the state of a package at each point in time can be reconstructed and retrieved. Most importantly, each released version is tagged in GitHub. Second, the released R source packages are stored in the OHDSI GitHub drat repository.
 
 \hypertarget{maintenance-support-and-retirement}{%
 \subsection{Maintenance, Support and Retirement}\label{maintenance-support-and-retirement}}
@@ -8767,14 +8756,14 @@ Each current version of the Methods Library is actively supported by OHDSI with 
 \hypertarget{qualified-personnel}{%
 \subsection{Qualified Personnel}\label{qualified-personnel}}
 
-Members of OHDSI community represent multiple statistical disciplines and are based at academic, not-for-profit and industry-affiliated institutions on multiple continents.
+Members of the OHDSI community represent multiple statistical disciplines and are based at academic, not-for-profit and industry-affiliated institutions on multiple continents.
 
 All leaders of the OHDSI Population-Level Estimation Workgroup and OHDSI Patient-Level Prediction Workgroup hold PhDs from accredited academic institutions and have published extensively in peer reviewed journals.
 
 \hypertarget{physical-and-logical-security}{%
 \subsection{Physical and Logical Security}\label{physical-and-logical-security}}
 
-The OHDSI Methods Library is hosted on the GitHub\footnote{\url{https://github.com/}} system. GitHub's security measures are described at \url{https://github.com/security}. Usernames and passwords are required by all members of the OHDSI community contribute modifications to the Methods Library, and only the Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can makes changes to the master branches. User accounts are limited in access based upon standard security policies and functional requirements.
+The OHDSI Methods Library is hosted on the GitHub\footnote{\url{https://github.com/}} system. GitHub's security measures are described at \url{https://github.com/security}. Usernames and passwords are required by all members of the OHDSI community to contribute modifications to the Methods Library, and only the Population-Level Estimation Workgroup and Patient-Level Prediction Workgroup leadership can make changes to the master branches. User accounts are limited in access based upon standard security policies and functional requirements.
 
 \hypertarget{disaster-recovery}{%
 \subsection{Disaster Recovery}\label{disaster-recovery}}
@@ -8789,7 +8778,7 @@ We distinguish between two types of tests performed on the Methods Library: Test
 \hypertarget{unit-test}{%
 \subsection{Unit test}\label{unit-test}}
 
-A large set of automated validation tests is maintained and upgraded by OHDSI to enable the testing of source code against known data and known results. Each test begins with specifying some simple input data, then executes a function in one of the packages on this input, and evaluates whether the output is exactly what would be expected. For simple functions, the expected result is often obvious (for example when performing propensity score matching on example data containing only a few subjects), for more complicated functions the expected result may be generated using combinations of other functions available in R (for example, Cyclops, our large-scale regression engine, is tested among others by comparing results on simple problems with other regression routines in R). We aim for these tests in total to cover 100\% of the lines of executable source code.
+A large set of automated validation tests is maintained and upgraded by OHDSI to enable the testing of source code against known data and known results. Each test begins with specifying some simple input data, then executes a function in one of the packages on this input, and evaluates whether the output is exactly what would be expected. For simple functions, the expected result is often obvious (for example when performing propensity score matching on example data containing only a few subjects); for more complicated functions the expected result may be generated using combinations of other functions available in R (for example, Cyclops, our large-scale regression engine, is tested among others by comparing results on simple problems with other regression routines in R). We aim for these tests in total to cover 100\% of the lines of executable source code.
 
 These tests are automatically performed when changes are made to a package (specifically, when changes are pushed to the package repository). Any errors noted during testing automatically trigger emails to the leadership of the Workgroups, and must be resolved prior to release of a new version of a package. The source code and expected results for these tests are available for review and use in other applications as may be appropriate. These tests are also available to end users and/or system administrators and can be run as part of their installation process to provide further documentation and objective evidence as to the accuracy, reliability and consistency of their installation of the Methods Library.
 
@@ -8810,9 +8799,9 @@ For more complex functionality it is not always obvious what the expected output
 \item
   Custom study code can be validated using code review or double coding.
 \item
-  The Methods Library provided validated functionality that can be used in observational studies.
+  The Methods Library provides validated functionality that can be used in observational studies.
 \item
-  The Methods Library is valdated by using a software development process aimed at creating valid software, and by testing.
+  The Methods Library is validated by using a software development process aimed at creating valid software, and by testing.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
@@ -8827,7 +8816,7 @@ When considering method validity we aim to answer the question
 Is this method valid for answering this question?
 \end{quote}
 
-Where ``method'' includes not only the study design, but also the data and the implementation of the design. Method validity is therefore somewhat of a catch-all; It is often not possible to observe good method validity without good data quality, clinical validity, and software validity. Those aspects of evidence quality should have already been addressed separately before we consider method validity.
+``Method'' includes not only the study design, but also the data and the implementation of the design. Method validity is therefore somewhat of a catch-all; it is often not possible to observe good method validity without good data quality, clinical validity, and software validity. Those aspects of evidence quality should have already been addressed separately before we consider method validity.
 
 The core activity when establishing method validity is evaluating whether important assumptions in the analysis have been met. For example, we assume that propensity-score matching makes two populations comparable, but we need to evaluate whether this is the case. Where possible, empirical tests should be performed to verify these assumptions. We can for example generate diagnostics to show that our two populations are indeed comparable on a wide range of characteristics after matching. In OHDSI we have developed many standardized diagnostics that should be generated and evaluated whenever an analysis is performed.
 
@@ -8854,7 +8843,7 @@ For each study design there are diagnostics specific to such a design. Many of t
   \textbf{Kaplan Meier curve} to asses typical time to onset, and whether the proportionality assumption underlying Cox models is met.
 \end{itemize}
 
-Other study designs require different diagnostics to test the different assumptions in those designs. For example, for the self-controlled case series (SCCS) design we may check the necessary assumption that the end of observation is independent of the outcome. This assumption is often violated in the case of serious, potentially lethal, events such as myocardial infarction. We can evaluate whether the assumption holds by generating the plot shown in Figure \ref{fig:timeToObsEnd}, which shows histograms of the time to observation period end for those that are censored, and those that uncensored. In our data we consider those whose observation period ends at the end date of data capture (the date when observation stopped for the entire data base, for example the date of extraction, or the study end date) to be uncensored, and all others to be censored. In Figure \ref{fig:timeToObsEnd} we see only minor differences between the two distributions, suggesting our assumptions holds.
+Other study designs require different diagnostics to test the different assumptions in those designs. For example, for the self-controlled case series (SCCS) design we may check the necessary assumption that the end of observation is independent of the outcome. This assumption is often violated in the case of serious, potentially lethal, events such as myocardial infarction. We can evaluate whether the assumption holds by generating the plot shown in Figure \ref{fig:timeToObsEnd}, which shows histograms of the time to observation period end for those that are censored, and those that are uncensored. In our data we consider those whose observation period ends at the end date of data capture (the date when observation stopped for the entire data base, for example the date of extraction, or the study end date) to be uncensored, and all others to be censored. In Figure \ref{fig:timeToObsEnd} we see only minor differences between the two distributions, suggesting our assumptions holds.
 
 \begin{figure}
 
@@ -8862,7 +8851,7 @@ Other study designs require different diagnostics to test the different assumpti
 
 }
 
-\caption{Time to observation end for those that are censored, and those that uncensored.}\label{fig:timeToObsEnd}
+\caption{Time to observation end for those that are censored, and those that are uncensored.}\label{fig:timeToObsEnd}
 \end{figure}
 
 \hypertarget{diagnostics-for-all-estimation}{%
@@ -8873,7 +8862,7 @@ Next to the design-specific diagnostics, there are also several diagnostics that
 \hypertarget{NegativeControls}{%
 \subsection{Negative controls}\label{NegativeControls}}
 
-Negative controls are exposure-outcome pairs where one believes no causal effect exists, and including negative controls or ``falsification endpoints'' \citep{prased_2013} has been recommended as a means to detect confounding, \citep{lipsitch_2010} selection bias and measurement error. \citep{arnold_2016} For example, in one study \citep{zaadstra_2008} investigating the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased.
+Negative controls are exposure-outcome pairs where one believes no causal effect exists, and it includes negative controls or ``falsification endpoints'' \citep{prased_2013} that have been recommended as a means to detect confounding, \citep{lipsitch_2010} selection bias, and measurement error. \citep{arnold_2016} For example, in one study \citep{zaadstra_2008} investigating the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased.
 
 We should select negative controls that are comparable to our hypothesis of interest, which means we typically select exposure-outcome pairs that either have the same exposure as the hypothesis of interest (so-called ``outcome controls'') or the same outcome (``exposure controls''). Our negative controls should further meet these criteria:
 
@@ -8891,14 +8880,14 @@ We should select negative controls that are comparable to our hypothesis of inte
   Negative controls should ideally have \textbf{some potential for bias}. For example, the last digit of someone's social security number is basically a random number, and is unlikely to show confounding. It should therefore not be used as a negative control.
 \end{itemize}
 
-Some argue that negative controls should also have the same confounding structure as the exposure-outcome pair of interest. \citep{lipsitch_2010} However, we believe this confounding structure is unknowable; The relationships between variables found in reality is often far more complex than people imagine. Also, even if the confounder structure were known, it is unlikely that a negative control exists having that exact same confounding structure, but lacking the direct causal effect. For this reason in OHDSI we rely on a large number of negative controls, assuming that such a set represents many different types of bias, including the ones present in the hypothesis of interest.
+Some argue that negative controls should also have the same confounding structure as the exposure-outcome pair of interest. \citep{lipsitch_2010} However, we believe this confounding structure is unknowable; the relationships between variables found in reality is often far more complex than people imagine. Also, even if the confounder structure was known, it is unlikely that a negative control exists having that exact same confounding structure, but lacking the direct causal effect. For this reason in OHDSI we rely on a large number of negative controls, assuming that such a set represents many different types of bias, including the ones present in the hypothesis of interest.
 
-The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studies extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this Principe in mind we have developed a semi-automated procedure for selecting negative controls \citep{voss_2016}. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.
+The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studied extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this principe in mind we have developed a semi-automated procedure for selecting negative controls \citep{voss_2016}. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.
 
 \hypertarget{PositiveControls}{%
 \subsection{Positive controls}\label{PositiveControls}}
 
-To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls, where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. \citep{noren_2014}
+To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. \citep{noren_2014}
 
 In OHDSI we therefore use synthetic positive controls, \citep{schuemie_2018} created by modifying a negative control through injection of additional, simulated occurrences of the outcome during the time at risk of the exposure. For example, assume that, during exposure to ACEi, n occurrences of our negative control outcome ``ingrowing nail'' were observed. If we now add an additional n simulated occurrences during exposure, we have doubled the risk. Since this was a negative control, the relative risk compared to the counterfactual was one, but after injection, it becomes two.
 
@@ -8920,7 +8909,7 @@ Although we refer to a single true ``effect size'' for each control, different m
 \hypertarget{metrics}{%
 \subsection{Empirical evaluation}\label{metrics}}
 
-Based on the estimates of a particular method for the negative and positive controls, we can then understand the operating characteristic by computing a range of metrics, for example:
+Based on the estimates of a particular method for the negative and positive controls, we can then understand the operating characteristics by computing a range of metrics, for example:
 
 \begin{itemize}
 \tightlist
@@ -9009,7 +8998,7 @@ Both p-value calibration and confidence interval calibration are implemented in 
 
 Another form of method validation comes from executing the study across several different databases that represent different populations, different health care systems, and/or different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates, \citep{madigan_2013} suggesting that either the effect differs greatly for different populations, or that the design does not adequately address the different biases found in the different databases. In fact, we observe that accounting for residual bias in a database through empirical calibration of confidence intervals can greatly reduce between-study heterogeneity. \citep{schuemie_2018}
 
-One way to express between-database heterogeneity is the \(I^2\) score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. \citep{higgins_2003} A naive categorization of values for \(I^2\) would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to \(I^2\) values of 25\%, 50\%, and 75\%. In a study estimating the effects for many depression treatments using a new-user cohort design with large-scale propensity score adjustment, \citet{schuemie_2018b} observed only 58\% of the estimates to have an \(I^2\) below 25\%. After empirical calibration this increased to 83\%.
+One way to express between-database heterogeneity is the \(I^2\) score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. \citep{higgins_2003} A naive categorization of values for \(I^2\) would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to \(I^2\) values of 25\%, 50\%, and 75\%. In a study estimating the effects for many depression treatments using a new-user cohort design with large-scale propensity score adjustment, \citep{schuemie_2018b} observed only 58\% of the estimates to have an \(I^2\) below 25\%. After empirical calibration this increased to 83\%.
 
 \BeginKnitrBlock{rmdimportant}
 Observing between-database heterogeneity casts doubt on the validity of the estimates. Unfortunately, the inverse is not true. Not observing heterogeneity does not guarantee an unbiased estimate. It is not unlikely that all databases share a similar bias, and that all estimates are therefore consistently wrong.
@@ -9020,12 +9009,12 @@ Observing between-database heterogeneity casts doubt on the validity of the esti
 
 When designing a study there are often design choices that are uncertain. For example, should propensity score matching of stratification be used? If stratification is used, how many strata? What is the appropriate time-at-risk? When faced with such uncertainty, one solution is to evaluate various options, and observe the sensitivity of the results to the design choice. If the estimate remains the same under various options, we can say the study is robust to the uncertainty.
 
-This definition of sensitivity analysis should not be confused with the definitions used by others such as \citet{rosenbaum_2005}, who define sensitivity analysis to ``appraise how the conclusions of a study might be altered by hidden biases of various magnitudes''.
+This definition of sensitivity analysis should not be confused with the definitions used by others such as, \citet{rosenbaum_2005} who defines sensitivity analysis to ``appraise how the conclusions of a study might be altered by hidden biases of various magnitudes.''
 
 \hypertarget{method-validation-in-practice}{%
 \section{Method validation in practice}\label{method-validation-in-practice}}
 
-Here we build on the example in Chapter \ref{PopulationLevelEstimation}, where we investigate the effect of ACE inhibitors (ACEi) on the risk of angioedema and acute myocardial infarction (AMI), compared to thiazides and thiazide-like diuretics (THZ). In that chapter we already explore many of the diagnostics specific to the design we used: the cohort method. Here, we apply additional diagnostics that could also have been applied had other designs been used. If the study is implemented using ATLAS as described in Section \ref{PleAtlas} these diagnostics are available in the Shiny app that is included in the study R package generated by ATLAS. If the study is implemented using R instead, as described in Section \ref{pleR}, then R functions available in the various packages should be used, as described in the next sections.
+Here we build on the example in Chapter \ref{PopulationLevelEstimation}, where we investigate the effect of ACE inhibitors (ACEi) on the risk of angioedema and acute myocardial infarction (AMI), compared to thiazides and thiazide-like diuretics (THZ). In that chapter we already explore many of the diagnostics specific to the design we used, the cohort method. Here, we apply additional diagnostics that could also have been applied had other designs been used. If the study is implemented using ATLAS as described in Section \ref{PleAtlas} these diagnostics are available in the Shiny app that is included in the study R package generated by ATLAS. If the study is implemented using R instead, as described in Section \ref{pleR}, then R functions available in the various packages should be used, as described in the next sections.
 
 \hypertarget{selecting-negative-controls}{%
 \subsection{Selecting negative controls}\label{selecting-negative-controls}}
@@ -9054,7 +9043,7 @@ Next, we go to the ``Explore Evidence'' tab, and click on the \includegraphics{i
 \caption{Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports.}\label{fig:candidateNcs}
 \end{figure}
 
-This list shows condition concepts, along with an overview of the evidence linking the condition to any of the exposures we defined. For example, we see the number of publications that link the exposures to the outcomes found in PubMed using various strategies, the number of product labels of our exposures of interest that list the condition as a possible adverse effect, and the number of spontaneous reports. By default the list is sorted to show candidate negative controls first. It is then sorted by the ``Sort Order'', which represents the prevalence of the condition in a collection of observational databases. The higher the Sort Order, the higher the prevalence. Although the prevalence in these databases might not correspond with the prevalence in the database we wish to run the study, it is likely a good approximation.
+This list shows condition concepts, along with an overview of the evidence linking the condition to any of the exposures we defined. For example, we see the number of publications that link the exposures to the outcomes found in PubMed using various strategies, the number of product labels of our exposures of interest that list the condition as a possible adverse effect, and the number of spontaneous reports. By default the list is sorted to show candidate negative controls first. It is then sorted by the ``Sort Order,'' which represents the prevalence of the condition in a collection of observational databases. The higher the Sort Order, the higher the prevalence. Although the prevalence in these databases might not correspond with the prevalence in the database we wish to run the study, it is likely a good approximation.
 
 The next step is to manually review the candidate list, typically starting at the top, so with the most prevalent condition, and working our way down until we are satisfied we have enough. One typical way to do this is to export the list to a CSV (comma separated values) file, and have clinicians review these, considering the criteria mentioned in Section \ref{NegativeControls}.
 
@@ -9063,9 +9052,9 @@ For our example study we select the 76 negative controls listed in Appendix \ref
 \hypertarget{including-controls}{%
 \subsection{Including controls}\label{including-controls}}
 
-Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \ref{evaluationSettings} discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter \ref{SqlAndR} describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.
+Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \ref{evaluationSettings} discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R, then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter \ref{SqlAndR} describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.
 
-The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \ref{evaluationSettings}, and is implemented in the \texttt{injectSignals} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
+The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \ref{evaluationSettings}, and it is implemented in the \texttt{injectSignals} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -9100,14 +9089,14 @@ The OHDSI tools also provide functionality for automatically generating and incl
 \end{Highlighting}
 \end{Shaded}
 
-Note that we must mimic the time-at-risk settings used in our estimation study design. The \texttt{injectSignals} function will extract information about the exposures and negative controls outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by \texttt{cohortDbSchema} and \texttt{cohortTable}. The resulting \texttt{pcs} data frame contains the information on the synthesized positive controls.
+Note that we must mimic the time-at-risk settings used in our estimation study design. The \texttt{injectSignals} function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by \texttt{cohortDbSchema} and \texttt{cohortTable}. The resulting \texttt{pcs} data frame contains the information on the synthesized positive controls.
 
 Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} readily allow estimation of many effects in an efficient manner.
 
 \hypertarget{empirical-performance}{%
 \subsection{Empirical performance}\label{empirical-performance}}
 
-Figure \ref{fig:controls} shows the estimated effect sizes for the negative and positive controls included in our example study, stratified by true effect size. This plot is included in the Shiny app that comes with the study R package generated by ATLAS, and can be generated using the \texttt{plotControls} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} package. Note that the number of controls is often lower than what was defined because there was not enough data to either produce an estimate, or to synthesize a positive control.
+Figure \ref{fig:controls} shows the estimated effect sizes for the negative and positive controls included in our example study, stratified by true effect size. This plot is included in the Shiny app that comes with the study R package generated by ATLAS, and can be generated using the \texttt{plotControls} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} package. Note that the number of controls is often lower than what was defined because there was not enough data to either produce an estimate or to synthesize a positive control.
 
 \begin{figure}
 
@@ -9173,7 +9162,7 @@ We can use the estimates for our negative controls to calibrate our p-values. Th
 \caption{P-value calibration: estimates below the dashed line have a conventional p < 0.05. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest.}\label{fig:pValueCal}
 \end{figure}
 
-In Figure \ref{fig:pValueCal} we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicated hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
+In Figure \ref{fig:pValueCal} we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicating hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
 
 We can compute the calibrated p-values:
 
@@ -9223,10 +9212,10 @@ Just as we executed our analysis on one database, in this case the IBM MarketSca
 
 }
 
-\caption{Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.}\label{fig:forest}
+\caption{Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate when comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.}\label{fig:forest}
 \end{figure}
 
-Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the \(I^2\) suggests between-database heterogeneity. However, if we compute the \(I^2\) using the calibrated confidence intervals as shown in Figure \ref{fig:forestCal}, we see that this heterogeneity can be explained by the bias measured in each database through the negative and positive controls. The empirical calibration appears to properly taken this bias into account.
+Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the \(I^2\) suggests between-database heterogeneity. However, if we compute the \(I^2\) using the calibrated confidence intervals as shown in Figure \ref{fig:forestCal}, we see that this heterogeneity can be explained by the bias measured in each database through the negative and positive controls. The empirical calibration appears to properly take this bias into account.
 
 \begin{figure}
 
@@ -9240,7 +9229,7 @@ Although all confidence intervals are above one, suggesting agreement on the fac
 \hypertarget{sensitivity-analyses-1}{%
 \subsection{Sensitivity analyses}\label{sensitivity-analyses-1}}
 
-One of the design choices in our analysis was to use variable-ratio matching on the propensity score. However, we could have also used stratification on the propensity score. Because we we are uncertain about this choice, we may decide to use both. Table \ref{tab:sensAnalysis} shows the effect size estimates for AMI and angioedema, both calibrated and uncalibrated, when using variable-ratio matching and stratification (with 10 equally-sized strata).
+One of the design choices in our analysis was to use variable-ratio matching on the propensity score. However, we could have also used stratification on the propensity score. Because we are uncertain about this choice, we may decide to use both. Table \ref{tab:sensAnalysis} shows the effect size estimates for AMI and angioedema, both calibrated and uncalibrated, when using variable-ratio matching and stratification (with 10 equally-sized strata).
 
 \begin{longtable}[]{@{}llll@{}}
 \caption{\label{tab:sensAnalysis} Uncalibrated and calibrated hazard ratios (95\% confidence interval) for the two analysis variants.}\tabularnewline
@@ -9352,11 +9341,6 @@ Our evaluation of the designs in the Methods Library also shows that empirical c
   Study diagnostics can be used to guide analytic design choices and adapt the protocol, as long as the researcher remains blinded to the effect of interest to avoid p-hacking.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
-
-\hypertarget{exercises-5}{%
-\section{Exercises}\label{exercises-5}}
-
-Todo
 
 \hypertarget{part-ohdsi-studies}{%
 \part{OHDSI Studies}\label{part-ohdsi-studies}}
