@@ -2,7 +2,7 @@
 
 # (PART) The OHDSI Community {-} 
 
-# Mission, vision, values {#MissionVissionValues}
+# Mission, vision, values {#MissionVisionValues}
 
 *Chapter lead: George Hripcsak* 
 
