@@ -214,24 +214,24 @@ You will now want to click 'New Inclusion Criteria' to add a subsequent piece of
 knitr::include_graphics("images/Cohorts/ATLAS-IC1.png")
 ```
 
-You will then want to add another criteria to look for patients: *with exactly 0 occurrences of hypertension drugs all days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLAS-IC2).
-```{r ATLAS-IC2, fig.cap='Additional Inclusion Criteria #2',echo=FALSE, out.width='90%', fig.align='center'}
+You will then want to add another criteria to look for patients: *with exactly 0 occurrences of hypertension drugs all days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLASIC2).
+```{r ATLASIC2, fig.cap='Additional Inclusion Criteria #2',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-IC2.png")
 ```
 
 You may be confused why "having no occurrences" is coded as "exactly 0 occurrences." This is a nuance of how ATLAS consumes knowledge. ATLAS only consumes inclusion criteria. You must use logical operators to indicate when you want the absence of a specific attribute such as: "Exactly 0." Over time you will become more familiar with the logical operators available in ATLAS criteria. 
 
-Lastly, you will want to add your another criteria to look for patients: *with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)*  Now check your logic against Figure \@ref(fig:ATLAS-IC3).
-```{r ATLAS-IC3, fig.cap='Additional Inclusion Criteria #3',echo=FALSE, out.width='90%', fig.align='center'}
+Lastly, you will want to add your another criteria to look for patients: *with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)*  Now check your logic against Figure \@ref(fig:ATLASIC3).
+```{r ATLASIC3, fig.cap='Additional Inclusion Criteria #3',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-IC3.png")
 ```
 
 You have now added all of your qualifying inclusion criteria. You must now specify your cohort exit criteria. You will ask yourself, *when are people no longer eligible to be included in this cohort?"* In this cohort, we are following new-users of a drug exposure. We want to look at continuous observation period as it relates to the drug exposure. As such, the exit criteria is specified to follow for the entirety of the continuous drug exposure. If there is a subsequent break in the drug exposure, the patient will exit the cohort at this time. We do this  as we cannot determine what happened to the person during the break in the drug exposure. We can also set a criteria on the persistence window to specify an "allowable" gap between drug exposures. In this case, our experts leading this study concluded that a maximum of 30 days between exposure records is allowable when inferring the era of persistence exposure. 
 
-*Why are gaps allowed?* In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can over a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have drug exposure. 
+*Why are gaps allowed?* In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can cover a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have access to the initial drug exposure because the unit of dispense exceeded one day. 
 
-We can configure this by selecting the Event will persist *until the end of a drug exposure*. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \@ref(fig:ATLAS-cohortexit).
-```{r ATLAS-cohortexit, fig.cap='Cohort Exit Criteria',echo=FALSE, out.width='90%', fig.align='center'}
+We can configure this by selecting the Event will persist *until the end of a drug exposure*. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \@ref(fig:ATLAScohortexit).
+```{r ATLAScohortexit, fig.cap='Cohort Exit Criteria',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-cohortexit.png")
 ```
 
