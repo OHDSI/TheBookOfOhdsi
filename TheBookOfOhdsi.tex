@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-08-06}
+    \date{2019-08-07}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -3507,7 +3507,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.j0f0k2phchildren ;"
+## [1] "SELECT * FROM temp_schema.w8dovrjechildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4672,9 +4672,9 @@ Lastly, you will want to add your another criteria to look for patients: \emph{w
 
 You have now added all of your qualifying inclusion criteria. You must now specify your cohort exit criteria. You will ask yourself, *when are people no longer eligible to be included in this cohort?``* In this cohort, we are following new-users of a drug exposure. We want to look at continuous observation period as it relates to the drug exposure. As such, the exit criteria is specified to follow for the entirety of the continuous drug exposure. If there is a subsequent break in the drug exposure, the patient will exit the cohort at this time. We do this as we cannot determine what happened to the person during the break in the drug exposure. We can also set a criteria on the persistence window to specify an''allowable" gap between drug exposures. In this case, our experts leading this study concluded that a maximum of 30 days between exposure records is allowable when inferring the era of persistence exposure.
 
-\emph{Why are gaps allowed?} In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can over a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have drug exposure.
+\emph{Why are gaps allowed?} In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can cover a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have access to the initial drug exposure because the unit of dispense exceeded one day.
 
-We can configure this by selecting the Event will persist \emph{until the end of a drug exposure}. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \ref{fig:ATLASchortexit}.
+We can configure this by selecting the Event will persist \emph{until the end of a drug exposure}. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \ref{fig:ATLAScohortexit}.
 
 \begin{figure}
 
@@ -4685,12 +4685,31 @@ We can configure this by selecting the Event will persist \emph{until the end of
 \caption{Cohort Exit Criteria}\label{fig:ATLAScohortexit}
 \end{figure}
 
-In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the Export tab to share your cohort definiton to other collaborators in the form of code or JSON files to load into ATLAS. For more information on how to utilize ATLAS, you should consult the \href{https://www.ohdsi.org/resources/}{OHDSI Resources} as a reminder.
+In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the Export tab to share your cohort definiton to other collaborators in the form of code or JSON files to load into ATLAS. For more information on how to utilize ATLAS, you can always return to \href{https://www.ohdsi.org/resources/}{OHDSI Resources} to find short videos on basic cohort building tasks in ATLAS.
 
 \hypertarget{cohort-building-at-the-database-layer-using-sql}{%
 \subsection{Cohort Building at the Database Layer Using SQL}\label{cohort-building-at-the-database-layer-using-sql}}
 
 While it is encouraged to use the OHDSI analytical tools to build and share cohorts, you may not have an instance of ATLAS available in your local environment. If you do not have ATLAS, you can still build a cohort. You may query a database directly using your preferred SQL dialect. A detailed discussion of how to write SQL against the OMOP CDM is available in Chapter \ref{SqlAndR}). As you become more familiar with OHDSI code, you are encouraged to utilize \href{https://github.com/OHDSI/SqlRender}{SQL Render} to render parameterized SQL. SQL Render will easily translate your query into other SQL dialects. This makes it a lot easier to share cohort definition across other OHDSI network sites. Even without ATLAS, you can work with other OHDSI collaborators who use ATLAS to create their cohort definition. Cohorts built in ATLAS can also be exported into your preferred SQL dialect.
+
+\hypertarget{summary-6}{%
+\section{Summary}\label{summary-6}}
+
+\BeginKnitrBlock{rmdsummary}
+\begin{itemize}
+\tightlist
+\item
+  An \textbf{OHDSI cohort} is set of persons who satisfy one or more inclusion criteria for a duration of time.
+\item
+  The \textbf{OHDSI Cohort Definition} is the description of inclusion criteria used for identifying a particular cohort.
+\item
+  Building a cohort is a fundamental piece of using the OHDSI Analytics Tools.
+\item
+  There are two major approachs to building a cohort (rules-based vs probabilistic).
+\item
+  The OHDSI community has a variety of resources available to support you as you're building your own cohorts including short videos of ATLAS functionality, a ready-to-use probabilistic machine-learning package (APHRODITE) to run on your OMOP CDM and even a freely available tool to evaluate the sensitivity and specificity of your cohort (PheValuator).
+\end{itemize}
+\EndKnitrBlock{rmdsummary}
 
 \hypertarget{exercises-3}{%
 \subsection{Exercises}\label{exercises-3}}
@@ -5364,8 +5383,8 @@ We can gather the same information to see the incidence of new use of ARBs among
 
 As shown, the metrics calculated are the same but the interpretation is different since the input (ARB use) references a drug utilization estimate instead of a health outcome.
 
-\hypertarget{summary-6}{%
-\section{Summary}\label{summary-6}}
+\hypertarget{summary-7}{%
+\section{Summary}\label{summary-7}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -6656,8 +6675,8 @@ One last check is to review the Kaplan-Meier plot, showing the survival over tim
 
 We observe a hazard ratio of 4.32 (95\% confidence interval: 2.45 - 8.08) for angioedema, which tells us that ACEi appear to increase the risk of angioedema compared to THZ. Similarly, we observe a hazard ratio of 1.13 (95\% confidence interval: 0.59 - 2.18) for AMI, suggesting little or no effect for AMI. Our diagnostics, as reviewed earlier, give no reason for doubt. However, ultimately the quality of this evidence, and whether we choose to trust it, depends on many factors that are not covererd by the study diagnostics as described in Chapter \ref{EvidenceQuality}.
 
-\hypertarget{summary-7}{%
-\section{Summary}\label{summary-7}}
+\hypertarget{summary-8}{%
+\section{Summary}\label{summary-8}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -8241,8 +8260,8 @@ We have added functionality to automatically generate a word document we can use
 
 For more details see the help page of the function.
 
-\hypertarget{summary-8}{%
-\section{Summary}\label{summary-8}}
+\hypertarget{summary-9}{%
+\section{Summary}\label{summary-9}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -8779,8 +8798,8 @@ These tests are automatically performed when changes are made to a package (spec
 
 For more complex functionality it is not always obvious what the expected output should be given the input. In these cases simulations are sometimes used, generating input given a specific statistical model, and establishing whether the functionality produces results in line with this known model. For example, in the \href{https://ohdsi.github.io/SelfControlledCaseSeries/}{SelfControlledCaseSeries} package simulations are used to verify that the method is able to detect and appropriately model temporal trends in simulated data.
 
-\hypertarget{summary-9}{%
-\section{Summary}\label{summary-9}}
+\hypertarget{summary-10}{%
+\section{Summary}\label{summary-10}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
@@ -9314,8 +9333,8 @@ This emphasizes the need for empirical evaluation and calibration: if no empiric
 
 Our evaluation of the designs in the Methods Library also shows that empirical calibration restores type 1 error and coverage to their nominal values, although often at the cost of increasing type 2 error and decreasing precision.
 
-\hypertarget{summary-10}{%
-\section{Summary}\label{summary-10}}
+\hypertarget{summary-11}{%
+\section{Summary}\label{summary-11}}
 
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}

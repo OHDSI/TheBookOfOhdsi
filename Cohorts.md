@@ -29,14 +29,10 @@ When creating a cohort definition, you need to ask yourself the following questi
 
 To visualize the importance of these criteria, think of how this information comes together in a person’s timeline (Figure . The OBSERVATION_PERIOD table creates the window for which we see the person in the data.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/cohort-build} 
-
-}
-
-\caption{Cohort Creation}(\#fig:cohortBuild)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/cohort-build.png" alt="Cohort Creation" width="90%" />
+<p class="caption">(\#fig:cohortBuild)Cohort Creation</p>
+</div>
 
 *Cohort entry criteria:* The cohort entry event can be one or many clinical attributes which dictate an individual patient’s eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain,concept set, as well as any domain-specific attributes. We will discuss these in detail in the further section. 
 
@@ -46,14 +42,10 @@ To visualize the importance of these criteria, think of how this information com
 
 *Time-at-risk:* In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you’re observing an acute/short term trend or a chronic/long term trend.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/cohort-TAR} 
-
-}
-
-\caption{Time-at-Risk Construction}(\#fig:cohortTar)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/cohort-TAR.png" alt="Time-at-Risk Construction" width="90%" />
+<p class="caption">(\#fig:cohortTar)Time-at-Risk Construction</p>
+</div>
 
 In traditional study design, we would categorize time-at-risk for ‘on treatment’ as the entirety of the time between when a person meets cohort entry through the cohort exit criteria. An ‘intent-to-treat’ design would include the entire time period between cohort start and observation period end (e.g. when the person leaves the data for some reason cuh as switching physicians, insurance carriers, etc).
 
@@ -76,14 +68,10 @@ To apply this approach on OMOP data, OHDSI community researchers created Automat
 
 When you build a cohort, you may start from your own knowledgebase or you may choose to look at how other studies specify a similar cohort definition. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results [@Rubbo2015phenotypes]. In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases). Making this comparison is best understood in a tabular view (Figure \@ref(fig:cohortPpv)).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/cohort-PPV} 
-
-}
-
-\caption{Algorithm Evaluation}(\#fig:cohortPpv)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/cohort-PPV.png" alt="Algorithm Evaluation" width="90%" />
+<p class="caption">(\#fig:cohortPpv)Algorithm Evaluation</p>
+</div>
 
 OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) [@Swerdel2019phevaluator].  For a complete validation of an algorithm, we need to calculate:
 
@@ -124,24 +112,16 @@ Recall, the components of building a cohort include:
 
 As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure \@ref(fig:cohortLegos) that represent cohort attributes. You can always refer to the Common Data Model chapter (Chapter \@ref(CommonDataModel)) for help.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.5\linewidth]{images/Cohorts/cohort-legos} 
-
-}
-
-\caption{Building Blocks of Cohorts}(\#fig:cohortLegos)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/cohort-legos.png" alt="Building Blocks of Cohorts" width="50%" />
+<p class="caption">(\#fig:cohortLegos)Building Blocks of Cohorts</p>
+</div>
 
 With this context in mind, we are now going to build our cohort. As we go through this exercise, we will approach building our cohort similar to standard attrition chart. Figure \@ref(fig:CohortPractice) shows the logical framework for how we want to build this cohort.
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/CohortPractice} 
-
-}
-
-\caption{Logical Diagram of Intended Cohort}(\#fig:CohortPractice)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/CohortPractice.png" alt="Logical Diagram of Intended Cohort" width="90%" />
+<p class="caption">(\#fig:CohortPractice)Logical Diagram of Intended Cohort</p>
+</div>
 
 You can build a cohort in the user interface of ATLAS or you can write a query directly against your OMOP CDM. We will briefly discuss both in this chapter.
 
@@ -149,106 +129,70 @@ You can build a cohort in the user interface of ATLAS or you can write a query d
 
 We can build a cohort using the ATLAS interface. To begin in ATLAS, click on the 'Cohort Definition' module (located on the left hand panel fifth selection from the top as seen in Figure \@ref(fig:ATLAScohort)).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.5\linewidth]{images/Cohorts/ATLAS-cohort} 
-
-}
-
-\caption{Navigating to ATLAS Cohort Definition module}(\#fig:ATLAScohort)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-cohort.png" alt="Navigating to ATLAS Cohort Definition module" width="50%" />
+<p class="caption">(\#fig:ATLAScohort)Navigating to ATLAS Cohort Definition module</p>
+</div>
 
 When the module loads, click on the blue botton on the right that says 'New Cohort' (Figure \@ref(fig:ATLASnewcohort).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-newcohort} 
-
-}
-
-\caption{Navigating to ATLAS New Cohort button}(\#fig:ATLASnewcohort)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-newcohort.png" alt="Navigating to ATLAS New Cohort button" width="90%" />
+<p class="caption">(\#fig:ATLASnewcohort)Navigating to ATLAS New Cohort button</p>
+</div>
 
 The next screen you will see will be an empty cohort definition. Figure \@ref(fig:ATLASdefineacohort) shows what you will see on your screen.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-defineacohort} 
-
-}
-
-\caption{New Cohort Definition}(\#fig:ATLASdefineacohort)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-defineacohort.png" alt="New Cohort Definition" width="90%" />
+<p class="caption">(\#fig:ATLASdefineacohort)New Cohort Definition</p>
+</div>
 
 Before you do anything else, you are encouraged to change the name of the cohort from *New Cohort Definition* to your own unique name for this cohort. You may opt for a name like *New users of ACE inhibitors as first-line monotherapy for hypertension*.
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">ATLAS will not allow two cohorts to have the same exact names. ATLAS will give you a pop-up error message if you choose a name already used by another ATLAS cohort.</div>\EndKnitrBlock{rmdimportant}
 Once you have chosen a name, you can save the cohort by clicking the green floppy-disk icon. Now we can proceed with defining the initial cohort event. You will click to add to 'Add an Initial Event'. You now have to pick which domain you are building a criteria around. You may ask yourself, *how do I know which domain is the initial cohort event?* Let's figure that out.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-initialevent} 
-
-}
-
-\caption{Adding an Initial Event}(\#fig:ATLASinitialevent)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-initialevent.png" alt="Adding an Initial Event" width="90%" />
+<p class="caption">(\#fig:ATLASinitialevent)Adding an Initial Event</p>
+</div>
 
 As we see in Figure \@ref(fig:ATLASinitialevent), ATLAS provides descriptions below each criteria to help you. If we were building a CONDITION_OCCURRENCE based criteria, our question would be looking for patients with a specific diagnosis. If we were building a DRUG_EXPOSURE based criteria, our question would be looking for patients with a specific drug or drug class. Since we want to find *patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension*, we want to choose a DRUG_EXPOSURE criteria. You may say, *but we also care about hypertension as a diagnosis*. You are correct. Hypertension is another criteria we will build. However, eligibility to enter this cohort is predicated on being a new-user of ACE inhibitor monotherapy. The diagnosis of hypertension is what we call an *additional qualifying criteria*. We will return to this once we build this criteria. We will click to add a DRUG_EXPOSURE criteria (Figure \@ref(fig:ATLASdrugexposure)).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-drugexposure} 
-
-}
-
-\caption{Building a Drug Exposure Criteria}(\#fig:ATLASdrugexposure)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-drugexposure.png" alt="Building a Drug Exposure Criteria" width="90%" />
+<p class="caption">(\#fig:ATLASdrugexposure)Building a Drug Exposure Criteria</p>
+</div>
 
 The screen will update with your selected criteria but you are not done yet. You now need to tell ATLAS which concept set you want to associate with this DRUG_EXPOSURE criteria. You will need to click the down arrow to open the dialogue box to import a concept set (Figure \@ref(fig:ATLASimportconcept).
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-importaconcept} 
-
-}
-
-\caption{Specifying a Concept Set - Step 1}(\#fig:ATLASimportconcept)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-importaconcept.png" alt="Specifying a Concept Set - Step 1" width="90%" />
+<p class="caption">(\#fig:ATLASimportconcept)Specifying a Concept Set - Step 1</p>
+</div>
 
 **Scenario 1: You have not built a concept set.** If you have not assembled your concept sets to retrieve to apply to your criteria, you will need to do this before you move forward. At a very basic level, this will require you to utilize the *Search* function to find and choose the concepts you would like to specify. You can refer back to (see Chapter \@ref(StandardizedVocabularies)) on how to navigate the OMOP vocabularies to find clinical concepts of interest. This chapter will not focus on the assembly of concept sets. You are encouraged to utilize the [OHDSI Resources](https://www.ohdsi.org/resources/) to find ATLAS tutorials that can help you understand how to search and build a concept set.
 
 
 **Scenario 2: You have already built a concept set.** If you have already created a concept set and saved it in ATLAS, you can click to *'Import a Concept Set'* where you will be prompted to find your concept in the concept set repository of your ATLAS (Figure \@ref(fig:ATLASfindyourconcept)).
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-findingyourconcept} 
-
-}
-
-\caption{Specifying a Concept Set - Step 2}(\#fig:ATLASfindyourconcept)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-findingyourconcept.png" alt="Specifying a Concept Set - Step 2" width="90%" />
+<p class="caption">(\#fig:ATLASfindyourconcept)Specifying a Concept Set - Step 2</p>
+</div>
 
 In the above example, the user typed in the name given to this concept set *'ace inhibitors'* in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. *(Note: the dialogue box will disappear once you have selected a concept set.)* You are not done **yet**. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. You need to specify this by clicking to *'Add attribute'*  (Figure \@ref(fig:ATLASfirstexposure)).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-firstexposure} 
-
-}
-
-\caption{Adding Attribute to Initial Criteria - Step 1}(\#fig:ATLASfirstexposure)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-firstexposure.png" alt="Adding Attribute to Initial Criteria - Step 1" width="90%" />
+<p class="caption">(\#fig:ATLASfirstexposure)Adding Attribute to Initial Criteria - Step 1</p>
+</div>
 
 You will want to select the *First Exposure Criteria*  (Figure \@ref(fig:ATLASfirsttimeever)). From there, the window will automatically close. Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-firsttimeever} 
-
-}
-
-\caption{Adding Attribute to Initial Criteria - Step 2}(\#fig:ATLASfirsttimeever)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-firsttimeever.png" alt="Adding Attribute to Initial Criteria - Step 2" width="90%" />
+<p class="caption">(\#fig:ATLASfirsttimeever)Adding Attribute to Initial Criteria - Step 2</p>
+</div>
 
 Once selected, this additional attribute will show up in the same box as the initial criteria. 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">The current design of ATLAS may confuse some. Despite its apperance, the red X is not intended to mean "No". It is an actionable feature to allow the user to delete the criteria. If you click the red X, this criteria will go away. Thus, you need to leave the criteria with the red X to keep the criteria active.</div>\EndKnitrBlock{rmdimportant}
@@ -256,25 +200,17 @@ Once selected, this additional attribute will show up in the same box as the ini
 Now you have built an initial qualifying event. To ensure you are capturing the first exposure, you will want to add a lookback window to know that you are looking at enogh of the patient's histroy to know what comes first. You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. To ensure this is the first exposure in the patient's history, we add a lookback of 365 days. The lookback window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. We then also opt limit it to the earliest event per person (Figure \@ref(fig:ATLASlookback)).
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-lookback} 
-
-}
-
-\caption{Adjusting the Observation Period}(\#fig:ATLASlookback)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-lookback.png" alt="Adjusting the Observation Period" width="90%" />
+<p class="caption">(\#fig:ATLASlookback)Adjusting the Observation Period</p>
+</div>
 
 By now, you may be confused. *Why do I add a first ever criteria in addition to limit to the earliest event?* You can think about this logically by thinking about assembling patient timelines.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/EarliestEventExplained} 
-
-}
-
-\caption{Patient Eligibility by Criteria Applied}(\#fig:EarliestEventExplained)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/EarliestEventExplained.png" alt="Patient Eligibility by Criteria Applied" width="90%" />
+<p class="caption">(\#fig:EarliestEventExplained)Patient Eligibility by Criteria Applied</p>
+</div>
 
 In Figure \@ref(fig:EarliestEventExplained), each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first time occurrence. This means that if we limit to the earliest event, it must fulfil **all** three criteria (drug exposure, first time in patient's history and lookback window) and it is the earliest occurrence of all three critera being met. If that still feels confusing, you are not alone. This is one of the most challenging features of ATLAS that tends to trip up researchers. When you are building your own cohorts, you may opt to engage the Researchers section of the [OHDSI Forum](http://forums.ohdsi.org) to get a second opinion on how to construct your cohort logic. 
 
@@ -282,51 +218,35 @@ Once we have specified a cohort entry event, you could proceed to one of two pla
 
 You will now want to click 'New Inclusion Criteria' to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: *With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLASIC1).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-IC1} 
-
-}
-
-\caption{Additional Inclusion Criteria 1}(\#fig:ATLASIC1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-IC1.png" alt="Additional Inclusion Criteria 1" width="90%" />
+<p class="caption">(\#fig:ATLASIC1)Additional Inclusion Criteria 1</p>
+</div>
 
 You will then want to add another criteria to look for patients: *with exactly 0 occurrences of hypertension drugs all days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)*. Now check your logic against Figure \@ref(fig:ATLASIC2).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-IC2} 
-
-}
-
-\caption{Additional Inclusion Criteria 2}(\#fig:ATLASIC2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-IC2.png" alt="Additional Inclusion Criteria 2" width="90%" />
+<p class="caption">(\#fig:ATLASIC2)Additional Inclusion Criteria 2</p>
+</div>
 
 You may be confused why "having no occurrences" is coded as "exactly 0 occurrences." This is a nuance of how ATLAS consumes knowledge. ATLAS only consumes inclusion criteria. You must use logical operators to indicate when you want the absence of a specific attribute such as: "Exactly 0." Over time you will become more familiar with the logical operators available in ATLAS criteria. 
 
 Lastly, you will want to add your another criteria to look for patients: *with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)*  Now check your logic against Figure \@ref(fig:ATLASIC3).
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-IC3} 
-
-}
-
-\caption{Additional Inclusion Criteria 3}(\#fig:ATLASIC3)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-IC3.png" alt="Additional Inclusion Criteria 3" width="90%" />
+<p class="caption">(\#fig:ATLASIC3)Additional Inclusion Criteria 3</p>
+</div>
 
 You have now added all of your qualifying inclusion criteria. You must now specify your cohort exit criteria. You will ask yourself, *when are people no longer eligible to be included in this cohort?"* In this cohort, we are following new-users of a drug exposure. We want to look at continuous observation period as it relates to the drug exposure. As such, the exit criteria is specified to follow for the entirety of the continuous drug exposure. If there is a subsequent break in the drug exposure, the patient will exit the cohort at this time. We do this  as we cannot determine what happened to the person during the break in the drug exposure. We can also set a criteria on the persistence window to specify an "allowable" gap between drug exposures. In this case, our experts leading this study concluded that a maximum of 30 days between exposure records is allowable when inferring the era of persistence exposure. 
 
 *Why are gaps allowed?* In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can cover a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have access to the initial drug exposure because the unit of dispense exceeded one day. 
 
 We can configure this by selecting the Event will persist *until the end of a drug exposure*. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \@ref(fig:ATLAScohortexit).
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/ATLAS-cohortexit} 
-
-}
-
-\caption{Cohort Exit Criteria}(\#fig:ATLAScohortexit)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/Cohorts/ATLAS-cohortexit.png" alt="Cohort Exit Criteria" width="90%" />
+<p class="caption">(\#fig:ATLAScohortexit)Cohort Exit Criteria</p>
+</div>
 
 In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the Export tab to share your cohort definiton to other collaborators in the form of code or JSON files to load into ATLAS. For more information on how to utilize ATLAS, you can always return to [OHDSI Resources](https://www.ohdsi.org/resources/) to find short videos on basic cohort building tasks in ATLAS.
 
@@ -341,7 +261,8 @@ While it is encouraged to use the OHDSI analytical tools to build and share coho
 - The **OHDSI Cohort Definition** is the description of inclusion criteria used for identifying a particular cohort.
 - Building a cohort is a fundamental piece of using the OHDSI Analytics Tools.
 - There are two major approachs to building a cohort (rules-based vs probabilistic).
-- The OHDSI community has a variety of resources available to support you as you're building your own cohorts including short videos of ATLAS functionality, a ready-to-use probabilistic machine-learning package (APHRODITE) to run on your OMOP CDM and even a freely available tool to evaluate the sensitivity and specificity of your cohort (PheValuator).</div>\EndKnitrBlock{rmdsummary}
+- The OHDSI community has a variety of resources available to support you as you're building your own cohorts including short videos of ATLAS functionality, a ready-to-use probabilistic machine-learning package (APHRODITE) to run on your OMOP CDM and even a freely available tool to evaluate the sensitivity and specificity of your cohort (PheValuator).
+</div>\EndKnitrBlock{rmdsummary}
 
 ### Exercises
 (Need help on syntax for how we format these... can you point me to a good example of an exercise in the BoO?)
