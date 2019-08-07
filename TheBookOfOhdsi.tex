@@ -22,7 +22,7 @@
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[paperheight=10in,paperwidth=7in,margin=1in,left=0.6in,right=0.6in,top=1in,bottom=0.6in]{geometry}
+\usepackage[paperheight=10in,paperwidth=7in,margin=1in,inner=0.75in,outer=0.5in,top=0.7in,bottom=0.7in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={The Book of OHDSI},
@@ -397,7 +397,7 @@ The OHDSI community addresses these challenges in its own way, and puts signific
 \hypertarget{open-science-in-action-the-study-a-thon}{%
 \section{Open Science in Action: the Study-a-thon}\label{open-science-in-action-the-study-a-thon}}
 
-A recent development in the community is the emergence of `study-a-thons': short, concentrated face to face gatherings of a multidisciplinary group of scientists aimed at answering an important clinically relevant research question using the OMOP data model and the OHDSI tools. A nice example is the 2018 Oxford study-a-thon, which is explained in an EHDEN webinar (\url{https://youtu.be/X5yuoJoL6xs}) which provides a walkthrough of the process and also highlights the openly available results. In the period leading up to the study-a-thon, the participants propose medically relevant research questions to study, and one or more research questions are selected to study during the study-a-thon itself. Data is provided through participants that have access to patient-level data in OMOP format and are able to run queries on these data sources. Much of the actual study-a-thon time is devoted to discussing the statistical approach (see also the next chapter \ref{WhereToBegin}), the suitability of the data sources, the results which are interactively produced and the follow-up questions that are inevitably raised by these results. In the case of the Oxford study-a-thon, the questions centered around studying adverse post-surgical effects of different knee replacement methods, and the results were published interactively during the study-a-thon using the OHDSI forums and tools \ref{OhdsiAnalyticsTools}. \footnote{\url{https://forums.ohdsi.org/t/ohdsi-oxford-study-a-thon-any-data-partners-want-to-participate-this-week-in-two-studies-on-knee-replacement/5650}} The OHDSI tools such as ATLAS faciliate rapid creation, exchange, discussion and tests of cohort definitions, which greatly speeds up the initial process of achieving consensus on problem definition and choice of methods. Thanks to the usage of the OMOP Common Data Model by the involved data sources and the availability of the OHDSI open source patient level prediction packages \ref{PatientLevelPrediction}, it was possible to create a a prediction model for 90-day post-operative mortality in one day, and validate the model externally in several large data sources the day after. The study-a-thon also resulted in a traditional peer-reviewed paper (Development and validation of patient-level prediction models for adverse outcomes following total knee arthroplasty, Ross Williams, Daniel Prieto-Alhambra et al., manuscript in preparation), which took of course months to process through peer review. But the fact that the analysis scripts and results for several healthcare databases covering hundreds of millions of patient records were conceived, produced and published from scratch within a week, illustrates the fundamental improvements OHDSI can bring to medical science, reducing the turnaround time for evidence to become available from months to days.
+A recent development in the community is the emergence of `study-a-thons': short, concentrated face to face gatherings of a multidisciplinary group of scientists aimed at answering an important clinically relevant research question using the OMOP data model and the OHDSI tools. A nice example is the 2018 Oxford study-a-thon, which is explained in an EHDEN webinar (\url{https://youtu.be/X5yuoJoL6xs}) which provides a walkthrough of the process and also highlights the openly available results. In the period leading up to the study-a-thon, the participants propose medically relevant research questions to study, and one or more research questions are selected to study during the study-a-thon itself. Data is provided through participants that have access to patient-level data in OMOP format and are able to run queries on these data sources. Much of the actual study-a-thon time is devoted to discussing the statistical approach (see also the next chapter \ref{WhereToBegin}), the suitability of the data sources, the results which are interactively produced and the follow-up questions that are inevitably raised by these results. In the case of the Oxford study-a-thon, the questions centered around studying adverse post-surgical effects of different knee replacement methods, and the results were published interactively during the study-a-thon using the OHDSI forums and tools \ref{OhdsiAnalyticsTools}. The OHDSI tools such as ATLAS faciliate rapid creation, exchange, discussion and tests of cohort definitions, which greatly speeds up the initial process of achieving consensus on problem definition and choice of methods. Thanks to the usage of the OMOP Common Data Model by the involved data sources and the availability of the OHDSI open source patient level prediction packages \ref{PatientLevelPrediction}, it was possible to create a a prediction model for 90-day post-operative mortality in one day, and validate the model externally in several large data sources the day after. The study-a-thon also resulted in a traditional peer-reviewed paper (Development and validation of patient-level prediction models for adverse outcomes following total knee arthroplasty, Ross Williams, Daniel Prieto-Alhambra et al., manuscript in preparation), which took of course months to process through peer review. But the fact that the analysis scripts and results for several healthcare databases covering hundreds of millions of patient records were conceived, produced and published from scratch within a week, illustrates the fundamental improvements OHDSI can bring to medical science, reducing the turnaround time for evidence to become available from months to days.
 
 \hypertarget{open-standards}{%
 \section{Open Standards}\label{open-standards}}
@@ -1402,7 +1402,7 @@ The VISIT\_OCCURRENCE table houses information about a patient's encounters with
 
 \textbf{How do we represent Lauren's encounters as visits?}
 
-As an example let's represent the inpatient encounter in Table \ref{tab:encounters} as a record in the VISIT\_OCCURRENCE table.
+As an example let's represent the inpatient encounter in Table \ref{tab:encounters} in the VISIT\_OCCURRENCE table.
 
 \begin{longtable}[]{@{}lll@{}}
 \caption{\label{tab:visitOccurrence} The VISIT\_OCCURRENCE table.}\tabularnewline
@@ -3502,7 +3502,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.detkharhchildren ;"
+## [1] "SELECT * FROM temp_schema.pnzhkhpwchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -6297,11 +6297,11 @@ Note that we've set \texttt{firstExposureOnly} and \texttt{removeDuplicateSubjec
 \end{Shaded}
 
 \begin{verbatim}
-##                    description targetPersons comparatorPersons           ...
-## 1             Original cohorts         67212             35379           ...
-## 2 Removed subs in both cohorts         67166             35333           ...
-## 3             No prior outcome         67061             35238           ...
-## 4 Have at least 1 days at risk         66780             35086           ...
+##                    description targetPersons comparatorPersons   ...
+## 1             Original cohorts         67212             35379   ...
+## 2 Removed subs in both cohorts         67166             35333   ...
+## 3             No prior outcome         67061             35238   ...
+## 4 Have at least 1 days at risk         66780             35086   ...
 \end{verbatim}
 
 \hypertarget{propensity-scores-1}{%
@@ -7983,17 +7983,18 @@ To make things easier we also provide the \texttt{externalValidatePlp} function 
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{valResult <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }
-                                 \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                                 \DataTypeTok{validationSchemaTarget =} \StringTok{'mainschema.dob'}\NormalTok{,}
-                                 \DataTypeTok{validationSchemaOutcome =} \StringTok{'mainschema.dob'}\NormalTok{,}
-                                 \DataTypeTok{validationSchemaCdm =} \StringTok{'cdmschema.dbo'}\NormalTok{,}
-                                 \DataTypeTok{databaseNames =} \StringTok{'new database'}\NormalTok{,}
-                                 \DataTypeTok{validationTableTarget =} \StringTok{'cohort'}\NormalTok{,}
-                                 \DataTypeTok{validationTableOutcome =} \StringTok{'cohort'}\NormalTok{,}
-                                 \DataTypeTok{validationIdTarget =} \DecValTok{1}\NormalTok{,}
-                                 \DataTypeTok{validationIdOutcome =} \DecValTok{2}
-\NormalTok{          )}
+\NormalTok{valResult <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}
+    \DataTypeTok{plpResult =}\NormalTok{ result, }
+    \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+    \DataTypeTok{validationSchemaTarget =} \StringTok{'mainschema.dob'}\NormalTok{,}
+    \DataTypeTok{validationSchemaOutcome =} \StringTok{'mainschema.dob'}\NormalTok{,}
+    \DataTypeTok{validationSchemaCdm =} \StringTok{'cdmschema.dbo'}\NormalTok{,}
+    \DataTypeTok{databaseNames =} \StringTok{'new database'}\NormalTok{,}
+    \DataTypeTok{validationTableTarget =} \StringTok{'cohort'}\NormalTok{,}
+    \DataTypeTok{validationTableOutcome =} \StringTok{'cohort'}\NormalTok{,}
+    \DataTypeTok{validationIdTarget =} \DecValTok{1}\NormalTok{,}
+    \DataTypeTok{validationIdOutcome =} \DecValTok{2}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -8001,29 +8002,30 @@ If we have multiple databases to validate the model on then we can run:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{valResults <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}\DataTypeTok{plpResult =}\NormalTok{ result, }
-                                  \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                                  \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
-                                                                \StringTok{'difschema.dob'}\NormalTok{, }
-                                                                \StringTok{'anotherschema.dob'}\NormalTok{),}
-                                  \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
-                                                                 \StringTok{'difschema.dob'}\NormalTok{, }
-                                                                 \StringTok{'anotherschema.dob'}\NormalTok{),}
-                                  \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{'cdms1chema.dbo'}\NormalTok{,}
-                                                             \StringTok{'cdm2schema.dbo'}\NormalTok{,}
-                                                             \StringTok{'cdm3schema.dbo'}\NormalTok{),}
-                                  \DataTypeTok{databaseNames =} \KeywordTok{list}\NormalTok{(}\StringTok{'new database 1'}\NormalTok{,}
-                                                       \StringTok{'new database 2'}\NormalTok{,}
-                                                       \StringTok{'new database 3'}\NormalTok{),}
-                                  \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}
-                                                               \StringTok{'cohort2'}\NormalTok{,}
-                                                               \StringTok{'cohort3'}\NormalTok{),}
-                                  \DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}
-                                                                \StringTok{'cohort2'}\NormalTok{,}
-                                                                \StringTok{'cohort3'}\NormalTok{),}
-                                  \DataTypeTok{validationIdTarget =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{),}
-                                  \DataTypeTok{validationIdOutcome =} \KeywordTok{list}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{)}
-\NormalTok{          )}
+\NormalTok{valResults <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}
+    \DataTypeTok{plpResult =}\NormalTok{ result, }
+    \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+    \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
+                                \StringTok{'difschema.dob'}\NormalTok{, }
+                                \StringTok{'anotherschema.dob'}\NormalTok{),}
+    \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
+                                 \StringTok{'difschema.dob'}\NormalTok{, }
+                                 \StringTok{'anotherschema.dob'}\NormalTok{),}
+    \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{'cdms1chema.dbo'}\NormalTok{,}
+                             \StringTok{'cdm2schema.dbo'}\NormalTok{,}
+                             \StringTok{'cdm3schema.dbo'}\NormalTok{),}
+    \DataTypeTok{databaseNames =} \KeywordTok{list}\NormalTok{(}\StringTok{'new database 1'}\NormalTok{,}
+                       \StringTok{'new database 2'}\NormalTok{,}
+                       \StringTok{'new database 3'}\NormalTok{),}
+    \DataTypeTok{validationTableTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}
+                               \StringTok{'cohort2'}\NormalTok{,}
+                               \StringTok{'cohort3'}\NormalTok{),}
+    \DataTypeTok{validationTableOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'cohort1'}\NormalTok{,}
+                                \StringTok{'cohort2'}\NormalTok{,}
+                                \StringTok{'cohort3'}\NormalTok{),}
+    \DataTypeTok{validationIdTarget =} \KeywordTok{list}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{5}\NormalTok{),}
+    \DataTypeTok{validationIdOutcome =} \KeywordTok{list}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{)}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -9604,7 +9606,7 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \end{longtable}
 
 \hypertarget{AceInhibitorsMono}{%
-\section{New users of ACE inhibitors as first-line monotherapy for hypertension}\label{AceInhibitorsMono}}
+\section{New users of ACE inhibitors monotherapy}\label{AceInhibitorsMono}}
 
 \textbf{Initial Event Cohort}
 
@@ -9919,7 +9921,7 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \end{longtable}
 
 \hypertarget{ThiazidesMono}{%
-\section{New users of Thiazide-like diuretics as first-line monotherapy for hypertension}\label{ThiazidesMono}}
+\section{New users of Thiazide-like diuretics monotherapy}\label{ThiazidesMono}}
 
 \textbf{Initial Event Cohort}
 
@@ -10091,7 +10093,7 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \end{longtable}
 
 \hypertarget{HTN1yrFO}{%
-\section{Patients initiating first-line therapy for hypertension with \textgreater1 yr follow-up}\label{HTN1yrFO}}
+\section{Patients initiating first-line therapy for hypertension}\label{HTN1yrFO}}
 
 \textbf{Initial Event Cohort}
 
