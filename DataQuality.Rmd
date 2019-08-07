@@ -2,10 +2,10 @@
 
 ## Introduction
 
-Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance);  (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) [@kahn_harmonized_2016]
+Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance);  (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) [@kahn_harmonized_2016] \index{data quality} \index{data quality!conformance} \index{data quality!completeness} \index{data quality!plausibility}
 
 
-Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge. 
+Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge. \index{data quality!verification} \index{data quality!validation}
 
 Table below shows examples of the above defined data quality (DQ) constructs.
 
@@ -19,7 +19,7 @@ Table below shows examples of the above defined data quality (DQ) constructs.
 |              | Atemporal                 | Use of a medication (by age group) for a specific disease agrees with the age pattern for that disease.            |
 |              | Temporal                  | Temporal pattern of an outbreak of a disease (e.g., Zika) agrees with external source pattern.                     |
 
-Kahn introduces the term *data quality check* (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines *data quality measure* (sometimes refered to as pre-computed analysis) as data analysis that  supports evaluation of a check. For example, distribution of days of supply by drug concept. 
+Kahn introduces the term *data quality check* (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines *data quality measure* (sometimes refered to as pre-computed analysis) as data analysis that  supports evaluation of a check. For example, distribution of days of supply by drug concept. \index{data quality!data quality check}
 
 Two types of DQ checks can be distinguished[@weiskopf_methods_2013]
 
@@ -32,7 +32,7 @@ Data quality can also be seen as a component in a larger effort refered to as *e
 
 ## Achilles Heel tool
 
-Since 2014, a component of the OHDSI Achilles tool called Heel was used to check data quality.[@huser_methods_2018]
+Since 2014, a component of the OHDSI Achilles tool called Heel was used to check data quality.[@huser_methods_2018] \index{achilles heel}
 
 ### Precomputed Analyses
 
