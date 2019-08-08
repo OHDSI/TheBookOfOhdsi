@@ -4,26 +4,30 @@
 
 >The likelihood of transforming matter into energey is something akin to shooting birds in the dark in a country where there are only a few birds. *Einstein, 1935*
 
-The goal of the Research Network is to lower the barrier to performing large-scale collaborative research using observational data to generate high-quality evidence through peer review across study design, execution, and data analysis [@Hripcsak2015]. Patient care and policy decisions demand high-quality evidence. Some have hypothesized that the volume, velocity, and veracity of observational data from electronic health records, administrative claims, and investment in data networks can be positioned to meet this demand. Analyses in large data sets are not necessarily correct simply because they are larger. Deficient studies may lead to misuse of resources and result in poor health care oucomes for patients (Morton et al). This chapter will focus on the question: 'To what extent does the analysis conducted match the clinical intention?'
+The goal of the Research Network is to lower the barrier to performing large-scale collaborative research using observational data to generate high-quality evidence through peer review across study design, execution, and data analysis [@Hripcsak2015]. Patient care and policy decisions demand high-quality evidence. Some have hypothesized that the volume, velocity, and veracity of observational data from electronic health records, administrative claims, and investment in data networks can be positioned to meet this demand. Analyses in large data sets are not necessarily correct simply because they are larger. Deficient studies may lead to misuse of resources and result in poor health care oucomes for patients (Morton et al). This chapter will focus on the question: 'To what extent does the analysis conducted match the clinical intention?' \index{clinical validity}
 
 Studies using observational data usually begin by developing cohorts of subjects to compare for determining some effect estimate.  During the development of these cohorts certain assumptions are made concerning the validity of the created cohorts, the most important of which is that the subjects in the cohorts have the characteristic that is the basis of the study.  For example, if the study involves subjects with myocardial infarction (MI) each of the subjects in the cohort must have had an MI.  Ideally, we would definitive evidence of the diagnosis of MI.  However, with observational data, we use subject records derived from limited data collected for a specific purpose.  In some cases, the data may be derived from data sets specifically collected from subjects with the health condition of interest such as disease registries.  While this is high quality data, it is usually a subset of all the subject’s data.  For example, the data for subjects with MI may include the interpretation of the electrocardiogram (ECG) and not the actual data from the ECG.  Subjects are included in these registries based on a clinical review of each subject’s health record.  In other cases, the data is derived from administrative datasets from insurance claims.  These data are usually much more limited than data from health registries but have the advantage of usually including a larger number of subjects from a broader population which may be more generalizable to the overall population.  In the case of administrative data, determination of the health claim for a subject is based on administrative codes for the health condition.  In the US, for example, these codes are from the International Classification of Diseases (ICD).  Regardless of the origin of the data, the validity of the health conditions based on this data need to be validated.
-An example of a typical epidemiological study is shown in the diagram below:
+An example of a typical epidemiological study is shown in the diagram below: \index{cohort} \index{myocardial infarction}
 
-<img src="images/ClinicalValidity/figure1.jpg" width="75%" style="display: block; margin: auto;" />
 
-In this example, we are comparing the rates of the occurrence of MI in one year in cohorts of subjects who initiated either Drug A or Drug B.  In this example, it is critical for the validity of the study to have valid measures of the rate of MI occurrence.  For studies where administrative data is used, the determination of MI is typically from the use of a phenotype algorithm (PA).  A PA is a heuristic-based set of rules used to determine the health condition with good precision.  These algorithms are often derived from prior research some of which may have been validated.  Examples of typical PAs for MI are illustrated below:
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure1} \end{center}
+
+In this example, we are comparing the rates of the occurrence of MI in one year in cohorts of subjects who initiated either Drug A or Drug B.  In this example, it is critical for the validity of the study to have valid measures of the rate of MI occurrence.  For studies where administrative data is used, the determination of MI is typically from the use of a phenotype algorithm (PA).  A PA is a heuristic-based set of rules used to determine the health condition with good precision.  These algorithms are often derived from prior research some of which may have been validated.  Examples of typical PAs for MI are illustrated below: \index{phenotype algorithm}
 
 1)	One or more occurrences of MI in the subject’s record
 
-<img src="images/ClinicalValidity/figure2.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure2} \end{center}
 
 2)	One occurrence of MI in the subject’s record followed by a second occurrence within 30 days
 
-<img src="images/ClinicalValidity/figure3.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure3} \end{center}
 
 3)	One or more occurrences of MI in the subject’s record from a hospital in-patient setting
 
-<img src="images/ClinicalValidity/figure4.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure4} \end{center}
 
 Once the PA for the study has been determined, the validity of the definition needs to be determined.  To determine the validity of the different algorithms, we need to examine several performance characteristics of the PA including:
 
@@ -52,7 +56,7 @@ The traditional method that has been used to validate PAs has been through a tho
 6)	Use the results from the clinical adjudication to calculate the performance characteristics of the PA used in the study.
 
 Each step in the above process has the potential to bias the results of the study.  For example, obtaining permission from subjects may be difficult and may introduce selection bias if those subjects who provide permission differ from those who do not.  In addition, obtaining the patient records and conducting a clinical review of those records is a time consuming and costly process.  In order to complete this process, many studies only examine the records of those subjects the PA identified as cases for the health conditions.  Under those conditions, the only performance characteristic that can be calculated is positive predictive value.
-In the OHDSI community, we were in the process of developing a different approach.  We are attempting to use diagnostic predictive models as an alternative method for cohort validation. The general idea is to simulate the ascertainment of the health outcome similar to the way clinicians would in a traditional phenotype algorithm validation but at scale.  In this process we develop a diagnostic predictive model for a health outcome and then use that model to determine the probability of a health outcome in a large set of subjects, the “evaluation” cohort, within the data set. We then use that evaluation cohort to test our phenotype algorithms. Using this method, we are able to determine the full set of performance characteristics (i.e., sensitivity, specificity, and positive and negative predictive value) at scale. The tool is being developed as an open-source R package called [**PheValuator**](https://github.com/OHDSI/PheValuator).  
+In the OHDSI community, we were in the process of developing a different approach.  We are attempting to use diagnostic predictive models as an alternative method for cohort validation. The general idea is to simulate the ascertainment of the health outcome similar to the way clinicians would in a traditional phenotype algorithm validation but at scale.  In this process we develop a diagnostic predictive model for a health outcome and then use that model to determine the probability of a health outcome in a large set of subjects, the “evaluation” cohort, within the data set. We then use that evaluation cohort to test our phenotype algorithms. Using this method, we are able to determine the full set of performance characteristics (i.e., sensitivity, specificity, and positive and negative predictive value) at scale. The tool is being developed as an open-source R package called [**PheValuator**](https://github.com/OHDSI/PheValuator).  \index{PheValuator}
 
 The process is as follows:
 
@@ -66,7 +70,7 @@ In diagnostic predictive modeling we create a model that discriminates between t
 
 **Practice of Phenotype Algorithm Validation**
 
-An example of the process to conduct a PA validation using chart review is provided by Cutrona and colleagues who validated their PA for MI for the US Food and Drug Administration’s (FDA) Sentinel program.[@cutrona_validation_2013]  The steps this group used to conduct the validation were as follows:
+An example of the process to conduct a PA validation using chart review is provided by Cutrona and colleagues who validated their PA for MI for the US Food and Drug Administration’s (FDA) Sentinel program.[@cutrona_validation_2013]  The steps this group used to conduct the validation were as follows: \index{myocardial infarction}
 
 1)	Develop a PA for MI:  They used the PA “those with an ICD-9-CM code for AMI (410.x0, 410.x1) in the principal or primary position on facility claims for hospitalizations.”
 
@@ -88,13 +92,14 @@ An example of the process to conduct a PA validation using chart review is provi
 
 10)	Disagreement between the two clinicians, i.e., one clinician determining the subject to be definite or probable and the other either not an MI or unable to determine, was settled through a joint discussion between the clinicians until agreement could be reached.
 
-It appears evident that the above process is both very thorough as well as very time consuming and costly.  In this example neither sensitivity nor specificity of the PA was determined likely owing to the cost of including records from a random selection of patients not determined to have an MI based on the PA.  Overall the process examined the records of 143 of the 153 records requested.  One advantage this group had was that patient permission was not required as the FDA Sentinel Initiative activities did not require institutional review board (IRB) approval.  At the end of this process the researchers determined the PPV for this algorithm to be 86.0% (95% confidence interval; 79.2%, 91.2%).
+It appears evident that the above process is both very thorough as well as very time consuming and costly.  In this example neither sensitivity nor specificity of the PA was determined likely owing to the cost of including records from a random selection of patients not determined to have an MI based on the PA.  Overall the process examined the records of 143 of the 153 records requested.  One advantage this group had was that patient permission was not required as the FDA Sentinel Initiative activities did not require institutional review board (IRB) approval.  At the end of this process the researchers determined the PPV for this algorithm to be 86.0% (95% confidence interval; 79.2%, 91.2%). \index{positive predictive value}
 The above study was included in a review of validation efforts for MI PAs by Rubbo et al.[@rubbo_use_2015]  In this review, the authors examined 33 studies involving validation of phenotype algorithms for acute myocardial infarction.  They found that there was significant heterogeneity in the phenotype algorithms used in the studies as well as in the validation methods and the results reported. The authors concluded that for acute myocardial infarction there is no gold standard phenotype algorithm available. They noted that the process was both costly and time consuming. Due to that limitation most studies had small sample sizes in their validation leading to wide variations in the estimates for the performance characteristics. They also noted that in the 33 studies, while all the studies reported positive predictive value, only 11 studies reported sensitivity and only five studies reported specificity. The question then needs to be asked is this really validation of the phenotype algorithm? 
 As discussed previously an alternative approach currently being developed in the OHDSI community is through the use of diagnostic predictive modeling tool using a tool called PheValuator.  The following are the steps for testing PAs for MI using PheValuator:
 
 1)	Develop an extremely specific, xSpec, cohort to determine those with MI with a high probability.  For MI, we used an occurrence of MI with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days.  The following illustrates this PA for MI:   
 
-<img src="images/ClinicalValidity/figure5.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure5} \end{center}
 
 2)	Develop the diagnostic predictive model for MI
 
@@ -112,6 +117,7 @@ Using this process, Table 1 displays the performance characteristics for four PA
 
 Table 1: Performance Characteristics of Four Phenotype Algorithms using Diagnostic Condition Codes to Determine Myocardial Infarction on Multiple Datasets using PheValuator. The continuous 3-color heat map for the data in the table was defined as Red (value = 0), Yellow (value = 0.5), and Green (value = 1).
 
-<img src="images/ClinicalValidity/figure6.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure6} \end{center}
 
 Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the phenotype; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database – Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater
