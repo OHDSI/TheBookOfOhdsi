@@ -57,25 +57,45 @@ TODO: make list of contributors complete
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
 
------------------  ---------------------  ------------------
-Hamed Abedtash     Mustafa Ascha          Mark Beno         
-Clair Blacketer    David Blatt            Brian Christian   
-Gino Cloft         Frank DeFalco          Sara Dempster     
-Jon Duke           Sergio Eslava          Clark Evans       
-Thomas Falconer    George Hripcsak        Mark Khayter      
-Greg Klebanov      Kristin Kostka         Bob Lanese        
-Wanda Lattimore    Chun Li                David Madigan     
-Sindhoosha Malay   Harry Menegay          Akihiko Nishimura 
-Ellen Palmer       Nirav Patil            Jose Posada       
-Nicole Pratt       Dani Prieto-Alhambra   Christian Reich   
-Jenna Reps         Peter Rijnbeek         Patrick Ryan      
-Craig Sachson      Izzy Saridakis         Paula Saroufim    
-Martijn Schuemie   Sarah Seager           Chan Seng You     
-Anthony Senna      Sunah Song             Matt Spotnitz     
-Marc Suchard       Joel Swerdel           Devin Tian        
-Don Torok          Kees van Bochove       Mui Van Zandt     
-Erica Voss         Kristin Waite          Mike Warfe        
-Jamie Weaver       James Wiggins          Andrew Williams   
-Chan You Seng                                               
------------------  ---------------------  ------------------
+\begin{tabular}{l|l|l}
+\hline
+Hamed Abedtash & Mustafa Ascha & Mark Beno\\
+\hline
+Clair Blacketer & David Blatt & Brian Christian\\
+\hline
+Gino Cloft & Frank DeFalco & Sara Dempster\\
+\hline
+Jon Duke & Sergio Eslava & Clark Evans\\
+\hline
+Thomas Falconer & George Hripcsak & Vojtech Huser\\
+\hline
+Mark Khayter & Greg Klebanov & Kristin Kostka\\
+\hline
+Bob Lanese & Wanda Lattimore & Chun Li\\
+\hline
+David Madigan & Sindhoosha Malay & Harry Menegay\\
+\hline
+Akihiko Nishimura & Ellen Palmer & Nirav Patil\\
+\hline
+Jose Posada & Nicole Pratt & Dani Prieto-Alhambra\\
+\hline
+Christian Reich & Jenna Reps & Peter Rijnbeek\\
+\hline
+Patrick Ryan & Craig Sachson & Izzy Saridakis\\
+\hline
+Paula Saroufim & Martijn Schuemie & Sarah Seager\\
+\hline
+Chan Seng You & Anthony Senna & Sunah Song\\
+\hline
+Matt Spotnitz & Marc Suchard & Joel Swerdel\\
+\hline
+Devin Tian & Don Torok & Kees van Bochove\\
+\hline
+Mui Van Zandt & Erica Voss & Kristin Waite\\
+\hline
+Mike Warfe & Jamie Weaver & James Wiggins\\
+\hline
+Andrew Williams & Chan You Seng & \\
+\hline
+\end{tabular}
 

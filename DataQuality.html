@@ -439,11 +439,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.2" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html#communicating-evidence-quality"><i class="fa fa-check"></i><b>15.2</b> Communicating Evidence Quality</a></li>
 </ul></li>
 <li class="chapter" data-level="16" data-path="DataQuality.html"><a href="DataQuality.html"><i class="fa fa-check"></i><b>16</b> Data Quality</a><ul>
-<li class="chapter" data-level="16.1" data-path="DataQuality.html"><a href="DataQuality.html#introduction-1"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
-<li class="chapter" data-level="16.2" data-path="DataQuality.html"><a href="DataQuality.html#achilles-heel-tool"><i class="fa fa-check"></i><b>16.2</b> Achilles Heel tool</a><ul>
-<li class="chapter" data-level="16.2.1" data-path="DataQuality.html"><a href="DataQuality.html#precomputed-analyses"><i class="fa fa-check"></i><b>16.2.1</b> Precomputed Analyses</a></li>
-<li class="chapter" data-level="16.2.2" data-path="DataQuality.html"><a href="DataQuality.html#example-dq-check"><i class="fa fa-check"></i><b>16.2.2</b> Example DQ check</a></li>
-<li class="chapter" data-level="16.2.3" data-path="DataQuality.html"><a href="DataQuality.html#overview-of-existing-dq-heel-checks"><i class="fa fa-check"></i><b>16.2.3</b> Overview of existing DQ Heel checks</a></li>
+<li class="chapter" data-level="16.1" data-path="DataQuality.html"><a href="DataQuality.html#sources-of-data-quality-problems"><i class="fa fa-check"></i><b>16.1</b> Sources of data quality problems</a></li>
+<li class="chapter" data-level="16.2" data-path="DataQuality.html"><a href="DataQuality.html#data-quality-in-general"><i class="fa fa-check"></i><b>16.2</b> Data quality in general</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="DataQuality.html"><a href="DataQuality.html#data-quality-checks"><i class="fa fa-check"></i><b>16.2.1</b> Data quality checks</a></li>
+<li class="chapter" data-level="16.2.2" data-path="DataQuality.html"><a href="DataQuality.html#etl-unit-tests"><i class="fa fa-check"></i><b>16.2.2</b> ETL unit tests</a></li>
 </ul></li>
 <li class="chapter" data-level="16.3" data-path="DataQuality.html"><a href="DataQuality.html#study-specific-checks"><i class="fa fa-check"></i><b>16.3</b> Study-specific checks</a><ul>
 <li class="chapter" data-level="16.3.1" data-path="DataQuality.html"><a href="DataQuality.html#outcomes"><i class="fa fa-check"></i><b>16.3.1</b> Outcomes</a></li>
@@ -563,88 +562,115 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="DataQuality" class="section level1">
 <h1><span class="header-section-number">Chapter 16</span> Data Quality</h1>
-<div id="introduction-1" class="section level2">
-<h2><span class="header-section-number">16.1</span> Introduction</h2>
-<p>Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance); (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) <span class="citation">(Kahn et al. <a href="#ref-kahn_harmonized_2016" role="doc-biblioref">2016</a>)</span>    </p>
-<p>Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge.  </p>
-<p>Table below shows examples of the above defined data quality (DQ) constructs.</p>
+<p><em>Chapter leads: Martijn Schuemie, Vojtech Huser &amp; Andrew Williams</em></p>
+<p>Most of the data used for observational healthcare research was not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and adminstrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with <span class="citation">Lei (<a href="#ref-vanDerLei_1991" role="doc-biblioref">1991</a>)</span> even stating that “Data shall be used only for the purpose for which they were collected”. The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:</p>
+<blockquote>
+<p>Are the data of sufficient quality for our research purposes?</p>
+</blockquote>
+<p>We can define data quality (DQ) as <span class="citation">(Roebuck <a href="#ref-roebuck_2012" role="doc-biblioref">2012</a>)</span>: </p>
+<blockquote>
+<p>The state of completeness, validity, consistency, timeliness and accuracy that makes data appropriate for a specific use.</p>
+</blockquote>
+<p>Note that it is unlikely that our data are perfect, but they may be good enough for our purposes.</p>
+<p>DQ cannot be observed directly, but methodology has been developed to assess it. Two types of DQ assessments can be distinguished <span class="citation">(N. G. Weiskopf and Weng <a href="#ref-weiskopf_methods_2013" role="doc-biblioref">2013</a><a href="#ref-weiskopf_methods_2013" role="doc-biblioref">b</a>)</span>: assessments to evaluate DQ in general, and assessments to evaluate DQ in the context of a specific study.</p>
+<p>In this chapter we will first review possible sources of DQ problems, after which we’ll discuss the theory of general and study-specific DQ assessments, followed by a step-by-step description of how these assessments can be performed using the OHDSI tools.</p>
+<div id="sources-of-data-quality-problems" class="section level2">
+<h2><span class="header-section-number">16.1</span> Sources of data quality problems</h2>
+<p>There are many threats to the quality of the data, starting as noted in Chapter (EvidenceQuality) when the doctor records her or his thoughts. <span class="citation">Dasu and Johnson (<a href="#ref-dasu_2003" role="doc-biblioref">2003</a>)</span> distinguish the following steps in the lifecycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Data gathering and integration</strong>. Possible problems include fallible manual entry, biases (e.g. upcoding in claims), erroneous joining of tables in an EHR, and replacing missing values with default ones.</li>
+<li><strong>Data storage and knowledge sharing</strong>. Potential problems are lack of documentation of the data model, and lack of meta-data.</li>
+<li><strong>Data analysis</strong>. Problems can include incorrect data transformations, incorrect data interpretation, and use of inapproriate methodology.</li>
+<li><strong>Data publishing</strong>. When publishing data for downstream use.</li>
+</ol>
+<p>Often the data we use has already been collected and integrated, so there is little we can do to improve step 1. We do have ways to check the DQ produced by this step as will be discussed in subsequent sections in this chapter.</p>
+<p>Similarly, we often receive the data in a specific form, so we have little influence over part of step 2. However, in OHDSI we convert all our observational data to the Common Data Model (CDM), and we do have ownership over this process. Some have expressed concerns that this specific step can regrade DQ. But because we control this process, we can build stringent safeguards to preserve DQ as discussed later in Section x. Several investigations <span class="citation">(Defalco, Ryan, and Soledad Cepeda <a href="#ref-defalco_2013" role="doc-biblioref">2013</a>; Makadia and Ryan <a href="#ref-makadia_2014" role="doc-biblioref">2014</a>; Matcho et al. <a href="#ref-matcho_2014" role="doc-biblioref">2014</a>; Voss, Ma, and Ryan <a href="#ref-voss_2015" role="doc-biblioref">2015</a>; Voss et al. <a href="#ref-voss_2015b" role="doc-biblioref">2015</a>; Hripcsak et al. <a href="#ref-hripcsak_2018" role="doc-biblioref">2018</a>)</span> have shown that when properly executed, little to no error is introduced when converting to the CDM. In fact, having a well-documented data model that is shared by a large community facilitates data storage in unambiguous and clear manner.</p>
+<p>Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not use the term DQ for the quality issues during this step, but rather the tersm <em>clinical validity</em>, <em>software validity</em> and <em>method validity</em>, which are discussed at length in Chapters <a href="ClinicalValidity.html#ClinicalValidity">17</a>, <a href="SoftwareValidity.html#SoftwareValidity">18</a>, and (MethodValidity), respectively.</p>
+</div>
+<div id="data-quality-in-general" class="section level2">
+<h2><span class="header-section-number">16.2</span> Data quality in general</h2>
+<p>We can ask the question whether our data is fit for the generic purpose of observational research. <span class="citation">Kahn et al. (<a href="#ref-kahn_harmonized_2016" role="doc-biblioref">2016</a>)</span> define such generic DQ as consisting of three components:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Conformance</strong>: Do data values adhere to do specified standard and formats? Three subtypes are identified:
+<ul>
+<li><strong>Value</strong>: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties?</li>
+<li><strong>Relational</strong>: Is the recorded data in agreement with specified relational constraints? For example, is the provider_id in a DRUG_EXPOSURE data present in the PROVIDER table?</li>
+<li><strong>Computation</strong>: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?</li>
+</ul></li>
+<li><strong>Completeness</strong>: Are data values present? For example, do all persons have a known gender?</li>
+<li><strong>Plausibility</strong>: Are data values believable? Three subtypes are defined:
+<ul>
+<li><strong>Uniqueness</strong>: For example, does each person_id occur only once in the PERSON table?</li>
+<li><strong>Atemporal</strong>: Do values, distributions, or densities agree with expected values? For example, is the prevalence of diabetes in line with the known prevalence?</li>
+<li><strong>Temporal</strong>: Are changes in values in line with expectations? For example, are immunization sequences in line with recommendations?</li>
+</ul>
+  </li>
+</ol>
+<p>Each component can be evaluated in two ways:</p>
+<ul>
+<li><strong>Verification</strong> focuses on model and data constraints and does not rely on external reference.</li>
+<li><strong>Validation</strong> focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge.</li>
+</ul>
+<p> </p>
+<div id="data-quality-checks" class="section level3">
+<h3><span class="header-section-number">16.2.1</span> Data quality checks</h3>
+<p>Kahn introduces the term <em>data quality check</em> (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in sofware, creating automated DQ tools. One such tool is <a href="https://github.com/OHDSI/Achilles">ACHILLES</a> (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) <span class="citation">(Huser et al. <a href="#ref-huser_methods_2018" role="doc-biblioref">2018</a>)</span>. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases <span class="citation">(Huser et al. <a href="#ref-huser_multisite_2016" role="doc-biblioref">2016</a>)</span>. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the “Data Sources” function.  </p>
+<p>ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as “ACHILLES Heel”. These checks are categorized as “<em>error</em>”, “<em>warning</em>”, or “<em>notification</em>”. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite dermination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table <a href="DataQuality.html#tab:heelExamples">16.1</a> show some example rules. </p>
 <table>
+<caption><span id="tab:heelExamples">Table 16.1: </span> Example data quality rules in ACHILLES Heel.</caption>
 <colgroup>
-<col width="8%" />
-<col width="17%" />
-<col width="73%" />
+<col width="16%" />
+<col width="83%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th>Term</th>
-<th>Subtype</th>
-<th>Validation example</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Conformance</td>
-<td>Value</td>
-<td>Providers are only assigned valid medical specialties.</td>
+<td align="left">Error</td>
+<td align="left">Age &gt; 150 years</td>
 </tr>
 <tr class="even">
-<td></td>
-<td>Relational</td>
-<td>Prescribing provider identifier is present in drug dispensation data.</td>
+<td align="left">Error</td>
+<td align="left">A condition_concept_id refers to a concept that is not in the CONDITION domain</td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>Computational</td>
-<td>Computed eGFR value conforms to the expected value for a test case patient scenario.</td>
+<td align="left">Warning</td>
+<td align="left">The rate of occurrence for a specific concept_id changes more than 100% from one month to the next</td>
 </tr>
 <tr class="even">
-<td>Completeness</td>
-<td>n/a (no subtypes defined)</td>
-<td>A drug product withdrawn from the market at a specific absolute historic date shows expected drop in dispensation.</td>
+<td align="left">Warning</td>
+<td align="left">A presciption has a days_supply &gt; 180</td>
 </tr>
 <tr class="odd">
-<td>Plausibility</td>
-<td>Uniqueness</td>
-<td>A zip code for a location does not refer to vastly conflicting geographical areas.</td>
+<td align="left">Notification</td>
+<td align="left">The number of patients without any visit exceeds a predefined threshold</td>
 </tr>
 <tr class="even">
-<td></td>
-<td>Atemporal</td>
-<td>Use of a medication (by age group) for a specific disease agrees with the age pattern for that disease.</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>Temporal</td>
-<td>Temporal pattern of an outbreak of a disease (e.g., Zika) agrees with external source pattern.</td>
+<td align="left">Notification</td>
+<td align="left">There is no weight data in the MEASUREMENT table</td>
 </tr>
 </tbody>
 </table>
-<p>Kahn introduces the term <em>data quality check</em> (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines <em>data quality measure</em> (sometimes refered to as pre-computed analysis) as data analysis that supports evaluation of a check. For example, distribution of days of supply by drug concept. </p>
-<p>Two types of DQ checks can be distinguished<span class="citation">(N. G. Weiskopf and Weng <a href="#ref-weiskopf_methods_2013" role="doc-biblioref">2013</a><a href="#ref-weiskopf_methods_2013" role="doc-biblioref">b</a>)</span></p>
-<ul>
-<li>general checks</li>
-<li>study-specific checks</li>
-</ul>
-<p>From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. <em>ETL data errors</em> are errors introduced during extract-tranform-load proces. A special type of ETL data error is <em>mapping error</em> that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model’s standard terminology (e.g., RxNorm and RxNorm Extension). A <em>source data error</em> is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).<span class="citation">(Huser et al. <a href="#ref-huser_multisite_2016" role="doc-biblioref">2016</a>)</span></p>
-<p>Data quality can also be seen as a component in a larger effort refered to as <em>evidence quality</em> or <em>evidence validation</em>. Data quality would fall in this framework under <em>data validation</em>.</p>
+
+<div class="rmdimportant">
+<p>ACHILLES and ACHILLES Heel are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.</p>
 </div>
-<div id="achilles-heel-tool" class="section level2">
-<h2><span class="header-section-number">16.2</span> Achilles Heel tool</h2>
-<p>Since 2014, a component of the OHDSI Achilles tool called Heel was used to check data quality.<span class="citation">(Huser et al. <a href="#ref-huser_methods_2018" role="doc-biblioref">2018</a>)</span> </p>
-<div id="precomputed-analyses" class="section level3">
-<h3><span class="header-section-number">16.2.1</span> Precomputed Analyses</h3>
-<p>In support of data characterization, Achilles tool pre-computes number of data analyses. Each pre-computed analysis has an analysis ID and a short description of the analysis. For example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. List of all pre-computed analyses (for Achilles version 1.6.3) as available at <a href="https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv" class="uri">https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv</a></p>
-<p>Achilles has more than 170 pre-computed analysis that support not only data quality checks but also general data characterization (outside data quality context) such as data density visualizations. The pre-computations are largely guided by the CDM relational database schema and analyze most terminology-based data columns, such as condition_concept_id or place_of_service_concept_id. Pre-computations results are stored in table ACHILLES_RESULTS and ACHILLES_RESULTS_DIST.</p>
+
 </div>
-<div id="example-dq-check" class="section level3">
-<h3><span class="header-section-number">16.2.2</span> Example DQ check</h3>
-<p>In complete data about general population, a range of services is provided by a range of providers (with many specialties). A data completness rule with rule_id of 38 evaluates data completness in the PROVIDER table. Checking optional fields in CDM (such as provider specialty) lead to a notification severity output. Analysis Rule 38 triggers a notification if count of distinct specialties &lt;2. It relies on a derived measure <code>Provider:SpeciatlyCnt</code>. The rule SQL-formulated logic can be found here: <a href="https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/sql/sql_server/heels/serial/rule_38.sql" class="uri">https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/sql/sql_server/heels/serial/rule_38.sql</a></p>
+<div id="etl-unit-tests" class="section level3">
+<h3><span class="header-section-number">16.2.2</span> ETL unit tests</h3>
+<p>The ETL (Extract-Transform-Load) process by which data is converted to the CDM is often quite complex, and with that complexity comes the danger of making mistakes that may go unnoticed.</p>
+<p>Figure <a href="DataQuality.html#fig:testFramework">16.1</a> shows</p>
+<div class="figure" style="text-align: center"><span id="fig:testFramework"></span>
+<img src="images/DataQuality/testFramework.png" alt="Unit testing an ETL (Extract-Transform-Load) process." width="90%" />
+<p class="caption">
+Figure 16.1: Unit testing an ETL (Extract-Transform-Load) process.
+</p>
 </div>
-<div id="overview-of-existing-dq-heel-checks" class="section level3">
-<h3><span class="header-section-number">16.2.3</span> Overview of existing DQ Heel checks</h3>
-<p>Achilles developers maintain a list of all DQ checks in an overview file. For version 1.6.3, this overview is available here <a href="https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv" class="uri">https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv</a> Each DQ check has a rule_id.</p>
-<p>Checks are classified into CDM conformance checks and DQ checks.</p>
-<p>Depending on the severity of the problem, the Heel output can be error, warning or notification.</p>
 </div>
 </div>
 <div id="study-specific-checks" class="section level2">
@@ -672,6 +698,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
+<div id="ref-dasu_2003">
+<p>Dasu, Tamraparni, and Theodore Johnson. 2003. <em>Exploratory Data Mining and Data Cleaning</em>. Vol. 479. John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-defalco_2013">
+<p>Defalco, F. J., P. B. Ryan, and M. Soledad Cepeda. 2013. “Applying standardized drug terminologies to observational healthcare databases: a case study on opioid exposure.” <em>Health Serv Outcomes Res Methodol</em> 13 (1): 58–67.</p>
+</div>
+<div id="ref-hripcsak_2018">
+<p>Hripcsak, G., M. E. Levine, N. Shang, and P. B. Ryan. 2018. “Effect of vocabulary mapping for conditions on phenotype cohorts.” <em>J Am Med Inform Assoc</em> 25 (12): 1618–25.</p>
+</div>
 <div id="ref-huser_multisite_2016">
 <p>Huser, Vojtech, Frank J. DeFalco, Martijn Schuemie, Patrick B. Ryan, Ning Shang, Mark Velez, Rae Woong Park, et al. 2016. “Multisite Evaluation of a Data Quality Tool for Patient-Level Clinical Data Sets.” <em>EGEMS (Washington, DC)</em> 4 (1): 1239. <a href="https://doi.org/10.13063/2327-9214.1239">https://doi.org/10.13063/2327-9214.1239</a>.</p>
 </div>
@@ -680,6 +715,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="ref-kahn_harmonized_2016">
 <p>Kahn, Michael G., Tiffany J. Callahan, Juliana Barnard, Alan E. Bauck, Jeff Brown, Bruce N. Davidson, Hossein Estiri, et al. 2016. “A Harmonized Data Quality Assessment Terminology and Framework for the Secondary Use of Electronic Health Record Data.” <em>EGEMS (Washington, DC)</em> 4 (1): 1244. <a href="https://doi.org/10.13063/2327-9214.1244">https://doi.org/10.13063/2327-9214.1244</a>.</p>
+</div>
+<div id="ref-vanDerLei_1991">
+<p>Lei, Johan van der. 1991. “Use and Abuse of Computer-Stored Medical Records.” <em>Methods of Information in Medicine</em> 30 (02): 79–80.</p>
+</div>
+<div id="ref-makadia_2014">
+<p>Makadia, R., and P. B. Ryan. 2014. “Transforming the Premier Perspective Hospital Database into the Observational Medical Outcomes Partnership (OMOP) Common Data Model.” <em>EGEMS (Wash DC)</em> 2 (1): 1110.</p>
+</div>
+<div id="ref-matcho_2014">
+<p>Matcho, A., P. Ryan, D. Fife, and C. Reich. 2014. “Fidelity assessment of a clinical practice research datalink conversion to the OMOP common data model.” <em>Drug Saf</em> 37 (11): 945–59.</p>
+</div>
+<div id="ref-roebuck_2012">
+<p>Roebuck, Kevin. 2012. <em>Data Quality: High-Impact Strategies-What You Need to Know: Definitions, Adoptions, Impact, Benefits, Maturity, Vendors</em>. Emereo Publishing.</p>
+</div>
+<div id="ref-voss_2015">
+<p>Voss, E. A., Q. Ma, and P. B. Ryan. 2015. “The impact of standardizing the definition of visits on the consistency of multi-database observational health research.” <em>BMC Med Res Methodol</em> 15 (March): 13.</p>
+</div>
+<div id="ref-voss_2015b">
+<p>Voss, E. A., R. Makadia, A. Matcho, Q. Ma, C. Knoll, M. Schuemie, F. J. DeFalco, A. Londhe, V. Zhu, and P. B. Ryan. 2015. “Feasibility and utility of applications of the common data model to multiple, disparate observational health databases.” <em>J Am Med Inform Assoc</em> 22 (3): 553–64.</p>
 </div>
 <div id="ref-weiskopf_methods_2013">
 <p>Weiskopf, Nicole Gray, and Chunhua Weng. 2013b. “Methods and Dimensions of Electronic Health Record Data Quality Assessment: Enabling Reuse for Clinical Research.” <em>Journal of the American Medical Informatics Association: JAMIA</em> 20 (1): 144–51. <a href="https://doi.org/10.1136/amiajnl-2011-000681">https://doi.org/10.1136/amiajnl-2011-000681</a>.</p>
