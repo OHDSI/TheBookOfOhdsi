@@ -82,14 +82,10 @@ The ETL (Extract-Transform-Load) process by which data is converted to the CDM i
 
 Figure \@ref(fig:testFramework) shows
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/DataQuality/testFramework} 
-
-}
-
-\caption{Unit testing an ETL (Extract-Transform-Load) process.}(\#fig:testFramework)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/testFramework.png" alt="Unit testing an ETL (Extract-Transform-Load) process." width="90%" />
+<p class="caption">(\#fig:testFramework)Unit testing an ETL (Extract-Transform-Load) process.</p>
+</div>
 
 ## Study-specific checks
 
