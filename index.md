@@ -8,9 +8,9 @@ geometry:
 - paperwidth=7in
 - margin=1in
 - inner=0.75in
-- outer=0.5in
+- outer=0.45in
 - top=0.7in
-- bottom=0.7in
+- bottom=0.65in
 mainfont: Times New Roman
 bibliography:
 - book.bib
