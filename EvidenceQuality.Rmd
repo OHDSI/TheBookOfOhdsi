@@ -6,17 +6,17 @@
 
 ## Understanding Evidence Quality
 
-How do we know if the results of a study are reliable?  Can they be trusted for use in clinical settings?  What about in regulatory decision-making?  Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or other type of analysis.
+How do we know if the results of a study are reliable?  Can they be trusted for use in clinical settings?  What about in regulatory decision-making?  Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or other type of analysis. \index{evidence quality} \index{regulatory decision-making}
 
-One of the concerns that is often raised around observational studies and the use of "real world data" is the topic of data quality [@botsis2010secondary; @hersh2013caveats; @sherman2016real].  Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well inherent biases.  These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality [@kahn2012pragmatic; @liaw2013towards; @weiskopf2013methods].  The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network [@huser_multisite_2016; @kahn_transparent_2015; @callahan2017comparison; @yoon_2016].
+One of the concerns that is often raised around observational studies and the use of "real world data" is the topic of data quality [@botsis2010secondary; @hersh2013caveats; @sherman2016real].  Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well inherent biases.  These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality [@kahn2012pragmatic; @liaw2013towards; @weiskopf2013methods].  The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network [@huser_multisite_2016; @kahn_transparent_2015; @callahan2017comparison; @yoon_2016]. \index{data quality} \index{community}
 
 Given the findings of the past decade in this area, it has become apparent that data quality is not perfect and never will be.  This notion is nicely reflected in this quote from Dr Clem McDonald, a pioneer in the field of medical informatics:
 
 
-> Loss of fidelity begins with the movement of data from the doctor’s brain to the medical record.
+> Loss of fidelity begins with the movement of data from the doctor’s brain to the medical record. \index{Clem McDonald}
 
 
- Thus, as a community we must ask the question-- *given imperfect data, how can we achieve the most reliable evidence?*  The OHDSI community is seeking to address this question through a holistic focus on "evidence quality".  Evidence quality considers not only the quality of  observational data but also the validity of the methods, software, and clinical definitions used in our observational analyses.  
+ Thus, as a community we must ask the question-- *given imperfect data, how can we achieve the most reliable evidence?*  The OHDSI community is seeking to address this question through a holistic focus on "evidence quality".  Evidence quality considers not only the quality of  observational data but also the validity of the methods, software, and clinical definitions used in our observational analyses.  \index{community} \index{reliable evidence}
 
 In the following chapters, we will explore four components of evidence quality:   
 
