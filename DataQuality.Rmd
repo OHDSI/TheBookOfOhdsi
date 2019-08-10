@@ -19,7 +19,7 @@ In this chapter we will first review possible sources of DQ problems, after whic
 
 ## Sources of data quality problems
 
-There are many threats to the quality of the data, starting as noted in Chapter \ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the lifecycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
+There are many threats to the quality of the data, starting as noted in Chapter \@ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the lifecycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
 
 1. **Data gathering and integration**. Possible problems include fallible manual entry, biases (e.g. upcoding in claims), erroneous joining of tables in an EHR, and replacing missing values with default ones. 
 2. **Data storage and knowledge sharing**. Potential problems are lack of documentation of the data model, and lack of meta-data.
@@ -30,7 +30,7 @@ Often the data we use has already been collected and integrated, so there is lit
 
 Similarly, we often receive the data in a specific form, so we have little influence over part of step 2. However, in OHDSI we convert all our observational data to the Common Data Model (CDM), and we do have ownership over this process. Some have expressed concerns that this specific step can regrade DQ. But because we control this process, we can build stringent safeguards to preserve DQ as discussed later in Section x. Several investigations [@defalco_2013;@makadia_2014;@matcho_2014;@voss_2015;@voss_2015b;@hripcsak_2018] have shown that when properly executed, little to no error is introduced when converting to the CDM. In fact, having a well-documented data model that is shared by a large community facilitates data storage in unambiguous and clear manner.
 
-Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not use the term DQ for the quality issues during this step, but rather the tersm *clinical validity*, *software validity* and *method validity*, which are discussed at length in Chapters \@ref(ClinicalValidity), \@ref(SoftwareValidity), and \ref(MethodValidity), respectively.
+Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not use the term DQ for the quality issues during this step, but rather the tersm *clinical validity*, *software validity* and *method validity*, which are discussed at length in Chapters \@ref(ClinicalValidity), \@ref(SoftwareValidity), and \@ref(MethodValidity), respectively.
 
 ## Data quality in general
 
