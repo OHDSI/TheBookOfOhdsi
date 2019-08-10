@@ -3,7 +3,7 @@
 
 *Chapter leads: Martijn Schuemie, Vojtech Huser & Andrew Williams* 
 
-Most of the data used for observational healthcare research was not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and adminstrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with @vanDerLei_1991 even stating that "Data shall be used only for the purpose for which they were collected". The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:
+Most of the data used for observational healthcare research were not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and adminstrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with @vanDerLei_1991 even stating that "Data shall be used only for the purpose for which they were collected". The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:
 
 > Are the data of sufficient quality for our research purposes?
 
@@ -82,14 +82,10 @@ The ETL (Extract-Transform-Load) process by which data is converted to the CDM i
 
 Figure \@ref(fig:testFramework) shows
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/DataQuality/testFramework} 
-
-}
-
-\caption{Unit testing an ETL (Extract-Transform-Load) process.}(\#fig:testFramework)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/testFramework.png" alt="Unit testing an ETL (Extract-Transform-Load) process." width="90%" />
+<p class="caption">(\#fig:testFramework)Unit testing an ETL (Extract-Transform-Load) process.</p>
+</div>
 
 ## Study-specific checks
 
