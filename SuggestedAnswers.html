@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-08-10" />
+<meta name="date" content="2019-08-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -430,7 +430,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.10.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#journal-paper-generation"><i class="fa fa-check"></i><b>14.10.1</b> Journal paper generation</a></li>
 </ul></li>
 <li class="chapter" data-level="14.11" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#summary-10"><i class="fa fa-check"></i><b>14.11</b> Summary</a></li>
-<li class="chapter" data-level="14.12" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#excercises-1"><i class="fa fa-check"></i><b>14.12</b> Excercises</a></li>
 </ul></li>
 <li class="part"><span><b>IV Evidence Quality</b></span></li>
 <li class="chapter" data-level="15" data-path="EvidenceQuality.html"><a href="EvidenceQuality.html"><i class="fa fa-check"></i><b>15</b> Evidence Quality</a><ul>
@@ -586,66 +585,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">E.1</span> SQL and R</h2>
 <p><strong>Exercise <a href="SqlAndR.html#exr:exercisePeopleCount">10.1</a></strong></p>
 <p>To compute the number of people we can simply query the PERSON table:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="SuggestedAnswers.html#cb124-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
-<span id="cb124-2"><a href="SuggestedAnswers.html#cb124-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
-<span id="cb124-3"><a href="SuggestedAnswers.html#cb124-3"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(*) AS person_count</span></span>
-<span id="cb124-4"><a href="SuggestedAnswers.html#cb124-4"></a><span class="st">FROM @cdm.person;&quot;</span></span>
-<span id="cb124-5"><a href="SuggestedAnswers.html#cb124-5"></a></span>
-<span id="cb124-6"><a href="SuggestedAnswers.html#cb124-6"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="SuggestedAnswers.html#cb128-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
+<span id="cb128-2"><a href="SuggestedAnswers.html#cb128-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
+<span id="cb128-3"><a href="SuggestedAnswers.html#cb128-3"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(*) AS person_count</span></span>
+<span id="cb128-4"><a href="SuggestedAnswers.html#cb128-4"></a><span class="st">FROM @cdm.person;&quot;</span></span>
+<span id="cb128-5"><a href="SuggestedAnswers.html#cb128-5"></a></span>
+<span id="cb128-6"><a href="SuggestedAnswers.html#cb128-6"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
 <pre><code>##   PERSON_COUNT
 ## 1         2694</code></pre>
 <p><strong>Exercise <a href="SqlAndR.html#exr:exerciseCelecoxibUsers">10.2</a></strong></p>
 <p>To compute the number of people with at least one prescription of celecoxib, we can query the DRUG_EXPOSURE table. To find all drugs containing the ingredient celecoxib, we join to the CONCEPT_ANCESTOR and CONCEPT tables:</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="SuggestedAnswers.html#cb126-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
-<span id="cb126-2"><a href="SuggestedAnswers.html#cb126-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
-<span id="cb126-3"><a href="SuggestedAnswers.html#cb126-3"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(DISTINCT(person_id)) AS person_count</span></span>
-<span id="cb126-4"><a href="SuggestedAnswers.html#cb126-4"></a><span class="st">FROM @cdm.drug_exposure</span></span>
-<span id="cb126-5"><a href="SuggestedAnswers.html#cb126-5"></a><span class="st">INNER JOIN @cdm.concept_ancestor</span></span>
-<span id="cb126-6"><a href="SuggestedAnswers.html#cb126-6"></a><span class="st">  ON drug_concept_id = descendant_concept_id</span></span>
-<span id="cb126-7"><a href="SuggestedAnswers.html#cb126-7"></a><span class="st">INNER JOIN @cdm.concept ingredient</span></span>
-<span id="cb126-8"><a href="SuggestedAnswers.html#cb126-8"></a><span class="st">  ON ancestor_concept_id = ingredient.concept_id</span></span>
-<span id="cb126-9"><a href="SuggestedAnswers.html#cb126-9"></a><span class="st">WHERE LOWER(ingredient.concept_name) = &#39;celecoxib&#39;</span></span>
-<span id="cb126-10"><a href="SuggestedAnswers.html#cb126-10"></a><span class="st">  AND ingredient.concept_class_id = &#39;Ingredient&#39;</span></span>
-<span id="cb126-11"><a href="SuggestedAnswers.html#cb126-11"></a><span class="st">  AND ingredient.standard_concept = &#39;S&#39;;&quot;</span></span>
-<span id="cb126-12"><a href="SuggestedAnswers.html#cb126-12"></a></span>
-<span id="cb126-13"><a href="SuggestedAnswers.html#cb126-13"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="SuggestedAnswers.html#cb130-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
+<span id="cb130-2"><a href="SuggestedAnswers.html#cb130-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
+<span id="cb130-3"><a href="SuggestedAnswers.html#cb130-3"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(DISTINCT(person_id)) AS person_count</span></span>
+<span id="cb130-4"><a href="SuggestedAnswers.html#cb130-4"></a><span class="st">FROM @cdm.drug_exposure</span></span>
+<span id="cb130-5"><a href="SuggestedAnswers.html#cb130-5"></a><span class="st">INNER JOIN @cdm.concept_ancestor</span></span>
+<span id="cb130-6"><a href="SuggestedAnswers.html#cb130-6"></a><span class="st">  ON drug_concept_id = descendant_concept_id</span></span>
+<span id="cb130-7"><a href="SuggestedAnswers.html#cb130-7"></a><span class="st">INNER JOIN @cdm.concept ingredient</span></span>
+<span id="cb130-8"><a href="SuggestedAnswers.html#cb130-8"></a><span class="st">  ON ancestor_concept_id = ingredient.concept_id</span></span>
+<span id="cb130-9"><a href="SuggestedAnswers.html#cb130-9"></a><span class="st">WHERE LOWER(ingredient.concept_name) = &#39;celecoxib&#39;</span></span>
+<span id="cb130-10"><a href="SuggestedAnswers.html#cb130-10"></a><span class="st">  AND ingredient.concept_class_id = &#39;Ingredient&#39;</span></span>
+<span id="cb130-11"><a href="SuggestedAnswers.html#cb130-11"></a><span class="st">  AND ingredient.standard_concept = &#39;S&#39;;&quot;</span></span>
+<span id="cb130-12"><a href="SuggestedAnswers.html#cb130-12"></a></span>
+<span id="cb130-13"><a href="SuggestedAnswers.html#cb130-13"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
 <pre><code>##   PERSON_COUNT
 ## 1         1844</code></pre>
 <p>Note that we use <code>COUNT(DISTINCT(person_id))</code> to find the number of distinct persons, considering that a person might have more than one prescription. Also note that we use the <code>LOWER</code> function to make our search for “celecoxib” case-insensitive.</p>
 <p>Alternatively, we can use the DRUG_ERA table, which is already rolled up to the ingredient level:</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="SuggestedAnswers.html#cb128-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
-<span id="cb128-2"><a href="SuggestedAnswers.html#cb128-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
-<span id="cb128-3"><a href="SuggestedAnswers.html#cb128-3"></a></span>
-<span id="cb128-4"><a href="SuggestedAnswers.html#cb128-4"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(DISTINCT(person_id)) AS person_count</span></span>
-<span id="cb128-5"><a href="SuggestedAnswers.html#cb128-5"></a><span class="st">FROM @cdm.drug_era</span></span>
-<span id="cb128-6"><a href="SuggestedAnswers.html#cb128-6"></a><span class="st">INNER JOIN @cdm.concept ingredient</span></span>
-<span id="cb128-7"><a href="SuggestedAnswers.html#cb128-7"></a><span class="st">  ON drug_concept_id = ingredient.concept_id</span></span>
-<span id="cb128-8"><a href="SuggestedAnswers.html#cb128-8"></a><span class="st">WHERE LOWER(ingredient.concept_name) = &#39;celecoxib&#39;</span></span>
-<span id="cb128-9"><a href="SuggestedAnswers.html#cb128-9"></a><span class="st">  AND ingredient.concept_class_id = &#39;Ingredient&#39;</span></span>
-<span id="cb128-10"><a href="SuggestedAnswers.html#cb128-10"></a><span class="st">  AND ingredient.standard_concept = &#39;S&#39;;&quot;</span></span>
-<span id="cb128-11"><a href="SuggestedAnswers.html#cb128-11"></a></span>
-<span id="cb128-12"><a href="SuggestedAnswers.html#cb128-12"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="SuggestedAnswers.html#cb132-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
+<span id="cb132-2"><a href="SuggestedAnswers.html#cb132-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
+<span id="cb132-3"><a href="SuggestedAnswers.html#cb132-3"></a></span>
+<span id="cb132-4"><a href="SuggestedAnswers.html#cb132-4"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(DISTINCT(person_id)) AS person_count</span></span>
+<span id="cb132-5"><a href="SuggestedAnswers.html#cb132-5"></a><span class="st">FROM @cdm.drug_era</span></span>
+<span id="cb132-6"><a href="SuggestedAnswers.html#cb132-6"></a><span class="st">INNER JOIN @cdm.concept ingredient</span></span>
+<span id="cb132-7"><a href="SuggestedAnswers.html#cb132-7"></a><span class="st">  ON drug_concept_id = ingredient.concept_id</span></span>
+<span id="cb132-8"><a href="SuggestedAnswers.html#cb132-8"></a><span class="st">WHERE LOWER(ingredient.concept_name) = &#39;celecoxib&#39;</span></span>
+<span id="cb132-9"><a href="SuggestedAnswers.html#cb132-9"></a><span class="st">  AND ingredient.concept_class_id = &#39;Ingredient&#39;</span></span>
+<span id="cb132-10"><a href="SuggestedAnswers.html#cb132-10"></a><span class="st">  AND ingredient.standard_concept = &#39;S&#39;;&quot;</span></span>
+<span id="cb132-11"><a href="SuggestedAnswers.html#cb132-11"></a></span>
+<span id="cb132-12"><a href="SuggestedAnswers.html#cb132-12"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
 <pre><code>##   PERSON_COUNT
 ## 1         1844</code></pre>
 <p><strong>Exercise <a href="SqlAndR.html#exr:exerciseGiBleedsDuringCelecoxib">10.3</a></strong></p>
 <p>To compute the number of diagnoses during exposure we extend our previous query by joining to the CONDITION_OCCURRENCE table. We join to the CONCEPT_ANCESTOR table to find all condition concepts that imply a gastrointestinal haemorrhage:</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="SuggestedAnswers.html#cb130-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
-<span id="cb130-2"><a href="SuggestedAnswers.html#cb130-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
-<span id="cb130-3"><a href="SuggestedAnswers.html#cb130-3"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(*) AS diagnose_count</span></span>
-<span id="cb130-4"><a href="SuggestedAnswers.html#cb130-4"></a><span class="st">FROM @cdm.drug_era</span></span>
-<span id="cb130-5"><a href="SuggestedAnswers.html#cb130-5"></a><span class="st">INNER JOIN @cdm.concept ingredient</span></span>
-<span id="cb130-6"><a href="SuggestedAnswers.html#cb130-6"></a><span class="st">  ON drug_concept_id = ingredient.concept_id</span></span>
-<span id="cb130-7"><a href="SuggestedAnswers.html#cb130-7"></a><span class="st">INNER JOIN @cdm.condition_occurrence</span></span>
-<span id="cb130-8"><a href="SuggestedAnswers.html#cb130-8"></a><span class="st">  ON condition_start_date &gt;= drug_era_start_date</span></span>
-<span id="cb130-9"><a href="SuggestedAnswers.html#cb130-9"></a><span class="st">    AND condition_start_date &lt;= drug_era_end_date</span></span>
-<span id="cb130-10"><a href="SuggestedAnswers.html#cb130-10"></a><span class="st">INNER JOIN @cdm.concept_ancestor </span></span>
-<span id="cb130-11"><a href="SuggestedAnswers.html#cb130-11"></a><span class="st">  ON condition_concept_id =descendant_concept_id</span></span>
-<span id="cb130-12"><a href="SuggestedAnswers.html#cb130-12"></a><span class="st">WHERE LOWER(ingredient.concept_name) = &#39;celecoxib&#39;</span></span>
-<span id="cb130-13"><a href="SuggestedAnswers.html#cb130-13"></a><span class="st">  AND ingredient.concept_class_id = &#39;Ingredient&#39;</span></span>
-<span id="cb130-14"><a href="SuggestedAnswers.html#cb130-14"></a><span class="st">  AND ingredient.standard_concept = &#39;S&#39;</span></span>
-<span id="cb130-15"><a href="SuggestedAnswers.html#cb130-15"></a><span class="st">  AND ancestor_concept_id = 192671;&quot;</span></span>
-<span id="cb130-16"><a href="SuggestedAnswers.html#cb130-16"></a></span>
-<span id="cb130-17"><a href="SuggestedAnswers.html#cb130-17"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="SuggestedAnswers.html#cb134-1"></a><span class="kw">library</span>(DatabaseConnector)</span>
+<span id="cb134-2"><a href="SuggestedAnswers.html#cb134-2"></a>connection &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
+<span id="cb134-3"><a href="SuggestedAnswers.html#cb134-3"></a>sql &lt;-<span class="st"> &quot;SELECT COUNT(*) AS diagnose_count</span></span>
+<span id="cb134-4"><a href="SuggestedAnswers.html#cb134-4"></a><span class="st">FROM @cdm.drug_era</span></span>
+<span id="cb134-5"><a href="SuggestedAnswers.html#cb134-5"></a><span class="st">INNER JOIN @cdm.concept ingredient</span></span>
+<span id="cb134-6"><a href="SuggestedAnswers.html#cb134-6"></a><span class="st">  ON drug_concept_id = ingredient.concept_id</span></span>
+<span id="cb134-7"><a href="SuggestedAnswers.html#cb134-7"></a><span class="st">INNER JOIN @cdm.condition_occurrence</span></span>
+<span id="cb134-8"><a href="SuggestedAnswers.html#cb134-8"></a><span class="st">  ON condition_start_date &gt;= drug_era_start_date</span></span>
+<span id="cb134-9"><a href="SuggestedAnswers.html#cb134-9"></a><span class="st">    AND condition_start_date &lt;= drug_era_end_date</span></span>
+<span id="cb134-10"><a href="SuggestedAnswers.html#cb134-10"></a><span class="st">INNER JOIN @cdm.concept_ancestor </span></span>
+<span id="cb134-11"><a href="SuggestedAnswers.html#cb134-11"></a><span class="st">  ON condition_concept_id =descendant_concept_id</span></span>
+<span id="cb134-12"><a href="SuggestedAnswers.html#cb134-12"></a><span class="st">WHERE LOWER(ingredient.concept_name) = &#39;celecoxib&#39;</span></span>
+<span id="cb134-13"><a href="SuggestedAnswers.html#cb134-13"></a><span class="st">  AND ingredient.concept_class_id = &#39;Ingredient&#39;</span></span>
+<span id="cb134-14"><a href="SuggestedAnswers.html#cb134-14"></a><span class="st">  AND ingredient.standard_concept = &#39;S&#39;</span></span>
+<span id="cb134-15"><a href="SuggestedAnswers.html#cb134-15"></a><span class="st">  AND ancestor_concept_id = 192671;&quot;</span></span>
+<span id="cb134-16"><a href="SuggestedAnswers.html#cb134-16"></a></span>
+<span id="cb134-17"><a href="SuggestedAnswers.html#cb134-17"></a><span class="kw">renderTranslateQuerySql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
 <pre><code>##   DIAGNOSE_COUNT
 ## 1         41</code></pre>
 <p>Note that in this case it is essential to use the DRUG_ERA table instead of the DRUG_EXPOSURE table, because drug exposures with the same ingredient can overlap, but drug eras can. This could lead to double counting. For example, imagine a person received two drug drugs containing celecoxib at the same time. This would be recorded as two drug exposures, so any diagnoses occurring during the exposure would be counted twice. The two exposures will be merged into a single non-overlapping drug era.</p>

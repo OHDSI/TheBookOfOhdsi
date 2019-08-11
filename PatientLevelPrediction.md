@@ -10,9 +10,9 @@ The number of publications describing clinical prediction models has increased s
 
 Advances in machine learning for large dataset analysis have led to increased interest in applying patient-level prediction on this type of data. However, many published efforts in patient-level prediction do not follow the model development guidelines, fail to perform extensive external validation, or provide insufficient model details which limits the ability of independent researchers to reproduce the models and perform external validation. This makes it hard to fairly evaluate the predictive performance of the models and reduces the likelihood of the model being used appropriately in clinical practice. To improve standards, several papers have been written detailing guidelines for best practices in developing and reporting prediction models. For example, the Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis (TRIPOD) statement ^[https://www.equator-network.org/reporting-guidelines/tripod-statement/] provides clear recommendations for reporting prediction model development and validation and addresses some of the concerns related to transparency. \index{machine learning} \index{TRIPOD}
 
-Massive-scale, patient-specific predictive modeling has become reality due to OHDSI, where the common data model (CDM) allows for uniform and transparent analysis at an unprecedented scale. The databases available in the CDM contain rich data to build highly predictive large-scale models and also provide immediate opportunity to serve large communities of patients who are in most need of improved quality of care. Such models can inform truly personalized medical care leading hopefully to sharply improved patient outcomes.
+Massive-scale, patient-specific predictive modeling has become reality due to OHDSI, where the common data model (CDM) allows for uniform and transparent analysis at an unprecedented scale. The growing network of database standardized to the CDM enables external validation of models in different healthcare settings on a global scale. We believe this provides immediate opportunity to serve large communities of patients who are in most need of improved quality of care. Such models can inform truly personalized medical care leading hopefully to sharply improved patient outcomes.
 
-In this chapter we describe OHDSI’s standardized framework for patient-level prediction, [@reps2018] and discuss the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) R package that implements established best practices. We start with providing the necessary theory behind the development and evaluation of patient-level prediction and provide a high-level overview of the implemented machine learning algorithms. We then discuss an example prediction problem and provide step-by-step guidance on its definition and implementation using ATLAS or custom R code. Finally, we review two Shiny apps that allow viewing the study outputs. One app explores a single prediction model, while the other explores many models at once.
+In this chapter we describe OHDSI’s standardized framework for patient-level prediction, [@reps2018] and discuss the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) R package that implements established best practices for development and validation. We start with providing the necessary theory behind the development and evaluation of patient-level prediction and provide a high-level overview of the implemented machine learning algorithms. We then discuss an example prediction problem and provide step-by-step guidance on its definition and implementation using ATLAS or custom R code. Finally, we discuss the use of Shiny applications for the dissemination study results. 
 
 ## The prediction problem
 
@@ -33,10 +33,10 @@ Table: (\#tab:plpDesign) Main design choices in a prediction design.
 
 | Choice            | Description                                              |
 |:----------------- |:-------------------------------------------------------- |
-| Target cohort     | A cohort for whom we wish to predict                     |
-| Outcome cohort    | A cohort representing the outcome we wish to predict     |
-| Time-at-risk      | For what time relative to t=0 do we want to make the prediction? |
-| Model             | What algorithms using which parameters do we want use, and what predictor variables do we want to include? |
+| Target cohort     | How do we define the cohort of persons for whom we wish to predict?                    |
+| Outcome cohort    | How do we define the outcome we want to predict?|
+| Time-at-risk      | In which time window relative to t=0 do we want to make the prediction? |
+| Model             | What algorithms do we want to use, and which potential predictor variables do we include? |
 
 
 This conceptual framework works for all type of prediction problems, for example:
@@ -59,18 +59,15 @@ This conceptual framework works for all type of prediction problems, for example
   
 ## Data extraction
 
-The observational data we use in OHDSI consist of time-stamped records of interactions of the patient with the healthcare system, as well as anonymized patient details such as gender and year of birth, stored in the CDM (Chapter \@ref(CommonDataModel)). To use this information in a prediction problem, we must convert this data into two datasets:
+When creating a predictive model we use a process know as supervised learning - a form of machine learning - that infers the relationship between the covariates and the outcome status based on a labelled set of examples.\index{supervised learning}. Therefore, we need methods to extract the covariates from the CDM for the persons in the target cohort and we need to obtain their outcome labels.
 
-1. A set of **covariates** (also referred to as "features" or "independent variables"). These describe the characteristics of the patients. Covariates can include age, gender, presence of specific condition and exposure codes in a patient's record, etc. \index{covariates}
-2. A set describing the **outcome status** (also referred to as the "labels" or "classes"). Did a patient experience the outcome of interest in the time-at-risk? \index{outcome status} \index{labels} \index{classes}
+The **covariates** (also referred to as "predictors", features" or "independent variables") describe the characteristics of the patients.\index{covariates} Covariates can include age, gender, presence of specific conditions and exposure codes in a patient's record, etc. Covariates are typically constructed using the [FeatureExtraction](https://ohdsi.github.io/FeatureExtraction/) package, described in more detail in Chapter \@ref(Characterization). For prediction we can only use data prior to (and on) the date the person enters the target cohort. This date we will call the index date.\index{index date}
 
-When creating a predictive model we use a process know as supervised learning - a form of machine learning - to infer the relationship between the covariates and the outcome status. Once the model is created, we can apply it to patients where we know their characteristics (their covariates), but do not know their outcome status, to create a prediction. \index{supervised learning}
-
-Converting the data in the CDM to these two datasets requires selecting a set of people, and for these people selecting a specific date. We will refer to this date as the index date. Data prior to (and on) the index date is used to construct the covariates. Covariates are typically constructed using the [FeatureExtraction](https://ohdsi.github.io/FeatureExtraction/) package, described in more detail in Chapter \@ref(Characterization). Data after (or on) the index date is used to construct the outcome status. The group of people and their index date are defined by the **target cohort**. The outcome status is determined by the **time-at-risk**, which is usually defined relative to the target cohort start and end date, and the **outcome cohort**; If the outcome occurs within the time-at-risk, the outcome status is "positive". \index{index date}
+We also need to obtain the **outcome status** (also referred to as the "labels" or "classes") of all the patients during the time-at-risk. If the outcome occurs within the time-at-risk, the outcome status is defined as "positive". \index{outcome status} \index{labels} \index{classes}
 
 ### Data extraction example
 
-Table \@ref(tab:plpExampleCohorts) shows an example COHORT table with two cohorts. The cohort with cohort definition ID 1 is the target cohort (e.g. "people recently diagnosed with atrial fibrillation"). Cohort definition ID 2 implies the outcome cohort (e.g. "stroke").
+Table \@ref(tab:plpExampleCohorts) shows an example COHORT table with two cohorts. The cohort with cohort definition ID 1 is the target cohort (e.g. "people recently diagnosed with atrial fibrillation"). Cohort definition ID 2 defines the outcome cohort (e.g. "stroke").
 
 Table: (\#tab:plpExampleCohorts) Example COHORT table. For simplicity the cohort_end_date has been omitted. 
 
@@ -93,20 +90,22 @@ Based on this example data, and assuming the time at risk is the year following 
 
 ### Missingness
 
-Observational healthcare data rarely reflects whether data is missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present at that time, or because it was not recorded. There is no way to distinguish between the two. For machine learning this does not matter as much as one might think. If a covariate is predictive of the outcome status it will end up in the model, else not. However, we should be aware that our interpretation of covariates should be nuanced: it is not the actual condition that is the predictor, but rather the recording of the condition in the data. \index{missing data}
+Observational healthcare data rarely reflects whether data is missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present at that time, or because it was not recorded. It is important to realize that the machine learning algorithm cannot distinguish between the two scenarios and will simply assess the predictive value in the available data. \index{missing data}
 
 ## Fitting the model {#modelFitting}
 
-When fitting a model (using supervised learning) we are trying to establish the relationship between the covariates and the observed outcome status, so that if we do not yet know the outcome status, we can predict it. If we consider the situation where we have two covariates (for example systolic and diastolic blood pressure), then we can represent each patient as a plot in two dimensional space as shown in Figure \@ref(fig:decisionBoundary). The shape of a data points corresponds to the patient's outcome status (e.g. stroke). The idea of supervised learning is to generalize what we see and fill in where there are no current data points. A supervised learning model will try to partition the space via a decision boundary that aims to minimize the cases where the outcome status does not match the models prediction. Different supervised learning techniques lead to different decision boundaries and there are often hyper-parameters that can impact the complexity of the decision boundary. \index{decision boundary}
+When fitting a prediction model we are trying to learn the relationship between the covariates and the observed outcome status from labelled examples. Suppose we only have two covariates systolic and diastolic blood pressure, then we can represent each patient as a plot in two dimensional space as shown in Figure \@ref(fig:decisionBoundary). In this figure the shape of the data point corresponds to the patient's outcome status (e.g. stroke). 
+
+A supervised learning model will try to find a decision boundary that optimally separates the two outcome classes. Different supervised learning techniques lead to different decision boundaries and there are often hyper-parameters that can impact the complexity of the decision boundary. \index{decision boundary}
 
 <div class="figure" style="text-align: center">
 <img src="images/PatientLevelPrediction/decisionBoundary.png" alt="Decision boundary." width="80%" />
 <p class="caption">(\#fig:decisionBoundary)Decision boundary.</p>
 </div>
 
-In Figure \@ref(fig:decisionBoundary) we can see three different decision boundaries. The boundaries are used to infer the outcome status of any new data point. If a new data point falls into the shaded area then the model will predict "has outcome", otherwise it will predict "no outcome". Ideally a decision boundary should perfectly partition the two classes. However, generalizability is an issue, as complex models can "overfit" the data; boundaries may be fit too closely and may not work for new data. For example, if the data contains noise, with mislabelled or incorrectly positioned data points, we would not want to fit our model to that noise. We may pref to define a decision boundary that does not perfectly discriminate those with known outcome status, to get a model that better predicts for now, previously unseen patients. We want a model that appears to partition the labelled data well but is also as simple as possible. Techniques such as regularization aim to maximize model performance on the data with known outcome status while minimizing complexity. Complexity can also be controlled by picking classifier hyper-parameters such that a simpler decision boundary is used.   
+In Figure \@ref(fig:decisionBoundary) we can see three different decision boundaries. The boundaries are used to infer the outcome status of any new data point. If a new data point falls into the shaded area then the model will predict "has outcome", otherwise it will predict "no outcome". Ideally a decision boundary should perfectly partition the two classes. However, there is a risk that too complex models "overfit" to the data. This can negatively impact the generalizability of the model to unseen data. For example, if the data contains noise, with mislabeled or incorrectly positioned data points, we would not want to fit our model to that noise. We therefore may prefer to define a decision boundary that does not perfectly discriminate in our training data but captures the "real" complexity. Techniques such as regularization aim to maximize model performance while minimizing complexity.   
 
-Another way to think about supervised learning is finding a function that maps from a patient's covariates to their label: $p(outcome\ status = 1|covariates) = f(covariates)$. Each supervised learning algorithm has a different way to learn the mapping function and the no free lunch theorem states that no one algorithm is always going to outperform the others. The performance of each type of supervised learning algorithm depends on how the labelled data points are distributed in space. Therefore we recommend trying multiple supervised learning techniques with various hyper-parameter settings when developing patient-level prediction models.
+Each supervised learning algorithm has a different way to learn the decision boundary and it is not straightforward which algorithm will work best on your data. As the No Free Lunch theorem states not one algorithm is always going to outperform the others on all prediction problems.\index{no free lunch} Therefore, we recommend trying multiple supervised learning algorithms with various hyper-parameter settings when developing patient-level prediction models.
 
 The following algorithms are available in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package:
 
@@ -139,7 +138,7 @@ Table: (\#tab:gbmParameters) Hyper-parameters for gradient boosting machines.
 
 ### Random forest
 
-Random forest is a bagging ensemble technique that combines multiple decision trees. The idea behind bagging is to reduce the likelihood of overfitting, by using weak classifiers, but combining multiple diverse weak classifiers into a strong classifier. Random forest accomplishes this by training multiple decision trees but only using a subset of the variables in each tree and the subset of variables differ between trees. Our packages uses the sklearn implementation of Random Forest in Python. \index{random forest} \index{python} \index{sklearn}
+Random forest is a bagging ensemble technique that combines multiple decision trees. The idea behind bagging is to reduce the likelihood of overfitting, by using weak classifiers, and combining them into a strong classifier. Random forest accomplishes this by training multiple decision trees but only using a subset of the variables in each tree and the subset of variables differ between trees. Our packages uses the sklearn implementation of Random Forest in Python. \index{random forest} \index{python} \index{sklearn}
 
 Table: (\#tab:randomForestParameters) Hyper-parameters for random forests.
 
@@ -153,7 +152,7 @@ Table: (\#tab:randomForestParameters) Hyper-parameters for random forests.
 
 ### K-nearest neighbors
 
-K-nearest neighbors (KNN) is an algorithm that uses some distance metric to find the K closest labelled data-points to a new unlabelled data-point. The prediction of the new data-points is then the most prevalent class of the K-nearest labelled data-points. There is a sharing limitation of KNN, as the model requires labelled data to perform the prediction on new data, and it is often not possible to share this data across data sites. We included the [BigKnn](https://github.com/OHDSI/BigKnn) package developed in OHDSI which is a large scale KNN classifier. \index{k-nearest neighbors} \index{bigknn}
+K-nearest neighbors (KNN) is an algorithm that uses some distance metric to find the K closest labelled data-points to a new unlabeled data-point. The prediction of the new data-points is then the most prevalent class of the K-nearest labelled data-points. There is a sharing limitation of KNN, as the model requires labelled data to perform the prediction on new data, and it is often not possible to share this data across data sites. We included the [BigKnn](https://github.com/OHDSI/BigKnn) package developed in OHDSI which is a large scale KNN classifier. \index{k-nearest neighbors} \index{bigknn}
 
 Table: (\#tab:knnParameters) Hyper-parameters for K-nearest neighbors.
 
@@ -229,11 +228,9 @@ There are two ways to perform internal validation:
 - A **holdout set** approach splits the labelled data into two independent sets: a train set and a test set (the hold out set). The train set is used to learn the model and the test set is used to evaluate it. We can simply divide our patients randomly into a train and test set, or we may choose to:
     - Split the data based on time (temporal validation), for example training on data before a specific date, and evaluating on data after that date. This may inform us on whether our model generalizes to different time periods.
     - Split the data based on geographic location (spatial validation). \index{validation!temporal validation} \index{validation!spatial validation}
-- **Cross validation** is useful when the data are limited. The data is split into $n$ equally-sized sets, where $n$ needs to be prespecified (e.g. $n=10$). For each of these sets a model is trained on all data except the data in that set, and used to generate predictions for the held-out set. In this way, all data is used once to evaluate the model-building algorithm. In the patient-level prediction framework we use cross validation to pick the optimal hyper-parameters. \index{cross-validation}
+- **Cross validation** is useful when the data are limited. The data is split into $n$ equally-sized sets, where $n$ needs to be prespecified (e.g. $n=10$). For each of these sets a model is trained on all data except the data in that set, and used to generate predictions for the hold-out set. In this way, all data is used once to evaluate the model-building algorithm. In the patient-level prediction framework we use cross validation to pick the optimal hyper-parameters. \index{cross-validation}
 
-Note that some may consider bootstrapping to be another approach to internal validation, which is often used specifically to express the uncertainty around a model's prediction, typically as confidence intervals. We currently do not use bootstrapping in the patient-level prediction framework. TODO: maybe elaborate on this. \index{bootstrap}
-
-External validation is when a model trained in one database is validated on a data from another database. This is important as different databases may represent different patient populations, but also perhaps different healthcare systems and different data-capture processes. External validation can therefore inform us on how well a model will perform outside of the settings it was developed in.
+External validation aims to assess model performance on data from another database, i.e. outside of the settings it was developed in. This measure of model transportability is important because we want to apply our models not only on the database it was trained on. Different databases may represent different patient populations, different healthcare systems and different data-capture processes. We believe that the external validation of prediction models on a large set of databases is a crucial step in model acceptance and implementation in clinical practice.
 
 ### Performance Metrics {#performance}
 
@@ -256,9 +253,9 @@ Table: (\#tab:tabletheorytab) Example of using a threshold on the predicted prob
 | 9 | 0.3   | 0 | 0 | TN |
 | 10 | 0.5   | 1 | 0 | FP |
 
-If a patient is predicted to have the outcome and has the outcome (during the time-at-risk) then this is called as a true positive (TP). If a patient is predicted to have the outcome but does not have the outcomethen this is called a false positive (FP). If a patient is predicted to not have the outcome and does not have the outcome then this is called a true negative (TN). Finally, if a patient is predicted to not have the outcome but does have the outcome then this is called a false negative (FN). \index{true positive} \index{false positive} \index{true negative} \index{false negative}
+If a patient is predicted to have the outcome and has the outcome (during the time-at-risk) then this is called as a true positive (TP). If a patient is predicted to have the outcome but does not have the outcome then this is called a false positive (FP). If a patient is predicted to not have the outcome and does not have the outcome then this is called a true negative (TN). Finally, if a patient is predicted to not have the outcome but does have the outcome then this is called a false negative (FN). \index{true positive} \index{false positive} \index{true negative} \index{false negative}
 
-The following threshold based metrics are:
+The following threshold based metrics can be calculated:
 
 -	accuracy: $(TP+TN)/(TP+TN+FP+FN)$
 -	sensitivity: $TP/(TP+FN)$
@@ -269,9 +266,7 @@ Note that these values can either decrease or increase if the threshold is lower
 
 **Discrimination**
 
-Discrimination is the ability to assign a higher risk to patients who will experience the outcome during the time at risk. The Receiver Operating Characteristics (ROC) is determined by plotting 1 – specificity on the x-axis and sensitivity on the y-axis at all possible thresholds. An example ROC plot is presented later in this chapter in Figure \@ref(fig:shinyROC). The area under the receiver operating characteristic curve (AUC) gives an overall measure of discrimination where a value of 0.5 corresponds to randomly assigning the risk and a value of 1 means perfect discrimination. In reality, most prediction models obtain AUCs between 0.6-0.8. \index{AUC} \index{ROC} \index{discrimination}
-
-For rare outcomes even a model with a high AUC may not be practical, because for every positive above a given threshold there could also be many negatives (i.e. the positive predictive value will be low). Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a high false positive rate may be impractical. When the outcome is rare another measure known as the area under the precision-recall curve (AUPRC) is therefore recommended. The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. \index{area under the precision-recall curve} 
+Discrimination is the ability to assign a higher risk to patients who will experience the outcome during the time at risk. The Receiver Operating Characteristics (ROC) curve is created by plotting 1 – specificity on the x-axis and sensitivity on the y-axis at all possible thresholds. An example ROC plot is presented later in this chapter in Figure \@ref(fig:shinyROC). The area under the receiver operating characteristic curve (AUC) gives an overall measure of discrimination where a value of 0.5 corresponds to randomly assigning the risk and a value of 1 means perfect discrimination. Most published prediction model obtain AUCs between 0.6-0.8. \index{AUC} \index{ROC} \index{discrimination}
 
 The AUC provides a way to determine how different the predicted risk distributions are between the patients who experience the outcome during the time at risk and those who do not. If the AUC is high, then the distributions will be mostly disjointed, whereas when there is a lot of overlap, the AUC will be closer to 0.5, see Figure \@ref(fig:figuretheoryroctheory).
 
@@ -280,9 +275,11 @@ The AUC provides a way to determine how different the predicted risk distributio
 <p class="caption">(\#fig:figuretheoryroctheory)How the ROC plots are linked to discrimination. If the two classes have similar distributions of prediced risk, the ROC will be close to the diagonal, with AUC close to 0.5.</p>
 </div>
 
+For rare outcomes even a model with a high AUC may not be practical, because for every positive above a given threshold there could also be many negatives (i.e. the positive predictive value will be low). Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a high false positive rate may be unwanted. When the outcome is rare another measure known as the area under the precision-recall curve (AUPRC) is therefore recommended. The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. \index{area under the precision-recall curve} 
+
 **Calibration**
 
-Calibration is the ability of the model to assign the correct risk. For example, if the model assigned one hundred patients a risk of 10% then ten of the patients should experience the outcome during the time at risk. If the model assigned 100 patients a risk of 80% then eighty of the patients should experience the outcome during the time at risk. The calibration is generally calculated by partitioning the patients into deciles based on the predicted risk and in each group calculating the mean predicted risk and the fraction of the patients who experienced the outcome during the time at risk. We then plot these ten points (predicted risk on the y-axis and observed risk on the x-axis) and see whether they fall on the x = y line, indicating the model is well calibrated. An example calibration plot is presented later in this chapter in Figure \@ref(fig:shinyCal). We also fit a linear model using the points to calculate the intercept (which should be close to zero) and the gradient (which should be close to one). If the gradient is greater than one then the model is assigning a higher risk than the true risk and if the gradient is less than one the model is assigning a lower risk than the true risk. \index{calibration}
+Calibration is the ability of the model to assign the correct risk. For example, if the model assigned one hundred patients a risk of 10% then ten of the patients should experience the outcome during the time at risk. If the model assigned 100 patients a risk of 80% then eighty of the patients should experience the outcome during the time at risk. The calibration is generally calculated by partitioning the patients into deciles based on the predicted risk and in each group calculating the mean predicted risk and the fraction of the patients who experienced the outcome during the time at risk. We then plot these ten points (predicted risk on the y-axis and observed risk on the x-axis) and see whether they fall on the x = y line, indicating the model is well calibrated. An example calibration plot is presented later in this chapter in Figure \@ref(fig:shinyCal). We also fit a linear model using the points to calculate the intercept (which should be close to zero) and the gradient (which should be close to one). If the gradient is greater than one then the model is assigning a higher risk than the true risk and if the gradient is less than one the model is assigning a lower risk than the true risk. Note that we also implemented Smooth Calibration Curves in our R-package to better capture the non-linear relationship between predicted and observed risk. \index{calibration}
 
 ## Designing a patient-level prediction Study
 
@@ -312,7 +309,7 @@ The final study population in which we will develop our model is often a subset 
 
 ### Model development settings
 
-To develop the prediction model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. we prefer to let the data speak for itself and try different approaches to find the best one. There is no algorithm that will work best for all problems (no free lunch). In our framework we have therefore implemented many algorithms as described in Section \@ref(modelFitting), and allow others to be added. In this example, to keep things simple, we select just one algorithm: Gradient Boosting Machines. \index{no free lunch}
+To develop the prediction model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. we prefer to let the data speak for itself and try different approaches to find the best one. In our framework we have therefore implemented many algorithms as described in Section \@ref(modelFitting), and allow others to be added. In this example, to keep things simple, we select just one algorithm: Gradient Boosting Machines. 
 
 Furthermore, we have to decide on the covariates that we will use to train our model. In our example, we like to add gender, age, all conditions, drugs and drug groups, and visit counts. We will look for these clinical events in the year before and any time prior the index date.
 
@@ -555,7 +552,7 @@ PatientLevelPrediction::viewMultiplePlp(outputFolder)
 
 ## Implementing the study in R
 
-An alternative to implementing our study design using ATLAS is to write the study code outselves in R. We can make use of the functions provided in the  [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
+An alternative to implementing our study design using ATLAS is to write the study code ourselves in R. We can make use of the functions provided in the  [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
 
 ### Cohort instantiation
 
@@ -728,7 +725,7 @@ gbmResults <- loadPlpResult("gbmResults")
 
 ### Internal Validation
 
-Once we execute the study, the `runPlp` function returns the trained model and the evaluation of the model on the train/test sets. You can interactively view the results by running: `viewPlp(runPlp = gbmResults)`. This will open a Shiny App in which we can view all performance measures created by the framework, including interactive plots, as shown in Figure \@ref(fig:shinySummary).
+Once we execute the study, the `runPlp` function returns the trained model and the evaluation of the model on the train/test sets. You can interactively view the results by running: `viewPlp(runPlp = gbmResults)`. This will open a Shiny App in which we can view all performance measures created by the framework, including interactive plots, see Figure \@ref(fig:shinySummary) in the section on the Shiny Application. 
 
 To generate and save all the evaluation plots to a folder run the following code:
 
@@ -890,7 +887,7 @@ This summary page table contains:
 - hold out target population count and incidence of outcome 
 - discrimination metrics: AUC, AUPRC
 
-To the left of the table is the filter option, where we can specify the development/validation databases to focus on, the type of model, the time at risk settings of interest and/or the cohorts of interest. For example, to pick the models corresponding to the target population "New users of ACE inhibitors as first line monotherapy for hypertension", select this in the *Target Cohort* option.
+To the left of the table is the filter option, where we can specify the development/validation databases to focus on, the type of model, the time at risk settings of interest and/or the cohorts of interest. For example, to pick the models corresponding to the target population "New users of ACE inhibitors as first line mono-therapy for hypertension", select this in the *Target Cohort* option.
 
 To explore a model click on the corresponding row, a selected row will be highlighted. With a row selected, we can now explore the model settings used when developing the model by clicking on the *Model Settings* tab:
 
@@ -980,9 +977,85 @@ For more details see the help page of the function.
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- ToDo
+
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- Patient-level prediction aims to develop a model that predicts future events using data from the past.
+
+- The selection of the best machine algorithm for model development is an empirical question, i.e. it should be driven by the problem and data at hand.
+
+- The PatientLevelPrediction Package implements best practices for the development and validation of prediction models using data stored in the OMOP-CDM.
+
+- The dessiminaton of the model and its performance measures is implemented through interactive dashboards.
+
+- OHDSI's prediction framework enables large-scale external validation of prediction models which is a pre-requisite for clinical adoption.
 </div>\EndKnitrBlock{rmdsummary}
 
-## Excercises
 
-ToDo
+
+**Prerequisites**
+
+For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+
+
+```r
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Eunomia")
+```
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
+
+```r
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
+
+The CDM database schema is "main".
+
+*Problem Definition*
+
+In patients that started using NSAIDs for the first time, predict who will develop a GI Bleed in the next year.
+
+Find below the SQL code to generate the NSAID cohort cohort.
+
+
+```r
+sqlNSAIDs <- "
+INSERT INTO @cohort_database_schema.@cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
+SELECT 1 AS cohort_definition_id,
+  person_id AS subject_id,
+  MIN(drug_exposure_start_date) AS cohort_start_date,
+  MIN(drug_exposure_end_date) AS cohort_end_date
+FROM @cdm_database_schema.drug_exposure
+INNER JOIN @cdm_database_schema.concept_ancestor
+  ON drug_concept_id = descendant_concept_id
+WHERE ancestor_concept_id IN (1118084, 1124300) -- NSAIDS
+GROUP BY person_id;"
+```
+
+And here SQL code to generate the GI Bleed cohort:
+
+
+```r
+sql <- "
+INSERT INTO @cohort_database_schema.@cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
+SELECT 2 AS cohort_definition_id,
+  person_id AS subject_id,
+  MIN(condition_start_date) AS cohort_start_date,
+  MIN(condition_end_date) AS cohort_end_date
+FROM @cdm_database_schema.condition_occurrence
+INNER JOIN @cdm_database_schema.concept_ancestor
+  ON condition_concept_id = descendant_concept_id
+WHERE ancestor_concept_id = 192671 -- Gastrointestinal haemorrhage
+GROUP BY person_id;"
+```
+
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:instantiate the cohorts"><strong>(\#exr:instantiate the cohorts) </strong></span>Create a cohort table and execute the queries against the CDM to instantiate the two cohorts. How many people are in these cohort?
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:extract the data"><strong>(\#exr:extract the data) </strong></span>Define the covariates you want to use for the prediction and extract the plp data from the CDM. Create the summary of the plp data.</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:specify the population settings"><strong>(\#exr:specify the population settings) </strong></span>Revisit the design choices you have to make to define the final target population and specify these using the CreateStudyPopulation function. What will the effect of your choices be on the final size of the target population?</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:buildin and evaluating a prediction model"><strong>(\#exr:buildin and evaluating a prediction model) </strong></span>Build a prediction model using Lasso and evaluate its performance using the Shiny application. How well is your model performing?</div>\EndKnitrBlock{exercise}
+
+TODO: Decide on providing answers.
