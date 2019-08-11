@@ -14,7 +14,7 @@ This standard is provided by the OMOP Common Data Model (CDM). The CDM, combined
 
 An overview of all the tables in the CDM is provided in Figure \@ref(fig:cdmDiagram).
 
-```{r cdmDiagram, fig.cap='Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.',echo=FALSE, out.width='100%'}
+```{r cdmDiagram, fig.cap="Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.",echo=FALSE, out.width="100%"}
 knitr::include_graphics("images/CommonDataModel/cdmDiagram.png")
 ```
 ## Design Principles
@@ -24,19 +24,19 @@ The CDM is optimized for typical observational research purposes of
 * Identifying patient populations with certain healthcare interventions (drug exposure, procedures, healthcare policy changes etc.) and outcomes (conditions, procedures, other drug exposures etc.),
 * Characterization of these patient populations for various parameters like demographic information, disease natural history, healthcare delivery, utilization and cost, morbidities, treatments and sequence of treatment etc.,
 * Predicting the occurrence of these outcomes in individual patients - see chapter \@ref(PatientLevelPrediction),
-* Estimating the effect these interventions have a population  - see chapter \@ref(PopulationLevelEstimation),
+* Estimating the effect these interventions have a population - see chapter \@ref(PopulationLevelEstimation),
 
 To achieve this goal, the development of the CDM follows the following design elements:
  
 * **Suitability for purpose**: The CDM aims to provide data organized in a way optimal for analysis, rather than the operational needs of health care providers or payers. 
 * **Data protection**: All data that might jeopardize the identity and protection of patients, such as names, birthdays, addresses etc. are limited. Exceptions are possible where the research expressly requires more detailed information, such as more precise birth dates for the study of infants.
-* **Design of Domains**: Clinical Events are organized in Domains (see chapter \@ref(StandardizedVocabularies)), which are modeled in a person-centric relational data model with a separate table for each Domain. Domain tables all share Foreign Keys to the PERSON table for identifying patients and a date, and Domain-specific attributes only applicable to the Domain (e.g. DAYS_SUPPLY for the Drug Domain).  All other data can be preserved as an observation in the observation table in an entity-attribute-value structure.
+* **Design of Domains**: Clinical Events are organized in Domains (see chapter \@ref(StandardizedVocabularies)), which are modeled in a person-centric relational data model with a separate table for each Domain. Domain tables all share Foreign Keys to the PERSON table for identifying patients and a date, and Domain-specific attributes only applicable to the Domain (e.g. DAYS_SUPPLY for the Drug Domain). All other data can be preserved as an observation in the observation table in an entity-attribute-value structure.
 * **Standardized Vocabularies**: The content of all Domain table records is normalized through Concepts, which are common to all OMOP CDM instances the reference tables of the Standardized Vocabularies. With few exception, there is no verbatim content in the standardized content of these tables. 
 * **Maintaining source codes**: Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost.
 * **Technology neutrality**: The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or non-RDBS technology such as Hadoop or SAS.
 * **Scalability**: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations.
-* **Backwards compatibility**: Changes between CDM versions are made with backwards compatibility in mind, such that little information is lost that was present previously. This rule is not always possible to keep 100%, though. All versions are stored in the github repository [(https://github.com/OHDSI/CommonDataModel)](https://github.com/OHDSI/CommonDataModel).  
-  
+* **Backwards compatibility**: Changes between CDM versions are made with backwards compatibility in mind, such that little information is lost that was present previously. This rule is not always possible to keep 100%, though. All versions are stored in the github repository [(https://github.com/OHDSI/CommonDataModel)](https://github.com/OHDSI/CommonDataModel). 
+ 
 ## Data Model Conventions
 
 There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions.
@@ -57,44 +57,50 @@ The CDM is platform-independent. Data types are defined generically using ANSI S
 
 ### General conventions of Domains 
 
-One of the ways in which the CDM is standardized is by the use of Concept Domains. Domains refer to the nature of a clinical Event and define the event table or field in an event table where a data record should be stored. This idea is covered fully in chapter \@ref(StandardizedVocabularies) but it is important to the understanding of the data model that we touch on them here. All standard concepts in the OMOP vocabularies are organized into 30 domains, as shown in table \@ref(tab:domains). Domains, like concepts, are a major reason why every researcher who uses the OMOP CDM is considered to be "speaking the same language". Once source codes from a native database are mapped to standard concepts (see section \@ref(concepts-sources)) the concepts themselves dictate which table they belong in by use of domains. In this way, a researcher using the CDM always knows where a record should be located rather than having to guess.
+Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \@ref(concepts-sources)). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION_CONCEPT_ID of the CONDITION_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an OMOP CDM, these records are found in the DRUG_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \@ref(tab:domains). 
 
 Table: (\#tab:domains) Number of standard concepts belonging to each domain.
 
 Concept Count|Domain_Id
 ----------------|--------------------------------
-1731378	| Drug
-477597	| Device
-257000	| Procedure
-163807	| Condition
-145898	| Observation
-89645	| Measurement
-33759	| Spec Anatomic Site
-17302	| Meas Value
-1799	| Specimen
-1215	| Provider Specialty
-1046	| Unit
-944	| Metadata
-538	| Revenue Code
-336	| Type Concept
-194	| Relationship
-183	| Route
-180	| Currency
-158	| Payer
-123	| Visit
-51	| Cost
-50	| Race
-13	| Plan Stop Reason
-11	| Plan
-6	| Episode
-6	| Sponsor
-5	| Meas Value Operator
-3	| Spec Disease Status
-2	| Gender
-2	| Ethnicity
-1	| Observation Type
+1731378	|Drug
+477597	|Device
+257000	|Procedure
+163807	|Condition
+145898	|Observation
+89645	|Measurement
+33759	|Spec Anatomic Site
+17302	|Meas Value
+1799	|Specimen
+1215	|Provider Specialty
+1046	|Unit
+944	|Metadata
+538	|Revenue Code
+336	|Type Concept
+194	|Relationship
+183	|Route
+180	|Currency
+158	|Payer
+123	|Visit
+51	|Cost
+50	|Race
+13	|Plan Stop Reason
+11	|Plan
+6	|Episode
+6	|Sponsor
+5	|Meas Value Operator
+3	|Spec Disease Status
+2	|Gender
+2	|Ethnicity
+1	|Observation Type
 
-### General conventions of fields 
+### Representation of content through Concepts 
+
+In CDM data tables the content of each record is fully normalized and represented through Concepts. Concepts are stored in Event tables with their CONCEPT_ID values, which are foreign keys to the CONCEPT table, which serves as the general reference table. All OMOP CDM instances use the same CONCEPT table as a reference of  the Concepts, which together with the Common Data Model is a key mechanism of interoperability and the foundation of the OHDSI research network. If a Standard Concept does not exist or cannot be identified, the value of the CONCEPT_ID is set to 0, representing a non-existing concept, an unknown or un-mappable value.
+
+Records in the CONCEPT table contain detailed information about each concept (name, domain, class etc.). Concepts, Concept Relationships, Concept Ancestors and other information relating to Concepts is contained in the tables of the Standardized Vocabularies (see chapter \@ref(StandardizedVocabularies)).
+
+### General naming conventions of fields
 
 Variable names across all tables follow one convention:
 
@@ -102,54 +108,48 @@ Table: (\#tab:fieldConventions) Field name conventions.
 
 |Notation|Description|
 |:------------------------------|:-------------------------------------------------------|
-|[entity]_id|Unique identifiers for key entities, which can serve as foreign keys to establish relationships across entities. For example, person_id uniquely identifies each individual. visit_occurrence_id uniquely identifies a PERSON encounter at a point of care.|
-|[entity]_source_value|Verbatim information from the source data, typically used in ETL to map to concept_id, and not to be used by any standard analytics. For example, condition_source_value = '787.02' was the ICD-9 code captured as a diagnosis from the administrative claim.|
-|[entity]_concept_id|Foreign key into the Standardized Vocabularies (i.e. the standard concept attribute for the corresponding term is true), which serves as the primary basis for all standardized analytics. For example, condition_concept_id = [31967](http://athena.ohdsi.org/search-terms/terms/31967) contains the reference value for the SNOMED concept of "Nausea".|
-|[entity]_source_concept_id|Foreign key into the Standardized Vocabularies representing the concept and terminology used in the source data, when applicable. For example, condition_source_concept_id = [45431665](http://athena.ohdsi.org/search-terms/terms/45431665) denotes the concept of "Nausea" in the Read terminology; the analogous condition_concept_id is [31967](http://athena.ohdsi.org/search-terms/terms/31967), since SNOMED-CT is the Standardized Vocabulary for most clinical diagnoses and findings.|
-|[entity]_type_concept_id|Delineates the origin of the source information, standardized within the Standardized Vocabularies. For example, drug_type_concept_id can allow analysts to discriminate between "Pharmacy dispensing" and "Prescription written"|
+|[Event]_ID|Unique identifier for each record, which serves as a foreign keys establishing relationships across Event tables. For example, PERSON_ID	uniquely identifies each individual. VISIT_OCCURRENCE_ID uniquely identifies a Visit.|
+|[Event]_CONCEPT_ID|Foreign key to a Standard Concept record in the CONCEPT reference table. This is the main representation of the Event, serving as the primary basis for all standardized analytics. For example, CONDITION_CONCEPT_ID = [31967](http://athena.ohdsi.org/search-terms/terms/31967) contains the reference value for the SNOMED concept of "Nausea".|
+|[Event]_SOURCE_CONCEPT_ID|Foreign key to a record in the CONCEPT reference table. This Concept is the equivalent of the Source Value (below), and it may happen to be a Standard Concept, at which point it would be identical to the [Event]_CONCEPT_ID, or another non-standard concept. For example, CONDITION_SOURCE_CONCEPT_ID = [45431665](http://athena.ohdsi.org/search-terms/terms/45431665) denotes the concept of "Nausea" in the Read terminology, and the analogous CONDITION_CONCEPT_ID is the Standard SNOMED-CT Concept [31967](http://athena.ohdsi.org/search-terms/terms/31967). The use of Source Concepts for standard analytics applications is discouraged since only Standard Concepts represent the semantic content of an Event in a unambiguous way and therefore Source Concepts are not interoperable.|
+|[Event]_TYPE_CONCEPT_ID|Foreign key to a record in the CONCEPT reference table, representing the origin of the source information, standardized within the Standardized Vocabularies. Note that despite the field name this is not a type of an Event, or type of a Concept, but declares the capture mechanism that created this record. For example, DRUG_TYPE_CONCEPT_ID discriminates if a Drug record was derived from a dispensing Event in the pharmacy ("Pharmacy dispensing") or from an e-prescribing application ("Prescription written")|
+|[Event]_SOURCE_VALUE|Verbatim code or free text string reflecting how this Event was represented in the source data. Its use is discouraged for standard analytics applications, as these Source Values are not harmonized across data sources. For example, CONDITION_SOURCE_VALUE might contain a record of "78702", corresponding to ICD-9 code 787.02 written in a notation omitting the dot.|
 
-### Representation of content through Concepts 
-
-In CDM data tables the content of each record is represented using Concepts. Concepts are stored in event tables with their concept IDs as foreign keys to the CONCEPT table, which contains concepts necessary to describe the healthcare experience of a patient. If a Standard Concept does not exist or cannot be identified, the  concept ID 0 is used, representing a non-existing concept or un-mappable source value.
-
-Records in the CONCEPT table contain detailed information about each concept (name, domain, class etc.). Concepts, Concept Relationships, Concept Ancestors and other information relating to Concepts is contained in the tables of the Standardized Vocabularies.
-
-### Difference between Concept IDs and Source Values{#concepts-sources}
+### Difference between Concepts and Source Values{#concepts-sources}
 
 Many tables contain equivalent information in multiple places: As a Source Value, a Source Concept and as a Standard Concept.
 
-* **Source Values** contain the codes from public code systems such as ICD-9-CM, NDC, CPT-4, READ etc. or locally controlled vocabularies (such as F for female and M for male) copied from the source data. Source Values are stored in the [entity]_source_value fields in the data tables.
-* **Concepts** are CDM-specific entities that represent the meaning of a clinical fact. Most concepts are based on code systems used in healthcare (called Source Concepts), while others were created de-novo (concept_code = "OMOP generated"). Concepts have unique IDs across all domains. 
-* **Source Concepts** are the concepts that represent the code used in the source. Source Concepts are only used for common healthcare code systems, not for OMOP-generated Concepts. Source Concepts are stored in the [entity]_source_concept_id field in the data tables.
-* **Standard Concepts** are those concepts that are used to define the unique meaning of a clinical entity. For each entity there is one Standard Concept. Standard Concepts are typically drawn from existing public vocabulary sources. Concepts that have the equivalent meaning to a Standard Concept are mapped to the Standard Concept. Standard Concepts are referred to in the [entity]_concept_id field of the data tables. 
+* **Source Values** are the original representation of an Event record in the source data. They can be codes from widely used coding systems, which are often public domain, such as ICD9CM, NDC or Read, proprietary coding systems like CPT4, GPI or MedDRA, or controlled vocabularies used only in the source data, such as F for female and M for male. They can also be short free text phrases that are not standardized and cotrolled. Source Values are stored in the [Event]_SOURCE_VALUE fields in the data tables.
+* **Concepts** are CDM-specific entities that normalize the meaning of a clinical fact. Most Concepts are based on existing public or proprietary coding systems in healthcare, while others were created de-novo (CONCEPT_CODE starts with "OMOP"). Concepts have unique IDs across all domains. 
+* **Source Concepts** are the Concepts that represent the code used in the source. Source Concepts are only used for existing public or proprietary coding systems, not for OMOP-generated Concepts. Source Concepts are stored in the [Event]_SOURCE_CONCEPT_ID field in the data tables.
+* **Standard Concepts** are those Concepts that are used to define the meaning of a clinical entity uniquely across all databases and independent from the codinng system used in the sources. Standard Concepts are typically drawn from existing public or proprietary vocabulary sources. Non-standard Concepts that have the equivalent meaning to a Standard Concept have a mapping to the Standard Concept in the Standardized Vocabularies. Standard Concepts are referred to in the [Event]_CONCEPT_ID field of the data tables. 
 
-Source Values are only provided for convenience and quality assurance (QA) purposes. Source Values and Source Concepts are optional, while **Standard Concepts are mandatory**. Source Values may contain information that is only meaningful in the context of a specific data source. This mandatory use of Standard Concepts is what allows all OHDSI collaborators to speak the same language. For example, let's look at the condition "Pulmonary Tuberculosis" (TB). Figure \@ref(fig:pulmTubICD9) shows that the ICD9CM code for TB is 011. 
+Source Values are only provided for convenience and quality assurance (QA) purposes. They may contain information that is only meaningful in the context of a specific data source. The use of Source Values and Source Concepts is optional, even though **strongly recommended** if the source data make use of coding systems. Standard Concepts **are mandatory** however. This mandatory use of Standard Concepts is what allows all OMOP CDM instances to speak the same language. For example, the condition "Pulmonary Tuberculosis" (TB, Figure \@ref(fig:pulmTubICD9)) shows that the ICD9CM code for TB is 011. 
 
-```{r pulmTubICD9, fig.cap='ICD9CM code for Pulmonary Tuberculosis',echo=FALSE, out.width='75%', fig.align='center'}
+```{r pulmTubICD9, fig.cap="ICD9CM code for Pulmonary Tuberculosis",echo=FALSE, out.width="75%", fig.align="center"}
 knitr::include_graphics("images/CommonDataModel/pulmTubICD9.png")
 ```
 
-Without the use of a standard way to represent TB the code 011 could be interpreted as "Hospital Inpatient (Including Medicare Part A)" in the UB04 vocabulary, or as "Nervous System Neoplasms without Complications, Comorbidities" in the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The Concept ID that represents the 011 ICD9CM code is [44828631](http://athena.ohdsi.org/search-terms/terms/44828631). This differentiates the ICD9CM from the UBO4 and from the DRG. The Standard Concept that ICD9CM code maps to is [253954](http://athena.ohdsi.org/search-terms/terms/253954) as shown in figure \@ref(fig:pulmTubMap) by the relationship "Non-standard to Standard map (OMOP)". This same mapping relationship exists between Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes. 
+Without context, the code 011 could be interpreted as "Hospital Inpatient (Including Medicare Part A)" from the UB04 vocabulary, or as "Nervous System Neoplasms without Complications, Comorbidities" from the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The CONCEPT_ID value that represents the 011 ICD9CM code is [44828631](http://athena.ohdsi.org/search-terms/terms/44828631). This differentiates the ICD9CM from the UBO4 and DRG. The ICD9CM TB Source Concept maps to Standard Concept [253954](http://athena.ohdsi.org/search-terms/terms/253954) from the SNOMED vocabulary through the relationship "Non-standard to Standard map (OMOP)" as shown in figure \@ref(fig:pulmTubMap). This same mapping relationships exists for Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes. 
 
-```{r pulmTubMap, fig.cap='SNOMED code for Pulmonary Tuberculosis',echo=FALSE, out.width='100%'}
+```{r pulmTubMap, fig.cap="sNOMED code for Pulmonary Tuberculosis",echo=FALSE, out.width="100%"}
 knitr::include_graphics("images/CommonDataModel/pulmTubMap.png")
 ```
 
-An example of how the standard concept-source code relationship is depicted in the tables is shown in Table \@ref(tab:conditionOccurrence).
+An example of how the Standard Concept to Source Concept relationship is depicted is shown in Table \@ref(tab:conditionOccurrence).
 
 ## OMOP CDM Standardized Tables
 
-The OMOP CDM contains 16 Clinical data tables, 10 Vocabulary tables, 2 Metadata tables, 4 Health System data tables, 2 Health Economics data tables, 3 standardized derived elements, and 2 results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl].
+The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl].
 
 [^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki
 
-To illustrate how these tables are used in practice the data of one person will be used as a common thread throughout the rest of the chapter. While part of the CDM the Vocabulary tables are not covered here, rather, they are detailed in depth in Chapter \@ref(StandardizedVocabularies).
+To illustrate how these tables are used in practice, the data of one person will be used as a common thread throughout the rest of the chapter. 
 
 ### Running Example: Endometriosis 
 
-Endometriosis is a painful condition whereby cells normally found in the lining of a woman's uterus occur elsewhere in the body. Severe cases can lead to infertility, bowel, and bladder problems. The following sections will detail one patient's experience with this disease and how her clinical experience might be represented in the Common Data Model. 
+Endometriosis is a painful condition whereby cells normally found in the lining of a woman's uterus occur elsewhere in the body. Severe cases can lead to infertility, bowel, and bladder problems. The following sections will detail one patient's experience with this disease and how it might be represented in the Common Data Model. 
 
-```{r Lauren1, echo=FALSE, out.width='50%', fig.align='center'}
+```{r Lauren1, echo=FALSE, out.width="50%", fig.align="center"}
 knitr::include_graphics("images/CommonDataModel/Lauren.jpg")
 ```
 
@@ -159,52 +159,50 @@ Lauren had been experiencing endometriosis symptoms for many year; however, it t
 
 ### PERSON table{#person}
 
-As the Common Data Model is a person-centric model (see section \@ref(model-conv)) let's start with how she would be represented in the PERSON table. 
-
 **What do we know about Lauren?** 
 
 * She is a 36-year-old woman
 * Her birthday is 12-March-1982
 * She is white
-* She is english
+* She is English
 
 With that in mind, her PERSON table might look something like this: 
 
 Table: (\#tab:person) The PERSON table.
 
-Column name | Value | Explanation
+Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|person_id|1|person_id should be an integer, either directly from the source or generated as part of the build process. |
-|gender_concept_id|8532|The concept ID referring to female gender is [8532](http://athena.ohdsi.org/search-terms/terms/8532). |
-|year_of_birth |1982| |
-|month_of_birth|3| |
-|day_of_birth|12| |
-|birth_datetime|1982-03-12 00:00:00 |When the time is not known midnight is used.|
-|death_datetime| | |
-|race_concept_id|8527| The concept ID referring to white race is [8527](http://athena.ohdsi.org/search-terms/terms/8527).|
-|ethnicity_concept_ id|38003564|Typically hispanic status is stored for ethnicity. The concept ID [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic". |
-|location_id|| Her address is not known.|
-|provider_id|| Her primary care provider is not known.|
-|care_site_id | | Her primary care site is not known.|
-|person_source_value|1 |Typically this would be her identifier in the source data, though often is it the same as the person_id.|
-|gender_source_value|F| The gender value as it appears in the source is stored here.|
-|gender_source_ concept_id|0|If the gender value in the source was coded using a vocabulary recognized by OHDSI, that concept ID would go here. For example, if her gender was "Sex-F" in the source and it was stated to be in the PCORNet vocabulary concept ID [44814665](http://athena.ohdsi.org/search-terms/terms/44814665) would go in this field. |
-|race_source_value|white| The race value as it appears in the source is stored here.|
-|race_source_concept_ id|0|Same principle as gender_source_concept_id. |
-|ethnicity_source_ value|english|The ethnicity value as it appears in the source is stored here. |
-|ethnicity_source_ concept_id|0|Same principle as gender_source_concept_id. |
+|PERSON_ID|1|The PERSON_ID should be an integer, either directly from the source or generated as part of the build process.|
+|GENDER_CONCEPT_ID|8532|The concept ID referring to female gender is [8532](http://athena.ohdsi.org/search-terms/terms/8532).|
+|YEAR_OF_BIRTH|1982||
+|MONTH_OF_BIRTH|3||
+|DAY_OF_BIRTH|12||
+|BIRTH_DATETIME|1982-03-12 00:00:00|When the time is not known midnight is used.|
+|DEATH_DATETIME|||
+|RACE_CONCEPT_ID|8527|The concept ID referring to white race is [8527](http://athena.ohdsi.org/search-terms/terms/8527). English ethnicity is [4093769](http://athena.ohdsi.org/search-terms/terms/4093769). Either one is correct, the latter will roll up to the former. Notice that enthnicities are stored here as part of Races, not in the ETHNICITY_CONCEPT_ID|
+|ETHNICITY_CONCEPT_ID|38003564|This is a US-typical notation to distingish Hispanics from the rest. Ethnicities, in this case English, is stored in the RACE_CONCEPT_ID. Outside the US this is not used. [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
+|LOCATION_ID||Her address is not known.|
+|PROVIDER_ID||Her primary care Provider is not known.|
+|CARE_SITE||Her primary Care Site is not known.|
+|PERSON_SOURCE_VALUE|1|Typically this would be her identifier in the source data, though often it is the same as the PERSON_ID.|
+|GENDER_SOURCE_VALUE|F|The gender value as it appears in the source is stored here.|
+|GENDER_SOURCE_ CONCEPT_ID|0|If the gender value in the source was coded using a coding scheme supported by OHDSI that Concept would go here. For example, if her gender was "sex-F" in the source and it was stated to be in the PCORNet vocabulary concept [44814665](http://athena.ohdsi.org/search-terms/terms/44814665) would go in this field.|
+|RACE_SOURCE_VALUE|white|The race value as it appears in the source is stored here.|
+|RACE_SOURCE_CONCEPT_ID|0|Same principle as GENDER_CONCEPT_ID.|
+|ETHNICITY_SOURCE_VALUE|english|The ethnicity value as it appears in the source is stored here.|
+|ETHNICITY_SOURCE_ CONCEPT_ID|0|Same principle as GENDER_SOURCE_CONCEPT_ID.|
 
 ### OBSERVATION_PERIOD table{#observationPeriod}
 
-The OBSERVATION_PERIOD table is designed to define the amount of time for which a patient's clinical events are recorded in the source system. For US healthcare insurance claims this is typically the enrollment period of the patient. When working with data from electronic health records (EHR) often the first record in the system is considered the observation_period_start_date and the latest record is considered the observation_period_end_date with the understanding that only the clinical events that happened within that particular system were recorded. 
+The OBSERVATION_PERIOD table is designed to define the amount of time for which at least a patient's demographics, conditions, procedures and drugs are recorded in the source system with the expection of a reasonable sensitivity and specificity. For insurance data this is typically the enrollment period of the patient. It's trickier in electronic health records (EHR), as most healthcare systems do not determine which healthcare institution or provider is visited. As a next best solution, often the first record in the system is considered the Start Date of the Observation Period and the latest record is considered the End Date.
 
-**How can we determine Lauren's observation period?**
+**How is Lauren's Observation Period defined?**
 
-Lauren's information as shown in Table \@ref(tab:encounters) is most similar to EHR data in that we only have records of her encounters from which to determine her observation period.
+Let's say Lauren's information as shown in Table \@ref(tab:encounters) is recorded like in an EHR system. Her encounters from which the Observation Period was derived are:
 
 Table: (\#tab:encounters) Lauren's healthcare encounters.
 
-Encounter ID | Start date | Stop date | Type |
+Encounter ID|Start date|Stop date|Type|
 :--------|:-----|:------|:-----------
 |70|2010-01-06|2010-01-06|outpatient|
 |80|2011-01-06|2011-01-06|outpatient|
@@ -217,46 +215,45 @@ Based on the encounter records her OBSERVATION_PERIOD table might look something
 
 Table: (\#tab:observationPeriod) The OBSERVATION_PERIOD table.
 
-Column name | Value | Explanation
+Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|observation_period_ id| 1| This is typically an autogenerated field that creates a unique ID number for each record in the table.|
-|person_id|1|This comes from the PERSON table and links PERSON and OBSERVATION_PERIOD.|
-|observation_period_ start_date|2010-01-06|This is the start date of her earliest encounter on record.|
-|observation_period_ end_date|2013-01-24|This is the end date of her latest encounter on record.|
-|period_type_ concept_id|44814725|The best option in the Vocabulary with the concept class "Obs Period Type" is [44814724](http://athena.ohdsi.org/search-terms/terms/44814724), which stands for "Period covering healthcare encounters".|
+|OBSERVATION_PERIOD_ID|1|This is typically an autogenerated value creating a unique identifier for each record in the table.|
+|PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to OBSERVATION_PERIOD table.|
+|OBSERVATION_PERIOD_START_DATE|2010-01-06|This is the start date of her earliest encounter on record.|
+|OBSERVATION_PERIOD_END_DATE|2013-01-24|This is the end date of her latest encounter on record.|
+|PERIOD_TYPE_CONCEPT_ID|44814725|The best option in the Vocabulary with the concept class "Obs Period Type" is [44814724](http://athena.ohdsi.org/search-terms/terms/44814724), which stands for "Period covering healthcare encounters".|
 
 ### VISIT_OCCURRENCE{#visitOccurrence}
 
-The VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as visits and are considered to be discreet events. There are 12 categories of visits though the most common are inpatient, outpatient, emergency and long term care. 
+the VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discreet events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits. 
 
-**How do we represent Lauren's encounters as visits?**
-
+**How are Lauren's encounters represented as Visits?**
 
 As an example let's represent the inpatient encounter in Table \@ref(tab:encounters) as a record in the VISIT_OCCURRENCE table.
 
-Table: (\#tab:visitOccurrence) The VISIT_OCCURRENCE table.
+Table: (\#tab:visitOccurrence) the VISIT_OCCURRENCE table.
 
-Column name | Value | Explanation
+Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|visit_occurrence_id|514 |This is typically an autogenerated field that creates a unique ID number for each visit on the person's record in the converted CDM database.|
-|person_id|1|This comes from the PERSON table and links PERSON and VISIT_OCCURRENCE.|
-|visit_concept_id|9201|The concept ID referring to an inpatient visit is [9201](http://athena.ohdsi.org/search-terms/terms/9201). |
-|visit_start_date|2013-01-17|The start date of the visit.|
-|visit_start_datetime|2013-01-17 00:00:00|The date and time of the visit started. When time is unknown midnight is used. |
-|visit_end_date|2013-01-24|The end date of the visit. If this is a one-day visit the end date should match the start date.|
-|visit_end_datetime|2013-01-24 00:00:00 | The date and time of the visit end. If time is unknown midnight is used.|
-|visit_type_concept_ id|32034|This column is intended to provide information about the provenance of the visit record, i.e. does it come from an insurance claim, hospital billing record, EHR record, etc. For this example the concept ID [32035](http://athena.ohdsi.org/search-terms/terms/32035) ("Visit derived from EHR encounter record") is used as the encounters are similar to electronic health records |
-|provider_id*|NULL |If the encounter record has a provider associated, the ID for that provider goes in this field. This should be the provider_id from the PROVIDER table that represents the provider on the encounter.|
-|care_site_id|NULL|If the encounter record has a care site associated, the ID for that care site goes in this field. This should be the care_site_id from the CARE_SITE table that codes for the care site on the encounter. |
-|visit_source_value|inpatient |The visit value as it appears in the source goes here. In this context "visit" means outpatient, inpatient, emergency, etc.|
-|visit_source_ concept_id| 0|If the visit value from the source is coded using a vocabulary that is recognized by OHDSI, the concept ID that represents the visit source value would go here. |
-|admitted_from_ concept_id|0	|If known, this is the concept ID that represents where the patient was admitted from. This concept should have the concept class "Place of Service" and the domain "Visit". For example, if a patient was admitted to the hospital from home, the concept ID would be [8536](http://athena.ohdsi.org/search-terms/terms/8536) ("Home"). |
-|admitted_from_ source_ value|	NULL|	This is the value from the source that represents where the patient was admitted from. Using the above example, this would be "home".|
-|discharge_to_ concept_id|0	|If known, this is the concept ID that represents where the patient was discharged to. This concept should have the concept class "Place of Service" and the domain "Visit". For example, if a patient was released to an assisted living facility, the concept ID would be [8615](http://athena.ohdsi.org/search-terms/terms/8615) ("Assisted Living Facility"). |
-|discharge_to_source_ value|	0|	This is the value from the source that represents where the patient was discharged to. Using the above example, this would be "assisted living facility".|
-|preceding_visit_ occurrence_id|	NULL|The visit_occurrence_id for the visit immediately preceding the current one in time for the patient.|
+|VISIT_OCCURRENCE_ID|514|This is typically an autogenerated value creating a unique identifier for each record.|
+|PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to VISIT_OCCURRENCE.|
+|VISIT_CONCEPT_ID|9201|A foreign key referring to an Inpatient Visit is [9201](http://athena.ohdsi.org/search-terms/terms/9201).|
+|VISIT_START_DATE|2013-01-17|The start date of the Visit.|
+|VISIT_START_DATETIME|2013-01-17 00:00:00|The date and time of the Visit. The time is unknown, so midnight is used.|
+|VISIT_END_DATE|2013-01-24|The end date of the Visit. If this is a one-day Visit the end date should match the start date.|
+|VISIT_END_DATETIME|2013-01-24 00:00:00|The date and time of the Visit end. The time is unknown, so midnight is used.|
+|VISIT_TYPE_CONCEPT_ID|32034|This provides information about the provenance of the Visit record, i.e. does it come from an insurance claim, hospital billing, EHR record, etc. For this example the concept ID [32035](http://athena.ohdsi.org/search-terms/terms/32035) ("Visit derived from EHR encounter record") is used as the encounters are similar to Electronic Health Records|
+|PROVIDER_ID*|NULL|If the encounter record has a provider associated the ID for that provider goes into this field. This should be the content of the PROVIDER_ID field from the PROVIDER table.|
+|CARE_SITE_ID|NULL|If the encounter record has a Care Site associated, the ID for that Care Site goes into this field. This should be the CARE_SITE_ID from the CARE_SITE table.|
+|VISIT_SOURCE_ VALUE|inpatient|The Visit value as it appears in the source goes here. Lauren's data do not have that.|
+|VISIT_SOURCE_ CONCEPT_ID|0|If the Visit value from the source is coded using a vocabulary that is recognized by OHDSI the CONCEPT_ID value representing the source code would be found here. Lauren's data do not have that.|
+|ADMITTED_FROM_ CONCEPT_ID|0|If known, this is contains a Concept representing where the patient was admitted from. This concept should have the domain "Visit". For example, if the patient were admitted to the hospital from home it would contain [8536](http://athena.ohdsi.org/search-terms/terms/8536) ("Home").|
+|ADMITTED_FROM_ SOURCE_CONCEPT_ID|NULL|This is the value from the source that represents where the patient was admitted from. Using the above example, this would be "home".|
+|DISCHARGE_TO_ CONCEPT_ID|0|If known, this refers to a Concept representing where the patient was discharged to. This concept should have domain "Visit". For example, if a patient was released to an assisted living facility, the concept ID would be [8615](http://athena.ohdsi.org/search-terms/terms/8615) ("Assisted Living Facility").|
+|DISCHARGE_TO_ SOURCE_VALUE|0|This is the value from the source that represents where the patient was discharged to. Using the above example, this would be "Assisted living facility".|
+|PRECEDING_VISIT_ OCCURRENCE_ID|NULL|This denotes the Visit immediately preceding the current one. In contrast to ADMITTED_FROM_CONCEPT_ID this links to the actual Visit Occurrence record rather than a Visit Concept. Also, note there is no record for the following Visit Occurrence, Visit Occurrences are only linked through this field.|
 
-* A patient may interact with multiple health care providers during one visit, as is often the case with inpatient stays. These interactions can be recorded in the VISIT_DETAIL table. While not covered in depth in this chapter, you can read more about the VISIT_DETAIL table in the [CDM wiki](https://github.com/OHDSI/CommonDataModel/wiki/VISIT_DETAIL).
+* A patient may interact with multiple health care Providers during one visit, as is often the case with inpatient stays. These interactions can be recorded in the VISIT_DETAIL table. While not covered in depth in this chapter, you can read more about the VISIT_DETAIL table in the [CDM wiki](https://github.com/OHDSI/CommonDataModel/wiki/VISIT_DETAIL).
 
 ### CONDITION_OCCURRENCE{#conditionOccurrence}
 
@@ -272,91 +269,88 @@ The SNOMED code for painful menstruation cramps, otherwise known as dysmenorrhea
 
 Table: (\#tab:conditionOccurrence) The CONDITION_OCCURRENCE table.
 
-Column name | Value | Explanation
+Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-| condition_ occurrence_id        | 964| This is typically an autogenerated field that creates a unique ID number for each condition on the person's record in the converted CDM database. |
-| person_id                      | 1|This comes from the PERSON table and links PERSON and CONDITION_OCCURRENCE.                                                                 |
-| condition_concept_id           |194696 | The concept ID that represents the SNOMED code 266599000 is [194696](http://athena.ohdsi.org/search-terms/terms/194696).                                                                                                           |
-| condition_start_date           | 2010-01-06| The date when the instance of the Condition is recorded.                                                                                                                                                         |
-| condition_start_ datetime       | 2010-01-06 00:00:00    | The date and time when the instance of the Condition is recorded. Midnight is used when the time is unknown                                                                                     |
-| condition_end_date             | NULL| If known, this is the date when the instance of the Condition is considered to have ended.                                                                                                                                         |
-| condition_end_ datetime         | NULL| If known, this is the date and time when the instance of the Condition is considered to have ended.                                                                                                                                         |
-| condition_type_ concept_id      | 32020| This column is intended to provide information about the provenance of the condition, i.e. does it come from an insurance claim, hospital billing record, EHR record, etc. For this example the concept ID [32020](http://athena.ohdsi.org/search-terms/terms/32020) ("EHR encounter diagnosis") is used as the encounters are similar to electronic health records. Concept IDs in this field should be in the "Condition Type" vocabulary.|
-| condition_status_ concept_id    | 0| If known, the this represents when and/or how the condition was diagnosed. For example, a condition could be an admitting diagnosis, in which case the concept ID [4203942](http://athena.ohdsi.org/search-terms/terms/4203942) would be used.|
-| stop_reason                    | NULL| If known, the reason that the Condition was no longer present, as indicated in the source data.                                                                                                                            |
-| provider_id                    | NULL| If the condition record has a diagnosing provider listed, the ID for that provider goes in this field. This should be the provider_id from the PROVIDER table that represents the provider on the encounter.|
-| visit_occurrence_id            | 509 | If known, this is the visit (represented as visit_occurrence_id taken from the VISIT_OCCURRENCE table) during which the condition was diagnosed.                                                                                                  |
-| visit_detail_id                | NULL | If known, this is the visit detail encounter (represented as VISIT_DETAIL_ID from the VISIT_DETAIL table) during which the condition was diagnosed.  																								   |
-| condition_source_ value         | 266599000| This is the value from the source that represents the condition. In Lauren's case of dysmenorrhea the SNOMED code for that condition is stored here and the standard concept ID mapped from that code is stored in condition_concept_id.  |
-| condition_source_ concept_id    | 194696 | If the condition value from the source is coded using a vocabulary that is recognized by OHDSI, the concept ID that represents that value would go here. In the example of dysmennorhea the source value is a SNOMED code so the concept ID that represents that code is 194696. In this case it is the same as the condition_concept_id since the SNOMED vocabulary is the standard condition vocabulary.                                                                                                                         |
-| condition_status_ source_ value  | 0| If the condition status value from the source is coded using a vocabulary that is recognized by OHDSI, the concept ID that represents that source value would go here.  |
+|CONDITION_OCCURRENCE_ID|964|This is typically an autogenerated value creating a unique identifier for each record.|
+|PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to CONDITION_OCCURRENCE.|
+|CONDITION_CONCEPT_ID|194696|A foreign key referring to the SNOMED code 266599000: [194696](http://athena.ohdsi.org/search-terms/terms/194696).|
+|CONDITION_START_DATE|2010-01-06|The date when the instance of the Condition is recorded.|
+|CONDITION_START_ DATETIME|2010-01-06 00:00:00|The date and time when the instance of the Condition is recorded. Midnight is used since the time is unknown.|
+|CONDITION_END_ DATE|NULL|This is the date when the instance of the Condition is considered to have ended, but this is rarely recorded.|
+|CONDITION_END_ DATETIME|NULL|If known, this is the date and time when the instance of the Condition is considered to have ended.|
+|CONDITION_TYPE_ CONCEPT_ID|32020|This column is intended to provide information about the provenance of the record, i.e. that it comes from an insurance claim, hospital billing record, EHR record, etc. For this example the concept [32020](http://athena.ohdsi.org/search-terms/terms/32020) ("EHR encounter diagnosis") is used as the encounters are similar to electronic health records. Concepts in this field should be in the "Condition Type" vocabulary.|
+|CONDITION_STATUS_ CONCEPT_ID|0|If known, the this tells the circumstance and . For example, a condition could be an admitting diagnosis, in which case the concept ID [4203942](http://athena.ohdsi.org/search-terms/terms/4203942) was used.|
+|STOP_REASON|NULL|If known, the reason that the Condition was no longer present, as indicated in the source data.|
+|PROVIDER_ID|NULL|If the condition record has a diagnosing provider listed, the ID for that provider goes in this field. This should be the provider_id from the PROVIDER table that represents the provider on the encounter.|
+|VISIT_OCCURRENCE_ID|509|The Visit (foreign key to the VISIT_OCCURRENCE_ID in the VISIT_OCCURRENCE table) during which the Condition was diagnosed.|
+|CONDITION_SOURCE_VALUE|266599000|This is the original source value representing the Condition. In Lauren's case of dysmenorrhea the SNOMED code for that Condition is stored here, while the Concept representing the code went to the CONDITION_SOURCE_CONCEPT_ID and the Standard Concept mapped from that is stored in the CONDITION_CONCEPT_ID field.|
+|CONDITION_SOURCE_ CONCEPT_ID|194696|If the condition value from the source is coded using a vocabulary that is recognized by OHDSI, the concept ID that represents that value would go here. In the example of dysmennorhea the source value is a SNOMED code so the Concept representing that code is 194696. In this case it has the same value as the CONDITION_CONCEPT_ID field.|
+|CONDITION_STATUS_ SOURCE_VALUE|0|If the Condition Status value from the source is coded using a coding scheme supported by OHDSI that concept would go here.|
 
 ### DRUG_EXPOSURE{#drugExposure}
 
-The DRUG_EXPOSURE table captures records about the utilization of a drug when ingested or otherwise introduced into the body. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Radiological devices ingested or applied locally do not count as Drugs.
+The DRUG_EXPOSURE table captures records about the intent or actual introduction of a drug into the body of the patient. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Drug exposures are inferred from clinical events associated with orders, prescriptions written, pharmacy dispensings, procedural administrations, and other patient-reported information. 
 
-Drug exposures are inferred from clinical events associated with orders, prescriptions written, pharmacy dispensings, procedural administrations, and other patient-reported information. 
+**How are Lauren's Drug Exposures represented?**
 
-**What are Lauren's drug exposures?**
-
-We know that Lauren was given 60 acetaminophen 325mg oral tablets for 30 days (NDC code 69842087651) at her visit on 2010-01-06 to help with her dysmenorrhea pain. Here's how that might look in the DRUG_EXPOSURE table: 
+To help with her dysmenorrhea pain, Lauren was given 60 oral tablets with 375 mg Acetaminophen (aka Paracetamol, e.g. sold in the US under NDC code 69842087651) each for 30 days at her Visit on 2010-01-06. Here's how that might look in the DRUG_EXPOSURE table: 
 
 Table: (\#tab:drugExposure) The DRUG_EXPOSURE table.
 
-Column name | Value | Explanation
+Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|drug_exposure_id				| 1001	| This is typically an autogenerated field that creates a unique ID number for each drug exposure on the person's record in the converted CDM database.|
-|person_id						| 1|This comes from the PERSON table and links PERSON and DRUG_EXPOSURE. |
-|drug_concept_id				|1127433	|The NDC code for acetaminophen maps to the RxNorm code 313782 which is represented by the concept ID [1127433](http://athena.ohdsi.org/search-terms/terms/1127433).                                                      |
-|drug_exposure_start_ date		|2010-01-06	|The start date of the drug exposure|
-|drug_exposure_start_ datetime	|2010-01-06	00:00:00|The start date and time of the drug exposure. Midnight is used when the time is not known. |
-|drug_exposure_end_ date			|2010-02-05|The end date of the drug exposure. Depending on different sources, it could be a known or an inferred date and denotes the last day at which the patient was still exposed to the drug. In this case the end is inferred since we know Lauren had a 30 days supply.                                                                                 |
-|drug_exposure_end_ datetime		|2010-02-05 00:00:00	|The end date and time of the drug exposure. Similar rules apply as to drug_exposure_end_date. Midnight is used when time is unknown                                                                       |
-|verbatim_end_date				|NULL		|If the source provides an end date rather than just days supply that date goes here.                                                                                                                  |
-|drug_type_concept_id			|38000177	| This column is intended to provide information about the provenance of the drug, i.e. does it come from an insurance claim, prescription record, etc. For this example the concept ID [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) ("Prescription written") is used as the drug record is from a written prescription. Concept IDs in this field should be in the "Drug Type" vocabulary.|
-|stop_reason					|NULL|The reason the drug was stopped. Reasons include regimen completed, changed, removed, etc.                                                                                       |
-|refills						|NULL	|The number of refills after the initial prescription. The initial prescription is not counted, values start with null. In the case of Lauren's acetaminophen she did not have any refills so the value is NULL.                                                          |
-|quantity 						|60		|The quantity of drug as recorded in the original prescription or dispensing record.                                                                                              |
-|days_supply					|30	|The number of days of supply of the medication as prescribed.                                             |
-|sig							|NULL|The directions ('signetur') on the Drug prescription as recorded in the original prescription (and printed on the container) or dispensing record.                              |
-|route_concept_id				|4132161	|This concept is meant to represent the route of the drug the patient was was exposed to. Lauren took her acetaminophen orally so the concept ID [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) ("Oral") is used.  |
-|lot_number						|NULL|An identifier assigned to a particular quantity or lot of drug product from the manufacturer.                                                                                     |
-|provider_id					|NULL|If the drug record has a prescribing provider listed, the ID for that provider goes in this field. This should be the PROVIDER_ID from the PROVIDER table that represents the provider on the encounter.|
-|visit_occurrence_id			|509 | If known, this is the visit (represented as visit_occurrence_id taken from the VISIT_OCCURRENCE table) during which the drug was prescribed.                                                                                                  |
-|visit_detail_id				|NULL|If known, this is the visit detail (represented as visit_detail_id taken from the VISIT_DETAIL table) during which the drug was prescribed.|
-|drug_source_value				|69842087651|This is the source code for the drug as it appears in the source data. In Lauren's case she was prescribed acetaminophen and the NDC code is stored here.|
-|drug_source_concept_ id			|750264|This is the concept ID that represents the drug source value. In this example the concept ID is [750264](http://athena.ohdsi.org/search-terms/terms/750264), the NDC code for "Acetaminophen 325 MG Oral Tablet". |
-|route_source_value				|NULL |The information about the route of administration as detailed in the source.|
-|dose_unit_source_ value			|NULL|The information about the dose unit as detailed in the source.|
+|DRUG_EXPOSURE_ID|1001|This is typically an autogenerated value creating a unique identifier for each record.|
+|PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to DRUG_EXPOSURE.|
+|DRUG_CONCEPT_ID|1127433|The Concept for the Drug product. The NDC code for acetaminophen maps to the RxNorm code 313782 which is represented by the Concept [1127433](http://athena.ohdsi.org/search-terms/terms/1127433).|
+|DRUG_EXPOSURE_START_DATE|2010-01-06|The start date of the exposure to the Drug.|
+|DRUG_EXPOSURE_ START_DATETIME|2010-01-06 00:00:00|The start date and time of the drug exposure. Midnight is used as the time is not known.|
+|DRUG_EXPOSURE_END_DATE|2010-02-05|The end date of the Drug Exposure. Depending on different sources, it could be a known or an inferred date and denotes the last day at which the patient was still exposed to the drug. In this case this date is inferred since we know Lauren had a 30 days supply.|
+|DRUG_EXPOSURE_ END_DATETIME|2010-02-05 00:00:00|The end date and time of the drug exposure. Similar rules apply as to DRUG_EXPOSURE_END_DATE. Midnight is used as time is unknown.|
+|VERBATIM_END_DATE|NULL|If the source recorded an explicit actual end date. The inferred end date banks on the assumption that the full range of days supply was utilized by the patient.|
+|DRUG_TYPE_CONCEPT_ID|38000177|This column is intended to provide information about the provenance of the record, i.e. does it come from an insurance claim, prescription record, etc. For this example the concept [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) ("Prescription written") is used.|
+|STOP_REASON|NULL|The reason the administration of the Drug was stopped. Reasons include regimen completed, changed, removed, etc. This information is very rarely captured.|
+|REFILLS|NULL|The number of automatic refills after the initial prescription that are part of the prescripion system in many countries. The initial prescription is not counted, values start with NULL. In the case of Lauren's acetaminophen she did not have any refills so the value is NULL.|
+|QUANTITY|60|The quantity of drug as recorded in the original prescription or dispensing record.|
+|DAYS_SUPPLY|30|The number of days of supply of the medication as prescribed.|
+|SIG|NULL|The directions ("signetur") on the Drug prescription as recorded in the original prescription or dispensing record (and printed on the container in the US drug prescription system). Signeturs are not yet standardized in the OMOP CDM, and provided verbatim.|
+|ROUTE_CONCEPT_ID|4132161|This concept is meant to represent the route of administration  of the Drug the patient was was exposed to. Lauren took her acetaminophen orally so the concept ID [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) ("Oral") is used.|
+|LOT_NUMBER|NULL|An identifier assigned to a particular quantity or lot of Drug product from the manufacturer. This information is rarely captured.|
+|PROVIDER_ID|NULL|If the drug record has a prescribing Provider listed, the ID for that Provider goes in this field. In that case this contains the PROVIDER_ID from the PROVIDER table.|
+|VISIT_OCCURRENCE_ID|509|A foreign key to the VISIT_OCCURRENCE table during which the Drug was prescribed.|
+|VISIT_DETAIL_ID|NULL|A foreign key to the VISIT_DETAIL table during which the Drug was prescribed.|
+|DRUG_SOURCE_VALUE|69842087651|This is the source code for the Drug as it appears in the source data. In Lauren's case the NDC code is stored here.|
+|DRUG_SOURCE_CONCEPT_ID|750264|This is the Concept that represents the drug source value. The Concept [750264](http://athena.ohdsi.org/search-terms/terms/750264) standing for the NDC code for "Acetaminophen 325 MG Oral Tablet".|
+|ROUTE_SOURCE_VALUE|NULL|The verbatim information about the route of administration as detailed in the source.|
 
 ### PROCEDURE_OCCURRENCE{#procedureOccurrence}
 
-The PROCEDURE_OCCURRENCE table contains records of activities or processes ordered by, or carried out by, a healthcare provider on the patient to have a diagnostic or therapeutic purpose. Procedures are present in various data sources in different forms with varying levels of standardization. For example:
+The PROCEDURE_OCCURRENCE table contains records of activities or processes ordered or carried out by a healthcare Provider on the patient with a diagnostic or therapeutic purpose. Procedures are present in various data sources in different forms with varying levels of standardization. For example:
 
-  * Medical Claims include procedure codes that are submitted as part of a claim for health services rendered, including procedures performed.
-  * Electronic Health Records that capture procedures as orders.
-  
+ * Medical Claims include procedure codes that are submitted as part of a claim for health services rendered, including procedures performed.
+ * Electronic Health Records that capture procedures as orders.
+ 
 **What procedures did Lauren have?**
-From her description we know she had a ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE_OCCURRENCE table:
+
+From her description we know she had an ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE_OCCURRENCE table:
 
 Table: (\#tab:procedureOccurrence) The PROCEDURE_OCCURRENCE table.
 
-Column name | Value | Explanation
+Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|procedure_ occurrence_id|1277|This is typically an autogenerated field that creates a unique ID number for each procedure occurrence on the person's record in the converted CDM database.|
-|person_id|1|This comes from the PERSON table and links PERSON and PROCEDURE_OCCURRENCE|
-|procedure_concept_id|4127451 |The SNOMED procedure code for a pelvic ultrasound is 304435002 which is represented by the concept ID [4127451](http://athena.ohdsi.org/search-terms/terms/4127451). |
-|procedure_date|2013-01-14|The date on which the procedure was performed.|
-|procedure_datetime|2013-01-14 00:00:00|The date and time on which the procedure was performed. Midnight is used when time is unknown.|
-|procedure_type_ concept_id|38000275 |This column is intended to provide information about the provenance of the procedure, i.e. does it come from an insurance claim, EHR order, etc. For this example the concept ID [38000275](http://athena.ohdsi.org/search-terms/terms/38000275) ("EHR order list entry") is used as the procedure record is from an EHR record. Concept IDs in this field should be in the "Procedure Type" vocabulary.|
-|modifier_concept_id|0|This is meant for a concept ID representing the modifier on the procedure. For example, if the record indicated that a CPT4 procedure was performed bilaterally then the concept ID [42739579](http://athena.ohdsi.org/search-terms/terms/42739579) ("Bilateral procedure") would be used. |
-|quantity|0|The quantity of procedures ordered or administered.|
-|provider_id|NULL|If the procedure record has a provider listed, the ID for that provider goes in this field. This should be the provider_id from the PROVIDER table that represents the provider on the encounter.|
-|visit_occurrence_id|740|If known, this is the visit (represented as visit_occurrence_id taken from the VISIT_OCCURRENCE table) during which the procedure was performed.|
-|visit_detail_id|NULL|If known, this is the visit detail (represented as visit_detail_id taken from the VISIT_DETAIL table) during which the procedure was performed.|
-|procedure_source_ value|304435002 |The source code for the procedure as it appears in the source data. This code is mapped to a standard procedure Concept in the Standardized Vocabularies and the original code is, stored here for reference.|
-|procedure_source_ concept_id| 4127451|This is the concept ID that represents the procedure source value.|
-|modifier_source_ value|NULL|The source code for the modifier as it appears in the source data.|
+|PROCEDURE_OCCURRENCE_ID|1277|This is typically an autogenerated value creating a unique identifier for each record.|
+|PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to PROCEDURE_OCCURRENCE|
+|PROCEDURE_CONCEPT_ID|4127451|The SNOMED procedure code for a pelvic ultrasound is 304435002 which is represented by Concept [4127451](http://athena.ohdsi.org/search-terms/terms/4127451).|
+|PROCEDURE_DATE|2013-01-14|The date on which the Procedure was performed.|
+|PROCEDURE_DATATIME|2013-01-14 00:00:00|The date and time on which the procedure was performed. Midnight is used as time is unknown.|
+|PROCEDURE_TYPE_ CONCEPT_ID|38000275|This column is intended to provide information about the provenance of the procedure record, i.e. does it come from an insurance claim, EHR order, etc. For this example the concept ID [38000275](http://athena.ohdsi.org/search-terms/terms/38000275) ("EHR order list entry") is used as the procedure record is from an EHR record.|
+|MODIFIER_CONCEPT_ID|0|This is meant for a concept ID representing the modifier on the procedure. For example, if the record indicated that a CPT4 procedure was performed bilaterally then the concept ID [42739579](http://athena.ohdsi.org/search-terms/terms/42739579) ("Bilateral procedure") would be used.|
+|QUANTITY|0|The quantity of Procedures ordered or administered. A missing Quantity, the numbers 0 and 1 all mean the same thing.|
+|PROVIDER_ID|NULL|If the Procedure record has a Provider listed, the ID for that Provider goes in this field. This should be a foreign key to the PROVIDER_ID from the PROVIDER table.|
+|VISIT_OCCURRENCE_ID|740|If known, this is the Visit (represented as VISIT_occurrence_id taken from the VISIT_OCCURRENCE table) during which the procedure was performed.|
+|VISIT_DETAIL_ID|NULL|If known, this is the Visit detail (represented as VISIT_detail_id taken from the VISIT_DETAIL table) during which the procedure was performed.|
+|PROCEDURE_SOURCE_VALUE|304435002|The code or information for the Procedure as it appears in the source data.|
+|PROCEDURE_SOURCE_ CONCEPT_ID|4127451|This is the Concept that represents the procedure source value.|
+|MODIFIER_SOURCE_VALUE|NULL|The source code for the modifier as it appears in the source data.|
 
 ## Additional Information
 
@@ -364,7 +358,7 @@ This chapter covers only a portion of the tables available in the OMOP CDM as ex
 
 ## Summary
 
-```{block2, type='rmdsummary'}
+```{block2, type="rmdsummary"}
 - The OMOP CDM is designed to support the conduct of research to identify and evaluate associations between interventions and outcomes
 
 - The OMOP CDM is a "person-centric" model
