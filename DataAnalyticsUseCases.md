@@ -27,37 +27,41 @@ The data can provide answers to questions like:
 - What is the incidence rate of pneumonia in patients over 65 years old?
 
 More specifically, if your question is:
-    - How many patients...?
-    - How often does...?
-    - What proportion ofpatients...?
-    - What is the distribution of values for lab...?
-    - What are the HbA1c levels for patients with...?
-    - What are the [lab values] for patients...?
-    - What is the median length of exposure for patients on....?
-    - What are the trends over time in...?
-    - What are other drugs that these patients are using?
-    - What are concomitant therapies?
-    - Do we have enough cases of...?
-    - Would it be feasible to study X...?
-    - What are the demographics of...?
-    - What are the risk factors of...? (if identifying a specific risk factor, maybe estimation, not prediction)
-    - What are the predictors of...?
-- And the desired output is:
-    - Count or percentage
-    - Averages
-    - Descriptive statistics
-    - Incidence rate
-    - Prevalence
-    - Cohort
-    - Rule-based phenotype
-    - Drug utilization
-    - Disease natural history
-    - Adherence
-    - Comorbidity profile
-    - Treatment pathways
-    - Line of therapy
-- Then you’re probably asking for:
-    - **Clinical characterization**
+
+- How many patients...?
+- How often does...?
+- What proportion ofpatients...?
+- What is the distribution of values for lab...?
+- What are the HbA1c levels for patients with...?
+- What are the [lab values] for patients...?
+- What is the median length of exposure for patients on....?
+- What are the trends over time in...?
+- What are other drugs that these patients are using?
+- What are concomitant therapies?
+- Do we have enough cases of...?
+- Would it be feasible to study X...?
+- What are the demographics of...?
+- What are the risk factors of...? (if identifying a specific risk factor, maybe estimation, not prediction)
+- What are the predictors of...?
+
+And the desired output is:
+
+- Count or percentage
+- Averages
+- Descriptive statistics
+- Incidence rate
+- Prevalence
+- Cohort
+- Rule-based phenotype
+- Drug utilization
+- Disease natural history
+- Adherence
+- Comorbidity profile
+- Treatment pathways
+- Line of therapy
+
+Then you’re probably asking for:
+- **Clinical characterization**
 
 
 ## Population-level estimation
@@ -74,23 +78,26 @@ The data can provide answers to questions like:
 - Does the causal effect of metformin on diarrhea vary by age?
 
 More specifically, if your question is:
-    - What is the effect of...?
-    - What if I do intervention...?
-    - Which treatment works better?
-    - What is the risk of X on Y?
-    - What is the time-to-event of...?
-- And the desired output is:
-    - Relative risk
-    - Hazards ratio
-    - Odds ratio
-    - Average treatment effect
-    - Causal effect
-    - Association
-    - Correlation
-    - Safety surveillance
-    - Comparative effectiveness
-- Then you’re probably asking for:
-    - **Population-level effect estimation**
+
+- What is the effect of...?
+- What if I do intervention...?
+- Which treatment works better?
+- What is the risk of X on Y?
+- What is the time-to-event of...?
+
+And the desired output is:
+- Relative risk
+- Hazards ratio
+- Odds ratio
+- Average treatment effect
+- Causal effect
+- Association
+- Correlation
+- Safety surveillance
+- Comparative effectiveness
+
+Then you’re probably asking for:
+- **Population-level effect estimation**
 
 ## Patient-Level prediction
 
@@ -104,15 +111,18 @@ The data can provide answers to questions like:
 - For a specific patient newly diagnosed with atrial fibrillation, in the first year after therapy initiation with warfarin, what is the probability the patient suffers an ischemic stroke?
 
 More specifically, if your question is:
-    - What is the chance that this patient will...?
-    - Who are candidates for...?
-- And the desired output is:
-    - Probability for an individual
-    - Prediction model
-    - High/low risk groups
-    - Probabilistic phenotype
-- Then you’re probably asking for:
-    - **Patient-level prediction**
+
+- What is the chance that this patient will...?
+- Who are candidates for...?
+
+And the desired output is:
+- Probability for an individual
+- Prediction model
+- High/low risk groups
+- Probabilistic phenotype
+
+Then you’re probably asking for:
+- **Patient-level prediction**
 
 Population-level estimation and patient-level prediction overlap to a certain extent. For example, an important use case for prediction is to predict an outcome for a specific patient had drug A been prescribed and also predict the same outcome had drug B been prescribed. Let's assume that in reality only one of these drugs is prescribed (say drug A) so we get to see whether the outcome following treatment with A actually occurs. Since drug B was not prescribed, the outcome following treatment B, while predictable, is "counterfactual" since it is not ever observed. Each of these prediction tasks falls under patient-level prediction. However, the difference between (or ratio of) the two outcomes is a unit-level *causal* effect, and should be estimated using causal effect estimation methods instead.
 
