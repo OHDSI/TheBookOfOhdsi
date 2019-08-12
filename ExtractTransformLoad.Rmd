@@ -4,7 +4,7 @@
 
 ## Introduction
 
-In order to get from the native/raw data to the OMOP Common Data Model (CDM) we have to create an extract, transform, and load (ETL) process. This process should restructure the data to the CDM, and add mappings to the Standardized Vocabularies, and is typically implemented as a set of automated scripts, for example SQL scripts. It is important that this ETL process is repeatable, so that it can be rerun whenever the source data is refreshed. \index{Extract, Transform and Load (ETL)} \index{ETL|see {Extract, Transform and Load (ETL)}} \index{Raw data} \index{Native data|see {Raw data}} \index{Source data|see{Raw data}}
+In order to get from the native/raw data to the OMOP Common Data Model (CDM) we have to create an extract, transform, and load (ETL) process. This process should restructure the data to the CDM, and add mappings to the Standardized Vocabularies, and is typically implemented as a set of automated scripts, for example SQL scripts. It is important that this ETL process is repeatable, so that it can be rerun whenever the source data is refreshed. extract, transform and load (ETL)} \index{ETL|see {extract, transform and load (ETL)}} \index{raw data} \index{native data|see {raw data}} \index{source data|see{raw data}}
 
 Creating an ETL is usually a large undertaking. Over the years, we have developed best practices, consisting of of four major steps:
 
@@ -23,7 +23,7 @@ Two closely-integrated tools have been developed to support the ETL design proce
 
 ### White Rabbit
 
-To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the [White Rabbit](https://github.com/OHDSI/WhiteRabbit) tool comes in; it scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub [^whiteRabbitGithubUrl]. \index{White Rabbit} \index{Data profiling|see {White Rabbit}}
+To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the [White Rabbit](https://github.com/OHDSI/WhiteRabbit) tool comes in; it scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub [^whiteRabbitGithubUrl]. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
 [^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit].
 
@@ -86,7 +86,7 @@ The report is powerful in understanding your source data by highlighting what ex
 
 ### Rabbit-In-a-Hat
 
-With the White Rabbit scan in hand, we have a clear picture of the source data. We also know the full specification of the CDM. Now we need to define the logic to go from one to the other. This design activity requires thorough knowledge of both the source data and the CDM. The Rabbit-in-a-Hat tools is specifically designed to support a team having these expertises. In a typical setting, the ETL design team sits together in a room, while Rabbit-in-a-Hat is projected on a screen. In a first round, the table-to-table mappings can be collaboratively decided, after which field-to-field mappings can be designed, while defining the logic by which values will be transformed. Rabbit-In-a-Hat comes with the White Rabbit software. \index{Rabbit-In-A-Hat} \index{ETL Design|see {Rabbit-In-A-Hat}}
+With the White Rabbit scan in hand, we have a clear picture of the source data. We also know the full specification of the CDM. Now we need to define the logic to go from one to the other. This design activity requires thorough knowledge of both the source data and the CDM. The Rabbit-in-a-Hat tools is specifically designed to support a team having these expertises. In a typical setting, the ETL design team sits together in a room, while Rabbit-in-a-Hat is projected on a screen. In a first round, the table-to-table mappings can be collaboratively decided, after which field-to-field mappings can be designed, while defining the logic by which values will be transformed. Rabbit-In-a-Hat comes with the White Rabbit software. \index{Rabbit-In-A-Hat} \index{ETL design|see {Rabbit-In-A-Hat}}
 
 **Scope and purpose**
 
@@ -180,7 +180,7 @@ Unfortunately, sometimes the source data uses coding systems that are not in the
 
 ### Usagi
 
-Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub [^UsagiUrl]. \index{Usagi} \index{Source code mapping|see {Usagi}}
+Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub [^UsagiUrl]. \index{Usagi} \index{source code mapping|see {Usagi}}
 
 [^UsagiUrl]: https://github.com/OHDSI/Usagi
 
@@ -298,7 +298,7 @@ When the vocabulary is updated, follow these steps:
 
 ## Step 3: Implement the ETL
 
-Implementation usually varies site to site and it largely depends on many factors including infrastructure, size of the database, the complexity of the ETL, and the technical expertise available. A few examples of different ETLs: \index{ETL!Implementations}
+Implementation usually varies site to site and it largely depends on many factors including infrastructure, size of the database, the complexity of the ETL, and the technical expertise available. A few examples of different ETLs: \index{ETL!implementations}
 
 * ETL-CDMBuilder - A .NET application designed to transform multiple databases
   + [https://github.com/OHDSI/etl-cdmbuilder](https://github.com/OHDSI/etl-cdmbuilder)
@@ -309,7 +309,7 @@ Implementation usually varies site to site and it largely depends on many factor
 
 ## Step 4: Quality control
 
-For the extract, transform, load process, quality control is iterative. The typical pattern is to write logic -> implement logic -> test logic -> fix/write logic. There are different ways to approach data quality as detailed in chapter \@ref(DataQuality) but we recommend at least the following steps in quality control: \index{ETL!Quality Control}
+For the extract, transform, load process, quality control is iterative. The typical pattern is to write logic -> implement logic -> test logic -> fix/write logic. There are different ways to approach data quality as detailed in chapter \@ref(DataQuality) but we recommend at least the following steps in quality control: \index{ETL!quality control}
 
 - Review of the ETL design document, computer code, and code mappings. Any one person can make mistakes, so always at least one other person should review what the first person did.
 - Manually compare all information on a sample of persons in the source and target data.
