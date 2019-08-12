@@ -71,7 +71,7 @@ Jose Posada         Nicole Pratt       Dani Prieto-Alhambra
 Christian Reich     Jenna Reps         Peter Rijnbeek       
 Patrick Ryan        Craig Sachson      Izzy Saridakis       
 Paula Saroufim      Martijn Schuemie   Sarah Seager         
-Chan Seng You       Anthony Senna      Sunah Song           
+Anthony Sena        Chan Seng You      Sunah Song           
 Matt Spotnitz       Marc Suchard       Joel Swerdel         
 Devin Tian          Don Torok          Kees van Bochove     
 Mui Van Zandt       Erica Voss         Kristin Waite        

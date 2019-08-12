@@ -10,16 +10,16 @@ The chapter serves to explain what is meant by creating and sharing cohort defin
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">**OHDSI Cohort:** set of persons who satisfy one or more inclusion criteria for a duration of time
 **OHDSI Cohort Definition:** the description of inclusion criteria used for identifying a particular cohort</div>\EndKnitrBlock{rmdimportant}
-
+\index{cohort} \index{cohort definition}
 In many peer-reviewed scientific manuscripts, a cohort is suggested to be analogous to a codeset of specific clinical codes (e.g. ICD-9/ICD-10, NDC, HCPCS, etc). While codesets are an important piece in assembling a cohort, a cohort definition is not simply a codeset. A cohort definition requires logic for how to use the codeset for the criteria. A well documented cohort specifies how a patient enters a cohort, a patient exits a cohort and any additional inclusion criteria that impacts how to observe a patient’s time-at-risk. 
-
+\index{codeset} 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">The term *cohort* is often interchanged with the term phenotype. The term *phenotype* is applied to patient characteristics inferred from electronic health record (EHR) data [@Hripcsak7329]. The goal is to draw conclusions about a target concept based on raw EHR data, claims data, or other clinically relevant data. Thus, a *cohort* is a set of persons who satisfy one or more inclusion criteria (a phenotype) for a duration of time. A cohort in itself is not a phenotype but a phenotype can be used to create a cohort.</div>\EndKnitrBlock{rmdimportant}
-
+\index{phenotype}
 There are two main approaches to constructing a cohort: **1) rules-based design** or **2) probabilistic design**. A rules-based cohort design relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules for cohort inclusion criteria. Conversely, a probabilistic design mines already available data to identify and qualify potential cohort membership through machine-suggested patterns. The next sections will discuss these approaches in further detail.
 
 ### Rules-based cohort design
 
-A rules-based OHDSI cohort definition begins with clinical expertise explicitly stating one or more inclusion criteria (e.g. “people with angioedema”) in a specific duration of time (e.g. “who developed this condition within the last 6 months”). 
+A rules-based OHDSI cohort definition begins with clinical expertise explicitly stating one or more inclusion criteria (e.g. “people with angioedema”) in a specific duration of time (e.g. “who developed this condition within the last 6 months”). \index{cohort!rule-based design}
 
 When creating a cohort definition, you need to ask yourself the following questions:
 
@@ -27,20 +27,20 @@ When creating a cohort definition, you need to ask yourself the following questi
 - *What inclusion criteria are applied to the initial events?*
 - *What defines a person’s cohort exit?*
 
-To visualize the importance of these criteria, think of how this information comes together in a person’s timeline (Figure . The OBSERVATION_PERIOD table creates the window for which we see the person in the data.
+To visualize the importance of these criteria, think of how this information comes together in a person’s timeline (Figure . The OBSERVATION_PERIOD table creates the window for which we see the person in the data.\index{cohort!criteria}
 
 <div class="figure" style="text-align: center">
 <img src="images/Cohorts/cohort-build.png" alt="Cohort Creation" width="90%" />
 <p class="caption">(\#fig:cohortBuild)Cohort Creation</p>
 </div>
 
-*Cohort entry criteria:* The cohort entry event can be one or many clinical attributes which dictate an individual patient’s eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain,concept set, as well as any domain-specific attributes. We will discuss these in detail in the further section. 
+*Cohort entry criteria:* The cohort entry event can be one or many clinical attributes which dictate an individual patient’s eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain,concept set, as well as any domain-specific attributes. We will discuss these in detail in the further section. \index{cohort!entry criteria}
 
-*Inclusion criteria:* The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.
+*Inclusion criteria:* The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.\index{cohort!inclusion criteria}
 
-*Cohort exit criteria:* The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g. persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.
+*Cohort exit criteria:* The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g. persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
 
-*Time-at-risk:* In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you’re observing an acute/short term trend or a chronic/long term trend.
+*Time-at-risk:* In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you’re observing an acute/short term trend or a chronic/long term trend.\index{cohort!time-at-risk}
 
 <div class="figure" style="text-align: center">
 <img src="images/Cohorts/cohort-TAR.png" alt="Time-at-Risk Construction" width="90%" />
@@ -60,20 +60,20 @@ Throughout the Book of OHDSI, we will detail how to address these consequences i
 
 ### Probabilistic cohort design using APHRODITE
 
-Rules-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria.
+Rules-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria. \index{cohort!probabilistic design}
 
-To apply this approach on OMOP data, OHDSI community researchers created Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation (APHRODITE), an R-package cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM [@Banda2017APHRODITE]. [APHRODITE](https://github.com/OHDSI/Aphrodite) is an open-source package (https://github.com/OHDSI/Aphrodite) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building. 
+To apply this approach on OMOP data, OHDSI community researchers created Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation (APHRODITE), an R-package cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM [@Banda2017APHRODITE]. [APHRODITE](https://github.com/OHDSI/Aphrodite) is an open-source package (https://github.com/OHDSI/Aphrodite) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building. \index{APHRODITE} 
 
 ## Phenotype Algorithm Evaluation
 
-When you build a cohort, you may start from your own knowledgebase or you may choose to look at how other studies specify a similar cohort definition. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results [@Rubbo2015phenotypes]. In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases). Making this comparison is best understood in a tabular view (Figure \@ref(fig:cohortPpv)).
+When you build a cohort, you may start from your own knowledgebase or you may choose to look at how other studies specify a similar cohort definition. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results [@Rubbo2015phenotypes]. In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases). Making this comparison is best understood in a tabular view (Figure \@ref(fig:cohortPpv)). \index{chart review}
 
 <div class="figure" style="text-align: center">
 <img src="images/Cohorts/cohort-PPV.png" alt="Algorithm Evaluation" width="90%" />
 <p class="caption">(\#fig:cohortPpv)Algorithm Evaluation</p>
 </div>
 
-OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) [@Swerdel2019phevaluator].  For a complete validation of an algorithm, we need to calculate:
+OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) [@Swerdel2019phevaluator].  For a complete validation of an algorithm, we need to calculate: \index{sensitivity} \index{specificity} \index{PPV} \index{positive predictive value|see {PPV}}
 
 $$
 Sensitivity = \frac{True\ positives}{True\ positives+False\ negatives }
@@ -87,11 +87,11 @@ $$
 Positive\ preditive\ value = \frac{True\ positives}{True\ positives+False\ positives }
 $$
 
-This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool [@Swerdel2019phevaluator] is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation.
+This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool [@Swerdel2019phevaluator] is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation. \index{PheValuator}
 
 ## OHDSI Gold Standard Phenotype Library
 
-To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg). Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool [@Swerdel2019phevaluator] , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup.
+To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg). Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool [@Swerdel2019phevaluator] , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
 
 ## Practice
 
@@ -127,7 +127,7 @@ You can build a cohort in the user interface of ATLAS or you can write a query d
 
 ### Using ATLAS
 
-We can build a cohort using the ATLAS interface. To begin in ATLAS, click on the 'Cohort Definition' module (located on the left hand panel fifth selection from the top as seen in Figure \@ref(fig:ATLAScohort)).
+We can build a cohort using the ATLAS interface. To begin in ATLAS, click on the 'Cohort Definition' module (located on the left hand panel fifth selection from the top as seen in Figure \@ref(fig:ATLAScohort)). 
 
 <div class="figure" style="text-align: center">
 <img src="images/Cohorts/ATLAS-cohort.png" alt="Navigating to ATLAS Cohort Definition module" width="50%" />

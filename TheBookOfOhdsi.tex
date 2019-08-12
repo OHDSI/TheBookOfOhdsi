@@ -307,7 +307,7 @@ Patrick Ryan & Craig Sachson & Izzy Saridakis\\
 \hline
 Paula Saroufim & Martijn Schuemie & Sarah Seager\\
 \hline
-Chan Seng You & Anthony Senna & Sunah Song\\
+Anthony Sena & Chan Seng You & Sunah Song\\
 \hline
 Matt Spotnitz & Marc Suchard & Joel Swerdel\\
 \hline
@@ -780,7 +780,7 @@ By now, you may be wondering: \emph{where do I fit into the OHDSI Community?}
 
 \emph{Chapter lead: Clair Blacketer}
 
-Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content.
+Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content. \index{OMOP Common Data Model} \index{CDM |see {OMOP Common Data Model}} \index{relational data model|see {OMOP Common Data Model}}
 
 Why do we need a Common Data Model for observational healthcare data?
 
@@ -788,7 +788,7 @@ Depending on their primary needs none of the observational databases capture all
 
 This standard is provided by the OMOP Common Data Model (CDM). The CDM, combined with its standardized content (see chapter \ref{StandardizedVocabularies}), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables.
 
-An overview of all the tables in the CDM is provided in Figure \ref{fig:cdmDiagram}.
+An overview of all the tables in the CDM is provided in Figure \ref{fig:cdmDiagram}. \index{OMOP Common Data Model!data model diagram}
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{images/CommonDataModel/cdmDiagram} \caption{Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.}\label{fig:cdmDiagram}
@@ -797,7 +797,7 @@ An overview of all the tables in the CDM is provided in Figure \ref{fig:cdmDiagr
 \hypertarget{design-principles}{%
 \section{Design Principles}\label{design-principles}}
 
-The CDM is optimized for typical observational research purposes of
+The CDM is optimized for typical observational research purposes of \index{OMOP Common Data Model!design principles}
 
 \begin{itemize}
 \tightlist
@@ -816,31 +816,31 @@ To achieve this goal, the development of the CDM follows the following design el
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Suitability for purpose}: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers.
+  \textbf{Suitability for purpose}: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers. \index{OMOP Common Data Model!suitability for purpose}
 \item
-  \textbf{Data protection}: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible when the research expressly requires more detailed information, such as precise birth dates for the study of infants.
+  \textbf{Data protection}: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible when the research expressly requires more detailed information, such as precise birth dates for the study of infants.\index{OMOP Common Data Model!data protection}
 \item
   \textbf{Design of domains}: The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum. Here, a relational data model is one where the data is represented as a collection of tables linked by primary and foreign keys.
 \item
-  \textbf{Rationale for domains}: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case (conditions, for example) and the domain has specific attributes that are not otherwise applicable. All other data can be preserved as an observation in the observation table in an entity-attribute-value structure.
+  \textbf{Rationale for domains}: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case (conditions, for example) and the domain has specific attributes that are not otherwise applicable. All other data can be preserved as an observation in the observation table in an entity-attribute-value structure. \index{OMOP Common Data Model!domains}
 \item
   \textbf{Standardized Vocabularies}: To standardize the content of those records, the CDM relies on the Standardized Vocabularies containing all necessary and appropriate corresponding standard healthcare concepts.
 \item
   \textbf{Reuse of existing vocabularies}: If possible, these concepts are leveraged from national or industry standardization or vocabulary definition organizations or initiatives, such as the National Library of Medicine, the Department of Veterans' Affairs, the Center of Disease Control and Prevention, etc.
 \item
-  \textbf{Maintaining source codes}: Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost.
+  \textbf{Maintaining source codes}: Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost. \index{OMOP Common Data Model!Source Codes} \index{OMOP Common Data Model!data loss prevention}
 \item
-  \textbf{Technology neutrality}: The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or as SAS analytical datasets.
+  \textbf{Technology neutrality}: The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or as SAS analytical datasets.\index{OMOP Common Data Model!technology neutrality}
 \item
-  \textbf{Scalability}: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations.
+  \textbf{Scalability}: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations. \index{OMOP Common Data Model!scalability}
 \item
-  \textbf{Backwards compatibility}: All changes from previous CDMs are clearly delineated in the github repository \href{https://github.com/OHDSI/CommonDataModel}{(https://github.com/OHDSI/CommonDataModel)}. Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously.
+  \textbf{Backwards compatibility}: All changes from previous CDMs are clearly delineated in the github repository \href{https://github.com/OHDSI/CommonDataModel}{(https://github.com/OHDSI/CommonDataModel)}. Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously. \index{OMOP Common Data Model!backwards compatibility}
 \end{itemize}
 
 \hypertarget{data-model-conventions}{%
 \section{Data Model Conventions}\label{data-model-conventions}}
 
-There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions.
+There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions. \index{OMOP Common Data Model!conventions}
 
 \hypertarget{model-conv}{%
 \subsection{General conventions of the model}\label{model-conv}}
@@ -1003,6 +1003,8 @@ An example of how the Standard Concept to Source Concept relationship is depicte
 
 \hypertarget{omop-cdm-standardized-tables}{%
 \section{OMOP CDM Standardized Tables}\label{omop-cdm-standardized-tables}}
+
+\index{OMOP Common Data Model!standardized tables}
 
 The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}}.
 
@@ -1952,7 +1954,7 @@ The OMOP Standardized Vocabulary: Christian's (almost) finished paper + \url{htt
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-In order to get from the native/raw data to the OMOP Common Data Model (CDM) we have to create an extract, transform, and load (ETL) process. This process should restructure the data to the CDM, and add mappings to the Standardized Vocabularies, and is typically implemented as a set of automated scripts, for example SQL scripts. It is important that this ETL process is repeatable, so that it can be rerun whenever the source data is refreshed.
+In order to get from the native/raw data to the OMOP Common Data Model (CDM) we have to create an extract, transform, and load (ETL) process. This process should restructure the data to the CDM, and add mappings to the Standardized Vocabularies, and is typically implemented as a set of automated scripts, for example SQL scripts. It is important that this ETL process is repeatable, so that it can be rerun whenever the source data is refreshed. extract, transform and load (ETL)\} \index{ETL|see {extract, transform and load (ETL)}} \index{raw data} \index{native data|see {raw data}} \index{source data|see{raw data}}
 
 Creating an ETL is usually a large undertaking. Over the years, we have developed best practices, consisting of of four major steps:
 
@@ -1981,7 +1983,7 @@ Two closely-integrated tools have been developed to support the ETL design proce
 \hypertarget{white-rabbit}{%
 \subsection{White Rabbit}\label{white-rabbit}}
 
-To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the \href{https://github.com/OHDSI/WhiteRabbit}{White Rabbit} tool comes in; it scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub \footnote{\url{https://github.com/OHDSI/WhiteRabbit}{]}.}.
+To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the \href{https://github.com/OHDSI/WhiteRabbit}{White Rabbit} tool comes in; it scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub \footnote{\url{https://github.com/OHDSI/WhiteRabbit}{]}.}. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
 \textbf{Scope and Purpose}
 
@@ -2057,7 +2059,7 @@ The report is powerful in understanding your source data by highlighting what ex
 \hypertarget{rabbit-in-a-hat}{%
 \subsection{Rabbit-In-a-Hat}\label{rabbit-in-a-hat}}
 
-With the White Rabbit scan in hand, we have a clear picture of the source data. We also know the full specification of the CDM. Now we need to define the logic to go from one to the other. This design activity requires thorough knowledge of both the source data and the CDM. The Rabbit-in-a-Hat tools is specifically designed to support a team having these expertises. In a typical setting, the ETL design team sits together in a room, while Rabbit-in-a-Hat is projected on a screen. In a first round, the table-to-table mappings can be collaboratively decided, after which field-to-field mappings can be designed, while defining the logic by which values will be transformed. Rabbit-In-a-Hat comes with the White Rabbit software.
+With the White Rabbit scan in hand, we have a clear picture of the source data. We also know the full specification of the CDM. Now we need to define the logic to go from one to the other. This design activity requires thorough knowledge of both the source data and the CDM. The Rabbit-in-a-Hat tools is specifically designed to support a team having these expertises. In a typical setting, the ETL design team sits together in a room, while Rabbit-in-a-Hat is projected on a screen. In a first round, the table-to-table mappings can be collaboratively decided, after which field-to-field mappings can be designed, while defining the logic by which values will be transformed. Rabbit-In-a-Hat comes with the White Rabbit software. \index{Rabbit-In-A-Hat} \index{ETL design|see {Rabbit-In-A-Hat}}
 
 \textbf{Scope and purpose}
 
@@ -2301,7 +2303,7 @@ Unfortunately, sometimes the source data uses coding systems that are not in the
 \hypertarget{usagi}{%
 \subsection{Usagi}\label{usagi}}
 
-Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub \footnote{\url{https://github.com/OHDSI/Usagi}}.
+Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub \footnote{\url{https://github.com/OHDSI/Usagi}}. \index{Usagi} \index{source code mapping|see {Usagi}}
 
 \textbf{Scope and purpose}
 
@@ -2452,7 +2454,7 @@ When the vocabulary is updated, follow these steps:
 \hypertarget{step-3-implement-the-etl}{%
 \section{Step 3: Implement the ETL}\label{step-3-implement-the-etl}}
 
-Implementation usually varies site to site and it largely depends on many factors including infrastructure, size of the database, the complexity of the ETL, and the technical expertise available. A few examples of different ETLs:
+Implementation usually varies site to site and it largely depends on many factors including infrastructure, size of the database, the complexity of the ETL, and the technical expertise available. A few examples of different ETLs: \index{ETL!implementations}
 
 \begin{itemize}
 \tightlist
@@ -2485,7 +2487,7 @@ Implementation usually varies site to site and it largely depends on many factor
 \hypertarget{step-4-quality-control}{%
 \section{Step 4: Quality control}\label{step-4-quality-control}}
 
-For the extract, transform, load process, quality control is iterative. The typical pattern is to write logic -\textgreater{} implement logic -\textgreater{} test logic -\textgreater{} fix/write logic. There are different ways to approach data quality as detailed in chapter \ref{DataQuality} but we recommend at least the following steps in quality control:
+For the extract, transform, load process, quality control is iterative. The typical pattern is to write logic -\textgreater{} implement logic -\textgreater{} test logic -\textgreater{} fix/write logic. There are different ways to approach data quality as detailed in chapter \ref{DataQuality} but we recommend at least the following steps in quality control: \index{ETL!quality control}
 
 \begin{itemize}
 \tightlist
@@ -2960,7 +2962,7 @@ In this chapter we first describe various ways in which we can choose to impleme
 \hypertarget{analysisImplementation}{%
 \section{Analysis implementation}\label{analysisImplementation}}
 
-Figure \ref{fig:implementations} shows the various ways in which we can choose to implement a study against a database using the CDM.
+Figure \ref{fig:implementations} shows the various ways in which we can choose to implement a study against a database using the CDM. \index{analysis implementation}
 
 \begin{figure}
 
@@ -3002,7 +3004,7 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 \hypertarget{atlas}{%
 \section{ATLAS}\label{atlas}}
 
-ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format. ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat. Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS \footnote{\url{http://www.ohdsi.org/web/atlas}}, and although this ATLAS instance only has access to a small simulated datasets, it can still be used for many purposes including testing and training. For example, it is possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI.
+ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format. ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat. Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS \footnote{\url{http://www.ohdsi.org/web/atlas}}, and although this ATLAS instance only has access to a small simulated datasets, it can still be used for many purposes including testing and training. For example, it is possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS}
 
 \begin{figure}
 
@@ -3017,53 +3019,53 @@ A screenshot of ATLAS is provided in Figure \ref{fig:atlas}. On the left is a na
 
 \begin{description}
 \tightlist
-\item[Data Sources]
+\item[Data Sources \index{ATLAS!Data Sources} \index{Achilles|see {ATLAS!data sources}}]
 Data sources provides the capability review descriptive, standardized reporting for each of the data sources that you have configured within your Atlas platform. This feature uses the large-scale analytics strategy: all descriptives have been pre-computed. Data sources is discussed in Chapter \ref{Characterization}.
-\item[Vocabulary Search]
+\item[Vocabulary Search \index{ATLAS!vocabulary search}]
 Atlas provides the ability to search and explore the OMOP standardized vocabulary to understand what concepts exist within those vocabularies and how to apply those concepts in your standardized analysis against your data sources. This feature is discussed in Chapter \ref{StandardizedVocabularies}.
-\item[Concept Sets]
+\item[Concept Sets \index{ATLAS!concept sets} \index{concept sets|see {ATLAS!concept sets}}]
 Concept sets provides the ability to create collections of logical expressions that can be used to identify a set of concepts to be used throughout your standardized analyses. Concept sets provide more sophistication than a simple list of codes or values. A concept set is comprised of multiple concepts from the standardized vocabulary in combination with logical indicators that allow a user to specify that they are interested in including or excluding related concepts in the vocabulary hierarchy. Searching the vocabulary, identifying the set of concepts, and specifying the logic to be used to resolve a concept set provides a powerful mechanism for defining the often obscure medical language used in analysis plans. These concept sets can be saved within ATLAS and then used throughout your analysis as part of cohort definitions or analysis specifications.
-\item[Cohort Definitions]
+\item[Cohort Definitions \index{ATLAS!cohort definitions}]
 Cohort definitions is the ability to construct a set of persons who satisfy one or more criteria for a duration of time and these cohorts can then serve as the basis of inputs for all of your subsequent analyses. This feature is discussed in Chapter \ref{Cohorts}.
-\item[Characterizations]
+\item[Characterizations \index{ATLAS!cohort characterization}]
 Characterizations is an analytic capability that allows you to look at one or more cohorts that you've defined and to summarize characteristics about those patient populations. This feature uses the real-time query strategy, and is discussed in Chapter \ref{Characterization}.
-\item[Cohort Pathways]
+\item[Cohort Pathways \index{ATLAS!cohort pathways}]
 Cohort pathways is an analytic tool that allows you to look at the sequence of clinical events that occur within one or more populations. This feature uses the real-time query strategy, and is discussed in Chapter \ref{Characterization}.
-\item[Incidence Rates]
+\item[Incidence Rates \index{ATLAS!incidence rates}]
 Incidence rates is a tool that allows you to estimate the incidence of outcomes within target populations of interest. This feature uses the real-time query strategy, and is discussed in Chapter \ref{Characterization}.
-\item[Profiles]
+\item[Profiles \index{ATLAS!profiles}]
 Profiles is a tool that allows you to explore an individual patients longitudinal observational data to summarize what is going on within a given individual. This feature uses the real-time query strategy.
-\item[Population Level Estimation]
+\item[Population Level Estimation \index{ATLAS!population level estimation}]
 Estimation is a capability to allow you to define a population level effect estimation study using a comparative cohort design whereby comparisons between one or more target and comparator cohorts can be explored for a series of outcomes. This feature can be said to implement the real-time query strategy, as no coding is required, and is discussed in Chapter \ref{PopulationLevelEstimation}.
-\item[Patient Level Prediction]
+\item[Patient Level Prediction \index{ATLAS!patient level prediction}]
 Prediction is a capability to allow you to apply machine learning algorithms to conduct patient level prediction analyses whereby you can predict an outcome within any given target exposures. This feature can be said to implement the real-time query strategy, as no coding is required, and is discussed in Chapter \ref{PatientLevelPrediction}.
-\item[Jobs]
+\item[Jobs \index{ATLAS!jobs}]
 Select the Jobs menu item to explore the state of processes that are running through the WebAPI. Jobs are often long running processes such as generating a cohort or computing cohort characterization reports.
-\item[Configuration]
+\item[Configuration \index{ATLAS!configuration}]
 Select the Configuration menu item to review the data sources that have been configured in the source configuration section.
-\item[Feedback]
+\item[Feedback \index{ATLAS!feedback}]
 The Feedback link will take you to the issue log for Atlas so that you can log a new issue or to search through existing issues. If you have ideas for new features or enhancements, this is also a place note these for the development community.
 \end{description}
 
 \hypertarget{security}{%
 \subsection{Security}\label{security}}
 
-ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform. The security system is built leveraging the Apache Shiro library. Additional information on the security system can be found in the online \href{https://github.com/OHDSI/WebAPI/wiki/Security-Configuration}{WebAPI security wiki}.
+ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform. The security system is built leveraging the Apache Shiro library. Additional information on the security system can be found in the online \href{https://github.com/OHDSI/WebAPI/wiki/Security-Configuration}{WebAPI security wiki}. \index{ATLAS!security}
 
 \hypertarget{documentation}{%
 \subsection{Documentation}\label{documentation}}
 
-Documentation for ATLAS can be found online in the \href{https://github.com/OHDSI/ATLAS/wiki}{ATLAS Github repository wiki}. This wiki includes information on the various application features as well as links to online video tutorials.
+Documentation for ATLAS can be found online in the \href{https://github.com/OHDSI/ATLAS/wiki}{ATLAS Github repository wiki}. This wiki includes information on the various application features as well as links to online video tutorials. \index{ATLAS!documentation}
 
 \hypertarget{how-to-install}{%
 \subsection{How to install}\label{how-to-install}}
 
-Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the \href{https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide}{ATLAS Github repository Setup Guide} and \href{https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide}{WebAPI Github repository Installation Guide}.
+Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the \href{https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide}{ATLAS Github repository Setup Guide} and \href{https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide}{WebAPI Github repository Installation Guide}. \index{ATLAS!installation}
 
 \hypertarget{methods-library}{%
 \section{Methods Library}\label{methods-library}}
 
-The \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} is the collection of open source R packages show in Figure \ref{fig:methodsLibrary}.
+The \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} is the collection of open source R packages show in Figure \ref{fig:methodsLibrary}. \index{methods library}
 
 \begin{figure}
 
@@ -3083,7 +3085,7 @@ The Methods Library has already been used in many published clinical studies \ci
 
 One key feature incorporated in all packages is the ability to efficiently run many analyses. For example, when performing population-level estimation, the CohortMethod package allows for computing effect-size estimates for many exposures and outcomes, using various analysis settings, and the package will automatically choose the optimal path to compute all the required artifacts. Steps that can be re-used, such as extraction of covariates, or fitting a propensity model, will be executed only once. Where possible, computations will take place in parallel to maximize the use of computational resources.
 
-This feature allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g.~negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \ref{MethodValidity}.
+This feature allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g.~negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \ref{MethodValidity}. \index{control hypotheses}
 
 \hypertarget{BigDataSupport}{%
 \subsection{Support for big data}\label{BigDataSupport}}
@@ -3106,12 +3108,12 @@ The Methods Library is also designed to run against very large databases and be 
 
 R provides a standard way of documenting package. Each package has a \emph{package manual} that documents every function and data set in the package. All package manuals are available online through the Methods Library website \footnote{\url{https://ohdsi.github.io/MethodsLibrary}}, through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. Furthermore, from within R the package manual can be consulted by using the question mark. For example, after loading the DatabaseConnector package, typing the command \texttt{?connect} brings up the documentation on the ``connect'' function.
 
-In addition to the package manual, many packages provide \emph{vignettes}. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette \footnote{\url{https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html}} describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN.
+In addition to the package manual, many packages provide \emph{vignettes}. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette \footnote{\url{https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html}} describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. \index{vignette}
 
 \hypertarget{system-requirements}{%
 \subsection{System requirements}\label{system-requirements}}
 
-Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation.
+Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation. \index{system requirements}
 
 The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery).
 
@@ -3120,7 +3122,7 @@ The analytics workstation is where the Methods Library is installed and run. Thi
 \hypertarget{installR}{%
 \subsection{How to install}\label{installR}}
 
-Here are the steps for installing the required environment to run the OHDSI R packages. Four things needs to be installed:
+Here are the steps for installing the required environment to run the OHDSI R packages. Four things needs to be installed: \index{R!installation}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -3280,17 +3282,17 @@ Another test is to see if source packages can be built. Run the following R code
 \hypertarget{deployment-strategies}{%
 \section{Deployment strategies}\label{deployment-strategies}}
 
-Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, in an organization is a daunting task. There are many components with dependencies that have to be considered, and configurations to set. For this reason, two initiatives have developed integrated deployment strategies that allow the entire stack to be installed as one package, using some forms of virtualization: Broadsea and Amazon Web Services (AWS).
+Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, in an organization is a daunting task. There are many components with dependencies that have to be considered, and configurations to set. For this reason, two initiatives have developed integrated deployment strategies that allow the entire stack to be installed as one package, using some forms of virtualization: Broadsea and Amazon Web Services (AWS). \index{tools deployment}
 
 \hypertarget{broadsea}{%
 \subsection{Broadsea}\label{broadsea}}
 
-BroadSea\footnote{\url{https://github.com/OHDSI/Broadsea}} uses Docker container technology\footnote{\url{https://www.docker.com/}}. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS.
+BroadSea\footnote{\url{https://github.com/OHDSI/Broadsea}} uses Docker container technology\footnote{\url{https://www.docker.com/}}. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS. \index{tools deployment!Broadsea}
 
 \hypertarget{amazon-aws}{%
 \subsection{Amazon AWS}\label{amazon-aws}}
 
-Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box\footnote{\url{https://github.com/OHDSI/OHDSI-in-a-Box}} and OHDSIonAWS\footnote{\url{https://github.com/OHDSI/OHDSIonAWS}}.
+Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box\footnote{\url{https://github.com/OHDSI/OHDSI-in-a-Box}} and OHDSIonAWS\footnote{\url{https://github.com/OHDSI/OHDSIonAWS}}. \index{tools deployment!Amazon AWS}
 
 OHDSI-in-a-Box is specifically created as a learning environment, and is used in most of the tutorials provided by the OHDSI community. It includes many OHDSI tools, sample data sets, RStudio and other supporting software in a single, low cost Windows virtual machine. A PostgreSQL database is used to store the CDM and also to store the intermediary results from ATLAS. The OMOP CDM data mapping and ETL tools are also included in OHDSI-in-a-Box. The architecture for OHDSI-in-a-Box is depicted in Figure \ref{fig:ohdsiinaboxDiagram}.
 
@@ -3337,7 +3339,7 @@ Todo
 
 The Common Data Model (CDM) is a relational database model (all data is represented as records in tables that have fields), which means that the data will typically be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with greater risk of making mistakes, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data. Direct queries do not provide such guidance.
 
-The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server, one would type:
+The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server, one would type: \index{SQL} \index{structured query language|see {SQL}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3353,13 +3355,13 @@ Whereas the same query on PostgreSQL would be:
 \end{Highlighting}
 \end{Shaded}
 
-In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to `speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - \textbf{OHDSI SQL} - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL.
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to `speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - \textbf{OHDSI SQL} - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \textbackslash index \{Standard SQL Dialect\textbar see \{SqlRender\} \index{OHDSI SQL|see {SqlRender}}
 
-Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter.
+Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter. \index{DatabaseConnector}
 
-So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots.
+So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. \index{R}
 
-In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector.
+In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector. \index{Query Library} \index{SQL Query Libary|see {Query Library}}
 
 \hypertarget{SqlRender}{%
 \section{SqlRender}\label{SqlRender}}
@@ -3377,7 +3379,7 @@ SqlRender supports a wide array of technical platforms including traditional dat
 \hypertarget{sql-parameterization}{%
 \subsection{SQL parameterization}\label{sql-parameterization}}
 
-One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the \texttt{render()} function.
+One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the \texttt{render()} function. \index{SqlRender!parameterization}
 
 \textbf{Substituting parameter values}
 
@@ -3497,7 +3499,7 @@ Another function of the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} pac
 ## [1] "SELECT  * FROM person LIMIT 10;"
 \end{verbatim}
 
-The \texttt{targetDialect} parameter can have the following values: ``oracle'', ``postgresql'', ``pdw'', ``redshift'', ``impala'', ``netezza'', ``bigquery'', ``sqlite'', and ``sql server''.
+The \texttt{targetDialect} parameter can have the following values: ``oracle'', ``postgresql'', ``pdw'', ``redshift'', ``impala'', ``netezza'', ``bigquery'', ``sqlite'', and ``sql server''. \index{SqlRender!translation}
 
 \BeginKnitrBlock{rmdimportant}
 There are limits to what SQL functions and constructs can be translated properly, both because only a limited set of translation rules have been implemented in the package, but also some SQL features do not have an equivalent in all dialects. This is the primary reason why OHDSI SQL was developed as its own, new SQL dialect. However, whenever possible we have kept to the SQL Server syntax to avoid reinventing the wheel.
@@ -3507,7 +3509,7 @@ Despite our best efforts, there are quite a few things to consider when writing 
 
 \textbf{Functions and structures supported by translate}
 
-These SQL Server functions have been tested and were found to be translated correctly to the various dialects:
+These SQL Server functions have been tested and were found to be translated correctly to the various dialects:\index{SqlRender!supported functions}
 
 \begin{longtable}[]{@{}lll@{}}
 \caption{\label{tab:sqlFunctions} Functions supported by translate.}\tabularnewline
@@ -3655,7 +3657,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.wi47ubifchildren ;"
+## [1] "SELECT * FROM temp_schema.z1o25k2wchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -3733,7 +3735,7 @@ The one situation where this will fail is the \texttt{USE} command, since \textt
 
 \textbf{Debugging parameterized SQL}
 
-Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL.
+Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL. \index{SqlRender!debugging}
 
 A Shiny app is included in the SqlRender package for interactively editing source SQL and generating rendered and translated SQL. The app can be started using:
 
@@ -3772,7 +3774,7 @@ DatabaseConnector supports a wide array of technical platforms including traditi
 \hypertarget{creating-a-connection}{%
 \subsection{Creating a connection}\label{creating-a-connection}}
 
-To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the \texttt{connect} function and specify these details directly:
+To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the \texttt{connect} function and specify these details directly: \index{DatabaseConnector!creating a connection}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3833,7 +3835,7 @@ Sometimes we may want to first specify the connection details, and defer connect
 \hypertarget{querying}{%
 \subsection{Querying}\label{querying}}
 
-The main functions for querying database are the \texttt{querySql} and \texttt{executeSql} functions. The difference between these functions is that \texttt{querySql} expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, \texttt{executeSql} does not expect data to be returned, and accepts multiple SQL statements in a single SQL string.
+The main functions for querying database are the \texttt{querySql} and \texttt{executeSql} functions. The difference between these functions is that \texttt{querySql} expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, \texttt{executeSql} does not expect data to be returned, and accepts multiple SQL statements in a single SQL string. \index{DatabaseConnector!querying}
 
 Some examples:
 
@@ -4478,18 +4480,20 @@ The chapter serves to explain what is meant by creating and sharing cohort defin
 \textbf{OHDSI Cohort Definition:} the description of inclusion criteria used for identifying a particular cohort
 \EndKnitrBlock{rmdimportant}
 
+\index{cohort} \index{cohort definition}
 In many peer-reviewed scientific manuscripts, a cohort is suggested to be analogous to a codeset of specific clinical codes (e.g.~ICD-9/ICD-10, NDC, HCPCS, etc). While codesets are an important piece in assembling a cohort, a cohort definition is not simply a codeset. A cohort definition requires logic for how to use the codeset for the criteria. A well documented cohort specifies how a patient enters a cohort, a patient exits a cohort and any additional inclusion criteria that impacts how to observe a patient's time-at-risk.
-
+\index{codeset}
 \BeginKnitrBlock{rmdimportant}
 The term \emph{cohort} is often interchanged with the term phenotype. The term \emph{phenotype} is applied to patient characteristics inferred from electronic health record (EHR) data \citep{Hripcsak7329}. The goal is to draw conclusions about a target concept based on raw EHR data, claims data, or other clinically relevant data. Thus, a \emph{cohort} is a set of persons who satisfy one or more inclusion criteria (a phenotype) for a duration of time. A cohort in itself is not a phenotype but a phenotype can be used to create a cohort.
 \EndKnitrBlock{rmdimportant}
 
+\index{phenotype}
 There are two main approaches to constructing a cohort: \textbf{1) rules-based design} or \textbf{2) probabilistic design}. A rules-based cohort design relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules for cohort inclusion criteria. Conversely, a probabilistic design mines already available data to identify and qualify potential cohort membership through machine-suggested patterns. The next sections will discuss these approaches in further detail.
 
 \hypertarget{rules-based-cohort-design}{%
 \subsection{Rules-based cohort design}\label{rules-based-cohort-design}}
 
-A rules-based OHDSI cohort definition begins with clinical expertise explicitly stating one or more inclusion criteria (e.g.~``people with angioedema'') in a specific duration of time (e.g.~``who developed this condition within the last 6 months'').
+A rules-based OHDSI cohort definition begins with clinical expertise explicitly stating one or more inclusion criteria (e.g.~``people with angioedema'') in a specific duration of time (e.g.~``who developed this condition within the last 6 months''). \index{cohort!rule-based design}
 
 When creating a cohort definition, you need to ask yourself the following questions:
 
@@ -4503,7 +4507,7 @@ When creating a cohort definition, you need to ask yourself the following questi
   \emph{What defines a person's cohort exit?}
 \end{itemize}
 
-To visualize the importance of these criteria, think of how this information comes together in a person's timeline (Figure . The OBSERVATION\_PERIOD table creates the window for which we see the person in the data.
+To visualize the importance of these criteria, think of how this information comes together in a person's timeline (Figure . The OBSERVATION\_PERIOD table creates the window for which we see the person in the data.\index{cohort!criteria}
 
 \begin{figure}
 
@@ -4514,13 +4518,13 @@ To visualize the importance of these criteria, think of how this information com
 \caption{Cohort Creation}\label{fig:cohortBuild}
 \end{figure}
 
-\emph{Cohort entry criteria:} The cohort entry event can be one or many clinical attributes which dictate an individual patient's eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain,concept set, as well as any domain-specific attributes. We will discuss these in detail in the further section.
+\emph{Cohort entry criteria:} The cohort entry event can be one or many clinical attributes which dictate an individual patient's eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain,concept set, as well as any domain-specific attributes. We will discuss these in detail in the further section. \index{cohort!entry criteria}
 
-\emph{Inclusion criteria:} The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.
+\emph{Inclusion criteria:} The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.\index{cohort!inclusion criteria}
 
-\emph{Cohort exit criteria:} The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.
+\emph{Cohort exit criteria:} The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
 
-\emph{Time-at-risk:} In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you're observing an acute/short term trend or a chronic/long term trend.
+\emph{Time-at-risk:} In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you're observing an acute/short term trend or a chronic/long term trend.\index{cohort!time-at-risk}
 
 \begin{figure}
 
@@ -4552,14 +4556,14 @@ Throughout the Book of OHDSI, we will detail how to address these consequences i
 \hypertarget{probabilistic-cohort-design-using-aphrodite}{%
 \subsection{Probabilistic cohort design using APHRODITE}\label{probabilistic-cohort-design-using-aphrodite}}
 
-Rules-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria.
+Rules-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria. \index{cohort!probabilistic design}
 
-To apply this approach on OMOP data, OHDSI community researchers created Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation (APHRODITE), an R-package cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM \citep{Banda2017APHRODITE}. \href{https://github.com/OHDSI/Aphrodite}{APHRODITE} is an open-source package (\url{https://github.com/OHDSI/Aphrodite}) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building.
+To apply this approach on OMOP data, OHDSI community researchers created Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation (APHRODITE), an R-package cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM \citep{Banda2017APHRODITE}. \href{https://github.com/OHDSI/Aphrodite}{APHRODITE} is an open-source package (\url{https://github.com/OHDSI/Aphrodite}) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building. \index{APHRODITE}
 
 \hypertarget{phenotype-algorithm-evaluation}{%
 \section{Phenotype Algorithm Evaluation}\label{phenotype-algorithm-evaluation}}
 
-When you build a cohort, you may start from your own knowledgebase or you may choose to look at how other studies specify a similar cohort definition. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results \citep{Rubbo2015phenotypes}. In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases). Making this comparison is best understood in a tabular view (Figure \ref{fig:cohortPpv}).
+When you build a cohort, you may start from your own knowledgebase or you may choose to look at how other studies specify a similar cohort definition. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results \citep{Rubbo2015phenotypes}. In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases). Making this comparison is best understood in a tabular view (Figure \ref{fig:cohortPpv}). \index{chart review}
 
 \begin{figure}
 
@@ -4570,7 +4574,7 @@ When you build a cohort, you may start from your own knowledgebase or you may ch
 \caption{Algorithm Evaluation}\label{fig:cohortPpv}
 \end{figure}
 
-OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) \citep{Swerdel2019phevaluator}. For a complete validation of an algorithm, we need to calculate:
+OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) \citep{Swerdel2019phevaluator}. For a complete validation of an algorithm, we need to calculate: \index{sensitivity} \index{specificity} \index{PPV} \index{positive predictive value|see {PPV}}
 
 \[
 Sensitivity = \frac{True\ positives}{True\ positives+False\ negatives }
@@ -4584,12 +4588,12 @@ Specificity = \frac{True\ negatives}{True\ negatives+False\ positives }
 Positive\ preditive\ value = \frac{True\ positives}{True\ positives+False\ positives }
 \]
 
-This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool \citep{Swerdel2019phevaluator} is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation.
+This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool \citep{Swerdel2019phevaluator} is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation. \index{PheValuator}
 
 \hypertarget{ohdsi-gold-standard-phenotype-library}{%
 \section{OHDSI Gold Standard Phenotype Library}\label{ohdsi-gold-standard-phenotype-library}}
 
-To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These ``gold standard'' definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (\url{https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg}). Research within this workgroup includes APHRODITE \citep{Banda2017APHRODITE} and the PheValuator tool \citep{Swerdel2019phevaluator} , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics \href{https://emerge.mc.vanderbilt.edu/}{eMERGE} \href{https://phekb.org/phenotypes}{Phenotype Library} across the OHDSI network \citep{Hripcsak2019eMERGE}. If phenotype curation is your interest, consider contributing to this workgroup.
+To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These ``gold standard'' definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (\url{https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg}). Research within this workgroup includes APHRODITE \citep{Banda2017APHRODITE} and the PheValuator tool \citep{Swerdel2019phevaluator} , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics \href{https://emerge.mc.vanderbilt.edu/}{eMERGE} \href{https://phekb.org/phenotypes}{Phenotype Library} across the OHDSI network \citep{Hripcsak2019eMERGE}. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
 
 \hypertarget{practice}{%
 \section{Practice}\label{practice}}
@@ -4883,7 +4887,7 @@ Observational healthcare databases provide a valuable resource to understand var
 
 With the exception of database-level characterization, these methods aim to describe a population relative to an event referred to as the index date. This population of interest is defined as a cohort as described in chapter \ref{Cohorts}. The cohort defines the index date for each person in the population of interest. Using the index date as an anchor, we define the time preceding the index date as \textbf{baseline} time. The index date and all time after is called the \textbf{post-index} time.
 
-Use-cases for characterization include disease natural history, treatment utilization and quality improvement. In this chapter will describe the methods for characterization. We will use a population of hypertensive persons to demonstrate how to use ATLAS and R to perform these characterization tasks.
+Use-cases for characterization include disease natural history, treatment utilization and quality improvement. In this chapter will describe the methods for characterization. We will use a population of hypertensive persons to demonstrate how to use ATLAS and R to perform these characterization tasks.\index{characterization} \index{cohort characterization|see {characterization!cohort}} \index{baseline time} \index{post-index time} \index{index date} \index{disease natural history|see {characterization}} \index{treatment utilization|see {characterization}} \index{quality improvement|see {characterization}}
 
 \hypertarget{database-level-characterization}{%
 \section{Database Level Characterization}\label{database-level-characterization}}
@@ -4902,19 +4906,19 @@ Before we can answer any characterization question about a population of interes
   What is the proportion of persons having a \{treatment, condition, procedure, etc\} recorded/prescribed over time?
 \end{itemize}
 
-These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \ref{DataQuality} goes into further detail on data quality.
+These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \ref{DataQuality} goes into further detail on data quality. \index{characterization!database Level}
 
 \hypertarget{cohort-characterization}{%
 \section{Cohort characterization}\label{cohort-characterization}}
 
 Cohort characterization describes the baseline and post-index characteristics of people in a cohort. OHDSI approaches characterization through descriptive statistics of all conditions, drug and device exposures, procedures and other clinical observations that are present in the person's history. We also summarize the socio-demographics of members of the cohort at the index date. This approach provides a complete summary of the cohort of interest. Importantly, this enables a full exploration of the cohort with an eye towards variation in the data while also allowing for identification of potentially missing values.
 
-Cohort characterisation methods can be used for person-level drug utilisation studies (DUS) to estimate the prevalence of indications and contraindications amongst users of a given treatment. The dissemination of this cohort characterization is a recommended best practice for observational studies as detailed in the Strengthening the Reporting of Observation Studies in Epidemiology (STROBE) guidelines \citep{VONELM2008344}.
+Cohort characterization methods can be used for person-level drug utilization studies (DUS) to estimate the prevalence of indications and contraindications amongst users of a given treatment. The dissemination of this cohort characterization is a recommended best practice for observational studies as detailed in the Strengthening the Reporting of Observation Studies in Epidemiology (STROBE) guidelines \citep{VONELM2008344}. \index{characterization!cohort} \index{descriptive statistics|see {characterization}} \index{drug utilization}
 
 \hypertarget{treatment-pathways}{%
 \section{Treatment Pathways}\label{treatment-pathways}}
 
-Another method to characterize a population is to describe the treatment sequence during the post-index time window. For example, \citet{Hripcsak7329} utilized the OHDSI common data standards to create descriptive statistics to characterize treatment pathways for type 2 diabetes, hypertension and depression. By standardizing this analytic approach, Hripcsak and colleagues were able to run the same analysis across the OHDSI network to describe the characteristics of these populations of interest.
+Another method to characterize a population is to describe the treatment sequence during the post-index time window. For example, \citet{Hripcsak7329} utilized the OHDSI common data standards to create descriptive statistics to characterize treatment pathways for type 2 diabetes, hypertension and depression. By standardizing this analytic approach, Hripcsak and colleagues were able to run the same analysis across the OHDSI network to describe the characteristics of these populations of interest. \index{characterization!treatment pathways} \index{treatment pathways|see {characterization!treatment pathways}} \index{cohort pathways|see {characterization!treatment pathways}}
 
 The pathway analysis aims to summarize the treatments (events) received by persons diagnosed with a specific condition from the first drug prescription/dispensation. In this study, treatments were described after the diagnosis of type 2 diabetes, hypertension and depression respectively. The events for each person were then aggregated to a set of summary statistics and visualized for each condition and for each database.
 
@@ -4936,7 +4940,7 @@ In classic DUS terminology, treatment pathway analyses include some population-l
 \hypertarget{incidence}{%
 \section{Incidence}\label{incidence}}
 
-Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk. Figure \ref{fig:incidenceTimeline} aims to show the components of an incidence calculation for a single person:
+Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk. Figure \ref{fig:incidenceTimeline} aims to show the components of an incidence calculation for a single person: \index{incidence}
 
 \begin{figure}
 
@@ -4955,13 +4959,13 @@ There are two metrics for calculating incidence:
 Incidence\;Proportion = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{\#\;persons\;in\;the\;cohort\;with\;time\;at\;risk}
 \end{equation}
 
-An incidence propoprtion provides a mesure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a stated timeframe.
+An incidence propoprtion provides a mesure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a defined timeframe.\index{incidence!proportion}
 
 \begin{equation} 
 Incidence\;Rate = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{person\;time\;at\;risk\;contributed\;by\;persons\;in\;the\;cohort}
 \end{equation}
 
-An incidence rate is a mesure of the number of new outcomes during the cumulative time-at-risk for the population. When a person experiences the outcome in the time-at-risk, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative time-at-risk is referred to as \textbf{person-time} and is expressed in days, months or years.
+An incidence rate is a mesure of the number of new outcomes during the cumulative time-at-risk for the population. When a person experiences the outcome in the time-at-risk, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative time-at-risk is referred to as \textbf{person-time} and is expressed in days, months or years.\index{incidence!rate} \index{person-time}
 
 When calculated for therapies, incidence proportions and incidence rates of use of a given therapy are classic population-level DUS.
 
@@ -4975,7 +4979,7 @@ Observational data sources provide a way to characterize hypertensive population
 \hypertarget{database-characterization-in-atlas}{%
 \section{Database characterization in ATLAS}\label{database-characterization-in-atlas}}
 
-Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with ACHILLES to find database level characteristics related to hypertensive persons. Start by clicking on \includegraphics{images/Characterization/atlasDataSourcesMenuItem.png} in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the database to explore. Next, use the drop down below the database to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:
+Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with \href{https://github.com/OHDSI/Achilles}{ACHILLES} to find database level characteristics related to hypertensive persons. Start by clicking on \includegraphics{images/Characterization/atlasDataSourcesMenuItem.png} in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the database to explore. Next, use the drop down below the database to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:
 
 \begin{figure}
 
@@ -5037,7 +5041,7 @@ We assume the cohorts have already been created in ATLAS as described in Chapter
 \hypertarget{feature-selection}{%
 \subsubsection{Feature Selection}\label{feature-selection}}
 
-ATLAS comes with nearly 100 preset feature analyses that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Each of these preset feature analyses perform aggregation and summarization functions on clinical observations for the selected target cohorts. These calculations provide potentially thousands of features to describe the cohorts baseline and post-index characteristics. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section.
+ATLAS comes with nearly 100 preset feature analyses that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Each of these preset feature analyses perform aggregation and summarization functions on clinical observations for the selected target cohorts. These calculations provide potentially thousands of features to describe the cohorts baseline and post-index characteristics. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section. \index{feature analyses}
 
 Click on \includegraphics{images/Characterization/atlasImportButton.png} to select the feature to characterize. Below is a list of features we will use to characterize these cohorts:
 
@@ -5165,7 +5169,7 @@ While domain covariates are computed using a binary indicator (i.e.~was a record
 \hypertarget{defining-custom-features}{%
 \subsection{Defining custom features}\label{defining-custom-features}}
 
-In addition to the preset features, ATLAS supports the ability to allow for user-defined custom features. To do this, click the \textbf{Characterization} left-hand menu item, then click the \textbf{Feature Analysis} tab and click the \textbf{New Feature Analysis} button. Provide a name for the custom feature and save it using the \includegraphics{images/PopulationLevelEstimation/save.png} button.
+In addition to the preset features, ATLAS supports the ability to allow for user-defined custom features. To do this, click the \textbf{Characterization} left-hand menu item, then click the \textbf{Feature Analysis} tab and click the \textbf{New Feature Analysis} button. Provide a name for the custom feature and save it using the \includegraphics{images/PopulationLevelEstimation/save.png} button. \index{ATLAS!characterization features}
 
 In this example, we will define a custom feature that will identify the count of persons in each cohort that have a drug era of ACE inhibitors in their history after cohort start:
 
@@ -5192,19 +5196,19 @@ The criteria defined above assumes that it will be applied to a cohort start dat
 \hypertarget{cohort-characterization-in-r}{%
 \section{Cohort characterization in R}\label{cohort-characterization-in-r}}
 
-We may also choose to characterize cohorts using R. Here we'll describe how to use the OHDSI R package FeatureExtraction to generate baseline features (covariates) for our hypertension cohorts. FeatureExtraction provides users with the ability to construct covariates in three ways:
+We may also choose to characterize cohorts using R. Here we'll describe how to use the OHDSI R package FeatureExtraction to generate baseline features (covariates) for our hypertension cohorts. FeatureExtraction provides users with the ability to construct covariates in three ways: \index{FeatureExtraction}
 
 \begin{itemize}
 \tightlist
 \item
   Choose the default set of covariates
 \item
-  Choose from a set of prespecified analyses
+  Choose from a set of pre-specified analyses
 \item
   Create a set of custom analyses
 \end{itemize}
 
-FeatureExtraction creates covariates in two distinct ways: person-level features and aggregate features. Person-level features are useful for machine learning applications. In this section, we'll focus on using aggregate features that are useful for generating baseline covariates that describe the cohort of interest. Additionally, we'll focus on the second two ways of constructing covariates: prespecified and custom analyses and leave using the default set as an exercise for the reader.
+FeatureExtraction creates covariates in two distinct ways: person-level features and aggregate features. Person-level features are useful for machine learning applications. In this section, we'll focus on using aggregate features that are useful for generating baseline covariates that describe the cohort of interest. Additionally, we'll focus on the second two ways of constructing covariates: pre-specified and custom analyses and leave using the default set as an exercise for the reader.
 
 \hypertarget{cohort-instantiation}{%
 \subsection{Cohort instantiation}\label{cohort-instantiation}}

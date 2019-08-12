@@ -588,11 +588,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="CommonDataModel" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> The Common Data Model</h1>
 <p><em>Chapter lead: Clair Blacketer</em></p>
-<p>Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content.</p>
+<p>Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content.   </p>
 <p>Why do we need a Common Data Model for observational healthcare data?</p>
 <p>Depending on their primary needs none of the observational databases capture all clinical events equally well. Therefore, research results must be drawn from many disparate data sources and compared and contrasted to understand the effect of potential capture bias. In addition, in order to draw conclusions with statistical power we need large numbers of observed patients. That explains the need for assessing and analyzing multiple data sources concurrently. In order to do that, data need to be harmonized into a common data standard. In addition, patient data require a high level of protection. To extract data for analysis purposes as it is done traditionally requires strict data use agreements and complex access control. A common data standard can eleviate this need by omitting the extraction step and allowing a standardized analytic to be executed on the data in it’s native environment - the analytic comes to the data instead of the data to the analytic.</p>
 <p>This standard is provided by the OMOP Common Data Model (CDM). The CDM, combined with its standardized content (see chapter <a href="StandardizedVocabularies.html#StandardizedVocabularies">6</a>), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables.</p>
-<p>An overview of all the tables in the CDM is provided in Figure <a href="CommonDataModel.html#fig:cdmDiagram">5.1</a>.</p>
+<p>An overview of all the tables in the CDM is provided in Figure <a href="CommonDataModel.html#fig:cdmDiagram">5.1</a>. </p>
 <div class="figure"><span id="fig:cdmDiagram"></span>
 <img src="images/CommonDataModel/cdmDiagram.png" alt="Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown." width="100%" />
 <p class="caption">
@@ -601,7 +601,7 @@ Figure 5.1: Overview of all tables in the CDM version 6.0. Note that not all rel
 </div>
 <div id="design-principles" class="section level2">
 <h2><span class="header-section-number">5.1</span> Design Principles</h2>
-<p>The CDM is optimized for typical observational research purposes of</p>
+<p>The CDM is optimized for typical observational research purposes of </p>
 <ul>
 <li>Identifying patient populations with certain healthcare interventions (drug exposure, procedures, healthcare policy changes etc.) and outcomes (conditions, procedures, other drug exposures etc.),</li>
 <li>Characterization of these patient populations for various parameters like demographic information, disease natural history, healthcare delivery, utilization and cost, morbidities, treatments and sequence of treatment etc.,</li>
@@ -610,21 +610,21 @@ Figure 5.1: Overview of all tables in the CDM version 6.0. Note that not all rel
 </ul>
 <p>To achieve this goal, the development of the CDM follows the following design elements:</p>
 <ul>
-<li><strong>Suitability for purpose</strong>: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers.</li>
+<li><strong>Suitability for purpose</strong>: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers. </li>
 <li><strong>Data protection</strong>: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible when the research expressly requires more detailed information, such as precise birth dates for the study of infants.</li>
 <li><strong>Design of domains</strong>: The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum. Here, a relational data model is one where the data is represented as a collection of tables linked by primary and foreign keys.</li>
-<li><strong>Rationale for domains</strong>: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case (conditions, for example) and the domain has specific attributes that are not otherwise applicable. All other data can be preserved as an observation in the observation table in an entity-attribute-value structure.</li>
+<li><strong>Rationale for domains</strong>: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case (conditions, for example) and the domain has specific attributes that are not otherwise applicable. All other data can be preserved as an observation in the observation table in an entity-attribute-value structure. </li>
 <li><strong>Standardized Vocabularies</strong>: To standardize the content of those records, the CDM relies on the Standardized Vocabularies containing all necessary and appropriate corresponding standard healthcare concepts.</li>
 <li><strong>Reuse of existing vocabularies</strong>: If possible, these concepts are leveraged from national or industry standardization or vocabulary definition organizations or initiatives, such as the National Library of Medicine, the Department of Veterans’ Affairs, the Center of Disease Control and Prevention, etc.</li>
-<li><strong>Maintaining source codes</strong>: Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost.</li>
+<li><strong>Maintaining source codes</strong>: Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost.  </li>
 <li><strong>Technology neutrality</strong>: The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or as SAS analytical datasets.</li>
-<li><strong>Scalability</strong>: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations.</li>
-<li><strong>Backwards compatibility</strong>: All changes from previous CDMs are clearly delineated in the github repository <a href="https://github.com/OHDSI/CommonDataModel">(https://github.com/OHDSI/CommonDataModel)</a>. Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously.</li>
+<li><strong>Scalability</strong>: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations. </li>
+<li><strong>Backwards compatibility</strong>: All changes from previous CDMs are clearly delineated in the github repository <a href="https://github.com/OHDSI/CommonDataModel">(https://github.com/OHDSI/CommonDataModel)</a>. Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously. </li>
 </ul>
 </div>
 <div id="data-model-conventions" class="section level2">
 <h2><span class="header-section-number">5.2</span> Data Model Conventions</h2>
-<p>There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions.</p>
+<p>There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions. </p>
 <div id="model-conv" class="section level3">
 <h3><span class="header-section-number">5.2.1</span> General conventions of the model</h3>
 <p>The OMOP CDM is considered a “person-centric” model, meaning that all clinical Event tables are linked to the PERSON table. Together with the date or start date this allows for a longitudinal view on all healthcare-relevant Events by person. The exceptions from this rule are the standardized health system data tables, which are linked directly to Events of the various domains.</p>
@@ -845,6 +845,7 @@ Figure 5.3: sNOMED code for Pulmonary Tuberculosis
 </div>
 <div id="omop-cdm-standardized-tables" class="section level2">
 <h2><span class="header-section-number">5.3</span> OMOP CDM Standardized Tables</h2>
+<p></p>
 <p>The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki<a href="references.html#fn15" class="footnote-ref" id="fnref15"><sup>15</sup></a>.</p>
 <p>To illustrate how these tables are used in practice, the data of one person will be used as a common thread throughout the rest of the chapter.</p>
 <div id="running-example-endometriosis" class="section level3">
