@@ -867,21 +867,72 @@ Figure 16.5: Monthly rate of diabetes coded in the ACHILLES web viewer.
 <span id="cb128-5"><a href="DataQuality.html#cb128-5"></a>                       <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
 <span id="cb128-6"><a href="DataQuality.html#cb128-6"></a>                       <span class="dt">cohortJson =</span> json,</span>
 <span id="cb128-7"><a href="DataQuality.html#cb128-7"></a>                       <span class="dt">cohortSql =</span> sql,</span>
-<span id="cb128-8"><a href="DataQuality.html#cb128-8"></a>                       <span class="st">&quot;output.html&quot;</span>)</span></code></pre></div>
-<p>TODO: Change image to actual analysis</p>
-<p>We can open the output file in a web browser as shown in Figure <a href="DataQuality.html#fig:sourceCodesAngioedema">16.6</a></p>
+<span id="cb128-8"><a href="DataQuality.html#cb128-8"></a>                       <span class="dt">outputFile =</span> <span class="st">&quot;output.html&quot;</span>)</span></code></pre></div>
+<p>We can open the output file in a web browser as shown in Figure <a href="DataQuality.html#fig:sourceCodesAngioedema">16.6</a>. Here we see that the angioedema cohort definition has two conceot sets: “Inpatient or ER visit”, and “Angioedema”. In this example database the visits were found through database-specific codes “ER” and “IP”, that are not in the Vocabulary. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cutover between the two coding systems when we look at the sparklines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.</p>
 <div class="figure" style="text-align: center"><span id="fig:sourceCodesAngioedema"></span>
 <img src="images/DataQuality/sourceCodesAngioedema.png" alt="Source codes used in the angioedema cohort definition." width="100%" />
 <p class="caption">
 Figure 16.6: Source codes used in the angioedema cohort definition.
 </p>
 </div>
-<p>Additionally, we can search for orphan source codes:</p>
+<p>Additionally, we can search for orphan source codes. Here we look for the Standard Concept “Angioedema”, and look for any codes and concepts that have “Angioedema” or any of the synonyms we provide as part of their name:</p>
 <div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="DataQuality.html#cb129-1"></a>orphans &lt;-<span class="st"> </span><span class="kw">findOrphanSourceCodes</span>(connectionDetails,</span>
 <span id="cb129-2"><a href="DataQuality.html#cb129-2"></a>                                 <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
 <span id="cb129-3"><a href="DataQuality.html#cb129-3"></a>                                 <span class="dt">conceptName =</span> <span class="st">&quot;Angioedema&quot;</span>,</span>
-<span id="cb129-4"><a href="DataQuality.html#cb129-4"></a>                                 <span class="dt">conceptSynonyms =</span> <span class="ot">NULL</span>)</span></code></pre></div>
-<p>TODO: add output of actual analysis. Also: find synonym of angioedema?</p>
+<span id="cb129-4"><a href="DataQuality.html#cb129-4"></a>                                 <span class="dt">conceptSynonyms =</span> <span class="kw">c</span>(<span class="st">&quot;Angioneurotic edema&quot;</span>,</span>
+<span id="cb129-5"><a href="DataQuality.html#cb129-5"></a>                                                     <span class="st">&quot;Giant hives&quot;</span>,</span>
+<span id="cb129-6"><a href="DataQuality.html#cb129-6"></a>                                                     <span class="st">&quot;Giant urticaria&quot;</span>,</span>
+<span id="cb129-7"><a href="DataQuality.html#cb129-7"></a>                                                     <span class="st">&quot;Periodic edema&quot;</span>))</span>
+<span id="cb129-8"><a href="DataQuality.html#cb129-8"></a><span class="kw">View</span>(orphans)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">code</th>
+<th align="left">description</th>
+<th align="left">vocabularyId</th>
+<th align="right">overallCount</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">T78.3XXS</td>
+<td align="left">Angioneurotic edema, sequela</td>
+<td align="left">ICD10CM</td>
+<td align="right">508</td>
+</tr>
+<tr class="even">
+<td align="left">10002425</td>
+<td align="left">Angioedemas</td>
+<td align="left">MedDRA</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">148774</td>
+<td align="left">Angioneurotic Edema of Larynx</td>
+<td align="left">CIEL</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">402383003</td>
+<td align="left">Idiopathic urticaria and/or angioedema</td>
+<td align="left">SNOMED</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">232437009</td>
+<td align="left">Angioneurotic edema of larynx</td>
+<td align="left">SNOMED</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">10002472</td>
+<td align="left">Angioneurotic edema, not elsewhere classified</td>
+<td align="left">MedDRA</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>The only potential orphan found that is actually used in the data is “Angioneurotic edema, sequela”, which is not supposed to map to angioedema. This analyis therefore did not reveal any missing codes.</p>
 </div>
 <div id="summary-11" class="section level2">
 <h2><span class="header-section-number">16.6</span> Summary</h2>
@@ -900,7 +951,7 @@ Figure 16.6: Source codes used in the angioedema cohort definition.
 <div id="exercises-4" class="section level2">
 <h2><span class="header-section-number">16.7</span> Exercises</h2>
 <p><strong>Prerequisites</strong></p>
-<p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">9.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, <a href="TODO:%20Add%20ACHILLES%20URL">ACHILLES</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
+<p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">9.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, <a href="https://github.com/OHDSI/Achilles">ACHILLES</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
 <div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="DataQuality.html#cb130-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
 <span id="cb130-2"><a href="DataQuality.html#cb130-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Achilles&quot;</span>)</span>
 <span id="cb130-3"><a href="DataQuality.html#cb130-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>)</span></code></pre></div>
