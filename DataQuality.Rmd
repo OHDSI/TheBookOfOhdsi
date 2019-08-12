@@ -134,7 +134,7 @@ Another assessment is to review the prevalence and changes in prevalence over ti
 
 One possible source of error that falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker [^vocabIssueTrackerUrl] and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard concepts, but also the source codes. We can review both the source codes that do map to the concepts used in the study, as well as those that do not.
 
-[^vocabIssueTrackerUrl]: TODO: add link
+[^vocabIssueTrackerUrl]: https://github.com/OHDSI/Vocabulary-v5.0/issues
 
 One way to review the source codes that do map is to use the `checkCohortSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalences of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure \@ref(fig:sourceCodes) shows a (partial) breakdown of a concept set called 'Depressive disorder'. The most prevalent concept in this concept set in the database of interest is concept  [440383](http://athena.ohdsi.org/search-terms/terms/440383) ("Depressive disorder"). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-19 code F32.9 (""Major depressive disorder, single episode, unspecified") should also have mapped to the concept. This problem has since been resolved in the Vocabulary.
 
@@ -229,28 +229,38 @@ checkCohortSourceCodes(connectionDetails,
                        cdmDatabaseSchema = cdmDbSchema,
                        cohortJson = json,
                        cohortSql = sql,
-                       "output.html")
+                       outputFile = "output.html")
 ```
 
-TODO: Change image to actual analysis
 
-We can open the output file in a web browser as shown in Figure \@ref(fig:sourceCodesAngioedema)
+We can open the output file in a web browser as shown in Figure \@ref(fig:sourceCodesAngioedema). Here we see that the angioedema cohort definition has two conceot sets: "Inpatient or ER visit", and "Angioedema". In this example database the visits were found through database-specific codes "ER" and "IP", that are not in the Vocabulary. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cutover between the two coding systems when we look at the sparklines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
 
 ```{r sourceCodesAngioedema, fig.cap='Source codes used in the angioedema cohort definition.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/DataQuality/sourceCodesAngioedema.png")
 ```
 
-Additionally, we can search for orphan source codes:
+Additionally, we can search for orphan source codes. Here we look for the Standard Concept "Angioedema", and look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
 
 ```{r tidy=FALSE,eval=FALSE}
 orphans <- findOrphanSourceCodes(connectionDetails,
                                  cdmDatabaseSchema = cdmDbSchema,
                                  conceptName = "Angioedema",
-                                 conceptSynonyms = NULL)
-
+                                 conceptSynonyms = c("Angioneurotic edema",
+                                                     "Giant hives",
+                                                     "Giant urticaria",
+                                                     "Periodic edema"))
+View(orphans)
 ```
+|code              |description                                                            |vocabularyId | overallCount|
+|:-----------------|:----------------------------------------------------------------------|:------------|------------:|
+|T78.3XXS          |Angioneurotic edema, sequela                                           |ICD10CM      |          508|
+|10002425          |Angioedemas                                                            |MedDRA       |            0|
+|148774            |Angioneurotic Edema of Larynx                                          |CIEL         |            0|
+|402383003         |Idiopathic urticaria and/or angioedema                                 |SNOMED       |            0|
+|232437009         |Angioneurotic edema of larynx                                          |SNOMED       |            0|
+|10002472          |Angioneurotic edema, not elsewhere classified                          |MedDRA       |            0|
 
-TODO: add output of actual analysis. Also: find synonym of angioedema?
+The only potential orphan found that is actually used in the data is "Angioneurotic edema, sequela", which is not supposed to map to angioedema. This analyis therefore did not reveal any missing codes.
 
 ## Summary
 
@@ -271,7 +281,7 @@ TODO: add output of actual analysis. Also: find synonym of angioedema?
 
 **Prerequisites**
 
-For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), [ACHILLES](TODO: Add ACHILLES URL),  and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), [ACHILLES](https://github.com/OHDSI/Achilles),  and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
 
 ```{r eval=FALSE}
 install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
