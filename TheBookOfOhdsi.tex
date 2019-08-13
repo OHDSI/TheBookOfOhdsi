@@ -3657,7 +3657,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.nfyexlj0children ;"
+## [1] "SELECT * FROM temp_schema.yc9fzwcgchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4216,16 +4216,27 @@ Next we create our exposure cohort, and insert it into our COHORT table:
 \StringTok{  cohort_end_date,}
 \StringTok{  subject_id}
 \StringTok{FROM (}
-\StringTok{  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,}
-\StringTok{    MIN(drug_exposure_end_date) AS cohort_end_date,}
+\StringTok{  SELECT drug_exposure_start_date AS cohort_start_date,}
+\StringTok{    COALESCE(drug_exposure_end_date,}
+\StringTok{             DATEADD(DAY, 1, drug_exposure_start_date)}
+\StringTok{    ) AS cohort_end_date,}
 \StringTok{    person_id AS subject_id}
-\StringTok{  FROM @cdm_db_schema.drug_exposure}
-\StringTok{  INNER JOIN @cdm_db_schema.concept_ancestor}
-\StringTok{    ON drug_concept_id = descendant_concept_id}
-\StringTok{  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,}
-\StringTok{    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,}
-\StringTok{    1342439) -- ACE inhibitors}
-\StringTok{  GROUP BY person_id}
+\StringTok{  FROM (}
+\StringTok{    SELECT drug_exposure_start_date,}
+\StringTok{      drug_exposure_end_date,}
+\StringTok{      person_id,}
+\StringTok{      ROW_NUMBER() OVER (}
+\StringTok{        PARTITION BY person_id}
+\StringTok{            ORDER BY drug_exposure_start_date}
+\StringTok{      ) order_nr}
+\StringTok{    FROM @cdm_db_schema.drug_exposure}
+\StringTok{    INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{      ON drug_concept_id = descendant_concept_id}
+\StringTok{    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,}
+\StringTok{      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,}
+\StringTok{      1342439) -- ACE inhibitors}
+\StringTok{  ) ordered_exposures}
+\StringTok{  WHERE order_nr = 1}
 \StringTok{) first_exposure}
 \StringTok{INNER JOIN @cdm_db_schema.observation_period}
 \StringTok{  ON subject_id = person_id}

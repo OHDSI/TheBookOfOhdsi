@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.hbjm8534children ;"
+## [1] "SELECT * FROM temp_schema.at8i41nhchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -745,16 +745,27 @@ SELECT 1 AS cohort_definition_id,
   cohort_end_date,
   subject_id
 FROM (
-  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,
-    MIN(drug_exposure_end_date) AS cohort_end_date,
+  SELECT drug_exposure_start_date AS cohort_start_date,
+    COALESCE(drug_exposure_end_date,
+             DATEADD(DAY, 1, drug_exposure_start_date)
+    ) AS cohort_end_date,
     person_id AS subject_id
-  FROM @cdm_db_schema.drug_exposure
-  INNER JOIN @cdm_db_schema.concept_ancestor
-    ON drug_concept_id = descendant_concept_id
-  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
-    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
-    1342439) -- ACE inhibitors
-  GROUP BY person_id
+  FROM (
+    SELECT drug_exposure_start_date,
+      drug_exposure_end_date,
+      person_id,
+      ROW_NUMBER() OVER (
+        PARTITION BY person_id
+  			ORDER BY drug_exposure_start_date
+      ) order_nr
+    FROM @cdm_db_schema.drug_exposure
+    INNER JOIN @cdm_db_schema.concept_ancestor
+      ON drug_concept_id = descendant_concept_id
+    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
+      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
+      1342439) -- ACE inhibitors
+  ) ordered_exposures
+  WHERE order_nr = 1
 ) first_exposure
 INNER JOIN @cdm_db_schema.observation_period
   ON subject_id = person_id
