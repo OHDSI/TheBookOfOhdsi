@@ -223,16 +223,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#characterization"><i class="fa fa-check"></i><b>8.1</b> Characterization</a></li>
 <li class="chapter" data-level="8.2" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#population-level-estimation"><i class="fa fa-check"></i><b>8.2</b> Population-level estimation</a></li>
 <li class="chapter" data-level="8.3" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#patient-level-prediction"><i class="fa fa-check"></i><b>8.3</b> Patient-Level prediction</a></li>
-<li class="chapter" data-level="8.4" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#frame-research-question-in-ohdsi-speak"><i class="fa fa-check"></i><b>8.4</b> Frame research question in OHDSI-speak</a></li>
-<li class="chapter" data-level="8.5" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#example-of-a-study-in-ohdsi-speak"><i class="fa fa-check"></i><b>8.5</b> Example of a Study in OHDSI-speak</a><ul>
-<li class="chapter" data-level="8.5.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#characterization-questions"><i class="fa fa-check"></i><b>8.5.1</b> Characterization Questions</a></li>
-<li class="chapter" data-level="8.5.2" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#population-level-estimation-question"><i class="fa fa-check"></i><b>8.5.2</b> Population-Level Estimation Question</a></li>
-<li class="chapter" data-level="8.5.3" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#more-real-example-questions"><i class="fa fa-check"></i><b>8.5.3</b> More real example questions</a></li>
+<li class="chapter" data-level="8.4" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#a-typical-application"><i class="fa fa-check"></i><b>8.4</b> A Typical Application</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#characterization-questions"><i class="fa fa-check"></i><b>8.4.1</b> Characterization Questions</a></li>
+<li class="chapter" data-level="8.4.2" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#population-level-estimation-question"><i class="fa fa-check"></i><b>8.4.2</b> Population-Level Estimation Question</a></li>
 </ul></li>
-<li class="chapter" data-level="8.6" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#limitations-of-observational-research"><i class="fa fa-check"></i><b>8.6</b> Limitations of observational research</a><ul>
-<li class="chapter" data-level="8.6.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#missing-data"><i class="fa fa-check"></i><b>8.6.1</b> Missing data</a></li>
+<li class="chapter" data-level="8.5" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#limitations-of-observational-research"><i class="fa fa-check"></i><b>8.5</b> Limitations of observational research</a><ul>
+<li class="chapter" data-level="8.5.1" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#erroneous-data"><i class="fa fa-check"></i><b>8.5.1</b> Erroneous data</a></li>
+<li class="chapter" data-level="8.5.2" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#missing-data"><i class="fa fa-check"></i><b>8.5.2</b> Missing data</a></li>
 </ul></li>
-<li class="chapter" data-level="8.7" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#summary-4"><i class="fa fa-check"></i><b>8.7</b> Summary</a></li>
+<li class="chapter" data-level="8.6" data-path="DataAnalyticsUseCases.html"><a href="DataAnalyticsUseCases.html#summary-4"><i class="fa fa-check"></i><b>8.6</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html"><i class="fa fa-check"></i><b>9</b> OHDSI Analytics Tools</a><ul>
 <li class="chapter" data-level="9.1" data-path="OhdsiAnalyticsTools.html"><a href="OhdsiAnalyticsTools.html#analysisImplementation"><i class="fa fa-check"></i><b>9.1</b> Analysis implementation</a></li>
@@ -846,7 +845,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="SqlAndR.html#cb28-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb28-2"><a href="SqlAndR.html#cb28-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.urfn1equchildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.zy0wvg06children ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>

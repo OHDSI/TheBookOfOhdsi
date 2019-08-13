@@ -2658,7 +2658,12 @@ And the desired output is:
 \end{itemize}
 
 Then you're probably asking for:
-- \textbf{Clinical characterization}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Clinical characterization}
+\end{itemize}
 
 \hypertarget{population-level-estimation}{%
 \section{Population-level estimation}\label{population-level-estimation}}
@@ -2698,18 +2703,36 @@ More specifically, if your question is:
 \end{itemize}
 
 And the desired output is:
-- Relative risk
-- Hazards ratio
-- Odds ratio
-- Average treatment effect
-- Causal effect
-- Association
-- Correlation
-- Safety surveillance
-- Comparative effectiveness
+
+\begin{itemize}
+\tightlist
+\item
+  Relative risk
+\item
+  Hazards ratio
+\item
+  Odds ratio
+\item
+  Average treatment effect
+\item
+  Causal effect
+\item
+  Association
+\item
+  Correlation
+\item
+  Safety surveillance
+\item
+  Comparative effectiveness
+\end{itemize}
 
 Then you're probably asking for:
-- \textbf{Population-level effect estimation}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Population-level effect estimation}
+\end{itemize}
 
 \hypertarget{patient-level-prediction}{%
 \section{Patient-Level prediction}\label{patient-level-prediction}}
@@ -2741,13 +2764,26 @@ More specifically, if your question is:
 \end{itemize}
 
 And the desired output is:
-- Probability for an individual
-- Prediction model
-- High/low risk groups
-- Probabilistic phenotype
+
+\begin{itemize}
+\tightlist
+\item
+  Probability for an individual
+\item
+  Prediction model
+\item
+  High/low risk groups
+\item
+  Probabilistic phenotype
+\end{itemize}
 
 Then you're probably asking for:
-- \textbf{Patient-level prediction}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Patient-level prediction}
+\end{itemize}
 
 Population-level estimation and patient-level prediction overlap to a certain extent. For example, an important use case for prediction is to predict an outcome for a specific patient had drug A been prescribed and also predict the same outcome had drug B been prescribed. Let's assume that in reality only one of these drugs is prescribed (say drug A) so we get to see whether the outcome following treatment with A actually occurs. Since drug B was not prescribed, the outcome following treatment B, while predictable, is ``counterfactual'' since it is not ever observed. Each of these prediction tasks falls under patient-level prediction. However, the difference between (or ratio of) the two outcomes is a unit-level \emph{causal} effect, and should be estimated using causal effect estimation methods instead.
 
@@ -2755,71 +2791,8 @@ Population-level estimation and patient-level prediction overlap to a certain ex
 People have a natural tendency to erroneously interpret predictive models as if they are causal models. But a predictive model can only show correlation, never causation. For example, diabetic drug use might be a strong predictor for myocardial infarction (MI) because diabetes is a strong risk factor for MI. However, that does not mean that stopping the diabetic drugs will prevent MI!
 \EndKnitrBlock{rmdimportant}
 
-\hypertarget{frame-research-question-in-ohdsi-speak}{%
-\section{Frame research question in OHDSI-speak}\label{frame-research-question-in-ohdsi-speak}}
-
-You now know from the previous step what OHDSI framework best suits your research question. Depending on the study objectives, an OHDSI-compliant research question should be structured in a way that explicitly describes the target population, the output(s) of interest, and analysis method (if applicable).
-
-The list below provides OHDSI-speak template and example questions for different study categories as the best practice to formulate research questions. The subsequent chapters will explain the analytical methods to run your study.
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-\begin{minipage}[b]{0.30\columnwidth}\raggedright
-Study Category\strut
-\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
-Template Question\strut
-\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
-Example\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Disease onset and progression\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients who are newly diagnosed with \textbf{{[}insert the disease of interest{]}}, which patients will go on to have \textbf{{[}another disease or related complication{]}} within \textbf{{[}time horizon from diagnosis{]}}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among newly diagnosed \textbf{AFib} patients, which patients will go onto to have \textbf{ischemic stroke} in next \textbf{3 years}? Among newly diagnosed \textbf{Melonoma}, which patients will go onto to have \textbf{brain cancer} in next \textbf{6 months}?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Treatment choice\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients with \textbf{{[}indicated disease{]}} who are treated with either \textbf{{[}treatment 1{]}} or \textbf{{[}treatment 2{]}}, which patients were treated with \textbf{{[}treatment 1{]} (on day 0)}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among \textbf{AFib} patients who took either \textbf{warfarin} or \textbf{dabigatran}, which patients got warfarin? (as defined for propensity score model)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Treatment response\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients who are new users of \textbf{{[}insert the chronically-used drug of interest{]}}, which patients will \textbf{{[}insert desired effect{]}} in \textbf{{[}time window{]}}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Which patients with \textbf{T2DM} who start \textbf{metformin} stay on \textbf{metformin} after \textbf{3 years}?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Treatment safety\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients who are new users of \textbf{{[}insert the drug of interest{]}}, which patients will experience \textbf{{[}insert your favorite known adverse event from the drug profile{]}} within \textbf{{[}time horizon following exposure start{]}}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among new users of \textbf{warfarin}, which patients will have \textbf{GI bleeding} in \textbf{1 year}?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Treatment adherence\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients who are new users of \textbf{{[}insert the chronically-used drug of interest{]}}, which patients will achieve \textbf{{[}adherence metric threshold{]}} at \textbf{{[}time horizon{]}}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Which patients with \textbf{T2DM} who start on \textbf{metformin} will achieve \textbf{\textgreater=80\% proportion of days covered} at \textbf{1 year}?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Comparative effectiveness\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-To compare the risk of \textbf{{[}Insert the outcome of interest{]}} between \textbf{{[}Insert the target exposure{]}} and \textbf{{[}Insert the comparator cohort{]}}, we will estimate the population-level effect of exposure on the \textbf{{[}Insert the metric of analysis model here: hazards for Cox/ odds for logistic / rate ratio for Poisson{]}} of the outcome during the period from \textbf{{[}Insert the time-at-risk start: e.g.~1 day after exposure start{]}} to \textbf{{[}Insert the time-at-risk end: e.g.~30 days after exposure end{]}}.\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-To compare the risk of \textbf{angioedema} between new users of \textbf{levetiracetam} and new users of \textbf{phenytoin}, we will estimate the population-level effect of exposure on the \textbf{hazards} of the outcome during the period from \textbf{1 day after exposure start} to \textbf{0 days after exposure end}.\strut
-\end{minipage}\tabularnewline
-\bottomrule
-\end{longtable}
-
-\hypertarget{example-of-a-study-in-ohdsi-speak}{%
-\section{Example of a Study in OHDSI-speak}\label{example-of-a-study-in-ohdsi-speak}}
+\hypertarget{a-typical-application}{%
+\section{A Typical Application}\label{a-typical-application}}
 
 You're a researcher interested in studying the effects of ACE inhibitor monotherapy vs.~thiazide diuretic monotherapy on the outcomes of acute myocardial infarction and angioedema as first-line treatment for hypertension. You understand that based on the OHDSI literature, you are asking a population-level effect estimation question but first, you need to do some homework on how to characterize this particular treatment of interest.
 
@@ -2834,81 +2807,6 @@ Acute myocardial infarction is a cardiovascular complication that can occur in p
 The population-level effect estimation study estimates the relative risk of ACE inhibitor vs, thiazide use for the outcomes of AMI and angioedema. Here, you further evaluate through study diagnostics and negative controls whether we can produce a reliable estimate of the average treatment effect.
 
 Independent of whether there is a causal effect of the exposures, you are also interested in trying to determine which patients are at highest risk of the outcomes. (This is a patient-level prediction problem). Here, you develop a prediction model that evaluates: amongst the patients who are new users of ACE inhibitors, which patients are at highest risk of developing acute myocardial infarction during the 1 year after starting treatment. The model allows us to predict, for a patient who has just been prescribed ACE for the first time, based on events observed from their medical history, what is the chance that they will experience AMI in the next 1 year.
-
-\hypertarget{more-real-example-questions}{%
-\subsection{More real example questions}\label{more-real-example-questions}}
-
-In this section, we provide more real examples of questions as they have been submitted to the community. We have also reframed them to the OHDSI-speak format (if needed) and mapped them to OHDSI analytic frameworks:
-
-\begin{longtable}[]{@{}lll@{}}
-\toprule
-\begin{minipage}[b]{0.30\columnwidth}\raggedright
-Unframed question we've heard from potential researchers\strut
-\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
-Reframed Question in OHDSI-speak \emph{(italics denote additions to the original question for clarification)}\strut
-\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
-OHDSI Framework\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among patients addicted to opioids, what is the proportion of patients taking benzos concurrently?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst opioid-addicted patients, how many patients did concurrently use benzodiazepines \emph{any time over the last 5 years of data}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Clinical characterization\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among patients newly diagnosed with cancer, how many received guideline-concordant care?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst newly diagnosed cancer patients, how many patients did receive guideline-concordant care \emph{over the last 5 years of data}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Clinical characterization\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among patients diagnosed with pneumonia, who develops ocular retinopathy within 2 years?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients who are \emph{newly} diagnosed with pneumonia, which patients will develop ocular retinopathy after 2 years?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Patient-level prediction\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among Patients with an ICD9/10 for psoriasis over the last 5 years, how many presented with major adverse cardiovascular events (e.g., heart attack, stroke, MI, atrial fibrillation)? What were the red cell distribution width (RDW) values for these patients?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst diagnosed patients with psoriasis over the last 5 years \emph{of data}, how many patients experienced major cardiovascular adverse events \emph{any time during the study period}? Amongst diagnosed patients with psoriasis over the last 5 years of data, what were \emph{max-min range, median, IQR, mean, and SD} of red cell distribution width (RDW) values \emph{any time during the study period}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Clinical characterization\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-How many patients had a shoulder arthroscopy in the last year?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-How many patients did undergo arthroscopy \emph{procedure} in the last year?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Clinical characterization\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among patients with neuro-degenerative Parkinson's disease, onset age 65 or older, how many subsequently suffered from brain stroke or dementia?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients diagnosed with neurodegenerative Parkinson's disease who were 65 years or older at onset, how many patients experienced brain stroke or dementia \emph{after diagnosis}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Clinical characterization\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-What are the rates of chemotherapy-induced neutropenia and subsequent chemotherapy withdrawal in patients taking cisplatin?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst patients who take cisplatin, what is the rate of developing chemotherapy-induced neutropenia \emph{per 1,000 patient per year over the last 2 years of data}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Clinical characterization\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.30\columnwidth}\raggedright
-Among outpatients, how many presented with ADHD were taking Ritalin for the last 6 months?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Amongst admitted patients in ambulatory setting \emph{over the last year of data}, how many ADHD patients did use Ritalin within the last 6 months \emph{prior to last visit}?\strut
-\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
-Clinical characterization\strut
-\end{minipage}\tabularnewline
-\bottomrule
-\end{longtable}
 
 \hypertarget{limitations-of-observational-research}{%
 \section{Limitations of observational research}\label{limitations-of-observational-research}}
@@ -2926,6 +2824,11 @@ There are many important healthcare questions for which OHDSI databases cannot p
 \item
   Since patients tend to encounter the healthcare system only when they are unwell, measurement of the benefits of treatments can prove elusive.
 \end{itemize}
+
+\hypertarget{erroneous-data}{%
+\subsection{Erroneous data}\label{erroneous-data}}
+
+Clinical data recorded in OHDSI databases can deviate from clinical reality. For example, a patient's record may include a code for myocardial infarction even though the patient never experienced a myocardial infarction. Similarly, a lab value may be erroneous or an incorrect code for a procedure may appear in the database. Chapters \ref{DataQuality} and \ref{ClinicalValidity} discuss several of these issues and good practice aims to identify and correct for as many of these kinds of issues as possible. Nonetheless, erroneous data inevitably persist to some extent and can undermine the validity of subsequent analyses. An extensive literature focuses on adjustment of statistical inferences to account for errors-in-data - see, for example, \citet{fuller2009measurement}.
 
 \hypertarget{missing-data}{%
 \subsection{Missing data}\label{missing-data}}
@@ -3657,7 +3560,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.yc9fzwcgchildren ;"
+## [1] "SELECT * FROM temp_schema.yvghik8bchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
