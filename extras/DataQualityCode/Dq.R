@@ -27,3 +27,5 @@ orphans <- findOrphanSourceCodes(connectionDetails,
                                                      "Giant hives",
                                                      "Giant urticaria",
                                                      "Periodic edema"))
+View(orphans)
+knitr::kable(orphans[, c(1,2,3,10)], row.names = FALSE)
