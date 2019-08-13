@@ -11,7 +11,7 @@ Observational healthcare databases provide a valuable resource to understand var
 
 With the exception of database-level characterization, these methods aim to describe a population relative to an event referred to as the index date. This population of interest is defined as a cohort as described in chapter \@ref(Cohorts). The cohort defines the index date for each person in the population of interest. Using the index date as an anchor, we define the time preceding the index date as **baseline** time. The index date and all time after is called the **post-index** time. 
 
-Use-cases for characterization include disease natural history, treatment utilization and quality improvement. In this chapter will describe the methods for characterization. We will use a population of hypertensive persons to demonstrate how to use ATLAS and R to perform these characterization tasks.
+Use-cases for characterization include disease natural history, treatment utilization and quality improvement. In this chapter will describe the methods for characterization. We will use a population of hypertensive persons to demonstrate how to use ATLAS and R to perform these characterization tasks.\index{characterization} \index{cohort characterization|see {characterization!cohort}} \index{baseline time} \index{post-index time} \index{index date} \index{disease natural history|see {characterization}} \index{treatment utilization|see {characterization}} \index{quality improvement|see {characterization}}
 
 ## Database Level Characterization
 
@@ -22,17 +22,17 @@ Before we can answer any characterization question about a population of interes
 * How long are persons in this database observed for?
 * What is the proportion of persons having a {treatment, condition, procedure, etc} recorded/prescribed over time?
 
-These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \@ref(DataQuality) goes into further detail on data quality.
+These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \@ref(DataQuality) goes into further detail on data quality. \index{characterization!database Level}
 
 ## Cohort characterization
 
 Cohort characterization describes the baseline and post-index characteristics of people in a cohort. OHDSI approaches characterization through descriptive statistics of all conditions, drug and device exposures, procedures and other clinical observations that are present in the person’s history. We also summarize the socio-demographics of members of the cohort at the index date. This approach provides a complete summary of the cohort of interest. Importantly, this enables a full exploration of the cohort with an eye towards variation in the data while also allowing for identification of potentially missing values. 
 
-Cohort characterisation methods can be used for person-level drug utilisation studies (DUS) to estimate the prevalence of indications and contraindications amongst users of a given treatment. The dissemination of this cohort characterization is a recommended best practice for observational studies as detailed in the Strengthening the Reporting of Observation Studies in Epidemiology (STROBE) guidelines [@VONELM2008344].
+Cohort characterization methods can be used for person-level drug utilization studies (DUS) to estimate the prevalence of indications and contraindications amongst users of a given treatment. The dissemination of this cohort characterization is a recommended best practice for observational studies as detailed in the Strengthening the Reporting of Observation Studies in Epidemiology (STROBE) guidelines [@VONELM2008344]. \index{characterization!cohort} \index{descriptive statistics|see {characterization}} \index{drug utilization}
 
 ## Treatment Pathways
 
-Another method to characterize a population is to describe the treatment sequence during the post-index time window. For example, @Hripcsak7329 utilized the OHDSI common data standards to create descriptive statistics to characterize treatment pathways for type 2 diabetes, hypertension and depression. By standardizing this analytic approach, Hripcsak and colleagues were able to run the same analysis across the OHDSI network to describe the characteristics of these populations of interest.
+Another method to characterize a population is to describe the treatment sequence during the post-index time window. For example, @Hripcsak7329 utilized the OHDSI common data standards to create descriptive statistics to characterize treatment pathways for type 2 diabetes, hypertension and depression. By standardizing this analytic approach, Hripcsak and colleagues were able to run the same analysis across the OHDSI network to describe the characteristics of these populations of interest. \index{characterization!treatment pathways} \index{treatment pathways|see {characterization!treatment pathways}} \index{cohort pathways|see {characterization!treatment pathways}}
 
 The pathway analysis aims to summarize the treatments (events) received by persons diagnosed with a specific condition from the first drug prescription/dispensation. In this study, treatments were described after the diagnosis of type 2 diabetes, hypertension and depression respectively. The events for each person were then aggregated to a set of summary statistics and visualized for each condition and for each database.
 
@@ -48,7 +48,7 @@ In classic DUS terminology, treatment pathway analyses include some population-l
 
 ## Incidence
 
-Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk. Figure \@ref(fig:incidenceTimeline) aims to show the components of an incidence calculation for a single person:
+Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk. Figure \@ref(fig:incidenceTimeline) aims to show the components of an incidence calculation for a single person: \index{incidence}
 
 ```{r incidenceTimeline, fig.cap='Person-level view of incidence calculation components',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Characterization/incidenceTimeline.png")
@@ -62,13 +62,13 @@ There are two metrics for calculating incidence:
 Incidence\;Proportion = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{\#\;persons\;in\;the\;cohort\;with\;time\;at\;risk}
 \end{equation} 
 
-An incidence propoprtion provides a mesure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a stated timeframe.
+An incidence propoprtion provides a mesure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a defined timeframe.\index{incidence!proportion}
 
 \begin{equation} 
 Incidence\;Rate = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{person\;time\;at\;risk\;contributed\;by\;persons\;in\;the\;cohort}
 \end{equation} 
 
-An incidence rate is a mesure of the number of new outcomes during the cumulative time-at-risk for the population. When a person experiences the outcome in the time-at-risk, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative time-at-risk is referred to as **person-time** and is expressed in days, months or years.
+An incidence rate is a mesure of the number of new outcomes during the cumulative time-at-risk for the population. When a person experiences the outcome in the time-at-risk, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative time-at-risk is referred to as **person-time** and is expressed in days, months or years.\index{incidence!rate} \index{person-time}
 
 When calculated for therapies, incidence proportions and incidence rates of use of a given therapy are classic population-level DUS.
 
@@ -80,7 +80,7 @@ Observational data sources provide a way to characterize hypertensive population
 
 ## Database characterization in ATLAS
  
-Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with ACHILLES to find database level characteristics related to hypertensive persons. Start by clicking on ![](images/Characterization/atlasDataSourcesMenuItem.png) in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the database to explore. Next, use the drop down below the database to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:
+Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with [ACHILLES](https://github.com/OHDSI/Achilles) to find database level characteristics related to hypertensive persons. Start by clicking on ![](images/Characterization/atlasDataSourcesMenuItem.png) in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the database to explore. Next, use the drop down below the database to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:
 
 ```{r atlasDataSourcesConditionTreemap, fig.cap='Atlas Data Sources: Condition Occurrence Treemap',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Characterization/atlasDataSourcesConditionTreemap.png")
@@ -118,7 +118,7 @@ We assume the cohorts have already been created in ATLAS as described in Chapter
 
 #### Feature Selection
 
-ATLAS comes with nearly 100 preset feature analyses that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Each of these preset feature analyses perform aggregation and summarization functions on clinical observations for the selected target cohorts. These calculations provide potentially thousands of features to describe the cohorts baseline and post-index characteristics. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section. 
+ATLAS comes with nearly 100 preset feature analyses that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Each of these preset feature analyses perform aggregation and summarization functions on clinical observations for the selected target cohorts. These calculations provide potentially thousands of features to describe the cohorts baseline and post-index characteristics. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section. \index{feature analyses}
 
 Click on ![](images/Characterization/atlasImportButton.png) to select the feature to characterize. Below is a list of features we will use to characterize these cohorts:
 
@@ -195,7 +195,7 @@ While domain covariates are computed using a binary indicator (i.e. was a record
 
 ### Defining custom features
 
-In addition to the preset features, ATLAS supports the ability to allow for user-defined custom features. To do this, click the **Characterization** left-hand menu item, then click the **Feature Analysis** tab and click the **New Feature Analysis** button. Provide a name for the custom feature and save it using the ![](images/PopulationLevelEstimation/save.png) button.
+In addition to the preset features, ATLAS supports the ability to allow for user-defined custom features. To do this, click the **Characterization** left-hand menu item, then click the **Feature Analysis** tab and click the **New Feature Analysis** button. Provide a name for the custom feature and save it using the ![](images/PopulationLevelEstimation/save.png) button. \index{ATLAS!characterization features}
 
 In this example, we will define a custom feature that will identify the count of persons in each cohort that have a drug era of ACE inhibitors in their history after cohort start:
 
@@ -211,13 +211,13 @@ knitr::include_graphics("images/Characterization/atlasCharacterizationCustomFeat
 
 ## Cohort characterization in R
 
-We may also choose to characterize cohorts using R. Here we’ll describe how to use the OHDSI R package FeatureExtraction to generate baseline features (covariates) for our hypertension cohorts. FeatureExtraction provides users with the ability to construct covariates in three ways:
+We may also choose to characterize cohorts using R. Here we’ll describe how to use the OHDSI R package FeatureExtraction to generate baseline features (covariates) for our hypertension cohorts. FeatureExtraction provides users with the ability to construct covariates in three ways: \index{FeatureExtraction}
 
 * Choose the default set of covariates
-* Choose from a set of prespecified analyses
+* Choose from a set of pre-specified analyses
 * Create a set of custom analyses
 
-FeatureExtraction creates covariates in two distinct ways: person-level features and aggregate features. Person-level features are useful for machine learning applications. In this section, we’ll focus on using aggregate features that are useful for generating baseline covariates that describe the cohort of interest. Additionally, we’ll focus on the second two ways of constructing covariates: prespecified and custom analyses and leave using the default set as an exercise for the reader.
+FeatureExtraction creates covariates in two distinct ways: person-level features and aggregate features. Person-level features are useful for machine learning applications. In this section, we’ll focus on using aggregate features that are useful for generating baseline covariates that describe the cohort of interest. Additionally, we’ll focus on the second two ways of constructing covariates: pre-specified and custom analyses and leave using the default set as an exercise for the reader.
 
 ### Cohort instantiation
 

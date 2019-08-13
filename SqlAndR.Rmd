@@ -9,7 +9,7 @@ require(DatabaseConnector)
 
 The Common Data Model (CDM) is a relational database model (all data is represented as records in tables that have fields), which means that the data will typically be stored in a relational database using a software platform like PostgreSQL, Oracle, or Microsoft SQL Server. The various OHDSI tools such as ATLAS and the Methods Library work by querying the database behind the scene, but we can also query the database directly ourselves if we have appropriate access rights. The main reason to do this is to perform analyses that currently are not supported by any existing tool. However, directly querying the database also comes with greater risk of making mistakes, as the OHDSI tools are often designed to help guide the user to appropriate analysis of the data. Direct queries do not provide such guidance.
 
-The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server, one would type:
+The standard language for querying relational databases is SQL (Structured Query Language), which can be used both to query the database as well as to make changes to the data. Although the basic commands in SQL are indeed standard, meaning the same across software platforms, each platform has its own dialect, with subtle changes. For example, to retrieve the top 10 rows of the PERSON table on SQL Server, one would type: \index{SQL} \index{structured query language|see {SQL}}
 
 ```{sql,eval=FALSE}
 SELECT TOP 10 * FROM person;
@@ -21,17 +21,17 @@ Whereas the same query on PostgreSQL would be:
 SELECT * FROM person LIMIT 10;
 ```
 
-In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. 
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \index {Standard SQL Dialect|see {SqlRender}} \index{OHDSI SQL|see {SqlRender}}
 
-Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter.
+Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter. \index{DatabaseConnector}
 
-So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. 
+So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyse the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. \index{R} 
 
-In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector.
+In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector. \index{Query Library} \index{SQL Query Libary|see {Query Library}}
 
 ## SqlRender {#SqlRender}
 
-The [SqlRender](https://ohdsi.github.io/SqlRender/) package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:
+The [SqlRender](https://ohdsi.github.io/SqlRender/) package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using: 
 
 ```{r, eval=FALSE}
 install.packages("SqlRender")
@@ -41,7 +41,7 @@ SqlRender supports a wide array of technical platforms including traditional dat
 
 ### SQL parameterization
 
-One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the `render()` function.
+One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the `render()` function. \index{SqlRender!parameterization}
 
 **Substituting parameter values**
 
@@ -100,7 +100,7 @@ sql <- "SELECT TOP 10 * FROM person;"
 translate(sql, targetDialect = "postgresql")
 ```
 
-The `targetDialect` parameter can have the following values: "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sqlite", and "sql server".
+The `targetDialect` parameter can have the following values: "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sqlite", and "sql server". \index{SqlRender!translation}
 
 ```{block2, type='rmdimportant'}
 There are limits to what SQL functions and constructs can be translated properly, both because only a limited set of translation rules have been implemented in the package, but also some SQL features do not have an equivalent in all dialects. This is the primary reason why OHDSI SQL was developed as its own, new SQL dialect. However, whenever possible we have kept to the SQL Server syntax to avoid reinventing the wheel.
@@ -110,7 +110,7 @@ Despite our best efforts, there are quite a few things to consider when writing 
 
 **Functions and structures supported by translate**
 
-These SQL Server functions have been tested and were found to be translated correctly to the various dialects:
+These SQL Server functions have been tested and were found to be translated correctly to the various dialects:\index{SqlRender!supported functions}
 
 Table: (\#tab:sqlFunctions) Functions supported by translate.
 
@@ -296,7 +296,7 @@ The one situation where this will fail is the `USE` command, since `USE cdm_data
 
 **Debugging parameterized SQL**
 
-Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL. 
+Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL. \index{SqlRender!debugging}
 
 A Shiny app is included in the SqlRender package for interactively editing source SQL and generating rendered and translated SQL. The app can be started using:
 
@@ -326,7 +326,7 @@ DatabaseConnector supports a wide array of technical platforms including traditi
 
 ### Creating a connection
 
-To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the `connect` function and specify these details directly:
+To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the `connect` function and specify these details directly: \index{DatabaseConnector!creating a connection}
 
 ```{r eval=FALSE}
 conn <- connect(dbms = "postgresql",
@@ -375,7 +375,7 @@ writeLines("Connecting using PostgreSQL driver")
 
 ### Querying
 
-The main functions for querying database are the `querySql` and `executeSql` functions. The difference between these functions is that `querySql` expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, `executeSql` does not expect data to be returned, and accepts multiple SQL statements in a single SQL string. 
+The main functions for querying database are the `querySql` and `executeSql` functions. The difference between these functions is that `querySql` expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, `executeSql` does not expect data to be returned, and accepts multiple SQL statements in a single SQL string. \index{DatabaseConnector!querying}
 
 Some examples:
 
@@ -670,16 +670,27 @@ SELECT 1 AS cohort_definition_id,
   cohort_end_date,
   subject_id
 FROM (
-  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,
-    MIN(drug_exposure_end_date) AS cohort_end_date,
+  SELECT drug_exposure_start_date AS cohort_start_date,
+    COALESCE(drug_exposure_end_date,
+             DATEADD(DAY, 1, drug_exposure_start_date)
+    ) AS cohort_end_date,
     person_id AS subject_id
-  FROM @cdm_db_schema.drug_exposure
-  INNER JOIN @cdm_db_schema.concept_ancestor
-    ON drug_concept_id = descendant_concept_id
-  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
-    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
-    1342439) -- ACE inhibitors
-  GROUP BY person_id
+  FROM (
+    SELECT drug_exposure_start_date,
+      drug_exposure_end_date,
+      person_id,
+      ROW_NUMBER() OVER (
+        PARTITION BY person_id
+  			ORDER BY drug_exposure_start_date
+      ) order_nr
+    FROM @cdm_db_schema.drug_exposure
+    INNER JOIN @cdm_db_schema.concept_ancestor
+      ON drug_concept_id = descendant_concept_id
+    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
+      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
+      1342439) -- ACE inhibitors
+  ) ordered_exposures
+  WHERE order_nr = 1
 ) first_exposure
 INNER JOIN @cdm_db_schema.observation_period
   ON subject_id = person_id

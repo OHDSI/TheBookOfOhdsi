@@ -46,7 +46,7 @@ Table: (\#tab:aceInhibitors) ACE inhibitors
 | 1373225 | Perindopril | NO | YES | NO |
 
 
-##  New users of ACE inhibitors as first-line monotherapy for hypertension {#AceInhibitorsMono}
+##  New users of ACE inhibitors monotherapy {#AceInhibitorsMono}
 
 **Initial Event Cohort**
 
@@ -268,7 +268,7 @@ Table: (\#tab:inpatientOrEr) Inpatient or ER visit
 | 9203 | Emergency Room Visit | NO | YES | NO |
 
 
-## New users of Thiazide-like diuretics as first-line monotherapy for hypertension {#ThiazidesMono}
+## New users of Thiazide-like diuretics monotherapy {#ThiazidesMono}
 
 **Initial Event Cohort**
 
@@ -394,7 +394,7 @@ Table: (\#tab:htnDrugsThzMono) Hypertension drugs
 | 40226742 | olmesartan | NO | YES | NO |
 | 40235485 | azilsartan | NO | YES | NO |
 
-## Patients initiating first-line therapy for hypertension with >1 yr follow-up {#HTN1yrFO}
+## Patients initiating first-line therapy for hypertension {#HTN1yrFO}
 
 **Initial Event Cohort**
 

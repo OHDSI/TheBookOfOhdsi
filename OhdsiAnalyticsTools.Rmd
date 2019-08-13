@@ -8,7 +8,7 @@ In this chapter we first describe various ways in which we can choose to impleme
 
 ## Analysis implementation {#analysisImplementation}
 
-Figure \@ref(fig:implementations) shows the various ways in which we can choose to implement a study against a database using the CDM. 
+Figure \@ref(fig:implementations) shows the various ways in which we can choose to implement a study against a database using the CDM. \index{analysis implementation}
 
 ```{r implementations, fig.cap='Different ways to implement an analysis against data in the CDM.',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/OhdsiAnalyticsTools/implementations.png")
@@ -18,7 +18,7 @@ We may choose to write our analysis as custom code, and not make use of any of t
 
 An alternative is to develop the analysis in R, and make use of the packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). At a minimum, one could use the [SqlRender](https://ohdsi.github.io/SqlRender/) and [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) packages described in more detail in Chapter \@ref(SqlAndR) that allow the same code to be executed on various database platforms, such as PostgreSQL, SQL Server, and Oracle. Other packages such as [CohortMethod](https://ohdsi.github.io/CohortMethod/) and [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) offer R functions for advanced analytics against the CDM that can be called on in one's code. This still requires a lot of technical expertise, but by re-using the validated components of the Methods Library we can be more efficient and error-free than when using completely custom code.
 
-The third approach relies on our interactive analysis platform [ATLAS](https://github.com/OHDSI/Atlas/wiki), a web-based tool that allows non-programmers to perform a wide range of analyses efficiently. ATLAS makes use of the Methods Libraries but provides a simple, point and click interface to design analyses and in many cases generate the necessary R code to run the analysis.  The pace of development can vary between the Methods Libraries and ATLAS which can lead to limited options in the ATLAS interface where the underlying libraries have more flexibility.  
+The third approach relies on our interactive analysis platform [ATLAS](https://github.com/OHDSI/Atlas/wiki), a web-based tool that allows non-programmers to perform a wide range of analyses efficiently. ATLAS makes use of the Methods Libraries but provides a simple, point and click interface to design analyses and in many cases generate the necessary R code to run the analysis.  The pace of development can vary between the Methods Libraries and ATLAS which can lead to limited options in the ATLAS interface where the underlying libraries have more flexibility. 
 
 ATLAS and the Methods Library are not independent. Some of the more complicated analytics that can be invoked in ATLAS are executed through calls to the packages in the Methods Library. Similarly, cohorts used in the Methods Library are often designed in ATLAS.
 
@@ -40,7 +40,7 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 
 ## ATLAS
 
-ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a small simulated datasets, it can still be used for many purposes including testing and training. For example, it is possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI.
+ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a small simulated datasets, it can still be used for many purposes including testing and training. For example, it is possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
 
 [^atlasUrl]: http://www.ohdsi.org/web/atlas
 
@@ -51,57 +51,57 @@ knitr::include_graphics("images/OhdsiAnalyticsTools/atlas.png")
 
 A screenshot of ATLAS is provided in Figure \@ref(fig:atlas). On the left is a navigation bar showing the various functions provided by ATLAS:
 
-Data Sources
+Data Sources \index{ATLAS!Data Sources} \index{Achilles|see {ATLAS!data sources}}
 : Data sources provides the capability review descriptive, standardized reporting for each of the data sources that you have configured within your Atlas platform. This feature uses the large-scale analytics strategy: all descriptives have been pre-computed. Data sources is discussed in Chapter \@ref(Characterization).
 
-Vocabulary Search
+Vocabulary Search \index{ATLAS!vocabulary search} 
 : Atlas provides the ability to search and explore the OMOP standardized vocabulary to understand what concepts exist within those vocabularies and how to apply those concepts in your standardized analysis against your data sources. This feature is discussed in Chapter \@ref(StandardizedVocabularies).
 
-Concept Sets
+Concept Sets \index{ATLAS!concept sets} \index{concept sets|see {ATLAS!concept sets}}
 : Concept sets provides the ability to create collections of logical expressions that can be used to identify a set of concepts to be used throughout your standardized analyses.  Concept sets provide more sophistication than a simple list of codes or values.  A concept set is comprised of multiple concepts from the standardized vocabulary in combination with logical indicators that allow a user to specify that they are interested in including or excluding related concepts in the vocabulary hierarchy.  Searching the vocabulary, identifying the set of concepts, and specifying the logic to be used to resolve a concept set provides a powerful mechanism for defining the often obscure medical language used in analysis plans.  These concept sets can be saved within ATLAS and then used throughout your analysis as part of cohort definitions or analysis specifications.
 
-Cohort Definitions
+Cohort Definitions \index{ATLAS!cohort definitions}
 : Cohort definitions is the ability to construct a set of persons who satisfy one or more criteria for a duration of time and these cohorts can then serve as the basis of inputs for all of your subsequent analyses. This feature is discussed in Chapter \@ref(Cohorts).
 
-Characterizations
+Characterizations \index{ATLAS!cohort characterization}
 : Characterizations is an analytic capability that allows you to look at one or more cohorts that you've defined and to summarize characteristics about those patient populations. This feature uses the real-time query strategy, and is discussed in Chapter \@ref(Characterization).
 
-Cohort Pathways
+Cohort Pathways \index{ATLAS!cohort pathways}
 : Cohort pathways is an analytic tool that allows you to look at the sequence of clinical events that occur within one or more populations. This feature uses the real-time query strategy, and is discussed in Chapter \@ref(Characterization).
 
-Incidence Rates
+Incidence Rates \index{ATLAS!incidence rates}
 : Incidence rates is a tool that allows you to estimate the incidence of outcomes within target populations of interest. This feature uses the real-time query strategy, and is discussed in Chapter \@ref(Characterization).
 
-Profiles
+Profiles \index{ATLAS!profiles}
 : Profiles is a tool that allows you to explore an individual patients longitudinal observational data to summarize what is going on within a given individual. This feature uses the real-time query strategy.
 
-Population Level Estimation
+Population Level Estimation \index{ATLAS!population level estimation}
 : Estimation is a capability to allow you to define a population level effect estimation study using a comparative cohort design whereby comparisons between one or more target and comparator cohorts can be explored for a series of outcomes. This feature can be said to implement the real-time query strategy, as no coding is required, and is discussed in Chapter \@ref(PopulationLevelEstimation).
 
-Patient Level Prediction
+Patient Level Prediction \index{ATLAS!patient level prediction}
 : Prediction is a capability to allow you to apply machine learning algorithms to conduct patient level prediction analyses whereby you can predict an outcome within any given target exposures. This feature can be said to implement the real-time query strategy, as no coding is required, and is discussed in Chapter \@ref(PatientLevelPrediction).
 
-Jobs
+Jobs \index{ATLAS!jobs}
 : Select the Jobs menu item to explore the state of processes that are running through the WebAPI. Jobs are often long running processes such as generating a cohort or computing cohort characterization reports. 
 
-Configuration
+Configuration \index{ATLAS!configuration}
 : Select the Configuration menu item to review the data sources that have been configured in the source configuration section. 
 
-Feedback
+Feedback \index{ATLAS!feedback}
 : The Feedback link will take you to the issue log for Atlas so that you can log a new issue or to search through existing issues. If you have ideas for new features or enhancements, this is also a place note these for the development community.
 
 ### Security
-ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform.  The security system is built leveraging the Apache Shiro library.  Additional information on the security system can be found in the online [WebAPI security wiki](https://github.com/OHDSI/WebAPI/wiki/Security-Configuration).
+ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform.  The security system is built leveraging the Apache Shiro library.  Additional information on the security system can be found in the online [WebAPI security wiki](https://github.com/OHDSI/WebAPI/wiki/Security-Configuration). \index{ATLAS!security}
 
 ### Documentation 
-Documentation for ATLAS can be found online in the [ATLAS Github repository wiki](https://github.com/OHDSI/ATLAS/wiki).  This wiki includes information on the various application features as well as links to online video tutorials.  
+Documentation for ATLAS can be found online in the [ATLAS Github repository wiki](https://github.com/OHDSI/ATLAS/wiki).  This wiki includes information on the various application features as well as links to online video tutorials.  \index{ATLAS!documentation}
 
 ### How to install
-Installation of ATLAS is done in combination with the OHDSI WebAPI.  Installation guides for each component are available online in the [ATLAS Github repository Setup Guide](https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide) and [WebAPI Github repository Installation Guide](https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide).
+Installation of ATLAS is done in combination with the OHDSI WebAPI.  Installation guides for each component are available online in the [ATLAS Github repository Setup Guide](https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide) and [WebAPI Github repository Installation Guide](https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide). \index{ATLAS!installation}
 
 ## Methods Library
 
-The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the collection of open source R packages show in Figure \@ref(fig:methodsLibrary).
+The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the collection of open source R packages show in Figure \@ref(fig:methodsLibrary). \index{methods library}
 
 ```{r methodsLibrary, fig.cap='Packages in the OHDSI Methods Library.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/OhdsiAnalyticsTools/methodsLibrary.png")
@@ -115,7 +115,7 @@ The Methods Library has already been used in many published clinical studies [@b
 
 One key feature incorporated in all packages is the ability to efficiently run many analyses. For example, when performing population-level estimation, the CohortMethod package allows for computing effect-size estimates for many exposures and outcomes, using various analysis settings, and the package will automatically choose the optimal path to compute all the required artifacts. Steps that can be re-used, such as extraction of covariates, or fitting a propensity model, will be executed only once. Where possible, computations will take place in parallel to maximize the use of computational resources.
 
-This feature allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g. negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \@ref(MethodValidity). 
+This feature allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g. negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \@ref(MethodValidity). \index{control hypotheses} 
 
 ### Support for big data {#BigDataSupport}
 
@@ -131,13 +131,13 @@ R provides a standard way of documenting package. Each package has a *package ma
 
 [^methodsLibraryUrl]: https://ohdsi.github.io/MethodsLibrary
 
-In addition to the package manual, many packages provide *vignettes*. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette [^vignetteUrl] describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. 
+In addition to the package manual, many packages provide *vignettes*. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette [^vignetteUrl] describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. \index{vignette}
 
 [^vignetteUrl]: https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html
 
 ###  System requirements
 
-Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation.
+Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation. \index{system requirements}
 
 The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). 
 
@@ -145,7 +145,7 @@ The analytics workstation is where the Methods Library is installed and run. Thi
 
 ### How to install {#installR}
 
-Here are the steps for installing the required environment to run the OHDSI R packages. Four things needs to be installed: 
+Here are the steps for installing the required environment to run the OHDSI R packages. Four things needs to be installed: \index{R!installation}
 
 1. **R** is a statistical computing environment. It comes with a basic user interface that is primarily a command-line interface.
 2. **RTools** is a set of programs that is required on Windows to build R packages from source.
@@ -231,18 +231,18 @@ install.packages("CohortMethod")
 
 ## Deployment strategies
 
-Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, in an organization is a daunting task. There are many components with dependencies that have to be considered, and configurations to set. For this reason, two initiatives have developed integrated deployment strategies that allow the entire stack to be installed as one package, using some forms of virtualization: Broadsea and Amazon Web Services (AWS).  
+Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, in an organization is a daunting task. There are many components with dependencies that have to be considered, and configurations to set. For this reason, two initiatives have developed integrated deployment strategies that allow the entire stack to be installed as one package, using some forms of virtualization: Broadsea and Amazon Web Services (AWS).  \index{tools deployment}
 
 ### Broadsea
 
-BroadSea[^broadseaUrl] uses Docker container technology[^dockerUrl]. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS.
+BroadSea[^broadseaUrl] uses Docker container technology[^dockerUrl]. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS. \index{tools deployment!Broadsea}
 
 [^broadseaUrl]: https://github.com/OHDSI/Broadsea
 [^dockerUrl]: https://www.docker.com/
 
 ### Amazon AWS
 
-Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box[^ohdsiInaBoxUrl] and OHDSIonAWS[^ohdsiOnAwsUrl]. 
+Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box[^ohdsiInaBoxUrl] and OHDSIonAWS[^ohdsiOnAwsUrl]. \index{tools deployment!Amazon AWS}
 
 OHDSI-in-a-Box is specifically created as a learning environment, and is used in most of the tutorials provided by the OHDSI community. It includes many OHDSI tools, sample data sets, RStudio and other supporting software in a single, low cost Windows virtual machine.  A PostgreSQL database is used to store the CDM and also to store the intermediary results from ATLAS. The OMOP CDM data mapping and ETL tools are also included in OHDSI-in-a-Box. The architecture for OHDSI-in-a-Box is depicted in Figure \@ref(fig:ohdsiinaboxDiagram).
 
