@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 19 Method Validity | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.12.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 19 Method Validity | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -747,36 +747,37 @@ Figure 19.4: Candidate control outcomes with an overview of the evidence found i
 <div id="including-controls" class="section level3">
 <h3><span class="header-section-number">19.3.2</span> Including controls</h3>
 <p>Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section <a href="PopulationLevelEstimation.html#evaluationSettings">13.7.3</a> discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R, then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter <a href="SqlAndR.html#SqlAndR">10</a> describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.</p>
-<p>The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section <a href="PopulationLevelEstimation.html#evaluationSettings">13.7.3</a>, and it is implemented in the <code>injectSignals</code> function in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:</p>
+<p>The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section <a href="PopulationLevelEstimation.html#evaluationSettings">13.7.3</a>, and it is implemented in the <code>synthesizePositiveControls</code> function in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:</p>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="MethodValidity.html#cb142-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
 <span id="cb142-2"><a href="MethodValidity.html#cb142-2"></a><span class="co"># Create a data frame with all negative control exposure-</span></span>
 <span id="cb142-3"><a href="MethodValidity.html#cb142-3"></a><span class="co"># outcome pairs, using only the target exposure (ACEi = 1).</span></span>
 <span id="cb142-4"><a href="MethodValidity.html#cb142-4"></a>eoPairs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">exposureId =</span> <span class="dv">1</span>,</span>
 <span id="cb142-5"><a href="MethodValidity.html#cb142-5"></a>                      <span class="dt">outcomeId =</span> ncs)</span>
 <span id="cb142-6"><a href="MethodValidity.html#cb142-6"></a></span>
-<span id="cb142-7"><a href="MethodValidity.html#cb142-7"></a>pcs &lt;-<span class="st"> </span><span class="kw">injectSignals</span>(<span class="dt">connectionDetails =</span> connectionDetails,</span>
-<span id="cb142-8"><a href="MethodValidity.html#cb142-8"></a>                     <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb142-9"><a href="MethodValidity.html#cb142-9"></a>                     <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,</span>
-<span id="cb142-10"><a href="MethodValidity.html#cb142-10"></a>                     <span class="dt">exposureTable =</span> cohortTable,</span>
-<span id="cb142-11"><a href="MethodValidity.html#cb142-11"></a>                     <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,</span>
-<span id="cb142-12"><a href="MethodValidity.html#cb142-12"></a>                     <span class="dt">outcomeTable =</span> cohortTable,</span>
-<span id="cb142-13"><a href="MethodValidity.html#cb142-13"></a>                     <span class="dt">outputDatabaseSchema =</span> cohortDbSchema,</span>
-<span id="cb142-14"><a href="MethodValidity.html#cb142-14"></a>                     <span class="dt">outputTable =</span> cohortTable,</span>
-<span id="cb142-15"><a href="MethodValidity.html#cb142-15"></a>                     <span class="dt">createOutputTable =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb142-16"><a href="MethodValidity.html#cb142-16"></a>                     <span class="dt">modelType =</span> <span class="st">&quot;survival&quot;</span>,</span>
-<span id="cb142-17"><a href="MethodValidity.html#cb142-17"></a>                     <span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb142-18"><a href="MethodValidity.html#cb142-18"></a>                     <span class="dt">firstOutcomeOnly =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb142-19"><a href="MethodValidity.html#cb142-19"></a>                     <span class="dt">removePeopleWithPriorOutcomes =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb142-20"><a href="MethodValidity.html#cb142-20"></a>                     <span class="dt">washoutPeriod =</span> <span class="dv">365</span>,</span>
-<span id="cb142-21"><a href="MethodValidity.html#cb142-21"></a>                     <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,</span>
-<span id="cb142-22"><a href="MethodValidity.html#cb142-22"></a>                     <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,</span>
-<span id="cb142-23"><a href="MethodValidity.html#cb142-23"></a>                     <span class="dt">addExposureDaysToEnd =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb142-24"><a href="MethodValidity.html#cb142-24"></a>                     <span class="dt">exposureOutcomePairs =</span> eoPairs,</span>
-<span id="cb142-25"><a href="MethodValidity.html#cb142-25"></a>                     <span class="dt">effectSizes =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">4</span>),</span>
-<span id="cb142-26"><a href="MethodValidity.html#cb142-26"></a>                     <span class="dt">cdmVersion =</span> cdmVersion,</span>
-<span id="cb142-27"><a href="MethodValidity.html#cb142-27"></a>                     <span class="dt">workFolder =</span> <span class="kw">file.path</span>(outputFolder,</span>
-<span id="cb142-28"><a href="MethodValidity.html#cb142-28"></a>                                            <span class="st">&quot;pcSynthesis&quot;</span>))</span></code></pre></div>
-<p>Note that we must mimic the time-at-risk settings used in our estimation study design. The <code>injectSignals</code> function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by <code>cohortDbSchema</code> and <code>cohortTable</code>. The resulting <code>pcs</code> data frame contains the information on the synthesized positive controls.</p>
+<span id="cb142-7"><a href="MethodValidity.html#cb142-7"></a>pcs &lt;-<span class="st"> </span><span class="kw">synthesizePositiveControls</span>(</span>
+<span id="cb142-8"><a href="MethodValidity.html#cb142-8"></a>  <span class="dt">connectionDetails =</span> connectionDetails,</span>
+<span id="cb142-9"><a href="MethodValidity.html#cb142-9"></a>  <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb142-10"><a href="MethodValidity.html#cb142-10"></a>  <span class="dt">exposureDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb142-11"><a href="MethodValidity.html#cb142-11"></a>  <span class="dt">exposureTable =</span> cohortTable,</span>
+<span id="cb142-12"><a href="MethodValidity.html#cb142-12"></a>  <span class="dt">outcomeDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb142-13"><a href="MethodValidity.html#cb142-13"></a>  <span class="dt">outcomeTable =</span> cohortTable,</span>
+<span id="cb142-14"><a href="MethodValidity.html#cb142-14"></a>  <span class="dt">outputDatabaseSchema =</span> cohortDbSchema,</span>
+<span id="cb142-15"><a href="MethodValidity.html#cb142-15"></a>  <span class="dt">outputTable =</span> cohortTable,</span>
+<span id="cb142-16"><a href="MethodValidity.html#cb142-16"></a>  <span class="dt">createOutputTable =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb142-17"><a href="MethodValidity.html#cb142-17"></a>  <span class="dt">modelType =</span> <span class="st">&quot;survival&quot;</span>,</span>
+<span id="cb142-18"><a href="MethodValidity.html#cb142-18"></a>  <span class="dt">firstExposureOnly =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb142-19"><a href="MethodValidity.html#cb142-19"></a>  <span class="dt">firstOutcomeOnly =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb142-20"><a href="MethodValidity.html#cb142-20"></a>  <span class="dt">removePeopleWithPriorOutcomes =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb142-21"><a href="MethodValidity.html#cb142-21"></a>  <span class="dt">washoutPeriod =</span> <span class="dv">365</span>,</span>
+<span id="cb142-22"><a href="MethodValidity.html#cb142-22"></a>  <span class="dt">riskWindowStart =</span> <span class="dv">1</span>,</span>
+<span id="cb142-23"><a href="MethodValidity.html#cb142-23"></a>  <span class="dt">riskWindowEnd =</span> <span class="dv">0</span>,</span>
+<span id="cb142-24"><a href="MethodValidity.html#cb142-24"></a>  <span class="dt">endAnchor =</span> <span class="st">&quot;cohort end&quot;</span>,</span>
+<span id="cb142-25"><a href="MethodValidity.html#cb142-25"></a>  <span class="dt">exposureOutcomePairs =</span> eoPairs,</span>
+<span id="cb142-26"><a href="MethodValidity.html#cb142-26"></a>  <span class="dt">effectSizes =</span> <span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">2</span>, <span class="dv">4</span>),</span>
+<span id="cb142-27"><a href="MethodValidity.html#cb142-27"></a>  <span class="dt">cdmVersion =</span> cdmVersion,</span>
+<span id="cb142-28"><a href="MethodValidity.html#cb142-28"></a>  <span class="dt">workFolder =</span> <span class="kw">file.path</span>(outputFolder,</span>
+<span id="cb142-29"><a href="MethodValidity.html#cb142-29"></a>                         <span class="st">&quot;pcSynthesis&quot;</span>))</span></code></pre></div>
+<p>Note that we must mimic the time-at-risk settings used in our estimation study design. The <code>synthesizePositiveControls</code> function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by <code>cohortDbSchema</code> and <code>cohortTable</code>. The resulting <code>pcs</code> data frame contains the information on the synthesized positive controls.</p>
 <p>Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the <a href="https://ohdsi.github.io/MethodsLibrary/">OHDSI Methods Library</a> readily allow estimation of many effects in an efficient manner.</p>
 </div>
 <div id="empirical-performance" class="section level3">

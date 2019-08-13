@@ -3560,7 +3560,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.yvghik8bchildren ;"
+## [1] "SELECT * FROM temp_schema.pzyfvwjwchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -6276,7 +6276,7 @@ When selecting concept to include, we can specify which covariates we would like
 
 \textbf{Concepts to exclude}
 
-Rather than specifying which concepts to include, we can instead specify concepts to \emph{exclude}. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, as well as any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \ref{fig:covsToExclude} shows we select a concept set that includes all these concepts.
+Rather than specifying which concepts to include, we can instead specify concepts to \emph{exclude}. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, as well as any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \ref{fig:covsToExclude} shows we select a concept set that includes all these concepts, including their descendants.
 
 \begin{figure}
 
@@ -6307,7 +6307,7 @@ After closing the comparisons dialog we can click on ``Add Analysis Settings.'' 
 
 There are a wide range of options to specify the study population, which is the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts in the cohort definition tool. One reason for using the options in Estimation instead of in the cohort definition is re-usability; we can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).
 
-The \textbf{study start and end dates} can be used to limit the analyses to a specific period. The study end date also truncates risk windows, meaning no outcomes beyond the study end date will be considered. One reason for selecting a study start date might be that one of the drugs being studied is new and did not exist in an earlier time. Automatically adjusting for this can be done by answering ``yes'' to the question ``\textbf{Restrict the analysis to the period when both exposures are observed?}''. Another reason to adjust study start and end dates might be that medical practice changed over time (e.g., due to a drug warning) and we are only interested in the time where medicine was practiced a specific way.
+The \textbf{study start and end dates} can be used to limit the analyses to a specific period. The study end date also truncates risk windows, meaning no outcomes beyond the study end date will be considered. One reason for selecting a study start date might be that one of the drugs being studied is new and did not exist in an earlier time. Automatically adjusting for this can be done by answering ``yes'' to the question ``\textbf{Restrict the analysis to the period when both exposures are present in the data?}''. Another reason to adjust study start and end dates might be that medical practice changed over time (e.g., due to a drug warning) and we are only interested in the time where medicine was practiced a specific way.
 
 The option ``\textbf{Should only the first exposure per subject be included?}'' can be used to restrict to the first exposure per patient. Often this is already done in the cohort definition, as is the case in this example. Similarly, the option ``\textbf{The minimum required continuous observation time prior to index date for a person to be included in the cohort}'' is often already set in the cohort definition, and can therefore be left at 0 here. Having observed time (as defined in the OBSERVATION\_PERIOD table) before the index date ensures that there is sufficient information about the patient to calculate a propensity score, and is also often used to ensure the patient is truly a new user, and therefore was not exposed before.
 
@@ -6352,8 +6352,6 @@ Our choices for our example study are shown in Figure \ref{fig:studyPopulation}.
 Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model (the Cox proporitional hazards model in this case). If we \textbf{click to view details} of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.
 
 We can modify the set of covariates by specifying concepts to \textbf{include} and/or \textbf{exclude}. These settings are the same as the ones found in Section \ref{ComparisonSettings} on comparison settings. The reason why they can be found in two places is because sometimes these settings are related to a specific comparison, as is the case here because we wish to exclude the drugs we are comparing, and sometimes the settings are related to a specific analysis. When executing an analysis for a specific comparison using specific analysis settings, the OHDSI tools will take the union of these sets.
-
-The choice to \textbf{add descendants to include or exclude} affects this union of the two settings. So in this example we specified only the ingredients to exclude when defining the comparisons. Here we set ``Should descendant concepts be added to the list of excluded concepts?'' to ``Yes'' to also add all descendants.
 
 Figure \ref{fig:covariateSettings} shows our choices for this study. Note that we have selected to add descendants to the concept to exclude, which we defined in the comparison settings in Figure \ref{fig:comparisons2}.
 
@@ -6409,6 +6407,8 @@ Fitting large-scale propensity models can be computationally expensive, so we ma
 
 \textbf{Test each covariate for correlation with the target assignment?} If any covariate has an unusually high correlation (either positive or negative), this will throw an error. This avoids lengthy calculation of a propensity model only to discover complete separation. Finding very high univariate correlation allows you to review the covariate to determine why it has high correlation and whether it should be dropped.
 
+\textbf{Use regularization when fitting the model?} The standard procedure is to include many covariates (typically more than 10,000) in the propensity model. In order to fit such models some regularization is required. If only a few hand-picked covariates are included, it is also possible to fit the model without regularization.
+
 Figure \ref{fig:psSettings} shows our choices for this study. Note that we select variable-ratio matching by setting the maximum number of people to match to 100.
 
 \begin{figure}
@@ -6424,9 +6424,11 @@ Figure \ref{fig:psSettings} shows our choices for this study. Note that we selec
 
 First, we need to \textbf{specify the statistical model we will use to estimate the relative risk of the outcome between target and comparator cohorts}. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \ref{CohortMethod}. For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify \textbf{whether the regression should be conditioned on the strata}. One way to understand conditioning is to imagine a separate estimate is produced in each stratum, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable-ratio matching it is required. \index{conditioned model} \index{stratified model|see {conditioned model}}
 
-We can also choose to \textbf{add all covariates to the outcome model} to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend keeping the outcome model as simple as possible and not include additional covariates.
+We can also choose to \textbf{add the covariates to the outcome model} to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend keeping the outcome model as simple as possible and not include additional covariates.
 
 Instead of stratifying or matching on the propensity score we can also choose to \textbf{use inverse probability of treatment weighting} (IPTW). If weighting is used it is often recommended to use some form of trimming to avoid extreme weights and therefore unstable estimates.
+
+If we choose to include all covariates in the outcome model, it may make sense to use regularization when fitting the model if there are many covariates. Note that no regularization will be applied to the treatment variable to allow for unbiased estimation.
 
 Figure \ref{fig:outcomeModelSettings} shows our choices for this study. Because we use variable-ratio matching, we must condition the regression on the strata (i.e.~the matched sets).
 
@@ -6459,7 +6461,16 @@ In Section \ref{ComparisonSettings} we selected a concept set representing the n
 
 \textbf{Positive control synthesis}
 
-In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \ref{MethodValidity}. Positive control synthesis is an advanced topic that we will skip for now.
+In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \ref{MethodValidity}. We can choose to \textbf{perform positive control synthesis}. If ``yes'', we must choose the \textbf{model type}, currently being ``Poisson'' and ``surival''. Since we use a survival (Cox) model in our estimation study, we should choose ``survival''. We define the time-at-risk model for the positive control synthesis to be the same as in our estimation settings, and similarly mimic the choices for the \textbf{minimum required continuous observation prior to exposure}, \textbf{should only the first exposure be included}, \textbf{should only the first outcome be included}, as well as \textbf{remove people with prior outcomes}. Figure \ref{fig:outcomeModelSettings} shows the settings for the positive control synthesis.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/PopulationLevelEstimation/pcSynthesis} 
+
+}
+
+\caption{Negative control outcome cohort definition settings.}\label{fig:pcSynthesis}
+\end{figure}
 
 \hypertarget{running-the-study-package}{%
 \subsection{Running the study package}\label{running-the-study-package}}
@@ -6625,13 +6636,13 @@ Typically, the exposure cohorts and outcome cohorts will be defined independentl
                                   \DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{,}
                                   \DataTypeTok{minDaysAtRisk =} \DecValTok{1}\NormalTok{,}
                                   \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
-                                  \DataTypeTok{addExposureDaysToStart =} \OtherTok{FALSE}\NormalTok{,}
+                                  \DataTypeTok{startAnchor =} \StringTok{"cohort start"}\NormalTok{,}
                                   \DataTypeTok{riskWindowEnd =} \DecValTok{0}\NormalTok{,}
-                                  \DataTypeTok{addExposureDaysToEnd =} \OtherTok{TRUE}\NormalTok{)}
+                                  \DataTypeTok{endAnchor =} \StringTok{"cohort end"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-Note that we've set \texttt{firstExposureOnly} and \texttt{removeDuplicateSubjects} to FALSE, and \texttt{washoutPeriod} to 0 because we already applied those criteria in the cohort definitions. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting on the day after the cohort start date (\texttt{riskWindowStart\ =\ 1} and \texttt{addExposureDaysToStart\ =\ FALSE}), and the risk windows ends when the cohort exposure ends (\texttt{riskWindowEnd\ =\ 0} and \texttt{addExposureDaysToEnd\ =\ TRUE}), which was defined as the end of exposure in the cohort definition. Note that the risk windows are automatically truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the \texttt{getAttritionTable} function:
+Note that we've set \texttt{firstExposureOnly} and \texttt{removeDuplicateSubjects} to FALSE, and \texttt{washoutPeriod} to 0 because we already applied those criteria in the cohort definitions. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting on the day after the cohort start date (\texttt{riskWindowStart\ =\ 1} and \texttt{startAnchor\ =\ "cohort\ start"}), and the risk windows ends when the cohort exposure ends (\texttt{riskWindowEnd\ =\ 0} and \texttt{endAnchor\ =\ "cohort\ end"}), which was defined as the end of exposure in the cohort definition. Note that the risk windows are automatically truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the \texttt{getAttritionTable} function:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -6753,9 +6764,9 @@ Next, we specify what arguments should be used when calling the various function
   \DataTypeTok{removeDuplicateSubjects =} \StringTok{"remove all"}\NormalTok{,}
   \DataTypeTok{removeSubjectsWithPriorOutcome =} \OtherTok{TRUE}\NormalTok{,}
   \DataTypeTok{minDaysAtRisk =} \DecValTok{1}\NormalTok{,}
-  \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
+  \DataTypeTok{startAnchor =} \StringTok{"cohort start"}\NormalTok{,}
   \DataTypeTok{addExposureDaysToStart =} \OtherTok{FALSE}\NormalTok{,}
-  \DataTypeTok{riskWindowEnd =} \DecValTok{0}\NormalTok{,}
+  \DataTypeTok{endAnchor =} \StringTok{"cohort end"}\NormalTok{,}
   \DataTypeTok{addExposureDaysToEnd =} \OtherTok{TRUE}\NormalTok{)}
 
 \NormalTok{psArgs <-}\StringTok{ }\KeywordTok{createCreatePsArgs}\NormalTok{()}
@@ -9848,7 +9859,7 @@ For our example study we select the 76 negative controls listed in Appendix \ref
 
 Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \ref{evaluationSettings} discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R, then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter \ref{SqlAndR} describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.
 
-The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \ref{evaluationSettings}, and it is implemented in the \texttt{injectSignals} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
+The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \ref{evaluationSettings}, and it is implemented in the \texttt{synthesizePositiveControls} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -9858,32 +9869,33 @@ The OHDSI tools also provide functionality for automatically generating and incl
 \NormalTok{eoPairs <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{exposureId =} \DecValTok{1}\NormalTok{,}
                       \DataTypeTok{outcomeId =}\NormalTok{ ncs)}
 
-\NormalTok{pcs <-}\StringTok{ }\KeywordTok{injectSignals}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
-                     \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDbSchema,}
-                     \DataTypeTok{exposureDatabaseSchema =}\NormalTok{ cohortDbSchema,}
-                     \DataTypeTok{exposureTable =}\NormalTok{ cohortTable,}
-                     \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortDbSchema,}
-                     \DataTypeTok{outcomeTable =}\NormalTok{ cohortTable,}
-                     \DataTypeTok{outputDatabaseSchema =}\NormalTok{ cohortDbSchema,}
-                     \DataTypeTok{outputTable =}\NormalTok{ cohortTable,}
-                     \DataTypeTok{createOutputTable =} \OtherTok{FALSE}\NormalTok{,}
-                     \DataTypeTok{modelType =} \StringTok{"survival"}\NormalTok{,}
-                     \DataTypeTok{firstExposureOnly =} \OtherTok{TRUE}\NormalTok{,}
-                     \DataTypeTok{firstOutcomeOnly =} \OtherTok{TRUE}\NormalTok{,}
-                     \DataTypeTok{removePeopleWithPriorOutcomes =} \OtherTok{TRUE}\NormalTok{,}
-                     \DataTypeTok{washoutPeriod =} \DecValTok{365}\NormalTok{,}
-                     \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
-                     \DataTypeTok{riskWindowEnd =} \DecValTok{0}\NormalTok{,}
-                     \DataTypeTok{addExposureDaysToEnd =} \OtherTok{TRUE}\NormalTok{,}
-                     \DataTypeTok{exposureOutcomePairs =}\NormalTok{ eoPairs,}
-                     \DataTypeTok{effectSizes =} \KeywordTok{c}\NormalTok{(}\FloatTok{1.5}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{),}
-                     \DataTypeTok{cdmVersion =}\NormalTok{ cdmVersion,}
-                     \DataTypeTok{workFolder =} \KeywordTok{file.path}\NormalTok{(outputFolder,}
-                                            \StringTok{"pcSynthesis"}\NormalTok{))}
+\NormalTok{pcs <-}\StringTok{ }\KeywordTok{synthesizePositiveControls}\NormalTok{(}
+  \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+  \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDbSchema,}
+  \DataTypeTok{exposureDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+  \DataTypeTok{exposureTable =}\NormalTok{ cohortTable,}
+  \DataTypeTok{outcomeDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+  \DataTypeTok{outcomeTable =}\NormalTok{ cohortTable,}
+  \DataTypeTok{outputDatabaseSchema =}\NormalTok{ cohortDbSchema,}
+  \DataTypeTok{outputTable =}\NormalTok{ cohortTable,}
+  \DataTypeTok{createOutputTable =} \OtherTok{FALSE}\NormalTok{,}
+  \DataTypeTok{modelType =} \StringTok{"survival"}\NormalTok{,}
+  \DataTypeTok{firstExposureOnly =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{firstOutcomeOnly =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{removePeopleWithPriorOutcomes =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{washoutPeriod =} \DecValTok{365}\NormalTok{,}
+  \DataTypeTok{riskWindowStart =} \DecValTok{1}\NormalTok{,}
+  \DataTypeTok{riskWindowEnd =} \DecValTok{0}\NormalTok{,}
+  \DataTypeTok{endAnchor =} \StringTok{"cohort end"}\NormalTok{,}
+  \DataTypeTok{exposureOutcomePairs =}\NormalTok{ eoPairs,}
+  \DataTypeTok{effectSizes =} \KeywordTok{c}\NormalTok{(}\FloatTok{1.5}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{),}
+  \DataTypeTok{cdmVersion =}\NormalTok{ cdmVersion,}
+  \DataTypeTok{workFolder =} \KeywordTok{file.path}\NormalTok{(outputFolder,}
+                         \StringTok{"pcSynthesis"}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
-Note that we must mimic the time-at-risk settings used in our estimation study design. The \texttt{injectSignals} function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by \texttt{cohortDbSchema} and \texttt{cohortTable}. The resulting \texttt{pcs} data frame contains the information on the synthesized positive controls.
+Note that we must mimic the time-at-risk settings used in our estimation study design. The \texttt{synthesizePositiveControls} function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by \texttt{cohortDbSchema} and \texttt{cohortTable}. The resulting \texttt{pcs} data frame contains the information on the synthesized positive controls.
 
 Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} readily allow estimation of many effects in an efficient manner.
 
