@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-08-12}
+    \date{2019-08-13}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -3355,7 +3355,7 @@ Whereas the same query on PostgreSQL would be:
 \end{Highlighting}
 \end{Shaded}
 
-In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to `speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - \textbf{OHDSI SQL} - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \textbackslash index \{Standard SQL Dialect\textbar see \{SqlRender\} \index{OHDSI SQL|see {SqlRender}}
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to `speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - \textbf{OHDSI SQL} - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \index {Standard SQL Dialect|see {SqlRender}} \index{OHDSI SQL|see {SqlRender}}
 
 Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter. \index{DatabaseConnector}
 
@@ -3657,7 +3657,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.z1o25k2wchildren ;"
+## [1] "SELECT * FROM temp_schema.nfyexlj0children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4464,80 +4464,35 @@ The CDM database schema is ``main''.
 Suggested answers can be found in Appendix \ref{SqlAndRanswers}.
 
 \hypertarget{Cohorts}{%
-\chapter{Building the building blocks: cohorts}\label{Cohorts}}
+\chapter{Defining cohorts}\label{Cohorts}}
 
-\emph{Lead: Kristin Kostka}
+\emph{Chapter lead: Kristin Kostka}
 
-Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for running high quality, systematic research. Cohort definitions vary from study to study depending on the research question of interest. Each cohort definition provides a specific way to represent a person with a condition or exposure using data in an observational health database. Thus, cohorts are an important component in documenting the methods of an observational research study.
+Observational health data (also referred to \emph{real world data}) are the data related to patient health status and/or the delivery of health care routinely collected from a variety of sources. As such, our OHDSI data stewards (aka OHDSI collaborators who maintain OMOP CDMs for their sites) could capture data from a number of sources including Electronic Health Records (EHR), health insurance claims and billing activities, product and disease registries, patient-generated data including in home-use settings, and data gathered from other sources that can inform on health status, such as mobile devices. As these data were not collected for research purposes, the data may not explicitly capture the clinical data elements we are interested in. For example, an insurance claims database aims to capture all care provided for some condition (e.g.~angioedema) so the associated costs can appropriately be reimbursed, and information on the actual condition is captured only as part of this aim. If we wish to use such observational data for research purposes, we will often have to write some logic that uses what is captured in the data to infer what we are really interested in. In other words, we often need to create a cohort using some definition of how a disease manifests. For example, if we want to identify angioedema events in a claims database, we may define logic requiring an angioedema diagnose code recorded in an emergency room setting, to distinguish from claims that merely describe follow-up care for some past angioedema occurrence. The same considerations would apply for data captured during routine healthcare interactions logged in an Electronic Health Record. Each time we design a study, we will think through the nuances of how our cohort exists in a variety of healthcare settings.
 
-The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS (for a detailed discussion on OHDSI Analytics Tools see Chapter \ref{OhdsiAnalyticsTools}).
+In OHDSI research, we define a cohort as a set of persons who satisfy one or more inclusion criteria for a duration of time. The term cohort is often interchanged with the term \emph{phenotype}. Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for executing a research question. For example, in a study aiming to predict the risk of angioedema in a group of people initiation ACE inhibitors, we define two cohorts: the outcome cohort (angioedema), and the target cohort (people initiating ACE inhibitors). An important aspect of cohorts in OHDSI is that they are typically defined independently from the other cohorts in the study, thus allowing re-use. For example, in our example the angioedema cohort would identify all angioedema events in the population, including those outside the target population. Our analytics tools will take the intersection of these two cohorts when needed at analysis time. The advantage of this is that the same angioedema cohort definition can now also be used in other analyses, for example an estimation study comparing ACE inhibitors to some other exposure. Cohort definitions can vary from study to study depending on the research question of interest. Each cohort definition provides a specific way to represent a person with a condition or exposure using data in an observational health database. Thus, cohorts are an important component in documenting the methods of an observational research study.
 
-\hypertarget{theory}{%
-\section{Theory}\label{theory}}
+The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS or SQL.
+
+\hypertarget{cohort-definitions}{%
+\section{Cohort definitions}\label{cohort-definitions}}
 
 \BeginKnitrBlock{rmdimportant}
-\textbf{OHDSI Cohort:} set of persons who satisfy one or more inclusion criteria for a duration of time
-\textbf{OHDSI Cohort Definition:} the description of inclusion criteria used for identifying a particular cohort
-\EndKnitrBlock{rmdimportant}
-
-\index{cohort} \index{cohort definition}
-In many peer-reviewed scientific manuscripts, a cohort is suggested to be analogous to a codeset of specific clinical codes (e.g.~ICD-9/ICD-10, NDC, HCPCS, etc). While codesets are an important piece in assembling a cohort, a cohort definition is not simply a codeset. A cohort definition requires logic for how to use the codeset for the criteria. A well documented cohort specifies how a patient enters a cohort, a patient exits a cohort and any additional inclusion criteria that impacts how to observe a patient's time-at-risk.
-\index{codeset}
-\BeginKnitrBlock{rmdimportant}
-The term \emph{cohort} is often interchanged with the term phenotype. The term \emph{phenotype} is applied to patient characteristics inferred from electronic health record (EHR) data \citep{Hripcsak7329}. The goal is to draw conclusions about a target concept based on raw EHR data, claims data, or other clinically relevant data. Thus, a \emph{cohort} is a set of persons who satisfy one or more inclusion criteria (a phenotype) for a duration of time. A cohort in itself is not a phenotype but a phenotype can be used to create a cohort.
-\EndKnitrBlock{rmdimportant}
-
-\index{phenotype}
-There are two main approaches to constructing a cohort: \textbf{1) rules-based design} or \textbf{2) probabilistic design}. A rules-based cohort design relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules for cohort inclusion criteria. Conversely, a probabilistic design mines already available data to identify and qualify potential cohort membership through machine-suggested patterns. The next sections will discuss these approaches in further detail.
-
-\hypertarget{rules-based-cohort-design}{%
-\subsection{Rules-based cohort design}\label{rules-based-cohort-design}}
-
-A rules-based OHDSI cohort definition begins with clinical expertise explicitly stating one or more inclusion criteria (e.g.~``people with angioedema'') in a specific duration of time (e.g.~``who developed this condition within the last 6 months''). \index{cohort!rule-based design}
-
-When creating a cohort definition, you need to ask yourself the following questions:
-
 \begin{itemize}
 \tightlist
 \item
-  \emph{What initial event(s) define cohort entry?}
+  A \textbf{cohort} is a set of persons who satisfy one or more inclusion criteria for a duration of time.
 \item
-  \emph{What inclusion criteria are applied to the initial events?}
-\item
-  \emph{What defines a person's cohort exit?}
+  A cohort definition is the full description of logic used for identifying a particular cohort.
 \end{itemize}
+\EndKnitrBlock{rmdimportant}
 
-To visualize the importance of these criteria, think of how this information comes together in a person's timeline (Figure . The OBSERVATION\_PERIOD table creates the window for which we see the person in the data.\index{cohort!criteria}
+\index{cohort} \index{cohort definition}
+It is important to realize that this definition of a cohort used in OHDSI might differ from that used by others in the field. For example, in many peer-reviewed scientific manuscripts, a cohort is suggested to be analogous to a codeset of specific clinical codes (e.g.~ICD-9/ICD-10, NDC, HCPCS, etc). While codesets are an important piece in assembling a cohort, a cohort is not defined by codeset. A cohort requires specific logic for how to use the codeset for the criteria (e.g.~is it the first occurrence of the ICD-9/ICD-10 code? any occurrence?). A well-defined cohort specifies how a patient enters a cohort and how a patient exits a cohort.
+\index{codeset}
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/cohort-build} 
-
-}
-
-\caption{Cohort Creation}\label{fig:cohortBuild}
-\end{figure}
-
-\emph{Cohort entry criteria:} The cohort entry event can be one or many clinical attributes which dictate an individual patient's eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events defined by a domain,concept set, as well as any domain-specific attributes. We will discuss these in detail in the further section. \index{cohort!entry criteria}
-
-\emph{Inclusion criteria:} The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by domain(s), concept set(s), domain-specific attributes, and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.\index{cohort!inclusion criteria}
-
-\emph{Cohort exit criteria:} The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
-
-\emph{Time-at-risk:} In order to interpret risk of a specific outcome, which will be defined as a separate cohort definition, it is necessary to know the length of time that applies. A time-at-risk criteria states the period of time in which the cohort must be in the data following the cohort entry criteria. The time-at-risk will vary based on whether you're observing an acute/short term trend or a chronic/long term trend.\index{cohort!time-at-risk}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/cohort-TAR} 
-
-}
-
-\caption{Time-at-Risk Construction}\label{fig:cohortTar}
-\end{figure}
-
-In traditional study design, we would categorize time-at-risk for `on treatment' as the entirety of the time between when a person meets cohort entry through the cohort exit criteria. An `intent-to-treat' design would include the entire time period between cohort start and observation period end (e.g.~when the person leaves the data for some reason cuh as switching physicians, insurance carriers, etc).
-
-The use of these criteria may present a number of unique nuances to an OHDSI cohort including:
+\index{phenotype}
+There are unique nuances to utilizing OHDSI's definition of a cohort, including:
 
 \begin{itemize}
 \tightlist
@@ -4551,76 +4506,67 @@ The use of these criteria may present a number of unique nuances to an OHDSI coh
   A cohort may have zero or more members
 \end{itemize}
 
-Throughout the Book of OHDSI, we will detail how to address these consequences in your overall study design. In each respective methodology, we will discuss how you can configure a methods package to address how one person shows up in multiple cohorts being studied.
+There are two main approaches to constructing a cohort:
 
-\hypertarget{probabilistic-cohort-design-using-aphrodite}{%
-\subsection{Probabilistic cohort design using APHRODITE}\label{probabilistic-cohort-design-using-aphrodite}}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Rule-based cohort definitions} use explicit rules to describe when a patient is in the cohort. Defining these rules typically relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules for cohort inclusion criteria.
+\item
+  \textbf{Probabilistic cohort definitions} use a probabilistic model to compute a probability between 0 and 100\% of the patient being in the cohort. This probability can be turned into a yes-no classification using some threshold, or in some study designs can be used as is. The probabilistic model is typically trained using machine learning (e.g.~logistic regression) on some example data to automatically identify the relevant patient characteristics that are predictive.
+\end{enumerate}
 
-Rules-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria. \index{cohort!probabilistic design}
+The next sections will discuss these approaches in further detail.
 
-To apply this approach on OMOP data, OHDSI community researchers created Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation (APHRODITE), an R-package cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM \citep{Banda2017APHRODITE}. \href{https://github.com/OHDSI/Aphrodite}{APHRODITE} is an open-source package (\url{https://github.com/OHDSI/Aphrodite}) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building. \index{APHRODITE}
+\hypertarget{rule-based-cohort-dedinirion}{%
+\subsection{Rule-based cohort dedinirion}\label{rule-based-cohort-dedinirion}}
 
-\hypertarget{phenotype-algorithm-evaluation}{%
-\section{Phenotype Algorithm Evaluation}\label{phenotype-algorithm-evaluation}}
+A rule-based OHDSI cohort definition begins with explicitly stating one or more inclusion criteria (e.g.~``people with angioedema'') in a specific duration of time (e.g.~``who developed this condition within the last 6 months''). \index{cohort!rule-based design}
 
-When you build a cohort, you may start from your own knowledgebase or you may choose to look at how other studies specify a similar cohort definition. A literature review of over 33 studies found significant heterogeneity in phenotype algorithms used, validation methods, and results \citep{Rubbo2015phenotypes}. In general, the validation of a rules-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases). Making this comparison is best understood in a tabular view (Figure \ref{fig:cohortPpv}). \index{chart review}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/cohort-PPV} 
-
-}
-
-\caption{Algorithm Evaluation}\label{fig:cohortPpv}
-\end{figure}
-
-OHDSI researchers encourage to perform a complete evaluation of the phenotype algorithm (i.e., determining sensitivity, specificity, and positive predictive value (PPV) \citep{Swerdel2019phevaluator}. For a complete validation of an algorithm, we need to calculate: \index{sensitivity} \index{specificity} \index{PPV} \index{positive predictive value|see {PPV}}
-
-\[
-Sensitivity = \frac{True\ positives}{True\ positives+False\ negatives }
-\]
-
-\[
-Specificity = \frac{True\ negatives}{True\ negatives+False\ positives }
-\]
-
-\[
-Positive\ preditive\ value = \frac{True\ positives}{True\ positives+False\ positives }
-\]
-
-This framework continues to be utilized across cohort definition research to evaluate the utility of reuse of cohorts across different electronic health data. The PheValuator tool \citep{Swerdel2019phevaluator} is a recent addition to the OHDSI Community that provides a standard method to efficiently estimate a complete phentoype algorithm evaluation. \index{PheValuator}
-
-\hypertarget{ohdsi-gold-standard-phenotype-library}{%
-\section{OHDSI Gold Standard Phenotype Library}\label{ohdsi-gold-standard-phenotype-library}}
-
-To further assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to provide additional leadership to the development of community-backed cohort libraries from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These ``gold standard'' definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (\url{https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg}). Research within this workgroup includes APHRODITE \citep{Banda2017APHRODITE} and the PheValuator tool \citep{Swerdel2019phevaluator} , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics \href{https://emerge.mc.vanderbilt.edu/}{eMERGE} \href{https://phekb.org/phenotypes}{Phenotype Library} across the OHDSI network \citep{Hripcsak2019eMERGE}. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
-
-\hypertarget{practice}{%
-\section{Practice}\label{practice}}
-
-Now that we've covered the basics, it's time to put your cohort building skills to the test. \emph{Note: If you've gotten lost on your OHDSI journey and not sure where to start, you can always return to Where to Begin ((Chapter \ref{WhereToBegin}) to recall the way to translate a research question into an OHDSI standard analytics approach.}
-
-When you are building a cohort, you should consider which of these is more important to you: \emph{finding all the eligible patients?} \textbf{vs.} \emph{Getting only the ones you are confident about?}
-
-Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you're trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher's discretion what threshold of stringency is necessary to adequately study the cohort of interest.
-
-We begin to practice our cohort skills by putting together a cohort definition using a rules-based approach. In this example, we want to find \emph{patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension}
-
-Recall, the components of building a cohort include:
+When creating a cohort definition, you need to ask yourself the following questions:
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Domain}: A Domain defines the set of allowable Concepts for the standardized fields in the CDM tables (refer to Chapter \ref{CommonDataModel}). (Ex: Condition, Drug, Procedure, Measurement)
+  \emph{What initial event(s) define time of cohort entry?}
 \item
-  \textbf{Concept set}: An expression that defines one or more concepts encompassing a clinical entity of interest (Ex: Concepts for type II diabetes, concepts for antidiabetic drugs)
+  \emph{What inclusion criteria are applied to the initial events?}
 \item
-  \textbf{Domain-specific attribute}: Ex: DRUG\_EXPOSURE: Days supply; MEASUREMENT: value\_as\_number, high\_range
+  \emph{What defines the time of cohort exit?}
+\end{itemize}
+
+To visualize the importance of these criteria, think of how this information comes together in a person's timeline (Figure \ref{fig:cohortBuild}). The OBSERVATION\_PERIOD table creates the window for which we see the person in the data.\index{cohort!criteria}
+
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/Cohorts/cohort-build} 
+
+}
+
+\caption{Defining a cohort using rules}\label{fig:cohortBuild}
+\end{figure}
+
+\emph{Cohort entry criteria:} The cohort entry event can be one or many clinical attributes which dictate an individual patient's eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events are inherently defined by CDM domain where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE, etc), the OMOP concept sets built to identify the clinical activity (e.g.~SNOMED codes for conditions, RxNorm codes for drugs) as well as any other specific attributes (e.g.~age at occurrence, first diagnosis/procedure/etc, specifying start and end date, specifying visit type or criteria, days supply, etc). We will discuss these in detail in the further section. \index{cohort!entry criteria}
+
+\emph{Inclusion criteria:} The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by the CDM domain(s) where the data are stored, OMOP concept set(s) representing the clinical activity, domain-specific attributes (e.g.~days supply, visit type, etc), and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.\index{cohort!inclusion criteria}
+
+\emph{Cohort exit criteria:} The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
+
+The standard components we use to assemble these criteria are:
+
+\begin{itemize}
+\item
+  \textbf{OMOP Domain}: The CDM domain(s) where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE) define the type of clinical information and the allowable OMOP concepts that can be represented inside that CDM table (refer to Chapter \ref{CommonDataModel}). (Ex: Condition, Drug, Procedure, Measurement)
+\item
+  \textbf{OMOP Concept set}: A data-agnostic expression that defines one or more OMOP standard concepts encompassing the clinical entity of interest -- these concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the OMOP vocabularies (Ex: OMOP standard concepts representing type II diabetes or antidiabetic drugs)
+\item
+  \textbf{Domain-specific attribute}: Additional attributes related to the clinical entity of interest (Ex: DRUG\_EXPOSURE: Days supply; MEASUREMENT: value\_as\_number, high\_range)
 \item
   \textbf{Temporal logic}: the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)
 \end{itemize}
 
-As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure \ref{fig:cohortLegos} that represent cohort attributes. You can always refer to the Common Data Model chapter (Chapter \ref{CommonDataModel}) for help.
+As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure \ref{fig:cohortLegos} that represent cohort attributes. If you are confused about allowable content in each domain, you can always refer to the Common Data Model chapter (Chapter \ref{CommonDataModel}) for help.
 
 \begin{figure}
 
@@ -4630,6 +4576,32 @@ As you are building your cohort definition, you may find it helpful to think of 
 
 \caption{Building Blocks of Cohorts}\label{fig:cohortLegos}
 \end{figure}
+
+\hypertarget{probabilistic-cohort-definitions}{%
+\subsection{Probabilistic cohort definitions}\label{probabilistic-cohort-definitions}}
+
+Rule-based cohort design are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this method, supervised learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade offs occur in overall study accuracy when choosing to modify phenotype criteria. \index{cohort!probabilistic design}
+
+An example of applying this approach on data in the OMOP CDM is APHRODITE (Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation) R-package. This package provides a cohort building framework that combines the ability of learning from imperfectly labeled data and the Anchor learning framework for improving selected features in the phenotype models, for use with the OHDSI/OMOP CDM \citep{Banda2017APHRODITE}. APHRODITE is an open-source package (\url{https://github.com/OHDSI/Aphrodite}) available for use which provides the OHDSI data network to the ability to start building electronic phenotype models that leverage machine learning techniques and go beyond traditional rule based approaches to cohort building. Collaborators interested in using the APHRODITE package can participate in the Gold Standard Phenotype Library (discussed below)'s sub-group for Design of Computable (Probabilistic) Phenotypes. \index{APHRODITE}
+
+\hypertarget{cohort-definition-validity}{%
+\section{Cohort definition validity}\label{cohort-definition-validity}}
+
+When you are building a cohort, you should consider which of these is more important to you: \emph{finding all the eligible patients?} \textbf{vs.} \emph{Getting only the ones you are confident about?}
+
+Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you're trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher's discretion what threshold of stringency is necessary to adequately study the cohort of interest.
+
+As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases). This is discussed in detail in Chapter \ref{ClinicalValidity} (``Clinical Validity'').
+
+\hypertarget{ohdsi-gold-standard-phenotype-library}{%
+\section{OHDSI Gold Standard Phenotype Library}\label{ohdsi-gold-standard-phenotype-library}}
+
+To assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to develop a community-backed phenotype library from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These ``gold standard'' definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (\url{https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg}). Research within this workgroup includes APHRODITE \citep{Banda2017APHRODITE} and the PheValuator tool \citep{Swerdel2019phevaluator} , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics \href{https://emerge.mc.vanderbilt.edu/}{eMERGE} \href{https://phekb.org/phenotypes}{Phenotype Library} across the OHDSI network \citep{Hripcsak2019eMERGE}. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
+
+\hypertarget{defining-a-cohort-for-hypertension}{%
+\section{Defining a cohort for hypertension}\label{defining-a-cohort-for-hypertension}}
+
+We begin to practice our cohort skills by putting together a cohort definition using a rule-based approach. In this example, we want to find \emph{patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension}
 
 With this context in mind, we are now going to build our cohort. As we go through this exercise, we will approach building our cohort similar to standard attrition chart. Figure \ref{fig:CohortPractice} shows the logical framework for how we want to build this cohort.
 
@@ -4644,19 +4616,10 @@ With this context in mind, we are now going to build our cohort. As we go throug
 
 You can build a cohort in the user interface of ATLAS or you can write a query directly against your OMOP CDM. We will briefly discuss both in this chapter.
 
-\hypertarget{using-atlas}{%
-\subsection{Using ATLAS}\label{using-atlas}}
+\hypertarget{implenting-a-cohort-using-atlas}{%
+\subsection{Implenting a Cohort using ATLAS}\label{implenting-a-cohort-using-atlas}}
 
-We can build a cohort using the ATLAS interface. To begin in ATLAS, click on the `Cohort Definition' module (located on the left hand panel fifth selection from the top as seen in Figure \ref{fig:ATLAScohort}).
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.5\linewidth]{images/Cohorts/ATLAS-cohort} 
-
-}
-
-\caption{Navigating to ATLAS Cohort Definition module}\label{fig:ATLAScohort}
-\end{figure}
+We can build a cohort using the ATLAS interface. To begin in ATLAS, click on the `Cohort Definition' module (in-text image will be readded).
 
 When the module loads, click on the blue botton on the right that says `New Cohort' (Figure \ref{fig:ATLASnewcohort}.
 
@@ -4759,7 +4722,7 @@ Once selected, this additional attribute will show up in the same box as the ini
 The current design of ATLAS may confuse some. Despite its apperance, the red X is not intended to mean ``No''. It is an actionable feature to allow the user to delete the criteria. If you click the red X, this criteria will go away. Thus, you need to leave the criteria with the red X to keep the criteria active.
 \EndKnitrBlock{rmdimportant}
 
-Now you have built an initial qualifying event. To ensure you are capturing the first exposure, you will want to add a lookback window to know that you are looking at enogh of the patient's histroy to know what comes first. You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. To ensure this is the first exposure in the patient's history, we add a lookback of 365 days. The lookback window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. We then also opt limit it to the earliest event per person (Figure \ref{fig:ATLASlookback}).
+Now you have built an initial qualifying event. To ensure you are capturing the first exposure, you will want to add a lookback window to know that you are looking at enough of the patient's history to know what comes first. You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. To ensure this is the first exposure in the patient's history, we add a lookback of 365 days. The lookback window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. We then also opt limit it to the earliest event per person (Figure \ref{fig:ATLASlookback}).
 
 \begin{figure}
 
@@ -4770,7 +4733,7 @@ Now you have built an initial qualifying event. To ensure you are capturing the 
 \caption{Adjusting the Observation Period}\label{fig:ATLASlookback}
 \end{figure}
 
-By now, you may be confused. \emph{Why do I add a first ever criteria in addition to limit to the earliest event?} You can think about this logically by thinking about assembling patient timelines.
+To further explain how our logic comes together, you can think about assembling patient timelines.
 
 \begin{figure}
 
@@ -4837,10 +4800,321 @@ We can configure this by selecting the Event will persist \emph{until the end of
 
 In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the Export tab to share your cohort definiton to other collaborators in the form of code or JSON files to load into ATLAS. For more information on how to utilize ATLAS, you can always return to \href{https://www.ohdsi.org/resources/}{OHDSI Resources} to find short videos on basic cohort building tasks in ATLAS.
 
-\hypertarget{cohort-building-at-the-database-layer-using-sql}{%
-\subsection{Cohort Building at the Database Layer Using SQL}\label{cohort-building-at-the-database-layer-using-sql}}
+\hypertarget{implementing-the-cohort-using-sql}{%
+\section{Implementing the cohort using SQL}\label{implementing-the-cohort-using-sql}}
 
-While it is encouraged to use the OHDSI analytical tools to build and share cohorts, you may not have an instance of ATLAS available in your local environment. If you do not have ATLAS, you can still build a cohort. You may query a database directly using your preferred SQL dialect. A detailed discussion of how to write SQL against the OMOP CDM is available in Chapter \ref{SqlAndR}). As you become more familiar with OHDSI code, you are encouraged to utilize \href{https://github.com/OHDSI/SqlRender}{SQL Render} to render parameterized SQL. SQL Render will easily translate your query into other SQL dialects. This makes it a lot easier to share cohort definition across other OHDSI network sites. Even without ATLAS, you can work with other OHDSI collaborators who use ATLAS to create their cohort definition. Cohorts built in ATLAS can also be exported into your preferred SQL dialect.
+Here we describe how to create the same cohort, but using SQL and R. As discussed in Chapter \ref{SqlAndR}, OHDSI provides two R packages, called SqlRender and DatabaseConnector, which together allow writing SQL code that can be automatically translated and executed against a wide variety of database platforms.
+
+For clarity, we will split the SQL into several chunks, each chunk generating a temp table that is used in the next. This is likely not the most computationally efficient way to do it, but it easier to read than a single very long statement.
+
+\hypertarget{connecting-to-the-database}{%
+\subsection{Connecting to the database}\label{connecting-to-the-database}}
+
+We first need to tell R how to connect to the server. We will use the \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} package, which provides a function called \texttt{createConnectionDetails}. Type \texttt{?createConnectionDetails} for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(CohortMethod)}
+\NormalTok{connDetails <-}\StringTok{ }\KeywordTok{createConnectionDetails}\NormalTok{(}\DataTypeTok{dbms =} \StringTok{"postgresql"}\NormalTok{,}
+                                       \DataTypeTok{server =} \StringTok{"localhost/ohdsi"}\NormalTok{,}
+                                       \DataTypeTok{user =} \StringTok{"joe"}\NormalTok{,}
+                                       \DataTypeTok{password =} \StringTok{"supersecret"}\NormalTok{)}
+
+\NormalTok{cdmDbSchema <-}\StringTok{ "my_cdm_data"}
+\NormalTok{cohortDbSchema <-}\StringTok{ "scratch"}
+\NormalTok{cohortTable <-}\StringTok{ "my_cohorts"}
+\end{Highlighting}
+\end{Shaded}
+
+The last three lines define the \texttt{cdmDbSchema}, \texttt{cohortDbSchema}, and \texttt{cohortTable} variables. We will use these later to tell R where the data in CDM format live, and where the cohorts of interest have to be created. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example \texttt{cdmDbSchema\ \textless{}-\ "my\_cdm\_data.dbo"}.
+
+\hypertarget{specifying-the-concepts}{%
+\subsection{Specifying the concepts}\label{specifying-the-concepts}}
+
+For readibility we will define the concept IDs we need in R, and pass them to the SQL:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{aceI <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1308216}\NormalTok{, }\DecValTok{1310756}\NormalTok{, }\DecValTok{1331235}\NormalTok{, }\DecValTok{1334456}\NormalTok{, }\DecValTok{1335471}\NormalTok{, }\DecValTok{1340128}\NormalTok{, }\DecValTok{1341927}\NormalTok{,}
+          \DecValTok{1342439}\NormalTok{, }\DecValTok{1363749}\NormalTok{, }\DecValTok{1373225}\NormalTok{)}
+
+\NormalTok{hypertension <-}\StringTok{ }\DecValTok{316866}
+
+\NormalTok{allHtDrugs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{904542}\NormalTok{, }\DecValTok{907013}\NormalTok{, }\DecValTok{932745}\NormalTok{, }\DecValTok{942350}\NormalTok{, }\DecValTok{956874}\NormalTok{, }\DecValTok{970250}\NormalTok{, }\DecValTok{974166}\NormalTok{,}
+                  \DecValTok{978555}\NormalTok{, }\DecValTok{991382}\NormalTok{, }\DecValTok{1305447}\NormalTok{, }\DecValTok{1307046}\NormalTok{, }\DecValTok{1307863}\NormalTok{, }\DecValTok{1308216}\NormalTok{,}
+                  \DecValTok{1308842}\NormalTok{, }\DecValTok{1309068}\NormalTok{, }\DecValTok{1309799}\NormalTok{, }\DecValTok{1310756}\NormalTok{, }\DecValTok{1313200}\NormalTok{, }\DecValTok{1314002}\NormalTok{,}
+                  \DecValTok{1314577}\NormalTok{, }\DecValTok{1317640}\NormalTok{, }\DecValTok{1317967}\NormalTok{, }\DecValTok{1318137}\NormalTok{, }\DecValTok{1318853}\NormalTok{, }\DecValTok{1319880}\NormalTok{,}
+                  \DecValTok{1319998}\NormalTok{, }\DecValTok{1322081}\NormalTok{, }\DecValTok{1326012}\NormalTok{, }\DecValTok{1327978}\NormalTok{, }\DecValTok{1328165}\NormalTok{, }\DecValTok{1331235}\NormalTok{,}
+                  \DecValTok{1332418}\NormalTok{, }\DecValTok{1334456}\NormalTok{, }\DecValTok{1335471}\NormalTok{, }\DecValTok{1338005}\NormalTok{, }\DecValTok{1340128}\NormalTok{, }\DecValTok{1341238}\NormalTok{,}
+                  \DecValTok{1341927}\NormalTok{, }\DecValTok{1342439}\NormalTok{, }\DecValTok{1344965}\NormalTok{, }\DecValTok{1345858}\NormalTok{, }\DecValTok{1346686}\NormalTok{, }\DecValTok{1346823}\NormalTok{,}
+                  \DecValTok{1347384}\NormalTok{, }\DecValTok{1350489}\NormalTok{, }\DecValTok{1351557}\NormalTok{, }\DecValTok{1353766}\NormalTok{, }\DecValTok{1353776}\NormalTok{, }\DecValTok{1363053}\NormalTok{,}
+                  \DecValTok{1363749}\NormalTok{, }\DecValTok{1367500}\NormalTok{, }\DecValTok{1373225}\NormalTok{, }\DecValTok{1373928}\NormalTok{, }\DecValTok{1386957}\NormalTok{, }\DecValTok{1395058}\NormalTok{,}
+                  \DecValTok{1398937}\NormalTok{, }\DecValTok{40226742}\NormalTok{, }\DecValTok{40235485}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{finding-first-use}{%
+\subsection{Finding first use}\label{finding-first-use}}
+
+We will first find first use of ACE inhibitors for each patient:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT person_id AS subject_id,}
+\StringTok{  MIN(drug_exposure_start_date) AS cohort_start_date}
+\StringTok{INTO #first_use}
+\StringTok{FROM @cdm_db_schema.drug_exposure}
+\StringTok{INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{  ON descendant_concept_id = drug_concept_id}
+\StringTok{WHERE ancestor_concept_id IN (@ace_i)}
+\StringTok{GROUP BY person_id;"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }\DataTypeTok{ace_i =}\NormalTok{ aceI)}
+\ErrorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Note that we join the DRUG\_EXPOSURE table to the CONCEPT\_ANCESTOR table to find all drugs that contain an ACE inhbitor.
+
+\hypertarget{require-365-days-of-prior-observation}{%
+\subsection{Require 365 days of prior observation}\label{require-365-days-of-prior-observation}}
+
+Next, we require 365 of continuous prior observation by joining to the OBSERVATION\_PERIOD table:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT subject_id,}
+\StringTok{  cohort_start_date}
+\StringTok{INTO #has_prior_obs}
+\StringTok{FROM #first_use}
+\StringTok{INNER JOIN @cdm_db_schema.observation_period}
+\StringTok{  ON subject_id = person_id}
+\StringTok{    AND observation_period_start_date <= cohort_start_date}
+\StringTok{    AND observation_period_end_date >= cohort_start_date}
+\StringTok{WHERE DATEADD(DAY, 365, observation_period_start_date) < cohort_start_date;"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{require-prior-hypertension}{%
+\subsection{Require prior hypertension}\label{require-prior-hypertension}}
+
+We require a hypertension diagnosis in the 365 days prior:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT DISTINCT subject_id,}
+\StringTok{  cohort_start_date}
+\StringTok{INTO #has_ht}
+\StringTok{FROM #has_prior_obs}
+\StringTok{INNER JOIN @cdm_db_schema.condition_occurrence}
+\StringTok{  ON subject_id = person_id}
+\StringTok{    AND condition_start_date <= cohort_start_date}
+\StringTok{    AND condition_start_date >= DATEADD(DAY, -365, cohort_start_date)}
+\StringTok{INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{  ON descendant_concept_id = condition_concept_id}
+\StringTok{WHERE ancestor_concept_id = @hypertension;"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }\DataTypeTok{hypertension =}\NormalTok{ hypertension)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that we \texttt{SELECT\ DISTINCT}, becuase else if a person has multiple hypertension diagnoses in their past, we would create duplicate cohort entries.
+
+\hypertarget{no-prior-treatment}{%
+\subsection{No prior treatment}\label{no-prior-treatment}}
+
+We require no prior exposure to any hypertension treatment:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT subject_id,}
+\StringTok{  cohort_start_date}
+\StringTok{INTO #no_prior_ht_drugs}
+\StringTok{FROM #has_ht}
+\StringTok{LEFT JOIN (}
+\StringTok{  SELECT *}
+\StringTok{  FROM @cdm_db_schema.drug_exposure}
+\StringTok{  INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{    ON descendant_concept_id = drug_concept_id}
+\StringTok{  WHERE ancestor_concept_id IN (@all_ht_drugs)}
+\StringTok{) ht_drugs}
+\StringTok{  ON subject_id = person_id}
+\StringTok{    AND drug_exposure_start_date < cohort_start_date}
+\StringTok{WHERE person_id IS NULL;"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }\DataTypeTok{all_ht_drugs =}\NormalTok{ allHtDrugs)}
+\end{Highlighting}
+\end{Shaded}
+
+Note that we use a left join, and only allow rows where the person\_id, which comes from the DRUG\_EXPOSURE table is NULL, meaning no matching record was found.
+
+\hypertarget{monotherapy}{%
+\subsection{Monotherapy}\label{monotherapy}}
+
+We require there to be only one exposure to hypertension treatment in the first seven days of the cohort entry:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT subject_id,}
+\StringTok{  cohort_start_date}
+\StringTok{INTO #monotherapy}
+\StringTok{FROM #no_prior_ht_drugs}
+\StringTok{INNER JOIN @cdm_db_schema.drug_exposure}
+\StringTok{  ON subject_id = person_id}
+\StringTok{    AND drug_exposure_start_date >= cohort_start_date}
+\StringTok{    AND drug_exposure_start_date <= DATEADD(DAY, 7, cohort_start_date)}
+\StringTok{INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{  ON descendant_concept_id = drug_concept_id}
+\StringTok{WHERE ancestor_concept_id IN (@all_ht_drugs)}
+\StringTok{GROUP BY subject_id,}
+\StringTok{  cohort_start_date}
+\StringTok{HAVING COUNT(*) = 1;"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }\DataTypeTok{all_ht_drugs =}\NormalTok{ allHtDrugs)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{cohort-exit}{%
+\subsection{Cohort exit}\label{cohort-exit}}
+
+We have now fully specified our cohort except the cohort end date. The cohort is defined to end when the exposure stops, allowing for a maximum 30-day gap between subsequent exposures. This means we need to not only consider the first drug exposure, but also subsequent drug exposures to ACE inhibitors. The SQL for combining subsequent exposures into eras can be highly complex. Luckily, standard code has been defined that can efficiently create eras. (This code was written by Chris Knoll, and is often referred to within OHDSI as `the magic').
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "WITH exposure AS (}
+\StringTok{  SELECT person_id,}
+\StringTok{    CAST(1 AS INT) AS concept_id,}
+\StringTok{    drug_exposure_start_date AS exposure_start_date,}
+\StringTok{    drug_exposure_end_date AS exposure_end_date}
+\StringTok{  FROM @cdm_db_schema.drug_exposure}
+\StringTok{  INNER JOIN @cdm_db_schema.concept_ancestor}
+\StringTok{    ON descendant_concept_id = drug_concept_id}
+\StringTok{  WHERE ancestor_concept_id IN (@ace_i)}
+\StringTok{)}
+\StringTok{SELECT ends.person_id AS subject_id,}
+\StringTok{    ends.concept_id AS cohort_definition_id,}
+\StringTok{  MIN(exposure_start_date) AS cohort_start_date,}
+\StringTok{  ends.era_end_date AS cohort_end_date}
+\StringTok{INTO #exposure_era}
+\StringTok{FROM (}
+\StringTok{  SELECT exposure.person_id,}
+\StringTok{    exposure.concept_id,}
+\StringTok{    exposure.exposure_start_date,}
+\StringTok{    MIN(events.end_date) AS era_end_date}
+\StringTok{  FROM  exposure}
+\StringTok{  JOIN (}
+\StringTok{--cteEndDates}
+\StringTok{    SELECT person_id,}
+\StringTok{      concept_id,}
+\StringTok{      DATEADD(DAY, - 1 * @max_gap, event_date) AS end_date}
+\StringTok{    FROM (}
+\StringTok{      SELECT person_id,}
+\StringTok{        concept_id,}
+\StringTok{        event_date,}
+\StringTok{        event_type,}
+\StringTok{        MAX(start_ordinal) OVER (}
+\StringTok{          PARTITION BY person_id ,concept_id ORDER BY event_date,}
+\StringTok{              event_type ROWS UNBOUNDED PRECEDING}
+\StringTok{          ) AS start_ordinal,}
+\StringTok{        ROW_NUMBER() OVER (}
+\StringTok{          PARTITION BY person_id, concept_id ORDER BY event_date,}
+\StringTok{            event_type}
+\StringTok{          ) AS overall_ord}
+\StringTok{      FROM (}
+\StringTok{-- select the start dates, assigning a row number to each}
+\StringTok{        SELECT person_id,}
+\StringTok{          concept_id,}
+\StringTok{          exposure_start_date AS event_date,}
+\StringTok{          0 AS event_type,}
+\StringTok{          ROW_NUMBER() OVER (}
+\StringTok{            PARTITION BY person_id, concept_id ORDER BY exposure_start_date}
+\StringTok{            ) AS start_ordinal}
+\StringTok{        FROM exposure}
+
+\StringTok{        UNION ALL}
+\StringTok{-- add the end dates with NULL as the row number, padding the end dates by}
+\StringTok{-- @max_gap to allow a grace period for overlapping ranges.}
+
+\StringTok{        SELECT person_id,}
+\StringTok{          concept_id,}
+\StringTok{          DATEADD(day, @max_gap, exposure_end_date),}
+\StringTok{          1 AS event_type,}
+\StringTok{          NULL}
+\StringTok{        FROM exposure}
+\StringTok{        ) rawdata}
+\StringTok{    ) events}
+\StringTok{  WHERE 2 * events.start_ordinal - events.overall_ord = 0}
+\StringTok{  ) events}
+\StringTok{  ON exposure.person_id = events.person_id}
+\StringTok{      AND exposure.concept_id = events.concept_id}
+\StringTok{      AND events.end_date >= exposure.exposure_end_date}
+\StringTok{  GROUP BY exposure.person_id,}
+\StringTok{      exposure.concept_id,}
+\StringTok{      exposure.exposure_start_date}
+\StringTok{  ) ends}
+\StringTok{GROUP BY ends.person_id,}
+\StringTok{  concept_id,}
+\StringTok{  ends.era_end_date;"}
+
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }\DataTypeTok{ace_i =}\NormalTok{ aceI, }\DataTypeTok{max_gap =} \DecValTok{30}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The most important part of this SQL is that we first define a set of exposures, the code turns these into eras, and writes them to a temp table called \texttt{\#exposure\_era}.
+
+Next, we simply join these ACE inhibitor exposure eras to our original cohort to use the era end dates as our cohort end dates:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "SELECT ee.subject_id,}
+\StringTok{  CAST(1 AS INT) AS cohort_definition_id,}
+\StringTok{  ee.cohort_start_date,}
+\StringTok{  ee.cohort_end_date}
+\StringTok{INTO @cohort_db_schema.@cohort_table}
+\StringTok{FROM #monotherapy mt}
+\StringTok{INNER JOIN #exposure_era ee}
+\StringTok{  ON mt.subject_id = ee.subject_id}
+\StringTok{    AND mt.cohort_start_date = ee.cohort_start_date;"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema, }\DataTypeTok{cohort_table =}\NormalTok{ cohortTable)}
+\end{Highlighting}
+\end{Shaded}
+
+Here we store the final cohort in schema and table we defined earlier. We assign it a cohort definition ID of 1, to distinguish it from other cohorts we may wish to store in the same table.
+
+\hypertarget{cleanup}{%
+\subsection{Cleanup}\label{cleanup}}
+
+Finally, it is always recommend to clean up any temp tables that were created, and disconnect from the database server:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "TRUNCATE TABLE #first_use;}
+\StringTok{DROP TABLE #first_use;}
+
+\StringTok{TRUNCATE TABLE #has_prior_obs;}
+\StringTok{DROP TABLE #has_prior_obs;}
+
+\StringTok{TRUNCATE TABLE #has_ht;}
+\StringTok{DROP TABLE #has_ht;}
+
+\StringTok{TRUNCATE TABLE #no_prior_ht_drugs;}
+\StringTok{DROP TABLE #no_prior_ht_drugs;}
+
+\StringTok{TRUNCATE TABLE #monotherapy;}
+\StringTok{DROP TABLE #monotherapy;}
+
+\StringTok{TRUNCATE TABLE #exposure_era;}
+\StringTok{DROP TABLE #exposure_era;"}
+
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql)}
+
+\KeywordTok{disconnect}\NormalTok{(conn)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{summary-7}{%
 \section{Summary}\label{summary-7}}
@@ -4849,22 +5123,20 @@ While it is encouraged to use the OHDSI analytical tools to build and share coho
 \begin{itemize}
 \tightlist
 \item
-  An \textbf{OHDSI cohort} is set of persons who satisfy one or more inclusion criteria for a duration of time.
+  A cohort is set of persons who satisfy one or more inclusion criteria for a duration of time.
 \item
-  The \textbf{OHDSI Cohort Definition} is the description of inclusion criteria used for identifying a particular cohort.
+  A cohort definition is the description of logic used for identifying a particular cohort.
 \item
-  Building a cohort is a fundamental piece of using the OHDSI Analytics Tools.
+  Cohorts are used (and re-used) throughout the OHDSI analytics tools to define for example the exposures and outcomes of interest.
 \item
-  There are two major approachs to building a cohort (rules-based vs probabilistic).
+  There are two major approaches to building a cohort: rule-based and probabilistic.
 \item
-  The OHDSI community has a variety of resources available to support you as you're building your own cohorts including short videos of ATLAS functionality, a ready-to-use probabilistic machine-learning package (APHRODITE) to run on your OMOP CDM and even a freely available tool to evaluate the sensitivity and specificity of your cohort (PheValuator).
+  Rule-based cohort definitions can be created in ATLAS, or using SQL
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
 \hypertarget{exercises-2}{%
-\subsection{Exercises}\label{exercises-2}}
-
-(Need help on syntax for how we format these\ldots{} can you point me to a good example of an exercise in the BoO?)
+\section{Exercises}\label{exercises-2}}
 
 \hypertarget{Characterization}{%
 \chapter{Characterization}\label{Characterization}}
@@ -5024,8 +5296,8 @@ Here we demonstrate how to use ATLAS to perform large-scale cohort characterizat
 
 A characterization analysis requires at least one cohort and at least one feature to characterize. For this example, we will use two cohorts. The first cohort will define persons initiating a treatment for hypertension as their index date with at least one diagnosis of hypertension in the year prior. We will also require that persons in this cohort have at least one year of observation after initiating the hypertensive drug (Appendix \ref{HTN1yrFO}). The second cohort is identical to the first cohort described with a requirement having at least three years of observation instead of one (Appendix \ref{HTN3yrFO}).
 
-\hypertarget{cohort-definitions}{%
-\subsubsection{Cohort definitions}\label{cohort-definitions}}
+\hypertarget{cohort-definitions-1}{%
+\subsubsection{Cohort definitions}\label{cohort-definitions-1}}
 
 \begin{figure}
 
@@ -8586,7 +8858,7 @@ In this chapter we will first review possible sources of DQ problems, after whic
 \hypertarget{sources-of-data-quality-problems}{%
 \section{Sources of data quality problems}\label{sources-of-data-quality-problems}}
 
-There are many threats to the quality of the data, starting as noted in Chapter \ref{EvidenceQuality} when the doctor records her or his thoughts. \citet{dasu_2003} distinguish the following steps in the lifecycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
+There are many threats to the quality of the data, starting as noted in Chapter \ref{EvidenceQuality} when the doctor records her or his thoughts. \citet{dasu_2003} distinguish the following steps in the life cycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -8596,7 +8868,7 @@ There are many threats to the quality of the data, starting as noted in Chapter 
 \item
   \textbf{Data storage and knowledge sharing}. Potential problems are lack of documentation of the data model, and lack of meta-data.
 \item
-  \textbf{Data analysis}. Problems can include incorrect data transformations, incorrect data interpretation, and use of inapproriate methodology.
+  \textbf{Data analysis}. Problems can include incorrect data transformations, incorrect data interpretation, and use of inappropriate methodology.
 \item
   \textbf{Data publishing}. When publishing data for downstream use.
 \end{enumerate}
@@ -8616,7 +8888,7 @@ We can ask the question whether our data is fit for the general purpose of obser
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \textbf{Conformance}: Do data values adhere to do specified standard and formats? Three subtypes are identified:
+  \textbf{Conformance}: Do data values adhere to do specified standard and formats? Three sub-types are identified:
 
   \begin{itemize}
   \tightlist
@@ -8630,7 +8902,7 @@ We can ask the question whether our data is fit for the general purpose of obser
 \item
   \textbf{Completeness}: Are data values present? For example, do all persons have a known gender?
 \item
-  \textbf{Plausibility}: Are data values believable? Three subtypes are defined:
+  \textbf{Plausibility}: Are data values believable? Three sub-types are defined:
 
   \begin{itemize}
   \tightlist
@@ -8660,9 +8932,9 @@ Each component can be evaluated in two ways:
 \hypertarget{data-quality-checks}{%
 \subsection{Data quality checks}\label{data-quality-checks}}
 
-Kahn introduces the term \emph{data quality check} (sometimes refered to as a \emph{data quality rule}) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in sofware, creating automated DQ tools. One such tool is \href{https://github.com/OHDSI/Achilles}{ACHILLES} (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) \citep{huser_methods_2018}. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases \citep{huser_multisite_2016}. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the ``Data Sources'' function. \index{data quality!data quality check} \index{ACHILLES}
+Kahn introduces the term \emph{data quality check} (sometimes referred to as a \emph{data quality rule}) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is \href{https://github.com/OHDSI/Achilles}{ACHILLES} (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) \citep{huser_methods_2018}. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases \citep{huser_multisite_2016}. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the ``Data Sources'' function. \index{data quality!data quality check} \index{ACHILLES}
 
-ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, ``715: Distribution of days\_supply by drug\_concept\_id'' or ``506: Distribution of age at death by gender''. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as ``\emph{ACHILLES Heel}''. These checks are categorized as ``\emph{error}'', ``\emph{warning}'', or ``\emph{notification}''. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite dermination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \ref{tab:heelExamples} show some example rules. \index{ACHILLES!Heel}
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, ``715: Distribution of days\_supply by drug\_concept\_id'' or ``506: Distribution of age at death by gender''. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as ``\emph{ACHILLES Heel}''. These checks are categorized as ``\emph{error}'', ``\emph{warning}'', or ``\emph{notification}''. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \ref{tab:heelExamples} show some example rules. \index{ACHILLES!Heel}
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:heelExamples} Example data quality rules in ACHILLES Heel.}\tabularnewline
@@ -8700,7 +8972,7 @@ The rate of occurrence for a specific concept\_id changes more than 100\% from o
 \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Warning\strut
 \end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-A presciption has a days\_supply \textgreater{} 180\strut
+A prescription has a days\_supply \textgreater{} 180\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Notification\strut
@@ -8737,7 +9009,7 @@ To make sure the ETL does what it is supposed to do, and continues to do so, it 
 \end{Highlighting}
 \end{Shaded}
 
-In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add\_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the member\_id and gender\_of\_member fields. Note that the ENROLLMENT table has many other fields, and if we do not provide explicit values for these other fields the add\_enrollemnt function will assign default values (the most prevalent values as observed in the White Rabbit scan report). Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.
+In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add\_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the member\_id and gender\_of\_member fields. Note that the ENROLLMENT table has many other fields, and if we do not provide explicit values for these other fields the add\_enrollment function will assign default values (the most prevalent values as observed in the White Rabbit scan report). Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.
 
 Similar unit tests can be created for all other logic in an ETL, typically resulting in hundreds of tests. When we are done defining the test, we can use the framework to generate two sets of SQL statements, one to create the fake source data, and one to create the tests on the ETL-ed data:
 
@@ -8748,7 +9020,7 @@ Similar unit tests can be created for all other logic in an ETL, typically resul
 \end{Highlighting}
 \end{Shaded}
 
-The overall process is depiced in Figure \ref{fig:testFramework}.
+The overall process is depicted in Figure \ref{fig:testFramework}.
 
 \begin{figure}
 
@@ -8805,7 +9077,7 @@ One way to review the source codes that do map is to use the \texttt{checkCohort
 \caption{Example output of he checkCohortSourceCodes function. }\label{fig:sourceCodes}
 \end{figure}
 
-Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mapings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the \texttt{findOrphanSourceCodes} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study concerning gangrene the concept ``Gangrenous disorder'' (\href{http://athena.ohdsi.org/search-terms/terms/439928}{439928}) was used. Several terms, including ``gangrene'', were used to search the descriptions in the CONCEPT and SOURCE\_TO\_CONCEPT\_MAP tables to identify source codes. Figure \ref{fig:missingMapping} show that the ICD-10 code J85.0 (``Gangrene and necrosis of lung'') was only mapped to concept \href{http://athena.ohdsi.org/search-terms/terms/4324261}{4324261} (``Pulmanory necrosis''), which is not a descendant of ``Gangrenous disorder''. Note that this issue has been reported and is now fixed.
+Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the \texttt{findOrphanSourceCodes} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study concerning gangrene the concept ``Gangrenous disorder'' (\href{http://athena.ohdsi.org/search-terms/terms/439928}{439928}) was used. Several terms, including ``gangrene'', were used to search the descriptions in the CONCEPT and SOURCE\_TO\_CONCEPT\_MAP tables to identify source codes. Figure \ref{fig:missingMapping} show that the ICD-10 code J85.0 (``Gangrene and necrosis of lung'') was only mapped to concept \href{http://athena.ohdsi.org/search-terms/terms/4324261}{4324261} (``Pulmonary necrosis''), which is not a descendant of ``Gangrenous disorder''. Note that this issue has been reported and is now fixed.
 
 \begin{figure}
 
@@ -8944,7 +9216,7 @@ In this case, ACHILLES Heel has revealed several serious errors that will need t
 \end{Highlighting}
 \end{Shaded}
 
-The JSON files will be written to the achillesOut subfolder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure \ref{fig:achillesDataDensity} shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.
+The JSON files will be written to the achillesOut sub-folder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure \ref{fig:achillesDataDensity} shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.
 
 \begin{figure}
 
@@ -8984,7 +9256,7 @@ Next, we will execute several checks specifically for the angioedema cohort defi
 \end{Highlighting}
 \end{Shaded}
 
-We can open the output file in a web browser as shown in Figure \ref{fig:sourceCodesAngioedema}. Here we see that the angioedema cohort definition has two conceot sets: ``Inpatient or ER visit'', and ``Angioedema''. In this example database the visits were found through database-specific codes ``ER'' and ``IP'', that are not in the Vocabulary. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cutover between the two coding systems when we look at the sparklines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
+We can open the output file in a web browser as shown in Figure \ref{fig:sourceCodesAngioedema}. Here we see that the angioedema cohort definition has two concept sets: ``Inpatient or ER visit'', and ``Angioedema''. In this example database the visits were found through database-specific codes ``ER'' and ``IP'', that are not in the Vocabulary. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
 
 \begin{figure}
 
@@ -9024,7 +9296,7 @@ T78.3XXS & Angioneurotic edema, sequela & ICD10CM & 508\tabularnewline
 \bottomrule
 \end{longtable}
 
-The only potential orphan found that is actually used in the data is ``Angioneurotic edema, sequela'', which is not supposed to map to angioedema. This analyis therefore did not reveal any missing codes.
+The only potential orphan found that is actually used in the data is ``Angioneurotic edema, sequela'', which is not supposed to map to angioedema. This analysis therefore did not reveal any missing codes.
 
 \hypertarget{summary-11}{%
 \section{Summary}\label{summary-11}}

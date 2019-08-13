@@ -20,7 +20,7 @@ Whereas the same query on PostgreSQL would be:
 SELECT * FROM person LIMIT 10;
 ```
 
-In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \index {Standard SQL Dialect|see {SqlRender} \index{OHDSI SQL|see {SqlRender}}
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \index {Standard SQL Dialect|see {SqlRender}} \index{OHDSI SQL|see {SqlRender}}
 
 Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter. \index{DatabaseConnector}
 
@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.iq00uujechildren ;"
+## [1] "SELECT * FROM temp_schema.hbjm8534children ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -359,14 +359,10 @@ launchSqlRenderDeveloper()
 
 That will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web[^sqlDeveloperUrl]. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/sqlDeveloper} 
-
-}
-
-\caption{The SqlDeveloper Shiny app.}(\#fig:sqlDeveloper)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
+<p class="caption">(\#fig:sqlDeveloper)The SqlDeveloper Shiny app.</p>
+</div>
 
 In the app you can enter OHDSI SQL, select the target dialect as well as provide values for the parameters that appear in your SQL, and the translation will automatically appear at the bottom.
 
@@ -672,14 +668,10 @@ QueryLibrary is a library of commonly-used SQL queries for the CDM. It is availa
 
 [^queryLibraryPackageUrl]: https://github.com/OHDSI/QueryLibrary
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/queryLibrary} 
-
-}
-
-\caption{QueryLibrary: a library of SQL queries against the CDM.}(\#fig:queryLibrary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SqlAndR/queryLibrary.png" alt="QueryLibrary: a library of SQL queries against the CDM." width="100%" />
+<p class="caption">(\#fig:queryLibrary)QueryLibrary: a library of SQL queries against the CDM.</p>
+</div>
 
 The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but it is also a valuable resource for experienced users.
 
@@ -909,8 +901,7 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
   xlab("Age") +
   ylab("Incidence (per 1,000 patient weeks)")
 ```
-
-\begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
+<img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" />
 
 ### Clean up
 

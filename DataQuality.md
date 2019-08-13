@@ -19,11 +19,11 @@ In this chapter we will first review possible sources of DQ problems, after whic
 
 ## Sources of data quality problems
 
-There are many threats to the quality of the data, starting as noted in Chapter \@ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the lifecycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
+There are many threats to the quality of the data, starting as noted in Chapter \@ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the life cycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
 
 1. **Data gathering and integration**. Possible problems include fallible manual entry, biases (e.g. upcoding in claims), erroneous joining of tables in an EHR, and replacing missing values with default ones. 
 2. **Data storage and knowledge sharing**. Potential problems are lack of documentation of the data model, and lack of meta-data.
-3. **Data analysis**. Problems can include incorrect data transformations, incorrect data interpretation, and use of inapproriate methodology. 
+3. **Data analysis**. Problems can include incorrect data transformations, incorrect data interpretation, and use of inappropriate methodology. 
 4. **Data publishing**. When publishing data for downstream use.
 
 Often the data we use has already been collected and integrated, so there is little we can do to improve step 1. We do have ways to check the DQ produced by this step as will be discussed in subsequent sections in this chapter. 
@@ -36,12 +36,12 @@ Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not us
 
 We can ask the question whether our data is fit for the general purpose of observational research. @kahn_harmonized_2016 define such generic DQ as consisting of three components: 
 
-1. **Conformance**: Do data values adhere to do specified standard and formats? Three subtypes are identified:
+1. **Conformance**: Do data values adhere to do specified standard and formats? Three sub-types are identified:
    - **Value**: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties? 
    - **Relational**: Is the recorded data in agreement with specified relational constraints? For example, does the provider_id in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?
    - **Computation**: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?
 2. **Completeness**: Are data values present? For example, do all persons have a known gender?
-3. **Plausibility**: Are data values believable? Three subtypes are defined:
+3. **Plausibility**: Are data values believable? Three sub-types are defined:
     - **Uniqueness**: For example, does each person_id occur only once in the PERSON table?
     - **Atemporal**: Do values, distributions, or densities agree with expected values? For example, is the prevalence of diabetes implied by the data in line with the known prevalence?
     - **Temporal**: Are changes in values in line with expectations? For example, are immunization sequences in line with recommendations?
@@ -57,9 +57,9 @@ Each component can be evaluated in two ways:
 
 ### Data quality checks
 
-Kahn introduces the term *data quality check* (sometimes refered to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in sofware, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
+Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
 
-ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as "*ACHILLES Heel*". These checks are categorized as "*error*", "*warning*", or "*notification*". Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite dermination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \@ref(tab:heelExamples) show some example rules. \index{ACHILLES!Heel}
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as "*ACHILLES Heel*". These checks are categorized as "*error*", "*warning*", or "*notification*". Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \@ref(tab:heelExamples) show some example rules. \index{ACHILLES!Heel}
 
 Table: (\#tab:heelExamples) Example data quality rules in ACHILLES Heel.
 
@@ -68,7 +68,7 @@ Table: (\#tab:heelExamples) Example data quality rules in ACHILLES Heel.
 | Error     | Age > 150 years                                   |
 | Error     | A condition_concept_id refers to a concept that is not in the CONDITION domain |
 | Warning   | The rate of occurrence for a specific concept_id changes more than 100% from one month to the next |
-| Warning   | A presciption has a days_supply > 180             |
+| Warning   | A prescription has a days_supply > 180             |
 | Notification | The number of patients without any visit exceeds a predefined threshold |
 | Notification | There is no weight data in the MEASUREMENT table        | 
 
@@ -92,7 +92,7 @@ expect_person(person_id = 102, gender_concept_id = 8507
 expect_person(person_id = 103, gender_concept_id = 8532)
 ```
 
-In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the member_id and gender_of_member fields. Note that the ENROLLMENT table has many other fields, and if we do not provide explicit values for these other fields the add_enrollemnt function will assign default values (the most prevalent values as observed in the White Rabbit scan report). Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.
+In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the member_id and gender_of_member fields. Note that the ENROLLMENT table has many other fields, and if we do not provide explicit values for these other fields the add_enrollment function will assign default values (the most prevalent values as observed in the White Rabbit scan report). Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.
 
 Similar unit tests can be created for all other logic in an ETL, typically resulting in hundreds of tests. When we are done defining the test, we can use the framework to generate two sets of SQL statements, one to create the fake source data, and one to create the tests on the ETL-ed data:
 
@@ -102,16 +102,12 @@ insertSql <- generateInsertSql(databaseSchema = "source_schema")
 testSql <- generateTestSql(databaseSchema = "cdm_test_schema")
 ```
 
-The overall process is depiced in Figure \@ref(fig:testFramework).
+The overall process is depicted in Figure \@ref(fig:testFramework).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/DataQuality/testFramework} 
-
-}
-
-\caption{Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework.}(\#fig:testFramework)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/testFramework.png" alt="Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework." width="90%" />
+<p class="caption">(\#fig:testFramework)Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework.</p>
+</div>
 
 The test SQL returns a table that will look like Table \@ref(tab:exampleTestResults). In this table we see that we passed the two tests we defined earlier.
 
@@ -142,25 +138,17 @@ One possible source of error that falls under our control is the mapping of sour
 
 One way to review the source codes that do map is to use the `checkCohortSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalences of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure \@ref(fig:sourceCodes) shows a (partial) breakdown of a concept set called 'Depressive disorder'. The most prevalent concept in this concept set in the database of interest is concept  [440383](http://athena.ohdsi.org/search-terms/terms/440383) ("Depressive disorder"). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-19 code F32.9 (""Major depressive disorder, single episode, unspecified") should also have mapped to the concept. This problem has since been resolved in the Vocabulary.
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/sourceCodes.png" alt="Example output of he checkCohortSourceCodes function. " width="100%" />
+<p class="caption">(\#fig:sourceCodes)Example output of he checkCohortSourceCodes function. </p>
+</div>
 
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/sourceCodes} 
+Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the `findOrphanSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study concerning gangrene the concept "Gangrenous disorder" ([439928](http://athena.ohdsi.org/search-terms/terms/439928)) was used. Several terms, including "gangrene", were used to search the descriptions in the CONCEPT and SOURCE_TO_CONCEPT_MAP tables to identify source codes.  Figure \@ref(fig:missingMapping) show that the ICD-10 code J85.0 ("Gangrene and necrosis of lung") was only mapped to concept [4324261](http://athena.ohdsi.org/search-terms/terms/4324261) ("Pulmonary necrosis"), which is not a descendant of "Gangrenous disorder". Note that this issue has been reported and is now fixed.
 
-}
-
-\caption{Example output of he checkCohortSourceCodes function. }(\#fig:sourceCodes)
-\end{figure}
-
-Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mapings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the `findOrphanSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study concerning gangrene the concept "Gangrenous disorder" ([439928](http://athena.ohdsi.org/search-terms/terms/439928)) was used. Several terms, including "gangrene", were used to search the descriptions in the CONCEPT and SOURCE_TO_CONCEPT_MAP tables to identify source codes.  Figure \@ref(fig:missingMapping) show that the ICD-10 code J85.0 ("Gangrene and necrosis of lung") was only mapped to concept [4324261](http://athena.ohdsi.org/search-terms/terms/4324261) ("Pulmanory necrosis"), which is not a descendant of "Gangrenous disorder". Note that this issue has been reported and is now fixed.
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.6\linewidth]{images/DataQuality/missingMapping} 
-
-}
-
-\caption{Example orphan source code. }(\#fig:missingMapping)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/missingMapping.png" alt="Example orphan source code. " width="60%" />
+<p class="caption">(\#fig:missingMapping)Example orphan source code. </p>
+</div>
 
 ## ACHILLES in practice {#achillesInPractice}
 
@@ -223,27 +211,19 @@ exportToJson(connectionDetails,
              outputPath = "achillesOut")
 ```
 
-The JSON files will be written to the achillesOut subfolder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure \@ref(fig:achillesDataDensity) shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.
+The JSON files will be written to the achillesOut sub-folder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure \@ref(fig:achillesDataDensity) shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/achillesDataDensity} 
-
-}
-
-\caption{The data density plot in the ACHILLES web viewer.}(\#fig:achillesDataDensity)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/achillesDataDensity.png" alt="The data density plot in the ACHILLES web viewer." width="100%" />
+<p class="caption">(\#fig:achillesDataDensity)The data density plot in the ACHILLES web viewer.</p>
+</div>
 
 Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a sudden change in the prevalence of a diabetes diagnosis code. This change coincides with changes in the reimbursement rules in this specific country, leading to more diagnoses but probably not a true increase in prevalence in the underlying population. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/achillesCodeChange} 
-
-}
-
-\caption{Monthly rate of diabetes coded in the ACHILLES web viewer.}(\#fig:achillesCodeChange)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/achillesCodeChange.png" alt="Monthly rate of diabetes coded in the ACHILLES web viewer." width="100%" />
+<p class="caption">(\#fig:achillesCodeChange)Monthly rate of diabetes coded in the ACHILLES web viewer.</p>
+</div>
 
 ## Study-specific checks in practice
 
@@ -262,16 +242,12 @@ checkCohortSourceCodes(connectionDetails,
 ```
 
 
-We can open the output file in a web browser as shown in Figure \@ref(fig:sourceCodesAngioedema). Here we see that the angioedema cohort definition has two conceot sets: "Inpatient or ER visit", and "Angioedema". In this example database the visits were found through database-specific codes "ER" and "IP", that are not in the Vocabulary. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cutover between the two coding systems when we look at the sparklines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
+We can open the output file in a web browser as shown in Figure \@ref(fig:sourceCodesAngioedema). Here we see that the angioedema cohort definition has two concept sets: "Inpatient or ER visit", and "Angioedema". In this example database the visits were found through database-specific codes "ER" and "IP", that are not in the Vocabulary. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/sourceCodesAngioedema} 
-
-}
-
-\caption{Source codes used in the angioedema cohort definition.}(\#fig:sourceCodesAngioedema)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/sourceCodesAngioedema.png" alt="Source codes used in the angioedema cohort definition." width="100%" />
+<p class="caption">(\#fig:sourceCodesAngioedema)Source codes used in the angioedema cohort definition.</p>
+</div>
 
 Additionally, we can search for orphan source codes. Here we look for the Standard Concept "Angioedema", and look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
 
@@ -295,7 +271,7 @@ View(orphans)
 |232437009         |Angioneurotic edema of larynx                                          |SNOMED       |            0|
 |10002472          |Angioneurotic edema, not elsewhere classified                          |MedDRA       |            0|
 
-The only potential orphan found that is actually used in the data is "Angioneurotic edema, sequela", which is not supposed to map to angioedema. This analyis therefore did not reveal any missing codes.
+The only potential orphan found that is actually used in the data is "Angioneurotic edema, sequela", which is not supposed to map to angioedema. This analysis therefore did not reveal any missing codes.
 
 ## Summary
 
