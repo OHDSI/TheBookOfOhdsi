@@ -21,7 +21,7 @@ Whereas the same query on PostgreSQL would be:
 SELECT * FROM person LIMIT 10;
 ```
 
-In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \index {Standard SQL Dialect|see {SqlRender} \index{OHDSI SQL|see {SqlRender}}
+In OHDSI, we would like to be agnostic to the specific dialect a platform uses; we would like to 'speak' the same SQL language across all OHDSI databases. For this reason OHDSI developed the [SqlRender](https://ohdsi.github.io/SqlRender/) package, an R package that can translate from one standard dialect to any of the supported dialects that will be discussed later in this chapter. This standard dialect - **OHDSI SQL** - is mainly a subset of the SQL Server SQL dialect. The example SQL statements provided throughout this chapter will all use OHDSI SQL. \index{SqlRender} \index{agnostic SQL|see {SqlRender}} \index {Standard SQL Dialect|see {SqlRender}} \index{OHDSI SQL|see {SqlRender}}
 
 Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter. \index{DatabaseConnector}
 
@@ -670,16 +670,27 @@ SELECT 1 AS cohort_definition_id,
   cohort_end_date,
   subject_id
 FROM (
-  SELECT MIN(drug_exposure_start_date) AS cohort_start_date,
-    MIN(drug_exposure_end_date) AS cohort_end_date,
+  SELECT drug_exposure_start_date AS cohort_start_date,
+    COALESCE(drug_exposure_end_date,
+             DATEADD(DAY, 1, drug_exposure_start_date)
+    ) AS cohort_end_date,
     person_id AS subject_id
-  FROM @cdm_db_schema.drug_exposure
-  INNER JOIN @cdm_db_schema.concept_ancestor
-    ON drug_concept_id = descendant_concept_id
-  WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
-    1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
-    1342439) -- ACE inhibitors
-  GROUP BY person_id
+  FROM (
+    SELECT drug_exposure_start_date,
+      drug_exposure_end_date,
+      person_id,
+      ROW_NUMBER() OVER (
+        PARTITION BY person_id
+  			ORDER BY drug_exposure_start_date
+      ) order_nr
+    FROM @cdm_db_schema.drug_exposure
+    INNER JOIN @cdm_db_schema.concept_ancestor
+      ON drug_concept_id = descendant_concept_id
+    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
+      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
+      1342439) -- ACE inhibitors
+  ) ordered_exposures
+  WHERE order_nr = 1
 ) first_exposure
 INNER JOIN @cdm_db_schema.observation_period
   ON subject_id = person_id
