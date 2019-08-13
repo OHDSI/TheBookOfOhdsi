@@ -13,7 +13,9 @@ The chapter serves to explain what is meant by creating and sharing cohort defin
 ```{block2, type='rmdimportant'}
 - A **cohort** is a set of persons who satisfy one or more inclusion criteria for a duration of time.
 - A cohort definition is the full description of logic used for identifying a particular cohort.
+
 ```
+
 \index{cohort} \index{cohort definition}
 It is important to realize that this definition of a cohort used in OHDSI might differ from that used by others in the field. For example, in many peer-reviewed scientific manuscripts, a cohort is suggested to be analogous to a codeset of specific clinical codes (e.g. ICD-9/ICD-10, NDC, HCPCS, etc). While codesets are an important piece in assembling a cohort, a cohort is not defined by codeset. A cohort requires specific logic for how to use the codeset for the criteria (e.g. is it the first occurrence of the ICD-9/ICD-10 code? any occurrence?). A well-defined cohort specifies how a patient enters a cohort and how a patient exits a cohort. 
 \index{codeset} 
@@ -27,8 +29,9 @@ There are unique nuances to utilizing OHDSI's definition of a cohort, including:
 - A cohort may have zero or more members
 
 There are two main approaches to constructing a cohort: 
-**1) Rule-based cohort definitions** use explicit rules to describe when a patient is in the cohort. Defining these rules typically relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules for cohort inclusion criteria.
-**2) Probabilistic cohort definitions** use a probabilistic model to compute a probability between 0 and 100% of the patient being in the cohort. This probability can be turned into a yes-no classification using some threshold, or in some study designs can be used as is. The probabilistic model is typically trained using machine learning (e.g. logistic regression) on some example data to automatically identify the relevant patient characteristics that are predictive.  
+
+1. **Rule-based cohort definitions** use explicit rules to describe when a patient is in the cohort. Defining these rules typically relies heavily on the domain expertise of the individual designing the cohort to use their knowledge of the therapeutic area of interest to build rules for cohort inclusion criteria.
+2. **Probabilistic cohort definitions** use a probabilistic model to compute a probability between 0 and 100% of the patient being in the cohort. This probability can be turned into a yes-no classification using some threshold, or in some study designs can be used as is. The probabilistic model is typically trained using machine learning (e.g. logistic regression) on some example data to automatically identify the relevant patient characteristics that are predictive.  
 
 The next sections will discuss these approaches in further detail.
 
@@ -83,7 +86,7 @@ When you are building a cohort, you should consider which of these is more impor
 
 Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you’re trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher’s discretion what threshold of stringency is necessary to adequately study the cohort of interest.
 
-As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases). This is discussed in detail in Chapter \ref(ClinicalValidity) (“Clinical Validity”).
+As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases). This is discussed in detail in Chapter \@ref(ClinicalValidity) (“Clinical Validity”).
 
 ## OHDSI Gold Standard Phenotype Library
 
@@ -94,6 +97,7 @@ To assist the community in the inventory and overall evaluation of existing coho
 We begin to practice our cohort skills by putting together a cohort definition using a rule-based approach. In this example, we want to find *patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension* 
 
 With this context in mind, we are now going to build our cohort. As we go through this exercise, we will approach building our cohort similar to standard attrition chart. Figure \@ref(fig:CohortPractice) shows the logical framework for how we want to build this cohort.
+
 ```{r CohortPractice, fig.cap='Logical Diagram of Intended Cohort',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/CohortPractice.png")
 ```
@@ -204,6 +208,7 @@ You have now added all of your qualifying inclusion criteria. You must now speci
 *Why are gaps allowed?* In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can cover a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have access to the initial drug exposure because the unit of dispense exceeded one day. 
 
 We can configure this by selecting the Event will persist *until the end of a drug exposure*. We then will add our persistence window and append the concept set for ACE inhibitors. Now check your logic against Figure \@ref(fig:ATLAScohortexit).
+
 ```{r ATLAScohortexit, fig.cap='Cohort Exit Criteria',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-cohortexit.png")
 ```
@@ -219,7 +224,7 @@ For clarity, we will split the SQL into several chunks, each chunk generating a 
 
 ### Connecting to the database
 
-We first need to tell R how to connect to the server. [CohortMethod](https://ohdsi.github.io/CohortMethod/) uses the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
+We first need to tell R how to connect to the server. We will use the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
 ```{r tidy=FALSE,eval=FALSE}
 library(CohortMethod)
@@ -507,7 +512,8 @@ disconnect(conn)
 - Cohorts are used (and re-used) throughout the OHDSI analytics tools to define for example the exposures and outcomes of interest.
 - There are two major approaches to building a cohort: rule-based and probabilistic.
 - Rule-based cohort definitions can be created in ATLAS, or using SQL
+
 ```
 
-### Exercises
+## Exercises
 
