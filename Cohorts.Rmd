@@ -64,7 +64,7 @@ The standard components we use to assemble these criteria are:
 
 - **OMOP Concept set**: A data-agnostic expression that defines one or more OMOP standard concepts encompassing the clinical entity of interest -- these concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the OMOP vocabularies (Ex: OMOP standard concepts representing type II diabetes or antidiabetic drugs)
 
-- **Domain-specific attribute**: Additional attributes related to the clinical entity of interest (Ex:  DRUG_EXPOSURE: Days supply;  MEASUREMENT:  value_as_number, high_range)
+- **Domain-specific attribute**: Additional attributes related to the clinical entity of interest (Ex:  DRUG_EXPOSURE: Days supply;  MEASUREMENT:  VALUE_AS_NUMBER, high_range)
 
 - **Temporal logic**:  the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)
 
@@ -267,14 +267,14 @@ allHtDrugs <- c(904542, 907013, 932745, 942350, 956874, 970250, 974166,
 We will first find first use of ACE inhibitors for each patient:
 
 ```{r eval=FALSE}
-sql <- "SELECT person_id AS subject_id,
-  MIN(drug_exposure_start_date) AS cohort_start_date
+sql <- "SELECT PERSON_ID AS SUBJECT_ID,
+  MIN(DRUG_EXPOSURE_START_DATE) AS COHORT_START_DATE
 INTO #first_use
 FROM @cdm_db_schema.drug_exposure
 INNER JOIN @cdm_db_schema.concept_ancestor
-  ON descendant_concept_id = drug_concept_id
-WHERE ancestor_concept_id IN (@ace_i)
-GROUP BY person_id;"
+  ON DESCENDANT_CONCEPT_ID = DRUG_CONCEPT_ID
+WHERE ANCESTOR_CONCEPT_ID IN (@ace_i)
+GROUP BY PERSON_ID;"
 
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, ace_i = aceI)
 }
@@ -287,15 +287,15 @@ Note that we join the DRUG_EXPOSURE table to the CONCEPT_ANCESTOR table to find 
 Next, we require 365 of continuous prior observation by joining to the OBSERVATION_PERIOD table:
 
 ```{r eval=FALSE}
-sql <- "SELECT subject_id,
-  cohort_start_date
+sql <- "SELECT SUBJECT_ID,
+  COHORT_START_DATE
 INTO #has_prior_obs
 FROM #first_use
 INNER JOIN @cdm_db_schema.observation_period
-  ON subject_id = person_id
-    AND observation_period_start_date <= cohort_start_date
-    AND observation_period_end_date >= cohort_start_date
-WHERE DATEADD(DAY, 365, observation_period_start_date) < cohort_start_date;"
+  ON SUBJECT_ID = PERSON_ID
+    AND OBSERVATION_PERIOD_START_DATE <= COHORT_START_DATE
+    AND OBSERVATION_PERIOD_END_DATE >= COHORT_START_DATE
+WHERE DATEADD(DAY, 365, OBSERVATION_PERIOD_START_DATE) < COHORT_START_DATE;"
 
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema)
 ```
@@ -305,17 +305,17 @@ renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema)
 We require a hypertension diagnosis in the 365 days prior:
 
 ```{r eval=FALSE}
-sql <- "SELECT DISTINCT subject_id,
-  cohort_start_date
+sql <- "SELECT DISTINCT SUBJECT_ID,
+  COHORT_START_DATE
 INTO #has_ht
 FROM #has_prior_obs
 INNER JOIN @cdm_db_schema.condition_occurrence
-  ON subject_id = person_id
-    AND condition_start_date <= cohort_start_date
-    AND condition_start_date >= DATEADD(DAY, -365, cohort_start_date)
+  ON SUBJECT_ID = PERSON_ID
+    AND CONDITION_START_DATE <= COHORT_START_DATE
+    AND CONDITION_START_DATE >= DATEADD(DAY, -365, COHORT_START_DATE)
 INNER JOIN @cdm_db_schema.concept_ancestor
-  ON descendant_concept_id = condition_concept_id
-WHERE ancestor_concept_id = @hypertension;"
+  ON DESCENDANT_CONCEPT_ID = CONDITION_CONCEPT_ID
+WHERE ANCESTOR_CONCEPT_ID = @hypertension;"
 
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, hypertension = hypertension)
 ```
@@ -327,44 +327,44 @@ Note that we `SELECT DISTINCT`, becuase else if a person has multiple hypertensi
 We require no prior exposure to any hypertension treatment:
 
 ```{r eval=FALSE}
-sql <- "SELECT subject_id,
-  cohort_start_date
+sql <- "SELECT SUBJECT_ID,
+  COHORT_START_DATE
 INTO #no_prior_ht_drugs
 FROM #has_ht
 LEFT JOIN (
   SELECT *
   FROM @cdm_db_schema.drug_exposure
   INNER JOIN @cdm_db_schema.concept_ancestor
-    ON descendant_concept_id = drug_concept_id
-  WHERE ancestor_concept_id IN (@all_ht_drugs)
+    ON DESCENDANT_CONCEPT_ID = DRUG_CONCEPT_ID
+  WHERE ANCESTOR_CONCEPT_ID IN (@all_ht_drugs)
 ) ht_drugs
-  ON subject_id = person_id
-    AND drug_exposure_start_date < cohort_start_date
-WHERE person_id IS NULL;"
+  ON SUBJECT_ID = PERSON_ID
+    AND DRUG_EXPOSURE_START_DATE < COHORT_START_DATE
+WHERE PERSON_ID IS NULL;"
 
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, all_ht_drugs = allHtDrugs)
 ```
 
-Note that we use a left join, and only allow rows where the person_id, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.
+Note that we use a left join, and only allow rows where the PERSON_ID, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.
 
 ### Monotherapy
 
 We require there to be only one exposure to hypertension treatment in the first seven days of the cohort entry:
 
 ```{r eval=FALSE}
-sql <- "SELECT subject_id,
-  cohort_start_date
+sql <- "SELECT SUBJECT_ID,
+  COHORT_START_DATE
 INTO #monotherapy
 FROM #no_prior_ht_drugs
 INNER JOIN @cdm_db_schema.drug_exposure
-  ON subject_id = person_id
-    AND drug_exposure_start_date >= cohort_start_date
-    AND drug_exposure_start_date <= DATEADD(DAY, 7, cohort_start_date)
+  ON SUBJECT_ID = PERSON_ID
+    AND DRUG_EXPOSURE_START_DATE >= COHORT_START_DATE
+    AND DRUG_EXPOSURE_START_DATE <= DATEADD(DAY, 7, COHORT_START_DATE)
 INNER JOIN @cdm_db_schema.concept_ancestor
-  ON descendant_concept_id = drug_concept_id
-WHERE ancestor_concept_id IN (@all_ht_drugs)
-GROUP BY subject_id,
-  cohort_start_date
+  ON DESCENDANT_CONCEPT_ID = DRUG_CONCEPT_ID
+WHERE ANCESTOR_CONCEPT_ID IN (@all_ht_drugs)
+GROUP BY SUBJECT_ID,
+  COHORT_START_DATE
 HAVING COUNT(*) = 1;"
 
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, all_ht_drugs = allHtDrugs)
@@ -376,52 +376,52 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 
 ```{r eval=FALSE}
 sql <- "WITH exposure AS (
-  SELECT person_id,
-    CAST(1 AS INT) AS concept_id,
-    drug_exposure_start_date AS exposure_start_date,
-    drug_exposure_end_date AS exposure_end_date
+  SELECT PERSON_ID,
+    CAST(1 AS INT) AS CONCEPT_ID,
+    DRUG_EXPOSURE_START_DATE AS exposure_START_DATE,
+    DRUG_EXPOSURE_END_DATE AS exposure_END_DATE
   FROM @cdm_db_schema.drug_exposure
   INNER JOIN @cdm_db_schema.concept_ancestor
-    ON descendant_concept_id = drug_concept_id
-  WHERE ancestor_concept_id IN (@ace_i)
+    ON DESCENDANT_CONCEPT_ID = DRUG_CONCEPT_ID
+  WHERE ANCESTOR_CONCEPT_ID IN (@ace_i)
 )
-SELECT ends.person_id AS subject_id,
-	ends.concept_id AS cohort_definition_id,
-  MIN(exposure_start_date) AS cohort_start_date,
-  ends.era_end_date AS cohort_end_date
+SELECT ends.PERSON_ID AS SUBJECT_ID,
+	ends.CONCEPT_ID AS COHORT_DEFINITION_ID,
+  MIN(exposure_START_DATE) AS COHORT_START_DATE,
+  ends.era_END_DATE AS COHORT_END_DATE
 INTO #exposure_era
 FROM (
-  SELECT exposure.person_id,
-    exposure.concept_id,
-    exposure.exposure_start_date,
-    MIN(events.end_date) AS era_end_date
+  SELECT exposure.PERSON_ID,
+    exposure.CONCEPT_ID,
+    exposure.exposure_START_DATE,
+    MIN(events.END_DATE) AS era_END_DATE
   FROM  exposure
   JOIN (
 --cteEndDates
-    SELECT person_id,
-      concept_id,
-      DATEADD(DAY, - 1 * @max_gap, event_date) AS end_date
+    SELECT PERSON_ID,
+      CONCEPT_ID,
+      DATEADD(DAY, - 1 * @max_gap, event_date) AS END_DATE
     FROM (
-      SELECT person_id,
-        concept_id,
+      SELECT PERSON_ID,
+        CONCEPT_ID,
         event_date,
         event_type,
         MAX(start_ordinal) OVER (
-          PARTITION BY person_id ,concept_id ORDER BY event_date,
+          PARTITION BY PERSON_ID ,CONCEPT_ID ORDER BY event_date,
               event_type ROWS UNBOUNDED PRECEDING
           ) AS start_ordinal,
         ROW_NUMBER() OVER (
-          PARTITION BY person_id, concept_id ORDER BY event_date,
+          PARTITION BY PERSON_ID, CONCEPT_ID ORDER BY event_date,
             event_type
           ) AS overall_ord
       FROM (
 -- select the start dates, assigning a row number to each
-        SELECT person_id,
-          concept_id,
-          exposure_start_date AS event_date,
+        SELECT PERSON_ID,
+          CONCEPT_ID,
+          exposure_START_DATE AS event_date,
           0 AS event_type,
           ROW_NUMBER() OVER (
-            PARTITION BY person_id, concept_id ORDER BY exposure_start_date
+            PARTITION BY PERSON_ID, CONCEPT_ID ORDER BY exposure_START_DATE
             ) AS start_ordinal
         FROM exposure
 
@@ -429,9 +429,9 @@ FROM (
 -- add the end dates with NULL as the row number, padding the end dates by
 -- @max_gap to allow a grace period for overlapping ranges.
 
-        SELECT person_id,
-          concept_id,
-          DATEADD(day, @max_gap, exposure_end_date),
+        SELECT PERSON_ID,
+          CONCEPT_ID,
+          DATEADD(day, @max_gap, exposure_END_DATE),
           1 AS event_type,
           NULL
         FROM exposure
@@ -439,16 +439,16 @@ FROM (
     ) events
   WHERE 2 * events.start_ordinal - events.overall_ord = 0
   ) events
-  ON exposure.person_id = events.person_id
-      AND exposure.concept_id = events.concept_id
-      AND events.end_date >= exposure.exposure_end_date
-  GROUP BY exposure.person_id,
-      exposure.concept_id,
-      exposure.exposure_start_date
+  ON exposure.PERSON_ID = events.PERSON_ID
+      AND exposure.CONCEPT_ID = events.CONCEPT_ID
+      AND events.END_DATE >= exposure.exposure_END_DATE
+  GROUP BY exposure.PERSON_ID,
+      exposure.CONCEPT_ID,
+      exposure.exposure_START_DATE
   ) ends
-GROUP BY ends.person_id,
-  concept_id,
-  ends.era_end_date;"
+GROUP BY ends.PERSON_ID,
+  CONCEPT_ID,
+  ends.era_END_DATE;"
 
 
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, ace_i = aceI, max_gap = 30)
@@ -459,15 +459,15 @@ The most important part of this SQL is that we first define a set of exposures, 
 Next, we simply join these ACE inhibitor exposure eras to our original cohort to use the era end dates as our cohort end dates:
 
 ```{r eval=FALSE}
-sql <- "SELECT ee.subject_id,
-  CAST(1 AS INT) AS cohort_definition_id,
-  ee.cohort_start_date,
-  ee.cohort_end_date
+sql <- "SELECT ee.SUBJECT_ID,
+  CAST(1 AS INT) AS COHORT_DEFINITION_ID,
+  ee.COHORT_START_DATE,
+  ee.COHORT_END_DATE
 INTO @cohort_db_schema.@cohort_table
 FROM #monotherapy mt
 INNER JOIN #exposure_era ee
-  ON mt.subject_id = ee.subject_id
-    AND mt.cohort_start_date = ee.cohort_start_date;"
+  ON mt.SUBJECT_ID = ee.SUBJECT_ID
+    AND mt.COHORT_START_DATE = ee.COHORT_START_DATE;"
 
 renderTranslateExecuteSql(conn, sql, cohort_db_schema = cohortDbSchema, cohort_table = cohortTable)
 ```
