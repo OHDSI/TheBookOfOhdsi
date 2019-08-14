@@ -444,8 +444,8 @@ Or perhaps we're interested in the average length of an observation period:
 
 ```sql
 SELECT AVG(DATEDIFF(DAY, 
-                    OBSERVATION_PERIOD_START_DATE, 
-                    OBSERVATION_PERIOD_END_DATE) / 365.25) AS num_years
+                    observation_period_start_date, 
+                    observation_period_end_date) / 365.25) AS num_years
 FROM @cdm.observation_period;
 ```
 | NUM_YEARS |     
@@ -455,11 +455,11 @@ FROM @cdm.observation_period;
 We can join tables to produce additional statistics. A join combines fields from multiple tables, typically by requiring specific fields in the tables to have the same value. For example, here we join the PERSON table to the OBSERVATION_PERIOD table on the PERSON_ID fields in both tables. In other words, the result of the join is a new table-like set that has all the fields of the two tables, but in all rows the PERSON_ID fields from the two tables must have the same value. We can now for example compute the maximum age at observation end by using the OBSERVATION_PERIOD_END_DATE field from the OBSERVATION_PERIOD table together with the year_of_birth field of the PERSON table:
 
 ```sql
-SELECT MAX(YEAR(OBSERVATION_PERIOD_END_DATE) -
+SELECT MAX(YEAR(observation_period_end_date) -
            year_of_birth) AS max_age
 FROM @cdm.person
 INNER JOIN @cdm.observation_period
-  ON person.PERSON_ID = observation_period.PERSON_ID;
+  ON person.person_id = observation_period.person_id;
 ```
 | MAX_AGE |     
 | -------:|
