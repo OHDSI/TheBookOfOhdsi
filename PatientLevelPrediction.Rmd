@@ -565,9 +565,9 @@ The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbT
 First it makes sense to verify that the cohort creation has succeeded, by counting the number of cohort entries:
 
 ```{r tidy=FALSE,eval=FALSE}
-sql <- paste("SELECT COHORT_DEFINITION_ID, COUNT(*) AS count",
+sql <- paste("SELECT cohort_definition_id, COUNT(*) AS count",
 "FROM @cohortsDbSchema.cohortsDbTable",
-"GROUP BY COHORT_DEFINITION_ID")
+"GROUP BY cohort_definition_id")
 conn <- connect(connDetails)
 renderTranslateQuerySql(connection = conn, 
                         sql = sql,
@@ -575,7 +575,7 @@ renderTranslateQuerySql(connection = conn,
                         cohortsDbTable = cohortsDbTable)
 ```
 ```{r echo=FALSE,message=FALSE}
-data.frame(COHORT_DEFINITION_ID = c(1, 2),count = c(527616, 3201))
+data.frame(cohort_definition_id = c(1, 2),count = c(527616, 3201))
 ```
 
 Now we can tell [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) to extract all necessary data for our analysis. Covariates are extracted using the [`FeatureExtraction`](https://ohdsi.github.io/FeatureExtraction/) package. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
@@ -971,32 +971,32 @@ Find below the SQL code to generate the NSAID cohort cohort.
 
 ```{r eval=FALSE}
 sqlNSAIDs <- "
-INSERT INTO @cohort_database_schema.@cohort_table (COHORT_DEFINITION_ID, SUBJECT_ID, COHORT_START_DATE, COHORT_END_DATE)
-SELECT 1 AS COHORT_DEFINITION_ID,
-  PERSON_ID AS SUBJECT_ID,
-  MIN(DRUG_EXPOSURE_START_DATE) AS COHORT_START_DATE,
-  MIN(DRUG_EXPOSURE_END_DATE) AS COHORT_END_DATE
+INSERT INTO @cohort_database_schema.@cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
+SELECT 1 AS cohort_definition_id,
+  person_id AS subject_id,
+  MIN(drug_exposure_start_date) AS cohort_start_date,
+  MIN(drug_exposure_end_date) AS cohort_end_date
 FROM @cdm_database_schema.drug_exposure
 INNER JOIN @cdm_database_schema.concept_ancestor
-  ON DRUG_CONCEPT_ID = DESCENDANT_CONCEPT_ID
-WHERE ANCESTOR_CONCEPT_ID IN (1118084, 1124300) -- NSAIDS
-GROUP BY PERSON_ID;"
+  ON drug_concept_id = descendant_concept_id
+WHERE ancestor_concept_id IN (1118084, 1124300) -- NSAIDS
+GROUP BY person_id;"
 ```
 
 And here SQL code to generate the GI Bleed cohort:
 
 ```{r eval=FALSE}
 sql <- "
-INSERT INTO @cohort_database_schema.@cohort_table (COHORT_DEFINITION_ID, SUBJECT_ID, COHORT_START_DATE, COHORT_END_DATE)
-SELECT 2 AS COHORT_DEFINITION_ID,
-  PERSON_ID AS SUBJECT_ID,
-  MIN(CONDITION_START_DATE) AS COHORT_START_DATE,
-  MIN(CONDITION_END_DATE) AS COHORT_END_DATE
+INSERT INTO @cohort_database_schema.@cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
+SELECT 2 AS cohort_definition_id,
+  person_id AS subject_id,
+  MIN(condition_start_date) AS cohort_start_date,
+  MIN(condition_end_date) AS cohort_end_date
 FROM @cdm_database_schema.condition_occurrence
 INNER JOIN @cdm_database_schema.concept_ancestor
-  ON CONDITION_CONCEPT_ID = DESCENDANT_CONCEPT_ID
-WHERE ANCESTOR_CONCEPT_ID = 192671 -- Gastrointestinal haemorrhage
-GROUP BY PERSON_ID;"
+  ON condition_concept_id = descendant_concept_id
+WHERE ancestor_concept_id = 192671 -- Gastrointestinal haemorrhage
+GROUP BY person_id;"
 ```
 
 

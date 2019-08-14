@@ -29,15 +29,15 @@ To compute the number of people with at least one prescription of celecoxib, we 
 ```{r eval=FALSE}
 library(DatabaseConnector)
 connection <- connect(connectionDetails)
-sql <- "SELECT COUNT(DISTINCT(PERSON_ID)) AS person_count
+sql <- "SELECT COUNT(DISTINCT(person_id)) AS person_count
 FROM @cdm.drug_exposure
 INNER JOIN @cdm.concept_ancestor
-  ON DRUG_CONCEPT_ID = DESCENDANT_CONCEPT_ID
+  ON drug_concept_id = descendant_concept_id
 INNER JOIN @cdm.concept ingredient
-  ON ANCESTOR_CONCEPT_ID = ingredient.CONCEPT_ID
-WHERE LOWER(ingredient.CONCEPT_NAME) = 'celecoxib'
-  AND ingredient.CONCEPT_CLASS_ID = 'Ingredient'
-  AND ingredient.STANDARD_CONCEPT = 'S';"
+  ON ancestor_concept_id = ingredient.concept_id
+WHERE LOWER(ingredient.concept_name) = 'celecoxib'
+  AND ingredient.concept_class_id = 'Ingredient'
+  AND ingredient.standard_concept = 'S';"
 
 renderTranslateQuerySql(connection, sql, cdm = "main")
 ```
@@ -55,13 +55,13 @@ Alternatively, we can use the DRUG_ERA table, which is already rolled up to the 
 library(DatabaseConnector)
 connection <- connect(connectionDetails)
 
-sql <- "SELECT COUNT(DISTINCT(PERSON_ID)) AS person_count
+sql <- "SELECT COUNT(DISTINCT(person_id)) AS person_count
 FROM @cdm.drug_era
 INNER JOIN @cdm.concept ingredient
-  ON DRUG_CONCEPT_ID = ingredient.CONCEPT_ID
-WHERE LOWER(ingredient.CONCEPT_NAME) = 'celecoxib'
-  AND ingredient.CONCEPT_CLASS_ID = 'Ingredient'
-  AND ingredient.STANDARD_CONCEPT = 'S';"
+  ON drug_concept_id = ingredient.concept_id
+WHERE LOWER(ingredient.concept_name) = 'celecoxib'
+  AND ingredient.concept_class_id = 'Ingredient'
+  AND ingredient.standard_concept = 'S';"
 
 renderTranslateQuerySql(connection, sql, cdm = "main")
 ```
@@ -81,16 +81,16 @@ connection <- connect(connectionDetails)
 sql <- "SELECT COUNT(*) AS diagnose_count
 FROM @cdm.drug_era
 INNER JOIN @cdm.concept ingredient
-  ON DRUG_CONCEPT_ID = ingredient.CONCEPT_ID
+  ON drug_concept_id = ingredient.concept_id
 INNER JOIN @cdm.condition_occurrence
-  ON CONDITION_START_DATE >= drug_era_START_DATE
-    AND CONDITION_START_DATE <= drug_era_END_DATE
+  ON condition_start_date >= drug_era_start_date
+    AND condition_start_date <= drug_era_end_date
 INNER JOIN @cdm.concept_ancestor 
-  ON CONDITION_CONCEPT_ID =DESCENDANT_CONCEPT_ID
-WHERE LOWER(ingredient.CONCEPT_NAME) = 'celecoxib'
-  AND ingredient.CONCEPT_CLASS_ID = 'Ingredient'
-  AND ingredient.STANDARD_CONCEPT = 'S'
-  AND ANCESTOR_CONCEPT_ID = 192671;"
+  ON condition_concept_id =descendant_concept_id
+WHERE LOWER(ingredient.concept_name) = 'celecoxib'
+  AND ingredient.concept_class_id = 'Ingredient'
+  AND ingredient.standard_concept = 'S'
+  AND ancestor_concept_id = 192671;"
 
 renderTranslateQuerySql(connection, sql, cdm = "main")
 ```

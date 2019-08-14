@@ -48,21 +48,21 @@ One of the functions of the package is to support parameterization of SQL. Often
 The `@` character can be used to indicate parameter names that need to be exchanged for actual parameter values when rendering. In the following example, a variable called `a` is mentioned in the SQL. In the call to the render function the value of this parameter is defined:
 
 ```{r tidy=TRUE,echo=TRUE}
-sql <- "SELECT * FROM concept WHERE CONCEPT_ID = @a;"
+sql <- "SELECT * FROM concept WHERE concept_id = @a;"
 render(sql, a = 123)
 ```
 
 Note that, unlike the parameterization offered by most database management systems, it is just as easy to parameterize table or field names as values:
 
 ```{r tidy=TRUE,echo=TRUE}
-sql <- "SELECT * FROM @x WHERE PERSON_ID = @a;"
+sql <- "SELECT * FROM @x WHERE person_id = @a;"
 render(sql, x = "observation", a = 123)
 ```
 
 The parameter values can be numbers, strings, booleans, as well as vectors, which are converted to comma-delimited lists:
 
 ```{r tidy=TRUE,echo=TRUE}
-sql <- "SELECT * FROM concept WHERE CONCEPT_ID IN (@a);"
+sql <- "SELECT * FROM concept WHERE concept_id IN (@a);"
 render(sql, a = c(123, 234, 345))
 ```
 
@@ -71,7 +71,7 @@ render(sql, a = c(123, 234, 345))
 Sometimes blocks of codes need to be turned on or off based on the values of one or more parameters. This is done using the `{Condition} ? {if true} : {if false}` syntax. If the *condition* evaluates to true or 1, the *if true* block is used, else the *if false* block is shown (if present).
 
 ```{r tidy=TRUE,echo=TRUE}
-sql <- "SELECT * FROM cohort {@x} ? {WHERE SUBJECT_ID = 1}"
+sql <- "SELECT * FROM cohort {@x} ? {WHERE subject_id = 1}"
 render(sql, x = FALSE)
 render(sql, x = TRUE)
 ```
@@ -79,7 +79,7 @@ render(sql, x = TRUE)
 Simple comparisons are also supported:
 
 ```{r tidy=TRUE,echo=TRUE}
-sql <- "SELECT * FROM cohort {@x == 1} ? {WHERE SUBJECT_ID = 1};"
+sql <- "SELECT * FROM cohort {@x == 1} ? {WHERE subject_id = 1};"
 render(sql,x = 1)
 render(sql,x = 2)
 ```
@@ -87,7 +87,7 @@ render(sql,x = 2)
 As well as the `IN` operator:
 
 ```{r tidy=TRUE,echo=TRUE}
-sql <- "SELECT * FROM cohort {@x IN (1,2,3)} ? {WHERE SUBJECT_ID = 1};"
+sql <- "SELECT * FROM cohort {@x IN (1,2,3)} ? {WHERE subject_id = 1};"
 render(sql,x = 2)
 ```
 
@@ -210,7 +210,7 @@ FROM my_table AS table_1
 INNER JOIN (
   SELECT * FROM other_table
 ) AS table_2
-ON table_1.PERSON_ID = table_2.PERSON_ID;
+ON table_1.person_id = table_2.person_id;
 
 -- Not using AS keyword
 SELECT * 
@@ -218,7 +218,7 @@ FROM my_table table_1
 INNER JOIN (
   SELECT * FROM other_table
 ) table_2
-ON table_1.PERSON_ID = table_2.PERSON_ID;
+ON table_1.person_id = table_2.person_id;
 ```
 
 However, Oracle will throw an error when the `AS` keyword is used. In the above example, the first query will fail. It is therefore recommended to not use the `AS` keyword when aliasing tables. (Note: we can't make SqlRender handle this, because it can't easily distinguish between table aliases where Oracle doesn't allow `AS` to be used, and field aliases, where Oracle requires `AS` to be used.)
@@ -383,7 +383,7 @@ Some examples:
 querySql(conn, "SELECT TOP 3 * FROM person")
 ```
 ```{r echo=FALSE}
-data.frame(PERSON_ID = c(1,2,3), GENDER_CONCEPT_ID = c(8507, 8507, 8507), YEAR_OF_BIRTH = c(1975, 1976, 1977))
+data.frame(person_id = c(1,2,3), gender_concept_id = c(8507, 8507, 8507), year_of_birth = c(1975, 1976, 1977))
 ```
 
 ```{r eval=FALSE}
@@ -475,10 +475,10 @@ AS (
 			ORDER BY age
 			) order_nr
 	FROM (
-		SELECT YEAR(OBSERVATION_PERIOD_START_DATE) - year_of_birth AS age
+		SELECT YEAR(observation_period_start_date) - year_of_birth AS age
 		FROM @cdm.person
 		INNER JOIN @cdm.observation_period
-			ON person.PERSON_ID = observation_period.PERSON_ID
+			ON person.person_id = observation_period.person_id
 		) age_computed
 	)
 SELECT MIN(age) AS min_age,
@@ -511,11 +511,11 @@ CROSS JOIN (
 More complex computations can also be performed in R instead of using SQL. For example, we can get the same answer using this R code:
 
 ```{r eval=FALSE}
-sql <- "SELECT YEAR(OBSERVATION_PERIOD_START_DATE) -
+sql <- "SELECT YEAR(observation_period_start_date) -
                year_of_birth AS age
 FROM @cdm.person
 INNER JOIN @cdm.observation_period
-  ON person.PERSON_ID = observation_period.PERSON_ID;"
+  ON person.person_id = observation_period.person_id;"
 age <- renderTranslateQuerySql(conn, sql, cdm = "cdm")
 quantile(age[, 1], c(0, 0.25, 0.5, 0.75, 1))
 ```
@@ -530,10 +530,10 @@ Here we compute age on the server, download all ages, and then compute the age d
 Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:
 
 ```sql
-SELECT TOP 10 CONDITION_SOURCE_VALUE, 
+SELECT TOP 10 condition_source_value, 
   COUNT(*) AS code_count
 FROM @cdm.condition_occurrence
-GROUP BY CONDITION_SOURCE_VALUE
+GROUP BY condition_source_value
 ORDER BY -COUNT(*);
 ```
 | CONDITION_SOURCE_VALUE | CODE_COUNT |    
@@ -557,11 +557,11 @@ Many operations require the vocabulary to be useful. The Vocabulary tables are p
 
 ```sql
 SELECT COUNT(*) AS subject_count,
-  CONCEPT_NAME
+  concept_name
 FROM @cdm.person
 INNER JOIN @cdm.concept
-  ON person.gender_CONCEPT_ID = concept.CONCEPT_ID
-GROUP BY CONCEPT_NAME;
+  ON person.gender_concept_id = concept.concept_id
+GROUP BY concept_name;
 ```
 | SUBJECT_COUNT | CONCEPT_NAME |    
 | -------------:| ------------:|
@@ -574,12 +574,12 @@ A very powerful feature of the Vocabulary is its hierarchy. A very common query 
 SELECT COUNT(*) AS prescription_count
 FROM @cdm.drug_exposure
 INNER JOIN @cdm.concept_ancestor
-  ON DRUG_CONCEPT_ID = DESCENDANT_CONCEPT_ID
+  ON drug_concept_id = descendant_concept_id
 INNER JOIN @cdm.concept ingredient
-  ON ANCESTOR_CONCEPT_ID = ingredient.CONCEPT_ID
-WHERE LOWER(ingredient.CONCEPT_NAME) = 'ibuprofen'
-  AND ingredient.CONCEPT_CLASS_ID = 'Ingredient'
-  AND ingredient.STANDARD_CONCEPT = 'S';
+  ON ancestor_concept_id = ingredient.concept_id
+WHERE LOWER(ingredient.concept_name) = 'ibuprofen'
+  AND ingredient.concept_class_id = 'Ingredient'
+  AND ingredient.standard_concept = 'S';
 ```
 | PRESCRIPTION_COUNT |
 | ------------------:|
@@ -640,10 +640,10 @@ cohortTable <- "my_cohorts"
 
 sql <- "
 CREATE TABLE @cohort_db_schema.@cohort_table (
-  COHORT_DEFINITION_ID INT,
-  COHORT_START_DATE DATE,
-  COHORT_END_DATE DATE,
-  SUBJECT_ID BIGINT
+  cohort_definition_id int,
+  cohort_start_date date,
+  cohort_end_date date,
+  subject_id bigint
 );
 "
 renderTranslateExecuteSql(conn, sql,
@@ -660,45 +660,45 @@ Next we create our exposure cohort, and insert it into our COHORT table:
 ```{r eval=FALSE}
 sql <- "
 INSERT INTO @cohort_db_schema.@cohort_table (
-  COHORT_DEFINITION_ID,
-  COHORT_START_DATE,
-  COHORT_END_DATE,
-  SUBJECT_ID
+  cohort_definition_id,
+  cohort_start_date,
+  cohort_end_date,
+  subject_id
 )
-SELECT 1 AS COHORT_DEFINITION_ID,
-  COHORT_START_DATE,
-  COHORT_END_DATE,
-  SUBJECT_ID
+SELECT 1 AS cohort_definition_id,
+  cohort_start_date,
+  cohort_end_date,
+  subject_id
 FROM (
-  SELECT DRUG_EXPOSURE_START_DATE AS COHORT_START_DATE,
-    COALESCE(DRUG_EXPOSURE_END_DATE,
-             DATEADD(DAY, 1, DRUG_EXPOSURE_START_DATE)
-    ) AS COHORT_END_DATE,
-    PERSON_ID AS SUBJECT_ID
+  SELECT drug_exposure_start_date as cohort_start_date,
+    COALESCE(drug_exposure_end_date,
+             DATEADD(DAY, 1, drug_exposure_start_date)
+    ) AS cohort_end_date,
+    person_id AS subject_id
   FROM (
-    SELECT DRUG_EXPOSURE_START_DATE,
-      DRUG_EXPOSURE_END_DATE,
-      PERSON_ID,
+    SELECT drug_exposure_start_date,
+      drug_exposure_end_date,
+      person_id,
       ROW_NUMBER() OVER (
-        PARTITION BY PERSON_ID
-  			ORDER BY DRUG_EXPOSURE_START_DATE
+        PARTITION BY person_id
+  			ORDER BY drug_exposure_start_date
       ) order_nr
     FROM @cdm_db_schema.drug_exposure
     INNER JOIN @cdm_db_schema.concept_ancestor
-      ON DRUG_CONCEPT_ID = DESCENDANT_CONCEPT_ID
-    WHERE ANCESTOR_CONCEPT_ID IN (1335471, 1340128, 1341927,
+      ON drug_concept_id = descendant_concept_id
+    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
       1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
       1342439) -- ACE inhibitors
   ) ordered_exposures
   WHERE order_nr = 1
 ) first_exposure
 INNER JOIN @cdm_db_schema.observation_period
-  ON SUBJECT_ID = PERSON_ID
-    AND OBSERVATION_PERIOD_START_DATE < COHORT_START_DATE
-    AND OBSERVATION_PERIOD_END_DATE > COHORT_START_DATE
+  ON subject_id = person_id
+    AND observation_period_start_date < cohort_start_date
+    AND observation_period_end_date > cohort_start_date
 WHERE DATEDIFF(DAY,
-               OBSERVATION_PERIOD_START_DATE,
-               COHORT_START_DATE) >= 365;
+               observation_period_start_date,
+               cohort_start_date) >= 365;
 "
 
 renderTranslateExecuteSql(conn, sql,
@@ -716,29 +716,29 @@ Finally, we must create our outcome cohort:
 ```{r eval=FALSE}
 sql <- "
 INSERT INTO @cohort_db_schema.@cohort_table (
- COHORT_DEFINITION_ID,
- COHORT_START_DATE,
- COHORT_END_DATE,
-SUBJECT_ID
+ cohort_definition_id,
+ cohort_start_date,
+ cohort_end_date,
+subject_id
 )
-SELECT 2 AS COHORT_DEFINITION_ID,
-  COHORT_START_DATE,
-  COHORT_END_DATE,
-  SUBJECT_ID
+SELECT 2 AS cohort_definition_id,
+  cohort_start_date,
+  cohort_end_date,
+  subject_id
 FROM (
-  SELECT DISTINCT PERSON_ID AS SUBJECT_ID,
-    CONDITION_START_DATE AS COHORT_START_DATE,
-    CONDITION_END_DATE AS COHORT_END_DATE
+  SELECT DISTINCT person_id AS subject_id,
+    Condition_start_date AS cohort_start_date,
+    condition_end_date AS cohort_end_date
   FROM @cdm_db_schema.condition_occurrence
   INNER JOIN @cdm_db_schema.concept_ancestor
-    ON CONDITION_CONCEPT_ID = DESCENDANT_CONCEPT_ID
-  WHERE ANCESTOR_CONCEPT_ID = 432791 -- Angioedema
+    ON condition_concept_id = descendant_concept_id
+  WHERE ancestor_concept_id = 432791 -- Angioedema
 ) distinct_occurrence
 INNER JOIN @cdm_db_schema.visit_occurrence
-  ON SUBJECT_ID = PERSON_ID
-  AND VISIT_START_DATE <= COHORT_START_DATE
-  AND VISIT_END_DATE >= COHORT_START_DATE
-WHERE VISIT_CONCEPT_ID IN (262, 9203,
+  ON subject_id = person_id
+  AND visit_start_date <= cohort_start_date
+  AND visit_end_date >= cohort_start_date
+WHERE visit_concept_id IN (262, 9203,
     9201) -- Inpatient or ER;
 "
 
@@ -757,26 +757,26 @@ Now that our cohorts are in place, we can compute the incidence rate, stratified
 ```{r eval=FALSE}
 sql <- "
 WITH tar AS (
-  SELECT CONCEPT_NAME AS gender,
-    FLOOR((YEAR(COHORT_START_DATE) -
+  SELECT concept_name AS gender,
+    FLOOR((YEAR(cohort_start_date) -
           year_of_birth) / 10) AS age,
-    SUBJECT_ID,
-    COHORT_START_DATE,
-    CASE WHEN DATEADD(DAY, 7, COHORT_START_DATE) >
-      OBSERVATION_PERIOD_END_DATE
-    THEN OBSERVATION_PERIOD_END_DATE
-    ELSE DATEADD(DAY, 7, COHORT_START_DATE)
-    END AS COHORT_END_DATE
+    subject_id,
+    cohort_start_date,
+    CASE WHEN DATEADD(DAY, 7, cohort_start_date) >
+      observation_period_end_date
+    THEN observation_period_end_date
+    ELSE DATEADD(DAY, 7, cohort_start_date)
+    END AS cohort_end_date
   FROM @cohort_db_schema.@cohort_table
   INNER JOIN @cdm_db_schema.observation_period
-    ON SUBJECT_ID = observation_period.PERSON_ID
-      AND OBSERVATION_PERIOD_START_DATE < COHORT_START_DATE
-      AND OBSERVATION_PERIOD_END_DATE > COHORT_START_DATE
+    ON subject_id = observation_period.person_id
+      AND observation_period_start_date < cohort_start_date
+      AND observation_period_end_date > cohort_start_date
   INNER JOIN @cdm_db_schema.person
-    ON SUBJECT_ID = person.PERSON_ID
+    ON subject_id = person.person_id
   INNER JOIN @cdm_db_schema.concept
-    ON gender_CONCEPT_ID = CONCEPT_ID
-  WHERE COHORT_DEFINITION_ID = 1 -- Exposure
+    ON gender_concept_id = concept_id
+  WHERE cohort_definition_id = 1 -- Exposure
 )
 SELECT days.gender,
     days.age,
@@ -785,8 +785,8 @@ SELECT days.gender,
 FROM (
   SELECT gender,
     age,
-    SUM(DATEDIFF(DAY, COHORT_START_DATE,
-      COHORT_END_DATE)) AS days
+    SUM(DATEDIFF(DAY, cohort_start_date,
+      cohort_end_date)) AS days
   FROM tar
   GROUP BY gender,
     age
@@ -797,10 +797,10 @@ LEFT JOIN (
       COUNT(*) AS events
   FROM tar
   INNER JOIN @cohort_db_schema.@cohort_table angioedema
-    ON tar.SUBJECT_ID = angioedema.SUBJECT_ID
-      AND tar.COHORT_START_DATE <= angioedema.COHORT_START_DATE
-      AND tar.COHORT_END_DATE >= angioedema.COHORT_START_DATE
-  WHERE COHORT_DEFINITION_ID = 2 -- Outcome
+    ON tar.subject_id = angioedema.subject_id
+      AND tar.cohort_start_date <= angioedema.cohort_start_date
+      AND tar.cohort_end_date >= angioedema.cohort_start_date
+  WHERE cohort_definition_id = 2 -- Outcome
   GROUP BY gender,
     age
 ) events
