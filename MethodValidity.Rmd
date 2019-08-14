@@ -185,7 +185,7 @@ For our example study we select the 76 negative controls listed in Appendix \@re
 
 Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \@ref(evaluationSettings) discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R, then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter \@ref(SqlAndR) describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.
 
-The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \@ref(evaluationSettings), and it is implemented in the `injectSignals` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
+The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \@ref(evaluationSettings), and it is implemented in the `synthesizePositiveControls` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
 
 ```{r tidy=FALSE,eval=FALSE}
 library(MethodEvaluation)
@@ -194,32 +194,33 @@ library(MethodEvaluation)
 eoPairs <- data.frame(exposureId = 1,
                       outcomeId = ncs)
 
-pcs <- injectSignals(connectionDetails = connectionDetails,
-                     cdmDatabaseSchema = cdmDbSchema,
-                     exposureDatabaseSchema = cohortDbSchema,
-                     exposureTable = cohortTable,
-                     outcomeDatabaseSchema = cohortDbSchema,
-                     outcomeTable = cohortTable,
-                     outputDatabaseSchema = cohortDbSchema,
-                     outputTable = cohortTable,
-                     createOutputTable = FALSE,
-                     modelType = "survival",
-                     firstExposureOnly = TRUE,
-                     firstOutcomeOnly = TRUE,
-                     removePeopleWithPriorOutcomes = TRUE,
-                     washoutPeriod = 365,
-                     riskWindowStart = 1,
-                     riskWindowEnd = 0,
-                     addExposureDaysToEnd = TRUE,
-                     exposureOutcomePairs = eoPairs,
-                     effectSizes = c(1.5, 2, 4),
-                     cdmVersion = cdmVersion,
-                     workFolder = file.path(outputFolder,
-                                            "pcSynthesis"))
-              
+pcs <- synthesizePositiveControls(
+  connectionDetails = connectionDetails,
+  cdmDatabaseSchema = cdmDbSchema,
+  exposureDatabaseSchema = cohortDbSchema,
+  exposureTable = cohortTable,
+  outcomeDatabaseSchema = cohortDbSchema,
+  outcomeTable = cohortTable,
+  outputDatabaseSchema = cohortDbSchema,
+  outputTable = cohortTable,
+  createOutputTable = FALSE,
+  modelType = "survival",
+  firstExposureOnly = TRUE,
+  firstOutcomeOnly = TRUE,
+  removePeopleWithPriorOutcomes = TRUE,
+  washoutPeriod = 365,
+  riskWindowStart = 1,
+  riskWindowEnd = 0,
+  endAnchor = "cohort end",
+  exposureOutcomePairs = eoPairs,
+  effectSizes = c(1.5, 2, 4),
+  cdmVersion = cdmVersion,
+  workFolder = file.path(outputFolder,
+                         "pcSynthesis"))
+
 ```
 
-Note that we must mimic the time-at-risk settings used in our estimation study design. The `injectSignals` function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by `cohortDbSchema` and `cohortTable`. The resulting `pcs` data frame contains the information on the synthesized positive controls.
+Note that we must mimic the time-at-risk settings used in our estimation study design. The `synthesizePositiveControls` function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by `cohortDbSchema` and `cohortTable`. The resulting `pcs` data frame contains the information on the synthesized positive controls.
 
 Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) readily allow estimation of many effects in an efficient manner.
 
