@@ -640,10 +640,10 @@ cohortTable <- "my_cohorts"
 
 sql <- "
 CREATE TABLE @cohort_db_schema.@cohort_table (
-  cohort_definition_id int,
-  cohort_start_date date,
-  cohort_end_date date,
-  subject_id bigint
+  cohort_definition_id INT,
+  cohort_start_date DATE,
+  cohort_end_date DATE,
+  subject_id BIGINT
 );
 "
 renderTranslateExecuteSql(conn, sql,
@@ -670,7 +670,7 @@ SELECT 1 AS cohort_definition_id,
   cohort_end_date,
   subject_id
 FROM (
-  SELECT drug_exposure_start_date as cohort_start_date,
+  SELECT drug_exposure_start_date AS cohort_start_date,
     COALESCE(drug_exposure_end_date,
              DATEADD(DAY, 1, drug_exposure_start_date)
     ) AS cohort_end_date,
@@ -727,7 +727,7 @@ SELECT 2 AS cohort_definition_id,
   subject_id
 FROM (
   SELECT DISTINCT person_id AS subject_id,
-    Condition_start_date AS cohort_start_date,
+    condition_start_date AS cohort_start_date,
     condition_end_date AS cohort_end_date
   FROM @cdm_db_schema.condition_occurrence
   INNER JOIN @cdm_db_schema.concept_ancestor

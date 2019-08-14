@@ -160,13 +160,13 @@ For more examples on how the Synthea dataset was mapped to the CDM please see th
 More and more code systems are added to the Vocabulary, so it may well be that the coding systems in the data are already included and mapped. Check the VOCABULARY table to see which vocabularies are included. To extract the mapping from non-standard concepts (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having RELATIONSHIP_ID = "Maps to". For example, to find the Standard concept ID for the ICD-10CM code I21 ("Acute Myocardial Infarction"), we can use the following SQL:
 
 ```sql
-SELECT CONCEPT_ID_2 STANDARD_CONCEPT_ID
+SELECT concept_id_2 standard_concept_id
 FROM concept_relationship
 INNER JOIN concept source_concept
-  ON CONCEPT_ID = CONCEPT_ID_1
-WHERE CONCEPT_CODE = 'I21'
-  AND VOCABULARY_ID = 'ICD10CM'
-  AND RELATIONSHIP_ID = 'Maps to'; 
+  ON concept_id = concept_id_1
+WHERE concept_code = 'I21'
+  AND vocabulary_id = 'ICD10CM'
+  AND relationship_id = 'Maps to'; 
 ```
 | STANDARD_CONCEPT_ID |
 | -------------------:|
