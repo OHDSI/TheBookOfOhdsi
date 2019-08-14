@@ -38,11 +38,11 @@ We can ask the question whether our data is fit for the general purpose of obser
 
 1. **Conformance**: Do data values adhere to do specified standard and formats? Three sub-types are identified:
    - **Value**: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties? 
-   - **Relational**: Is the recorded data in agreement with specified relational constraints? For example, does the provider_id in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?
+   - **Relational**: Is the recorded data in agreement with specified relational constraints? For example, does the PROVIDER_ID in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?
    - **Computation**: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?
 2. **Completeness**: Are data values present? For example, do all persons have a known gender?
 3. **Plausibility**: Are data values believable? Three sub-types are defined:
-    - **Uniqueness**: For example, does each person_id occur only once in the PERSON table?
+    - **Uniqueness**: For example, does each PERSON_ID occur only once in the PERSON table?
     - **Atemporal**: Do values, distributions, or densities agree with expected values? For example, is the prevalence of diabetes implied by the data in line with the known prevalence?
     - **Temporal**: Are changes in values in line with expectations? For example, are immunization sequences in line with recommendations?
     
@@ -59,16 +59,16 @@ Each component can be evaluated in two ways:
 
 Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
 
-ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as "*ACHILLES Heel*". These checks are categorized as "*error*", "*warning*", or "*notification*". Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \@ref(tab:heelExamples) show some example rules. \index{ACHILLES!Heel}
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as "*ACHILLES Heel*". These checks are categorized as "*error*", "*warning*", or "*notification*". Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \@ref(tab:heelExamples) show some example rules. \index{ACHILLES!Heel}
 
 Table: (\#tab:heelExamples) Example data quality rules in ACHILLES Heel.
 
 |Type       | Description                                       |
 |:--------- |:--------------------------------------------------|
 | Error     | Age > 150 years                                   |
-| Error     | A condition_concept_id refers to a concept that is not in the CONDITION domain |
-| Warning   | The rate of occurrence for a specific concept_id changes more than 100% from one month to the next |
-| Warning   | A prescription has a days_supply > 180             |
+| Error     | A CONDITION_CONCEPT_ID refers to a concept that is not in the CONDITION domain |
+| Warning   | The rate of occurrence for a specific CONCEPT_ID changes more than 100% from one month to the next |
+| Warning   | A prescription has a DAYS_SUPPLY > 180             |
 | Notification | The number of patients without any visit exceeds a predefined threshold |
 | Notification | There is no weight data in the MEASUREMENT table        | 
 
@@ -88,8 +88,8 @@ source("Framework.R")
 declareTest(101, "Person gender mappings")
 add_enrollment(member_id = "M000000102", gender_of_member = "male")
 add_enrollment(member_id = "M000000103", gender_of_member = "female")
-expect_person(person_id = 102, gender_concept_id = 8507
-expect_person(person_id = 103, gender_concept_id = 8532)
+expect_person(PERSON_ID = 102, GENDER_CONCEPT_ID = 8507
+expect_person(PERSON_ID = 103, GENDER_CONCEPT_ID = 8532)
 ```
 
 In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the member_id and gender_of_member fields. Note that the ENROLLMENT table has many other fields, and if we do not provide explicit values for these other fields the add_enrollment function will assign default values (the most prevalent values as observed in the White Rabbit scan report). Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.
@@ -194,7 +194,7 @@ head(heel)
 ```
 |ANALYSIS_ID|ACHILLES_HEEL_WARNING|RULE_ID|RECORD_COUNT|
 |:--:|:-------------------------------------- |:--:|:---|
-118|ERROR: 118-Number of observation periods with invalid person_id; count (n=2649) should not be > 0| 1| 2649|
+118|ERROR: 118-Number of observation periods with invalid PERSON_ID; count (n=2649) should not be > 0| 1| 2649|
 410|ERROR: 410-Number of condition occurrence records outside valid observation period; count (n=85) should not be > 0| 1| 85|
 413|ERROR: 413-Number of condition occurrence records with invalid visit_id; count (n=64717) should not be > 0| 1|64717|
 610|ERROR: 610-Number of procedure occurrence records outside valid observation period; count (n=15) should not be > 0| 1| 15|

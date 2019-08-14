@@ -63,7 +63,7 @@ The standard components we use to assemble these criteria are:
 
 - **OMOP Concept set**: A data-agnostic expression that defines one or more OMOP standard concepts encompassing the clinical entity of interest -- these concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the OMOP vocabularies (Ex: OMOP standard concepts representing type II diabetes or antidiabetic drugs)
 
-- **Domain-specific attribute**: Additional attributes related to the clinical entity of interest (Ex:  DRUG_EXPOSURE: Days supply;  MEASUREMENT:  value_as_number, high_range)
+- **Domain-specific attribute**: Additional attributes related to the clinical entity of interest (Ex:  DRUG_EXPOSURE: Days supply;  MEASUREMENT:  VALUE_AS_NUMBER, high_range)
 
 - **Temporal logic**:  the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)
 
@@ -362,7 +362,7 @@ WHERE person_id IS NULL;"
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, all_ht_drugs = allHtDrugs)
 ```
 
-Note that we use a left join, and only allow rows where the person_id, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.
+Note that we use a left join, and only allow rows where the PERSON_ID, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.
 
 ### Monotherapy
 
@@ -412,8 +412,8 @@ INTO #exposure_era
 FROM (
   SELECT exposure.person_id,
     exposure.concept_id,
-    exposure.exposure_start_date,
-    MIN(events.end_date) AS era_end_date
+    exposure.exposure_START_DATE,
+    MIN(events.END_DATE) AS era_END_DATE
   FROM  exposure
   JOIN (
 --cteEndDates

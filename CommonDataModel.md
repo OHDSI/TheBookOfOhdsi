@@ -64,7 +64,7 @@ Events of different nature are organized into Domains. These Events are stored i
 
 Table: (\#tab:domains) Number of standard concepts belonging to each domain.
 
-Concept Count|Domain_Id
+Concept Count|DOMAIN_ID
 ----------------|--------------------------------
 1731378	|Drug
 477597	|Device

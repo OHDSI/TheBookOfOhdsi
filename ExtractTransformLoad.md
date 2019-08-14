@@ -114,14 +114,14 @@ Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are re
 
 **General Flow of an ETL**
 
-Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers back to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person's patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order. 
+Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers back to the PERSON table by way of the PERSON_ID so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person's patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order. 
 
 <div class="figure">
 <img src="images/ExtractTransformLoad/flowOfEtl.png" alt="General flow of an ETL and which tables to map first." width="100%" />
 <p class="caption">(\#fig:etlFlow)General flow of an ETL and which tables to map first.</p>
 </div>
 
-It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct visit_occurrence_ids to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). This is 100% allowed and encouraged. What is discouraged is the persistence and reliance on these tables once the conversion is complete. 
+It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct VISIT_OCCURRENCE_IDs to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). This is 100% allowed and encouraged. What is discouraged is the persistence and reliance on these tables once the conversion is complete. 
 
 #### Mapping Example: Person table
 
@@ -138,24 +138,24 @@ Table: (\#tab:syntheaEtlPerson) ETL logic to convert the Synthea Patients table 
 
 | Destination Field | Source field | Logic & comments |
 | :---------------------- | :--------- | :---------------------------------------- |
-| person_id                   |             |  Autogenerate. The person_id will be generated at the time of implementation. This is because the id value from the source is a varchar value while the person_id is an integer. The id field from the source is set as the person_source_value to preserve that value and allow for error-checking if necessary. |
-| gender_concept_id           | gender      | When gender = 'M' then set gender_concept_id to 8507, when gender = 'F' then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses. |
-| year_of_birth               | birthdate   | Take year from birthdate |
-| month_of_birth              | birthdate   | Take month from birthdate |
-| day_of_birth                | birthdate   | Take day from birthdate |
-| birth_datetime              | birthdate   | With midnight as time 00:00:00. Here, the source did not supply a time of birth so the choice was made to set it at midnight.  |
-| race_concept_id             | race        | When race = 'WHITE' then set as 8527, when race = 'BLACK' then set as 8516, when race = 'ASIAN' then set as 8515, otherwise set as 0. These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source.  |
-| ethnicity_concept_id        | race  ethnicity | When race = 'HISPANIC', or when ethnicity in ('CENTRAL_AMERICAN',   'DOMINICAN', 'MEXICAN', 'PUERTO_RICAN', 'SOUTH_AMERICAN') then set as 38003563, otherwise set as 0. This is a good example of how multiple source columns can contribute to one CDM column. In the CDM ethnicity is represented as either hispanic or not hispanice so values from both the source column race and source column ethnicity will determine this value. |
-| location_id                 |             |   |
-| provider_id                 |             |   |
-| care_site_id                |             |   |
-| person_source_value         | id          |   |
-| gender_source_value         | gender      |   |
-| gender_source_concept_id    |             |   |
-| race_source_value           | race        |   |
-| race_source_concept_id      |             |   |
-| ethnicity_source_value      | ethnicity   |  In this case the ethnicity_source_value will have more granularity than the ethnicity_concept_id.  |
-| ethnicity_source_concept_id |             |   |
+| PERSON_ID                   |             |  Autogenerate. The PERSON_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON_ID is an integer. The id field from the source is set as the PERSON_SOURCE_VALUE to preserve that value and allow for error-checking if necessary. |
+| GENDER_CONCEPT_ID           | gender      | When gender = 'M' then set GENDER_CONCEPT_ID to 8507, when gender = 'F' then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses. |
+| YEAR_OF_BIRTH               | birthdate   | Take year from birthdate |
+| MONTH_OF_BIRTH              | birthdate   | Take month from birthdate |
+| DAY_OF_BIRTH                | birthdate   | Take day from birthdate |
+| BIRTH_DATETIME              | birthdate   | With midnight as time 00:00:00. Here, the source did not supply a time of birth so the choice was made to set it at midnight.  |
+| RACE_CONCEPT_ID             | race        | When race = 'WHITE' then set as 8527, when race = 'BLACK' then set as 8516, when race = 'ASIAN' then set as 8515, otherwise set as 0. These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source.  |
+| ETHNICITY_CONCEPT_ID        | race  ethnicity | When race = 'HISPANIC', or when ethnicity in ('CENTRAL_AMERICAN',   'DOMINICAN', 'MEXICAN', 'PUERTO_RICAN', 'SOUTH_AMERICAN') then set as 38003563, otherwise set as 0. This is a good example of how multiple source columns can contribute to one CDM column. In the CDM ethnicity is represented as either hispanic or not hispanice so values from both the source column race and source column ethnicity will determine this value. |
+| LOCATION_ID                 |             |   |
+| PROVIDER_ID                 |             |   |
+| CARE_SITE_ID                |             |   |
+| PERSON_SOURCE_VALUE         | id          |   |
+| GENDER_SOURCE_VALUE         | gender      |   |
+| GENDER_SOURCE_CONCEPT_ID    |             |   |
+| RACE_SOURCE_VALUE           | race        |   |
+| RACE_SOURCE_CONCEPT_ID      |             |   |
+| ETHNICITY_SOURCE_VALUE      | ethnicity   |  In this case the ETHNICITY_SOURCE_VALUE will have more granularity than the ETHNICITY_CONCEPT_ID.  |
+| ETHNICITY_SOURCE_CONCEPT_ID |             |   |
 
 For more examples on how the Synthea dataset was mapped to the CDM please see the full specification document [^syntheaEtlUrl].
 
@@ -163,7 +163,7 @@ For more examples on how the Synthea dataset was mapped to the CDM please see th
 
 ## Step 2: Create the code mappings
 
-More and more code systems are added to the Vocabulary, so it may well be that the coding systems in the data are already included and mapped. Check the VOCABULARY table to see which vocabularies are included. To extract the mapping from non-standard concepts (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having relationship_id = "Maps to". For example, to find the Standard concept ID for the ICD-10CM code I21 ("Acute Myocardial Infarction"), we can use the following SQL:
+More and more code systems are added to the Vocabulary, so it may well be that the coding systems in the data are already included and mapped. Check the VOCABULARY table to see which vocabularies are included. To extract the mapping from non-standard concepts (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having RELATIONSHIP_ID = "Maps to". For example, to find the Standard concept ID for the ICD-10CM code I21 ("Acute Myocardial Infarction"), we can use the following SQL:
 
 ```sql
 SELECT concept_id_2 standard_concept_id
@@ -174,7 +174,7 @@ WHERE concept_code = 'I21'
   AND vocabulary_id = 'ICD10CM'
   AND relationship_id = 'Maps to'; 
 ```
-| standard_concept_id |
+| STANDARD_CONCEPT_ID |
 | -------------------:|
 | 312327              |
 

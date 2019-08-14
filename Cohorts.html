@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-08-13" />
+<meta name="date" content="2019-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -649,7 +649,7 @@ Figure 11.1: Defining a cohort using rules
 <ul>
 <li><p><strong>OMOP Domain</strong>: The CDM domain(s) where the data are stored (e.g. PROCEDURE_OCCURRENCE, DRUG_EXPOSURE) define the type of clinical information and the allowable OMOP concepts that can be represented inside that CDM table (refer to Chapter <a href="CommonDataModel.html#CommonDataModel">5</a>). (Ex: Condition, Drug, Procedure, Measurement)</p></li>
 <li><p><strong>OMOP Concept set</strong>: A data-agnostic expression that defines one or more OMOP standard concepts encompassing the clinical entity of interest – these concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the OMOP vocabularies (Ex: OMOP standard concepts representing type II diabetes or antidiabetic drugs)</p></li>
-<li><p><strong>Domain-specific attribute</strong>: Additional attributes related to the clinical entity of interest (Ex: DRUG_EXPOSURE: Days supply; MEASUREMENT: value_as_number, high_range)</p></li>
+<li><p><strong>Domain-specific attribute</strong>: Additional attributes related to the clinical entity of interest (Ex: DRUG_EXPOSURE: Days supply; MEASUREMENT: VALUE_AS_NUMBER, high_range)</p></li>
 <li><p><strong>Temporal logic</strong>: the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)</p></li>
 </ul>
 <p>As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure <a href="Cohorts.html#fig:cohortLegos">11.2</a> that represent cohort attributes. If you are confused about allowable content in each domain, you can always refer to the Common Data Model chapter (Chapter <a href="CommonDataModel.html#CommonDataModel">5</a>) for help.</p>
@@ -914,7 +914,7 @@ Figure 11.17: Cohort Exit Criteria
 <span id="cb73-14"><a href="Cohorts.html#cb73-14"></a><span class="st">WHERE person_id IS NULL;&quot;</span></span>
 <span id="cb73-15"><a href="Cohorts.html#cb73-15"></a></span>
 <span id="cb73-16"><a href="Cohorts.html#cb73-16"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cdm_db_schema =</span> cdmDbSchema, <span class="dt">all_ht_drugs =</span> allHtDrugs)</span></code></pre></div>
-<p>Note that we use a left join, and only allow rows where the person_id, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.</p>
+<p>Note that we use a left join, and only allow rows where the PERSON_ID, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.</p>
 </div>
 <div id="monotherapy" class="section level3">
 <h3><span class="header-section-number">11.5.7</span> Monotherapy</h3>
@@ -957,8 +957,8 @@ Figure 11.17: Cohort Exit Criteria
 <span id="cb75-16"><a href="Cohorts.html#cb75-16"></a><span class="st">FROM (</span></span>
 <span id="cb75-17"><a href="Cohorts.html#cb75-17"></a><span class="st">  SELECT exposure.person_id,</span></span>
 <span id="cb75-18"><a href="Cohorts.html#cb75-18"></a><span class="st">    exposure.concept_id,</span></span>
-<span id="cb75-19"><a href="Cohorts.html#cb75-19"></a><span class="st">    exposure.exposure_start_date,</span></span>
-<span id="cb75-20"><a href="Cohorts.html#cb75-20"></a><span class="st">    MIN(events.end_date) AS era_end_date</span></span>
+<span id="cb75-19"><a href="Cohorts.html#cb75-19"></a><span class="st">    exposure.exposure_START_DATE,</span></span>
+<span id="cb75-20"><a href="Cohorts.html#cb75-20"></a><span class="st">    MIN(events.END_DATE) AS era_END_DATE</span></span>
 <span id="cb75-21"><a href="Cohorts.html#cb75-21"></a><span class="st">  FROM  exposure</span></span>
 <span id="cb75-22"><a href="Cohorts.html#cb75-22"></a><span class="st">  JOIN (</span></span>
 <span id="cb75-23"><a href="Cohorts.html#cb75-23"></a><span class="st">--cteEndDates</span></span>

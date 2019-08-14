@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-08-13}
+    \date{2019-08-14}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -867,11 +867,11 @@ Events of different nature are organized into Domains. These Events are stored i
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:domains} Number of standard concepts belonging to each domain.}\tabularnewline
 \toprule
-Concept Count & Domain\_Id\tabularnewline
+Concept Count & DOMAIN\_ID\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-Concept Count & Domain\_Id\tabularnewline
+Concept Count & DOMAIN\_ID\tabularnewline
 \midrule
 \endhead
 1731378 & Drug\tabularnewline
@@ -2090,13 +2090,13 @@ Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are re
 
 \textbf{General Flow of an ETL}
 
-Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION\_OCCURRENCE, DRUG\_EXPOSURE, PROCEDURE\_OCCURRENCE, etc.) refers back to the PERSON table by way of the person\_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION\_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION\_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION\_PERIOD tables are done the dimensional tables like PROVIDER, CARE\_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT\_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person's patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.
+Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION\_OCCURRENCE, DRUG\_EXPOSURE, PROCEDURE\_OCCURRENCE, etc.) refers back to the PERSON table by way of the PERSON\_ID so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION\_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION\_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION\_PERIOD tables are done the dimensional tables like PROVIDER, CARE\_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT\_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person's patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/flowOfEtl} \caption{General flow of an ETL and which tables to map first.}\label{fig:etlFlow}
 \end{figure}
 
-It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct visit\_occurrence\_ids to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). This is 100\% allowed and encouraged. What is discouraged is the persistence and reliance on these tables once the conversion is complete.
+It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct VISIT\_OCCURRENCE\_IDs to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). This is 100\% allowed and encouraged. What is discouraged is the persistence and reliance on these tables once the conversion is complete.
 
 \hypertarget{mapping-example-person-table}{%
 \subsubsection{Mapping Example: Person table}\label{mapping-example-person-table}}
@@ -2132,126 +2132,126 @@ Logic \& comments\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-person\_id\strut
+PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
-Autogenerate. The person\_id will be generated at the time of implementation. This is because the id value from the source is a varchar value while the person\_id is an integer. The id field from the source is set as the person\_source\_value to preserve that value and allow for error-checking if necessary.\strut
+Autogenerate. The PERSON\_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON\_ID is an integer. The id field from the source is set as the PERSON\_SOURCE\_VALUE to preserve that value and allow for error-checking if necessary.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-gender\_concept\_id\strut
+GENDER\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 gender\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
-When gender = `M' then set gender\_concept\_id to 8507, when gender = `F' then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.\strut
+When gender = `M' then set GENDER\_CONCEPT\_ID to 8507, when gender = `F' then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-year\_of\_birth\strut
+YEAR\_OF\_BIRTH\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 birthdate\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 Take year from birthdate\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-month\_of\_birth\strut
+MONTH\_OF\_BIRTH\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 birthdate\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 Take month from birthdate\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-day\_of\_birth\strut
+DAY\_OF\_BIRTH\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 birthdate\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 Take day from birthdate\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-birth\_datetime\strut
+BIRTH\_DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 birthdate\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 With midnight as time 00:00:00. Here, the source did not supply a time of birth so the choice was made to set it at midnight.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-race\_concept\_id\strut
+RACE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 race\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 When race = `WHITE' then set as 8527, when race = `BLACK' then set as 8516, when race = `ASIAN' then set as 8515, otherwise set as 0. These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ethnicity\_concept\_id\strut
+ETHNICITY\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 race ethnicity\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 When race = `HISPANIC', or when ethnicity in (`CENTRAL\_AMERICAN', `DOMINICAN', `MEXICAN', `PUERTO\_RICAN', `SOUTH\_AMERICAN') then set as 38003563, otherwise set as 0. This is a good example of how multiple source columns can contribute to one CDM column. In the CDM ethnicity is represented as either hispanic or not hispanice so values from both the source column race and source column ethnicity will determine this value.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-location\_id\strut
+LOCATION\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-provider\_id\strut
+PROVIDER\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-care\_site\_id\strut
+CARE\_SITE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-person\_source\_value\strut
+PERSON\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 id\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-gender\_source\_value\strut
+GENDER\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 gender\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-gender\_source\_concept\_id\strut
+GENDER\_SOURCE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-race\_source\_value\strut
+RACE\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 race\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-race\_source\_concept\_id\strut
+RACE\_SOURCE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ethnicity\_source\_value\strut
+ETHNICITY\_SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 ethnicity\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
-In this case the ethnicity\_source\_value will have more granularity than the ethnicity\_concept\_id.\strut
+In this case the ETHNICITY\_SOURCE\_VALUE will have more granularity than the ETHNICITY\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ethnicity\_source\_concept\_id\strut
+ETHNICITY\_SOURCE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
@@ -2265,7 +2265,7 @@ For more examples on how the Synthea dataset was mapped to the CDM please see th
 \hypertarget{step-2-create-the-code-mappings}{%
 \section{Step 2: Create the code mappings}\label{step-2-create-the-code-mappings}}
 
-More and more code systems are added to the Vocabulary, so it may well be that the coding systems in the data are already included and mapped. Check the VOCABULARY table to see which vocabularies are included. To extract the mapping from non-standard concepts (e.g.~ICD-10CM codes) to standard concepts (e.g.~SNOMED codes), we can use the records in the CONCEPT\_RELATIONSHIP table having relationship\_id = ``Maps to''. For example, to find the Standard concept ID for the ICD-10CM code I21 (``Acute Myocardial Infarction''), we can use the following SQL:
+More and more code systems are added to the Vocabulary, so it may well be that the coding systems in the data are already included and mapped. Check the VOCABULARY table to see which vocabularies are included. To extract the mapping from non-standard concepts (e.g.~ICD-10CM codes) to standard concepts (e.g.~SNOMED codes), we can use the records in the CONCEPT\_RELATIONSHIP table having RELATIONSHIP\_ID = ``Maps to''. For example, to find the Standard concept ID for the ICD-10CM code I21 (``Acute Myocardial Infarction''), we can use the following SQL:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2281,7 +2281,7 @@ More and more code systems are added to the Vocabulary, so it may well be that t
 
 \begin{longtable}[]{@{}r@{}}
 \toprule
-standard\_concept\_id\tabularnewline
+STANDARD\_CONCEPT\_ID\tabularnewline
 \midrule
 \endhead
 312327\tabularnewline
@@ -3560,7 +3560,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.pzyfvwjwchildren ;"
+## [1] "SELECT * FROM temp_schema.i2l3l86lchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -3749,7 +3749,7 @@ Some examples:
 \end{Shaded}
 
 \begin{verbatim}
-##   PERSON_ID GENDER_CONCEPT_ID YEAR_OF_BIRTH
+##   person_id gender_concept_id year_of_birth
 ## 1         1              8507          1975
 ## 2         2              8507          1976
 ## 3         3              8507          1977
@@ -3847,7 +3847,7 @@ NUM\_YEARS\tabularnewline
 \bottomrule
 \end{longtable}
 
-We can join tables to produce additional statistics. A join combines fields from multiple tables, typically by requiring specific fields in the tables to have the same value. For example, here we join the PERSON table to the OBSERVATION\_PERIOD table on the person\_id fields in both tables. In other words, the result of the join is a new table-like set that has all the fields of the two tables, but in all rows the person\_id fields from the two tables must have the same value. We can now for example compute the maximum age at observation end by using the observation\_period\_end\_date field from the OBSERVATION\_PERIOD table together with the year\_of\_birth field of the PERSON table:
+We can join tables to produce additional statistics. A join combines fields from multiple tables, typically by requiring specific fields in the tables to have the same value. For example, here we join the PERSON table to the OBSERVATION\_PERIOD table on the PERSON\_ID fields in both tables. In other words, the result of the join is a new table-like set that has all the fields of the two tables, but in all rows the PERSON\_ID fields from the two tables must have the same value. We can now for example compute the maximum age at observation end by using the OBSERVATION\_PERIOD\_END\_DATE field from the OBSERVATION\_PERIOD table together with the year\_of\_birth field of the PERSON table:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -3970,7 +3970,7 @@ I10 & 19453451\tabularnewline
 \bottomrule
 \end{longtable}
 
-Here we grouped records in the CONDITION\_OCCURRENCE table by values of the condition\_source\_value field, and counted the number of records in each group. We retrieve the condition\_source\_value and the count, and reverse-order it by the count.
+Here we grouped records in the CONDITION\_OCCURRENCE table by values of the CONDITION\_SOURCE\_VALUE field, and counted the number of records in each group. We retrieve the CONDITION\_SOURCE\_VALUE and the count, and reverse-order it by the count.
 
 \hypertarget{using-the-vocabulary-when-querying}{%
 \section{Using the vocabulary when querying}\label{using-the-vocabulary-when-querying}}
@@ -4157,7 +4157,7 @@ Next we create our exposure cohort, and insert it into our COHORT table:
 \end{Highlighting}
 \end{Shaded}
 
-Here we use the DRUG\_EXPOSURE table, and join it to the CONCEPT\_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e.~all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION\_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation\_period\_start\_date and the cohort\_start\_date.
+Here we use the DRUG\_EXPOSURE table, and join it to the CONCEPT\_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e.~all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION\_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION\_PERIOD\_START\_DATE and the COHORT\_START\_DATE.
 
 \hypertarget{outcome-cohort}{%
 \subsection{Outcome cohort}\label{outcome-cohort}}
@@ -4271,7 +4271,7 @@ Now that our cohorts are in place, we can compute the incidence rate, stratified
 \end{Highlighting}
 \end{Shaded}
 
-We first create ``tar,'' a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation\_period\_end\_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
+We first create ``tar,'' a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the OBSERVATION\_PERIOD\_END\_DATE. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.
 
 We use \texttt{snakeCaseToCamelCase\ =\ TRUE} because in SQL we tend to use snake\_case for field names (because SQL in case-insensitive), whereas in R we tend to use camelCase (because R is case-sensitive). The \texttt{results} data frame column names will now be in camelCase.
 
@@ -4475,7 +4475,7 @@ The standard components we use to assemble these criteria are:
 \item
   \textbf{OMOP Concept set}: A data-agnostic expression that defines one or more OMOP standard concepts encompassing the clinical entity of interest -- these concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the OMOP vocabularies (Ex: OMOP standard concepts representing type II diabetes or antidiabetic drugs)
 \item
-  \textbf{Domain-specific attribute}: Additional attributes related to the clinical entity of interest (Ex: DRUG\_EXPOSURE: Days supply; MEASUREMENT: value\_as\_number, high\_range)
+  \textbf{Domain-specific attribute}: Additional attributes related to the clinical entity of interest (Ex: DRUG\_EXPOSURE: Days supply; MEASUREMENT: VALUE\_AS\_NUMBER, high\_range)
 \item
   \textbf{Temporal logic}: the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)
 \end{itemize}
@@ -4862,7 +4862,7 @@ We require no prior exposure to any hypertension treatment:
 \end{Highlighting}
 \end{Shaded}
 
-Note that we use a left join, and only allow rows where the person\_id, which comes from the DRUG\_EXPOSURE table is NULL, meaning no matching record was found.
+Note that we use a left join, and only allow rows where the PERSON\_ID, which comes from the DRUG\_EXPOSURE table is NULL, meaning no matching record was found.
 
 \hypertarget{monotherapy}{%
 \subsection{Monotherapy}\label{monotherapy}}
@@ -4915,8 +4915,8 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 \StringTok{FROM (}
 \StringTok{  SELECT exposure.person_id,}
 \StringTok{    exposure.concept_id,}
-\StringTok{    exposure.exposure_start_date,}
-\StringTok{    MIN(events.end_date) AS era_end_date}
+\StringTok{    exposure.exposure_START_DATE,}
+\StringTok{    MIN(events.END_DATE) AS era_END_DATE}
 \StringTok{  FROM  exposure}
 \StringTok{  JOIN (}
 \StringTok{--cteEndDates}
@@ -7185,13 +7185,13 @@ We also need to obtain the \textbf{outcome status} (also referred to as the ``la
 Table \ref{tab:plpExampleCohorts} shows an example COHORT table with two cohorts. The cohort with cohort definition ID 1 is the target cohort (e.g.~``people recently diagnosed with atrial fibrillation''). Cohort definition ID 2 defines the outcome cohort (e.g.~``stroke'').
 
 \begin{longtable}[]{@{}ccc@{}}
-\caption{\label{tab:plpExampleCohorts} Example COHORT table. For simplicity the cohort\_end\_date has been omitted.}\tabularnewline
+\caption{\label{tab:plpExampleCohorts} Example COHORT table. For simplicity the COHORT\_END\_DATE has been omitted.}\tabularnewline
 \toprule
-cohort\_definition\_id & subject\_id & cohort\_start\_date\tabularnewline
+COHORT\_DEFINITION\_ID & SUBJECT\_ID & COHORT\_START\_DATE\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-cohort\_definition\_id & subject\_id & cohort\_start\_date\tabularnewline
+COHORT\_DEFINITION\_ID & SUBJECT\_ID & COHORT\_START\_DATE\tabularnewline
 \midrule
 \endhead
 1 & 1 & 2000-06-01\tabularnewline
@@ -7205,11 +7205,11 @@ Table \ref{tab:plpExampleConditions} provides an example CONDITION\_OCCURRENCE t
 \begin{longtable}[]{@{}ccc@{}}
 \caption{\label{tab:plpExampleConditions} Example CONDITION\_OCCURRENCE table. For simplicity only three columns are shown.}\tabularnewline
 \toprule
-person\_id & condition\_concept\_id & condition\_start\_date\tabularnewline
+PERSON\_ID & CONDITION\_CONCEPT\_ID & CONDITION\_START\_DATE\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-person\_id & condition\_concept\_id & condition\_start\_date\tabularnewline
+PERSON\_ID & CONDITION\_CONCEPT\_ID & CONDITION\_START\_DATE\tabularnewline
 \midrule
 \endhead
 1 & 320128 & 2000-10-01\tabularnewline
@@ -8820,7 +8820,7 @@ We can ask the question whether our data is fit for the general purpose of obser
   \item
     \textbf{Value}: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties?
   \item
-    \textbf{Relational}: Is the recorded data in agreement with specified relational constraints? For example, does the provider\_id in a DRUG\_EXPOSURE data have a corresponding record in the PROVIDER table?
+    \textbf{Relational}: Is the recorded data in agreement with specified relational constraints? For example, does the PROVIDER\_ID in a DRUG\_EXPOSURE data have a corresponding record in the PROVIDER table?
   \item
     \textbf{Computation}: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?
   \end{itemize}
@@ -8832,7 +8832,7 @@ We can ask the question whether our data is fit for the general purpose of obser
   \begin{itemize}
   \tightlist
   \item
-    \textbf{Uniqueness}: For example, does each person\_id occur only once in the PERSON table?
+    \textbf{Uniqueness}: For example, does each PERSON\_ID occur only once in the PERSON table?
   \item
     \textbf{Atemporal}: Do values, distributions, or densities agree with expected values? For example, is the prevalence of diabetes implied by the data in line with the known prevalence?
   \item
@@ -8859,7 +8859,7 @@ Each component can be evaluated in two ways:
 
 Kahn introduces the term \emph{data quality check} (sometimes referred to as a \emph{data quality rule}) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is \href{https://github.com/OHDSI/Achilles}{ACHILLES} (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) \citep{huser_methods_2018}. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases \citep{huser_multisite_2016}. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the ``Data Sources'' function. \index{data quality!data quality check} \index{ACHILLES}
 
-ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, ``715: Distribution of days\_supply by drug\_concept\_id'' or ``506: Distribution of age at death by gender''. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as ``\emph{ACHILLES Heel}''. These checks are categorized as ``\emph{error}'', ``\emph{warning}'', or ``\emph{notification}''. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \ref{tab:heelExamples} show some example rules. \index{ACHILLES!Heel}
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, ``715: Distribution of DAYS\_SUPPLY by DRUG\_CONCEPT\_ID'' or ``506: Distribution of age at death by gender''. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as ``\emph{ACHILLES Heel}''. These checks are categorized as ``\emph{error}'', ``\emph{warning}'', or ``\emph{notification}''. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \ref{tab:heelExamples} show some example rules. \index{ACHILLES!Heel}
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:heelExamples} Example data quality rules in ACHILLES Heel.}\tabularnewline
@@ -8887,17 +8887,17 @@ Age \textgreater{} 150 years\strut
 \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Error\strut
 \end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-A condition\_concept\_id refers to a concept that is not in the CONDITION domain\strut
+A CONDITION\_CONCEPT\_ID refers to a concept that is not in the CONDITION domain\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Warning\strut
 \end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-The rate of occurrence for a specific concept\_id changes more than 100\% from one month to the next\strut
+The rate of occurrence for a specific CONCEPT\_ID changes more than 100\% from one month to the next\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Warning\strut
 \end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-A prescription has a days\_supply \textgreater{} 180\strut
+A prescription has a DAYS\_SUPPLY \textgreater{} 180\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Notification\strut
@@ -8929,8 +8929,8 @@ To make sure the ETL does what it is supposed to do, and continues to do so, it 
 \KeywordTok{declareTest}\NormalTok{(}\DecValTok{101}\NormalTok{, }\StringTok{"Person gender mappings"}\NormalTok{)}
 \KeywordTok{add_enrollment}\NormalTok{(}\DataTypeTok{member_id =} \StringTok{"M000000102"}\NormalTok{, }\DataTypeTok{gender_of_member =} \StringTok{"male"}\NormalTok{)}
 \KeywordTok{add_enrollment}\NormalTok{(}\DataTypeTok{member_id =} \StringTok{"M000000103"}\NormalTok{, }\DataTypeTok{gender_of_member =} \StringTok{"female"}\NormalTok{)}
-\KeywordTok{expect_person}\NormalTok{(}\DataTypeTok{person_id =} \DecValTok{102}\NormalTok{, }\DataTypeTok{gender_concept_id =} \DecValTok{8507}
-\KeywordTok{expect_person}\NormalTok{(}\DataTypeTok{person_id =} \DecValTok{103}\NormalTok{, }\DataTypeTok{gender_concept_id =} \DecValTok{8532}\NormalTok{)}
+\KeywordTok{expect_person}\NormalTok{(}\DataTypeTok{PERSON_ID =} \DecValTok{102}\NormalTok{, }\DataTypeTok{GENDER_CONCEPT_ID =} \DecValTok{8507}
+\KeywordTok{expect_person}\NormalTok{(}\DataTypeTok{PERSON_ID =} \DecValTok{103}\NormalTok{, }\DataTypeTok{GENDER_CONCEPT_ID =} \DecValTok{8532}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -9076,7 +9076,7 @@ RECORD\_COUNT\strut
 \begin{minipage}[t]{0.07\columnwidth}\centering
 118\strut
 \end{minipage} & \begin{minipage}[t]{0.68\columnwidth}\raggedright
-ERROR: 118-Number of observation periods with invalid person\_id; count (n=2649) should not be \textgreater{} 0\strut
+ERROR: 118-Number of observation periods with invalid PERSON\_ID; count (n=2649) should not be \textgreater{} 0\strut
 \end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\centering
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
@@ -10521,7 +10521,7 @@ To be added.
 \chapter{Glossary}\label{Glossary}}
 
 Cohort
-A cohort is a list of person\_ids with start and end date. It is stored in a study specific cohort table or a CDM specified cohort table can also be used. Cohort can be represented as .json file. It is used for import and export but not during an analysis. OHDSI tools use SQL so Atlas also generates a .sql file that creates the cohort during analysis.
+A cohort is a list of PERSON\_IDs with start and end date. It is stored in a study specific cohort table or a CDM specified cohort table can also be used. Cohort can be represented as .json file. It is used for import and export but not during an analysis. OHDSI tools use SQL so Atlas also generates a .sql file that creates the cohort during analysis.
 
 Parametized SQL code
 An SQL code that allows for use of parameters. Parameters are prefixed with @. Such code has to be ``rendered''. Synonym: OHDSI SQL code.

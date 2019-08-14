@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-08-13" />
+<meta name="date" content="2019-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -845,7 +845,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="SqlAndR.html#cb28-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb28-2"><a href="SqlAndR.html#cb28-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.fd07knsschildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.u298k3g5children ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -925,7 +925,7 @@ Figure 10.1: The SqlDeveloper Shiny app.
 <p>The main functions for querying database are the <code>querySql</code> and <code>executeSql</code> functions. The difference between these functions is that <code>querySql</code> expects data to be returned by the database, and can handle only one SQL statement at a time. In contrast, <code>executeSql</code> does not expect data to be returned, and accepts multiple SQL statements in a single SQL string. </p>
 <p>Some examples:</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="SqlAndR.html#cb45-1"></a><span class="kw">querySql</span>(conn, <span class="st">&quot;SELECT TOP 3 * FROM person&quot;</span>)</span></code></pre></div>
-<pre><code>##   PERSON_ID GENDER_CONCEPT_ID YEAR_OF_BIRTH
+<pre><code>##   person_id gender_concept_id year_of_birth
 ## 1         1              8507          1975
 ## 2         2              8507          1976
 ## 3         3              8507          1977</code></pre>
@@ -988,7 +988,7 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </tr>
 </tbody>
 </table>
-<p>We can join tables to produce additional statistics. A join combines fields from multiple tables, typically by requiring specific fields in the tables to have the same value. For example, here we join the PERSON table to the OBSERVATION_PERIOD table on the person_id fields in both tables. In other words, the result of the join is a new table-like set that has all the fields of the two tables, but in all rows the person_id fields from the two tables must have the same value. We can now for example compute the maximum age at observation end by using the observation_period_end_date field from the OBSERVATION_PERIOD table together with the year_of_birth field of the PERSON table:</p>
+<p>We can join tables to produce additional statistics. A join combines fields from multiple tables, typically by requiring specific fields in the tables to have the same value. For example, here we join the PERSON table to the OBSERVATION_PERIOD table on the PERSON_ID fields in both tables. In other words, the result of the join is a new table-like set that has all the fields of the two tables, but in all rows the PERSON_ID fields from the two tables must have the same value. We can now for example compute the maximum age at observation end by using the OBSERVATION_PERIOD_END_DATE field from the OBSERVATION_PERIOD table together with the year_of_birth field of the PERSON table:</p>
 <div class="sourceCode" id="cb53"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb53-1"><a href="SqlAndR.html#cb53-1"></a><span class="kw">SELECT</span> <span class="fu">MAX</span>(<span class="dt">YEAR</span>(observation_period_end_date) <span class="op">-</span></span>
 <span id="cb53-2"><a href="SqlAndR.html#cb53-2"></a>           year_of_birth) <span class="kw">AS</span> max_age</span>
 <span id="cb53-3"><a href="SqlAndR.html#cb53-3"></a><span class="kw">FROM</span> @cdm.person</span>
@@ -1129,7 +1129,7 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </tr>
 </tbody>
 </table>
-<p>Here we grouped records in the CONDITION_OCCURRENCE table by values of the condition_source_value field, and counted the number of records in each group. We retrieve the condition_source_value and the count, and reverse-order it by the count.</p>
+<p>Here we grouped records in the CONDITION_OCCURRENCE table by values of the CONDITION_SOURCE_VALUE field, and counted the number of records in each group. We retrieve the CONDITION_SOURCE_VALUE and the count, and reverse-order it by the count.</p>
 </div>
 <div id="using-the-vocabulary-when-querying" class="section level2">
 <h2><span class="header-section-number">10.4</span> Using the vocabulary when querying</h2>
@@ -1289,7 +1289,7 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 <span id="cb61-45"><a href="SqlAndR.html#cb61-45"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
 <span id="cb61-46"><a href="SqlAndR.html#cb61-46"></a>                          <span class="dt">cohort_table =</span> cohortTable,</span>
 <span id="cb61-47"><a href="SqlAndR.html#cb61-47"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema)</span></code></pre></div>
-<p>Here we use the DRUG_EXPOSURE table, and join it to the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the observation_period_start_date and the cohort_start_date.</p>
+<p>Here we use the DRUG_EXPOSURE table, and join it to the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.</p>
 </div>
 <div id="outcome-cohort" class="section level3">
 <h3><span class="header-section-number">10.7.2</span> Outcome cohort</h3>
@@ -1389,7 +1389,7 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 <span id="cb63-56"><a href="SqlAndR.html#cb63-56"></a>                                   <span class="dt">cohort_table =</span> cohortTable,</span>
 <span id="cb63-57"><a href="SqlAndR.html#cb63-57"></a>                                   <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
 <span id="cb63-58"><a href="SqlAndR.html#cb63-58"></a>                                   <span class="dt">snakeCaseToCamelCase =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p>We first create “tar,” a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the observation_period_end_date. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.</p>
+<p>We first create “tar,” a CTE that contains all exposures with the appropriate time-at-risk. Note that we truncate the time-at-risk at the OBSERVATION_PERIOD_END_DATE. We also compute the age in 10-year bins, and identify the gender. The advantage of using a CTE is that we can use the same set of intermediate results several times in a query. In this case we use it to count the total amount of time-at-risk, as well as the number of angioedema events that occur during the time-at-risk.</p>
 <p>We use <code>snakeCaseToCamelCase = TRUE</code> because in SQL we tend to use snake_case for field names (because SQL in case-insensitive), whereas in R we tend to use camelCase (because R is case-sensitive). The <code>results</code> data frame column names will now be in camelCase.</p>
 <p>With the help of the ggplot2 package we can easily plot our results:</p>
 <div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="SqlAndR.html#cb64-1"></a><span class="co"># Compute incidence rate (IR) :</span></span>

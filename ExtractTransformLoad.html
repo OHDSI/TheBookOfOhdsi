@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-08-13" />
+<meta name="date" content="2019-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -684,14 +684,14 @@ Figure 7.4: Example values for a single column.
 <p><strong>Writing ETL Logic</strong></p>
 <p>Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea<a href="references.html#fn17" class="footnote-ref" id="fnref17"><sup>17</sup></a> database might look during conversion.</p>
 <p><strong>General Flow of an ETL</strong></p>
-<p>Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers back to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person’s patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.</p>
+<p>Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers back to the PERSON table by way of the PERSON_ID so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clincal tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person’s patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.</p>
 <div class="figure"><span id="fig:etlFlow"></span>
 <img src="images/ExtractTransformLoad/flowOfEtl.png" alt="General flow of an ETL and which tables to map first." width="100%" />
 <p class="caption">
 Figure 7.5: General flow of an ETL and which tables to map first.
 </p>
 </div>
-<p>It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct visit_occurrence_ids to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). This is 100% allowed and encouraged. What is discouraged is the persistence and reliance on these tables once the conversion is complete.</p>
+<p>It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct VISIT_OCCURRENCE_IDs to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). This is 100% allowed and encouraged. What is discouraged is the persistence and reliance on these tables once the conversion is complete.</p>
 <div id="mapping-example-person-table" class="section level4">
 <h4><span class="header-section-number">7.2.2.1</span> Mapping Example: Person table</h4>
 <p>The Synthea data structure contains 20 columns in the patients table but not all were needed to populate the PERSON table, as seen in Figure <a href="ExtractTransformLoad.html#fig:syntheaPerson">7.6</a>. This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver’s license number, and passport number.</p>
@@ -718,92 +718,92 @@ Figure 7.6: Mapping of Synthea Patients table to CDM PERSON table.
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">person_id</td>
+<td align="left">PERSON_ID</td>
 <td align="left"></td>
-<td align="left">Autogenerate. The person_id will be generated at the time of implementation. This is because the id value from the source is a varchar value while the person_id is an integer. The id field from the source is set as the person_source_value to preserve that value and allow for error-checking if necessary.</td>
+<td align="left">Autogenerate. The PERSON_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON_ID is an integer. The id field from the source is set as the PERSON_SOURCE_VALUE to preserve that value and allow for error-checking if necessary.</td>
 </tr>
 <tr class="even">
-<td align="left">gender_concept_id</td>
+<td align="left">GENDER_CONCEPT_ID</td>
 <td align="left">gender</td>
-<td align="left">When gender = ‘M’ then set gender_concept_id to 8507, when gender = ‘F’ then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.</td>
+<td align="left">When gender = ‘M’ then set GENDER_CONCEPT_ID to 8507, when gender = ‘F’ then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.</td>
 </tr>
 <tr class="odd">
-<td align="left">year_of_birth</td>
+<td align="left">YEAR_OF_BIRTH</td>
 <td align="left">birthdate</td>
 <td align="left">Take year from birthdate</td>
 </tr>
 <tr class="even">
-<td align="left">month_of_birth</td>
+<td align="left">MONTH_OF_BIRTH</td>
 <td align="left">birthdate</td>
 <td align="left">Take month from birthdate</td>
 </tr>
 <tr class="odd">
-<td align="left">day_of_birth</td>
+<td align="left">DAY_OF_BIRTH</td>
 <td align="left">birthdate</td>
 <td align="left">Take day from birthdate</td>
 </tr>
 <tr class="even">
-<td align="left">birth_datetime</td>
+<td align="left">BIRTH_DATETIME</td>
 <td align="left">birthdate</td>
 <td align="left">With midnight as time 00:00:00. Here, the source did not supply a time of birth so the choice was made to set it at midnight.</td>
 </tr>
 <tr class="odd">
-<td align="left">race_concept_id</td>
+<td align="left">RACE_CONCEPT_ID</td>
 <td align="left">race</td>
 <td align="left">When race = ‘WHITE’ then set as 8527, when race = ‘BLACK’ then set as 8516, when race = ‘ASIAN’ then set as 8515, otherwise set as 0. These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source.</td>
 </tr>
 <tr class="even">
-<td align="left">ethnicity_concept_id</td>
+<td align="left">ETHNICITY_CONCEPT_ID</td>
 <td align="left">race ethnicity</td>
 <td align="left">When race = ‘HISPANIC’, or when ethnicity in (‘CENTRAL_AMERICAN’, ‘DOMINICAN’, ‘MEXICAN’, ‘PUERTO_RICAN’, ‘SOUTH_AMERICAN’) then set as 38003563, otherwise set as 0. This is a good example of how multiple source columns can contribute to one CDM column. In the CDM ethnicity is represented as either hispanic or not hispanice so values from both the source column race and source column ethnicity will determine this value.</td>
 </tr>
 <tr class="odd">
-<td align="left">location_id</td>
+<td align="left">LOCATION_ID</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">provider_id</td>
+<td align="left">PROVIDER_ID</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">care_site_id</td>
+<td align="left">CARE_SITE_ID</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">person_source_value</td>
+<td align="left">PERSON_SOURCE_VALUE</td>
 <td align="left">id</td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">gender_source_value</td>
+<td align="left">GENDER_SOURCE_VALUE</td>
 <td align="left">gender</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">gender_source_concept_id</td>
+<td align="left">GENDER_SOURCE_CONCEPT_ID</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">race_source_value</td>
+<td align="left">RACE_SOURCE_VALUE</td>
 <td align="left">race</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">race_source_concept_id</td>
+<td align="left">RACE_SOURCE_CONCEPT_ID</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left">ethnicity_source_value</td>
+<td align="left">ETHNICITY_SOURCE_VALUE</td>
 <td align="left">ethnicity</td>
-<td align="left">In this case the ethnicity_source_value will have more granularity than the ethnicity_concept_id.</td>
+<td align="left">In this case the ETHNICITY_SOURCE_VALUE will have more granularity than the ETHNICITY_CONCEPT_ID.</td>
 </tr>
 <tr class="even">
-<td align="left">ethnicity_source_concept_id</td>
+<td align="left">ETHNICITY_SOURCE_CONCEPT_ID</td>
 <td align="left"></td>
 <td align="left"></td>
 </tr>
@@ -815,7 +815,7 @@ Figure 7.6: Mapping of Synthea Patients table to CDM PERSON table.
 </div>
 <div id="step-2-create-the-code-mappings" class="section level2">
 <h2><span class="header-section-number">7.3</span> Step 2: Create the code mappings</h2>
-<p>More and more code systems are added to the Vocabulary, so it may well be that the coding systems in the data are already included and mapped. Check the VOCABULARY table to see which vocabularies are included. To extract the mapping from non-standard concepts (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having relationship_id = “Maps to”. For example, to find the Standard concept ID for the ICD-10CM code I21 (“Acute Myocardial Infarction”), we can use the following SQL:</p>
+<p>More and more code systems are added to the Vocabulary, so it may well be that the coding systems in the data are already included and mapped. Check the VOCABULARY table to see which vocabularies are included. To extract the mapping from non-standard concepts (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having RELATIONSHIP_ID = “Maps to”. For example, to find the Standard concept ID for the ICD-10CM code I21 (“Acute Myocardial Infarction”), we can use the following SQL:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="ExtractTransformLoad.html#cb1-1"></a><span class="kw">SELECT</span> concept_id_2 standard_concept_id</span>
 <span id="cb1-2"><a href="ExtractTransformLoad.html#cb1-2"></a><span class="kw">FROM</span> concept_relationship</span>
 <span id="cb1-3"><a href="ExtractTransformLoad.html#cb1-3"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> concept source_concept</span>
@@ -826,7 +826,7 @@ Figure 7.6: Mapping of Synthea Patients table to CDM PERSON table.
 <table>
 <thead>
 <tr class="header">
-<th align="right">standard_concept_id</th>
+<th align="right">STANDARD_CONCEPT_ID</th>
 </tr>
 </thead>
 <tbody>

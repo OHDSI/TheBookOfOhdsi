@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Science and Informatics" />
 
 
-<meta name="date" content="2019-08-13" />
+<meta name="date" content="2019-08-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -627,13 +627,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><strong>Conformance</strong>: Do data values adhere to do specified standard and formats? Three sub-types are identified:
 <ul>
 <li><strong>Value</strong>: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties?</li>
-<li><strong>Relational</strong>: Is the recorded data in agreement with specified relational constraints? For example, does the provider_id in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?</li>
+<li><strong>Relational</strong>: Is the recorded data in agreement with specified relational constraints? For example, does the PROVIDER_ID in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?</li>
 <li><strong>Computation</strong>: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?</li>
 </ul></li>
 <li><strong>Completeness</strong>: Are data values present? For example, do all persons have a known gender?</li>
 <li><strong>Plausibility</strong>: Are data values believable? Three sub-types are defined:
 <ul>
-<li><strong>Uniqueness</strong>: For example, does each person_id occur only once in the PERSON table?</li>
+<li><strong>Uniqueness</strong>: For example, does each PERSON_ID occur only once in the PERSON table?</li>
 <li><strong>Atemporal</strong>: Do values, distributions, or densities agree with expected values? For example, is the prevalence of diabetes implied by the data in line with the known prevalence?</li>
 <li><strong>Temporal</strong>: Are changes in values in line with expectations? For example, are immunization sequences in line with recommendations?</li>
 </ul>
@@ -648,7 +648,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data-quality-checks" class="section level3">
 <h3><span class="header-section-number">16.2.1</span> Data quality checks</h3>
 <p>Kahn introduces the term <em>data quality check</em> (sometimes referred to as a <em>data quality rule</em>) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is <a href="https://github.com/OHDSI/Achilles">ACHILLES</a> (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) <span class="citation">(Huser et al. <a href="#ref-huser_methods_2018" role="doc-biblioref">2018</a>)</span>. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases <span class="citation">(Huser et al. <a href="#ref-huser_multisite_2016" role="doc-biblioref">2016</a>)</span>. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the “Data Sources” function.  </p>
-<p>ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as “<em>ACHILLES Heel</em>”. These checks are categorized as “<em>error</em>”, “<em>warning</em>”, or “<em>notification</em>”. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table <a href="DataQuality.html#tab:heelExamples">16.1</a> show some example rules. </p>
+<p>ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as “<em>ACHILLES Heel</em>”. These checks are categorized as “<em>error</em>”, “<em>warning</em>”, or “<em>notification</em>”. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table <a href="DataQuality.html#tab:heelExamples">16.1</a> show some example rules. </p>
 <table>
 <caption><span id="tab:heelExamples">Table 16.1: </span> Example data quality rules in ACHILLES Heel.</caption>
 <colgroup>
@@ -668,15 +668,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 <tr class="even">
 <td align="left">Error</td>
-<td align="left">A condition_concept_id refers to a concept that is not in the CONDITION domain</td>
+<td align="left">A CONDITION_CONCEPT_ID refers to a concept that is not in the CONDITION domain</td>
 </tr>
 <tr class="odd">
 <td align="left">Warning</td>
-<td align="left">The rate of occurrence for a specific concept_id changes more than 100% from one month to the next</td>
+<td align="left">The rate of occurrence for a specific CONCEPT_ID changes more than 100% from one month to the next</td>
 </tr>
 <tr class="even">
 <td align="left">Warning</td>
-<td align="left">A prescription has a days_supply &gt; 180</td>
+<td align="left">A prescription has a DAYS_SUPPLY &gt; 180</td>
 </tr>
 <tr class="odd">
 <td align="left">Notification</td>
@@ -702,8 +702,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb132-2"><a href="DataQuality.html#cb132-2"></a><span class="kw">declareTest</span>(<span class="dv">101</span>, <span class="st">&quot;Person gender mappings&quot;</span>)</span>
 <span id="cb132-3"><a href="DataQuality.html#cb132-3"></a><span class="kw">add_enrollment</span>(<span class="dt">member_id =</span> <span class="st">&quot;M000000102&quot;</span>, <span class="dt">gender_of_member =</span> <span class="st">&quot;male&quot;</span>)</span>
 <span id="cb132-4"><a href="DataQuality.html#cb132-4"></a><span class="kw">add_enrollment</span>(<span class="dt">member_id =</span> <span class="st">&quot;M000000103&quot;</span>, <span class="dt">gender_of_member =</span> <span class="st">&quot;female&quot;</span>)</span>
-<span id="cb132-5"><a href="DataQuality.html#cb132-5"></a><span class="kw">expect_person</span>(<span class="dt">person_id =</span> <span class="dv">102</span>, <span class="dt">gender_concept_id =</span> <span class="dv">8507</span></span>
-<span id="cb132-6"><a href="DataQuality.html#cb132-6"></a><span class="kw">expect_person</span>(<span class="dt">person_id =</span> <span class="dv">103</span>, <span class="dt">gender_concept_id =</span> <span class="dv">8532</span>)</span></code></pre></div>
+<span id="cb132-5"><a href="DataQuality.html#cb132-5"></a><span class="kw">expect_person</span>(<span class="dt">PERSON_ID =</span> <span class="dv">102</span>, <span class="dt">GENDER_CONCEPT_ID =</span> <span class="dv">8507</span></span>
+<span id="cb132-6"><a href="DataQuality.html#cb132-6"></a><span class="kw">expect_person</span>(<span class="dt">PERSON_ID =</span> <span class="dv">103</span>, <span class="dt">GENDER_CONCEPT_ID =</span> <span class="dv">8532</span>)</span></code></pre></div>
 <p>In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the member_id and gender_of_member fields. Note that the ENROLLMENT table has many other fields, and if we do not provide explicit values for these other fields the add_enrollment function will assign default values (the most prevalent values as observed in the White Rabbit scan report). Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.</p>
 <p>Similar unit tests can be created for all other logic in an ETL, typically resulting in hundreds of tests. When we are done defining the test, we can use the framework to generate two sets of SQL statements, one to create the fake source data, and one to create the tests on the ETL-ed data:</p>
 <div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="DataQuality.html#cb133-1"></a>insertSql &lt;-<span class="st"> </span><span class="kw">generateInsertSql</span>(<span class="dt">databaseSchema =</span> <span class="st">&quot;source_schema&quot;</span>)</span>
@@ -809,7 +809,7 @@ Figure 16.3: Example orphan source code.
 <tbody>
 <tr class="odd">
 <td align="center">118</td>
-<td align="left">ERROR: 118-Number of observation periods with invalid person_id; count (n=2649) should not be &gt; 0</td>
+<td align="left">ERROR: 118-Number of observation periods with invalid PERSON_ID; count (n=2649) should not be &gt; 0</td>
 <td align="center">1</td>
 <td align="left">2649</td>
 </tr>
