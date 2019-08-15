@@ -39,7 +39,7 @@ The next sections will discuss these approaches in further detail.
 
 ### Rule-based cohort definitions
 
-A rule-based cohort definition begins with explicitly stating one or more inclusion criteria (e.g. ?people with angioedema?) in a specific duration of time (e.g. ?who developed this condition within the last 6 months?). \index{cohort!rule-based design}
+A rule-based cohort definition begins with explicitly stating one or more inclusion criteria (e.g. “people with angioedema”) in a specific duration of time (e.g. “who developed this condition within the last 6 months”). \index{cohort!rule-based design}
 
 The standard components we use to assemble these criteria are:
 
@@ -47,7 +47,7 @@ The standard components we use to assemble these criteria are:
 
 - **OMOP Concept set**: A data-agnostic expression that defines one or more OMOP standard concepts encompassing the clinical entity of interest -- these concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the OMOP vocabularies (Ex: OMOP standard concepts representing type II diabetes or antidiabetic drugs)
 
-- **Domain-specific attribute**: Additional attributes related to the clinical entity of interest (Ex:  for a DRUG_EXPOSURE: Days supply;  for a MEASUREMENT:  value_as_number, high_range)
+- **Domain-specific attribute**: Additional attributes related to the clinical entity of interest (Ex:  for a DRUG_EXPOSURE: DAYS_SUPPLY;  for a MEASUREMENT:  VALUE_AS_NUMBER, RANGE_HIGH)
 
 - **Temporal logic**:  the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)
 
@@ -63,34 +63,18 @@ When creating a cohort definition, you need to ask yourself the following questi
 - *What inclusion criteria are applied to the initial events?*
 - *What defines the time of cohort exit?*
 
-To visualize the importance of these criteria, think of how this information comes together in a person?s timeline (Figure \@ref(fig:cohortBuild)). The OBSERVATION_PERIOD table creates the window for which we see the person in the data.\index{cohort!criteria}
+To visualize the importance of these criteria, think of how this information comes together in a person’s timeline (Figure \@ref(fig:cohortBuild)). The OBSERVATION_PERIOD table creates the window for which we see the person in the data.\index{cohort!criteria}
 
 ```{r cohortBuild, fig.cap='Defining a cohort using rules',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/cohortbuild.png")
 ```
 
-*Cohort entry criteria:* The cohort entry event can be one or many clinical attributes which dictate an individual patient?s eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events are inherently defined by CDM domain where the data are stored (e.g. PROCEDURE_OCCURRENCE, DRUG_EXPOSURE, etc), the OMOP concept sets built to identify the clinical activity (e.g. SNOMED codes for conditions, RxNorm codes for drugs) as well as any other specific attributes (e.g. age at occurrence, first diagnosis/procedure/etc, specifying start and end date, specifying visit type or criteria, days supply, etc). We will discuss these in detail in the further section. \index{cohort!entry criteria}
+*Cohort entry criteria:* The cohort entry event can be one or many clinical attributes which dictate an individual patient’s eligibility to be included in a cohort. Events are recorded time-stamped observations for the persons, such as drug exposures, conditions, procedures, measurements and visits. The event index date is set to be equal to the event start date. Initial events are inherently defined by CDM domain where the data are stored (e.g. PROCEDURE_OCCURRENCE, DRUG_EXPOSURE, etc), the OMOP concept sets built to identify the clinical activity (e.g. SNOMED codes for conditions, RxNorm codes for drugs) as well as any other specific attributes (e.g. age at occurrence, first diagnosis/procedure/etc, specifying start and end date, specifying visit type or criteria, days supply, etc). We will discuss these in detail in the further section. \index{cohort!entry criteria}
 
 *Inclusion criteria:* The qualifying cohort will be defined as all persons who have an initial event and satisfy all qualifying inclusion criteria. Each inclusion criterion is defined by the CDM domain(s) where the data are stored, OMOP concept set(s) representing the clinical activity, domain-specific attributes (e.g. days supply, visit type, etc), and the temporal logic relative to initial events. Each qualifying inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial cohort.\index{cohort!inclusion criteria}
 
 *Cohort exit criteria:* The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g. persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
 
-
-The standard components we use to assemble these criteria are:
-
-- **OMOP Domain**: The CDM domain(s) where the data are stored (e.g. PROCEDURE_OCCURRENCE, DRUG_EXPOSURE) define the type of clinical information and the allowable OMOP concepts that can be represented inside that CDM table (refer to Chapter \@ref(CommonDataModel)). (Ex:  Condition, Drug, Procedure, Measurement)
-
-- **OMOP Concept set**: A data-agnostic expression that defines one or more OMOP standard concepts encompassing the clinical entity of interest -- these concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the OMOP vocabularies (Ex: OMOP standard concepts representing type II diabetes or antidiabetic drugs)
-
-- **Domain-specific attribute**: Additional attributes related to the clinical entity of interest (Ex:  DRUG_EXPOSURE: DAYS_SUPPLY;  MEASUREMENT:  VALUE_AS_NUMBER, RANGE_HIGH)
-
-- **Temporal logic**:  the time intervals within which the relationship between an inclusion criteria and an event is evaluated (Ex: Indicated condition must occur during 365d prior to or on exposure start)
-
-As you are building your cohort definition, you may find it helpful to think of OMOP domains analogous to building blocks (see Figure \@ref(fig:cohortLegos) that represent cohort attributes. If you are confused about allowable content in each domain, you can always refer to the Common Data Model chapter (Chapter \@ref(CommonDataModel)) for help.
-
-```{r cohortLegos, fig.cap='Building Blocks of Cohorts',echo=FALSE, out.width='50%', fig.align='center'}
-knitr::include_graphics("images/Cohorts/cohort-legos.png")
-```
 
 ### Probabilistic cohort definitions
 
@@ -102,13 +86,13 @@ An example of applying this approach on data in the OMOP CDM is APHRODITE (Autom
 
 When you are building a cohort, you should consider which of these is more important to you: *finding all the eligible patients?* **vs.** *Getting only the ones you are confident about?*
 
-Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you?re trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher?s discretion what threshold of stringency is necessary to adequately study the cohort of interest.
+Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you’re trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher’s discretion what threshold of stringency is necessary to adequately study the cohort of interest.
 
-As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ?gold standard? reference (e.g. manual chart review of cases). This is discussed in detail in Chapter \ref(ClinicalValidity) (?Clinical Validity?).
+As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases). This is discussed in detail in Chapter \ref(ClinicalValidity) (“Clinical Validity”).
 
 ## OHDSI Gold Standard Phenotype Library
 
-To assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to develop a community-backed phenotype library from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These ?gold standard? definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg). Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool [@Swerdel2019phevaluator] , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
+To assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to develop a community-backed phenotype library from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page (https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg). Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool [@Swerdel2019phevaluator] , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
 
 ## Defining a cohort for hypertension
 
