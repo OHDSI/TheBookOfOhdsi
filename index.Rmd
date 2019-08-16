@@ -70,6 +70,7 @@ Each section has multiple chapters, and each chapter aims to follow the followin
 
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
+\begin{center}
 ```{r echo=FALSE, eval=TRUE}
 contributors <- read.csv("Contributors.csv")
 contributors <- contributors[order(contributors$lastName), ]
@@ -82,6 +83,7 @@ table <- matrix(names, ncol = colCount, byrow = TRUE)
 table <- as.data.frame(table)
 knitr::kable(table, col.names = NULL)
 ```
+\end{center}
 
 ## Software versions {-}
 
@@ -90,11 +92,11 @@ A large part of this book is about the open source software of OHDSI, and this s
 - ACHILLES: version 1.6.6
 - ATLAS: version 2.7.2
 - EUNOMIA: version 1.0.0
-- Methods Library packages:
+- Methods Library packages: see Table \@ref(tab:packageVersions)
 
-```{r echo=FALSE, eval=TRUE}
+```{r packageVersions, echo=FALSE, eval=TRUE}
 packageVersions <- read.csv("PackageVersions.csv")
 packageVersions <- packageVersions[order(packageVersions$package), ]
-knitr::kable(packageVersions, col.names = c("Package", "Version"), row.names = FALSE)
+knitr::kable(packageVersions, col.names = c("Package", "Version"), row.names = FALSE, booktabs = TRUE, caption = 'Versions of packages in the Methods Library used in this book.')
 ```
 
