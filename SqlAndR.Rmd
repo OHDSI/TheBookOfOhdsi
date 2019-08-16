@@ -670,28 +670,24 @@ SELECT 1 AS cohort_definition_id,
   cohort_end_date,
   subject_id
 FROM (
-  SELECT drug_exposure_start_date AS cohort_start_date,
-    COALESCE(drug_exposure_end_date,
-             DATEADD(DAY, 1, drug_exposure_start_date)
-    ) AS cohort_end_date,
+  SELECT drug_era_start_date AS cohort_start_date,
+    drug_era_end_date AS cohort_end_date,
     person_id AS subject_id
   FROM (
-    SELECT drug_exposure_start_date,
-      drug_exposure_end_date,
+    SELECT drug_era_start_date,
+      drug_era_end_date,
       person_id,
       ROW_NUMBER() OVER (
         PARTITION BY person_id
-  			ORDER BY drug_exposure_start_date
+  			ORDER BY drug_era_start_date
       ) order_nr
-    FROM @cdm_db_schema.drug_exposure
-    INNER JOIN @cdm_db_schema.concept_ancestor
-      ON drug_concept_id = descendant_concept_id
-    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
+    FROM @cdm_db_schema.drug_era
+    WHERE drug_concept_id IN (1335471, 1340128, 1341927,
       1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
       1342439) -- ACE inhibitors
   ) ordered_exposures
   WHERE order_nr = 1
-) first_exposure
+) first_era
 INNER JOIN @cdm_db_schema.observation_period
   ON subject_id = person_id
     AND observation_period_start_date < cohort_start_date
@@ -707,7 +703,7 @@ renderTranslateExecuteSql(conn, sql,
                           cdm_db_schema = cdmDbSchema)
 ```
 
-Here we use the DRUG_EXPOSURE table, and join it to the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.
+Here we use the DRUG_ERA table, a standard table in the CDM that is automatically derived from the DRUG_EXPOSURE table. The DRUG_ERA table contains eras of continuous exposure at the ingredient level. We can thus search for the ACEi ingredients, and this will automatically identify all exposures to drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.
 
 ### Outcome cohort
 
