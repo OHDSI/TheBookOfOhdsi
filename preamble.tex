@@ -1,4 +1,5 @@
 \usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{amsthm}
 
 \usepackage{makeidx}
@@ -67,13 +68,43 @@
 %\usepackage{fontspec} % Requires xelatex
 %\setmainfont{Arial}
 
-%\usepackage{titlesec}
-%\titleformat{\chapter}[runin]{}{}{}{}[]
+\let\llncsparagraph\paragraph
+\let\paragraph\subsection
+\let\llncssubparagraph\subparagraph
+\let\subparagraph\paragraph
+
+\usepackage{titlesec}
 %\titleformat{\chapter}% reformat chapter headings
-%     [hang]% like section, with number on same line
-%     {\Huge\bfseries}% formatting applied to whole
-%     {\thechapter}% Chapter number
-%     {0.5em}% space between # and title
-%     {}% formatting applied just to title
+%   [hang]% like section, with number on same line
+%   {\Huge\bfseries\sffamily}% formatting applied to whole
+%   {Chapter \thechapter:}% Chapter number
+%   {0.5em}% space between # and title
+%   {}% formatting applied just to title
+
+\titleformat{\chapter}% reformat chapter headings
+   [display]% like section, with number on same line
+   {\huge\bfseries\sffamily}% formatting applied to whole
+   {Chapter \thechapter}% Chapter number
+   {1.0em}% space between # and title
+   {\Huge}% formatting applied just to title
+
+\titleformat{\section}% reformat chapter headings
+   [hang]% like section, with number on same line
+   {\Large\bfseries\sffamily}% formatting applied to whole
+   {\thesection}% Chapter number
+   {1.0em}% space between # and title
+   {}% formatting applied just to title
+
+\titleformat{\subsection}% reformat chapter headings
+   [hang]% like section, with number on same line
+   {\large\bfseries\sffamily}% formatting applied to whole
+   {\thesubsection}% Chapter number
+   {1.0em}% space between # and title
+   {}% formatting applied just to title
+
+\let\paragraph\llncsparagraph
+\let\subparagraph\llncssubparagraph
 
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
+
+\frontmatter

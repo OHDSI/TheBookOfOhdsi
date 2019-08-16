@@ -1,83 +1,310 @@
 # Data Quality {#DataQuality}
 
-## Introduction
 
-Kahn et al. define data quality as consisting of three components: (1) conformance (do data values adhere to do specified standard and formats?; subtypes: value, relational and computational conformance);  (2) completeness (are data values present?); and (3) plausibility (are data values believable?; subtypes uniqueness, atemporal; temporal) [@kahn_harmonized_2016]
+*Chapter leads: Martijn Schuemie, Vojtech Huser & Andrew Williams* 
+
+Most of the data used for observational healthcare research were not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and adminstrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with @vanDerLei_1991 even stating that "Data shall be used only for the purpose for which they were collected". The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:
+
+> Are the data of sufficient quality for our research purposes?
+
+We can define data quality (DQ) as [@roebuck_2012]: \index{data quality}
+
+> The state of completeness, validity, consistency, timeliness and accuracy that makes data appropriate for a specific use.
+
+Note that it is unlikely that our data are perfect, but they may be good enough for our purposes. 
+
+DQ cannot be observed directly, but methodology has been developed to assess it. Two types of DQ assessments can be distinguished [@weiskopf_methods_2013]: assessments to evaluate DQ in general, and assessments to evaluate DQ in the context of a specific study.
+
+In this chapter we will first review possible sources of DQ problems, after which we'll discuss the theory of general and study-specific DQ assessments, followed by a step-by-step description of how these assessments can be performed using the OHDSI tools.
+
+## Sources of data quality problems
+
+There are many threats to the quality of the data, starting as noted in Chapter \@ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the life cycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
+
+1. **Data gathering and integration**. Possible problems include fallible manual entry, biases (e.g. upcoding in claims), erroneous joining of tables in an EHR, and replacing missing values with default ones. 
+2. **Data storage and knowledge sharing**. Potential problems are lack of documentation of the data model, and lack of meta-data.
+3. **Data analysis**. Problems can include incorrect data transformations, incorrect data interpretation, and use of inappropriate methodology. 
+4. **Data publishing**. When publishing data for downstream use.
+
+Often the data we use has already been collected and integrated, so there is little we can do to improve step 1. We do have ways to check the DQ produced by this step as will be discussed in subsequent sections in this chapter. 
+
+Similarly, we often receive the data in a specific form, so we have little influence over part of step 2. However, in OHDSI we convert all our observational data to the Common Data Model (CDM), and we do have ownership over this process. Some have expressed concerns that this specific step can degrade DQ. But because we control this process, we can build stringent safeguards to preserve DQ as discussed later in Section x. Several investigations [@defalco_2013;@makadia_2014;@matcho_2014;@voss_2015;@voss_2015b;@hripcsak_2018] have shown that when properly executed, little to no error is introduced when converting to the CDM. In fact, having a well-documented data model that is shared by a large community facilitates data storage in unambiguous and clear manner.
+
+Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not use the term DQ for the quality issues during this step, but rather the terms *clinical validity*, *software validity* and *method validity*, which are discussed at length in Chapters \@ref(ClinicalValidity), \@ref(SoftwareValidity), and \@ref(MethodValidity), respectively.
+
+## Data quality in general
+
+We can ask the question whether our data is fit for the general purpose of observational research. @kahn_harmonized_2016 define such generic DQ as consisting of three components: 
+
+1. **Conformance**: Do data values adhere to do specified standard and formats? Three sub-types are identified:
+   - **Value**: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties? 
+   - **Relational**: Is the recorded data in agreement with specified relational constraints? For example, does the PROVIDER_ID in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?
+   - **Computation**: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?
+2. **Completeness**: Are data values present? For example, do all persons have a known gender?
+3. **Plausibility**: Are data values believable? Three sub-types are defined:
+    - **Uniqueness**: For example, does each PERSON_ID occur only once in the PERSON table?
+    - **Atemporal**: Do values, distributions, or densities agree with expected values? For example, is the prevalence of diabetes implied by the data in line with the known prevalence?
+    - **Temporal**: Are changes in values in line with expectations? For example, are immunization sequences in line with recommendations?
+    
+    \index{data quality!conformance} \index{data quality!completeness} \index{data quality!plausibility}
+
+Each component can be evaluated in two ways:
+
+* **Verification** focuses on model and data constraints and does not rely on external reference. 
+* **Validation** focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge. 
+
+\index{data quality!verification} \index{data quality!validation}
+
+### Data quality checks
+
+Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
+
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as "*ACHILLES Heel*". These checks are categorized as "*error*", "*warning*", or "*notification*". Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \@ref(tab:heelExamples) show some example rules. \index{ACHILLES!Heel}
+
+Table: (\#tab:heelExamples) Example data quality rules in ACHILLES Heel.
+
+|Type       | Description                                       |
+|:--------- |:--------------------------------------------------|
+| Error     | Age > 150 years                                   |
+| Error     | A CONDITION_CONCEPT_ID refers to a concept that is not in the CONDITION domain |
+| Warning   | The rate of occurrence for a specific CONCEPT_ID changes more than 100% from one month to the next |
+| Warning   | A prescription has a DAYS_SUPPLY > 180             |
+| Notification | The number of patients without any visit exceeds a predefined threshold |
+| Notification | There is no weight data in the MEASUREMENT table        | 
 
 
-Kahn additionaly defines two contexts: verification and validation. Verification focuses on model and data constraints and does not rely on external reference. Validation focuses on data expectations that are derived from comparison to a relative gold standard and uses external knowledge. 
+```{block2, type='rmdimportant'}
+ACHILLES and ACHILLES Heel are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
 
-Table below shows examples of the above defined data quality (DQ) constructs.
+```
 
-| Term         | Subtype                   | Validation example                                                                                                 |
-|--------------|---------------------------|--------------------------------------------------------------------------------------------------------------------|
-| Conformance  | Value                     | Providers are only assigned valid medical specialties.                                                             |
-|              | Relational                | Prescribing provider identifier is present in drug dispensation data.                                              |
-|              | Computational             | Computed eGFR value conforms to the expected value for a test case patient scenario.                               |
-| Completeness | n/a (no subtypes defined) | A drug product withdrawn from the market at a specific absolute historic date shows expected drop in dispensation. |
-| Plausibility | Uniqueness                | A zip code for a location does not refer to vastly conflicting geographical areas.                                 |
-|              | Atemporal                 | Use of a medication (by age group) for a specific disease agrees with the age pattern for that disease.            |
-|              | Temporal                  | Temporal pattern of an outbreak of a disease (e.g., Zika) agrees with external source pattern.                     |
+### ETL unit tests
 
-Kahn introduces the term *data quality check* (sometimes refered to as data quality rule) that tests whether data conform to a given requirement (e.g., implausible age of 141 of a patient (due to incorrect birth year or missing death event)). In support of checks, he also defines *data quality measure* (sometimes refered to as pre-computed analysis) as data analysis that  supports evaluation of a check. For example, distribution of days of supply by drug concept. 
+The ETL (Extract-Transform-Load) process by which data is converted to the CDM is often quite complex, and with that complexity comes the danger of making mistakes that may go unnoticed. Moreover, as time goes by the source data model may change, or the CDM may be updated, making it necessary to modify the ETL process. Changes to a process as complicated as an ETL can have unintended consequences, requiring all aspects of the ETL to be reconsidered and reviewed. 
 
-Two types of DQ checks can be distinguished[@weiskopf_methods_2013]
+To make sure the ETL does what it is supposed to do, and continues to do so, it is highly recommended to construct a set of unit tests. A unit test is a small piece of code that automatically checks a single aspect. The Rabbit-in-a-Hat tool described in Chapter \@ref(ExtractTransformLoad) can create a unit test framework that makes writing such unit tests easier. This framework is a collection of R functions created specifically for the source database and target CDM version of the ETL. Some of these functions are for creating fake data entries that adhere to the source data schema, while other functions can be used to specify expectations on the data in the CDM format. Here is an example unit test:
 
-* general checks
-* study-specific checks
+```{r eval=FALSE}
+source("Framework.R")
+declareTest(101, "Person gender mappings")
+add_enrollment(member_id = "M000000102", gender_of_member = "male")
+add_enrollment(member_id = "M000000103", gender_of_member = "female")
+expect_person(PERSON_ID = 102, GENDER_CONCEPT_ID = 8507
+expect_person(PERSON_ID = 103, GENDER_CONCEPT_ID = 8532)
 
-From the point of researcher analyzing the data, the desired situation is that data is free from erros that could have been prevented. *ETL data errors* are errors introduced during extract-tranform-load proces. A special type of ETL data error is *mapping error* that results from incorrect mapping of the data from the source terminology (e.g., Korean national drug terminology) into the target data model's standard terminology (e.g., RxNorm and RxNorm Extension).  A *source data error* is an error that is already present in the source data due to various cuases (e.g., human typo during data entry).[@huser_multisite_2016]
+```
 
-Data quality can also be seen as a component in a larger effort refered to as *evidence quality* or *evidence validation*. Data quality would fall in this framework under *data validation*.
+In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the member_id and gender_of_member fields. Note that the ENROLLMENT table has many other fields, and if we do not provide explicit values for these other fields the add_enrollment function will assign default values (the most prevalent values as observed in the White Rabbit scan report). Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.
 
-## Achilles Heel tool
+Similar unit tests can be created for all other logic in an ETL, typically resulting in hundreds of tests. When we are done defining the test, we can use the framework to generate two sets of SQL statements, one to create the fake source data, and one to create the tests on the ETL-ed data:
 
-Since 2014, a component of the OHDSI Achilles tool called Heel was used to check data quality.[@huser_methods_2018]
+```{r eval=FALSE}
+insertSql <- generateInsertSql(databaseSchema = "source_schema")
+testSql <- generateTestSql(databaseSchema = "cdm_test_schema")
+```
 
-### Precomputed Analyses
+The overall process is depicted in Figure \@ref(fig:testFramework).
 
-In support of data characterization, Achilles tool pre-computes number of data analyses. Each pre-computed analysis has an analysis ID and a short description of the analysis. For example, “715: Distribution of days_supply by drug_concept_id” or “506: Distribution of age at death by gender”. List of all pre-computed analyses (for Achilles version 1.6.3) as available at https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/achilles/achilles_analysis_details.csv 
+```{r testFramework, fig.cap='Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework.',echo=FALSE, out.width='90%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/testFramework.png")
+```
 
-Achilles has more than 170 pre-computed analysis that support not only data quality checks but also general data characterization (outside data quality context) such as data density visualizations. The pre-computations are largely guided by the CDM relational database schema and analyze most terminology-based data columns, such as condition_concept_id or place_of_service_concept_id. Pre-computations results are stored in table ACHILLES_RESULTS and ACHILLES_RESULTS_DIST.
+The test SQL returns a table that will look like Table \@ref(tab:exampleTestResults). In this table we see that we passed the two tests we defined earlier.
 
-### Example DQ check
+Table: (\#tab:exampleTestResults) Example ETL unit test results.
 
-In complete data about general population, a range of services is provided by a range of providers (with many specialties). A data completness rule with rule_id of 38 evaluates data completness in the PROVIDER table. Checking optional fields in CDM (such as provider specialty) lead to a notification severity output. Analysis Rule 38 triggers a notification if count of distinct specialties <2. It relies on a derived measure `Provider:SpeciatlyCnt`. The rule SQL-formulated logic can be found here: https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/sql/sql_server/heels/serial/rule_38.sql
+| ID    | Description            | Status |
+|:-----:|:---------------------- |:------:|
+| 101   | Person gender mappings | PASS   |
+| 101   | Person gender mappings | PASS   |
 
-
-
-### Overview of existing DQ Heel checks
-
-Achilles developers maintain a list of all DQ checks in an overview file. For version 1.6.3, this overview is available here https://github.com/OHDSI/Achilles/blob/v1.6.3/inst/csv/heel/heel_rules_all.csv Each DQ check has a rule_id.
-
-Checks are classified into CDM conformance checks and DQ checks.
-
-Depending on the severity of the problem, the Heel output can be error, warning or notification.
-
+The power of these unit tests is that we can easily rerun them any time the ETL process is changed. 
 
 ## Study-specific checks
 
-The chapter has so far focused on general DQ checks. Such checks are executed regardless of the single research question context. The assumption is that a researcher would formulate additional DQ checks that are required for a specific research question.
+The chapter has so far focused on general DQ checks. Such checks are executed regardless of the single research question context. However, we also recommend performing study-specific DQ assessments.
 
-We use case studies to demostrate study-specific checks.
+Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specifies the length of exposure. 
 
-### Outcomes 
+A standard assessment is to review the concepts that are most relevant for the study in ACHILLES. Sudden changes over time in the rate with which a code is observed may hint at DQ problems. Some examples will be discussed later in this chapter.
 
-For an international analysis, part of OHDSI study diagnostics (for a give dataset) may involve checking whether coding practices (that are country specific) affect a cohort definition. A stringent cohort definition may lead to zero cohort size in one (or multiple dataesets). 
+Another assessment is to review the prevalence and changes in prevalence over time of the cohorts used in the study, and see whether these agree with expectations based on external clinical knowledge. For example, exposure of a new drug should be absent before introduction to the market, and will likely increase over time after introduction. Similarly, the prevalence of outcomes should be in line with what is know of the prevalence of the condition in the population. If a study is executed across a network of databases, we can compare the prevalences of cohorts across databases. If a cohort is highly prevalent in one database (compared to the other cohorts in the study), but is missing in another database, there might be a DQ issue. Note  that such an assessment overlaps with the notion of *clinical validity*, as discussed in Chapter \@ref(ClinicalValidity); We may find unexpected prevalences in some databases not because of DQ issues, but because our cohort definition is not truly capturing the health state we are interested in.
+
+### Checking mappings
+
+One possible source of error that falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker [^vocabIssueTrackerUrl] and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard concepts, but also the source codes. We can review both the source codes that do map to the concepts used in the study, as well as those that do not.
+
+[^vocabIssueTrackerUrl]: https://github.com/OHDSI/Vocabulary-v5.0/issues
+
+One way to review the source codes that do map is to use the `checkCohortSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalences of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure \@ref(fig:sourceCodes) shows a (partial) breakdown of a concept set called 'Depressive disorder'. The most prevalent concept in this concept set in the database of interest is concept  [440383](http://athena.ohdsi.org/search-terms/terms/440383) ("Depressive disorder"). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-19 code F32.9 (""Major depressive disorder, single episode, unspecified") should also have mapped to the concept. This problem has since been resolved in the Vocabulary.
+
+```{r sourceCodes, fig.cap='Example output of he checkCohortSourceCodes function. ',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/sourceCodes.png")
+```
+
+Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the `findOrphanSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study concerning gangrene the concept "Gangrenous disorder" ([439928](http://athena.ohdsi.org/search-terms/terms/439928)) was used. Several terms, including "gangrene", were used to search the descriptions in the CONCEPT and SOURCE_TO_CONCEPT_MAP tables to identify source codes.  Figure \@ref(fig:missingMapping) show that the ICD-10 code J85.0 ("Gangrene and necrosis of lung") was only mapped to concept [4324261](http://athena.ohdsi.org/search-terms/terms/4324261) ("Pulmonary necrosis"), which is not a descendant of "Gangrenous disorder". Note that this issue has been reported and is now fixed.
+
+```{r missingMapping, fig.cap='Example orphan source code. ',echo=FALSE, out.width='60%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/missingMapping.png")
+```
+
+## ACHILLES in practice {#achillesInPractice}
+
+Here we will demonstrate how to run ACHILLES against a database in the CDM format. 
+
+We first need to tell R how to connect to the server. ACHILLES uses the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
+
+```{r tidy=FALSE,eval=FALSE}
+library(Achilles)
+connDetails <- createConnectionDetails(dbms = "postgresql",
+                                       server = "localhost/ohdsi",
+                                       user = "joe",
+                                       password = "supersecret")
+
+cdmDbSchema <- "my_cdm_data"
+cdmVersion <- "5.3.0"
+```
+
+The last two lines define the `cdmDbSchema` variable, as well as the CDM version. We will use these later to tell R where the data in CDM format live, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
+
+Next, we run ACHILLES:
+
+```{r tidy=FALSE, eval=FALSE}
+result <- achilles(connectionDetails,
+                   cdmDatabaseSchema = cdmDbSchema,
+                   resultsDatabaseSchema = cdmDbSchema,
+                   sourceName = "My database",
+                   cdmVersion = cdmVersion)
+```
+
+This function will create several tables in the `resultsDatabaseSchema`, which here we've set to the same database schema as the CDM data. 
+
+We can extract the results of ACHILLES Heel from that database using:
+
+```{r tidy=FALSE, eval=FALSE}
+heel <- fetchAchillesHeelResults(connectionDetails,
+                         resultsDatabaseSchema = cdmDatabaseSchema)
+
+head(heel)
+```
+|ANALYSIS_ID|ACHILLES_HEEL_WARNING|RULE_ID|RECORD_COUNT|
+|:--:|:-------------------------------------- |:--:|:---|
+118|ERROR: 118-Number of observation periods with invalid PERSON_ID; count (n=2649) should not be > 0| 1| 2649|
+410|ERROR: 410-Number of condition occurrence records outside valid observation period; count (n=85) should not be > 0| 1| 85|
+413|ERROR: 413-Number of condition occurrence records with invalid visit_id; count (n=64717) should not be > 0| 1|64717|
+610|ERROR: 610-Number of procedure occurrence records outside valid observation period; count (n=15) should not be > 0| 1| 15|
+613|ERROR: 613-Number of procedure occurrence records with invalid visit_id; count (n=36819) should not be > 0| 1|36819|
+710|ERROR: 710-Number of drug exposure records outside valid observation period; count (n=80) should not be > 0| 1| 80|
+
+In this case, ACHILLES Heel has revealed several serious errors that will need to be fixed. We can also view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
+
+```{r tidy=FALSE, eval=FALSE}
+exportToJson(connectionDetails,
+             cdmDatabaseSchema = cdmDatabaseSchema,
+             resultsDatabaseSchema = cdmDatabaseSchema,
+             outputPath = "achillesOut")
+```
+
+The JSON files will be written to the achillesOut sub-folder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure \@ref(fig:achillesDataDensity) shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.
+
+```{r achillesDataDensity, fig.cap='The data density plot in the ACHILLES web viewer.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/achillesDataDensity.png")
+```
+
+Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a sudden change in the prevalence of a diabetes diagnosis code. This change coincides with changes in the reimbursement rules in this specific country, leading to more diagnoses but probably not a true increase in prevalence in the underlying population. 
+
+```{r achillesCodeChange, fig.cap='Monthly rate of diabetes coded in the ACHILLES web viewer.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/achillesCodeChange.png")
+```
+
+## Study-specific checks in practice
+
+Next, we will execute several checks specifically for the angioedema cohort definition provided in Appendix \@ref(Angioedema). We will assume the connection details have been set as described in Section \@ref(achillesInPractice), and that the cohort definition JSON and SQL of the cohort definition have been saved in the files "cohort.json" and "cohort.sql", respectively. The JSON and SQL can be obtained from the Export tab in the ATLAS cohort definition function.
+
+```{r tide=FALSE,eval=FALSE}
+library(MethodEvaluation)
+json <- readChar("cohort.json", file.info("cohort.json")$size)
+sql <- readChar("cohort.sql", file.info("cohort.sql")$size)
+checkCohortSourceCodes(connectionDetails,
+                       cdmDatabaseSchema = cdmDbSchema,
+                       cohortJson = json,
+                       cohortSql = sql,
+                       outputFile = "output.html")
+```
 
 
-### Laboratory data
+We can open the output file in a web browser as shown in Figure \@ref(fig:sourceCodesAngioedema). Here we see that the angioedema cohort definition has two concept sets: "Inpatient or ER visit", and "Angioedema". In this example database the visits were found through database-specific codes "ER" and "IP", that are not in the Vocabulary. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
 
+```{r sourceCodesAngioedema, fig.cap='Source codes used in the angioedema cohort definition.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/sourceCodesAngioedema.png")
+```
 
-A diabetes study may utilize HbA1c measurement. A 2018 OHDSI study (https://www.ncbi.nlm.nih.gov/pubmed/30646124) defined a cohort 'HbA1c8Moderate' (see https://github.com/rohit43/DiabetesTxPath/blob/master/inst/settings/CohortsToCreate.csv)
+Additionally, we can search for orphan source codes. Here we look for the Standard Concept "Angioedema", and look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
 
+```{r tidy=FALSE,eval=FALSE}
+orphans <- findOrphanSourceCodes(connectionDetails,
+                                 cdmDatabaseSchema = cdmDbSchema,
+                                 conceptName = "Angioedema",
+                                 conceptSynonyms = c("Angioneurotic edema",
+                                                     "Giant hives",
+                                                     "Giant urticaria",
+                                                     "Periodic edema"))
+View(orphans)
+```
+|code              |description                                                            |vocabularyId | overallCount|
+|:-----------------|:----------------------------------------------------------------------|:------------|------------:|
+|T78.3XXS          |Angioneurotic edema, sequela                                           |ICD10CM      |          508|
+|10002425          |Angioedemas                                                            |MedDRA       |            0|
+|148774            |Angioneurotic Edema of Larynx                                          |CIEL         |            0|
+|402383003         |Idiopathic urticaria and/or angioedema                                 |SNOMED       |            0|
+|232437009         |Angioneurotic edema of larynx                                          |SNOMED       |            0|
+|10002472          |Angioneurotic edema, not elsewhere classified                          |MedDRA       |            0|
 
+The only potential orphan found that is actually used in the data is "Angioneurotic edema, sequela", which is not supposed to map to angioedema. This analysis therefore did not reveal any missing codes.
 
-## ETL unit testing
+## Summary
 
-Extract Transform Load (ETL) process that transforms data from source (in EHR system or claims sys) to target (OMOP CDM) can contain errors. Unit testing of ETL code allows for preventing coding errors in ETL to cause data errors.
+```{block2, type='rmdsummary'}
+- Most observational healthcare data were not collected for research.
 
-### Unit testing framwork in Rabbit-in-a-Hat
+- We must therefore assess whether the data are of sufficient quality for our purposes.
 
-OHDSI tool Rabbit-in-a-Hat includes an ETL unit testing framwork. This framework defines an a set of function for each table in the source schema and a set of functions for each table in target OMOP CDM schema. Detailed description is available at https://www.ohdsi.org/web/wiki/doku.php?id=documentation:software:whiterabbit:test_framework. 
+- We can assess data quality for the purpose of research in general, and in the context of a specific study.
 
+- Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in ACHILLES Heel.
+
+- Other tools exist to evaluate the mapping of codes relevant for a particular study.
+
+```
+
+## Exercises
+
+**Prerequisites**
+
+For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), [ACHILLES](https://github.com/OHDSI/Achilles),  and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+
+```{r eval=FALSE}
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Achilles")
+devtools::install_github("ohdsi/Eunomia")
+```
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
+```{r eval=FALSE}
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
+
+The CDM database schema is "main".
+
+```{exercise, exerciseRunAchilles}
+Execute ACHILLES against the Eunomia database.
+
+```
+
+```{exercise, exerciseViewHeel}
+Extract the ACHILLES Heel list of issues.
+
+```
+
+Suggested answers can be found in Appendix \@ref(DataQualityanswers).

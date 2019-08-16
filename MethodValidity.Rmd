@@ -6,7 +6,7 @@ When considering method validity we aim to answer the question
 
 > Is this method valid for answering this question?
 
-Where "method" includes not only the study design, but also the data and the implementation of the design. Method validity is therefore somewhat of a catch-all; It is often not possible to observe good method validity without good data quality, clinical validity, and software validity. Those aspects of evidence quality should have already been addressed separately before we consider method validity.
+"Method" includes not only the study design, but also the data and the implementation of the design. Method validity is therefore somewhat of a catch-all; it is often not possible to observe good method validity without good data quality, clinical validity, and software validity. Those aspects of evidence quality should have already been addressed separately before we consider method validity.
 
 The core activity when establishing method validity is evaluating whether important assumptions in the analysis have been met. For example, we assume that propensity-score matching makes two populations comparable, but we need to evaluate whether this is the case. Where possible, empirical tests should be performed to verify these assumptions. We can for example generate diagnostics to show that our two populations are indeed comparable on a wide range of characteristics after matching. In OHDSI we have developed many standardized diagnostics that should be generated and evaluated whenever an analysis is performed. 
 
@@ -23,9 +23,9 @@ For each study design there are diagnostics specific to such a design. Many of t
 - **Power** to assess whether enough data is available to answer the question.
 - **Kaplan Meier curve** to asses typical time to onset, and whether the proportionality assumption underlying Cox models is met.
 
-Other study designs require different diagnostics to test the different assumptions in those designs. For example, for the self-controlled case series (SCCS) design we may check the necessary assumption  that the end of observation is independent of the outcome. This assumption is often violated in the case of serious, potentially lethal, events such as myocardial infarction. We can evaluate whether the assumption holds by generating the plot shown in Figure \@ref(fig:timeToObsEnd), which shows histograms of the time to observation period end for those that are censored, and those that uncensored. In our data we consider those whose observation period ends at the end date of data capture (the date when observation stopped for the entire data base, for example the date of extraction, or the study end date) to be uncensored, and all others to be censored. In Figure \@ref(fig:timeToObsEnd) we see only minor differences between the two distributions, suggesting our assumptions holds.
+Other study designs require different diagnostics to test the different assumptions in those designs. For example, for the self-controlled case series (SCCS) design we may check the necessary assumption  that the end of observation is independent of the outcome. This assumption is often violated in the case of serious, potentially lethal, events such as myocardial infarction. We can evaluate whether the assumption holds by generating the plot shown in Figure \@ref(fig:timeToObsEnd), which shows histograms of the time to observation period end for those that are censored, and those that are uncensored. In our data we consider those whose observation period ends at the end date of data capture (the date when observation stopped for the entire data base, for example the date of extraction, or the study end date) to be uncensored, and all others to be censored. In Figure \@ref(fig:timeToObsEnd) we see only minor differences between the two distributions, suggesting our assumptions holds.
 
-```{r timeToObsEnd, fig.cap='Time to observation end for those that are censored, and those that uncensored.',echo=FALSE, out.width='100%', fig.align='center'}
+```{r timeToObsEnd, fig.cap='Time to observation end for those that are censored, and those that are uncensored.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/MethodValidity/timeToObsEnd.png")
 ```
 
@@ -35,7 +35,7 @@ Next to the design-specific diagnostics, there are also several diagnostics that
 
 ### Negative controls {#NegativeControls}
 
-Negative controls are exposure-outcome pairs where one believes no causal effect exists, and including negative controls or "falsification endpoints" [@prased_2013] has been recommended as a means to detect confounding, [@lipsitch_2010] selection bias and measurement error. [@arnold_2016] For example, in one study [@zaadstra_2008] investigating the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased. 
+Negative controls are exposure-outcome pairs where one believes no causal effect exists, and it includes negative controls or "falsification endpoints" [@prased_2013] that have been recommended as a means to detect confounding, [@lipsitch_2010] selection bias, and measurement error. [@arnold_2016] For example, in one study [@zaadstra_2008] investigating the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased. 
 
 We should select negative controls that are comparable to our hypothesis of interest, which means we typically select exposure-outcome pairs that either have the same exposure as the hypothesis of interest (so-called "outcome controls") or the same outcome ("exposure controls"). Our negative controls should further meet these criteria:
 
@@ -45,13 +45,13 @@ We should select negative controls that are comparable to our hypothesis of inte
 - Negative controls should ideally be **independent**. For example, we should avoid having negative controls that are either ancestors of each other (e.g. "ingrown nail" and "ingrown nail of foot") or siblings (e.g. "fracture of left femur" and "fracture of right femur").
 - Negative controls should ideally have **some potential for bias**. For example, the last digit of someone's social security number is basically a random number, and is unlikely to show confounding. It should therefore not be used as a negative control.
 
-Some argue that negative controls should also have the same confounding structure as the exposure-outcome pair of interest. [@lipsitch_2010] However, we believe this confounding structure is unknowable; The relationships between variables found in reality is often far more complex than people imagine. Also, even if the confounder structure were known, it is unlikely that a negative control exists having that exact same confounding structure, but lacking the direct causal effect. For this reason in OHDSI we rely on a large number of negative controls, assuming that such a set represents many different types of bias, including the ones present in the hypothesis of interest.
+Some argue that negative controls should also have the same confounding structure as the exposure-outcome pair of interest. [@lipsitch_2010] However, we believe this confounding structure is unknowable; the relationships between variables found in reality is often far more complex than people imagine. Also, even if the confounder structure was known, it is unlikely that a negative control exists having that exact same confounding structure, but lacking the direct causal effect. For this reason in OHDSI we rely on a large number of negative controls, assuming that such a set represents many different types of bias, including the ones present in the hypothesis of interest.
 
-The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studies extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this Principe in mind we have developed a semi-automated procedure for selecting negative controls [@voss_2016]. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.
+The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studied extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this principe in mind we have developed a semi-automated procedure for selecting negative controls [@voss_2016]. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.
 
 ### Positive controls {#PositiveControls}
 
-To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls, where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. [@noren_2014]
+To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. [@noren_2014]
 
 In OHDSI we therefore use synthetic positive controls, [@schuemie_2018] created by modifying a negative control through injection of additional, simulated occurrences of the outcome during the time at risk of the exposure. For example, assume that, during exposure to ACEi, n occurrences of our negative control outcome "ingrowing nail" were observed. If we now add an additional n simulated occurrences during exposure, we have doubled the risk. Since this was a negative control, the relative risk compared to the counterfactual was one, but after injection, it becomes two. 
 
@@ -67,7 +67,7 @@ Although we refer to a single true "effect size" for each control, different met
 
 ### Empirical evaluation {#metrics}
 
-Based on the estimates of a particular method for the negative and positive controls, we can then understand the operating characteristic by computing a range of metrics, for example:
+Based on the estimates of a particular method for the negative and positive controls, we can then understand the operating characteristics by computing a range of metrics, for example:
 
 *	**Area Under the receiver operator Curve (AUC)**: the ability to discriminate between positive and negative controls. 
 *	**Coverage**: how often the true effect size is within the 95% confidence interval.
@@ -113,7 +113,7 @@ $$\beta_i \sim N(\mu(\theta_i) , \sigma^2(\theta_i))$$
 
 where
 
-$$\mu(\theta_i) = a + b \times \theta_i \text{ and} \\
+$$\mu(\theta_i) = a + b \times \theta_i \text{ and } \\
   \sigma(\theta_i) ^2= c + d \times \mid \theta_i \mid$$
 
 We estimate $a$, $b$, $c$ and $d$ by maximizing the marginalized likelihood in which we integrate out the unobserved $\beta_i$:
@@ -143,7 +143,7 @@ Both p-value calibration and confidence interval calibration are implemented in 
 
 Another form of method validation comes from executing the study across several different databases that represent different populations, different health care systems, and/or different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates, [@madigan_2013] suggesting that either the effect differs greatly for different populations, or that the design does not adequately address the different biases found in the different databases. In fact, we observe that accounting for residual bias in a database through empirical calibration of confidence intervals can greatly reduce between-study heterogeneity. [@schuemie_2018]
 
-One way to express between-database heterogeneity is the $I^2$ score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. [@higgins_2003] A naive categorization of values for $I^2$ would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to $I^2$ values of 25%, 50%, and 75%. In a study estimating the effects for many depression treatments using a new-user cohort design with large-scale propensity score adjustment, @schuemie_2018b observed only 58% of the estimates to have an $I^2$ below 25%. After empirical calibration this increased to 83%. 
+One way to express between-database heterogeneity is the $I^2$ score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. [@higgins_2003] A naive categorization of values for $I^2$ would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to $I^2$ values of 25%, 50%, and 75%. In a study estimating the effects for many depression treatments using a new-user cohort design with large-scale propensity score adjustment, [@schuemie_2018b] observed only 58% of the estimates to have an $I^2$ below 25%. After empirical calibration this increased to 83%. 
 
 ```{block2, type='rmdimportant'}
 Observing between-database heterogeneity casts doubt on the validity of the estimates. Unfortunately, the inverse is not true. Not observing heterogeneity does not guarantee an unbiased estimate. It is not unlikely that all databases share a similar bias, and that all estimates are therefore consistently wrong.
@@ -153,11 +153,11 @@ Observing between-database heterogeneity casts doubt on the validity of the esti
 
 When designing a study there are often design choices that are uncertain. For example, should propensity score matching of stratification be used? If stratification is used, how many strata? What is the appropriate time-at-risk? When faced with such uncertainty, one solution is to evaluate various options, and observe the sensitivity of the results to the design choice. If the estimate remains the same under various options, we can say the study is robust to the uncertainty.
 
-This definition of sensitivity analysis should not be confused with the definitions used by others such as @rosenbaum_2005, who define sensitivity analysis to "appraise how the conclusions of a study might be altered by hidden biases of various magnitudes".
+This definition of sensitivity analysis should not be confused with the definitions used by others such as, @rosenbaum_2005 who defines sensitivity analysis to "appraise how the conclusions of a study might be altered by hidden biases of various magnitudes."
 
 ## Method validation in practice
 
-Here we build on the example in Chapter \@ref(PopulationLevelEstimation), where we investigate the effect of ACE inhibitors (ACEi) on the risk of angioedema and acute myocardial infarction (AMI), compared to thiazides and thiazide-like diuretics (THZ). In that chapter we already explore many of the diagnostics specific to the design we used: the cohort method. Here, we apply additional diagnostics that could also have been applied had other designs been used. If the study is implemented using ATLAS as described in Section \@ref(PleAtlas) these diagnostics are available in the Shiny app that is included in the study R package generated by ATLAS. If the study is implemented using R instead, as described in Section \@ref(pleR), then R functions available in the various packages should be used, as described in the next sections.
+Here we build on the example in Chapter \@ref(PopulationLevelEstimation), where we investigate the effect of ACE inhibitors (ACEi) on the risk of angioedema and acute myocardial infarction (AMI), compared to thiazides and thiazide-like diuretics (THZ). In that chapter we already explore many of the diagnostics specific to the design we used, the cohort method. Here, we apply additional diagnostics that could also have been applied had other designs been used. If the study is implemented using ATLAS as described in Section \@ref(PleAtlas) these diagnostics are available in the Shiny app that is included in the study R package generated by ATLAS. If the study is implemented using R instead, as described in Section \@ref(pleR), then R functions available in the various packages should be used, as described in the next sections.
 
 ### Selecting negative controls
 
@@ -175,7 +175,7 @@ Next, we go to the "Explore Evidence" tab, and click on the ![](images/MethodVal
 knitr::include_graphics("images/MethodValidity/candidateNcs.png")
 ```
 
-This list shows condition concepts, along with an overview of the evidence linking the condition to any of the exposures we defined. For example, we see the number of publications that link the exposures to the outcomes found in PubMed using various strategies, the number of product labels of our exposures of interest that list the condition as a possible adverse effect, and the number of spontaneous reports. By default the list is sorted to show candidate negative controls first. It is then sorted by the "Sort Order", which represents the prevalence of the condition in a collection of observational databases. The higher the Sort Order, the higher the prevalence. Although the prevalence in these databases might not correspond with the prevalence in the database we wish to run the study, it is likely a good approximation.
+This list shows condition concepts, along with an overview of the evidence linking the condition to any of the exposures we defined. For example, we see the number of publications that link the exposures to the outcomes found in PubMed using various strategies, the number of product labels of our exposures of interest that list the condition as a possible adverse effect, and the number of spontaneous reports. By default the list is sorted to show candidate negative controls first. It is then sorted by the "Sort Order," which represents the prevalence of the condition in a collection of observational databases. The higher the Sort Order, the higher the prevalence. Although the prevalence in these databases might not correspond with the prevalence in the database we wish to run the study, it is likely a good approximation.
 
 The next step is to manually review the candidate list, typically starting at the top, so with the most prevalent condition, and working our way down until we are satisfied we have enough. One typical way to do this is to export the list to a CSV (comma separated values) file, and have clinicians review these, considering the criteria mentioned in Section \@ref(NegativeControls).
 
@@ -183,9 +183,9 @@ For our example study we select the 76 negative controls listed in Appendix \@re
 
 ### Including controls 
 
-Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \@ref(evaluationSettings) discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter \@ref(SqlAndR) describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.
+Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \@ref(evaluationSettings) discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R, then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter \@ref(SqlAndR) describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.
 
-The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \@ref(evaluationSettings), and is implemented in the `injectSignals` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
+The OHDSI tools also provide functionality for automatically generating and including positive controls derived from the negative controls. This functionality can be found in the Evaluation Settings section in ATLAS described in Section \@ref(evaluationSettings), and it is implemented in the `synthesizePositiveControls` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package. Here we generate three positive controls for each negative control, with true effect sizes of 1.5, 2, and 4, using a survival model:
 
 ```{r tidy=FALSE,eval=FALSE}
 library(MethodEvaluation)
@@ -194,38 +194,39 @@ library(MethodEvaluation)
 eoPairs <- data.frame(exposureId = 1,
                       outcomeId = ncs)
 
-pcs <- injectSignals(connectionDetails = connectionDetails,
-                     cdmDatabaseSchema = cdmDbSchema,
-                     exposureDatabaseSchema = cohortDbSchema,
-                     exposureTable = cohortTable,
-                     outcomeDatabaseSchema = cohortDbSchema,
-                     outcomeTable = cohortTable,
-                     outputDatabaseSchema = cohortDbSchema,
-                     outputTable = cohortTable,
-                     createOutputTable = FALSE,
-                     modelType = "survival",
-                     firstExposureOnly = TRUE,
-                     firstOutcomeOnly = TRUE,
-                     removePeopleWithPriorOutcomes = TRUE,
-                     washoutPeriod = 365,
-                     riskWindowStart = 1,
-                     riskWindowEnd = 0,
-                     addExposureDaysToEnd = TRUE,
-                     exposureOutcomePairs = eoPairs,
-                     effectSizes = c(1.5, 2, 4),
-                     cdmVersion = cdmVersion,
-                     workFolder = file.path(outputFolder,
-                                            "pcSynthesis"))
-              
+pcs <- synthesizePositiveControls(
+  connectionDetails = connectionDetails,
+  cdmDatabaseSchema = cdmDbSchema,
+  exposureDatabaseSchema = cohortDbSchema,
+  exposureTable = cohortTable,
+  outcomeDatabaseSchema = cohortDbSchema,
+  outcomeTable = cohortTable,
+  outputDatabaseSchema = cohortDbSchema,
+  outputTable = cohortTable,
+  createOutputTable = FALSE,
+  modelType = "survival",
+  firstExposureOnly = TRUE,
+  firstOutcomeOnly = TRUE,
+  removePeopleWithPriorOutcomes = TRUE,
+  washoutPeriod = 365,
+  riskWindowStart = 1,
+  riskWindowEnd = 0,
+  endAnchor = "cohort end",
+  exposureOutcomePairs = eoPairs,
+  effectSizes = c(1.5, 2, 4),
+  cdmVersion = cdmVersion,
+  workFolder = file.path(outputFolder,
+                         "pcSynthesis"))
+
 ```
 
-Note that we must mimic the time-at-risk settings used in our estimation study design. The `injectSignals` function will extract information about the exposures and negative controls outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by `cohortDbSchema` and `cohortTable`. The resulting `pcs` data frame contains the information on the synthesized positive controls.
+Note that we must mimic the time-at-risk settings used in our estimation study design. The `synthesizePositiveControls` function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by `cohortDbSchema` and `cohortTable`. The resulting `pcs` data frame contains the information on the synthesized positive controls.
 
 Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) readily allow estimation of many effects in an efficient manner.
 
 ### Empirical performance
 
-Figure \@ref(fig:controls) shows the estimated effect sizes for the negative and positive controls included in our example study, stratified by true effect size. This plot is included in the Shiny app that comes with the study R package generated by ATLAS, and can be generated using the `plotControls` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package. Note that the number of controls is often lower than what was defined because there was not enough data to either produce an estimate, or to synthesize a positive control.
+Figure \@ref(fig:controls) shows the estimated effect sizes for the negative and positive controls included in our example study, stratified by true effect size. This plot is included in the Shiny app that comes with the study R package generated by ATLAS, and can be generated using the `plotControls` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package. Note that the number of controls is often lower than what was defined because there was not enough data to either produce an estimate or to synthesize a positive control.
 
 ```{r controls, fig.cap='Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio > 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn\'t include the true effect size.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/MethodValidity/controls.png")
@@ -269,7 +270,7 @@ plotCalibrationEffect(logRrNegatives = ncEstimates$logRr,
 knitr::include_graphics("images/MethodValidity/pValueCal.png")
 ```
 
-In Figure \@ref(fig:pValueCal) we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicated hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
+In Figure \@ref(fig:pValueCal) we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicating hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
 
 We can compute the calibrated p-values:
 
@@ -305,11 +306,11 @@ Before calibration, the estimated hazard ratios (95% confidence interval) are 4.
 
 Just as we executed our analysis on one database, in this case the IBM MarketScan Medicaid (MDCD) database, we can also run the same analysis code on other databases that adhere to the Common Data Model (CDM). Figure \@ref(fig:forest) shows the forest plot and meta-analytic estimates (assuming random effects) [@dersimonian_1986] across a total of five databases for the outcome of angioedema. This figure was generated using the `plotMetaAnalysisForest` function in the [EvidenceSynthesis](https://ohdsi.github.io/EvidenceSynthesis/) package.
 
-```{r forest, fig.cap='Effect size estimates and 95\\% confidence intervals (CI) from five different databases and a meta-analytic estimatewhen comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.',echo=FALSE, out.width='90%', fig.align='center'}
+```{r forest, fig.cap='Effect size estimates and 95\\% confidence intervals (CI) from five different databases and a meta-analytic estimate when comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/MethodValidity/forest.png")
 ```
 
-Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the $I^2$ suggests between-database heterogeneity. However, if we compute the $I^2$ using the calibrated confidence intervals as shown in Figure \@ref(fig:forestCal), we see that this heterogeneity can be explained by the bias measured in each database through the negative and positive controls. The empirical calibration appears to properly taken this bias into account.
+Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the $I^2$ suggests between-database heterogeneity. However, if we compute the $I^2$ using the calibrated confidence intervals as shown in Figure \@ref(fig:forestCal), we see that this heterogeneity can be explained by the bias measured in each database through the negative and positive controls. The empirical calibration appears to properly take this bias into account.
 
 ```{r forestCal, fig.cap='Calibrated Effect size estimates and 95\\% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics.',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/MethodValidity/forestCal.png")
@@ -317,7 +318,7 @@ knitr::include_graphics("images/MethodValidity/forestCal.png")
 
 ### Sensitivity analyses
 
-One of the design choices in our analysis was to use variable-ratio matching on the propensity score. However, we could have also used stratification on the propensity score. Because we we are uncertain about this choice, we may decide to use both. Table \@ref(tab:sensAnalysis) shows the effect size estimates for AMI and angioedema, both calibrated and uncalibrated, when using variable-ratio matching and stratification (with 10 equally-sized strata).
+One of the design choices in our analysis was to use variable-ratio matching on the propensity score. However, we could have also used stratification on the propensity score. Because we are uncertain about this choice, we may decide to use both. Table \@ref(tab:sensAnalysis) shows the effect size estimates for AMI and angioedema, both calibrated and uncalibrated, when using variable-ratio matching and stratification (with 10 equally-sized strata).
 
 Table: (\#tab:sensAnalysis) Uncalibrated and calibrated hazard ratios (95\% confidence interval) for the two analysis variants.
 
@@ -367,6 +368,5 @@ Our evaluation of the designs in the Methods Library also shows that empirical c
 
 ```
 
-## Exercises
+[//]: # (## Exercises)
 
-Todo
