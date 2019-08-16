@@ -115,7 +115,7 @@ $$\beta_i \sim N(\mu(\theta_i) , \sigma^2(\theta_i))$$
 
 where
 
-$$\mu(\theta_i) = a + b \times \theta_i \text{ and} \\
+$$\mu(\theta_i) = a + b \times \theta_i \text{ and } \\
   \sigma(\theta_i) ^2= c + d \times \mid \theta_i \mid$$
 
 We estimate $a$, $b$, $c$ and $d$ by maximizing the marginalized likelihood in which we integrate out the unobserved $\beta_i$:

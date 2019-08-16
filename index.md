@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-08-15"
+date: "2019-08-16"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -48,11 +48,9 @@ III) Data Analytics
 IV) Evidence Quality
 V) OHDSI Studies
 
-Each section has multiple chapters, and each chapter aims to follow the following main outline: Introduction, Theory, Practice, Excercises. 
+Each section has multiple chapters, and each chapter aims to follow the following main outline: Introduction, Theory, Practice, Summary, and Excercises. 
 
 ## Contributors {-}
-
-TODO: make list of contributors complete
 
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
@@ -78,4 +76,31 @@ Mui Van Zandt       Erica Voss         Kristin Waite
 Mike Warfe          Jamie Weaver       James Wiggins        
 Andrew Williams     Chan You Seng                           
 ------------------  -----------------  ---------------------
+
+## Software versions {-}
+
+A large part of this book is about the open source software of OHDSI, and this software will evolve over time. Although the developers do their best to offer a consistent and stable experience to the users, it is inevitable that over time improvements to the software will make some of the instructions in this book out of date. The online version of the book will be updated to reflect those changes, and new editions of the hard copy will be released over time. For reference, these are the version numbers of the software used in this version of the book:
+
+- ACHILLES: version 1.6.6
+- ATLAS: version 2.7.2
+- EUNOMIA: version 1.0.0
+- Methods Library packages:
+
+
+Package                    Version 
+-------------------------  --------
+CaseControl                1.6.0   
+CaseCrossover              1.1.0   
+CohortMethod               3.1.0   
+Cyclops                    2.0.2   
+DatabaseConnector          2.4.1   
+EmpiricalCalibration       2.0.0   
+EvidenceSynthesis          0.0.4   
+FeatureExtraction          2.2.4   
+MethodEvaluation           1.1.0   
+ParallelLogger             1.1.0   
+PatientLevelPrediction     3.0.6   
+SelfControlledCaseSeries   1.4.0   
+SelfControlledCohort       1.5.0   
+SqlRender                  1.6.2   
 
