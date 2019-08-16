@@ -70,7 +70,7 @@ Once all settings are completed, press the “Scan tables” button. After the s
 
 **Interpreting the Scan Report**
 
-Once the scan is complete, an Excel file is generated in the selected folder with one-tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. Figure \@ref(fig:ScanOverviewTab). shows an example overview tab.
+Once the scan is complete, an Excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. Figure \@ref(fig:ScanOverviewTab). shows an example overview tab.
 
 ```{r ScanOverviewTab, fig.cap="Example overview tab from a scan report.", echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/ExtractTransformLoad/ScanOverviewTab.png")
@@ -116,7 +116,7 @@ Since the CDM is a person-centric model it is always a good idea to start mappin
 knitr::include_graphics("images/ExtractTransformLoad/flowOfEtl.png")
 ```
 
-It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct visit_occurrence_ids to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). Intermediate tables are 100% allowed and encouraged. What is discouraged is the persistence and reliance on these intermediate tables once the conversion is complete. 
+It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct VISIT_OCCURRENCE_IDs to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). Intermediate tables are 100% allowed and encouraged. What is discouraged is the persistence and reliance on these intermediate tables once the conversion is complete. 
 
 #### Mapping Example: Person table
 
@@ -132,8 +132,8 @@ Table: (\#tab:syntheaEtlPerson) ETL logic to convert the Synthea Patients table 
 
 | Destination Field | Source field | Logic & comments |
 | :---------------------- | :--------- | :---------------------------------------- |
-| PERSON_ID                   |             |  Autogenerate. The person_id will be generated at the time of implementation. This is because the id value from the source is a varchar value while the person_id is an integer. The id field from the source is set as the person_source_value to preserve that value and allow for error-checking if necessary. |
-| GENDER_CONCEPT_ID           | gender      | When gender = ‘M’ then set gender_concept_id to 8507, when gender = ‘F’ then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.|
+| PERSON_ID                   |             |  Autogenerate. The PERSON_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON_ID is an integer. The id field from the source is set as the person_source_value to preserve that value and allow for error-checking if necessary. |
+| GENDER_CONCEPT_ID           | gender      | When gender = ‘M’ then set GENDER_CONCEPT_ID to 8507, when gender = ‘F’ then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.|
 | YEAR_OF_BIRTH               | birthdate   | Take year from birthdate |
 | MONTH_OF_BIRTH              | birthdate   | Take month from birthdate |
 | DAY_OF_BIRTH                | birthdate   | Take day from birthdate |
