@@ -54,6 +54,7 @@ Each section has multiple chapters, and each chapter aims to follow the followin
 
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
+\begin{center}
 
 ------------------  -----------------  ---------------------
 Hamed Abedtash      Mustafa Ascha      Mark Beno            
@@ -76,6 +77,7 @@ Mui Van Zandt       Erica Voss         Kristin Waite
 Mike Warfe          Jamie Weaver       James Wiggins        
 Andrew Williams     Chan You Seng                           
 ------------------  -----------------  ---------------------
+\end{center}
 
 ## Software versions {-}
 
@@ -84,8 +86,10 @@ A large part of this book is about the open source software of OHDSI, and this s
 - ACHILLES: version 1.6.6
 - ATLAS: version 2.7.2
 - EUNOMIA: version 1.0.0
-- Methods Library packages:
+- Methods Library packages: see Table \@ref(tab:packageVersions)
 
+
+Table: (\#tab:packageVersions)Versions of packages in the Methods Library used in this book.
 
 Package                    Version 
 -------------------------  --------
