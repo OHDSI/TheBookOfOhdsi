@@ -9,21 +9,25 @@ The goal of the Research Network is to lower the barrier to performing large-sca
 Studies using observational data usually begin by developing cohorts of subjects to compare for determining some effect estimate.  During the development of these cohorts certain assumptions are made concerning the validity of the created cohorts, the most important of which is that the subjects in the cohorts have the characteristic that is the basis of the study.  For example, if the study involves subjects with myocardial infarction (MI) each of the subjects in the cohort must have had an MI.  Ideally, we would definitive evidence of the diagnosis of MI.  However, with observational data, we use subject records derived from limited data collected for a specific purpose.  In some cases, the data may be derived from data sets specifically collected from subjects with the health condition of interest such as disease registries.  While this is high quality data, it is usually a subset of all the subject’s data.  For example, the data for subjects with MI may include the interpretation of the electrocardiogram (ECG) and not the actual data from the ECG.  Subjects are included in these registries based on a clinical review of each subject’s health record.  In other cases, the data is derived from administrative datasets from insurance claims.  These data are usually much more limited than data from health registries but have the advantage of usually including a larger number of subjects from a broader population which may be more generalizable to the overall population.  In the case of administrative data, determination of the health claim for a subject is based on administrative codes for the health condition.  In the US, for example, these codes are from the International Classification of Diseases (ICD).  Regardless of the origin of the data, the validity of the health conditions based on this data need to be validated.
 An example of a typical epidemiological study is shown in the diagram below: \index{cohort} \index{myocardial infarction}
 
-<img src="images/ClinicalValidity/figure1.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure1} \end{center}
 
 In this example, we are comparing the rates of the occurrence of MI in one year in cohorts of subjects who initiated either Drug A or Drug B.  In this example, it is critical for the validity of the study to have valid measures of the rate of MI occurrence.  For studies where administrative data is used, the determination of MI is typically from the use of a phenotype algorithm (PA).  A PA is a heuristic-based set of rules used to determine the health condition with good precision.  These algorithms are often derived from prior research some of which may have been validated.  Examples of typical PAs for MI are illustrated below: \index{phenotype algorithm}
 
 1)	One or more occurrences of MI in the subject’s record
 
-<img src="images/ClinicalValidity/figure2.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure2} \end{center}
 
 2)	One occurrence of MI in the subject’s record followed by a second occurrence within 30 days
 
-<img src="images/ClinicalValidity/figure3.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure3} \end{center}
 
 3)	One or more occurrences of MI in the subject’s record from a hospital in-patient setting
 
-<img src="images/ClinicalValidity/figure4.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure4} \end{center}
 
 Once the PA for the study has been determined, the validity of the definition needs to be determined.  To determine the validity of the different algorithms, we need to examine several performance characteristics of the PA including:
 
@@ -94,7 +98,8 @@ As discussed previously an alternative approach currently being developed in the
 
 1)	Develop an extremely specific, xSpec, cohort to determine those with MI with a high probability.  For MI, we used an occurrence of MI with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days.  The following illustrates this PA for MI:   
 
-<img src="images/ClinicalValidity/figure5.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure5} \end{center}
 
 2)	Develop the diagnostic predictive model for MI
 
@@ -112,6 +117,7 @@ Using this process, Table 1 displays the performance characteristics for four PA
 
 Table 1: Performance Characteristics of Four Phenotype Algorithms using Diagnostic Condition Codes to Determine Myocardial Infarction on Multiple Datasets using PheValuator. The continuous 3-color heat map for the data in the table was defined as Red (value = 0), Yellow (value = 0.5), and Green (value = 1).
 
-<img src="images/ClinicalValidity/figure6.jpg" width="75%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.75\linewidth]{images/ClinicalValidity/figure6} \end{center}
 
 Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the phenotype; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database – Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater
