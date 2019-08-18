@@ -1,15 +1,15 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Science and Informatics"
-date: "2019-08-17"
+date: "2019-08-18"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
 - paperwidth=7in
 - margin=1in
-- inner=0.75in
-- outer=0.45in
-- top=0.7in
+- inner=1in
+- outer=0.65in
+- top=1.1in
 - bottom=0.65in
 mainfont: Times New Roman
 bibliography:
