@@ -587,9 +587,6 @@ WHERE LOWER(ingredient.concept_name) = 'ibuprofen'
 
 ## QueryLibrary
 
-[//]: # (TODO: update this section when QueryLibrary is finalized.)
-
-
 QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application [^queryLibraryUrl] shown in Figure \@ref(fig:queryLibrary), and as an R package[^queryLibraryPackageUrl]. 
 
 [^queryLibraryUrl]: http:/data.ohdsi.org/QueryLibrary
@@ -608,13 +605,13 @@ The QueryLibrary makes use of SqlRender to output the queries in the SQL dialect
 
 ### Problem definition
 
-Angioedema is a well-known side-effect of ACE inhibitors (ACEi). @slater_1988 estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender, thus answering the question
+Angioedema is a well-known side-effect of ACE inhibitors (ACEi). @slater_1988 estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisnopril. We thus answer the question
 
-> What is the rate of angioedema in the first week following ACEi treatment initiation, stratified by age and gender?
+> What is the rate of angioedema in the first week following lisnopril treatment initiation, stratified by age and gender?
 
 ### Exposure
 
-We'll define exposure as first exposure to a drug containing an ingredient in the ACEi class. By first we mean no earlier exposure to any ingredient in the class. We require 365 days of continuous observation time prior to the first exposure.
+We'll define exposure as first exposure to lisnopril. By first we mean no earlier exposure to lisnopril. We require 365 days of continuous observation time prior to the first exposure.
 
 ### Outcome
 
@@ -682,9 +679,7 @@ FROM (
   			ORDER BY drug_era_start_date
       ) order_nr
     FROM @cdm_db_schema.drug_era
-    WHERE drug_concept_id IN (1335471, 1340128, 1341927,
-      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
-      1342439) -- ACE inhibitors
+    WHERE drug_concept_id = 1308216 -- Lisinopril
   ) ordered_exposures
   WHERE order_nr = 1
 ) first_era
@@ -703,7 +698,7 @@ renderTranslateExecuteSql(conn, sql,
                           cdm_db_schema = cdmDbSchema)
 ```
 
-Here we use the DRUG_ERA table, a standard table in the CDM that is automatically derived from the DRUG_EXPOSURE table. The DRUG_ERA table contains eras of continuous exposure at the ingredient level. We can thus search for the ACEi ingredients, and this will automatically identify all exposures to drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.
+Here we use the DRUG_ERA table, a standard table in the CDM that is automatically derived from the DRUG_EXPOSURE table. The DRUG_ERA table contains eras of continuous exposure at the ingredient level. We can thus search for lisinopril, and this will automatically identify all exposures to drugs containing lisinopril. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.
 
 ### Outcome cohort
 
