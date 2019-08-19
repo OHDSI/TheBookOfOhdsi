@@ -64,38 +64,23 @@ Events of different nature are organized into Domains. These Events are stored i
 
 Table: (\#tab:domains) Number of standard concepts belonging to each domain.
 
-Concept Count|DOMAIN_ID
-----------------|--------------------------------
-1731378	|Drug
-477597	|Device
-257000	|Procedure
-163807	|Condition
-145898	|Observation
-89645	|Measurement
-33759	|Spec Anatomic Site
-17302	|Meas Value
-1799	|Specimen
-1215	|Provider Specialty
-1046	|Unit
-944	|Metadata
-538	|Revenue Code
-336	|Type Concept
-194	|Relationship
-183	|Route
-180	|Currency
-158	|Payer
-123	|Visit
-51	|Cost
-50	|Race
-13	|Plan Stop Reason
-11	|Plan
-6	|Episode
-6	|Sponsor
-5	|Meas Value Operator
-3	|Spec Disease Status
-2	|Gender
-2	|Ethnicity
-1	|Observation Type
+Concept Count|Domain ID|Concept Count|Domain ID
+:---------- |:---------------------------- |:---------- |:----------------------------
+1731378|Drug|183|Route
+477597|Device|180|Currency
+257000|Procedure|158|Payer
+163807|Condition|123|Visit
+145898|Observation|51|Cost
+89645|Measurement|50|Race
+33759|Spec Anatomic Site|13|Plan Stop Reason
+17302|Meas Value|11|Plan
+1799|Specimen|6|Episode
+1215|Provider Specialty|6|Sponsor
+1046|Unit|5|Meas Value Operator
+944|Metadata|3|Spec Disease Status
+538|Revenue Code|2|Gender
+336|Type Concept|2|Ethnicity
+194|Relationship|1|Observation Type
 
 ### Representation of content through Concepts 
 

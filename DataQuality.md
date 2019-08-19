@@ -192,14 +192,14 @@ heel <- fetchAchillesHeelResults(connectionDetails,
 
 head(heel)
 ```
-|ANALYSIS_ID|ACHILLES_HEEL_WARNING|RULE_ID|RECORD_COUNT|
-|:--:|:-------------------------------------- |:--:|:---|
-118|ERROR: 118-Number of observation periods with invalid PERSON_ID; count (n=2649) should not be > 0| 1| 2649|
-410|ERROR: 410-Number of condition occurrence records outside valid observation period; count (n=85) should not be > 0| 1| 85|
-413|ERROR: 413-Number of condition occurrence records with invalid visit_id; count (n=64717) should not be > 0| 1|64717|
-610|ERROR: 610-Number of procedure occurrence records outside valid observation period; count (n=15) should not be > 0| 1| 15|
-613|ERROR: 613-Number of procedure occurrence records with invalid visit_id; count (n=36819) should not be > 0| 1|36819|
-710|ERROR: 710-Number of drug exposure records outside valid observation period; count (n=80) should not be > 0| 1| 80|
+|ANALYSIS_ ID|ACHILLES_HEEL_WARNING|RECORD_ COUNT|
+|:-----:|:-------------------------------------- |:-----|
+118|ERROR: 118-Number of observation periods with invalid PERSON_ID; count (n=2649) should not be > 0| 2649|
+410|ERROR: 410-Number of condition occurrence records outside valid observation period; count (n=85) should not be > 0| 85|
+413|ERROR: 413-Number of condition occurrence records with invalid visit_id; count (n=64717) should not be > 0|64717|
+610|ERROR: 610-Number of procedure occurrence records outside valid observation period; count (n=15) should not be > 0| 15|
+613|ERROR: 613-Number of procedure occurrence records with invalid visit_id; count (n=36819) should not be > 0|36819|
+710|ERROR: 710-Number of drug exposure records outside valid observation period; count (n=80) should not be > 0| 80|
 
 In this case, ACHILLES Heel has revealed several serious errors that will need to be fixed. We can also view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
 

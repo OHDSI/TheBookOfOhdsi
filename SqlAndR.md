@@ -162,7 +162,7 @@ These SQL Server functions have been tested and were found to be translated corr
 Table: (\#tab:sqlFunctions) Functions supported by translate.
 
 |Function          |Function   |Function   |
-|:-----------------|:----------|:----------|
+|:----------------- ||:----------------- |:----------------- |
 |ABS               |EXP        |RAND       |
 |ACOS              |FLOOR      |RANK       |
 |ASIN              |GETDATE    |RIGHT      |
@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.l5buzp06children ;"
+## [1] "SELECT * FROM temp_schema.lbsx5qbvchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
