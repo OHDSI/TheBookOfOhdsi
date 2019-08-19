@@ -105,13 +105,13 @@ knitr::include_graphics("images/Cohorts/CohortPractice.png")
 
 You can build a cohort in the user interface of ATLAS or you can write a query directly against your OMOP CDM. We will briefly discuss both in this chapter.
 
-### Implementing a Cohort using ATLAS
+## Implementing a Cohort using ATLAS
 
-To begin in ATLAS, click on the ![](images/Cohorts/cohortdefinition.png) module. When the module loads, click on ![](images/Cohorts/newcohort.png).
+To begin in ATLAS, click on the ![](images/Cohorts/cohortdefinition.png) module. When the module loads, click on "New cohort".
 
 The next screen you will see will be an empty cohort definition. Figure \@ref(fig:ATLASdefineacohort) shows what you will see on your screen.
 
-```{r ATLASdefineacohort, fig.cap='New Cohort Definition',echo=FALSE, out.width='90%', fig.align='center'}
+```{r ATLASdefineacohort, fig.cap='New Cohort Definition',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-defineacohort.png")
 ```
 
@@ -121,38 +121,42 @@ Before you do anything else, you are encouraged to change the name of the cohort
 ATLAS will not allow two cohorts to have the same exact names. ATLAS will give you a pop-up error message if you choose a name already used by another ATLAS cohort.
 ```
 
-Once you have chosen a name, you can save the cohort by clicking ![](images/Cohorts/save.png). Now we can proceed with defining the initial cohort event. You will click to add to ![](images/Cohorts/initialevent.png). You now have to pick which domain you are building a criteria around. You may ask yourself, *how do I know which domain is the initial cohort event?* Let's figure that out.
+Once you have chosen a name, you can save the cohort by clicking ![](images/Cohorts/save.png). Now we can proceed with defining the initial cohort event. You will click "Add initial event". You now have to pick which domain you are building a criteria around. You may ask yourself, *how do I know which domain is the initial cohort event?* Let's figure that out.
 
-```{r ATLASinitialevent, fig.cap='Adding an Initial Event',echo=FALSE, out.width='90%', fig.align='center'}
+```{r ATLASinitialevent, fig.cap='Adding an Initial Event',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-initialevent.png")
 ```
 
-As we see in Figure \@ref(fig:ATLASinitialevent), ATLAS provides descriptions below each criteria to help you. If we were building a CONDITION_OCCURRENCE based criteria, our question would be looking for patients with a specific diagnosis. If we were building a DRUG_EXPOSURE based criteria, our question would be looking for patients with a specific drug or drug class. Since we want to find *patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension*, we want to choose a DRUG_EXPOSURE criteria. You may say, *but we also care about hypertension as a diagnosis*. You are correct. Hypertension is another criterion we will build. However, the cohort start date is defined by the initiation of the ACE inhibitor treatment, which is therefore the initial event. The diagnosis of hypertension is what we call an *additional qualifying criteria*. We will return to this once we build this criteria. We will click ![](images/Cohorts/drugexposure.png).
+As we see in Figure \@ref(fig:ATLASinitialevent), ATLAS provides descriptions below each criteria to help you. If we were building a CONDITION_OCCURRENCE based criteria, our question would be looking for patients with a specific diagnosis. If we were building a DRUG_EXPOSURE based criteria, our question would be looking for patients with a specific drug or drug class. Since we want to find *patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension*, we want to choose a DRUG_EXPOSURE criteria. You may say, *but we also care about hypertension as a diagnosis*. You are correct. Hypertension is another criterion we will build. However, the cohort start date is defined by the initiation of the ACE inhibitor treatment, which is therefore the initial event. The diagnosis of hypertension is what we call an *additional qualifying criteria*. We will return to this once we build this criteria. We will click "Add Drug Exposure".
 
 The screen will update with your selected criteria but you are not done yet. As we see in Figure \@ref(fig:ATLASdrugexposure), ATLAS does not know what drug we are looking for. We need to tell ATLAS which concept set is associated to *ACE inhibitors*.
-```{r ATLASdrugexposure, fig.cap='Defining a Drug Exposure',echo=FALSE, out.width='50%', fig.align='center'}
+```{r ATLASdrugexposure, fig.cap='Defining a Drug Exposure',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-drugexposure.png")
 ```
 
-You will need to click ![](images/Cohorts/downarrow.png) to open the dialogue box ![](images/Cohorts/importaconcept.png) which will allow you to retrieve a concept set to define *ACE Inhibitors*.
+You will need to click ![](images/Cohorts/downarrow.png) to open the dialogue box that will allow you to retrieve a concept set to define *ACE Inhibitors*.
 
-**Scenario 1: You have not built a concept set.** If you have not assembled your concept sets to retrieve to apply to your criteria, you will need to do so before you move forward. You may build a concept set within the cohort definition by navigating to the ![](images/Cohorts/nested-conceptset.png) tab and clicking ![](images/Cohorts/newconceptset.png). You will need to rename the concept set from ![](images/Cohorts/unnamed.png) to a name of your choosing. From there you can use the ![](images/Cohorts/search-2.png) module to look for clinical concepts that represent *ACE inhibitors* (Figure \@ref(fig:aceinhibitors).
+#### Scenario 1: You have not built a concept set {-} 
+
+If you have not assembled your concept sets to retrieve to apply to your criteria, you will need to do so before you move forward. You may build a concept set within the cohort definition by navigating to the "Concept set" tab and clicking "New Concept Set". You will need to rename the concept set from "Unnamed Concept Set" to a name of your choosing. From there you can use the ![](images/Cohorts/search-2.png) module to look for clinical concepts that represent *ACE inhibitors* (Figure \@ref(fig:aceinhibitors)).
 
 ```{r aceinhibitors, fig.cap='Searching the OMOP Vocabulary - ACE Inhibitors',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/aceinhibitors.png")
 ```
 
-When you have found terms that you would like to use to define this drug exposure, you can select the concept by clicking on ![](images/Cohorts/shoppingcart.png). You can return to your cohort definition by using the breadcrumbs at the top of right of the navigation window (e.g. ![](images/Cohorts/breadcrumbs.png)) and clicking ![](images/Cohorts/save.png). You can refer back to (see Chapter \@ref(StandardizedVocabularies)) on how to navigate the OMOP vocabularies to find clinical concepts of interest.
+When you have found terms that you would like to use to define this drug exposure, you can select the concept by clicking on ![](images/Cohorts/shoppingcart.png). You can return to your cohort definition by using the breadcrumbs at the top of right of the navigation window and clicking ![](images/Cohorts/save.png). You can refer back to (see Chapter \@ref(StandardizedVocabularies)) on how to navigate the OMOP vocabularies to find clinical concepts of interest.
 
-**Scenario 2: You have already built a concept set.** If you have already created a concept set and saved it in ATLAS, you can click to ![](images/Cohorts/importaconcept-2.png). A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS (Figure \@ref(fig:ATLASfindyourconcept)).
+#### Scenario 2: You have already built a concept set{-}
+
+If you have already created a concept set and saved it in ATLAS, you can click to "Import Concept Set". A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS (Figure \@ref(fig:ATLASfindyourconcept)).
 
 ```{r ATLASfindyourconcept, fig.cap='Importing a Concept Set from ATLAS Repository',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-findingyourconcept.png")
 ```
 
-In the above example, the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set *'ace inhibitors'* in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. *(Note: the dialogue box will disappear once you have selected a concept set.)*  You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected ![](images/Cohorts/concept-added.png).
+In the example in Figure \@ref(fig:ATLASfindyourconcept), the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set *"ace inhibitors"* in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. *(Note: the dialogue box will disappear once you have selected a concept set.)*  You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.
 
-Now that you've attached a concept set, you are not done **yet**. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the *first exposure* of ACE inhibitors in the patient's record. To specifiy this, you need to click ![](images/Cohorts/addattribute.png). You will want to select the ![](images/Cohorts/firstexposurecriteria.png). Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
+Now that you've attached a concept set, you are not done **yet**. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the *first exposure* of ACE inhibitors in the patient's record. To specifiy this, you need to click "+Add attribute". You will want to select the "Add first exposure criteria". Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
 
 From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (Figure \@ref(fig:atlasfirsttimeever)).
 
@@ -165,32 +169,32 @@ The current design of ATLAS may confuse some. Despite its apperance, the ![](ima
 
 ```
 
-Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a lookback window to know that you are looking at enough of the patient's history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the criteria. You can do this by adjusting the continuous observation drop downs ![](images/Cohorts/0.png). You could also click the box and type in a value to these windows. We will require 365 days of of continuous observation prior to the initial event. You will update your observation period to: *with continuous observation of ![](images/Cohorts/365.png) days before*. This lookback window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require ![](images/Cohorts/0.png) days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the ![](images/Cohorts/earliestevent.png) per person.
+Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a lookback window to know that you are looking at enough of the patient's history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the criteria. You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. We will require 365 days of of continuous observation prior to the initial event. You will update your observation period to: *with continuous observation of 365 days before*. This lookback window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require 0 days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the "earliest event" per person.
 
 
 To further explain how this logic comes together, you can think about assembling patient timelines.
 
-```{r EarliestEventExplained, fig.cap='Explaining Patient Eligibility by Criteria Applied',echo=FALSE, out.width='50%', fig.align='center'}
+```{r EarliestEventExplained, fig.cap='Explaining Patient Eligibility by Criteria Applied',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/EarliestEventExplained.png")
 ```
 
 In Figure \@ref(fig:EarliestEventExplained), each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first time occurrence. Logically, limiting to the initial event is redundant though it is helpful to maintain our explicit logic in every selection we make. When you are building your own cohorts, you may opt to engage the Researchers section of the [OHDSI Forum](http://forums.ohdsi.org) to get a second opinion on how to construct your cohort logic.
 
-Once we have specified a cohort entry event, you could proceed to one of two places to add your additional qualifying events: ![](images/Cohorts/restrict.png) and ![](images/Cohorts/newinclusion.png). The fundamental difference between these two options is what interim information you want ATLAS to serve back to you. If you add additional qualifying criteria into the Cohort Entry Event box by selecting ![](images/Cohorts/restrict.png), when you choose to generate a count in ATLAS, you will only get back the number of people who meet ALL of these criteria. If you opt to add criteria into the ![](images/Cohorts/newinclusion.png), you will get an attrition chart to show you how many patients are lost by applying additional inclusion criteria. It is highly encouraged to utilize the Inclusion Criteria section so you can understand the impact of each rule on the overall success of the cohort definition. You may find a certain inclusion criteria severely limits the number of people who end up in the cohort. You may choose to relax this criterion to get a larger cohort. This will ultimately be at the discretion of the expert consensus assembling this cohort.
+Once we have specified a cohort entry event, you could proceed to one of two places to add your additional qualifying events: "Restrict inital events" and "New inclusion criteria". The fundamental difference between these two options is what interim information you want ATLAS to serve back to you. If you add additional qualifying criteria into the Cohort Entry Event box by selecting "Restrict inital events", when you choose to generate a count in ATLAS, you will only get back the number of people who meet ALL of these criteria. If you opt to add criteria into the "New inclusion criteria", you will get an attrition chart to show you how many patients are lost by applying additional inclusion criteria. It is highly encouraged to utilize the Inclusion Criteria section so you can understand the impact of each rule on the overall success of the cohort definition. You may find a certain inclusion criteria severely limits the number of people who end up in the cohort. You may choose to relax this criterion to get a larger cohort. This will ultimately be at the discretion of the expert consensus assembling this cohort.
 
-You will now want to click ![](images/Cohorts/newinclusion.png) to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: *With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)*. You will click ![](images/Cohorts/newinclusion.png) to add a new criteria. You should name your criteria and, if desired, put a little description of what you are looking for. This is for your own purposes to recall what you build -- it will not impact the integrity of the cohort you are defining (see Figure \@ref(fig:addtldescription)).
+You will now want to click "New inclusion criteria" to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: *With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)*. You will click "New inclusion criteria" to add a new criteria. You should name your criteria and, if desired, put a little description of what you are looking for. This is for your own purposes to recall what you build -- it will not impact the integrity of the cohort you are defining (see Figure \@ref(fig:addtldescription)).
 
-```{r addtldescription, fig.cap='ria 1',echo=FALSE, out.width='50%', fig.align='center'}
+```{r addtldescription, fig.cap='ria 1',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/additional-description.png")
 ```
 
-Once you have annotated this new criteria, you will click on the ![](images/Cohorts/additionalcriteria.png) button to build your actual criteria for this rule. This button functions similar to the ![](images/Cohorts/initialevent.png) except we are no longer specifying an initial event. We could add multiple criteria to this -- which is why it specifies "add criteria to group". An example would be if you have multiple ways of finding a disease (e.g. logic for a CONDITION_OCCURRENCE, logic using a DRUG_EXPOSURE as a proxy for this condition, logic for using a MEASUREMENT as a proxy for this condition). These would be separate domains and require different criteria but can be grouped into one criteria looking for this condition. In this case, we want to find a diagnosis of hypertension so we ![](images/Cohorts/add-conditionoccurrence.png).  We will follow similar steps as we did with the initial event by attaching a concept set to this record. We also want to specify the event starts between 365 days before and 0 days after the index date (the occurrence of the first ACE inhibitor use). Now check your logic against Figure \@ref(fig:ATLASIC1).
+Once you have annotated this new criteria, you will click on the "+Add criteria to group" button to build your actual criteria for this rule. This button functions similar to the "Add Initial Event" except we are no longer specifying an initial event. We could add multiple criteria to this -- which is why it specifies "add criteria to group". An example would be if you have multiple ways of finding a disease (e.g. logic for a CONDITION_OCCURRENCE, logic using a DRUG_EXPOSURE as a proxy for this condition, logic for using a MEASUREMENT as a proxy for this condition). These would be separate domains and require different criteria but can be grouped into one criteria looking for this condition. In this case, we want to find a diagnosis of hypertension so we "Add condition occurrence".  We will follow similar steps as we did with the initial event by attaching a concept set to this record. We also want to specify the event starts between 365 days before and 0 days after the index date (the occurrence of the first ACE inhibitor use). Now check your logic against Figure \@ref(fig:ATLASIC1).
 
 ```{r ATLASIC1, fig.cap='Additional Inclusion Criteria 1',echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-IC1.png")
 ```
 
-You will then want to add another criterion to look for patients: *with exactly 0 occurrences of hypertension drugs ALL days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)*. This process begins as we did before by clicking  the ![](images/Cohorts/newinclusion.png) button, adding your annotations to this criterion and then clicking ![](images/Cohorts/additionalcriteria.png). This is a DRUG_EXPOSURE so you will click ![](images/Cohorts/add-drugexposure.png), attach a concept set for hypertensive drugs, and will specify ALL days before and 0 days after the index date. Make sure to confirm you have *exactly 0* occurrence selected. Now check your logic against Figure \@ref(fig:ATLASIC2).
+You will then want to add another criterion to look for patients: *with exactly 0 occurrences of hypertension drugs ALL days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)*. This process begins as we did before by clicking  the "New inclusion criteria" button, adding your annotations to this criterion and then clicking "+Add criteria to group". This is a DRUG_EXPOSURE so you will click "Add Drug Exposure", attach a concept set for hypertensive drugs, and will specify ALL days before and 0 days after the index date. Make sure to confirm you have *exactly 0* occurrence selected. Now check your logic against Figure \@ref(fig:ATLASIC2).
 
 ```{r ATLASIC2, fig.cap='Additional Inclusion Criteria 2',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-IC2.png")
@@ -198,7 +202,7 @@ knitr::include_graphics("images/Cohorts/ATLAS-IC2.png")
 
 You may be confused why "having no occurrences" is coded as "exactly 0 occurrences." This is a nuance of how ATLAS consumes knowledge. ATLAS only consumes inclusion criteria. You must use logical operators to indicate when you want the absence of a specific attribute such as: "Exactly 0." Over time you will become more familiar with the logical operators available in ATLAS criteria.
 
-Lastly, you will want to add your another criterion to look for patients: *with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)* . This process begins as we did before by clicking  the ![](images/Cohorts/newinclusion.png) button, adding your annotations to this criterion and then clicking ![](images/Cohorts/additionalcriteria.png). This is a DRUG_EXPOSURE so you will click ![](images/Cohorts/add-drugexposure.png), attach a concept set for hypertensive drugs, and will specify 0 days before and 7 days after the index date. Now check your logic against Figure \@ref(fig:ATLASIC3).
+Lastly, you will want to add your another criterion to look for patients: *with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)* . This process begins as we did before by clicking  the "New inclusion criteria" button, adding your annotations to this criterion and then clicking "+Add criteria to group". This is a DRUG_EXPOSURE so you will click "Add Drug Exposure", attach a concept set for hypertensive drugs, and will specify 0 days before and 7 days after the index date. Now check your logic against Figure \@ref(fig:ATLASIC3).
 
 ```{r ATLASIC3, fig.cap='Additional Inclusion Criteria 3',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-IC3.png")
@@ -208,13 +212,13 @@ You have now added all of your qualifying inclusion criteria. You must now speci
 
 **Why are gaps allowed?** In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can cover a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patiet may logically still have access to the initial drug exposure because the unit of dispense exceeded one day.
 
-We can configure this by selecting the Event will persist ![](images/Cohorts/endofDE.png)/ We then will add our persistence window to ![](images/Cohorts/PEwindow.png)and append the concept set for ![](images/Cohorts/concept-added.png). Now check your logic against Figure \@ref(fig:ATLAScohortexit).
+We can configure this by selecting the Event will persist "end of a continuous drug exposure". We then will add our persistence window to "allow for a maximum of 30 days" and append the concept set for "ACE inhibitors". Now check your logic against Figure \@ref(fig:ATLAScohortexit).
 
-```{r ATLAScohortexit, fig.cap='Cohort Exit Criteria',echo=FALSE, out.width='80%', fig.align='center'}
+```{r ATLAScohortexit, fig.cap='Cohort Exit Criteria',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/cohort-exit.png")
 ```
 
-In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Make sure to hit the ![](images/Cohorts/save.png) button. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the ![](images/Cohorts/export.png) tab to share your cohort definiton to other collaborators in the form of ![](images/Cohorts/SQL.png) code or ![](images/Cohorts/json.png) files to load into ATLAS.
+In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Make sure to hit the ![](images/Cohorts/save.png) button. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the "Export" tab to share your cohort definiton to other collaborators in the form of SQL code or JSON files to load into ATLAS.
 
 ## Implementing the cohort using SQL
 
@@ -278,7 +282,10 @@ INNER JOIN @cdm_db_schema.concept_ancestor
 WHERE ancestor_concept_id IN (@ace_i)
 GROUP BY person_id;"
 
-renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, ace_i = aceI)
+renderTranslateExecuteSql(conn, 
+                          sql, 
+                          cdm_db_schema = cdmDbSchema, 
+                          ace_i = aceI)
 ```
 
 Note that we join the DRUG_EXPOSURE table to the CONCEPT_ANCESTOR table to find all drugs that contain an ACE inhbitor.
@@ -318,7 +325,10 @@ INNER JOIN @cdm_db_schema.concept_ancestor
   ON descendant_concept_id = condition_concept_id
 WHERE ancestor_concept_id = @hypertension;"
 
-renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, hypertension = hypertension)
+renderTranslateExecuteSql(conn, 
+                          sql, 
+                          cdm_db_schema = cdmDbSchema, 
+                          hypertension = hypertension)
 ```
 
 Note that we `SELECT DISTINCT`, becuase else if a person has multiple hypertension diagnoses in their past, we would create duplicate cohort entries.
@@ -343,7 +353,10 @@ LEFT JOIN (
     AND drug_exposure_start_date < cohort_start_date
 WHERE person_id IS NULL;"
 
-renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, all_ht_drugs = allHtDrugs)
+renderTranslateExecuteSql(conn, 
+                          sql, 
+                          cdm_db_schema = cdmDbSchema, 
+                          all_ht_drugs = allHtDrugs)
 ```
 
 Note that we use a left join, and only allow rows where the person_id, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.
@@ -368,7 +381,10 @@ GROUP BY subject_id,
   cohort_start_date
 HAVING COUNT(*) = 1;"
 
-renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, all_ht_drugs = allHtDrugs)
+renderTranslateExecuteSql(conn, 
+                          sql, 
+                          cdm_db_schema = cdmDbSchema, 
+                          all_ht_drugs = allHtDrugs)
 ```
 
 ### Cohort exit
@@ -386,7 +402,10 @@ sql <- "
   INNER JOIN @cdm_db_schema.concept_ancestor
     ON descendant_concept_id = drug_concept_id
   WHERE ancestor_concept_id IN (@ace_i);"
-renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, ace_i = aceI)
+renderTranslateExecuteSql(conn,
+                          sql, 
+                          cdm_db_schema = cdmDbSchema, 
+                          ace_i = aceI)
 ```
 
 
@@ -457,7 +476,10 @@ GROUP BY ends.person_id,
   concept_id,
   ends.era_end_date;"
 
-renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema,max_gap = 30)
+renderTranslateExecuteSql(conn,
+                          sql, 
+                          cdm_db_schema = cdmDbSchema,
+                          max_gap = 30)
 ```
 
 The most important part of this SQL is that we first define a set of exposures, the code turns these into eras, and writes them to a temp table called `#exposure_era`.
@@ -475,7 +497,10 @@ INNER JOIN #exposure_era ee
   ON mt.subject_id = ee.subject_id
     AND mt.cohort_start_date = ee.cohort_start_date;"
 
-renderTranslateExecuteSql(conn, sql, cohort_db_schema = cohortDbSchema, cohort_table = cohortTable)
+renderTranslateExecuteSql(conn, 
+                          sql, 
+                          cohort_db_schema = cohortDbSchema, 
+                          cohort_table = cohortTable)
 ```
 
 Here we store the final cohort in schema and table we defined earlier. We assign it a cohort definition ID of 1, to distinguish it from other cohorts we may wish to store in the same table.
