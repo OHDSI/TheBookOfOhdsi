@@ -602,15 +602,16 @@ Now we can tell [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPre
 
 
 ```r
-covSettings <- createCovariateSettings(useDemographicsGender = TRUE,
-                                       useDemographicsAge = TRUE,
-                                       useConditionGroupEraLongTerm = TRUE,
-                                       useConditionGroupEraAnyTimePrior = TRUE,
-                                       useDrugGroupEraLongTerm = TRUE,
-                                       useDrugGroupEraAnyTimePrior = TRUE,
-                                       useVisitConceptCountLongTerm = TRUE,
-                                       longTermStartDays = -365,
-                                       endDays = -1)
+covariateSettings <-
+  createCovariateSettings(useDemographicsGender = TRUE,
+                          useDemographicsAge = TRUE,
+                          useConditionGroupEraLongTerm = TRUE,
+                          useConditionGroupEraAnyTimePrior = TRUE,
+                          useDrugGroupEraLongTerm = TRUE,
+                          useDrugGroupEraAnyTimePrior = TRUE,
+                          useVisitConceptCountLongTerm = TRUE,
+                          longTermStartDays = -365,
+                          endDays = -1)
 ```
 
 The final step for extracting the data is to run the `getPlpData` function and input the connection details, the database schema where the cohorts are stored, the cohort definition IDs for the cohort and outcome, and the washout period which is the minimum number of days prior to cohort index date that the person must have been observed to be included into the data, and finally input the previously constructed covariate settings.
