@@ -863,7 +863,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="SqlAndR.html#cb28-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb28-2"><a href="SqlAndR.html#cb28-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.womp4scmchildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.jbn9ndd8children ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -1224,14 +1224,14 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 <h2><span class="header-section-number">10.6</span> Designing a simple study</h2>
 <div id="problem-definition" class="section level3">
 <h3><span class="header-section-number">10.6.1</span> Problem definition</h3>
-<p>Angioedema is a well-known side-effect of ACE inhibitors (ACEi). <span class="citation">Slater et al. (<a href="#ref-slater_1988" role="doc-biblioref">1988</a>)</span> estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender, thus answering the question</p>
+<p>Angioedema is a well-known side-effect of ACE inhibitors (ACEi). <span class="citation">Slater et al. (<a href="#ref-slater_1988" role="doc-biblioref">1988</a>)</span> estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisnopril. We thus answer the question</p>
 <blockquote>
-<p>What is the rate of angioedema in the first week following ACEi treatment initiation, stratified by age and gender?</p>
+<p>What is the rate of angioedema in the first week following lisnopril treatment initiation, stratified by age and gender?</p>
 </blockquote>
 </div>
 <div id="exposure" class="section level3">
 <h3><span class="header-section-number">10.6.2</span> Exposure</h3>
-<p>We’ll define exposure as first exposure to a drug containing an ingredient in the ACEi class. By first we mean no earlier exposure to any ingredient in the class. We require 365 days of continuous observation time prior to the first exposure.</p>
+<p>We’ll define exposure as first exposure to lisnopril. By first we mean no earlier exposure to lisnopril. We require 365 days of continuous observation time prior to the first exposure.</p>
 </div>
 <div id="outcome" class="section level3">
 <h3><span class="header-section-number">10.6.3</span> Outcome</h3>
@@ -1281,42 +1281,36 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 <span id="cb61-10"><a href="SqlAndR.html#cb61-10"></a><span class="st">  cohort_end_date,</span></span>
 <span id="cb61-11"><a href="SqlAndR.html#cb61-11"></a><span class="st">  subject_id</span></span>
 <span id="cb61-12"><a href="SqlAndR.html#cb61-12"></a><span class="st">FROM (</span></span>
-<span id="cb61-13"><a href="SqlAndR.html#cb61-13"></a><span class="st">  SELECT drug_exposure_start_date AS cohort_start_date,</span></span>
-<span id="cb61-14"><a href="SqlAndR.html#cb61-14"></a><span class="st">    COALESCE(drug_exposure_end_date,</span></span>
-<span id="cb61-15"><a href="SqlAndR.html#cb61-15"></a><span class="st">             DATEADD(DAY, 1, drug_exposure_start_date)</span></span>
-<span id="cb61-16"><a href="SqlAndR.html#cb61-16"></a><span class="st">    ) AS cohort_end_date,</span></span>
-<span id="cb61-17"><a href="SqlAndR.html#cb61-17"></a><span class="st">    person_id AS subject_id</span></span>
-<span id="cb61-18"><a href="SqlAndR.html#cb61-18"></a><span class="st">  FROM (</span></span>
-<span id="cb61-19"><a href="SqlAndR.html#cb61-19"></a><span class="st">    SELECT drug_exposure_start_date,</span></span>
-<span id="cb61-20"><a href="SqlAndR.html#cb61-20"></a><span class="st">      drug_exposure_end_date,</span></span>
-<span id="cb61-21"><a href="SqlAndR.html#cb61-21"></a><span class="st">      person_id,</span></span>
-<span id="cb61-22"><a href="SqlAndR.html#cb61-22"></a><span class="st">      ROW_NUMBER() OVER (</span></span>
-<span id="cb61-23"><a href="SqlAndR.html#cb61-23"></a><span class="st">        PARTITION BY person_id</span></span>
-<span id="cb61-24"><a href="SqlAndR.html#cb61-24"></a><span class="st">            ORDER BY drug_exposure_start_date</span></span>
-<span id="cb61-25"><a href="SqlAndR.html#cb61-25"></a><span class="st">      ) order_nr</span></span>
-<span id="cb61-26"><a href="SqlAndR.html#cb61-26"></a><span class="st">    FROM @cdm_db_schema.drug_exposure</span></span>
-<span id="cb61-27"><a href="SqlAndR.html#cb61-27"></a><span class="st">    INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
-<span id="cb61-28"><a href="SqlAndR.html#cb61-28"></a><span class="st">      ON drug_concept_id = descendant_concept_id</span></span>
-<span id="cb61-29"><a href="SqlAndR.html#cb61-29"></a><span class="st">    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,</span></span>
-<span id="cb61-30"><a href="SqlAndR.html#cb61-30"></a><span class="st">      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,</span></span>
-<span id="cb61-31"><a href="SqlAndR.html#cb61-31"></a><span class="st">      1342439) -- ACE inhibitors</span></span>
-<span id="cb61-32"><a href="SqlAndR.html#cb61-32"></a><span class="st">  ) ordered_exposures</span></span>
-<span id="cb61-33"><a href="SqlAndR.html#cb61-33"></a><span class="st">  WHERE order_nr = 1</span></span>
-<span id="cb61-34"><a href="SqlAndR.html#cb61-34"></a><span class="st">) first_exposure</span></span>
-<span id="cb61-35"><a href="SqlAndR.html#cb61-35"></a><span class="st">INNER JOIN @cdm_db_schema.observation_period</span></span>
-<span id="cb61-36"><a href="SqlAndR.html#cb61-36"></a><span class="st">  ON subject_id = person_id</span></span>
-<span id="cb61-37"><a href="SqlAndR.html#cb61-37"></a><span class="st">    AND observation_period_start_date &lt; cohort_start_date</span></span>
-<span id="cb61-38"><a href="SqlAndR.html#cb61-38"></a><span class="st">    AND observation_period_end_date &gt; cohort_start_date</span></span>
-<span id="cb61-39"><a href="SqlAndR.html#cb61-39"></a><span class="st">WHERE DATEDIFF(DAY,</span></span>
-<span id="cb61-40"><a href="SqlAndR.html#cb61-40"></a><span class="st">               observation_period_start_date,</span></span>
-<span id="cb61-41"><a href="SqlAndR.html#cb61-41"></a><span class="st">               cohort_start_date) &gt;= 365;</span></span>
-<span id="cb61-42"><a href="SqlAndR.html#cb61-42"></a><span class="st">&quot;</span></span>
-<span id="cb61-43"><a href="SqlAndR.html#cb61-43"></a></span>
-<span id="cb61-44"><a href="SqlAndR.html#cb61-44"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
-<span id="cb61-45"><a href="SqlAndR.html#cb61-45"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
-<span id="cb61-46"><a href="SqlAndR.html#cb61-46"></a>                          <span class="dt">cohort_table =</span> cohortTable,</span>
-<span id="cb61-47"><a href="SqlAndR.html#cb61-47"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema)</span></code></pre></div>
-<p>Here we use the DRUG_EXPOSURE table, and join it to the CONCEPT_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e. all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.</p>
+<span id="cb61-13"><a href="SqlAndR.html#cb61-13"></a><span class="st">  SELECT drug_era_start_date AS cohort_start_date,</span></span>
+<span id="cb61-14"><a href="SqlAndR.html#cb61-14"></a><span class="st">    drug_era_end_date AS cohort_end_date,</span></span>
+<span id="cb61-15"><a href="SqlAndR.html#cb61-15"></a><span class="st">    person_id AS subject_id</span></span>
+<span id="cb61-16"><a href="SqlAndR.html#cb61-16"></a><span class="st">  FROM (</span></span>
+<span id="cb61-17"><a href="SqlAndR.html#cb61-17"></a><span class="st">    SELECT drug_era_start_date,</span></span>
+<span id="cb61-18"><a href="SqlAndR.html#cb61-18"></a><span class="st">      drug_era_end_date,</span></span>
+<span id="cb61-19"><a href="SqlAndR.html#cb61-19"></a><span class="st">      person_id,</span></span>
+<span id="cb61-20"><a href="SqlAndR.html#cb61-20"></a><span class="st">      ROW_NUMBER() OVER (</span></span>
+<span id="cb61-21"><a href="SqlAndR.html#cb61-21"></a><span class="st">        PARTITION BY person_id</span></span>
+<span id="cb61-22"><a href="SqlAndR.html#cb61-22"></a><span class="st">            ORDER BY drug_era_start_date</span></span>
+<span id="cb61-23"><a href="SqlAndR.html#cb61-23"></a><span class="st">      ) order_nr</span></span>
+<span id="cb61-24"><a href="SqlAndR.html#cb61-24"></a><span class="st">    FROM @cdm_db_schema.drug_era</span></span>
+<span id="cb61-25"><a href="SqlAndR.html#cb61-25"></a><span class="st">    WHERE drug_concept_id = 1308216 -- Lisinopril</span></span>
+<span id="cb61-26"><a href="SqlAndR.html#cb61-26"></a><span class="st">  ) ordered_exposures</span></span>
+<span id="cb61-27"><a href="SqlAndR.html#cb61-27"></a><span class="st">  WHERE order_nr = 1</span></span>
+<span id="cb61-28"><a href="SqlAndR.html#cb61-28"></a><span class="st">) first_era</span></span>
+<span id="cb61-29"><a href="SqlAndR.html#cb61-29"></a><span class="st">INNER JOIN @cdm_db_schema.observation_period</span></span>
+<span id="cb61-30"><a href="SqlAndR.html#cb61-30"></a><span class="st">  ON subject_id = person_id</span></span>
+<span id="cb61-31"><a href="SqlAndR.html#cb61-31"></a><span class="st">    AND observation_period_start_date &lt; cohort_start_date</span></span>
+<span id="cb61-32"><a href="SqlAndR.html#cb61-32"></a><span class="st">    AND observation_period_end_date &gt; cohort_start_date</span></span>
+<span id="cb61-33"><a href="SqlAndR.html#cb61-33"></a><span class="st">WHERE DATEDIFF(DAY,</span></span>
+<span id="cb61-34"><a href="SqlAndR.html#cb61-34"></a><span class="st">               observation_period_start_date,</span></span>
+<span id="cb61-35"><a href="SqlAndR.html#cb61-35"></a><span class="st">               cohort_start_date) &gt;= 365;</span></span>
+<span id="cb61-36"><a href="SqlAndR.html#cb61-36"></a><span class="st">&quot;</span></span>
+<span id="cb61-37"><a href="SqlAndR.html#cb61-37"></a></span>
+<span id="cb61-38"><a href="SqlAndR.html#cb61-38"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql,</span>
+<span id="cb61-39"><a href="SqlAndR.html#cb61-39"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
+<span id="cb61-40"><a href="SqlAndR.html#cb61-40"></a>                          <span class="dt">cohort_table =</span> cohortTable,</span>
+<span id="cb61-41"><a href="SqlAndR.html#cb61-41"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema)</span></code></pre></div>
+<p>Here we use the DRUG_ERA table, a standard table in the CDM that is automatically derived from the DRUG_EXPOSURE table. The DRUG_ERA table contains eras of continuous exposure at the ingredient level. We can thus search for lisinopril, and this will automatically identify all exposures to drugs containing lisinopril. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.</p>
 </div>
 <div id="outcome-cohort" class="section level3">
 <h3><span class="header-section-number">10.7.2</span> Outcome cohort</h3>

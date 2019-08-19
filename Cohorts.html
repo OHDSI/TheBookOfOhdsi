@@ -846,16 +846,18 @@ Figure 11.15: Cohort Exit Criteria
 <div id="finding-first-use" class="section level3">
 <h3><span class="header-section-number">11.5.3</span> Finding first use</h3>
 <p>We will first find first use of ACE inhibitors for each patient:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="Cohorts.html#cb70-1"></a>sql &lt;-<span class="st"> &quot;SELECT person_id AS subject_id,</span></span>
-<span id="cb70-2"><a href="Cohorts.html#cb70-2"></a><span class="st">  MIN(drug_exposure_start_date) AS cohort_start_date</span></span>
-<span id="cb70-3"><a href="Cohorts.html#cb70-3"></a><span class="st">INTO #first_use</span></span>
-<span id="cb70-4"><a href="Cohorts.html#cb70-4"></a><span class="st">FROM @cdm_db_schema.drug_exposure</span></span>
-<span id="cb70-5"><a href="Cohorts.html#cb70-5"></a><span class="st">INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
-<span id="cb70-6"><a href="Cohorts.html#cb70-6"></a><span class="st">  ON descendant_concept_id = drug_concept_id</span></span>
-<span id="cb70-7"><a href="Cohorts.html#cb70-7"></a><span class="st">WHERE ancestor_concept_id IN (@ace_i)</span></span>
-<span id="cb70-8"><a href="Cohorts.html#cb70-8"></a><span class="st">GROUP BY person_id;&quot;</span></span>
-<span id="cb70-9"><a href="Cohorts.html#cb70-9"></a></span>
-<span id="cb70-10"><a href="Cohorts.html#cb70-10"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cdm_db_schema =</span> cdmDbSchema, <span class="dt">ace_i =</span> aceI)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="Cohorts.html#cb70-1"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(connectionDetails)</span>
+<span id="cb70-2"><a href="Cohorts.html#cb70-2"></a></span>
+<span id="cb70-3"><a href="Cohorts.html#cb70-3"></a>sql &lt;-<span class="st"> &quot;SELECT person_id AS subject_id,</span></span>
+<span id="cb70-4"><a href="Cohorts.html#cb70-4"></a><span class="st">  MIN(drug_exposure_start_date) AS cohort_start_date</span></span>
+<span id="cb70-5"><a href="Cohorts.html#cb70-5"></a><span class="st">INTO #first_use</span></span>
+<span id="cb70-6"><a href="Cohorts.html#cb70-6"></a><span class="st">FROM @cdm_db_schema.drug_exposure</span></span>
+<span id="cb70-7"><a href="Cohorts.html#cb70-7"></a><span class="st">INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
+<span id="cb70-8"><a href="Cohorts.html#cb70-8"></a><span class="st">  ON descendant_concept_id = drug_concept_id</span></span>
+<span id="cb70-9"><a href="Cohorts.html#cb70-9"></a><span class="st">WHERE ancestor_concept_id IN (@ace_i)</span></span>
+<span id="cb70-10"><a href="Cohorts.html#cb70-10"></a><span class="st">GROUP BY person_id;&quot;</span></span>
+<span id="cb70-11"><a href="Cohorts.html#cb70-11"></a></span>
+<span id="cb70-12"><a href="Cohorts.html#cb70-12"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cdm_db_schema =</span> cdmDbSchema, <span class="dt">ace_i =</span> aceI)</span></code></pre></div>
 <p>Note that we join the DRUG_EXPOSURE table to the CONCEPT_ANCESTOR table to find all drugs that contain an ACE inhbitor.</p>
 </div>
 <div id="require-365-days-of-prior-observation" class="section level3">
@@ -935,121 +937,123 @@ Figure 11.15: Cohort Exit Criteria
 <div id="cohort-exit" class="section level3">
 <h3><span class="header-section-number">11.5.8</span> Cohort exit</h3>
 <p>We have now fully specified our cohort except the cohort end date. The cohort is defined to end when the exposure stops, allowing for a maximum 30-day gap between subsequent exposures. This means we need to not only consider the first drug exposure, but also subsequent drug exposures to ACE inhibitors. The SQL for combining subsequent exposures into eras can be highly complex. Luckily, standard code has been defined that can efficiently create eras. (This code was written by Chris Knoll, and is often referred to within OHDSI as ‘the magic’).</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="Cohorts.html#cb75-1"></a>sql &lt;-<span class="st"> &quot;WITH exposure AS (</span></span>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="Cohorts.html#cb75-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
 <span id="cb75-2"><a href="Cohorts.html#cb75-2"></a><span class="st">  SELECT person_id,</span></span>
 <span id="cb75-3"><a href="Cohorts.html#cb75-3"></a><span class="st">    CAST(1 AS INT) AS concept_id,</span></span>
 <span id="cb75-4"><a href="Cohorts.html#cb75-4"></a><span class="st">    drug_exposure_start_date AS exposure_start_date,</span></span>
 <span id="cb75-5"><a href="Cohorts.html#cb75-5"></a><span class="st">    drug_exposure_end_date AS exposure_end_date</span></span>
-<span id="cb75-6"><a href="Cohorts.html#cb75-6"></a><span class="st">  FROM @cdm_db_schema.drug_exposure</span></span>
-<span id="cb75-7"><a href="Cohorts.html#cb75-7"></a><span class="st">  INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
-<span id="cb75-8"><a href="Cohorts.html#cb75-8"></a><span class="st">    ON descendant_concept_id = drug_concept_id</span></span>
-<span id="cb75-9"><a href="Cohorts.html#cb75-9"></a><span class="st">  WHERE ancestor_concept_id IN (@ace_i)</span></span>
-<span id="cb75-10"><a href="Cohorts.html#cb75-10"></a><span class="st">)</span></span>
-<span id="cb75-11"><a href="Cohorts.html#cb75-11"></a><span class="st">SELECT ends.person_id AS subject_id,</span></span>
-<span id="cb75-12"><a href="Cohorts.html#cb75-12"></a><span class="st">    ends.concept_id AS cohort_definition_id,</span></span>
-<span id="cb75-13"><a href="Cohorts.html#cb75-13"></a><span class="st">  MIN(exposure_start_date) AS cohort_start_date,</span></span>
-<span id="cb75-14"><a href="Cohorts.html#cb75-14"></a><span class="st">  ends.era_end_date AS cohort_end_date</span></span>
-<span id="cb75-15"><a href="Cohorts.html#cb75-15"></a><span class="st">INTO #exposure_era</span></span>
-<span id="cb75-16"><a href="Cohorts.html#cb75-16"></a><span class="st">FROM (</span></span>
-<span id="cb75-17"><a href="Cohorts.html#cb75-17"></a><span class="st">  SELECT exposure.person_id,</span></span>
-<span id="cb75-18"><a href="Cohorts.html#cb75-18"></a><span class="st">    exposure.concept_id,</span></span>
-<span id="cb75-19"><a href="Cohorts.html#cb75-19"></a><span class="st">    exposure.exposure_start_date,</span></span>
-<span id="cb75-20"><a href="Cohorts.html#cb75-20"></a><span class="st">    MIN(events.end_date) AS era_end_date</span></span>
-<span id="cb75-21"><a href="Cohorts.html#cb75-21"></a><span class="st">  FROM  exposure</span></span>
-<span id="cb75-22"><a href="Cohorts.html#cb75-22"></a><span class="st">  JOIN (</span></span>
-<span id="cb75-23"><a href="Cohorts.html#cb75-23"></a><span class="st">--cteEndDates</span></span>
-<span id="cb75-24"><a href="Cohorts.html#cb75-24"></a><span class="st">    SELECT person_id,</span></span>
-<span id="cb75-25"><a href="Cohorts.html#cb75-25"></a><span class="st">      concept_id,</span></span>
-<span id="cb75-26"><a href="Cohorts.html#cb75-26"></a><span class="st">      DATEADD(DAY, - 1 * @max_gap, event_date) AS end_date</span></span>
-<span id="cb75-27"><a href="Cohorts.html#cb75-27"></a><span class="st">    FROM (</span></span>
-<span id="cb75-28"><a href="Cohorts.html#cb75-28"></a><span class="st">      SELECT person_id,</span></span>
-<span id="cb75-29"><a href="Cohorts.html#cb75-29"></a><span class="st">        concept_id,</span></span>
-<span id="cb75-30"><a href="Cohorts.html#cb75-30"></a><span class="st">        event_date,</span></span>
-<span id="cb75-31"><a href="Cohorts.html#cb75-31"></a><span class="st">        event_type,</span></span>
-<span id="cb75-32"><a href="Cohorts.html#cb75-32"></a><span class="st">        MAX(start_ordinal) OVER (</span></span>
-<span id="cb75-33"><a href="Cohorts.html#cb75-33"></a><span class="st">          PARTITION BY person_id ,concept_id ORDER BY event_date,</span></span>
-<span id="cb75-34"><a href="Cohorts.html#cb75-34"></a><span class="st">              event_type ROWS UNBOUNDED PRECEDING</span></span>
-<span id="cb75-35"><a href="Cohorts.html#cb75-35"></a><span class="st">          ) AS start_ordinal,</span></span>
-<span id="cb75-36"><a href="Cohorts.html#cb75-36"></a><span class="st">        ROW_NUMBER() OVER (</span></span>
-<span id="cb75-37"><a href="Cohorts.html#cb75-37"></a><span class="st">          PARTITION BY person_id, concept_id ORDER BY event_date,</span></span>
-<span id="cb75-38"><a href="Cohorts.html#cb75-38"></a><span class="st">            event_type</span></span>
-<span id="cb75-39"><a href="Cohorts.html#cb75-39"></a><span class="st">          ) AS overall_ord</span></span>
-<span id="cb75-40"><a href="Cohorts.html#cb75-40"></a><span class="st">      FROM (</span></span>
-<span id="cb75-41"><a href="Cohorts.html#cb75-41"></a><span class="st">-- select the start dates, assigning a row number to each</span></span>
-<span id="cb75-42"><a href="Cohorts.html#cb75-42"></a><span class="st">        SELECT person_id,</span></span>
-<span id="cb75-43"><a href="Cohorts.html#cb75-43"></a><span class="st">          concept_id,</span></span>
-<span id="cb75-44"><a href="Cohorts.html#cb75-44"></a><span class="st">          exposure_start_date AS event_date,</span></span>
-<span id="cb75-45"><a href="Cohorts.html#cb75-45"></a><span class="st">          0 AS event_type,</span></span>
-<span id="cb75-46"><a href="Cohorts.html#cb75-46"></a><span class="st">          ROW_NUMBER() OVER (</span></span>
-<span id="cb75-47"><a href="Cohorts.html#cb75-47"></a><span class="st">            PARTITION BY person_id, concept_id ORDER BY exposure_start_date</span></span>
-<span id="cb75-48"><a href="Cohorts.html#cb75-48"></a><span class="st">            ) AS start_ordinal</span></span>
-<span id="cb75-49"><a href="Cohorts.html#cb75-49"></a><span class="st">        FROM exposure</span></span>
-<span id="cb75-50"><a href="Cohorts.html#cb75-50"></a></span>
-<span id="cb75-51"><a href="Cohorts.html#cb75-51"></a><span class="st">        UNION ALL</span></span>
-<span id="cb75-52"><a href="Cohorts.html#cb75-52"></a><span class="st">-- add the end dates with NULL as the row number, padding the end dates by</span></span>
-<span id="cb75-53"><a href="Cohorts.html#cb75-53"></a><span class="st">-- @max_gap to allow a grace period for overlapping ranges.</span></span>
-<span id="cb75-54"><a href="Cohorts.html#cb75-54"></a></span>
-<span id="cb75-55"><a href="Cohorts.html#cb75-55"></a><span class="st">        SELECT person_id,</span></span>
-<span id="cb75-56"><a href="Cohorts.html#cb75-56"></a><span class="st">          concept_id,</span></span>
-<span id="cb75-57"><a href="Cohorts.html#cb75-57"></a><span class="st">          DATEADD(day, @max_gap, exposure_end_date),</span></span>
-<span id="cb75-58"><a href="Cohorts.html#cb75-58"></a><span class="st">          1 AS event_type,</span></span>
-<span id="cb75-59"><a href="Cohorts.html#cb75-59"></a><span class="st">          NULL</span></span>
-<span id="cb75-60"><a href="Cohorts.html#cb75-60"></a><span class="st">        FROM exposure</span></span>
-<span id="cb75-61"><a href="Cohorts.html#cb75-61"></a><span class="st">        ) rawdata</span></span>
-<span id="cb75-62"><a href="Cohorts.html#cb75-62"></a><span class="st">    ) events</span></span>
-<span id="cb75-63"><a href="Cohorts.html#cb75-63"></a><span class="st">  WHERE 2 * events.start_ordinal - events.overall_ord = 0</span></span>
-<span id="cb75-64"><a href="Cohorts.html#cb75-64"></a><span class="st">  ) events</span></span>
-<span id="cb75-65"><a href="Cohorts.html#cb75-65"></a><span class="st">  ON exposure.person_id = events.person_id</span></span>
-<span id="cb75-66"><a href="Cohorts.html#cb75-66"></a><span class="st">      AND exposure.concept_id = events.concept_id</span></span>
-<span id="cb75-67"><a href="Cohorts.html#cb75-67"></a><span class="st">      AND events.end_date &gt;= exposure.exposure_end_date</span></span>
-<span id="cb75-68"><a href="Cohorts.html#cb75-68"></a><span class="st">  GROUP BY exposure.person_id,</span></span>
-<span id="cb75-69"><a href="Cohorts.html#cb75-69"></a><span class="st">      exposure.concept_id,</span></span>
-<span id="cb75-70"><a href="Cohorts.html#cb75-70"></a><span class="st">      exposure.exposure_start_date</span></span>
-<span id="cb75-71"><a href="Cohorts.html#cb75-71"></a><span class="st">  ) ends</span></span>
-<span id="cb75-72"><a href="Cohorts.html#cb75-72"></a><span class="st">GROUP BY ends.person_id,</span></span>
-<span id="cb75-73"><a href="Cohorts.html#cb75-73"></a><span class="st">  concept_id,</span></span>
-<span id="cb75-74"><a href="Cohorts.html#cb75-74"></a><span class="st">  ends.era_end_date;&quot;</span></span>
-<span id="cb75-75"><a href="Cohorts.html#cb75-75"></a></span>
-<span id="cb75-76"><a href="Cohorts.html#cb75-76"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cdm_db_schema =</span> cdmDbSchema, <span class="dt">ace_i =</span> aceI, <span class="dt">max_gap =</span> <span class="dv">30</span>)</span></code></pre></div>
+<span id="cb75-6"><a href="Cohorts.html#cb75-6"></a><span class="st">  INTO #exposure</span></span>
+<span id="cb75-7"><a href="Cohorts.html#cb75-7"></a><span class="st">  FROM @cdm_db_schema.drug_exposure</span></span>
+<span id="cb75-8"><a href="Cohorts.html#cb75-8"></a><span class="st">  INNER JOIN @cdm_db_schema.concept_ancestor</span></span>
+<span id="cb75-9"><a href="Cohorts.html#cb75-9"></a><span class="st">    ON descendant_concept_id = drug_concept_id</span></span>
+<span id="cb75-10"><a href="Cohorts.html#cb75-10"></a><span class="st">  WHERE ancestor_concept_id IN (@ace_i);&quot;</span></span>
+<span id="cb75-11"><a href="Cohorts.html#cb75-11"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cdm_db_schema =</span> cdmDbSchema, <span class="dt">ace_i =</span> aceI)</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="Cohorts.html#cb76-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
+<span id="cb76-2"><a href="Cohorts.html#cb76-2"></a><span class="st">SELECT ends.person_id AS subject_id,</span></span>
+<span id="cb76-3"><a href="Cohorts.html#cb76-3"></a><span class="st">    ends.concept_id AS cohort_definition_id,</span></span>
+<span id="cb76-4"><a href="Cohorts.html#cb76-4"></a><span class="st">  MIN(exposure_start_date) AS cohort_start_date,</span></span>
+<span id="cb76-5"><a href="Cohorts.html#cb76-5"></a><span class="st">  ends.era_end_date AS cohort_end_date</span></span>
+<span id="cb76-6"><a href="Cohorts.html#cb76-6"></a><span class="st">INTO #exposure_era</span></span>
+<span id="cb76-7"><a href="Cohorts.html#cb76-7"></a><span class="st">FROM (</span></span>
+<span id="cb76-8"><a href="Cohorts.html#cb76-8"></a><span class="st">  SELECT exposure.person_id,</span></span>
+<span id="cb76-9"><a href="Cohorts.html#cb76-9"></a><span class="st">    exposure.concept_id,</span></span>
+<span id="cb76-10"><a href="Cohorts.html#cb76-10"></a><span class="st">    exposure.exposure_start_date,</span></span>
+<span id="cb76-11"><a href="Cohorts.html#cb76-11"></a><span class="st">    MIN(events.end_date) AS era_end_date</span></span>
+<span id="cb76-12"><a href="Cohorts.html#cb76-12"></a><span class="st">  FROM #exposure exposure</span></span>
+<span id="cb76-13"><a href="Cohorts.html#cb76-13"></a><span class="st">  JOIN (</span></span>
+<span id="cb76-14"><a href="Cohorts.html#cb76-14"></a><span class="st">--cteEndDates</span></span>
+<span id="cb76-15"><a href="Cohorts.html#cb76-15"></a><span class="st">    SELECT person_id,</span></span>
+<span id="cb76-16"><a href="Cohorts.html#cb76-16"></a><span class="st">      concept_id,</span></span>
+<span id="cb76-17"><a href="Cohorts.html#cb76-17"></a><span class="st">      DATEADD(DAY, - 1 * @max_gap, event_date) AS end_date</span></span>
+<span id="cb76-18"><a href="Cohorts.html#cb76-18"></a><span class="st">    FROM (</span></span>
+<span id="cb76-19"><a href="Cohorts.html#cb76-19"></a><span class="st">      SELECT person_id,</span></span>
+<span id="cb76-20"><a href="Cohorts.html#cb76-20"></a><span class="st">        concept_id,</span></span>
+<span id="cb76-21"><a href="Cohorts.html#cb76-21"></a><span class="st">        event_date,</span></span>
+<span id="cb76-22"><a href="Cohorts.html#cb76-22"></a><span class="st">        event_type,</span></span>
+<span id="cb76-23"><a href="Cohorts.html#cb76-23"></a><span class="st">        MAX(start_ordinal) OVER (</span></span>
+<span id="cb76-24"><a href="Cohorts.html#cb76-24"></a><span class="st">          PARTITION BY person_id ,concept_id ORDER BY event_date,</span></span>
+<span id="cb76-25"><a href="Cohorts.html#cb76-25"></a><span class="st">              event_type ROWS UNBOUNDED PRECEDING</span></span>
+<span id="cb76-26"><a href="Cohorts.html#cb76-26"></a><span class="st">          ) AS start_ordinal,</span></span>
+<span id="cb76-27"><a href="Cohorts.html#cb76-27"></a><span class="st">        ROW_NUMBER() OVER (</span></span>
+<span id="cb76-28"><a href="Cohorts.html#cb76-28"></a><span class="st">          PARTITION BY person_id, concept_id ORDER BY event_date,</span></span>
+<span id="cb76-29"><a href="Cohorts.html#cb76-29"></a><span class="st">            event_type</span></span>
+<span id="cb76-30"><a href="Cohorts.html#cb76-30"></a><span class="st">          ) AS overall_ord</span></span>
+<span id="cb76-31"><a href="Cohorts.html#cb76-31"></a><span class="st">      FROM (</span></span>
+<span id="cb76-32"><a href="Cohorts.html#cb76-32"></a><span class="st">-- select the start dates, assigning a row number to each</span></span>
+<span id="cb76-33"><a href="Cohorts.html#cb76-33"></a><span class="st">        SELECT person_id,</span></span>
+<span id="cb76-34"><a href="Cohorts.html#cb76-34"></a><span class="st">          concept_id,</span></span>
+<span id="cb76-35"><a href="Cohorts.html#cb76-35"></a><span class="st">          exposure_start_date AS event_date,</span></span>
+<span id="cb76-36"><a href="Cohorts.html#cb76-36"></a><span class="st">          0 AS event_type,</span></span>
+<span id="cb76-37"><a href="Cohorts.html#cb76-37"></a><span class="st">          ROW_NUMBER() OVER (</span></span>
+<span id="cb76-38"><a href="Cohorts.html#cb76-38"></a><span class="st">            PARTITION BY person_id, concept_id ORDER BY exposure_start_date</span></span>
+<span id="cb76-39"><a href="Cohorts.html#cb76-39"></a><span class="st">            ) AS start_ordinal</span></span>
+<span id="cb76-40"><a href="Cohorts.html#cb76-40"></a><span class="st">        FROM #exposure exposure</span></span>
+<span id="cb76-41"><a href="Cohorts.html#cb76-41"></a></span>
+<span id="cb76-42"><a href="Cohorts.html#cb76-42"></a><span class="st">        UNION ALL</span></span>
+<span id="cb76-43"><a href="Cohorts.html#cb76-43"></a><span class="st">-- add the end dates with NULL as the row number, padding the end dates by</span></span>
+<span id="cb76-44"><a href="Cohorts.html#cb76-44"></a><span class="st">-- @max_gap to allow a grace period for overlapping ranges.</span></span>
+<span id="cb76-45"><a href="Cohorts.html#cb76-45"></a></span>
+<span id="cb76-46"><a href="Cohorts.html#cb76-46"></a><span class="st">        SELECT person_id,</span></span>
+<span id="cb76-47"><a href="Cohorts.html#cb76-47"></a><span class="st">          concept_id,</span></span>
+<span id="cb76-48"><a href="Cohorts.html#cb76-48"></a><span class="st">          DATEADD(day, @max_gap, exposure_end_date),</span></span>
+<span id="cb76-49"><a href="Cohorts.html#cb76-49"></a><span class="st">          1 AS event_type,</span></span>
+<span id="cb76-50"><a href="Cohorts.html#cb76-50"></a><span class="st">          NULL</span></span>
+<span id="cb76-51"><a href="Cohorts.html#cb76-51"></a><span class="st">        FROM #exposure exposure</span></span>
+<span id="cb76-52"><a href="Cohorts.html#cb76-52"></a><span class="st">        ) rawdata</span></span>
+<span id="cb76-53"><a href="Cohorts.html#cb76-53"></a><span class="st">    ) events</span></span>
+<span id="cb76-54"><a href="Cohorts.html#cb76-54"></a><span class="st">  WHERE 2 * events.start_ordinal - events.overall_ord = 0</span></span>
+<span id="cb76-55"><a href="Cohorts.html#cb76-55"></a><span class="st">  ) events</span></span>
+<span id="cb76-56"><a href="Cohorts.html#cb76-56"></a><span class="st">  ON exposure.person_id = events.person_id</span></span>
+<span id="cb76-57"><a href="Cohorts.html#cb76-57"></a><span class="st">      AND exposure.concept_id = events.concept_id</span></span>
+<span id="cb76-58"><a href="Cohorts.html#cb76-58"></a><span class="st">      AND events.end_date &gt;= exposure.exposure_end_date</span></span>
+<span id="cb76-59"><a href="Cohorts.html#cb76-59"></a><span class="st">  GROUP BY exposure.person_id,</span></span>
+<span id="cb76-60"><a href="Cohorts.html#cb76-60"></a><span class="st">      exposure.concept_id,</span></span>
+<span id="cb76-61"><a href="Cohorts.html#cb76-61"></a><span class="st">      exposure.exposure_start_date</span></span>
+<span id="cb76-62"><a href="Cohorts.html#cb76-62"></a><span class="st">  ) ends</span></span>
+<span id="cb76-63"><a href="Cohorts.html#cb76-63"></a><span class="st">GROUP BY ends.person_id,</span></span>
+<span id="cb76-64"><a href="Cohorts.html#cb76-64"></a><span class="st">  concept_id,</span></span>
+<span id="cb76-65"><a href="Cohorts.html#cb76-65"></a><span class="st">  ends.era_end_date;&quot;</span></span>
+<span id="cb76-66"><a href="Cohorts.html#cb76-66"></a></span>
+<span id="cb76-67"><a href="Cohorts.html#cb76-67"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cdm_db_schema =</span> cdmDbSchema,<span class="dt">max_gap =</span> <span class="dv">30</span>)</span></code></pre></div>
 <p>The most important part of this SQL is that we first define a set of exposures, the code turns these into eras, and writes them to a temp table called <code>#exposure_era</code>.</p>
 <p>Next, we simply join these ACE inhibitor exposure eras to our original cohort to use the era end dates as our cohort end dates:</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="Cohorts.html#cb76-1"></a>sql &lt;-<span class="st"> &quot;SELECT ee.subject_id,</span></span>
-<span id="cb76-2"><a href="Cohorts.html#cb76-2"></a><span class="st">  CAST(1 AS INT) AS cohort_definition_id,</span></span>
-<span id="cb76-3"><a href="Cohorts.html#cb76-3"></a><span class="st">  ee.cohort_start_date,</span></span>
-<span id="cb76-4"><a href="Cohorts.html#cb76-4"></a><span class="st">  ee.cohort_end_date</span></span>
-<span id="cb76-5"><a href="Cohorts.html#cb76-5"></a><span class="st">INTO @cohort_db_schema.@cohort_table</span></span>
-<span id="cb76-6"><a href="Cohorts.html#cb76-6"></a><span class="st">FROM #monotherapy mt</span></span>
-<span id="cb76-7"><a href="Cohorts.html#cb76-7"></a><span class="st">INNER JOIN #exposure_era ee</span></span>
-<span id="cb76-8"><a href="Cohorts.html#cb76-8"></a><span class="st">  ON mt.subject_id = ee.subject_id</span></span>
-<span id="cb76-9"><a href="Cohorts.html#cb76-9"></a><span class="st">    AND mt.cohort_start_date = ee.cohort_start_date;&quot;</span></span>
-<span id="cb76-10"><a href="Cohorts.html#cb76-10"></a></span>
-<span id="cb76-11"><a href="Cohorts.html#cb76-11"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cohort_db_schema =</span> cohortDbSchema, <span class="dt">cohort_table =</span> cohortTable)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="Cohorts.html#cb77-1"></a>sql &lt;-<span class="st"> &quot;SELECT ee.subject_id,</span></span>
+<span id="cb77-2"><a href="Cohorts.html#cb77-2"></a><span class="st">  CAST(1 AS INT) AS cohort_definition_id,</span></span>
+<span id="cb77-3"><a href="Cohorts.html#cb77-3"></a><span class="st">  ee.cohort_start_date,</span></span>
+<span id="cb77-4"><a href="Cohorts.html#cb77-4"></a><span class="st">  ee.cohort_end_date</span></span>
+<span id="cb77-5"><a href="Cohorts.html#cb77-5"></a><span class="st">INTO @cohort_db_schema.@cohort_table</span></span>
+<span id="cb77-6"><a href="Cohorts.html#cb77-6"></a><span class="st">FROM #monotherapy mt</span></span>
+<span id="cb77-7"><a href="Cohorts.html#cb77-7"></a><span class="st">INNER JOIN #exposure_era ee</span></span>
+<span id="cb77-8"><a href="Cohorts.html#cb77-8"></a><span class="st">  ON mt.subject_id = ee.subject_id</span></span>
+<span id="cb77-9"><a href="Cohorts.html#cb77-9"></a><span class="st">    AND mt.cohort_start_date = ee.cohort_start_date;&quot;</span></span>
+<span id="cb77-10"><a href="Cohorts.html#cb77-10"></a></span>
+<span id="cb77-11"><a href="Cohorts.html#cb77-11"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql, <span class="dt">cohort_db_schema =</span> cohortDbSchema, <span class="dt">cohort_table =</span> cohortTable)</span></code></pre></div>
 <p>Here we store the final cohort in schema and table we defined earlier. We assign it a cohort definition ID of 1, to distinguish it from other cohorts we may wish to store in the same table.</p>
 </div>
 <div id="cleanup" class="section level3">
 <h3><span class="header-section-number">11.5.9</span> Cleanup</h3>
 <p>Finally, it is always recommend to clean up any temp tables that were created, and disconnect from the database server:</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="Cohorts.html#cb77-1"></a>sql &lt;-<span class="st"> &quot;TRUNCATE TABLE #first_use;</span></span>
-<span id="cb77-2"><a href="Cohorts.html#cb77-2"></a><span class="st">DROP TABLE #first_use;</span></span>
-<span id="cb77-3"><a href="Cohorts.html#cb77-3"></a></span>
-<span id="cb77-4"><a href="Cohorts.html#cb77-4"></a><span class="st">TRUNCATE TABLE #has_prior_obs;</span></span>
-<span id="cb77-5"><a href="Cohorts.html#cb77-5"></a><span class="st">DROP TABLE #has_prior_obs;</span></span>
-<span id="cb77-6"><a href="Cohorts.html#cb77-6"></a></span>
-<span id="cb77-7"><a href="Cohorts.html#cb77-7"></a><span class="st">TRUNCATE TABLE #has_ht;</span></span>
-<span id="cb77-8"><a href="Cohorts.html#cb77-8"></a><span class="st">DROP TABLE #has_ht;</span></span>
-<span id="cb77-9"><a href="Cohorts.html#cb77-9"></a></span>
-<span id="cb77-10"><a href="Cohorts.html#cb77-10"></a><span class="st">TRUNCATE TABLE #no_prior_ht_drugs;</span></span>
-<span id="cb77-11"><a href="Cohorts.html#cb77-11"></a><span class="st">DROP TABLE #no_prior_ht_drugs;</span></span>
-<span id="cb77-12"><a href="Cohorts.html#cb77-12"></a></span>
-<span id="cb77-13"><a href="Cohorts.html#cb77-13"></a><span class="st">TRUNCATE TABLE #monotherapy;</span></span>
-<span id="cb77-14"><a href="Cohorts.html#cb77-14"></a><span class="st">DROP TABLE #monotherapy;</span></span>
-<span id="cb77-15"><a href="Cohorts.html#cb77-15"></a></span>
-<span id="cb77-16"><a href="Cohorts.html#cb77-16"></a><span class="st">TRUNCATE TABLE #exposure_era;</span></span>
-<span id="cb77-17"><a href="Cohorts.html#cb77-17"></a><span class="st">DROP TABLE #exposure_era;&quot;</span></span>
-<span id="cb77-18"><a href="Cohorts.html#cb77-18"></a></span>
-<span id="cb77-19"><a href="Cohorts.html#cb77-19"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql)</span>
-<span id="cb77-20"><a href="Cohorts.html#cb77-20"></a></span>
-<span id="cb77-21"><a href="Cohorts.html#cb77-21"></a><span class="kw">disconnect</span>(conn)</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="Cohorts.html#cb78-1"></a>sql &lt;-<span class="st"> &quot;TRUNCATE TABLE #first_use;</span></span>
+<span id="cb78-2"><a href="Cohorts.html#cb78-2"></a><span class="st">DROP TABLE #first_use;</span></span>
+<span id="cb78-3"><a href="Cohorts.html#cb78-3"></a></span>
+<span id="cb78-4"><a href="Cohorts.html#cb78-4"></a><span class="st">TRUNCATE TABLE #has_prior_obs;</span></span>
+<span id="cb78-5"><a href="Cohorts.html#cb78-5"></a><span class="st">DROP TABLE #has_prior_obs;</span></span>
+<span id="cb78-6"><a href="Cohorts.html#cb78-6"></a></span>
+<span id="cb78-7"><a href="Cohorts.html#cb78-7"></a><span class="st">TRUNCATE TABLE #has_ht;</span></span>
+<span id="cb78-8"><a href="Cohorts.html#cb78-8"></a><span class="st">DROP TABLE #has_ht;</span></span>
+<span id="cb78-9"><a href="Cohorts.html#cb78-9"></a></span>
+<span id="cb78-10"><a href="Cohorts.html#cb78-10"></a><span class="st">TRUNCATE TABLE #no_prior_ht_drugs;</span></span>
+<span id="cb78-11"><a href="Cohorts.html#cb78-11"></a><span class="st">DROP TABLE #no_prior_ht_drugs;</span></span>
+<span id="cb78-12"><a href="Cohorts.html#cb78-12"></a></span>
+<span id="cb78-13"><a href="Cohorts.html#cb78-13"></a><span class="st">TRUNCATE TABLE #monotherapy;</span></span>
+<span id="cb78-14"><a href="Cohorts.html#cb78-14"></a><span class="st">DROP TABLE #monotherapy;</span></span>
+<span id="cb78-15"><a href="Cohorts.html#cb78-15"></a></span>
+<span id="cb78-16"><a href="Cohorts.html#cb78-16"></a><span class="st">TRUNCATE TABLE #exposure_era;</span></span>
+<span id="cb78-17"><a href="Cohorts.html#cb78-17"></a><span class="st">DROP TABLE #exposure_era;&quot;</span></span>
+<span id="cb78-18"><a href="Cohorts.html#cb78-18"></a></span>
+<span id="cb78-19"><a href="Cohorts.html#cb78-19"></a><span class="kw">renderTranslateExecuteSql</span>(conn, sql)</span>
+<span id="cb78-20"><a href="Cohorts.html#cb78-20"></a></span>
+<span id="cb78-21"><a href="Cohorts.html#cb78-21"></a><span class="kw">disconnect</span>(conn)</span></code></pre></div>
 </div>
 </div>
 <div id="summary-7" class="section level2">

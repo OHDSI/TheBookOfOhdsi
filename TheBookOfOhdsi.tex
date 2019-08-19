@@ -3819,7 +3819,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.em29qst7children ;"
+## [1] "SELECT * FROM temp_schema.odetzf2zchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4314,16 +4314,16 @@ The QueryLibrary makes use of SqlRender to output the queries in the SQL dialect
 \hypertarget{problem-definition}{%
 \subsection{Problem definition}\label{problem-definition}}
 
-Angioedema is a well-known side-effect of ACE inhibitors (ACEi). \citet{slater_1988} estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender, thus answering the question
+Angioedema is a well-known side-effect of ACE inhibitors (ACEi). \citet{slater_1988} estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisnopril. We thus answer the question
 
 \begin{quote}
-What is the rate of angioedema in the first week following ACEi treatment initiation, stratified by age and gender?
+What is the rate of angioedema in the first week following lisnopril treatment initiation, stratified by age and gender?
 \end{quote}
 
 \hypertarget{exposure}{%
 \subsection{Exposure}\label{exposure}}
 
-We'll define exposure as first exposure to a drug containing an ingredient in the ACEi class. By first we mean no earlier exposure to any ingredient in the class. We require 365 days of continuous observation time prior to the first exposure.
+We'll define exposure as first exposure to lisnopril. By first we mean no earlier exposure to lisnopril. We require 365 days of continuous observation time prior to the first exposure.
 
 \hypertarget{outcome}{%
 \subsection{Outcome}\label{outcome}}
@@ -4386,28 +4386,22 @@ Next we create our exposure cohort, and insert it into our COHORT table:
 \StringTok{  cohort_end_date,}
 \StringTok{  subject_id}
 \StringTok{FROM (}
-\StringTok{  SELECT drug_exposure_start_date AS cohort_start_date,}
-\StringTok{    COALESCE(drug_exposure_end_date,}
-\StringTok{             DATEADD(DAY, 1, drug_exposure_start_date)}
-\StringTok{    ) AS cohort_end_date,}
+\StringTok{  SELECT drug_era_start_date AS cohort_start_date,}
+\StringTok{    drug_era_end_date AS cohort_end_date,}
 \StringTok{    person_id AS subject_id}
 \StringTok{  FROM (}
-\StringTok{    SELECT drug_exposure_start_date,}
-\StringTok{      drug_exposure_end_date,}
+\StringTok{    SELECT drug_era_start_date,}
+\StringTok{      drug_era_end_date,}
 \StringTok{      person_id,}
 \StringTok{      ROW_NUMBER() OVER (}
 \StringTok{        PARTITION BY person_id}
-\StringTok{            ORDER BY drug_exposure_start_date}
+\StringTok{            ORDER BY drug_era_start_date}
 \StringTok{      ) order_nr}
-\StringTok{    FROM @cdm_db_schema.drug_exposure}
-\StringTok{    INNER JOIN @cdm_db_schema.concept_ancestor}
-\StringTok{      ON drug_concept_id = descendant_concept_id}
-\StringTok{    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,}
-\StringTok{      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,}
-\StringTok{      1342439) -- ACE inhibitors}
+\StringTok{    FROM @cdm_db_schema.drug_era}
+\StringTok{    WHERE drug_concept_id = 1308216 -- Lisinopril}
 \StringTok{  ) ordered_exposures}
 \StringTok{  WHERE order_nr = 1}
-\StringTok{) first_exposure}
+\StringTok{) first_era}
 \StringTok{INNER JOIN @cdm_db_schema.observation_period}
 \StringTok{  ON subject_id = person_id}
 \StringTok{    AND observation_period_start_date < cohort_start_date}
@@ -4424,7 +4418,7 @@ Next we create our exposure cohort, and insert it into our COHORT table:
 \end{Highlighting}
 \end{Shaded}
 
-Here we use the DRUG\_EXPOSURE table, and join it to the CONCEPT\_ANCESTOR table, thus allowing us to search for the ACEi ingredients and all their descendants, i.e.~all drugs containing an ACEi. We take the first drug exposure per person, and then join to the OBSERVATION\_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION\_PERIOD\_START\_DATE and the COHORT\_START\_DATE.
+Here we use the DRUG\_ERA table, a standard table in the CDM that is automatically derived from the DRUG\_EXPOSURE table. The DRUG\_ERA table contains eras of continuous exposure at the ingredient level. We can thus search for lisinopril, and this will automatically identify all exposures to drugs containing lisinopril. We take the first drug exposure per person, and then join to the OBSERVATION\_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION\_PERIOD\_START\_DATE and the COHORT\_START\_DATE.
 
 \hypertarget{outcome-cohort}{%
 \subsection{Outcome cohort}\label{outcome-cohort}}
@@ -5027,6 +5021,8 @@ We will first find first use of ACE inhibitors for each patient:
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{conn <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connectionDetails)}
+
 \NormalTok{sql <-}\StringTok{ "SELECT person_id AS subject_id,}
 \StringTok{  MIN(drug_exposure_start_date) AS cohort_start_date}
 \StringTok{INTO #first_use}
@@ -5149,16 +5145,23 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sql <-}\StringTok{ "WITH exposure AS (}
+\NormalTok{sql <-}\StringTok{ "}
 \StringTok{  SELECT person_id,}
 \StringTok{    CAST(1 AS INT) AS concept_id,}
 \StringTok{    drug_exposure_start_date AS exposure_start_date,}
 \StringTok{    drug_exposure_end_date AS exposure_end_date}
+\StringTok{  INTO #exposure}
 \StringTok{  FROM @cdm_db_schema.drug_exposure}
 \StringTok{  INNER JOIN @cdm_db_schema.concept_ancestor}
 \StringTok{    ON descendant_concept_id = drug_concept_id}
-\StringTok{  WHERE ancestor_concept_id IN (@ace_i)}
-\StringTok{)}
+\StringTok{  WHERE ancestor_concept_id IN (@ace_i);"}
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }\DataTypeTok{ace_i =}\NormalTok{ aceI)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sql <-}\StringTok{ "}
 \StringTok{SELECT ends.person_id AS subject_id,}
 \StringTok{    ends.concept_id AS cohort_definition_id,}
 \StringTok{  MIN(exposure_start_date) AS cohort_start_date,}
@@ -5169,7 +5172,7 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 \StringTok{    exposure.concept_id,}
 \StringTok{    exposure.exposure_start_date,}
 \StringTok{    MIN(events.end_date) AS era_end_date}
-\StringTok{  FROM  exposure}
+\StringTok{  FROM #exposure exposure}
 \StringTok{  JOIN (}
 \StringTok{--cteEndDates}
 \StringTok{    SELECT person_id,}
@@ -5197,7 +5200,7 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 \StringTok{          ROW_NUMBER() OVER (}
 \StringTok{            PARTITION BY person_id, concept_id ORDER BY exposure_start_date}
 \StringTok{            ) AS start_ordinal}
-\StringTok{        FROM exposure}
+\StringTok{        FROM #exposure exposure}
 
 \StringTok{        UNION ALL}
 \StringTok{-- add the end dates with NULL as the row number, padding the end dates by}
@@ -5208,7 +5211,7 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 \StringTok{          DATEADD(day, @max_gap, exposure_end_date),}
 \StringTok{          1 AS event_type,}
 \StringTok{          NULL}
-\StringTok{        FROM exposure}
+\StringTok{        FROM #exposure exposure}
 \StringTok{        ) rawdata}
 \StringTok{    ) events}
 \StringTok{  WHERE 2 * events.start_ordinal - events.overall_ord = 0}
@@ -5224,7 +5227,7 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 \StringTok{  concept_id,}
 \StringTok{  ends.era_end_date;"}
 
-\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }\DataTypeTok{ace_i =}\NormalTok{ aceI, }\DataTypeTok{max_gap =} \DecValTok{30}\NormalTok{)}
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, sql, }\DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}\DataTypeTok{max_gap =} \DecValTok{30}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

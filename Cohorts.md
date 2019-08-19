@@ -279,6 +279,8 @@ We will first find first use of ACE inhibitors for each patient:
 
 
 ```r
+conn <- connect(connectionDetails)
+
 sql <- "SELECT person_id AS subject_id,
   MIN(drug_exposure_start_date) AS cohort_start_date
 INTO #first_use
@@ -391,16 +393,23 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 
 
 ```r
-sql <- "WITH exposure AS (
+sql <- "
   SELECT person_id,
     CAST(1 AS INT) AS concept_id,
     drug_exposure_start_date AS exposure_start_date,
     drug_exposure_end_date AS exposure_end_date
+  INTO #exposure
   FROM @cdm_db_schema.drug_exposure
   INNER JOIN @cdm_db_schema.concept_ancestor
     ON descendant_concept_id = drug_concept_id
-  WHERE ancestor_concept_id IN (@ace_i)
-)
+  WHERE ancestor_concept_id IN (@ace_i);"
+renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, ace_i = aceI)
+```
+
+
+
+```r
+sql <- "
 SELECT ends.person_id AS subject_id,
 	ends.concept_id AS cohort_definition_id,
   MIN(exposure_start_date) AS cohort_start_date,
@@ -411,7 +420,7 @@ FROM (
     exposure.concept_id,
     exposure.exposure_start_date,
     MIN(events.end_date) AS era_end_date
-  FROM  exposure
+  FROM #exposure exposure
   JOIN (
 --cteEndDates
     SELECT person_id,
@@ -439,7 +448,7 @@ FROM (
           ROW_NUMBER() OVER (
             PARTITION BY person_id, concept_id ORDER BY exposure_start_date
             ) AS start_ordinal
-        FROM exposure
+        FROM #exposure exposure
 
         UNION ALL
 -- add the end dates with NULL as the row number, padding the end dates by
@@ -450,7 +459,7 @@ FROM (
           DATEADD(day, @max_gap, exposure_end_date),
           1 AS event_type,
           NULL
-        FROM exposure
+        FROM #exposure exposure
         ) rawdata
     ) events
   WHERE 2 * events.start_ordinal - events.overall_ord = 0
@@ -466,7 +475,7 @@ GROUP BY ends.person_id,
   concept_id,
   ends.era_end_date;"
 
-renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema, ace_i = aceI, max_gap = 30)
+renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema,max_gap = 30)
 ```
 
 The most important part of this SQL is that we first define a set of exposures, the code turns these into eras, and writes them to a temp table called `#exposure_era`.
