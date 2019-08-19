@@ -241,7 +241,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/comparisons.png")
 
 Note that we can select multiple outcomes for a target-comparator pair. Each outcome will be treated independently, and will result in a separate analysis.
 
-**Negative control outcomes**
+#### Negative control outcomes {-}
 
 Negative control outcomes are outcomes that are not believed to be caused by either the target or the comparator, and where therefore the true hazard ratio equals 1. Ideally, we would have proper cohort definitions for each outcome cohort. However, typically, we only have a concept set, with one concept per negative control outcome, and some standard logic to turn these into outcome cohorts. Here we assume the concept set has already been created as described in Chapter \@ref(MethodValidity) and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure \@ref(fig:ncConceptSet) shows the negative control concept set used for this study.
 
@@ -249,11 +249,11 @@ Negative control outcomes are outcomes that are not believed to be caused by eit
 knitr::include_graphics("images/PopulationLevelEstimation/ncConceptSet.png")
 ```
 
-**Concepts to include**
+#### Concepts to include {-}
 
 When selecting concept to include, we can specify which covariates we would like to generate, for example to use in a propensity model. When specifying covariates here, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the regularized regression build a model that balances all covariates. The only reason we might want to specify particular covariates is to replicate an existing study that manually picked covariates. These inclusions can be specified in this comparison section or in the analysis section, because sometimes they pertain to a specific comparison (e.g. know confounders in a comparison), or sometimes they pertain to an analysis (e.g. when evaluating a particular covariate selection strategy).
 
-**Concepts to exclude**
+#### Concepts to exclude {-}
 
 Rather than specifying which concepts to include, we can instead specify concepts to *exclude*. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, as well as any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \@ref(fig:covsToExclude) shows we select a concept set that includes all these concepts, including their descendants.
 
@@ -271,7 +271,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/comparisons2.png")
 
 After closing the comparisons dialog we can click on "Add Analysis Settings." In the box labeled "Analysis Name," we can give the analysis a unique name that is easy to remember and locate in the future. For example, we could set the name to "Propensity score matching."
 
-**Study population**
+#### Study population {-}
 
 There are a wide range of options to specify the study population, which is the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts in the cohort definition tool. One reason for using the options in Estimation instead of in the cohort definition is re-usability; we can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).
 
@@ -299,7 +299,7 @@ Our choices for our example study are shown in Figure \@ref(fig:studyPopulation)
 knitr::include_graphics("images/PopulationLevelEstimation/studyPopulation.png")
 ```
 
-**Covariate settings**
+#### Covariate settings {-}
 
 Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model (the Cox proporitional hazards model in this case). If we **click to view details** of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.
 
@@ -311,7 +311,7 @@ Figure \@ref(fig:covariateSettings) shows our choices for this study. Note that 
 knitr::include_graphics("images/PopulationLevelEstimation/covariateSettings.png")
 ```
 
-**Time at risk**
+#### Time at risk {-}
 
 Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to one day after cohort start, so one day after treatment initiation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation if we do not believe it biologically plausible they can be caused by the drug.
 
@@ -327,7 +327,7 @@ A golden rule in designing a cohort study is to never use information that falls
 knitr::include_graphics("images/PopulationLevelEstimation/timeAtRisk.png")
 ```
 
-**Propensity score adjustment**
+#### Propensity score adjustment {-}
 
 We can opt to **trim** the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score falls outside the range we specify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW. \index{propensity score!trimming}
 
@@ -351,7 +351,7 @@ Figure \@ref(fig:psSettings) shows our choices for this study. Note that we sele
 knitr::include_graphics("images/PopulationLevelEstimation/psSettings.png")
 ```
 
-**Outcome model settings**
+#### Outcome model settings {-}
 
 First, we need to **specify the statistical model we will use to estimate the relative risk of the outcome between target and comparator cohorts**. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \@ref(CohortMethod). For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify **whether the regression should be conditioned on the strata**. One way to understand conditioning is to imagine a separate estimate is produced in each stratum, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable-ratio matching it is required. \index{conditioned model} \index{stratified model|see {conditioned model}}
 
@@ -371,7 +371,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/outcomeModelSettings.p
 
 As described in Chapter \@ref(MethodValidity), negative and positive controls should be included in our study to evaluate the operating characteristics, and perform empirical calibration.
 
-**Negative control outcome cohort definition**
+#### Negative control outcome cohort definition {-}
 
 In Section \@ref(ComparisonSettings) we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic with three choices. The first choice is whether to **use all occurrences** or just  the **first occurrence** of the concept. The second choice determines **whether occurrences of descendant concepts should be considered**. For example, occurrences of the descendant "ingrown nail of foot" can also be counted as an occurrence of the ancestor "ingrown nail." The third choice specifies which domains should be considered when looking for the concepts.
 
@@ -379,7 +379,7 @@ In Section \@ref(ComparisonSettings) we selected a concept set representing the 
 knitr::include_graphics("images/PopulationLevelEstimation/ncSettings.png")
 ```
 
-**Positive control synthesis**
+#### Positive control synthesis {-}
 
 In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \@ref(MethodValidity). We can choose to **perform positive control synthesis**. If "yes", we must choose the **model type**, currently being "Poisson" and "surival". Since we use a survival (Cox) model in our estimation study, we should choose "survival". We define the time-at-risk model for the positive control synthesis to be the same as in our estimation settings, and similarly mimic the choices for the **minimum required continuous observation prior to exposure**, **should only the first exposure be included**, **should only the first outcome be included**, as well as **remove people with prior outcomes**. Figure \@ref(fig:outcomeModelSettings) shows the settings for the positive control synthesis.
 
@@ -506,7 +506,7 @@ saveCohortMethodData(cmData, "AceiVsThzForAngioedema")
 
 We can use the `loadCohortMethodData()` function to load the data in a future session.
 
-**Defining new users**
+#### Defining new users {-}
 
 Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior to first use) is used to increase the probability that it is truly first use. When using the CohortMethod package, you can enforce the necessary requirements for new use in three ways:
 
