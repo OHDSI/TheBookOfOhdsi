@@ -131,6 +131,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{amsthm}
+\usepackage{xcolor}
 
 \usepackage{makeidx}
 \makeindex
@@ -143,7 +144,7 @@
 }
 \makeatother
 
-\definecolor{myShadeColor}{rgb}{0.95, 0.95, 0.95}
+\definecolor{myShadeColor}{gray}{0.92}
 
 \makeatletter
 \newenvironment{kframe}{%
@@ -254,7 +255,24 @@
 \fancyhead[RE]{\itshape\nouppercase{\leftmark}}
 \renewcommand{\headrulewidth}{0pt}
 
+\setlength{\headheight}{13.6pt} % Avoids warning: Package Fancyhdr Warning: \headheight is too small (12.0pt)
+
+
 \frontmatter
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -417,7 +435,7 @@ SqlRender & 1.6.2\\
 \section*{License}\label{license}}
 \addcontentsline{toc}{section}{License}
 
-This book is licensed under the \href{http://creativecommons.org/publicdomain/zero/1.0/}{Creative Commons Zero v1.0 Universal license.}.
+This book is licensed under the \href{http://creativecommons.org/publicdomain/zero/1.0/}{Creative Commons Zero v1.0 Universal license}.
 
 \includegraphics{images/Preface/cc0.png}
 
@@ -1108,7 +1126,7 @@ An example of how the Standard Concept to Source Concept relationship is depicte
 
 \index{OMOP Common Data Model!standardized tables}
 
-The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}{]}.}.
+The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}}.
 
 To illustrate how these tables are used in practice, the data of one person will be used as a common thread throughout the rest of the chapter.
 
@@ -2271,7 +2289,7 @@ PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
-Autogenerate. The PERSON\_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON\_ID is an integer. The id field from the source is set as the person\_source\_value to preserve that value and allow for error-checking if necessary.\strut
+Autogenerate. The PERSON\_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON\_ID is an integer. The id field from the source is set as the PERSON\_SOURCE\_VALUE to preserve that value and allow for error-checking if necessary.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 GENDER\_CONCEPT\_ID\strut
@@ -3801,7 +3819,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.hq0d3m1tchildren ;"
+## [1] "SELECT * FROM temp_schema.em29qst7children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4753,7 +4771,7 @@ When you are building a cohort, you should consider which of these is more impor
 
 Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you're trying to answer. You may opt to build a cohort definition that: uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher's discretion what threshold of stringency is necessary to adequately study the cohort of interest.
 
-As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases). This is discussed in detail in Chapter \ref(ClinicalValidity) (``Clinical Validity'').
+As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases). This is discussed in detail in Chapter \ref{ClinicalValidity} (``Clinical Validity'').
 
 \hypertarget{ohdsi-gold-standard-phenotype-library}{%
 \section{OHDSI Gold Standard Phenotype Library}\label{ohdsi-gold-standard-phenotype-library}}
@@ -6140,7 +6158,7 @@ Good practice always checks that the PS adjustment succeeds in creating balanced
 
 \index{self-controlled cohort design}
 
-\begin{figure}
+\begin{figure}[h]
 
 {\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/selfControlledCohort} 
 
@@ -6151,46 +6169,21 @@ Good practice always checks that the PS adjustment succeeds in creating balanced
 
 The self-controlled cohort (SCC) design \citep{ryan_2013} compares the rate of outcomes during exposure to the rate of outcomes in the time just prior to the exposure. The four choices shown in Table \ref{tab:sccChoices} define a self-controlled cohort question. \index{target cohort!self-controlled cohort design} \index{outcome cohort!self-controlled cohort design}
 
-\begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:sccChoices} Main design choices in a self-controlled cohort design.}\tabularnewline
+\begin{table}[t]
+
+\caption{\label{tab:sccChoices}Main design choices in a self-controlled cohort design.}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
 \toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
+Choice & Description\\
 \midrule
-\endfirsthead
-\toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Target cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the treatment\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Outcome cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the outcome of interest\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Time-at-risk\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Control time\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-The time period used as the control time\strut
-\end{minipage}\tabularnewline
+Target cohort & A cohort representing the treatment\\
+Outcome cohort & A cohort representing the outcome of interest\\
+Time-at-risk & At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?\\
+Control time & The time period used as the control time\\
 \bottomrule
-\end{longtable}
+\end{tabu}
+\end{table}
 
 Because the same subject that make up the exposed group are also used as the control group, no adjustment for between-person differences need to be made. However, the method is vulnerable to other differences, such as differences in the baseline risk of the outcome between different time periods.
 
@@ -6199,7 +6192,7 @@ Because the same subject that make up the exposed group are also used as the con
 
 \index{case-control design}
 
-\begin{figure}
+\begin{figure}[h]
 
 {\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/caseControl} 
 
@@ -6210,51 +6203,22 @@ Because the same subject that make up the exposed group are also used as the con
 
 Case-control studies \citep{vandenbroucke_2012} consider the question ``are persons with a specific disease outcome exposed more frequently to a specific agent than those without the disease?'' Thus, the central idea is to compare ``cases,'' i.e., subjects that experience the outcome of interest, with ``controls,'' i.e., subjects that did not experience the outcome of interest. The choices in Table \ref{tab:ccChoices} define a case-control question. \index{outcome cohort!case-control design} \index{target cohort!case-control design} \index{nesting cohort!case-control design}
 
-\begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:ccChoices} Main design choices in a case-control design.}\tabularnewline
+\begin{table}[t]
+
+\caption{\label{tab:ccChoices}Main design choices in a case-control design.}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
 \toprule
-\begin{minipage}[b]{0.22\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
+Choice & Description\\
 \midrule
-\endfirsthead
-\toprule
-\begin{minipage}[b]{0.22\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.22\columnwidth}\raggedright
-Outcome cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the cases (the outcome of interest)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.22\columnwidth}\raggedright
-Control cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the controls. Typically the control cohort is automatically derived from the outcome cohort using some selection logic\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.22\columnwidth}\raggedright
-Target cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the treatment\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.22\columnwidth}\raggedright
-Nesting cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-Optionally, a cohort defining the subpopulation from which cases and controls are drawn\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.22\columnwidth}\raggedright
-Time-at-risk\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-At what time (often relative to the index date) do we consider exposure status?\strut
-\end{minipage}\tabularnewline
+Outcome cohort & A cohort representing the cases (the outcome of interest)\\
+Control cohort & A cohort representing the controls. Typically the control cohort is automatically derived from the outcome cohort using some selection logic\\
+Target cohort & A cohort representing the treatment\\
+Nesting cohort & Optionally, a cohort defining the subpopulation from which cases and controls are drawn\\
+Time-at-risk & At what time (often relative to the index date) do we consider exposure status?\\
 \bottomrule
-\end{longtable}
+\end{tabu}
+\end{table}
 
 Often, one selects controls to match cases based on characteristics such as age and sex to make them more comparable. Another widespread practice is to nest the analysis within a specific subgroup of people, for example people that have all been diagnosed with one of the indications of the exposure of interest.
 
@@ -6263,7 +6227,7 @@ Often, one selects controls to match cases based on characteristics such as age 
 
 \index{case-crossover design}
 
-\begin{figure}
+\begin{figure}[h]
 
 {\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/caseCrossover} 
 
@@ -6274,46 +6238,21 @@ Often, one selects controls to match cases based on characteristics such as age 
 
 The case-crossover \citep{maclure_1991} design evaluates whether the rate of exposure is different at the time of the outcome than at some predefined number of days prior to the outcome. It is trying to determine whether there is something special about the day the outcome occurred. Table \ref{tab:ccrChoices} shows the choices that define a case-crossover question. \index{outcome cohort!case-crossover design} \index{target cohort!case-crossover design}
 
-\begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:ccrChoices} Main design choices in a case-crossover design.}\tabularnewline
+\begin{table}[t]
+
+\caption{\label{tab:ccrChoices}Main design choices in a case-crossover design.}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
 \toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
+Choice & Description\\
 \midrule
-\endfirsthead
-\toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Outcome cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the cases (the outcome of interest)\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Target cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the treatment\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Time-at-risk\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-At what time (often relative to the index date) do we consider exposure status?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Control time\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-The time period used as the control time\strut
-\end{minipage}\tabularnewline
+Outcome cohort & A cohort representing the cases (the outcome of interest)\\
+Target cohort & A cohort representing the treatment\\
+Time-at-risk & At what time (often relative to the index date) do we consider exposure status?\\
+Control time & The time period used as the control time\\
 \bottomrule
-\end{longtable}
+\end{tabu}
+\end{table}
 
 Cases serve as their own controls. As self-controlled designs, they should be robust to confounding due to between-person differences. One concern is that, because the outcome date is always later than the control date, the method will be positively biased if the overall frequency of exposure increases over time (or negatively biased if there is a decrease). To address this, the case-time-control design \citep{suissa_1995} was developed, which adds controls, matched for example on age and sex, to the case-crossover design to adjust for exposure trends. \index{case-time-control design}
 
@@ -6322,7 +6261,7 @@ Cases serve as their own controls. As self-controlled designs, they should be ro
 
 \index{self-controlled case series (SCCS) design}
 
-\begin{figure}
+\begin{figure}[h]
 
 {\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/selfControlledCaseSeries} 
 
@@ -6333,46 +6272,21 @@ Cases serve as their own controls. As self-controlled designs, they should be ro
 
 The Self-Controlled Case Series (SCCS) design \citep{farrington_1995, whitaker_2006} compares the rate of outcomes during exposure to the rate of outcomes during all unexposed time, including before, between, and after exposures. It is a Poisson regression that is conditioned on the person. Thus, it seeks to answer the question: ``Given that a patient has the outcome, is the outcome more likely during exposed time compared to non-exposed time?''. The choices in Table \ref{tab:sccsChoices} define an SCCS question. \index{outcome cohort!SCCS design} \index{target cohort!SCCS design}
 
-\begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:sccsChoices} Main design choices in a self-controlled case series design.}\tabularnewline
+\begin{table}[t]
+
+\caption{\label{tab:sccsChoices}Main design choices in a self-controlled case series design.}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
 \toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
+Choice & Description\\
 \midrule
-\endfirsthead
-\toprule
-\begin{minipage}[b]{0.23\columnwidth}\raggedright
-Choice\strut
-\end{minipage} & \begin{minipage}[b]{0.72\columnwidth}\raggedright
-Description\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Target cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the treatment\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Outcome cohort\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-A cohort representing the outcome of interest\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Time-at-risk\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.23\columnwidth}\raggedright
-Model\strut
-\end{minipage} & \begin{minipage}[t]{0.72\columnwidth}\raggedright
-The model to estimate the effect, including any adjustments for time-varying confounders\strut
-\end{minipage}\tabularnewline
+Target cohort & A cohort representing the treatment\\
+Outcome cohort & A cohort representing the outcome of interest\\
+Time-at-risk & At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?\\
+Model & The model to estimate the effect, including any adjustments for time-varying confounders\\
 \bottomrule
-\end{longtable}
+\end{tabu}
+\end{table}
 
 Like other self-controlled designs, the SCCS is robust to confounding due to between-person differences, but vulnerable to confounding due to time-varying effects. Several adjustments are possible to attempt to account for these, for example by including age and season. A special variant of the SCCS includes not just the exposure of interest, but all other exposures to drugs recorded in the database \citep{simpson_2013} potentially adding thousands of additional variables to the model. L1-regularization using cross-validation to select the regularization hyperparameter is applied to the coefficients of all exposures except the exposure of interest.
 

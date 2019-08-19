@@ -97,14 +97,15 @@ Good practice always checks that the PS adjustment succeeds in creating balanced
 
 The self-controlled cohort (SCC) design [@ryan_2013] compares the rate of outcomes during exposure to the rate of outcomes in the time just prior to the exposure. The  four choices shown in Table \@ref(tab:sccChoices) define a self-controlled cohort question. \index{target cohort!self-controlled cohort design} \index{outcome cohort!self-controlled cohort design}
 
-Table: (\#tab:sccChoices) Main design choices in a self-controlled cohort design.
 
-| Choice            | Description                                              |
-|:----------------- |:-------------------------------------------------------- |
-| Target cohort     | A cohort representing the treatment                      |
-| Outcome cohort    | A cohort representing the outcome of interest            |
-| Time-at-risk      | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?  |
-| Control time      | The time period used as the control time                 |
+Table: (\#tab:sccChoices)Main design choices in a self-controlled cohort design.
+
+Choice           Description                                                                                                    
+---------------  ---------------------------------------------------------------------------------------------------------------
+Target cohort    A cohort representing the treatment                                                                            
+Outcome cohort   A cohort representing the outcome of interest                                                                  
+Time-at-risk     At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome? 
+Control time     The time period used as the control time                                                                       
 
 Because the same subject that make up the exposed group are also used as the control group, no adjustment for between-person differences need to be made. However, the method is vulnerable to other differences, such as differences in the baseline risk of the outcome between different time periods.
 
@@ -119,15 +120,17 @@ Because the same subject that make up the exposed group are also used as the con
 
 Case-control studies [@vandenbroucke_2012] consider the question “are persons with a specific disease outcome exposed more frequently to a specific agent than those without the disease?” Thus, the central idea is to compare “cases,” i.e., subjects that experience the outcome of interest, with “controls,” i.e., subjects that did not experience the outcome of interest. The choices in Table \@ref(tab:ccChoices) define a case-control question. \index{outcome cohort!case-control design} \index{target cohort!case-control design} \index{nesting cohort!case-control design}
 
-Table: (\#tab:ccChoices) Main design choices in a case-control design.
 
-| Choice            | Description                                               |
-|:----------------- |:--------------------------------------------------------- |
-| Outcome cohort    | A cohort representing the cases (the outcome of interest) |
-| Control cohort    | A cohort representing the controls. Typically the control cohort is automatically derived from the outcome cohort using some selection logic |
-| Target cohort     | A cohort representing the treatment                       |
-| Nesting cohort  | Optionally, a cohort defining the subpopulation from which cases and controls are drawn  |
-| Time-at-risk      | At what time (often relative to the index date) do we consider exposure status?  |
+
+Table: (\#tab:ccChoices)Main design choices in a case-control design.
+
+Choice           Description                                                                                                                                  
+---------------  ---------------------------------------------------------------------------------------------------------------------------------------------
+Outcome cohort   A cohort representing the cases (the outcome of interest)                                                                                    
+Control cohort   A cohort representing the controls. Typically the control cohort is automatically derived from the outcome cohort using some selection logic 
+Target cohort    A cohort representing the treatment                                                                                                          
+Nesting cohort   Optionally, a cohort defining the subpopulation from which cases and controls are drawn                                                      
+Time-at-risk     At what time (often relative to the index date) do we consider exposure status?                                                              
 
 Often, one selects controls to match cases based on characteristics such as age and sex to make them more comparable. Another widespread practice is to nest the analysis within a specific subgroup of people, for example people that have all been diagnosed with one of the indications of the exposure of interest.
 
@@ -142,14 +145,15 @@ Often, one selects controls to match cases based on characteristics such as age 
 
 The case-crossover [@maclure_1991] design evaluates whether the rate of exposure is different at the time of the outcome than at some predefined number of days prior to the outcome. It is trying to determine whether there is something special about the day the outcome occurred. Table \@ref(tab:ccrChoices) shows the choices that define a case-crossover question. \index{outcome cohort!case-crossover design} \index{target cohort!case-crossover design}
 
-Table: (\#tab:ccrChoices) Main design choices in a case-crossover design.
 
-| Choice            | Description                                              |
-|:----------------- |:-------------------------------------------------------- |
-| Outcome cohort    | A cohort representing the cases (the outcome of interest)  |
-| Target cohort     | A cohort representing the treatment  |
-| Time-at-risk      | At what time (often relative to the index date) do we consider exposure status?  |
-| Control time      | The time period used as the control time                 |
+Table: (\#tab:ccrChoices)Main design choices in a case-crossover design.
+
+Choice           Description                                                                     
+---------------  --------------------------------------------------------------------------------
+Outcome cohort   A cohort representing the cases (the outcome of interest)                       
+Target cohort    A cohort representing the treatment                                             
+Time-at-risk     At what time (often relative to the index date) do we consider exposure status? 
+Control time     The time period used as the control time                                        
 
 Cases serve as their own controls. As self-controlled designs, they should be robust to confounding due to between-person differences. One concern is that, because the outcome date is always later than the control date, the method will be positively biased if the overall frequency of exposure increases over time (or negatively biased if there is a decrease). To address this, the case-time-control design [@suissa_1995] was developed, which adds controls, matched for example on age and sex, to the case-crossover design to adjust for exposure trends. \index{case-time-control design}
 
@@ -164,22 +168,21 @@ Cases serve as their own controls. As self-controlled designs, they should be ro
 
 The Self-Controlled Case Series (SCCS) design [@farrington_1995; @whitaker_2006] compares the rate of outcomes during exposure to the rate of outcomes during all unexposed time, including before, between, and after exposures. It is a Poisson regression that is conditioned on the person. Thus, it seeks to answer the question: “Given that a patient has the outcome, is the outcome more likely during exposed time compared to non-exposed time?”. The choices in Table \@ref(tab:sccsChoices) define an SCCS question. \index{outcome cohort!SCCS design} \index{target cohort!SCCS design}
 
-Table: (\#tab:sccsChoices) Main design choices in a self-controlled case series design.
 
-| Choice            | Description                                              |
-|:----------------- |:-------------------------------------------------------- |
-| Target cohort     | A cohort representing the treatment                      |
-| Outcome cohort    | A cohort representing the outcome of interest            |
-| Time-at-risk      | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?  |
-| Model             | The model to estimate the effect, including any adjustments for time-varying confounders |
+Table: (\#tab:sccsChoices)Main design choices in a self-controlled case series design.
+
+Choice           Description                                                                                                    
+---------------  ---------------------------------------------------------------------------------------------------------------
+Target cohort    A cohort representing the treatment                                                                            
+Outcome cohort   A cohort representing the outcome of interest                                                                  
+Time-at-risk     At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome? 
+Model            The model to estimate the effect, including any adjustments for time-varying confounders                       
 
 Like other self-controlled designs, the SCCS is robust to confounding due to between-person differences, but vulnerable to confounding due to time-varying effects. Several adjustments are possible to attempt to account for these, for example by including age and season. A special variant of the SCCS includes not just the exposure of interest, but all other exposures to drugs recorded in the database  [@simpson_2013] potentially adding thousands of additional variables to the model. L1-regularization using cross-validation to select the regularization hyperparameter is applied to the coefficients of all exposures except the exposure of interest.
 
 One important assumption underlying the SCCS is that the observation period end is independent of the date of the outcome. For some outcomes, especially ones that can be fatal such as stroke, this assumption can be violated. An extension to the SCCS has been developed that corrects for any such dependency. [@farrington_2011]
 
-
 ## Designing a hypertension study
-
 
 ### Problem definition
 
