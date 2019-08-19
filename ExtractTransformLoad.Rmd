@@ -132,7 +132,7 @@ Table: (\#tab:syntheaEtlPerson) ETL logic to convert the Synthea Patients table 
 
 | Destination Field | Source field | Logic & comments |
 | :---------------------- | :--------- | :---------------------------------------- |
-| PERSON_ID                   |             |  Autogenerate. The PERSON_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON_ID is an integer. The id field from the source is set as the person_source_value to preserve that value and allow for error-checking if necessary. |
+| PERSON_ID                   |             |  Autogenerate. The PERSON_ID will be generated at the time of implementation. This is because the id value from the source is a varchar value while the PERSON_ID is an integer. The id field from the source is set as the PERSON_SOURCE_VALUE to preserve that value and allow for error-checking if necessary. |
 | GENDER_CONCEPT_ID           | gender      | When gender = ‘M’ then set GENDER_CONCEPT_ID to 8507, when gender = ‘F’ then set to 8532. Drop any rows with missing/unknown gender. These two concepts were chosen as they are the only two standard concepts in the gender domain. The choice to drop patients with unknown genders tends to be site-based, though it is recommended they are removed as people without a gender are excluded from analyses.|
 | YEAR_OF_BIRTH               | birthdate   | Take year from birthdate |
 | MONTH_OF_BIRTH              | birthdate   | Take month from birthdate |
