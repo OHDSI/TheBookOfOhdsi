@@ -5,23 +5,23 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 Population-Level Estimation | The Book of OHDSI</title>
-  <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="generator" content="bookdown 0.12.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 Population-Level Estimation | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
-  <meta property="og:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta property="og:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 13 Population-Level Estimation | The Book of OHDSI" />
   
-  <meta name="twitter:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="twitter:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
 
-<meta name="author" content="Observational Health Data Science and Informatics" />
+<meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
 <meta name="date" content="2019-08-19" />
@@ -144,6 +144,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#structure-of-the-book"><i class="fa fa-check"></i>Structure of the book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#contributors"><i class="fa fa-check"></i>Contributors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#software-versions"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 </ul></li>
 <li class="part"><span><b>I The OHDSI Community</b></span></li>
 <li class="chapter" data-level="1" data-path="MissionVisionValues.html"><a href="MissionVisionValues.html"><i class="fa fa-check"></i><b>1</b> Mission, vision, values</a><ul>
@@ -438,6 +439,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.7.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#additional-inclusion-criteria"><i class="fa fa-check"></i><b>14.7.3</b> Additional inclusion criteria</a></li>
 <li class="chapter" data-level="14.7.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development"><i class="fa fa-check"></i><b>14.7.4</b> Model Development</a></li>
 <li class="chapter" data-level="14.7.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#internal-validation"><i class="fa fa-check"></i><b>14.7.5</b> Internal Validation</a></li>
+<li class="chapter" data-level="14.7.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#external-validation"><i class="fa fa-check"></i><b>14.7.6</b> External validation</a></li>
 </ul></li>
 <li class="chapter" data-level="14.8" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#single-model-viewer-app"><i class="fa fa-check"></i><b>14.8</b> Single model viewer app</a></li>
 <li class="chapter" data-level="14.9" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#multiple-model-viewer-app"><i class="fa fa-check"></i><b>14.9</b> Multiple model viewer app</a><ul>
@@ -963,7 +965,8 @@ Figure 13.6: The comparison dialog
 </p>
 </div>
 <p>Note that we can select multiple outcomes for a target-comparator pair. Each outcome will be treated independently, and will result in a separate analysis.</p>
-<p><strong>Negative control outcomes</strong></p>
+<div id="negative-control-outcomes" class="section level4 unnumbered">
+<h4>Negative control outcomes</h4>
 <p>Negative control outcomes are outcomes that are not believed to be caused by either the target or the comparator, and where therefore the true hazard ratio equals 1. Ideally, we would have proper cohort definitions for each outcome cohort. However, typically, we only have a concept set, with one concept per negative control outcome, and some standard logic to turn these into outcome cohorts. Here we assume the concept set has already been created as described in Chapter <a href="MethodValidity.html#MethodValidity">19</a> and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure <a href="PopulationLevelEstimation.html#fig:ncConceptSet">13.7</a> shows the negative control concept set used for this study.</p>
 <div class="figure" style="text-align: center"><span id="fig:ncConceptSet"></span>
 <img src="images/PopulationLevelEstimation/ncConceptSet.png" alt="Negative Control concept set." width="100%" />
@@ -971,9 +974,13 @@ Figure 13.6: The comparison dialog
 Figure 13.7: Negative Control concept set.
 </p>
 </div>
-<p><strong>Concepts to include</strong></p>
+</div>
+<div id="concepts-to-include" class="section level4 unnumbered">
+<h4>Concepts to include</h4>
 <p>When selecting concept to include, we can specify which covariates we would like to generate, for example to use in a propensity model. When specifying covariates here, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the regularized regression build a model that balances all covariates. The only reason we might want to specify particular covariates is to replicate an existing study that manually picked covariates. These inclusions can be specified in this comparison section or in the analysis section, because sometimes they pertain to a specific comparison (e.g. know confounders in a comparison), or sometimes they pertain to an analysis (e.g. when evaluating a particular covariate selection strategy).</p>
-<p><strong>Concepts to exclude</strong></p>
+</div>
+<div id="concepts-to-exclude" class="section level4 unnumbered">
+<h4>Concepts to exclude</h4>
 <p>Rather than specifying which concepts to include, we can instead specify concepts to <em>exclude</em>. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, as well as any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure <a href="PopulationLevelEstimation.html#fig:covsToExclude">13.8</a> shows we select a concept set that includes all these concepts, including their descendants.</p>
 <div class="figure" style="text-align: center"><span id="fig:covsToExclude"></span>
 <img src="images/PopulationLevelEstimation/covsToExclude.png" alt="The concept set defining the concepts to exclude." width="100%" />
@@ -989,10 +996,12 @@ Figure 13.9: The comparison window showing concept sets for negative controls an
 </p>
 </div>
 </div>
+</div>
 <div id="effect-estimation-analysis-settings" class="section level3">
 <h3><span class="header-section-number">13.7.2</span> Effect estimation analysis settings</h3>
 <p>After closing the comparisons dialog we can click on “Add Analysis Settings.” In the box labeled “Analysis Name,” we can give the analysis a unique name that is easy to remember and locate in the future. For example, we could set the name to “Propensity score matching.”</p>
-<p><strong>Study population</strong></p>
+<div id="study-population" class="section level4 unnumbered">
+<h4>Study population</h4>
 <p>There are a wide range of options to specify the study population, which is the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts in the cohort definition tool. One reason for using the options in Estimation instead of in the cohort definition is re-usability; we can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).</p>
 <p>The <strong>study start and end dates</strong> can be used to limit the analyses to a specific period. The study end date also truncates risk windows, meaning no outcomes beyond the study end date will be considered. One reason for selecting a study start date might be that one of the drugs being studied is new and did not exist in an earlier time. Automatically adjusting for this can be done by answering “yes” to the question “<strong>Restrict the analysis to the period when both exposures are present in the data?</strong>”. Another reason to adjust study start and end dates might be that medical practice changed over time (e.g., due to a drug warning) and we are only interested in the time where medicine was practiced a specific way.</p>
 <p>The option “<strong>Should only the first exposure per subject be included?</strong>” can be used to restrict to the first exposure per patient. Often this is already done in the cohort definition, as is the case in this example. Similarly, the option “<strong>The minimum required continuous observation time prior to index date for a person to be included in the cohort</strong>” is often already set in the cohort definition, and can therefore be left at 0 here. Having observed time (as defined in the OBSERVATION_PERIOD table) before the index date ensures that there is sufficient information about the patient to calculate a propensity score, and is also often used to ensure the patient is truly a new user, and therefore was not exposed before.</p>
@@ -1017,7 +1026,9 @@ Figure 13.10: Time-at-risk (TAR) for subjects who are in both cohorts, assuming 
 Figure 13.11: Study population settings.
 </p>
 </div>
-<p><strong>Covariate settings</strong></p>
+</div>
+<div id="covariate-settings" class="section level4 unnumbered">
+<h4>Covariate settings</h4>
 <p>Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model (the Cox proporitional hazards model in this case). If we <strong>click to view details</strong> of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.</p>
 <p>We can modify the set of covariates by specifying concepts to <strong>include</strong> and/or <strong>exclude</strong>. These settings are the same as the ones found in Section <a href="PopulationLevelEstimation.html#ComparisonSettings">13.7.1</a> on comparison settings. The reason why they can be found in two places is because sometimes these settings are related to a specific comparison, as is the case here because we wish to exclude the drugs we are comparing, and sometimes the settings are related to a specific analysis. When executing an analysis for a specific comparison using specific analysis settings, the OHDSI tools will take the union of these sets.</p>
 <p>Figure <a href="PopulationLevelEstimation.html#fig:covariateSettings">13.12</a> shows our choices for this study. Note that we have selected to add descendants to the concept to exclude, which we defined in the comparison settings in Figure <a href="PopulationLevelEstimation.html#fig:comparisons2">13.9</a>.</p>
@@ -1027,7 +1038,9 @@ Figure 13.11: Study population settings.
 Figure 13.12: Covariate settings.
 </p>
 </div>
-<p><strong>Time at risk</strong></p>
+</div>
+<div id="time-at-risk-2" class="section level4 unnumbered">
+<h4>Time at risk</h4>
 <p>Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to one day after cohort start, so one day after treatment initiation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation if we do not believe it biologically plausible they can be caused by the drug.</p>
 <p>We set the end of the time-at-risk to the cohort end, so when exposure stops. We could choose to set the end date later if for example we believe events closely following treatment end may still be attributable to the exposure. In the extreme we could set the time-at-risk end to a large number of days (e.g. 99999) after the cohort end date, meaning we will effectively follow up subjects until observation end. Such a design is sometimes referred to as an <em>intent-to-treat</em> design.</p>
 <p>A patient with zero days at risk adds no information, so the <strong>minimum days at risk</strong> is normally set at one day. If there is a known latency for the side effect, then this may be increased to get a more informative proportion. It can also be used to create a cohort more similar to that of a randomized trial it is being compared to (e.g., all the patients in the randomized trial were observed for at least N days).</p>
@@ -1042,7 +1055,9 @@ A golden rule in designing a cohort study is to never use information that falls
 Figure 13.13: Time-at-risk settings.
 </p>
 </div>
-<p><strong>Propensity score adjustment</strong></p>
+</div>
+<div id="propensity-score-adjustment" class="section level4 unnumbered">
+<h4>Propensity score adjustment</h4>
 <p>We can opt to <strong>trim</strong> the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score falls outside the range we specify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW. </p>
 <p>In addition to, or instead of trimming, we can choose to <strong>stratify</strong> or <strong>match</strong> on the propensity score. When stratifying we need to specify the <strong>number of strata</strong> and whether to select the strata based on the target, comparator, or entire study population. When matching we need to specify the <strong>maximum number of people from the comparator group to match to each person in the target group</strong>. Typical values are 1 for one-on-one matching, or a large number (e.g. 100) for variable-ratio matching. We also need to specify the <strong>caliper</strong>: the maximum allowed difference between propensity scores to allow a match. The caliper can be defined on difference <strong>caliper scales</strong>: </p>
 <ul>
@@ -1061,7 +1076,9 @@ Figure 13.13: Time-at-risk settings.
 Figure 13.14: Propensity score adjustment settings.
 </p>
 </div>
-<p><strong>Outcome model settings</strong></p>
+</div>
+<div id="outcome-model-settings" class="section level4 unnumbered">
+<h4>Outcome model settings</h4>
 <p>First, we need to <strong>specify the statistical model we will use to estimate the relative risk of the outcome between target and comparator cohorts</strong>. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section <a href="PopulationLevelEstimation.html#CohortMethod">13.1</a>. For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify <strong>whether the regression should be conditioned on the strata</strong>. One way to understand conditioning is to imagine a separate estimate is produced in each stratum, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable-ratio matching it is required.  </p>
 <p>We can also choose to <strong>add the covariates to the outcome model</strong> to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend keeping the outcome model as simple as possible and not include additional covariates.</p>
 <p>Instead of stratifying or matching on the propensity score we can also choose to <strong>use inverse probability of treatment weighting</strong> (IPTW). If weighting is used it is often recommended to use some form of trimming to avoid extreme weights and therefore unstable estimates.</p>
@@ -1074,10 +1091,12 @@ Figure 13.15: Outcome model settings.
 </p>
 </div>
 </div>
+</div>
 <div id="evaluationSettings" class="section level3">
 <h3><span class="header-section-number">13.7.3</span> Evaluation settings</h3>
 <p>As described in Chapter <a href="MethodValidity.html#MethodValidity">19</a>, negative and positive controls should be included in our study to evaluate the operating characteristics, and perform empirical calibration.</p>
-<p><strong>Negative control outcome cohort definition</strong></p>
+<div id="negative-control-outcome-cohort-definition" class="section level4 unnumbered">
+<h4>Negative control outcome cohort definition</h4>
 <p>In Section <a href="PopulationLevelEstimation.html#ComparisonSettings">13.7.1</a> we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic with three choices. The first choice is whether to <strong>use all occurrences</strong> or just the <strong>first occurrence</strong> of the concept. The second choice determines <strong>whether occurrences of descendant concepts should be considered</strong>. For example, occurrences of the descendant “ingrown nail of foot” can also be counted as an occurrence of the ancestor “ingrown nail.” The third choice specifies which domains should be considered when looking for the concepts.</p>
 <div class="figure" style="text-align: center"><span id="fig:ncSettings"></span>
 <img src="images/PopulationLevelEstimation/ncSettings.png" alt="Negative control outcome cohort definition settings." width="100%" />
@@ -1085,13 +1104,16 @@ Figure 13.15: Outcome model settings.
 Figure 13.16: Negative control outcome cohort definition settings.
 </p>
 </div>
-<p><strong>Positive control synthesis</strong></p>
+</div>
+<div id="positive-control-synthesis" class="section level4 unnumbered">
+<h4>Positive control synthesis</h4>
 <p>In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter <a href="MethodValidity.html#MethodValidity">19</a>. We can choose to <strong>perform positive control synthesis</strong>. If “yes”, we must choose the <strong>model type</strong>, currently being “Poisson” and “surival”. Since we use a survival (Cox) model in our estimation study, we should choose “survival”. We define the time-at-risk model for the positive control synthesis to be the same as in our estimation settings, and similarly mimic the choices for the <strong>minimum required continuous observation prior to exposure</strong>, <strong>should only the first exposure be included</strong>, <strong>should only the first outcome be included</strong>, as well as <strong>remove people with prior outcomes</strong>. Figure <a href="PopulationLevelEstimation.html#fig:outcomeModelSettings">13.15</a> shows the settings for the positive control synthesis.</p>
 <div class="figure" style="text-align: center"><span id="fig:pcSynthesis"></span>
 <img src="images/PopulationLevelEstimation/pcSynthesis.png" alt="Negative control outcome cohort definition settings." width="100%" />
 <p class="caption">
 Figure 13.17: Negative control outcome cohort definition settings.
 </p>
+</div>
 </div>
 </div>
 <div id="running-the-study-package" class="section level3">
@@ -1183,7 +1205,8 @@ Figure 13.17: Negative control outcome cohort definition settings.
 <p>Creating the <code>cohortMethodData</code> file can take considerable computing time, and it is probably a good idea to save it for future sessions. Because <code>cohortMethodData</code> uses <code>ff</code>, we cannot use R’s regular save function. Instead, we’ll have to use the <code>saveCohortMethodData()</code> function:</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="PopulationLevelEstimation.html#cb90-1"></a><span class="kw">saveCohortMethodData</span>(cmData, <span class="st">&quot;AceiVsThzForAngioedema&quot;</span>)</span></code></pre></div>
 <p>We can use the <code>loadCohortMethodData()</code> function to load the data in a future session.</p>
-<p><strong>Defining new users</strong></p>
+<div id="defining-new-users" class="section level4 unnumbered">
+<h4>Defining new users</h4>
 <p>Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior to first use) is used to increase the probability that it is truly first use. When using the CohortMethod package, you can enforce the necessary requirements for new use in three ways:</p>
 <ol style="list-style-type: decimal">
 <li>When defining the cohorts.</li>
@@ -1191,6 +1214,7 @@ Figure 13.17: Negative control outcome cohort definition settings.
 <li>When defining the study population using the <code>createStudyPopulation</code> function (see below).</li>
 </ol>
 <p>The advantage of option 1 is that the input cohorts are already fully defined outside of the CohortMethod package, and external cohort characterization tools can be used on the same cohorts used in this analysis. The advantage of options 2 and 3 is that they save you the trouble of limiting to first use yourself, for example allowing you to directly use the DRUG_ERA table in the CDM. Option 2 is more efficient than 3, since only data for first use will be fetched, while option 3 is less efficient but allows you to compare the original cohorts to the study population.</p>
+</div>
 </div>
 <div id="defining-the-study-population" class="section level3">
 <h3><span class="header-section-number">13.8.3</span> Defining the study population</h3>

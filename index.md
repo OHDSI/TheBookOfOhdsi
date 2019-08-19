@@ -1,6 +1,6 @@
 --- 
 title: "The Book of OHDSI"
-author: "Observational Health Data Science and Informatics"
+author: "Observational Health Data Sciences and Informatics"
 date: "2019-08-19"
 classoption: 11pt      
 geometry:
@@ -9,13 +9,13 @@ geometry:
 - margin=1in
 - inner=1in
 - outer=0.65in
-- top=1.1in
-- bottom=0.65in
+- top=0.8in
+- bottom=0.8in
 mainfont: Times New Roman
 bibliography:
 - book.bib
 - packages.bib
-description: A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software.
+description: A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software.
 documentclass: book
 favicon: images/favicon.ico
 github-repo: OHDSI/TheBookOfOhdsi
@@ -107,4 +107,10 @@ PatientLevelPrediction     3.0.6
 SelfControlledCaseSeries   1.4.0   
 SelfControlledCohort       1.5.0   
 SqlRender                  1.6.2   
+
+## License {-}
+
+This book is licensed under the [Creative Commons Zero v1.0 Universal license. ](http://creativecommons.org/publicdomain/zero/1.0/).
+
+![](images/Preface/cc0.png)
 

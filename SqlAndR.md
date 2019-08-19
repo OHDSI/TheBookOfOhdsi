@@ -43,7 +43,7 @@ SqlRender supports a wide array of technical platforms including traditional dat
 
 One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the `render()` function. \index{SqlRender!parameterization}
 
-**Substituting parameter values**
+#### Substituting parameter values {-}
 
 The `@` character can be used to indicate parameter names that need to be exchanged for actual parameter values when rendering. In the following example, a variable called `a` is mentioned in the SQL. In the call to the render function the value of this parameter is defined:
 
@@ -81,7 +81,7 @@ render(sql, a = c(123, 234, 345))
 ## [1] "SELECT * FROM concept WHERE concept_id IN (123,234,345);"
 ```
 
-**If-then-else**
+#### If-then-else {-}
 
 Sometimes blocks of codes need to be turned on or off based on the values of one or more parameters. This is done using the `{Condition} ? {if true} : {if false}` syntax. If the *condition* evaluates to true or 1, the *if true* block is used, else the *if false* block is shown (if present).
 
@@ -155,7 +155,7 @@ The `targetDialect` parameter can have the following values: "oracle", "postgres
 
 Despite our best efforts, there are quite a few things to consider when writing OHDSI SQL that will run without error on all supported platforms. In what follows we discuss these considerations in detail.
 
-**Functions and structures supported by translate**
+#### Functions and structures supported by translate {-}
 
 These SQL Server functions have been tested and were found to be translated correctly to the various dialects:\index{SqlRender!supported functions}
 
@@ -242,11 +242,11 @@ SELECT * FROM a INTERSECT SELECT * FROM b;
 SELECT * FROM a EXCEPT SELECT * FROM b;
 ```
 
-**String concatenation**
+#### String concatenation {-}
 
 String concatenation is one area where SQL Server is less specific than other dialects. In SQL Server, one would write `SELECT first_name + ' ' + last_name AS full_name FROM table`, but this should be `SELECT first_name || ' ' || last_name AS full_name FROM table` in PostgreSQL and Oracle. SqlRender tries to guess when values that are being concatenated are strings. In the example above, because we have an explicit string (the space surrounded by single quotation marks), the translation will be correct. However, if the query had been `SELECT first_name + last_name AS full_name FROM table`, SqlRender would have had no clue the two fields were strings, and would incorrectly leave the plus sign. Another clue that a value is a string is an explicit cast to VARCHAR, so `SELECT last_name + CAST(age AS VARCHAR(3)) AS full_name FROM table` would also be translated correctly. To avoid ambiguity altogether, it is probable best to use the ```CONCAT()``` function to concatenate two or more strings.
 
-**Table aliases and the AS keyword**
+#### Table aliases and the AS keyword {-}
 
 Many SQL dialects allow the use of the `AS` keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:
 
@@ -270,7 +270,7 @@ ON table_1.person_id = table_2.person_id;
 
 However, Oracle will throw an error when the `AS` keyword is used. In the above example, the first query will fail. It is therefore recommended to not use the `AS` keyword when aliasing tables. (Note: we can't make SqlRender handle this, because it can't easily distinguish between table aliases where Oracle doesn't allow `AS` to be used, and field aliases, where Oracle requires `AS` to be used.)
 
-**Temp tables**
+#### Temp tables {-}
 
 Temp tables can be very useful to store intermediate results, and when used correctly can dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they're only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by
 
@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.jgq20zlbchildren ;"
+## [1] "SELECT * FROM temp_schema.sqo8xveqchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -294,7 +294,7 @@ Also note that because Oracle has a limit on table names of 30 characters. **Tem
 
 Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly ```TRUNCATE``` and ```DROP``` all temp tables once you're done with them to prevent orphan tables accumulating in the Oracle temp schema.
 
-**Implicit casts**
+#### Implicit casts {-}
 
 One of the few points where SQL Server is less explicit than other dialects is that it allows implicit casts. For example, this code will work on SQL Server:
 
@@ -321,7 +321,7 @@ or
 SELECT * FROM #temp WHERE CAST(txt AS INT) = 1;
 ```
 
-**Case sensitivity in string comparisons**
+#### Case sensitivity in string comparisons {-}
 
 Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of 
 
@@ -333,7 +333,7 @@ it is preferred to use
 SELECT * FROM concept WHERE LOWER(concep_class_id) = 'clinical finding'
 ```
 
-**Schemas and databases**
+#### Schemas and databases {-}
 
 In SQL Server, tables are located in a schema, and schemas reside in a database. For example, `cdm_data.dbo.person` refers to the `person` table in the `dbo` schema in the `cdm_data` database. In other dialects, even though a similar hierarchy often exists they are used very differently. In SQL Server, there is typically one schema per database (often called `dbo`), and users can easily use data in different databases. On other platforms, for example in PostgreSQL, it is not possible to use data across databases in a single session, but there are often many schemas in a database. In PostgreSQL one could say that the equivalent of SQL Server's database is the schema.
 
@@ -346,7 +346,7 @@ where on SQL Server we can include both database and schema names in the value: 
 The one situation where this will fail is the `USE` command, since `USE cdm_data.dbo;` will throw an error. It is therefore preferred not to use the `USE` command, but always specify the database / schema where a table is located. 
 
 
-**Debugging parameterized SQL**
+#### Debugging parameterized SQL {-}
 
 Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL. \index{SqlRender!debugging}
 
@@ -952,7 +952,7 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 
 ## Exercises
 
-**Prerequisites**
+#### Prerequisites {-}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
 

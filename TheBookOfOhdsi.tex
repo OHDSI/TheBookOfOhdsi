@@ -22,11 +22,11 @@
 \usepackage{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[paperheight=10in,paperwidth=7in,margin=1in,inner=1in,outer=0.65in,top=1.1in,bottom=0.65in]{geometry}
+\usepackage[paperheight=10in,paperwidth=7in,margin=1in,inner=1in,outer=0.65in,top=0.8in,bottom=0.8in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
             pdftitle={The Book of OHDSI},
-            pdfauthor={Observational Health Data Science and Informatics},
+            pdfauthor={Observational Health Data Sciences and Informatics},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -121,7 +121,7 @@
   \title{The Book of OHDSI}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
-    \author{Observational Health Data Science and Informatics}
+    \author{Observational Health Data Sciences and Informatics}
     \preauthor{\centering\large\emph}
   \postauthor{\par}
       \predate{\centering\large\emph}
@@ -143,6 +143,7 @@
 }
 \makeatother
 
+\definecolor{myShadeColor}{rgb}{0.95, 0.95, 0.95}
 
 \makeatletter
 \newenvironment{kframe}{%
@@ -154,7 +155,7 @@
   \begin{minipage}{\columnwidth}%
  \fi\fi%
  \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
+ \colorbox{myShadeColor}{##1}\hskip-\fboxsep
      % There is no \\@totalrightmargin, so:
      \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
  \MakeFramed {\advance\hsize-\width
@@ -231,6 +232,9 @@
    {\thesubsection}% Chapter number
    {1.0em}% space between # and title
    {}% formatting applied just to title
+   
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries}{}{0em}{}
 
 \let\paragraph\llncsparagraph
 \let\subparagraph\llncssubparagraph
@@ -408,6 +412,14 @@ SqlRender & 1.6.2\\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\hypertarget{license}{%
+\section*{License}\label{license}}
+\addcontentsline{toc}{section}{License}
+
+This book is licensed under the \href{http://creativecommons.org/publicdomain/zero/1.0/}{Creative Commons Zero v1.0 Universal license.}.
+
+\includegraphics{images/Preface/cc0.png}
 
 \mainmatter
 
@@ -1116,7 +1128,9 @@ Lauren had been experiencing endometriosis symptoms for many years; however, it 
 \hypertarget{person}{%
 \subsection{PERSON table}\label{person}}
 
-\textbf{What do we know about Lauren?}
+\hypertarget{what-do-we-know-about-lauren}{%
+\subsubsection*{What do we know about Lauren?}\label{what-do-we-know-about-lauren}}
+\addcontentsline{toc}{subsubsection}{What do we know about Lauren?}
 
 \begin{itemize}
 \tightlist
@@ -1295,7 +1309,9 @@ Same principle as GENDER\_SOURCE\_CONCEPT\_ID.\strut
 
 The OBSERVATION\_PERIOD table is designed to define the amount of time for which at least a patient's demographics, conditions, procedures and drugs are recorded in the source system with the expection of a reasonable sensitivity and specificity. For insurance data this is typically the enrollment period of the patient. It's trickier in electronic health records (EHR), as most healthcare systems do not determine which healthcare institution or provider is visited. As a next best solution, often the first record in the system is considered the Start Date of the Observation Period and the latest record is considered the End Date.
 
-\textbf{How is Lauren's Observation Period defined?}
+\hypertarget{how-is-laurens-observation-period-defined}{%
+\subsubsection*{How is Lauren's Observation Period defined?}\label{how-is-laurens-observation-period-defined}}
+\addcontentsline{toc}{subsubsection}{How is Lauren's Observation Period defined?}
 
 Let's say Lauren's information as shown in Table \ref{tab:encounters} is recorded like in an EHR system. Her encounters from which the Observation Period was derived are:
 
@@ -1385,7 +1401,9 @@ The best option in the Vocabulary with the concept class ``Obs Period Type'' is 
 
 the VISIT\_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discreet events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits.
 
-\textbf{How are Lauren's encounters represented as Visits?}
+\hypertarget{how-are-laurens-encounters-represented-as-visits}{%
+\subsubsection*{How are Lauren's encounters represented as Visits?}\label{how-are-laurens-encounters-represented-as-visits}}
+\addcontentsline{toc}{subsubsection}{How are Lauren's encounters represented as Visits?}
 
 As an example let's represent the inpatient encounter in Table \ref{tab:encounters} in the VISIT\_OCCURRENCE table.
 
@@ -1544,7 +1562,9 @@ This denotes the Visit immediately preceding the current one. In contrast to ADM
 
 Records in the CONDITION\_OCCURRENCE table are diagnoses, signs, or symptoms of a condition either observed by a Provider or reported by the patient.
 
-\textbf{What are Lauren's conditions?}
+\hypertarget{what-are-laurens-conditions}{%
+\subsubsection*{What are Lauren's conditions?}\label{what-are-laurens-conditions}}
+\addcontentsline{toc}{subsubsection}{What are Lauren's conditions?}
 
 Revisiting her account she says:
 
@@ -1689,7 +1709,9 @@ If the Condition Status value from the source is coded using a coding scheme sup
 
 The DRUG\_EXPOSURE table captures records about the intent or actual introduction of a drug into the body of the patient. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Drug exposures are inferred from clinical events associated with orders, prescriptions written, pharmacy dispensings, procedural administrations, and other patient-reported information.
 
-\textbf{How are Lauren's Drug Exposures represented?}
+\hypertarget{how-are-laurens-drug-exposures-represented}{%
+\subsubsection*{How are Lauren's Drug Exposures represented?}\label{how-are-laurens-drug-exposures-represented}}
+\addcontentsline{toc}{subsubsection}{How are Lauren's Drug Exposures represented?}
 
 To help with her dysmenorrhea pain, Lauren was given 60 oral tablets with 375 mg Acetaminophen (aka Paracetamol, e.g.~sold in the US under NDC code 69842087651) each for 30 days at her Visit on 2010-01-06. Here's how that might look in the DRUG\_EXPOSURE table:
 
@@ -1885,7 +1907,9 @@ The PROCEDURE\_OCCURRENCE table contains records of activities or processes orde
   Electronic Health Records that capture procedures as orders.
 \end{itemize}
 
-\textbf{What procedures did Lauren have?}
+\hypertarget{what-procedures-did-lauren-have}{%
+\subsubsection*{What procedures did Lauren have?}\label{what-procedures-did-lauren-have}}
+\addcontentsline{toc}{subsubsection}{What procedures did Lauren have?}
 
 From her description we know she had an ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE\_OCCURRENCE table:
 
@@ -2075,11 +2099,15 @@ Two closely-integrated tools have been developed to support the ETL design proce
 
 To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the \href{https://github.com/OHDSI/WhiteRabbit}{White Rabbit} tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the \href{https://github.com/OHDSI/CommonDataModel}{OMOP CDM}. White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub \footnote{\url{https://github.com/OHDSI/WhiteRabbit}{]}.}. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
-\textbf{Scope and Purpose}
+\hypertarget{scope-and-purpose}{%
+\subsubsection*{Scope and Purpose}\label{scope-and-purpose}}
+\addcontentsline{toc}{subsubsection}{Scope and Purpose}
 
 White Rabbit's main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon RedShift). The scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.
 
-\textbf{Process Overview}
+\hypertarget{process-overview}{%
+\subsubsection*{Process Overview}\label{process-overview}}
+\addcontentsline{toc}{subsubsection}{Process Overview}
 
 The typical sequence for using the software to scan source data:
 
@@ -2096,7 +2124,9 @@ The typical sequence for using the software to scan source data:
   White Rabbit creates an export of information about the source data.
 \end{enumerate}
 
-\textbf{Setting a Working Folder}
+\hypertarget{setting-a-working-folder}{%
+\subsubsection*{Setting a Working Folder}\label{setting-a-working-folder}}
+\addcontentsline{toc}{subsubsection}{Setting a Working Folder}
 
 After downloading and installing the White Rabbit application, the first thing you need to do is set a working folder. Any files that White Rabbit creates will be exported to this local folder. Use the ``Pick Folder'' button shown in Figure \ref{fig:WhiteRabbitLocation} to navigate in your local environment where you would like the scan document to go.
 
@@ -2104,11 +2134,15 @@ After downloading and installing the White Rabbit application, the first thing y
 \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitLocation} \caption{The "Pick Folder" button allows the specification of a working folder for the White Rabbit application.}\label{fig:WhiteRabbitLocation}
 \end{figure}
 
-\textbf{Connection to a Database}
+\hypertarget{connection-to-a-database}{%
+\subsubsection*{Connection to a Database}\label{connection-to-a-database}}
+\addcontentsline{toc}{subsubsection}{Connection to a Database}
 
 White Rabbit supports delimited text files and various database platforms. Hover the mouse over the various fields to get a description of what is required. More detailed information can be found in the manual.
 
-\textbf{Scanning the Tables in a Database}
+\hypertarget{scanning-the-tables-in-a-database}{%
+\subsubsection*{Scanning the Tables in a Database}\label{scanning-the-tables-in-a-database}}
+\addcontentsline{toc}{subsubsection}{Scanning the Tables in a Database}
 
 After connecting to a database, you can scan the tables contained therein. A scan generates a report containing information on the source data that can be used to help design the ETL. Using the Scan tab shown in Figure \ref{fig:WhiteRabbitAddTables} you can either select individual tables in the selected source database by clicking on ``Add'' (Ctrl + mouse click), or automatically select all tables in the database by clicking on ``Add all in DB''.
 
@@ -2130,7 +2164,9 @@ There are a few setting options as well with the scan:
 
 Once all settings are completed, press the ``Scan tables'' button. After the scan is completed the report will be written to the working folder.
 
-\textbf{Interpreting the Scan Report}
+\hypertarget{interpreting-the-scan-report}{%
+\subsubsection*{Interpreting the Scan Report}\label{interpreting-the-scan-report}}
+\addcontentsline{toc}{subsubsection}{Interpreting the Scan Report}
 
 Once the scan is complete, an Excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. Figure \ref{fig:ScanOverviewTab}. shows an example overview tab.
 
@@ -2151,11 +2187,15 @@ The report is powerful in understanding your source data by highlighting what ex
 
 With the White Rabbit scan in hand, we have a clear picture of the source data. We also know the full specification of the CDM. Now we need to define the logic to go from one to the other. This design activity requires thorough knowledge of both the source data and the CDM. The Rabbit-in-a-Hat tools that comes with the White Rabbit software is specifically designed to support a team of experts in these areas. In a typical setting, the ETL design team sits together in a room, while Rabbit-in-a-Hat is projected on a screen. In a first round, the table-to-table mappings can be collaboratively decided, after which field-to-field mappings can be designed, while defining the logic by which values will be transformed. \index{Rabbit-In-A-Hat} \index{ETL design|see {Rabbit-In-A-Hat}}
 
-\textbf{Scope and purpose}
+\hypertarget{scope-and-purpose-1}{%
+\subsubsection*{Scope and purpose}\label{scope-and-purpose-1}}
+\addcontentsline{toc}{subsubsection}{Scope and purpose}
 
 Rabbit-In-a-Hat is designed to read and display a White Rabbit scan document. White Rabbit generates information about the source data while Rabbit-In-a-Hat uses that information and through a graphical user interface to allow a user to connect source data to tables and columns within the CDM. Rabbit-In-a-Hat generates documentation for the ETL process, it does not generate code to create an ETL.
 
-\textbf{Process Overview}
+\hypertarget{process-overview-1}{%
+\subsubsection*{Process Overview}\label{process-overview-1}}
+\addcontentsline{toc}{subsubsection}{Process Overview}
 
 The typical sequence for using this software to generate documentation of an ETL:
 
@@ -2174,11 +2214,15 @@ The typical sequence for using this software to generate documentation of an ETL
   Save Rabbit-In-a-Hat work and export to a MS Word document.
 \end{enumerate}
 
-\textbf{Writing ETL Logic}
+\hypertarget{writing-etl-logic}{%
+\subsubsection*{Writing ETL Logic}\label{writing-etl-logic}}
+\addcontentsline{toc}{subsubsection}{Writing ETL Logic}
 
 Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea\footnote{Synthea\textsuperscript{TM} is a patient generator that aims to model real patients. Data are created based on parameters passed to the application.The structure of the data can be found here: \url{https://github.com/synthetichealth/synthea/wiki}.} database might look during conversion.
 
-\textbf{General Flow of an ETL}
+\hypertarget{general-flow-of-an-etl}{%
+\subsubsection*{General Flow of an ETL}\label{general-flow-of-an-etl}}
+\addcontentsline{toc}{subsubsection}{General Flow of an ETL}
 
 Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION\_OCCURRENCE, DRUG\_EXPOSURE, PROCEDURE\_OCCURRENCE, etc.) refers to the PERSON table by way of the person\_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION\_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION\_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION\_PERIOD tables are done the dimensional tables like PROVIDER, CARE\_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clinical tables is VISIT\_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person's patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.
 
@@ -2189,7 +2233,8 @@ Since the CDM is a person-centric model it is always a good idea to start mappin
 It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct VISIT\_OCCURRENCE\_IDs to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). Intermediate tables are 100\% allowed and encouraged. What is discouraged is the persistence and reliance on these intermediate tables once the conversion is complete.
 
 \hypertarget{mapping-example-person-table}{%
-\subsubsection{Mapping Example: Person table}\label{mapping-example-person-table}}
+\subsubsection*{Mapping Example: Person table}\label{mapping-example-person-table}}
+\addcontentsline{toc}{subsubsection}{Mapping Example: Person table}
 
 The Synthea data structure contains 20 columns in the patients table but not all were needed to populate the PERSON table, as seen in Figure \ref{fig:syntheaPerson}. This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver's license number, and passport number.
 
@@ -2395,11 +2440,15 @@ Unfortunately, sometimes the source data uses coding systems that are not in the
 
 Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate \footnote{\url{https://translate.google.com/}} often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub \footnote{\url{https://github.com/OHDSI/Usagi}}. \index{Usagi} \index{source code mapping|see {Usagi}}
 
-\textbf{Scope and purpose}
+\hypertarget{scope-and-purpose-2}{%
+\subsubsection*{Scope and purpose}\label{scope-and-purpose-2}}
+\addcontentsline{toc}{subsubsection}{Scope and purpose}
 
 Source codes that need mapping are loaded into the Usagi (if the codes are not in English additional translations columns are needed). A term similarity approach is used to connect source codes to Vocabulary concepts. However, these code connections need to be manually reviewed and Usagi provides an interface to facilitate that. Usagi will only propose concepts that are marked as Standard concepts in the Vocabulary.
 
-\textbf{Process Overview}
+\hypertarget{process-overview-2}{%
+\subsubsection*{Process Overview}\label{process-overview-2}}
+\addcontentsline{toc}{subsubsection}{Process Overview}
 
 The typical sequence for using this software is:
 
@@ -2416,7 +2465,9 @@ The typical sequence for using this software is:
   Export final map generated by Usagi into the Vocabulary's SOURCE\_TO\_CONCEPT\_MAP.
 \end{enumerate}
 
-\textbf{Importing Source Codes into Usagi}
+\hypertarget{importing-source-codes-into-usagi}{%
+\subsubsection*{Importing Source Codes into Usagi}\label{importing-source-codes-into-usagi}}
+\addcontentsline{toc}{subsubsection}{Importing Source Codes into Usagi}
 
 Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g.\,dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g.~you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that.
 
@@ -2449,7 +2500,9 @@ You can also use other sources of information than the ATC code to restrict as w
 
 Once all your settings are finalized, click the ``Import'' button to import the file. The file import will take a few minutes as it is running the term similarity algorithm to map source codes.
 
-\textbf{Reviewing Source Code to Vocabulary Concept Maps}
+\hypertarget{reviewing-source-code-to-vocabulary-concept-maps}{%
+\subsubsection*{Reviewing Source Code to Vocabulary Concept Maps}\label{reviewing-source-code-to-vocabulary-concept-maps}}
+\addcontentsline{toc}{subsubsection}{Reviewing Source Code to Vocabulary Concept Maps}
 
 Once you have imported your input file of source codes, the mapping process begins. In Figure \ref{fig:usagiOverview}, you see the Usagi screen is made up of 3 main sections: an overview table, the selected mapping section, and place to perform searches. Note that in any of the tables, you can right-click to select the columns that are shown or hidden to reduce the visual complexity.
 
@@ -2457,13 +2510,17 @@ Once you have imported your input file of source codes, the mapping process begi
 \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/usagiOverview} \caption{Usagi source code input screen.}\label{fig:usagiOverview}
 \end{figure}
 
-\textbf{Approving a Suggested Mapping}
+\hypertarget{approving-a-suggested-mapping}{%
+\subsubsection*{Approving a Suggested Mapping}\label{approving-a-suggested-mapping}}
+\addcontentsline{toc}{subsubsection}{Approving a Suggested Mapping}
 
 The ``Overview Table'' shows the current mapping of source codes to concepts. Right after importing source codes, this mapping contains the automatically generated suggested mappings based on term similarity and any search options. In the example in Figure \ref{fig:usagiOverview}, the English names of Dutch condition codes were mapped to standard concepts in the Condition domain, because the user restricted the search to that domain. Usagi compared the source code descriptions to concept names and synonyms to find the best match. Because the user had selected ``Include source terms'' Usagi also considered the names and synonyms of all source concepts in the vocabulary that map to a particular concept. If Usagi is unable to make a mapping, it will map to the CONCEPT\_ID = 0.
 
 It is suggested that someone with experience with coding systems help map source codes to their associated standard vocabulary. That individual will work through code by code in the ``Overview Table'' to either accept the mapping Usagi has suggested or choose a new mapping. For example in Figure \ref{fig:usagiOverview} we see that the Dutch term ``Hoesten'' which was translated to the English term ``Cough''. Usagi used ``Cough'' and mapped it to the Vocabulary concept of ``4158493-C/O - cough''. There was a matching score of 0.58 associated to this matched pair (matching scores are typically 0 to 1 with 1 being a confident match), a score of 0.58 signifies that Usagi is not very sure of how well it has mapped this Dutch code to SNOMED. Let us say in this case, we are okay with this mapping, we can approve it by hitting the green ``Approve'' button in the bottom right hand portion of the screen.
 
-\textbf{Searching for a New Mapping}
+\hypertarget{searching-for-a-new-mapping}{%
+\subsubsection*{Searching for a New Mapping}\label{searching-for-a-new-mapping}}
+\addcontentsline{toc}{subsubsection}{Searching for a New Mapping}
 
 There will be cases where Usagi suggests a map and the user will be left to either try to find a better mapping or set the map to no concept (CONCEPT\_ID = 0). In the example given in Figure \ref{fig:usagiOverview}, we see for the Dutch Term ``Hoesten'', which was translated to ``Cough''. Usagi's suggestion was restricted by the concept identified in our automatically derived mapping from UMLS, and the result might not be optimal. In the Search Facility, we could search for other concepts using either the actual term itself or a search box query.
 
@@ -2473,7 +2530,9 @@ To continue our example, suppose we used the search term ``Cough'' to see if we 
 
 When we apply these search criteria we find ``254761-Cough'' and feel this may be an appropriate Vocabulary concept to map to our Dutch code. In order to do that we can hit the ``Replace concept'' button, which you will see in the ``Selected Source Code'' section update, followed by the ``Approve'' button. There is also an ``Add concept'' button, this allows for multiple standardized Vocabulary concepts to map to one source code (e.g.\,some source codes may bundle multiple diseases together while the standardized vocabulary may not).
 
-\textbf{Concept information}
+\hypertarget{concept-information}{%
+\subsubsection*{Concept information}\label{concept-information}}
+\addcontentsline{toc}{subsubsection}{Concept information}
 
 When looking for appropriate concepts to map to, it is important to consider the ``social life'' of a concept. The meaning of a concept might depend partially on its place in the hierarchy, and sometimes there are ``orphan concepts'' in the vocabulary with few or no hierarchical relationships, which would be ill-suited as target concepts. Usagi will often report the number of parents and children a concept has, and it also possible to show more information by pressing ALT + C or selecting view --\textgreater{} Concept information in the top menu bar.
 
@@ -2487,7 +2546,9 @@ Continue to move through this process, code by code, until all codes have been c
 
 It is possible to add comments to mappings, which could be used to document why a mapping decision was made.
 
-\textbf{Best Practices}
+\hypertarget{best-practices}{%
+\subsubsection*{Best Practices}\label{best-practices}}
+\addcontentsline{toc}{subsubsection}{Best Practices}
 
 \begin{itemize}
 \tightlist
@@ -2501,7 +2562,9 @@ It is possible to add comments to mappings, which could be used to document why 
   It is important to consider the context of a concept, specifically its parents and children.
 \end{itemize}
 
-\textbf{Export the Usagi Map Created}
+\hypertarget{export-the-usagi-map-created}{%
+\subsubsection*{Export the Usagi Map Created}\label{export-the-usagi-map-created}}
+\addcontentsline{toc}{subsubsection}{Export the Usagi Map Created}
 
 Once you have created your map within USAGI, the best way to use it moving forward is to export it and append it to the Vocabulary SOURCE\_TO\_CONCEPT\_MAP table.
 
@@ -2509,7 +2572,9 @@ To export your mappings, go to File --\textgreater{} Export source\_to\_concept\
 
 After selecting the SOURCE\_VOCABULARY\_ID, you give your export CSV a name and save to location. The export CSV structure is in that of the SOURCE\_TO\_CONCEPT\_MAP table. This mapping could be appended to the OMOP Vocabulary's SOURCE\_TO\_CONCEPT\_MAP table. It would also make sense to append a single row to the VOCABULARY table defining the SOURCE\_VOCABULARY\_ID you defined in the step above. Finally, it is important to note that only mappings with the ``Approved'' status will be exported into the CSV file; the mapping needs to be completed in USAGI in order to export it.
 
-\textbf{Updating an Usagi mapping}
+\hypertarget{updating-an-usagi-mapping}{%
+\subsubsection*{Updating an Usagi mapping}\label{updating-an-usagi-mapping}}
+\addcontentsline{toc}{subsubsection}{Updating an Usagi mapping}
 
 Often a mapping is not a one-time effort. As data is updated perhaps new source codes are added, and the vocabulary is updated regularly, perhaps requiring an update of the mapping.
 
@@ -3200,7 +3265,9 @@ Below we describe how to install each of these in a Windows environment.
 In Windows, both R and Java come in 32-bit and 64-bits architectures. If you install R in both architectures, you \textbf{must} also install Java in both architectures. It is recommended to only install the 64-bit version of R.
 \EndKnitrBlock{rmdimportant}
 
-\textbf{Installing R}
+\hypertarget{installing-r}{%
+\subsubsection*{Installing R}\label{installing-r}}
+\addcontentsline{toc}{subsubsection}{Installing R}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -3246,7 +3313,9 @@ In Windows, both R and Java come in 32-bit and 64-bits architectures. If you ins
 
 Once completed, you should be able to select R from your Start Menu.
 
-\textbf{Installing RTools}
+\hypertarget{installing-rtools}{%
+\subsubsection*{Installing RTools}\label{installing-rtools}}
+\addcontentsline{toc}{subsubsection}{Installing RTools}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -3256,7 +3325,9 @@ Once completed, you should be able to select R from your Start Menu.
   After downloading has completed run the installer. Select the default options everywhere.
 \end{enumerate}
 
-\textbf{Installing RStudio}
+\hypertarget{installing-rstudio}{%
+\subsubsection*{Installing RStudio}\label{installing-rstudio}}
+\addcontentsline{toc}{subsubsection}{Installing RStudio}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -3282,7 +3353,9 @@ Once completed, you should be able to select R from your Start Menu.
   After downloading, start the installer, and use the default options everywhere.
 \end{enumerate}
 
-\textbf{Installing Java}
+\hypertarget{installing-java}{%
+\subsubsection*{Installing Java}\label{installing-java}}
+\addcontentsline{toc}{subsubsection}{Installing Java}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -3308,7 +3381,9 @@ Once completed, you should be able to select R from your Start Menu.
   After downloading just run the installer.
 \end{enumerate}
 
-\textbf{Verifying the installation}
+\hypertarget{verifying-the-installation}{%
+\subsubsection*{Verifying the installation}\label{verifying-the-installation}}
+\addcontentsline{toc}{subsubsection}{Verifying the installation}
 
 You should now be ready to go, but we should make sure. Start RStudio, and type
 
@@ -3438,7 +3513,9 @@ SqlRender supports a wide array of technical platforms including traditional dat
 
 One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the \texttt{render()} function. \index{SqlRender!parameterization}
 
-\textbf{Substituting parameter values}
+\hypertarget{substituting-parameter-values}{%
+\subsubsection*{Substituting parameter values}\label{substituting-parameter-values}}
+\addcontentsline{toc}{subsubsection}{Substituting parameter values}
 
 The \texttt{@} character can be used to indicate parameter names that need to be exchanged for actual parameter values when rendering. In the following example, a variable called \texttt{a} is mentioned in the SQL. In the call to the render function the value of this parameter is defined:
 
@@ -3479,7 +3556,9 @@ The parameter values can be numbers, strings, booleans, as well as vectors, whic
 ## [1] "SELECT * FROM concept WHERE concept_id IN (123,234,345);"
 \end{verbatim}
 
-\textbf{If-then-else}
+\hypertarget{if-then-else}{%
+\subsubsection*{If-then-else}\label{if-then-else}}
+\addcontentsline{toc}{subsubsection}{If-then-else}
 
 Sometimes blocks of codes need to be turned on or off based on the values of one or more parameters. This is done using the \texttt{\{Condition\}\ ?\ \{if\ true\}\ :\ \{if\ false\}} syntax. If the \emph{condition} evaluates to true or 1, the \emph{if true} block is used, else the \emph{if false} block is shown (if present).
 
@@ -3564,7 +3643,9 @@ There are limits to what SQL functions and constructs can be translated properly
 
 Despite our best efforts, there are quite a few things to consider when writing OHDSI SQL that will run without error on all supported platforms. In what follows we discuss these considerations in detail.
 
-\textbf{Functions and structures supported by translate}
+\hypertarget{functions-and-structures-supported-by-translate}{%
+\subsubsection*{Functions and structures supported by translate}\label{functions-and-structures-supported-by-translate}}
+\addcontentsline{toc}{subsubsection}{Functions and structures supported by translate}
 
 These SQL Server functions have been tested and were found to be translated correctly to the various dialects:\index{SqlRender!supported functions}
 
@@ -3661,11 +3742,15 @@ Similarly, many SQL syntax structures are supported. Here is a non-exhaustive li
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{String concatenation}
+\hypertarget{string-concatenation}{%
+\subsubsection*{String concatenation}\label{string-concatenation}}
+\addcontentsline{toc}{subsubsection}{String concatenation}
 
 String concatenation is one area where SQL Server is less specific than other dialects. In SQL Server, one would write \texttt{SELECT\ first\_name\ +\ \textquotesingle{}\ \textquotesingle{}\ +\ last\_name\ AS\ full\_name\ FROM\ table}, but this should be \texttt{SELECT\ first\_name\ \textbar{}\textbar{}\ \textquotesingle{}\ \textquotesingle{}\ \textbar{}\textbar{}\ last\_name\ AS\ full\_name\ FROM\ table} in PostgreSQL and Oracle. SqlRender tries to guess when values that are being concatenated are strings. In the example above, because we have an explicit string (the space surrounded by single quotation marks), the translation will be correct. However, if the query had been \texttt{SELECT\ first\_name\ +\ last\_name\ AS\ full\_name\ FROM\ table}, SqlRender would have had no clue the two fields were strings, and would incorrectly leave the plus sign. Another clue that a value is a string is an explicit cast to VARCHAR, so \texttt{SELECT\ last\_name\ +\ CAST(age\ AS\ VARCHAR(3))\ AS\ full\_name\ FROM\ table} would also be translated correctly. To avoid ambiguity altogether, it is probable best to use the \texttt{CONCAT()} function to concatenate two or more strings.
 
-\textbf{Table aliases and the AS keyword}
+\hypertarget{table-aliases-and-the-as-keyword}{%
+\subsubsection*{Table aliases and the AS keyword}\label{table-aliases-and-the-as-keyword}}
+\addcontentsline{toc}{subsubsection}{Table aliases and the AS keyword}
 
 Many SQL dialects allow the use of the \texttt{AS} keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:
 
@@ -3691,7 +3776,9 @@ Many SQL dialects allow the use of the \texttt{AS} keyword when defining a table
 
 However, Oracle will throw an error when the \texttt{AS} keyword is used. In the above example, the first query will fail. It is therefore recommended to not use the \texttt{AS} keyword when aliasing tables. (Note: we can't make SqlRender handle this, because it can't easily distinguish between table aliases where Oracle doesn't allow \texttt{AS} to be used, and field aliases, where Oracle requires \texttt{AS} to be used.)
 
-\textbf{Temp tables}
+\hypertarget{temp-tables}{%
+\subsubsection*{Temp tables}\label{temp-tables}}
+\addcontentsline{toc}{subsubsection}{Temp tables}
 
 Temp tables can be very useful to store intermediate results, and when used correctly can dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they're only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by
 
@@ -3714,7 +3801,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.i3tc8g42children ;"
+## [1] "SELECT * FROM temp_schema.hq0d3m1tchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -3723,7 +3810,9 @@ Also note that because Oracle has a limit on table names of 30 characters. \text
 
 Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly \texttt{TRUNCATE} and \texttt{DROP} all temp tables once you're done with them to prevent orphan tables accumulating in the Oracle temp schema.
 
-\textbf{Implicit casts}
+\hypertarget{implicit-casts}{%
+\subsubsection*{Implicit casts}\label{implicit-casts}}
+\addcontentsline{toc}{subsubsection}{Implicit casts}
 
 One of the few points where SQL Server is less explicit than other dialects is that it allows implicit casts. For example, this code will work on SQL Server:
 
@@ -3756,7 +3845,9 @@ or
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Case sensitivity in string comparisons}
+\hypertarget{case-sensitivity-in-string-comparisons}{%
+\subsubsection*{Case sensitivity in string comparisons}\label{case-sensitivity-in-string-comparisons}}
+\addcontentsline{toc}{subsubsection}{Case sensitivity in string comparisons}
 
 Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of
 
@@ -3774,7 +3865,9 @@ it is preferred to use
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Schemas and databases}
+\hypertarget{schemas-and-databases}{%
+\subsubsection*{Schemas and databases}\label{schemas-and-databases}}
+\addcontentsline{toc}{subsubsection}{Schemas and databases}
 
 In SQL Server, tables are located in a schema, and schemas reside in a database. For example, \texttt{cdm\_data.dbo.person} refers to the \texttt{person} table in the \texttt{dbo} schema in the \texttt{cdm\_data} database. In other dialects, even though a similar hierarchy often exists they are used very differently. In SQL Server, there is typically one schema per database (often called \texttt{dbo}), and users can easily use data in different databases. On other platforms, for example in PostgreSQL, it is not possible to use data across databases in a single session, but there are often many schemas in a database. In PostgreSQL one could say that the equivalent of SQL Server's database is the schema.
 
@@ -3790,7 +3883,9 @@ where on SQL Server we can include both database and schema names in the value: 
 
 The one situation where this will fail is the \texttt{USE} command, since \texttt{USE\ cdm\_data.dbo;} will throw an error. It is therefore preferred not to use the \texttt{USE} command, but always specify the database / schema where a table is located.
 
-\textbf{Debugging parameterized SQL}
+\hypertarget{debugging-parameterized-sql}{%
+\subsubsection*{Debugging parameterized SQL}\label{debugging-parameterized-sql}}
+\addcontentsline{toc}{subsubsection}{Debugging parameterized SQL}
 
 Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL. \index{SqlRender!debugging}
 
@@ -4496,7 +4591,9 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 \hypertarget{exercises-1}{%
 \section{Exercises}\label{exercises-1}}
 
-\textbf{Prerequisites}
+\hypertarget{prerequisites}{%
+\subsubsection*{Prerequisites}\label{prerequisites}}
+\addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
 
@@ -5349,7 +5446,8 @@ Here we demonstrate how to use ATLAS to perform large-scale cohort characterizat
 A characterization analysis requires at least one cohort and at least one feature to characterize. For this example, we will use two cohorts. The first cohort will define persons initiating a treatment for hypertension as their index date with at least one diagnosis of hypertension in the year prior. We will also require that persons in this cohort have at least one year of observation after initiating the hypertensive drug (Appendix \ref{HTN1yrFO}). The second cohort is identical to the first cohort described with a requirement having at least three years of observation instead of one (Appendix \ref{HTN3yrFO}).
 
 \hypertarget{cohort-definitions-1}{%
-\subsubsection{Cohort definitions}\label{cohort-definitions-1}}
+\subsubsection*{Cohort definitions}\label{cohort-definitions-1}}
+\addcontentsline{toc}{subsubsection}{Cohort definitions}
 
 \begin{figure}
 
@@ -5363,7 +5461,8 @@ A characterization analysis requires at least one cohort and at least one featur
 We assume the cohorts have already been created in ATLAS as described in Chapter \ref{Cohorts}. Click on \includegraphics{images/Characterization/atlasImportButton.png} and select the cohorts as shown in figure \ref{fig:atlasCharacterizationCohortSelection}. Next, we'll define the features to use for characterizing these two cohorts.
 
 \hypertarget{feature-selection}{%
-\subsubsection{Feature Selection}\label{feature-selection}}
+\subsubsection*{Feature Selection}\label{feature-selection}}
+\addcontentsline{toc}{subsubsection}{Feature Selection}
 
 ATLAS comes with nearly 100 preset feature analyses that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Each of these preset feature analyses perform aggregation and summarization functions on clinical observations for the selected target cohorts. These calculations provide potentially thousands of features to describe the cohorts baseline and post-index characteristics. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section. \index{feature analyses}
 
@@ -5393,7 +5492,8 @@ The figure above shows the list of features selected along with a description of
 \end{itemize}
 
 \hypertarget{subgroup-analysis}{%
-\subsubsection{Subgroup analysis}\label{subgroup-analysis}}
+\subsubsection*{Subgroup analysis}\label{subgroup-analysis}}
+\addcontentsline{toc}{subsubsection}{Subgroup analysis}
 
 What if we were interested in creating different characteristics based on gender? We can use the ``subgroup analyses'' section to define new subgroups of interest to use in our characterization.
 
@@ -6395,7 +6495,9 @@ A study can have one or more comparisons. Click on ``Add Comparison,'' which wil
 
 Note that we can select multiple outcomes for a target-comparator pair. Each outcome will be treated independently, and will result in a separate analysis.
 
-\textbf{Negative control outcomes}
+\hypertarget{negative-control-outcomes}{%
+\subsubsection*{Negative control outcomes}\label{negative-control-outcomes}}
+\addcontentsline{toc}{subsubsection}{Negative control outcomes}
 
 Negative control outcomes are outcomes that are not believed to be caused by either the target or the comparator, and where therefore the true hazard ratio equals 1. Ideally, we would have proper cohort definitions for each outcome cohort. However, typically, we only have a concept set, with one concept per negative control outcome, and some standard logic to turn these into outcome cohorts. Here we assume the concept set has already been created as described in Chapter \ref{MethodValidity} and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure \ref{fig:ncConceptSet} shows the negative control concept set used for this study.
 
@@ -6408,11 +6510,15 @@ Negative control outcomes are outcomes that are not believed to be caused by eit
 \caption{Negative Control concept set.}\label{fig:ncConceptSet}
 \end{figure}
 
-\textbf{Concepts to include}
+\hypertarget{concepts-to-include}{%
+\subsubsection*{Concepts to include}\label{concepts-to-include}}
+\addcontentsline{toc}{subsubsection}{Concepts to include}
 
 When selecting concept to include, we can specify which covariates we would like to generate, for example to use in a propensity model. When specifying covariates here, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the regularized regression build a model that balances all covariates. The only reason we might want to specify particular covariates is to replicate an existing study that manually picked covariates. These inclusions can be specified in this comparison section or in the analysis section, because sometimes they pertain to a specific comparison (e.g.~know confounders in a comparison), or sometimes they pertain to an analysis (e.g.~when evaluating a particular covariate selection strategy).
 
-\textbf{Concepts to exclude}
+\hypertarget{concepts-to-exclude}{%
+\subsubsection*{Concepts to exclude}\label{concepts-to-exclude}}
+\addcontentsline{toc}{subsubsection}{Concepts to exclude}
 
 Rather than specifying which concepts to include, we can instead specify concepts to \emph{exclude}. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, as well as any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \ref{fig:covsToExclude} shows we select a concept set that includes all these concepts, including their descendants.
 
@@ -6441,7 +6547,9 @@ After selecting the negative controls and covariates to exclude, the lower half 
 
 After closing the comparisons dialog we can click on ``Add Analysis Settings.'' In the box labeled ``Analysis Name,'' we can give the analysis a unique name that is easy to remember and locate in the future. For example, we could set the name to ``Propensity score matching.''
 
-\textbf{Study population}
+\hypertarget{study-population}{%
+\subsubsection*{Study population}\label{study-population}}
+\addcontentsline{toc}{subsubsection}{Study population}
 
 There are a wide range of options to specify the study population, which is the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts in the cohort definition tool. One reason for using the options in Estimation instead of in the cohort definition is re-usability; we can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).
 
@@ -6485,7 +6593,9 @@ Our choices for our example study are shown in Figure \ref{fig:studyPopulation}.
 \caption{Study population settings.}\label{fig:studyPopulation}
 \end{figure}
 
-\textbf{Covariate settings}
+\hypertarget{covariate-settings}{%
+\subsubsection*{Covariate settings}\label{covariate-settings}}
+\addcontentsline{toc}{subsubsection}{Covariate settings}
 
 Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model (the Cox proporitional hazards model in this case). If we \textbf{click to view details} of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.
 
@@ -6502,7 +6612,9 @@ Figure \ref{fig:covariateSettings} shows our choices for this study. Note that w
 \caption{Covariate settings.}\label{fig:covariateSettings}
 \end{figure}
 
-\textbf{Time at risk}
+\hypertarget{time-at-risk-2}{%
+\subsubsection*{Time at risk}\label{time-at-risk-2}}
+\addcontentsline{toc}{subsubsection}{Time at risk}
 
 Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to one day after cohort start, so one day after treatment initiation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation if we do not believe it biologically plausible they can be caused by the drug.
 
@@ -6523,7 +6635,9 @@ A golden rule in designing a cohort study is to never use information that falls
 \caption{Time-at-risk settings.}\label{fig:timeAtRisk}
 \end{figure}
 
-\textbf{Propensity score adjustment}
+\hypertarget{propensity-score-adjustment}{%
+\subsubsection*{Propensity score adjustment}\label{propensity-score-adjustment}}
+\addcontentsline{toc}{subsubsection}{Propensity score adjustment}
 
 We can opt to \textbf{trim} the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score falls outside the range we specify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW. \index{propensity score!trimming}
 
@@ -6558,7 +6672,9 @@ Figure \ref{fig:psSettings} shows our choices for this study. Note that we selec
 \caption{Propensity score adjustment settings.}\label{fig:psSettings}
 \end{figure}
 
-\textbf{Outcome model settings}
+\hypertarget{outcome-model-settings}{%
+\subsubsection*{Outcome model settings}\label{outcome-model-settings}}
+\addcontentsline{toc}{subsubsection}{Outcome model settings}
 
 First, we need to \textbf{specify the statistical model we will use to estimate the relative risk of the outcome between target and comparator cohorts}. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \ref{CohortMethod}. For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify \textbf{whether the regression should be conditioned on the strata}. One way to understand conditioning is to imagine a separate estimate is produced in each stratum, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable-ratio matching it is required. \index{conditioned model} \index{stratified model|see {conditioned model}}
 
@@ -6584,7 +6700,9 @@ Figure \ref{fig:outcomeModelSettings} shows our choices for this study. Because 
 
 As described in Chapter \ref{MethodValidity}, negative and positive controls should be included in our study to evaluate the operating characteristics, and perform empirical calibration.
 
-\textbf{Negative control outcome cohort definition}
+\hypertarget{negative-control-outcome-cohort-definition}{%
+\subsubsection*{Negative control outcome cohort definition}\label{negative-control-outcome-cohort-definition}}
+\addcontentsline{toc}{subsubsection}{Negative control outcome cohort definition}
 
 In Section \ref{ComparisonSettings} we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic with three choices. The first choice is whether to \textbf{use all occurrences} or just the \textbf{first occurrence} of the concept. The second choice determines \textbf{whether occurrences of descendant concepts should be considered}. For example, occurrences of the descendant ``ingrown nail of foot'' can also be counted as an occurrence of the ancestor ``ingrown nail.'' The third choice specifies which domains should be considered when looking for the concepts.
 
@@ -6597,7 +6715,9 @@ In Section \ref{ComparisonSettings} we selected a concept set representing the n
 \caption{Negative control outcome cohort definition settings.}\label{fig:ncSettings}
 \end{figure}
 
-\textbf{Positive control synthesis}
+\hypertarget{positive-control-synthesis}{%
+\subsubsection*{Positive control synthesis}\label{positive-control-synthesis}}
+\addcontentsline{toc}{subsubsection}{Positive control synthesis}
 
 In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \ref{MethodValidity}. We can choose to \textbf{perform positive control synthesis}. If ``yes'', we must choose the \textbf{model type}, currently being ``Poisson'' and ``surival''. Since we use a survival (Cox) model in our estimation study, we should choose ``survival''. We define the time-at-risk model for the positive control synthesis to be the same as in our estimation settings, and similarly mimic the choices for the \textbf{minimum required continuous observation prior to exposure}, \textbf{should only the first exposure be included}, \textbf{should only the first outcome be included}, as well as \textbf{remove people with prior outcomes}. Figure \ref{fig:outcomeModelSettings} shows the settings for the positive control synthesis.
 
@@ -6741,7 +6861,9 @@ Creating the \texttt{cohortMethodData} file can take considerable computing time
 
 We can use the \texttt{loadCohortMethodData()} function to load the data in a future session.
 
-\textbf{Defining new users}
+\hypertarget{defining-new-users}{%
+\subsubsection*{Defining new users}\label{defining-new-users}}
+\addcontentsline{toc}{subsubsection}{Defining new users}
 
 Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior to first use) is used to increase the probability that it is truly first use. When using the CohortMethod package, you can enforce the necessary requirements for new use in three ways:
 
@@ -7618,7 +7740,9 @@ External validation aims to assess model performance on data from another databa
 \hypertarget{performance}{%
 \subsection{Performance Metrics}\label{performance}}
 
-\textbf{Threshold measures}
+\hypertarget{threshold-measures}{%
+\subsubsection*{Threshold measures}\label{threshold-measures}}
+\addcontentsline{toc}{subsubsection}{Threshold measures}
 
 A prediction model assigns a value between 0 and 1 for each patient corresponding to the risk of the patient having the outcome during the time at risk. A value of 0 means 0\% risk, a value of 0.5 means 50\% risk and a value of 1 means 100\% risk. Common metrics such as accuracy, sensitivity, specificity, positive predictive value can be calculated by first specifying a threshold that is used to classify patients as having the outcome or not during the time at risk. For example, given Table \ref{tab:tabletheorytab}, if we set the threshold as 0.5, patients 1, 3, 7 and 10 have a predicted risk greater than or equal to the threshold of 0.5 so they would be predicted to have the outcome. All other patients had a predicted risk less than 0.5, so they would be predicted to not have the outcome. \index{performance metrics} \index{accuracy} \index{sensitivity} \index{specificity} \index{positive predictive value}
 
@@ -7783,7 +7907,9 @@ The following threshold based metrics can be calculated:
 
 Note that these values can either decrease or increase if the threshold is lowered. Lowering the threshold of a classifier may increase the denominator by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase positive predictive value. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing positive predictive value. For sensitivity the denominator does not depend on the classifier threshold (\(TP+FN\) is a constant). This means that lowering the classifier threshold may increase sensitivity by increasing the number of true positive results. It is also possible that lowering the threshold may leave sensitivity unchanged, while the positive predictive value fluctuates.
 
-\textbf{Discrimination}
+\hypertarget{discrimination}{%
+\subsubsection*{Discrimination}\label{discrimination}}
+\addcontentsline{toc}{subsubsection}{Discrimination}
 
 Discrimination is the ability to assign a higher risk to patients who will experience the outcome during the time at risk. The Receiver Operating Characteristics (ROC) curve is created by plotting 1 -- specificity on the x-axis and sensitivity on the y-axis at all possible thresholds. An example ROC plot is presented later in this chapter in Figure \ref{fig:shinyROC}. The area under the receiver operating characteristic curve (AUC) gives an overall measure of discrimination where a value of 0.5 corresponds to randomly assigning the risk and a value of 1 means perfect discrimination. Most published prediction models obtain AUCs between 0.6-0.8. \index{AUC} \index{ROC} \index{discrimination}
 
@@ -7795,7 +7921,9 @@ The AUC provides a way to determine how different the predicted risk distributio
 
 For rare outcomes even a model with a high AUC may not be practical, because for every positive above a given threshold there could also be many negatives (i.e.~the positive predictive value will be low). Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a high false positive rate may be unwanted. When the outcome is rare another measure known as the area under the precision-recall curve (AUPRC) is therefore recommended. The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. \index{area under the precision-recall curve}
 
-\textbf{Calibration}
+\hypertarget{calibration}{%
+\subsubsection*{Calibration}\label{calibration}}
+\addcontentsline{toc}{subsubsection}{Calibration}
 
 Calibration is the ability of the model to assign the correct risk. For example, if the model assigned one hundred patients a risk of 10\% then ten of the patients should experience the outcome during the time at risk. If the model assigned 100 patients a risk of 80\% then eighty of the patients should experience the outcome during the time at risk. The calibration is generally calculated by partitioning the patients into deciles based on the predicted risk and in each group calculating the mean predicted risk and the fraction of the patients who experienced the outcome during the time at risk. We then plot these ten points (predicted risk on the y-axis and observed risk on the x-axis) and see whether they fall on the x = y line, indicating the model is well calibrated. An example calibration plot is presented later in this chapter in Figure \ref{fig:shinyCal}. We also fit a linear model using the points to calculate the intercept (which should be close to zero) and the gradient (which should be close to one). If the gradient is greater than one then the model is assigning a higher risk than the true risk and if the gradient is less than one the model is assigning a lower risk than the true risk. Note that we also implemented Smooth Calibration Curves in our R-package to better capture the non-linear relationship between predicted and observed risk. \index{calibration}
 
@@ -7919,7 +8047,9 @@ To select a target population cohort we need to have previously defined it in AT
 
 The analysis settings enable selection of the supervised learning algorithm, the covariates and population settings.
 
-\textbf{Model Settings}
+\hypertarget{model-settings}{%
+\subsubsection*{Model Settings}\label{model-settings}}
+\addcontentsline{toc}{subsubsection}{Model Settings}
 
 We can pick one or more supervised learning algorithms for model development. To add a supervised learning algorithms click on the ``Add Model Settings'' button. A dropdown containing all the models currently supported in the ATLAS interface will appear. We can select the supervised learning model we want to include in the study by clicking on the name in the dropdown menu. This will then show a view for that specific model, allowing the selection of the hyper-parameter values. If multiple values are provided, a grid search is performed across all possible combinations of values to select the optimal combination using cross-validation.
 
@@ -7934,7 +8064,9 @@ For our example we select gradient boosting machines, and set the hyper-paramete
 \caption{Gradient boosting machine settings}\label{fig:gbmSettings}
 \end{figure}
 
-\textbf{Covariate Settings}
+\hypertarget{covariate-settings-1}{%
+\subsubsection*{Covariate Settings}\label{covariate-settings-1}}
+\addcontentsline{toc}{subsubsection}{Covariate Settings}
 
 We have defined a set of standard covariates that can be extracted from the observational data in the CDM format. In the covariate settings view, it is possible to select which of the standard covariates to include. We can define different types of covariate settings, and each model will be created separately with each specified covariate setting.
 
@@ -8094,7 +8226,9 @@ The final option is whether to include commonly used risk scores as covariates. 
 \caption{Risk score covariate settings.}\label{fig:covariateSettings6}
 \end{figure}
 
-\textbf{Population Settings}
+\hypertarget{population-settings}{%
+\subsubsection*{Population Settings}\label{population-settings}}
+\addcontentsline{toc}{subsubsection}{Population Settings}
 
 The population settings is where addition inclusion criteria can be applied to the target population and is also where the time-at-risk is defined. To add a population setting into the study, click on the ``Add Population Settings'' button. This will open up the population setting view.
 
@@ -8432,7 +8566,7 @@ To generate and save all the evaluation plots to a folder run the following code
 The plots are described in more detail in Section \ref{performance}.
 
 \hypertarget{external-validation}{%
-\subsubsection{External validation}\label{external-validation}}
+\subsection{External validation}\label{external-validation}}
 
 We recommend to always perform external validation, i.e.~apply the final model on as much new datasets as feasible and evaluate its performance. Here we assume the data extraction has already been performed on a second database and stored in the \texttt{newData} folder. We load the model we previously fitted from the \texttt{model} folder:
 
@@ -8754,7 +8888,9 @@ For more details see the help page of the function.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\textbf{Prerequisites}
+\hypertarget{prerequisites-1}{%
+\subsubsection*{Prerequisites}\label{prerequisites-1}}
+\addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
 
@@ -9382,7 +9518,9 @@ The only potential orphan found that is actually used in the data is ``Angioneur
 \hypertarget{exercises-4}{%
 \section{Exercises}\label{exercises-4}}
 
-\textbf{Prerequisites}
+\hypertarget{prerequisites-2}{%
+\subsubsection*{Prerequisites}\label{prerequisites-2}}
+\addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, \href{https://github.com/OHDSI/Achilles}{ACHILLES}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
 
@@ -9512,7 +9650,9 @@ The process is as follows:
   In diagnostic predictive modeling we create a model that discriminates between those with the disease and those without the disease. For the PheValuator process, we use an extremely specific cohort definition, the ``xSpec'' cohort, to determine the cases for the models. The xSpec cohort uses a definition to find those with the disease with a very high probability of having the disease of interest. The xSpec cohort is may be defined as those subjects who have multiple condition code codes in their record for the health outcome of interest. For example, for atrial fibrillation, we may have subjects who have 10 or more codes for atrial fibrillation in their record. For MI, an acute outcome, we may use 5 occurrences of MI and include the requirement of having at least two occurrences from a hospital inpatient setting. For our non-cases, we exclude anybody from the data set who have any of the condition occurrences for the health outcome of interest. There are limitations to this method. It is possible that these xSpec cohort subjects may have may be more severe than other cases of the disease. It may also be that these subjects had longer observation time after initial diagnosis than the average patient. We use logistic regression to create these models, using the LASSO method.\citep{tibshirani_regression_1996} This method produces a parsimonious model. In so doing it removes many of the collinear covariates which may be present in many subjects. In the current version of our software we also do not include the temporality of events in the patient's record.
 \end{enumerate}
 
-\textbf{Practice of Phenotype Algorithm Validation}
+\hypertarget{practice-of-phenotype-algorithm-validation}{%
+\subsubsection*{Practice of Phenotype Algorithm Validation}\label{practice-of-phenotype-algorithm-validation}}
+\addcontentsline{toc}{subsubsection}{Practice of Phenotype Algorithm Validation}
 
 An example of the process to conduct a PA validation using chart review is provided by Cutrona and colleagues who validated their PA for MI for the US Food and Drug Administration's (FDA) Sentinel program.\citep{cutrona_validation_2013} The steps this group used to conduct the validation were as follows: \index{myocardial infarction}
 
@@ -10494,7 +10634,10 @@ The OHDSI Research Network is an international collaboration of researchers seek
 OHDSI is open network, inviting healthcare institutions across the globe with active patient data to join the network and convert data to the OMOP CDM. As OMOP data conversions are complete, collaborators are invited to report site information in the Data Network census maintained by the OHDSI Program Manager (\href{mailto:beaton@ohdsi.org}{\nolinkurl{beaton@ohdsi.org}}). Each OHDSI network site participates voluntarily. There are no hard obligations. Each site opts-in to each respective network study. In each study, data remains at the site behind a firewall. No data pooling across network sites. Only aggregate results are shared.
 
 \BeginKnitrBlock{rmdimportant}
-\textbf{Benefits of Joining the OHDSI Network}
+\hypertarget{benefits-of-joining-the-ohdsi-network}{%
+\subsubsection*{Benefits of Joining the OHDSI Network}\label{benefits-of-joining-the-ohdsi-network}}
+\addcontentsline{toc}{subsubsection}{Benefits of Joining the OHDSI Network}
+
 Unlock the power of institutional data: Transforming institutional EHR data in the OMOP Common Data Model enables clinical research on populations of your patients, something EHR systems don't support.
 Access to free tools: OHDSI publishes free, open source tools for data characterization and analytics (e.g.~browsing the clinical concepts, defining and characterizing cohorts, running Population-Level Estimation and Patient-Level Prediction studies).
 Participate in a premier research community: Author and publish network research, gain access to eminent leaders in global real-world evidence community.
@@ -10672,7 +10815,9 @@ This Appendix contains cohort definitions used throughout the book.
 \hypertarget{AceInhibitors}{%
 \section{ACE inhibitors}\label{AceInhibitors}}
 
-\textbf{Initial Event Cohort}
+\hypertarget{initial-event-cohort}{%
+\subsubsection*{Initial Event Cohort}\label{initial-event-cohort}}
+\addcontentsline{toc}{subsubsection}{Initial Event Cohort}
 
 People having any of the following:
 
@@ -10686,7 +10831,9 @@ with continuous observation of at least 365 days prior and 0 days after event in
 
 Limit qualifying cohort to: all events per person.
 
-\textbf{End Date Strategy}
+\hypertarget{end-date-strategy}{%
+\subsubsection*{End Date Strategy}\label{end-date-strategy}}
+\addcontentsline{toc}{subsubsection}{End Date Strategy}
 
 Custom Drug Era Exit Criteria
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
@@ -10701,11 +10848,15 @@ Use the era end date of \emph{ACE inhibitors} (Table \ref{tab:aceInhibitors})
   adding 0 days after exposure end
 \end{itemize}
 
-\textbf{Cohort Collapse Strategy}
+\hypertarget{cohort-collapse-strategy}{%
+\subsubsection*{Cohort Collapse Strategy}\label{cohort-collapse-strategy}}
+\addcontentsline{toc}{subsubsection}{Cohort Collapse Strategy}
 
 Collapse cohort by era with a gap size of 30 days.
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:aceInhibitors} ACE inhibitors}\tabularnewline
@@ -10733,7 +10884,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \hypertarget{AceInhibitorsMono}{%
 \section{New users of ACE inhibitors monotherapy}\label{AceInhibitorsMono}}
 
-\textbf{Initial Event Cohort}
+\hypertarget{initial-event-cohort-1}{%
+\subsubsection*{Initial Event Cohort}\label{initial-event-cohort-1}}
+\addcontentsline{toc}{subsubsection}{Initial Event Cohort}
 
 People having any of the following:
 
@@ -10745,7 +10898,9 @@ People having any of the following:
 
 with continuous observation of at least 365 days prior and 0 days after event index date, and limit initial events to: earliest event per person.
 
-\textbf{Inclusion Rules}
+\hypertarget{inclusion-rules}{%
+\subsubsection*{Inclusion Rules}\label{inclusion-rules}}
+\addcontentsline{toc}{subsubsection}{Inclusion Rules}
 
 Inclusion Criteria \#1: has hypertension diagnosis in 1 yr prior to treatment
 
@@ -10779,7 +10934,9 @@ Having all of the following criteria:
 
 Limit qualifying cohort to: earliest event per person.
 
-\textbf{End Date Strategy}
+\hypertarget{end-date-strategy-1}{%
+\subsubsection*{End Date Strategy}\label{end-date-strategy-1}}
+\addcontentsline{toc}{subsubsection}{End Date Strategy}
 
 Custom Drug Era Exit Criteria.
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
@@ -10794,11 +10951,15 @@ Use the era end date of \emph{ACE inhibitors} (Table \ref{tab:aceInhibitorsMono}
   adding 0 days after exposure end
 \end{itemize}
 
-\textbf{Cohort Collapse Strategy}
+\hypertarget{cohort-collapse-strategy-1}{%
+\subsubsection*{Cohort Collapse Strategy}\label{cohort-collapse-strategy-1}}
+\addcontentsline{toc}{subsubsection}{Cohort Collapse Strategy}
 
 Collapse cohort by era with a gap size of 0 days.
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-1}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-1}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:aceInhibitorsMono} ACE inhibitors}\tabularnewline
@@ -10911,7 +11072,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \hypertarget{Ami}{%
 \section{Acute myocardial infarction (AMI)}\label{Ami}}
 
-\textbf{Initial Event Cohort}
+\hypertarget{initial-event-cohort-2}{%
+\subsubsection*{Initial Event Cohort}\label{initial-event-cohort-2}}
+\addcontentsline{toc}{subsubsection}{Initial Event Cohort}
 
 People having any of the following:
 
@@ -10935,16 +11098,22 @@ Limit cohort of initial events to: all events per person.
 
 Limit qualifying cohort to: all events per person.
 
-\textbf{End Date Strategy}
+\hypertarget{end-date-strategy-2}{%
+\subsubsection*{End Date Strategy}\label{end-date-strategy-2}}
+\addcontentsline{toc}{subsubsection}{End Date Strategy}
 
 Date Offset Exit Criteria.
 This cohort defintion end date will be the index event's start date plus 7 days
 
-\textbf{Cohort Collapse Strategy}
+\hypertarget{cohort-collapse-strategy-2}{%
+\subsubsection*{Cohort Collapse Strategy}\label{cohort-collapse-strategy-2}}
+\addcontentsline{toc}{subsubsection}{Cohort Collapse Strategy}
 
 Collapse cohort by era with a gap size of 180 days.
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-2}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-2}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:ami} Inpatient or ER visit}\tabularnewline
@@ -10980,7 +11149,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \hypertarget{Angioedema}{%
 \section{Angioedema}\label{Angioedema}}
 
-\textbf{Initial Event Cohort}
+\hypertarget{initial-event-cohort-3}{%
+\subsubsection*{Initial Event Cohort}\label{initial-event-cohort-3}}
+\addcontentsline{toc}{subsubsection}{Initial Event Cohort}
 
 People having any of the following:
 
@@ -11005,15 +11176,21 @@ Limit cohort of initial events to: all events per person.
 
 Limit qualifying cohort to: all events per person.
 
-\textbf{End Date Strategy}
+\hypertarget{end-date-strategy-3}{%
+\subsubsection*{End Date Strategy}\label{end-date-strategy-3}}
+\addcontentsline{toc}{subsubsection}{End Date Strategy}
 
 This cohort defintion end date will be the index event's start date plus 7 days
 
-\textbf{Cohort Collapse Strategy}
+\hypertarget{cohort-collapse-strategy-3}{%
+\subsubsection*{Cohort Collapse Strategy}\label{cohort-collapse-strategy-3}}
+\addcontentsline{toc}{subsubsection}{Cohort Collapse Strategy}
 
 Collapse cohort by era with a gap size of 30 days.
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-3}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-3}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:angioedema} Angioedema}\tabularnewline
@@ -11048,7 +11225,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \hypertarget{ThiazidesMono}{%
 \section{New users of Thiazide-like diuretics monotherapy}\label{ThiazidesMono}}
 
-\textbf{Initial Event Cohort}
+\hypertarget{initial-event-cohort-4}{%
+\subsubsection*{Initial Event Cohort}\label{initial-event-cohort-4}}
+\addcontentsline{toc}{subsubsection}{Initial Event Cohort}
 
 People having any of the following:
 
@@ -11060,7 +11239,9 @@ People having any of the following:
 
 with continuous observation of at least 365 days prior and 0 days after event index date, and limit initial events to: earliest event per person.
 
-\textbf{Inclusion Rules}
+\hypertarget{inclusion-rules-1}{%
+\subsubsection*{Inclusion Rules}\label{inclusion-rules-1}}
+\addcontentsline{toc}{subsubsection}{Inclusion Rules}
 
 Inclusion Criteria \#1: has hypertension diagnosis in 1 yr prior to treatment
 
@@ -11094,7 +11275,9 @@ Having all of the following criteria:
 
 Limit qualifying cohort to: earliest event per person.
 
-\textbf{End Date Strategy}
+\hypertarget{end-date-strategy-4}{%
+\subsubsection*{End Date Strategy}\label{end-date-strategy-4}}
+\addcontentsline{toc}{subsubsection}{End Date Strategy}
 
 Custom Drug Era Exit Criteria.
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
@@ -11109,11 +11292,15 @@ Use the era end date of \emph{Thiazide or thiazide-like diuretic} (Table \ref{ta
   adding 0 days after exposure end
 \end{itemize}
 
-\textbf{Cohort Collapse Strategy}
+\hypertarget{cohort-collapse-strategy-4}{%
+\subsubsection*{Cohort Collapse Strategy}\label{cohort-collapse-strategy-4}}
+\addcontentsline{toc}{subsubsection}{Cohort Collapse Strategy}
 
 Collapse cohort by era with a gap size of 0 days.
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-4}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-4}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:thiazidesMono} Thiazide or thiazide-like diuretic}\tabularnewline
@@ -11220,7 +11407,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 \hypertarget{HTN1yrFO}{%
 \section{Patients initiating first-line therapy for hypertension}\label{HTN1yrFO}}
 
-\textbf{Initial Event Cohort}
+\hypertarget{initial-event-cohort-5}{%
+\subsubsection*{Initial Event Cohort}\label{initial-event-cohort-5}}
+\addcontentsline{toc}{subsubsection}{Initial Event Cohort}
 
 People having any of the following:
 
@@ -11232,7 +11421,9 @@ People having any of the following:
 
 with continuous observation of at least 365 days prior and 365 days after event index date, and limit initial events to: earliest event per person.
 
-\textbf{Inclusion Rules}
+\hypertarget{inclusion-rules-2}{%
+\subsubsection*{Inclusion Rules}\label{inclusion-rules-2}}
+\addcontentsline{toc}{subsubsection}{Inclusion Rules}
 
 Having all of the following criteria:
 
@@ -11247,15 +11438,21 @@ Having all of the following criteria:
 Limit cohort of initial events to: earliest event per person.
 Limit qualifying cohort to: earliest event per person.
 
-\textbf{End Date Strategy}
+\hypertarget{end-date-strategy-5}{%
+\subsubsection*{End Date Strategy}\label{end-date-strategy-5}}
+\addcontentsline{toc}{subsubsection}{End Date Strategy}
 
 No end date strategy selected. By default, the cohort end date will be the end of the observation period that contains the index event.
 
-\textbf{Cohort Collapse Strategy}
+\hypertarget{cohort-collapse-strategy-5}{%
+\subsubsection*{Cohort Collapse Strategy}\label{cohort-collapse-strategy-5}}
+\addcontentsline{toc}{subsubsection}{Cohort Collapse Strategy}
 
 Collapse cohort by era with a gap size of 0 days.
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-5}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-5}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:HTN1yrFO1stLine} First-line hypertension drugs}\tabularnewline
@@ -11393,7 +11590,9 @@ Same as \emph{cohort definition \ref{HTN1yrFO}} but with continuous observation 
 \hypertarget{ACEiUse}{%
 \section{ACE inhibitor use}\label{ACEiUse}}
 
-\textbf{Initial Event Cohort}
+\hypertarget{initial-event-cohort-6}{%
+\subsubsection*{Initial Event Cohort}\label{initial-event-cohort-6}}
+\addcontentsline{toc}{subsubsection}{Initial Event Cohort}
 
 People having any of the following:
 
@@ -11407,7 +11606,9 @@ with continuous observation of at least 0 days prior and 0 days after event inde
 
 Limit qualifying cohort to: all events per person.
 
-\textbf{End Date Strategy}
+\hypertarget{end-date-strategy-6}{%
+\subsubsection*{End Date Strategy}\label{end-date-strategy-6}}
+\addcontentsline{toc}{subsubsection}{End Date Strategy}
 
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
 
@@ -11421,11 +11622,15 @@ Use the era end date of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE})
   adding 0 days after exposure end
 \end{itemize}
 
-\textbf{Cohort Collapse Strategy}
+\hypertarget{cohort-collapse-strategy-6}{%
+\subsubsection*{Cohort Collapse Strategy}\label{cohort-collapse-strategy-6}}
+\addcontentsline{toc}{subsubsection}{Cohort Collapse Strategy}
 
 Collapse cohort by era with a gap size of 30 days.
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-6}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-6}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:ACEiUseACE} ACE inhibitors}\tabularnewline
@@ -11455,7 +11660,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{Angiotensin Receptor Blockers (ARBs)} (Table \ref{tab:ARBUseARBs}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-7}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-7}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:ARBUseARBs} Angiotensin Receptor Blockers (ARBs)}\tabularnewline
@@ -11483,7 +11690,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{Thiazide or thiazide-like diuretic} (Table \ref{tab:THZUseTHZ}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-8}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-8}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:THZUseTHZ} Thiazide or thiazide-like diuretic}\tabularnewline
@@ -11507,7 +11716,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{dihydropyridine Calcium Channel Blocker (dCCB)} (Table \ref{tab:dCCBUsedCBB}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-9}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-9}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:dCCBUsedCBB} Dihydropyridine Calcium channel blockers (dCCB)}\tabularnewline
@@ -11533,7 +11744,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{non-dihydropyridine Calcium channel blockers (ndCCB)} (Table \ref{tab:ndCCBUsendCCB}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-10}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-10}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:ndCCBUsendCCB} non-dihydropyridine Calcium channel blockers (ndCCB)}\tabularnewline
@@ -11555,7 +11768,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{Beta blockers} (Table \ref{tab:BBUseBB}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-11}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-11}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:BBUseBB} Beta blockers}\tabularnewline
@@ -11587,7 +11802,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{Diuretics - Loop} (Table \ref{tab:DLoopUseDLoops}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-12}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-12}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:DLoopUseDLoops} Diuretics - Loop}\tabularnewline
@@ -11610,7 +11827,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{Diuretics - potassium sparing} (Table \ref{tab:DPUseDPs}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-13}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-13}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:DPUseDPs} Diuretics - potassium sparing}\tabularnewline
@@ -11632,7 +11851,9 @@ Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
 
 Same as \emph{cohort definition \ref{ACEiUse}} with \emph{Alpha-1 blocker} (Table \ref{tab:A1BUseA1Bs}) in place of \emph{ACE inhibitors} (Table \ref{tab:ACEiUseACE}).
 
-\textbf{Concept Set Definitions}
+\hypertarget{concept-set-definitions-14}{%
+\subsubsection*{Concept Set Definitions}\label{concept-set-definitions-14}}
+\addcontentsline{toc}{subsubsection}{Concept Set Definitions}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:A1BUseA1Bs} Alpha-1 blocker}\tabularnewline
@@ -11849,7 +12070,9 @@ This Appendix contains suggested answers for the exercises in the book.
 \hypertarget{SqlAndRanswers}{%
 \section{SQL and R}\label{SqlAndRanswers}}
 
-\textbf{Exercise \ref{exr:exercisePeopleCount}}
+\hypertarget{exercise-refexrexercisepeoplecount}{%
+\subsubsection*{Exercise \ref{exr:exercisePeopleCount}}\label{exercise-refexrexercisepeoplecount}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exercisePeopleCount}}
 
 To compute the number of people we can simply query the PERSON table:
 
@@ -11869,7 +12092,9 @@ To compute the number of people we can simply query the PERSON table:
 ## 1         2694
 \end{verbatim}
 
-\textbf{Exercise \ref{exr:exerciseCelecoxibUsers}}
+\hypertarget{exercise-refexrexercisecelecoxibusers}{%
+\subsubsection*{Exercise \ref{exr:exerciseCelecoxibUsers}}\label{exercise-refexrexercisecelecoxibusers}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseCelecoxibUsers}}
 
 To compute the number of people with at least one prescription of celecoxib, we can query the DRUG\_EXPOSURE table. To find all drugs containing the ingredient celecoxib, we join to the CONCEPT\_ANCESTOR and CONCEPT tables:
 
@@ -11922,7 +12147,9 @@ Alternatively, we can use the DRUG\_ERA table, which is already rolled up to the
 ## 1         1844
 \end{verbatim}
 
-\textbf{Exercise \ref{exr:exerciseGiBleedsDuringCelecoxib}}
+\hypertarget{exercise-refexrexercisegibleedsduringcelecoxib}{%
+\subsubsection*{Exercise \ref{exr:exerciseGiBleedsDuringCelecoxib}}\label{exercise-refexrexercisegibleedsduringcelecoxib}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseGiBleedsDuringCelecoxib}}
 
 To compute the number of diagnoses during exposure we extend our previous query by joining to the CONDITION\_OCCURRENCE table. We join to the CONCEPT\_ANCESTOR table to find all condition concepts that imply a gastrointestinal haemorrhage:
 
@@ -11958,7 +12185,9 @@ Note that in this case it is essential to use the DRUG\_ERA table instead of the
 \hypertarget{DataQualityanswers}{%
 \section{Data Quality}\label{DataQualityanswers}}
 
-\textbf{Exercise \ref{exr:exerciseRunAchilles}}
+\hypertarget{exercise-refexrexerciserunachilles}{%
+\subsubsection*{Exercise \ref{exr:exerciseRunAchilles}}\label{exercise-refexrexerciserunachilles}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseRunAchilles}}
 
 To run ACHILLES:
 
@@ -11973,7 +12202,9 @@ To run ACHILLES:
 \end{Highlighting}
 \end{Shaded}
 
-\textbf{Exercise \ref{exr:exerciseViewHeel}}
+\hypertarget{exercise-refexrexerciseviewheel}{%
+\subsubsection*{Exercise \ref{exr:exerciseViewHeel}}\label{exercise-refexrexerciseviewheel}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseViewHeel}}
 
 To run extract the ACHILLES Heel issue list:
 

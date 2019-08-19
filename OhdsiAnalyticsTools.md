@@ -160,7 +160,7 @@ Below we describe how to install each of these in a Windows environment.
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">In Windows, both R and Java come in 32-bit and 64-bits architectures. If you install R in both architectures, you **must** also install Java in both architectures. It is recommended to only install the 64-bit version of R.</div>\EndKnitrBlock{rmdimportant}
 
-**Installing R**
+#### Installing R {-}
 
 1. Go to [https://cran.r-project.org/](https://cran.r-project.org/), click on "Download R for Windows", then "base", then click the Download link indicated in Figure \@ref(fig:downloadR).  
 
@@ -183,13 +183,13 @@ Below we describe how to install each of these in a Windows environment.
 
 Once completed, you should be able to select R from your Start Menu. 
 
-**Installing RTools**
+#### Installing RTools {-}
 
 1. Go to [https://cran.r-project.org/](https://cran.r-project.org/), click on "Download R for Windows", then "Rtools", and select the very latest version of RTools to download.
 
 2. After downloading has completed run the installer. Select the default options everywhere.
 
-**Installing RStudio**
+#### Installing RStudio {-}
 
 1. Go to [https://www.rstudio.com/](https://www.rstudio.com/), select "Download RStudio" (or the "Download" button under "RStudio"), opt for the free version, and download the installer for Windows as shown in Figure \@ref(fig:downloadRStudio).
 
@@ -200,7 +200,7 @@ Once completed, you should be able to select R from your Start Menu.
 
 2. After downloading, start the installer, and use the default options everywhere.
 
-**Installing Java**
+#### Installing Java {-}
 
 1. Go to [https://java.com/en/download/manual.jsp](https://java.com/en/download/manual.jsp), and select the Windows 64-bit installer as shown in Figure \@ref(fig:downloadJava). If you also installed the 32-bit version of R, you *must* also install the other (32-bit) version of Java.
 
@@ -212,7 +212,7 @@ Once completed, you should be able to select R from your Start Menu.
 
 2. After downloading just run the installer.
 
-**Verifying the installation**
+#### Verifying the installation {-}
 
 You should now be ready to go, but we should make sure. Start RStudio, and type
 

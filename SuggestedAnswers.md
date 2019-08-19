@@ -4,7 +4,7 @@ This Appendix contains suggested answers for the exercises in the book.
 
 ## SQL and R {#SqlAndRanswers}
 
-**Exercise \@ref(exr:exercisePeopleCount)**
+#### Exercise \@ref(exr:exercisePeopleCount) {-}
 
 To compute the number of people we can simply query the PERSON table:
 
@@ -23,7 +23,7 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 ## 1         2694
 ```
 
-**Exercise \@ref(exr:exerciseCelecoxibUsers)**
+#### Exercise \@ref(exr:exerciseCelecoxibUsers) {-}
 
 To compute the number of people with at least one prescription of celecoxib, we can query the DRUG_EXPOSURE table. To find all drugs containing the ingredient celecoxib, we join to the CONCEPT_ANCESTOR and CONCEPT tables:
 
@@ -74,7 +74,7 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 ## 1         1844
 ```
 
-**Exercise \@ref(exr:exerciseGiBleedsDuringCelecoxib)**
+#### Exercise \@ref(exr:exerciseGiBleedsDuringCelecoxib) {-}
 
 To compute the number of diagnoses during exposure we extend our previous query by joining to the CONDITION_OCCURRENCE table. We join to the CONCEPT_ANCESTOR table to find all condition concepts that imply a gastrointestinal haemorrhage:
 
@@ -109,7 +109,7 @@ Note that in this case it is essential to use the DRUG_ERA table instead of the 
 
 ## Data Quality {#DataQualityanswers}
 
-**Exercise \@ref(exr:exerciseRunAchilles)**
+#### Exercise \@ref(exr:exerciseRunAchilles) {-}
 
 To run ACHILLES:
 
@@ -123,7 +123,7 @@ result <- achilles(connectionDetails,
                    cdmVersion = "5.3.0")
 ```
 
-**Exercise \@ref(exr:exerciseViewHeel)**
+#### Exercise \@ref(exr:exerciseViewHeel) {-}
 
 To run extract the ACHILLES Heel issue list:
 

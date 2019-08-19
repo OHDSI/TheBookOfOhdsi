@@ -5,23 +5,23 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 17 Clinical Validity | The Book of OHDSI</title>
-  <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="generator" content="bookdown 0.12.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 17 Clinical Validity | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
-  <meta property="og:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta property="og:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 17 Clinical Validity | The Book of OHDSI" />
   
-  <meta name="twitter:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="twitter:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
 
-<meta name="author" content="Observational Health Data Science and Informatics" />
+<meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
 <meta name="date" content="2019-08-19" />
@@ -144,6 +144,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#structure-of-the-book"><i class="fa fa-check"></i>Structure of the book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#contributors"><i class="fa fa-check"></i>Contributors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#software-versions"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 </ul></li>
 <li class="part"><span><b>I The OHDSI Community</b></span></li>
 <li class="chapter" data-level="1" data-path="MissionVisionValues.html"><a href="MissionVisionValues.html"><i class="fa fa-check"></i><b>1</b> Mission, vision, values</a><ul>
@@ -438,6 +439,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.7.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#additional-inclusion-criteria"><i class="fa fa-check"></i><b>14.7.3</b> Additional inclusion criteria</a></li>
 <li class="chapter" data-level="14.7.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development"><i class="fa fa-check"></i><b>14.7.4</b> Model Development</a></li>
 <li class="chapter" data-level="14.7.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#internal-validation"><i class="fa fa-check"></i><b>14.7.5</b> Internal Validation</a></li>
+<li class="chapter" data-level="14.7.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#external-validation"><i class="fa fa-check"></i><b>14.7.6</b> External validation</a></li>
 </ul></li>
 <li class="chapter" data-level="14.8" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#single-model-viewer-app"><i class="fa fa-check"></i><b>14.8</b> Single model viewer app</a></li>
 <li class="chapter" data-level="14.9" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#multiple-model-viewer-app"><i class="fa fa-check"></i><b>14.9</b> Multiple model viewer app</a><ul>
@@ -649,7 +651,8 @@ In the OHDSI community, we were in the process of developing a different approac
 There are limitations using this approach. First, we can only use data that is in dataset; we are limited to diagnoses, procedures, observations, measurements, and drug exposures. Moreover, measurements are usually incomplete in administrative datasets as these do not include the actual values for the measures and, as such, we are limited to the existence or absence of the measurements as part of the model. Clinical notes are also not usually present in our data sets. Patient complaints or symptoms may not be recorded in administrative data sets. These may include things like lethargy and acute pain.
 In diagnostic predictive modeling we create a model that discriminates between those with the disease and those without the disease. For the PheValuator process, we use an extremely specific cohort definition, the “xSpec” cohort, to determine the cases for the models. The xSpec cohort uses a definition to find those with the disease with a very high probability of having the disease of interest. The xSpec cohort is may be defined as those subjects who have multiple condition code codes in their record for the health outcome of interest. For example, for atrial fibrillation, we may have subjects who have 10 or more codes for atrial fibrillation in their record. For MI, an acute outcome, we may use 5 occurrences of MI and include the requirement of having at least two occurrences from a hospital inpatient setting. For our non-cases, we exclude anybody from the data set who have any of the condition occurrences for the health outcome of interest. There are limitations to this method. It is possible that these xSpec cohort subjects may have may be more severe than other cases of the disease. It may also be that these subjects had longer observation time after initial diagnosis than the average patient. We use logistic regression to create these models, using the LASSO method.<span class="citation">(Tibshirani <a href="#ref-tibshirani_regression_1996" role="doc-biblioref">1996</a>)</span> This method produces a parsimonious model. In so doing it removes many of the collinear covariates which may be present in many subjects. In the current version of our software we also do not include the temporality of events in the patient’s record.</p></li>
 </ol>
-<p><strong>Practice of Phenotype Algorithm Validation</strong></p>
+<div id="practice-of-phenotype-algorithm-validation" class="section level4 unnumbered">
+<h4>Practice of Phenotype Algorithm Validation</h4>
 <p>An example of the process to conduct a PA validation using chart review is provided by Cutrona and colleagues who validated their PA for MI for the US Food and Drug Administration’s (FDA) Sentinel program.<span class="citation">(Cutrona et al. <a href="#ref-cutrona_validation_2013" role="doc-biblioref">2013</a>)</span> The steps this group used to conduct the validation were as follows: </p>
 <ol style="list-style-type: decimal">
 <li><p>Develop a PA for MI: They used the PA “those with an ICD-9-CM code for AMI (410.x0, 410.x1) in the principal or primary position on facility claims for hospitalizations.”</p></li>
@@ -687,6 +690,7 @@ As discussed previously an alternative approach currently being developed in the
 <p><img src="images/ClinicalValidity/figure6.jpg" width="75%" style="display: block; margin: auto;" /></p>
 <p>Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the phenotype; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database – Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater</p>
 
+</div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">

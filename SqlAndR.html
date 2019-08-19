@@ -5,23 +5,23 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 SQL and R | The Book of OHDSI</title>
-  <meta name="description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="generator" content="bookdown 0.12.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 SQL and R | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
   <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
-  <meta property="og:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta property="og:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 10 SQL and R | The Book of OHDSI" />
   
-  <meta name="twitter:description" content="A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software." />
+  <meta name="twitter:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
 
-<meta name="author" content="Observational Health Data Science and Informatics" />
+<meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
 <meta name="date" content="2019-08-19" />
@@ -144,6 +144,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#structure-of-the-book"><i class="fa fa-check"></i>Structure of the book</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#contributors"><i class="fa fa-check"></i>Contributors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#software-versions"><i class="fa fa-check"></i>Software versions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 </ul></li>
 <li class="part"><span><b>I The OHDSI Community</b></span></li>
 <li class="chapter" data-level="1" data-path="MissionVisionValues.html"><a href="MissionVisionValues.html"><i class="fa fa-check"></i><b>1</b> Mission, vision, values</a><ul>
@@ -438,6 +439,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.7.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#additional-inclusion-criteria"><i class="fa fa-check"></i><b>14.7.3</b> Additional inclusion criteria</a></li>
 <li class="chapter" data-level="14.7.4" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#model-development"><i class="fa fa-check"></i><b>14.7.4</b> Model Development</a></li>
 <li class="chapter" data-level="14.7.5" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#internal-validation"><i class="fa fa-check"></i><b>14.7.5</b> Internal Validation</a></li>
+<li class="chapter" data-level="14.7.6" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#external-validation"><i class="fa fa-check"></i><b>14.7.6</b> External validation</a></li>
 </ul></li>
 <li class="chapter" data-level="14.8" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#single-model-viewer-app"><i class="fa fa-check"></i><b>14.8</b> Single model viewer app</a></li>
 <li class="chapter" data-level="14.9" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#multiple-model-viewer-app"><i class="fa fa-check"></i><b>14.9</b> Multiple model viewer app</a><ul>
@@ -618,7 +620,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="sql-parameterization" class="section level3">
 <h3><span class="header-section-number">10.1.1</span> SQL parameterization</h3>
 <p>One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the <code>render()</code> function. </p>
-<p><strong>Substituting parameter values</strong></p>
+<div id="substituting-parameter-values" class="section level4 unnumbered">
+<h4>Substituting parameter values</h4>
 <p>The <code>@</code> character can be used to indicate parameter names that need to be exchanged for actual parameter values when rendering. In the following example, a variable called <code>a</code> is mentioned in the SQL. In the call to the render function the value of this parameter is defined:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="SqlAndR.html#cb8-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM concept WHERE concept_id = @a;&quot;</span></span>
 <span id="cb8-2"><a href="SqlAndR.html#cb8-2"></a><span class="kw">render</span>(sql, <span class="dt">a =</span> <span class="dv">123</span>)</span></code></pre></div>
@@ -631,7 +634,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="SqlAndR.html#cb12-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM concept WHERE concept_id IN (@a);&quot;</span></span>
 <span id="cb12-2"><a href="SqlAndR.html#cb12-2"></a><span class="kw">render</span>(sql, <span class="dt">a =</span> <span class="kw">c</span>(<span class="dv">123</span>, <span class="dv">234</span>, <span class="dv">345</span>))</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM concept WHERE concept_id IN (123,234,345);&quot;</code></pre>
-<p><strong>If-then-else</strong></p>
+</div>
+<div id="if-then-else" class="section level4 unnumbered">
+<h4>If-then-else</h4>
 <p>Sometimes blocks of codes need to be turned on or off based on the values of one or more parameters. This is done using the <code>{Condition} ? {if true} : {if false}</code> syntax. If the <em>condition</em> evaluates to true or 1, the <em>if true</em> block is used, else the <em>if false</em> block is shown (if present).</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="SqlAndR.html#cb14-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM cohort {@x} ? {WHERE subject_id = 1}&quot;</span></span>
 <span id="cb14-2"><a href="SqlAndR.html#cb14-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
@@ -649,6 +654,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb22-2"><a href="SqlAndR.html#cb22-2"></a><span class="kw">render</span>(sql, <span class="dt">x =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;SELECT * FROM cohort WHERE subject_id = 1;&quot;</code></pre>
 </div>
+</div>
 <div id="translation-to-other-sql-dialects" class="section level3">
 <h3><span class="header-section-number">10.1.2</span> Translation to other SQL dialects</h3>
 <p>Another function of the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package is to translate from OHDSI SQL to other SQL dialects. For example:</p>
@@ -662,7 +668,8 @@ There are limits to what SQL functions and constructs can be translated properly
 </div>
 
 <p>Despite our best efforts, there are quite a few things to consider when writing OHDSI SQL that will run without error on all supported platforms. In what follows we discuss these considerations in detail.</p>
-<p><strong>Functions and structures supported by translate</strong></p>
+<div id="functions-and-structures-supported-by-translate" class="section level4 unnumbered">
+<h4>Functions and structures supported by translate</h4>
 <p>These SQL Server functions have been tested and were found to be translated correctly to the various dialects:</p>
 <table>
 <caption><span id="tab:sqlFunctions">Table 10.1: </span> Functions supported by translate.</caption>
@@ -821,9 +828,13 @@ There are limits to what SQL functions and constructs can be translated properly
 <span id="cb26-51"><a href="SqlAndR.html#cb26-51"></a></span>
 <span id="cb26-52"><a href="SqlAndR.html#cb26-52"></a><span class="co">-- EXCEPT:</span></span>
 <span id="cb26-53"><a href="SqlAndR.html#cb26-53"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> a <span class="kw">EXCEPT</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> b;</span></code></pre></div>
-<p><strong>String concatenation</strong></p>
+</div>
+<div id="string-concatenation" class="section level4 unnumbered">
+<h4>String concatenation</h4>
 <p>String concatenation is one area where SQL Server is less specific than other dialects. In SQL Server, one would write <code>SELECT first_name + ' ' + last_name AS full_name FROM table</code>, but this should be <code>SELECT first_name || ' ' || last_name AS full_name FROM table</code> in PostgreSQL and Oracle. SqlRender tries to guess when values that are being concatenated are strings. In the example above, because we have an explicit string (the space surrounded by single quotation marks), the translation will be correct. However, if the query had been <code>SELECT first_name + last_name AS full_name FROM table</code>, SqlRender would have had no clue the two fields were strings, and would incorrectly leave the plus sign. Another clue that a value is a string is an explicit cast to VARCHAR, so <code>SELECT last_name + CAST(age AS VARCHAR(3)) AS full_name FROM table</code> would also be translated correctly. To avoid ambiguity altogether, it is probable best to use the <code>CONCAT()</code> function to concatenate two or more strings.</p>
-<p><strong>Table aliases and the AS keyword</strong></p>
+</div>
+<div id="table-aliases-and-the-as-keyword" class="section level4 unnumbered">
+<h4>Table aliases and the AS keyword</h4>
 <p>Many SQL dialects allow the use of the <code>AS</code> keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb27-1"><a href="SqlAndR.html#cb27-1"></a><span class="co">-- Using AS keyword</span></span>
 <span id="cb27-2"><a href="SqlAndR.html#cb27-2"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
@@ -841,7 +852,9 @@ There are limits to what SQL functions and constructs can be translated properly
 <span id="cb27-14"><a href="SqlAndR.html#cb27-14"></a>) table_2</span>
 <span id="cb27-15"><a href="SqlAndR.html#cb27-15"></a><span class="kw">ON</span> table_1.person_id <span class="op">=</span> table_2.person_id;</span></code></pre></div>
 <p>However, Oracle will throw an error when the <code>AS</code> keyword is used. In the above example, the first query will fail. It is therefore recommended to not use the <code>AS</code> keyword when aliasing tables. (Note: we can’t make SqlRender handle this, because it can’t easily distinguish between table aliases where Oracle doesn’t allow <code>AS</code> to be used, and field aliases, where Oracle requires <code>AS</code> to be used.)</p>
-<p><strong>Temp tables</strong></p>
+</div>
+<div id="temp-tables" class="section level4 unnumbered">
+<h4>Temp tables</h4>
 <p>Temp tables can be very useful to store intermediate results, and when used correctly can dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they’re only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by</p>
 <ol style="list-style-type: decimal">
 <li>Adding a random string to the table name so tables from different users will not conflict.</li>
@@ -850,11 +863,13 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="SqlAndR.html#cb28-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb28-2"><a href="SqlAndR.html#cb28-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.zy5sixi9children ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.go6ytum4children ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
-<p><strong>Implicit casts</strong></p>
+</div>
+<div id="implicit-casts" class="section level4 unnumbered">
+<h4>Implicit casts</h4>
 <p>One of the few points where SQL Server is less explicit than other dialects is that it allows implicit casts. For example, this code will work on SQL Server:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb30-1"><a href="SqlAndR.html#cb30-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> #temp (txt <span class="dt">VARCHAR</span>);</span>
 <span id="cb30-2"><a href="SqlAndR.html#cb30-2"></a></span>
@@ -867,18 +882,24 @@ There are limits to what SQL functions and constructs can be translated properly
 <div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb31-1"><a href="SqlAndR.html#cb31-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> txt <span class="op">=</span> <span class="fu">CAST</span>(<span class="dv">1</span> <span class="kw">AS</span> <span class="dt">VARCHAR</span>);</span></code></pre></div>
 <p>or</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb32-1"><a href="SqlAndR.html#cb32-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> #temp <span class="kw">WHERE</span> <span class="fu">CAST</span>(txt <span class="kw">AS</span> <span class="dt">INT</span>) <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div>
-<p><strong>Case sensitivity in string comparisons</strong></p>
+</div>
+<div id="case-sensitivity-in-string-comparisons" class="section level4 unnumbered">
+<h4>Case sensitivity in string comparisons</h4>
 <p>Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb33-1"><a href="SqlAndR.html#cb33-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> concep_class_id <span class="op">=</span> <span class="st">&#39;Clinical Finding&#39;</span></span></code></pre></div>
 <p>it is preferred to use</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb34-1"><a href="SqlAndR.html#cb34-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> <span class="fu">LOWER</span>(concep_class_id) <span class="op">=</span> <span class="st">&#39;clinical finding&#39;</span></span></code></pre></div>
-<p><strong>Schemas and databases</strong></p>
+</div>
+<div id="schemas-and-databases" class="section level4 unnumbered">
+<h4>Schemas and databases</h4>
 <p>In SQL Server, tables are located in a schema, and schemas reside in a database. For example, <code>cdm_data.dbo.person</code> refers to the <code>person</code> table in the <code>dbo</code> schema in the <code>cdm_data</code> database. In other dialects, even though a similar hierarchy often exists they are used very differently. In SQL Server, there is typically one schema per database (often called <code>dbo</code>), and users can easily use data in different databases. On other platforms, for example in PostgreSQL, it is not possible to use data across databases in a single session, but there are often many schemas in a database. In PostgreSQL one could say that the equivalent of SQL Server’s database is the schema.</p>
 <p>We therefore recommend concatenating SQL Server’s database and schema into a single parameter, which we typically call <code>@databaseSchema</code>. For example, we could have the parameterized SQL</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb35-1"><a href="SqlAndR.html#cb35-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> @databaseSchema.person</span></code></pre></div>
 <p>where on SQL Server we can include both database and schema names in the value: <code>databaseSchema = "cdm_data.dbo"</code>. On other platforms, we can use the same code, but now only specify the schema as the parameter value: <code>databaseSchema = "cdm_data"</code>.</p>
 <p>The one situation where this will fail is the <code>USE</code> command, since <code>USE cdm_data.dbo;</code> will throw an error. It is therefore preferred not to use the <code>USE</code> command, but always specify the database / schema where a table is located.</p>
-<p><strong>Debugging parameterized SQL</strong></p>
+</div>
+<div id="debugging-parameterized-sql" class="section level4 unnumbered">
+<h4>Debugging parameterized SQL</h4>
 <p>Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL. </p>
 <p>A Shiny app is included in the SqlRender package for interactively editing source SQL and generating rendered and translated SQL. The app can be started using:</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="SqlAndR.html#cb36-1"></a><span class="kw">launchSqlRenderDeveloper</span>()</span></code></pre></div>
@@ -890,6 +911,7 @@ Figure 10.1: The SqlDeveloper Shiny app.
 </p>
 </div>
 <p>In the app you can enter OHDSI SQL, select the target dialect as well as provide values for the parameters that appear in your SQL, and the translation will automatically appear at the bottom.</p>
+</div>
 </div>
 </div>
 <div id="DatabaseConnector" class="section level2">
@@ -1445,7 +1467,8 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 </div>
 <div id="exercises-1" class="section level2">
 <h2><span class="header-section-number">10.9</span> Exercises</h2>
-<p><strong>Prerequisites</strong></p>
+<div id="prerequisites" class="section level4 unnumbered">
+<h4>Prerequisites</h4>
 <p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">9.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
 <div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="SqlAndR.html#cb66-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
 <span id="cb66-2"><a href="SqlAndR.html#cb66-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>)</span></code></pre></div>
@@ -1469,6 +1492,7 @@ Figure 10.2: QueryLibrary: a library of SQL queries against the CDM.
 
 <p>Suggested answers can be found in Appendix <a href="SuggestedAnswers.html#SqlAndRanswers">E.1</a>.</p>
 
+</div>
 </div>
 </div>
 <h3>References</h3>

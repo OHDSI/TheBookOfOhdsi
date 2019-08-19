@@ -27,11 +27,11 @@ To initiate an ETL process on a database you need to understand your data, inclu
 
 [^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit].
 
-**Scope and Purpose**
+#### Scope and Purpose  {-}
 
 White Rabbit’s main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon RedShift). The scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.
 
-**Process Overview**
+#### Process Overview {-}
 
 The typical sequence for using the software to scan source data:
 
@@ -40,7 +40,7 @@ The typical sequence for using the software to scan source data:
 3. Select the tables of interest for the scan and scan the tables.
 4. White Rabbit creates an export of information about the source data.
 
-**Setting a Working Folder**
+#### Setting a Working Folder {-}
 
 After downloading and installing the White Rabbit application, the first thing you need to do is set a working folder. Any files that White Rabbit creates will be exported to this local folder. Use the "Pick Folder" button shown in Figure \@ref(fig:WhiteRabbitLocation) to navigate in your local environment where you would like the scan document to go. 
 
@@ -49,11 +49,11 @@ After downloading and installing the White Rabbit application, the first thing y
 <p class="caption">(\#fig:WhiteRabbitLocation)The "Pick Folder" button allows the specification of a working folder for the White Rabbit application.</p>
 </div>
 
-**Connection to a Database**
+#### Connection to a Database {-}
 
 White Rabbit supports delimited text files and various database platforms. Hover the mouse over the various fields to get a description of what is required. More detailed information can be found in the manual.
 
-**Scanning the Tables in a Database**
+#### Scanning the Tables in a Database {-}
 
 After connecting to a database, you can scan the tables contained therein. A scan generates a report containing information on the source data that can be used to help design the ETL. Using the Scan tab shown in Figure \@ref(fig:WhiteRabbitAddTables) you can either select individual tables in the selected source database by clicking on “Add” (Ctrl + mouse click), or automatically select all tables in the database by clicking on “Add all in DB”.
 
@@ -70,7 +70,7 @@ There are a few setting options as well with the scan:
 
 Once all settings are completed, press the “Scan tables” button. After the scan is completed the report will be written to the working folder.
 
-**Interpreting the Scan Report**
+#### Interpreting the Scan Report {-}
 
 Once the scan is complete, an Excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. Figure \@ref(fig:ScanOverviewTab). shows an example overview tab.
 
@@ -92,11 +92,11 @@ The report is powerful in understanding your source data by highlighting what ex
 
 With the White Rabbit scan in hand, we have a clear picture of the source data. We also know the full specification of the CDM. Now we need to define the logic to go from one to the other. This design activity requires thorough knowledge of both the source data and the CDM. The Rabbit-in-a-Hat tools that comes with the White Rabbit software is specifically designed to support a team of experts in these areas. In a typical setting, the ETL design team sits together in a room, while Rabbit-in-a-Hat is projected on a screen. In a first round, the table-to-table mappings can be collaboratively decided, after which field-to-field mappings can be designed, while defining the logic by which values will be transformed. \index{Rabbit-In-A-Hat} \index{ETL design|see {Rabbit-In-A-Hat}}
 
-**Scope and purpose**
+#### Scope and purpose {-}
 
 Rabbit-In-a-Hat is designed to read and display a White Rabbit scan document. White Rabbit generates information about the source data while Rabbit-In-a-Hat uses that information and through a graphical user interface to allow a user to connect source data to tables and columns within the CDM. Rabbit-In-a-Hat generates documentation for the ETL process, it does not generate code to create an ETL.  
 
-**Process Overview**
+#### Process Overview {-}
 
 The typical sequence for using this software to generate documentation of an ETL:
 
@@ -106,13 +106,13 @@ The typical sequence for using this software to generate documentation of an ETL
 4. For each source table to CDM table connection, further define the connection with source column to CDM column detail.
 5. Save Rabbit-In-a-Hat work and export to a MS Word document.
 
-**Writing ETL Logic**
+#### Writing ETL Logic {-}
 
 Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea[^syntheaWiki] database might look during conversion. 
 
 [^syntheaWiki]: Synthea^TM^ is a patient generator that aims to model real patients. Data are created based on parameters passed to the application.The structure of the data can be found here: https://github.com/synthetichealth/synthea/wiki.
 
-**General Flow of an ETL**
+#### General Flow of an ETL {-}
 
 Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clinical tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person’s patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.  
 
@@ -123,7 +123,7 @@ Since the CDM is a person-centric model it is always a good idea to start mappin
 
 It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct VISIT_OCCURRENCE_IDs to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). Intermediate tables are 100% allowed and encouraged. What is discouraged is the persistence and reliance on these intermediate tables once the conversion is complete. 
 
-#### Mapping Example: Person table
+#### Mapping Example: Person table  {-}
 
 The Synthea data structure contains 20 columns in the patients table but not all were needed to populate the PERSON table, as seen in Figure \@ref(fig:syntheaPerson). This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver’s license number, and passport number.
 
@@ -191,11 +191,11 @@ Usagi is a tool to aid the manual process of creating a code mapping. It can mak
 [^GoogleTranslateUrl]: https://translate.google.com/
 [^UsagiUrl]: https://github.com/OHDSI/Usagi
 
-**Scope and purpose**
+#### Scope and purpose {-}
 
 Source codes that need mapping are loaded into the Usagi (if the codes are not in English additional translations columns are needed). A term similarity approach is used to connect source codes to Vocabulary concepts. However, these code connections need to be manually reviewed and Usagi provides an interface to facilitate that. Usagi will only propose concepts that are marked as Standard concepts in the Vocabulary. 
 
-**Process Overview**
+#### Process Overview {-}
 
 The typical sequence for using this software is:
 
@@ -204,7 +204,7 @@ The typical sequence for using this software is:
 3. Leverage Usagi interface to check, and where needed, improve suggested mappings. Preferably an individual who has experience with the coding system and medical terminology should be used for this review.
 4. Export final map generated by Usagi into the Vocabulary’s SOURCE_TO_CONCEPT_MAP.
 
-**Importing Source Codes into Usagi**
+#### Importing Source Codes into Usagi {-}
 
 Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g. dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g. you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that. 
 
@@ -231,7 +231,7 @@ You can also use other sources of information than the ATC code to restrict as w
 
 Once all your settings are finalized, click the “Import” button to import the file. The file import will take a few minutes as it is running the term similarity algorithm to map source codes. 
 
-**Reviewing Source Code to Vocabulary Concept Maps**
+#### Reviewing Source Code to Vocabulary Concept Maps {-}
 
 Once you have imported your input file of source codes, the mapping process begins. In Figure \@ref(fig:usagiOverview), you see the Usagi screen is made up of 3 main sections: an overview table, the selected mapping section, and place to perform searches. Note that in any of the tables, you can right-click to select the columns that are shown or hidden to reduce the visual complexity.
 
@@ -240,13 +240,13 @@ Once you have imported your input file of source codes, the mapping process begi
 <p class="caption">(\#fig:usagiOverview)Usagi source code input screen.</p>
 </div>
 
-**Approving a Suggested Mapping**
+#### Approving a Suggested Mapping {-}
 
 The “Overview Table” shows the current mapping of source codes to concepts. Right after importing source codes, this mapping contains the automatically generated suggested mappings based on term similarity and any search options. In the example in Figure \@ref(fig:usagiOverview), the English names of Dutch condition codes were mapped to standard concepts in the Condition domain, because the user restricted the search to that domain. Usagi compared the source code descriptions to concept names and synonyms to find the best match. Because the user had selected “Include source terms” Usagi also considered the names and synonyms of all source concepts in the vocabulary that map to a particular concept. If Usagi is unable to make a mapping, it will map to the CONCEPT_ID = 0. 
 
 It is suggested that someone with experience with coding systems help map source codes to their associated standard vocabulary. That individual will work through code by code in the “Overview Table” to either accept the mapping Usagi has suggested or choose a new mapping. For example in Figure \@ref(fig:usagiOverview) we see that the Dutch term “Hoesten” which was translated to the English term “Cough”. Usagi used “Cough” and mapped it to the Vocabulary concept of “4158493-C/O - cough”. There was a matching score of 0.58 associated to this matched pair (matching scores are typically 0 to 1 with 1 being a confident match), a score of 0.58 signifies that Usagi is not very sure of how well it has mapped this Dutch code to SNOMED. Let us say in this case, we are okay with this mapping, we can approve it by hitting the green “Approve” button in the bottom right hand portion of the screen.
 
-**Searching for a New Mapping**
+#### Searching for a New Mapping {-}
 
 There will be cases where Usagi suggests a map and the user will be left to either try to find a better mapping or set the map to no concept (CONCEPT_ID = 0). In the example given in Figure \@ref(fig:usagiOverview), we see for the Dutch Term “Hoesten”, which was translated to “Cough”. Usagi’s suggestion was restricted by the concept identified in our automatically derived mapping from UMLS, and the result might not be optimal. In the Search Facility, we could search for other concepts using either the actual term itself or a search box query. 
 
@@ -256,7 +256,7 @@ To continue our example, suppose we used the search term “Cough” to see if w
 
 When we apply these search criteria we find “254761-Cough” and feel this may be an appropriate Vocabulary concept to map to our Dutch code. In order to do that we can hit the “Replace concept” button, which you will see in the “Selected Source Code” section update, followed by the “Approve” button. There is also an “Add concept” button, this allows for multiple standardized Vocabulary concepts to map to one source code (e.g. some source codes may bundle multiple diseases together while the standardized vocabulary may not). 
 
-**Concept information**
+#### Concept information {-}
 
 When looking for appropriate concepts to map to, it is important to consider the “social life” of a concept. The meaning of a concept might depend partially on its place in the hierarchy, and sometimes there are “orphan concepts” in the vocabulary with few or no hierarchical relationships, which would be ill-suited as target concepts. Usagi will often report the number of parents and children a concept has, and it also possible to show more information by pressing ALT + C or selecting view –> Concept information in the top menu bar.
 
@@ -274,14 +274,14 @@ Continue to move through this process, code by code, until all codes have been c
 
 It is possible to add comments to mappings, which could be used to document why a mapping decision was made.
 
-**Best Practices**
+#### Best Practices {-}
 
 * Use someone who has experience with coding schemes. 
 * By clicking on a column name, you can sort the columns in the “Overview Table”. It may be valuable to sort on “Match Score”; reviewing codes that Usagi is most confident on first may quickly knock out a significant chunk of codes. Also sorting on “Frequency” is valuable, spending more effort on frequent codes versus non-frequent is important. 
 * It is okay to map some codes to CONCEPT_ID = 0, some codes may not be worth it to find a good map and others may just lack a proper map. 
 * It is important to consider the context of a concept, specifically its parents and children. 
 
-**Export the Usagi Map Created**
+#### Export the Usagi Map Created {-}
 
 Once you have created your map within USAGI, the best way to use it moving forward is to export it and append it to the Vocabulary SOURCE_TO_CONCEPT_MAP table. 
 
@@ -289,7 +289,7 @@ To export your mappings, go to File –> Export source_to_concept_map. A pop-up 
 
 After selecting the SOURCE_VOCABULARY_ID, you give your export CSV a name and save to location. The export CSV structure is in that of the SOURCE_TO_CONCEPT_MAP table. This mapping could be appended to the OMOP Vocabulary’s SOURCE_TO_CONCEPT_MAP table. It would also make sense to append a single row to the VOCABULARY table defining the SOURCE_VOCABULARY_ID you defined in the step above. Finally, it is important to note that only mappings with the “Approved” status will be exported into the CSV file; the mapping needs to be completed in USAGI in order to export it. 
 
-**Updating an Usagi mapping**
+#### Updating an Usagi mapping {-}
 
 Often a mapping is not a one-time effort. As data is updated perhaps new source codes are added, and the vocabulary is updated regularly, perhaps requiring an update of the mapping. 
 
