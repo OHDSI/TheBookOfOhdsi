@@ -143,9 +143,9 @@ An example of how the Standard Concept to Source Concept relationship is depicte
 
 \index{OMOP Common Data Model!standardized tables}
 
-The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl].
+The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl1].
 
-[^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki
+[^cdmWikiUrl1]: https://github.com/OHDSI/CommonDataModel/wiki
 
 To illustrate how these tables are used in practice, the data of one person will be used as a common thread throughout the rest of the chapter. 
 
@@ -163,7 +163,7 @@ Lauren had been experiencing endometriosis symptoms for many years; however, it 
 
 ### PERSON table{#person}
 
-**What do we know about Lauren?** 
+#### What do we know about Lauren?  {-}
 
 * She is a 36-year-old woman
 * Her birthday is 12-March-1982
@@ -200,7 +200,7 @@ Column name|Value|Explanation
 
 The OBSERVATION_PERIOD table is designed to define the amount of time for which at least a patient's demographics, conditions, procedures and drugs are recorded in the source system with the expection of a reasonable sensitivity and specificity. For insurance data this is typically the enrollment period of the patient. It's trickier in electronic health records (EHR), as most healthcare systems do not determine which healthcare institution or provider is visited. As a next best solution, often the first record in the system is considered the Start Date of the Observation Period and the latest record is considered the End Date.
 
-**How is Lauren's Observation Period defined?**
+#### How is Lauren's Observation Period defined? {-}
 
 Let's say Lauren's information as shown in Table \@ref(tab:encounters) is recorded like in an EHR system. Her encounters from which the Observation Period was derived are:
 
@@ -231,7 +231,7 @@ Column name|Value|Explanation
 
 the VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discreet events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits. 
 
-**How are Lauren's encounters represented as Visits?**
+#### How are Lauren's encounters represented as Visits?  {-}
 
 As an example let's represent the inpatient encounter in Table \@ref(tab:encounters) in the VISIT_OCCURRENCE table.
 
@@ -263,7 +263,7 @@ Column name|Value|Explanation
 
 Records in the CONDITION_OCCURRENCE table are diagnoses, signs, or symptoms of a condition either observed by a Provider or reported by the patient.
 
-**What are Lauren's conditions?**
+#### What are Lauren's conditions? {-}
 
 Revisiting her account she says:
 
@@ -295,7 +295,7 @@ Column name|Value|Explanation
 
 The DRUG_EXPOSURE table captures records about the intent or actual introduction of a drug into the body of the patient. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Drug exposures are inferred from clinical events associated with orders, prescriptions written, pharmacy dispensings, procedural administrations, and other patient-reported information. 
 
-**How are Lauren's Drug Exposures represented?**
+#### How are Lauren's Drug Exposures represented?  {-}
 
 To help with her dysmenorrhea pain, Lauren was given 60 oral tablets with 375 mg Acetaminophen (aka Paracetamol, e.g. sold in the US under NDC code 69842087651) each for 30 days at her Visit on 2010-01-06. Here's how that might look in the DRUG_EXPOSURE table: 
 
@@ -333,7 +333,7 @@ The PROCEDURE_OCCURRENCE table contains records of activities or processes order
  * Medical Claims include procedure codes that are submitted as part of a claim for health services rendered, including procedures performed.
  * Electronic Health Records that capture procedures as orders.
  
-**What procedures did Lauren have?**
+#### What procedures did Lauren have?  {-}
 
 From her description we know she had an ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE_OCCURRENCE table:
 
