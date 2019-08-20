@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-08-19}
+    \date{2019-08-20}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -2004,7 +2004,7 @@ The source code for the modifier as it appears in the source data.\strut
 \hypertarget{additional-information}{%
 \section{Additional Information}\label{additional-information}}
 
-This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site \url{https://github.com/OHDSI/CommonDataModel/wiki} for more information.
+This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}{]}.} for more information.
 
 \hypertarget{summary-2}{%
 \section{Summary}\label{summary-2}}
@@ -2012,13 +2012,63 @@ This chapter covers only a portion of the tables available in the OMOP CDM as ex
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
 \item
-  The OMOP CDM is designed to support the conduct of research to identify and evaluate associations between interventions and outcomes
+  The CDM is designed to support a wide range of observational research activities.
 \item
-  The OMOP CDM is a ``person-centric'' model
+  The CDM is a person-centric model.
 \item
-  Source codes are represented as standard concept ids
+  The CDM not only standarizes the structure of the data, but through the Standardized Vocabularies it also standardizes the representation of the content.
+\item
+  Source codes are maintained in the CDM for full traceability.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
+
+\hypertarget{exercises}{%
+\section{Exercises}\label{exercises}}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseJohnPerson}{}{\label{exr:exerciseJohnPerson} }John is an African American man born on August 4, 1974. Define an entry in the PERSON table that encodes this information.
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseJohnOp}{}{\label{exr:exerciseJohnOp} }John enrolled in his current insurance on January 1st, 2015. The data from his insurance database were extracted on July 1st, 2019. Define an entry in the OBSERVATION\_PERIOD table that encodes this information.
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseJohnDrug}{}{\label{exr:exerciseJohnDrug} }John was prescribed a 30-day supply of Ibuprofen 200 MG Oral tablets (NDC code: 76168009520) on May 1st, 2019. Define an entry in the DRUG\_EXPOSURE table that encodes this information.
+\EndKnitrBlock{exercise}
+
+\hypertarget{prerequisites}{%
+\subsubsection*{Prerequisites}\label{prerequisites}}
+\addcontentsline{toc}{subsubsection}{Prerequisites}
+
+For these last two exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{connectionDetails <-}\StringTok{ }\NormalTok{Eunomia}\OperatorTok{::}\KeywordTok{getEunomiaConnectionDetails}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+The CDM database schema is ``main''.
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseGiBleedRecords}{}{\label{exr:exerciseGiBleedRecords} }Using SQL and R, retrieve all records of the condition ``Gastrointestinal hemorrhage'' (with concept ID \href{http://athena.ohdsi.org/search-terms/terms/192671}{192671}.
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exercisePerson61Records}{}{\label{exr:exercisePerson61Records} }Using SQL and R, retrieve the observation period of the person with PERSON\_ID 61.
+\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \ref{Cdmanswers}.
 
 \hypertarget{StandardizedVocabularies}{%
 \chapter{Standardized Vocabularies}\label{StandardizedVocabularies}}
@@ -3068,8 +3118,8 @@ The third approach relies on our interactive analysis platform \href{https://git
 
 ATLAS and the Methods Library are not independent. Some of the more complicated analytics that can be invoked in ATLAS are executed through calls to the packages in the Methods Library. Similarly, cohorts used in the Methods Library are often designed in ATLAS.
 
-\hypertarget{analysis-strategy}{%
-\section{Analysis strategy}\label{analysis-strategy}}
+\hypertarget{analysis-strategies}{%
+\section{Analysis strategies}\label{analysis-strategies}}
 
 More or less independently of how we choose to implement our analysis is the strategy that our analytics takes in answering specific questions. Figure \ref{fig:strategies} highlights three strategies that are employed in OHDSI.
 
@@ -3091,7 +3141,7 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 \hypertarget{atlas}{%
 \section{ATLAS}\label{atlas}}
 
-ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format. ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat. Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS \footnote{\url{http://www.ohdsi.org/web/atlas}}, and although this ATLAS instance only has access to a small simulated datasets, it can still be used for many purposes including testing and training. For example, it is possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS}
+ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format. ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat. Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS \footnote{\url{http://www.ohdsi.org/web/atlas}}, and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS}
 
 \begin{figure}
 
@@ -3137,17 +3187,17 @@ The Feedback link will take you to the issue log for Atlas so that you can log a
 \hypertarget{security}{%
 \subsection{Security}\label{security}}
 
-ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform. The security system is built leveraging the Apache Shiro library. Additional information on the security system can be found in the online \href{https://github.com/OHDSI/WebAPI/wiki/Security-Configuration}{WebAPI security wiki}. \index{ATLAS!security}
+ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform. The security system is built leveraging the Apache Shiro library. Additional information on the security system can be found in the online WebAPI security wiki\footnote{\url{https://github.com/OHDSI/WebAPI/wiki/Security-Configuration}}. \index{ATLAS!security}
 
 \hypertarget{documentation}{%
 \subsection{Documentation}\label{documentation}}
 
-Documentation for ATLAS can be found online in the \href{https://github.com/OHDSI/ATLAS/wiki}{ATLAS Github repository wiki}. This wiki includes information on the various application features as well as links to online video tutorials. \index{ATLAS!documentation}
+Documentation for ATLAS can be found online in the ATLAS Github repository wiki\footnote{\url{https://github.com/OHDSI/ATLAS/wiki}}. This wiki includes information on the various application features as well as links to online video tutorials. \index{ATLAS!documentation}
 
 \hypertarget{how-to-install}{%
 \subsection{How to install}\label{how-to-install}}
 
-Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the \href{https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide}{ATLAS Github repository Setup Guide} and \href{https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide}{WebAPI Github repository Installation Guide}. \index{ATLAS!installation}
+Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS Github repository Setup Guide\footnote{\url{https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide}} and WebAPI Github repository Installation Guide\footnote{\url{https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide}}. \index{ATLAS!installation}
 
 \hypertarget{methods-library}{%
 \section{Methods Library}\label{methods-library}}
@@ -3424,8 +3474,8 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises}{%
-\section{Exercises}\label{exercises}}
+\hypertarget{exercises-1}{%
+\section{Exercises}\label{exercises-1}}
 
 Todo
 
@@ -3614,28 +3664,36 @@ Despite our best efforts, there are quite a few things to consider when writing 
 
 These SQL Server functions have been tested and were found to be translated correctly to the various dialects:\index{SqlRender!supported functions}
 
-Table: \label{tab:sqlFunctions} Functions supported by translate.
-
-\textbar Function \textbar Function \textbar Function \textbar{}
-\textbar:----------------- \textbar\textbar:----------------- \textbar:----------------- \textbar{}
-\textbar ABS \textbar EXP \textbar RAND \textbar{}
-\textbar ACOS \textbar FLOOR \textbar RANK \textbar{}
-\textbar ASIN \textbar GETDATE \textbar RIGHT \textbar{}
-\textbar ATAN \textbar HASHBYTES* \textbar ROUND \textbar{}
-\textbar AVG \textbar ISNULL \textbar ROW\_NUMBER \textbar{}
-\textbar CAST \textbar ISNUMERIC \textbar RTRIM \textbar{}
-\textbar CEILING \textbar LEFT \textbar SIN \textbar{}
-\textbar CHARINDEX \textbar LEN \textbar SQRT \textbar{}
-\textbar CONCAT \textbar LOG \textbar SQUARE \textbar{}
-\textbar COS \textbar LOG10 \textbar STDEV \textbar{}
-\textbar COUNT \textbar LOWER \textbar SUM \textbar{}
-\textbar COUNT\_BIG \textbar LTRIM \textbar TAN \textbar{}
-\textbar DATEADD \textbar MAX \textbar UPPER \textbar{}
-\textbar DATEDIFF \textbar MIN \textbar VAR \textbar{}
-\textbar DATEFROMPARTS \textbar MONTH \textbar YEAR \textbar{}
-\textbar DATETIMEFROMPARTS \textbar NEWID \textbar{} \textbar{}
-\textbar DAY \textbar PI \textbar{} \textbar{}
-\textbar EOMONTH \textbar POWER \textbar{} \textbar{}
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:sqlFunctions} Functions supported by translate.}\tabularnewline
+\toprule
+Function & Function & Function\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Function & Function & Function\tabularnewline
+\midrule
+\endhead
+ABS & EXP & RAND\tabularnewline
+ACOS & FLOOR & RANK\tabularnewline
+ASIN & GETDATE & RIGHT\tabularnewline
+ATAN & HASHBYTES* & ROUND\tabularnewline
+AVG & ISNULL & ROW\_NUMBER\tabularnewline
+CAST & ISNUMERIC & RTRIM\tabularnewline
+CEILING & LEFT & SIN\tabularnewline
+CHARINDEX & LEN & SQRT\tabularnewline
+CONCAT & LOG & SQUARE\tabularnewline
+COS & LOG10 & STDEV\tabularnewline
+COUNT & LOWER & SUM\tabularnewline
+COUNT\_BIG & LTRIM & TAN\tabularnewline
+DATEADD & MAX & UPPER\tabularnewline
+DATEDIFF & MIN & VAR\tabularnewline
+DATEFROMPARTS & MONTH & YEAR\tabularnewline
+DATETIMEFROMPARTS & NEWID &\tabularnewline
+DAY & PI &\tabularnewline
+EOMONTH & POWER &\tabularnewline
+\bottomrule
+\end{longtable}
 
 * Requires special privileges on Oracle. Has no equivalent on SQLite.
 
@@ -3758,7 +3816,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.xdqtelf5children ;"
+## [1] "SELECT * FROM temp_schema.vhyutod7children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4539,11 +4597,11 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-1}{%
-\section{Exercises}\label{exercises-1}}
+\hypertarget{exercises-2}{%
+\section{Exercises}\label{exercises-2}}
 
-\hypertarget{prerequisites}{%
-\subsubsection*{Prerequisites}\label{prerequisites}}
+\hypertarget{prerequisites-1}{%
+\subsubsection*{Prerequisites}\label{prerequisites-1}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -4551,7 +4609,7 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{)}
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5271,8 +5329,8 @@ Finally, it is always recommend to clean up any temp tables that were created, a
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-2}{%
-\subsection{Exercises}\label{exercises-2}}
+\hypertarget{exercises-3}{%
+\subsection{Exercises}\label{exercises-3}}
 
 To be added
 
@@ -5962,8 +6020,8 @@ As shown, the metrics calculated are the same but the interpretation is differen
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-3}{%
-\section{Exercises}\label{exercises-3}}
+\hypertarget{exercises-4}{%
+\section{Exercises}\label{exercises-4}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -8776,8 +8834,8 @@ For more details see the help page of the function.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{prerequisites-1}{%
-\subsubsection*{Prerequisites}\label{prerequisites-1}}
+\hypertarget{prerequisites-2}{%
+\subsubsection*{Prerequisites}\label{prerequisites-2}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -9391,11 +9449,11 @@ The only potential orphan found that is actually used in the data is ``Angioneur
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-4}{%
-\section{Exercises}\label{exercises-4}}
+\hypertarget{exercises-5}{%
+\section{Exercises}\label{exercises-5}}
 
-\hypertarget{prerequisites-2}{%
-\subsubsection*{Prerequisites}\label{prerequisites-2}}
+\hypertarget{prerequisites-3}{%
+\subsubsection*{Prerequisites}\label{prerequisites-3}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, \href{https://github.com/OHDSI/Achilles}{ACHILLES}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -11942,6 +12000,476 @@ Concept ID & Concept Name\tabularnewline
 \chapter{Suggested Answers}\label{SuggestedAnswers}}
 
 This Appendix contains suggested answers for the exercises in the book.
+
+\hypertarget{Cdmanswers}{%
+\section{The Common Data Model}\label{Cdmanswers}}
+
+\hypertarget{exercise-refexrexercisejohnperson}{%
+\subsubsection*{Exercise \ref{exr:exerciseJohnPerson}}\label{exercise-refexrexercisejohnperson}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseJohnPerson}}
+
+Based on the description in the exercise, John's record should look like Table \ref{tab:johnPerson}.
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:johnPerson} The PERSON table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.28\columnwidth}\raggedright
+Column name\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.28\columnwidth}\raggedright
+Column name\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+PERSON\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+A unique integer.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+GENDER\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+8507\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+The concept ID for male gender is \href{http://athena.ohdsi.org/search-terms/terms/8507}{8507}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+YEAR\_OF\_BIRTH\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+1974\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+MONTH\_OF\_BIRTH\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+8\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DAY\_OF\_BIRTH\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+BIRTH\_DATETIME\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+1974-08-04 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+When the time is not known midnight is used.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DEATH\_DATETIME\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+RACE\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+8516\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+The concept ID for black or African American is \href{http://athena.ohdsi.org/search-terms/terms/8516}{8516}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+ETHNICITY\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+38003564\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\href{http://athena.ohdsi.org/search-terms/terms/38003564}{38003564} refers to ``Not hispanic''.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+LOCATION\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+His address is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+PROVIDER\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+His primary care Provider is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+CARE\_SITE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+His primary Care Site is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+PERSON\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Not provided.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+GENDER\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+Man\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+The text used in the description.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+GENDER\_SOURCE\_ CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+RACE\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+African American\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+The text used in the description.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+RACE\_SOURCE\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+ETHNICITY\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+ETHNICITY\_SOURCE\_ CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{exercise-refexrexercisejohnop}{%
+\subsubsection*{Exercise \ref{exr:exerciseJohnOp}}\label{exercise-refexrexercisejohnop}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseJohnOp}}
+
+Based on the description in the exercise, John's record should look like Table \ref{tab:johnOp}.
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:johnOp} The OBSERVATION\_PERIOD table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.28\columnwidth}\raggedright
+Column name\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.28\columnwidth}\raggedright
+Column name\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+OBSERVATION\_PERIOD\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+A unique integer.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+PERSON\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+This is a foreign key to John's record in the PERSON table.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+OBSERVATION\_PERIOD\_START\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2015-01-01\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+The date of enrollment.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+OBSERVATION\_PERIOD\_END\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2019-07-01\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+No data can be expected after the data extraction date.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+PERIOD\_TYPE\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+44814722\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\href{http://athena.ohdsi.org/search-terms/terms/44814722}{44814724} refers to ``Period while enrolled in insurance''.\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{exercise-refexrexercisejohndrug}{%
+\subsubsection*{Exercise \ref{exr:exerciseJohnDrug}}\label{exercise-refexrexercisejohndrug}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseJohnDrug}}
+
+Based on the description in the exercise, John's record should look like Table \ref{tab:johnDrug}.
+
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:johnDrug} The DRUG\_EXPOSURE table.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.28\columnwidth}\raggedright
+Column name\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.28\columnwidth}\raggedright
+Column name\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_EXPOSURE\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+1001\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Some unique integer\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+PERSON\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+This is a foreign key to John's record in the PERSON table.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+19078461\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+The provided NDC code maps to Standard Concept \href{http://athena.ohdsi.org/search-terms/terms/19078461}{19078461}.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_EXPOSURE\_START\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2019-05-01\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+The start date of the exposure to the drug.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_EXPOSURE\_ START\_DATETIME\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2019-05-01 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Midnight is used as the time is not known.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_EXPOSURE\_END\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2019-05-31\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Based on start date + days supply.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_EXPOSURE\_ END\_DATETIME\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+2019-05-31 00:00:00\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Midnight is used as time is unknown.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+VERBATIM\_END\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Not provided.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_TYPE\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+38000177\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\href{http://athena.ohdsi.org/search-terms/terms/38000177}{38000177} indicates ``Prescription written''.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+STOP\_REASON\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+REFILLS\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+QUANTITY\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Not provided.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DAYS\_SUPPLY\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+30\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+As descibed in the exercise.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+SIG\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Not provided.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+ROUTE\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+4132161\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\href{http://athena.ohdsi.org/search-terms/terms/4132161}{4132161} indicates ``Oral''.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+LOT\_NUMBER\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Not provided.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+PROVIDER\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+Not provided.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+VISIT\_OCCURRENCE\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+No information on the visit was provided..\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+VISIT\_DETAIL\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+76168009520\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+This is provided NDC code.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+DRUG\_SOURCE\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+583945\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\href{http://athena.ohdsi.org/search-terms/terms/750264}{583945} represents the drug source value (NDC code ``76168009520'').\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.28\columnwidth}\raggedright
+ROUTE\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{exercise-refexrexercisegibleedrecords}{%
+\subsubsection*{Exercise \ref{exr:exerciseGiBleedRecords}}\label{exercise-refexrexercisegibleedrecords}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseGiBleedRecords}}
+
+To find the set of records, we can query the CONDITION\_OCCURRENCE table:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(DatabaseConnector)}
+\NormalTok{connection <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connectionDetails)}
+\NormalTok{sql <-}\StringTok{ "SELECT *}
+\StringTok{FROM @cdm.condition_occurrence}
+\StringTok{WHERE condition_concept_id = 192671;"}
+
+\NormalTok{result <-}\StringTok{ }\KeywordTok{renderTranslateQuerySql}\NormalTok{(connection, sql, }\DataTypeTok{cdm =} \StringTok{"main"}\NormalTok{)}
+\KeywordTok{head}\NormalTok{(result)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
+## 1                    4657       273               192671 ...
+## 2                    1021        61               192671 ...
+## 3                    5978       351               192671 ...
+## 4                    9798       579               192671 ...
+## 5                    9301       549               192671 ...
+## 6                    1997       116               192671 ...
+\end{verbatim}
+
+\hypertarget{exercise-refexrexerciseperson61records}{%
+\subsubsection*{Exercise \ref{exr:exercisePerson61Records}}\label{exercise-refexrexerciseperson61records}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exercisePerson61Records}}
+
+This information is stored in the OBSERVATION\_PERIOD table:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(DatabaseConnector)}
+\NormalTok{connection <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connectionDetails)}
+\NormalTok{sql <-}\StringTok{ "SELECT *}
+\StringTok{FROM @cdm.observation_period}
+\StringTok{WHERE person_id = 61;"}
+
+\KeywordTok{renderTranslateQuerySql}\NormalTok{(connection, sql, }\DataTypeTok{cdm =} \StringTok{"main"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   OBSERVATION_PERIOD_ID PERSON_ID OBSERVATION_PERIOD_START_DATE ...
+## 1                    61        61                    1968-01-21 ...
+\end{verbatim}
 
 \hypertarget{SqlAndRanswers}{%
 \section{SQL and R}\label{SqlAndRanswers}}

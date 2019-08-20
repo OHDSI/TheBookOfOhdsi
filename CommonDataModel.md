@@ -344,15 +344,55 @@ Column name|Value|Explanation
 
 ## Additional Information
 
-This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site [https://github.com/OHDSI/CommonDataModel/wiki](https://github.com/OHDSI/CommonDataModel/wiki) for more information.
+This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site[^cdmWikiUrl] for more information.
+
+[^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- The OMOP CDM is designed to support the conduct of research to identify and evaluate associations between interventions and outcomes
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- The CDM is designed to support a wide range of observational research activities.
 
-- The OMOP CDM is a "person-centric" model
+- The CDM is a person-centric model.
 
-- Source codes are represented as standard concept ids
+- The CDM not only standarizes the structure of the data, but through the Standardized Vocabularies it also standardizes the representation of the content.
+
+- Source codes are maintained in the CDM for full traceability.
 </div>\EndKnitrBlock{rmdsummary}
 
-[//]: # (## Exercises)
+## Exercises
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseJohnPerson"><strong>(\#exr:exerciseJohnPerson) </strong></span>John is an African American man born on August 4, 1974.  Define an entry in the PERSON table that encodes this information.
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseJohnOp"><strong>(\#exr:exerciseJohnOp) </strong></span>John enrolled in his current insurance on January 1st, 2015. The data from his insurance database were extracted on July 1st, 2019. Define an entry in the OBSERVATION_PERIOD table that encodes this information.
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseJohnDrug"><strong>(\#exr:exerciseJohnDrug) </strong></span>John was prescribed a 30-day supply of Ibuprofen 200 MG Oral tablets (NDC code: 76168009520) on May 1st, 2019. Define an entry in the DRUG_EXPOSURE table that encodes this information.
+</div>\EndKnitrBlock{exercise}
+
+#### Prerequisites {-}
+
+For these last two exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+
+
+```r
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+```
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
+
+```r
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
+
+The CDM database schema is "main".
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseGiBleedRecords"><strong>(\#exr:exerciseGiBleedRecords) </strong></span>Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" (with concept ID [192671](http://athena.ohdsi.org/search-terms/terms/192671).
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePerson61Records"><strong>(\#exr:exercisePerson61Records) </strong></span>Using SQL and R, retrieve the observation period of the person with PERSON_ID 61.
+</div>\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \@ref(Cdmanswers).

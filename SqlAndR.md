@@ -161,8 +161,8 @@ These SQL Server functions have been tested and were found to be translated corr
 
 Table: (\#tab:sqlFunctions) Functions supported by translate.
 
-|Function          |Function   |Function   |
-|:----------------- ||:----------------- |:----------------- |
+|Function           |Function           |Function           |    
+|:----------------- |:----------------- |:----------------- |
 |ABS               |EXP        |RAND       |
 |ACOS              |FLOOR      |RANK       |
 |ASIN              |GETDATE    |RIGHT      |
@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.vaaolg1echildren ;"
+## [1] "SELECT * FROM temp_schema.kxti21qjchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -950,7 +950,7 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 ```r
 install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
-devtools::install_github("ohdsi/Eunomia")
+devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:

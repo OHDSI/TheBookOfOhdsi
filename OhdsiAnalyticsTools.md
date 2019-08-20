@@ -23,7 +23,7 @@ The third approach relies on our interactive analysis platform [ATLAS](https://g
 
 ATLAS and the Methods Library are not independent. Some of the more complicated analytics that can be invoked in ATLAS are executed through calls to the packages in the Methods Library. Similarly, cohorts used in the Methods Library are often designed in ATLAS.
 
-## Analysis strategy
+## Analysis strategies
 
 More or less independently of how we choose to implement our analysis is the strategy that our analytics takes in answering specific questions. Figure \@ref(fig:strategies) highlights three strategies that are employed in OHDSI.
 
@@ -42,7 +42,7 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 
 ## ATLAS
 
-ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a small simulated datasets, it can still be used for many purposes including testing and training. For example, it is possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
+ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
 
 [^atlasUrl]: http://www.ohdsi.org/web/atlas
 
@@ -94,13 +94,23 @@ Feedback \index{ATLAS!feedback}
 : The Feedback link will take you to the issue log for Atlas so that you can log a new issue or to search through existing issues. If you have ideas for new features or enhancements, this is also a place note these for the development community.
 
 ### Security
-ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform.  The security system is built leveraging the Apache Shiro library.  Additional information on the security system can be found in the online [WebAPI security wiki](https://github.com/OHDSI/WebAPI/wiki/Security-Configuration). \index{ATLAS!security}
+
+ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform. The security system is built leveraging the Apache Shiro library. Additional information on the security system can be found in the online WebAPI security wiki[^webApiSecurityWikiUrl]. \index{ATLAS!security}
+
+[^webApiSecurityWikiUrl]: https://github.com/OHDSI/WebAPI/wiki/Security-Configuration
 
 ### Documentation 
-Documentation for ATLAS can be found online in the [ATLAS Github repository wiki](https://github.com/OHDSI/ATLAS/wiki).  This wiki includes information on the various application features as well as links to online video tutorials.  \index{ATLAS!documentation}
+
+Documentation for ATLAS can be found online in the ATLAS Github repository wiki[^atlasRepoWikiUrl]. This wiki includes information on the various application features as well as links to online video tutorials.  \index{ATLAS!documentation}
+
+[^atlasRepoWikiUrl]: https://github.com/OHDSI/ATLAS/wiki 
 
 ### How to install
-Installation of ATLAS is done in combination with the OHDSI WebAPI.  Installation guides for each component are available online in the [ATLAS Github repository Setup Guide](https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide) and [WebAPI Github repository Installation Guide](https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide). \index{ATLAS!installation}
+
+Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS Github repository Setup Guide[^atlasSetupGuideUrl] and WebAPI Github repository Installation Guide[^webApiInstallationGuideUrl]. \index{ATLAS!installation}
+
+[^atlasSetupGuideUrl]: https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide
+[^webApiInstallationGuideUrl]: https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide
 
 ## Methods Library
 
