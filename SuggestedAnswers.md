@@ -123,6 +123,20 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 ## 1                    61        61                    1968-01-21 ...
 ```
 
+## Data Analytics Use Cases {#UseCasesanswers}
+
+#### Exercise \@ref(exr:exerciseUseCases1) {-}
+
+1. Characterization
+
+2. Patient-level prediction
+
+3. Population-level estimation
+
+#### Exercise \@ref(exr:exerciseUseCases2) {-}
+
+Probably not. Defining a non-exposure cohort that is comparable to your diclofenac exposure cohort is often impossible, since people take diclofenac for a reason. This precludes a between-person comparison. It might possible to a within-person comparison, so for each patient in the diclofenac cohort identifying time when they are not exposed, but a similar problem occurs here: these times are likely incomparable, because there are reasons when at one time someone is exposed and at other times not.
+
 
 ## SQL and R {#SqlAndRanswers}
 
