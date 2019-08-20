@@ -283,12 +283,23 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- TODO: add
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- We can perform analyses against data in the CDM by 
+    - writing custom code
+    - writing code that uses the R packages in the OHDSI Methods Library
+    - using the interactive analysis platform ATLAS
+
+- OHDSI tools use different analysis stragies
+    - Single studies
+    - Real-time queries
+    - Large-scale analytics
+
+- The majority of OHDSI analytics tool are embedded in
+    - The interactive analysis platform ATLAS
+    - The OHDSI Methods Libary R packages
+
+- Several stategies exist facilitating the deployment of the OHDSI tools.
 </div>\EndKnitrBlock{rmdsummary}
 
-## Exercises
-
-Todo
 
 
 

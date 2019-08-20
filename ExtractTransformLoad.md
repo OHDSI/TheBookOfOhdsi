@@ -380,10 +380,10 @@ The ETL process is a difficult one to master for many reasons, not the least of 
 ## Summary
 
 \BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- There is a generally agreed upon process for how to approach an ETL, including
-  + Data experts and CDM experts together design the ETL
-  + People with medical knowledge create the code mappings
-  + A technical person implements the ETL
-  + All are involved in quality control
+  - Data experts and CDM experts together design the ETL
+  - People with medical knowledge create the code mappings
+  - A technical person implements the ETL
+  - All are involved in quality control
 
 - Tools have been developed by the OHDSI community to facilitate these steps and are freely available for use
 
