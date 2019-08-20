@@ -63,38 +63,23 @@ Events of different nature are organized into Domains. These Events are stored i
 
 Table: (\#tab:domains) Number of standard concepts belonging to each domain.
 
-Concept Count|DOMAIN_ID
-----------------|--------------------------------
-1731378	|Drug
-477597	|Device
-257000	|Procedure
-163807	|Condition
-145898	|Observation
-89645	|Measurement
-33759	|Spec Anatomic Site
-17302	|Meas Value
-1799	|Specimen
-1215	|Provider Specialty
-1046	|Unit
-944	|Metadata
-538	|Revenue Code
-336	|Type Concept
-194	|Relationship
-183	|Route
-180	|Currency
-158	|Payer
-123	|Visit
-51	|Cost
-50	|Race
-13	|Plan Stop Reason
-11	|Plan
-6	|Episode
-6	|Sponsor
-5	|Meas Value Operator
-3	|Spec Disease Status
-2	|Gender
-2	|Ethnicity
-1	|Observation Type
+Concept Count|Domain ID|Concept Count|Domain ID
+:---------- |:---------------------------- |:---------- |:----------------------------
+1731378|Drug|183|Route
+477597|Device|180|Currency
+257000|Procedure|158|Payer
+163807|Condition|123|Visit
+145898|Observation|51|Cost
+89645|Measurement|50|Race
+33759|Spec Anatomic Site|13|Plan Stop Reason
+17302|Meas Value|11|Plan
+1799|Specimen|6|Episode
+1215|Provider Specialty|6|Sponsor
+1046|Unit|5|Meas Value Operator
+944|Metadata|3|Spec Disease Status
+538|Revenue Code|2|Gender
+336|Type Concept|2|Ethnicity
+194|Relationship|1|Observation Type
 
 ### Representation of content through Concepts 
 
@@ -143,9 +128,9 @@ An example of how the Standard Concept to Source Concept relationship is depicte
 
 \index{OMOP Common Data Model!standardized tables}
 
-The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl].
+The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl1].
 
-[^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki
+[^cdmWikiUrl1]: https://github.com/OHDSI/CommonDataModel/wiki
 
 To illustrate how these tables are used in practice, the data of one person will be used as a common thread throughout the rest of the chapter. 
 
@@ -163,7 +148,7 @@ Lauren had been experiencing endometriosis symptoms for many years; however, it 
 
 ### PERSON table{#person}
 
-**What do we know about Lauren?** 
+#### What do we know about Lauren?  {-}
 
 * She is a 36-year-old woman
 * Her birthday is 12-March-1982
@@ -200,7 +185,7 @@ Column name|Value|Explanation
 
 The OBSERVATION_PERIOD table is designed to define the amount of time for which at least a patient's demographics, conditions, procedures and drugs are recorded in the source system with the expection of a reasonable sensitivity and specificity. For insurance data this is typically the enrollment period of the patient. It's trickier in electronic health records (EHR), as most healthcare systems do not determine which healthcare institution or provider is visited. As a next best solution, often the first record in the system is considered the Start Date of the Observation Period and the latest record is considered the End Date.
 
-**How is Lauren's Observation Period defined?**
+#### How is Lauren's Observation Period defined? {-}
 
 Let's say Lauren's information as shown in Table \@ref(tab:encounters) is recorded like in an EHR system. Her encounters from which the Observation Period was derived are:
 
@@ -231,7 +216,7 @@ Column name|Value|Explanation
 
 the VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discreet events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits. 
 
-**How are Lauren's encounters represented as Visits?**
+#### How are Lauren's encounters represented as Visits?  {-}
 
 As an example let's represent the inpatient encounter in Table \@ref(tab:encounters) in the VISIT_OCCURRENCE table.
 
@@ -263,7 +248,7 @@ Column name|Value|Explanation
 
 Records in the CONDITION_OCCURRENCE table are diagnoses, signs, or symptoms of a condition either observed by a Provider or reported by the patient.
 
-**What are Lauren's conditions?**
+#### What are Lauren's conditions? {-}
 
 Revisiting her account she says:
 
@@ -295,7 +280,7 @@ Column name|Value|Explanation
 
 The DRUG_EXPOSURE table captures records about the intent or actual introduction of a drug into the body of the patient. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Drug exposures are inferred from clinical events associated with orders, prescriptions written, pharmacy dispensings, procedural administrations, and other patient-reported information. 
 
-**How are Lauren's Drug Exposures represented?**
+#### How are Lauren's Drug Exposures represented?  {-}
 
 To help with her dysmenorrhea pain, Lauren was given 60 oral tablets with 375 mg Acetaminophen (aka Paracetamol, e.g. sold in the US under NDC code 69842087651) each for 30 days at her Visit on 2010-01-06. Here's how that might look in the DRUG_EXPOSURE table: 
 
@@ -333,7 +318,7 @@ The PROCEDURE_OCCURRENCE table contains records of activities or processes order
  * Medical Claims include procedure codes that are submitted as part of a claim for health services rendered, including procedures performed.
  * Electronic Health Records that capture procedures as orders.
  
-**What procedures did Lauren have?**
+#### What procedures did Lauren have?  {-}
 
 From her description we know she had an ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE_OCCURRENCE table:
 
@@ -358,17 +343,65 @@ Column name|Value|Explanation
 
 ## Additional Information
 
-This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site [https://github.com/OHDSI/CommonDataModel/wiki](https://github.com/OHDSI/CommonDataModel/wiki) for more information.
+This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site[^cdmWikiUrl] for more information.
+
+[^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki
 
 ## Summary
 
 ```{block2, type="rmdsummary"}
-- The OMOP CDM is designed to support the conduct of research to identify and evaluate associations between interventions and outcomes
+- The CDM is designed to support a wide range of observational research activities.
 
-- The OMOP CDM is a "person-centric" model
+- The CDM is a person-centric model.
 
-- Source codes are represented as standard concept ids
+- The CDM not only standarizes the structure of the data, but through the Standardized Vocabularies it also standardizes the representation of the content.
+
+- Source codes are maintained in the CDM for full traceability.
 
 ```
 
-[//]: # (## Exercises)
+## Exercises
+
+```{exercise, exerciseJohnPerson}
+John is an African American man born on August 4, 1974.  Define an entry in the PERSON table that encodes this information.
+
+```
+
+```{exercise, exerciseJohnOp}
+John enrolled in his current insurance on January 1st, 2015. The data from his insurance database were extracted on July 1st, 2019. Define an entry in the OBSERVATION_PERIOD table that encodes this information.
+
+```
+
+```{exercise, exerciseJohnDrug}
+John was prescribed a 30-day supply of Ibuprofen 200 MG Oral tablets (NDC code: 76168009520) on May 1st, 2019. Define an entry in the DRUG_EXPOSURE table that encodes this information.
+
+```
+
+#### Prerequisites {-}
+
+For these last two exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+
+```{r eval=FALSE}
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+```
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
+```{r eval=FALSE}
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
+
+The CDM database schema is "main".
+
+```{exercise, exerciseGiBleedRecords}
+Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" (with concept ID [192671](http://athena.ohdsi.org/search-terms/terms/192671).
+
+```
+
+```{exercise, exercisePerson61Records}
+Using SQL and R, retrieve the observation period of the person with PERSON_ID 61.
+
+```
+
+Suggested answers can be found in Appendix \@ref(Cdmanswers).
