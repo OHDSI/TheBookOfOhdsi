@@ -2,6 +2,127 @@
 
 This Appendix contains suggested answers for the exercises in the book.
 
+## The Common Data Model {#Cdmanswers}
+
+#### Exercise \@ref(exr:exerciseJohnPerson) {-}
+
+Based on the description in the exercise, John's record should look like Table \@ref(tab:johnPerson).
+
+Table: (\#tab:johnPerson) The PERSON table.
+
+Column name|Value|Explanation
+:---------------------|:-----------|:--------------------------------------
+|PERSON_ID|2|A unique integer.|
+|GENDER_CONCEPT_ID|8507|The concept ID for male gender is [8507](http://athena.ohdsi.org/search-terms/terms/8507).|
+|YEAR_OF_BIRTH|1974||
+|MONTH_OF_BIRTH|8||
+|DAY_OF_BIRTH|4||
+|BIRTH_DATETIME|1974-08-04 00:00:00|When the time is not known midnight is used.|
+|DEATH_DATETIME|NULL||
+|RACE_CONCEPT_ID|8516|The concept ID for black or African American is [8516](http://athena.ohdsi.org/search-terms/terms/8516).|
+|ETHNICITY_CONCEPT_ID|38003564| [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
+|LOCATION_ID||His address is not known.|
+|PROVIDER_ID||His primary care Provider is not known.|
+|CARE_SITE||His primary Care Site is not known.|
+|PERSON_SOURCE_VALUE|NULL|Not provided.|
+|GENDER_SOURCE_VALUE|Man|The text used in the description.|
+|GENDER_SOURCE_ CONCEPT_ID|0||
+|RACE_SOURCE_VALUE|African American|The text used in the description.|
+|RACE_SOURCE_CONCEPT_ID|0||
+|ETHNICITY_SOURCE_VALUE|NULL||
+|ETHNICITY_SOURCE_ CONCEPT_ID|0||
+
+#### Exercise \@ref(exr:exerciseJohnOp) {-}
+
+Based on the description in the exercise, John's record should look like Table \@ref(tab:johnOp).
+
+Table: (\#tab:johnOp) The OBSERVATION_PERIOD table.
+
+Column name|Value|Explanation
+:---------------------|:-----------|:--------------------------------------
+|OBSERVATION_PERIOD_ID|2|A unique integer.|
+|PERSON_ID|2|This is a foreign key to John's record in the PERSON table.|
+|OBSERVATION_PERIOD_START_DATE|2015-01-01|The date of enrollment.|
+|OBSERVATION_PERIOD_END_DATE|2019-07-01|No data can be expected after the data extraction date.|
+|PERIOD_TYPE_CONCEPT_ID|44814722| [44814724](http://athena.ohdsi.org/search-terms/terms/44814722) refers to "Period while enrolled in insurance".|
+
+#### Exercise \@ref(exr:exerciseJohnDrug) {-}
+
+Based on the description in the exercise, John's record should look like Table \@ref(tab:johnDrug).
+
+Table: (\#tab:johnDrug) The DRUG_EXPOSURE table.
+
+Column name|Value|Explanation
+:---------------------|:-----------|:--------------------------------------
+|DRUG_EXPOSURE_ID|1001|Some unique integer|
+|PERSON_ID|1|This is a foreign key to John's record in the PERSON table.|
+|DRUG_CONCEPT_ID|19078461|The provided NDC code maps to Standard Concept [19078461](http://athena.ohdsi.org/search-terms/terms/19078461).|
+|DRUG_EXPOSURE_START_DATE|2019-05-01|The start date of the exposure to the drug.|
+|DRUG_EXPOSURE_ START_DATETIME|2019-05-01 00:00:00|Midnight is used as the time is not known.|
+|DRUG_EXPOSURE_END_DATE|2019-05-31|Based on start date + days supply.|
+|DRUG_EXPOSURE_ END_DATETIME|2019-05-31 00:00:00|Midnight is used as time is unknown.|
+|VERBATIM_END_DATE|NULL|Not provided.|
+|DRUG_TYPE_CONCEPT_ID|38000177| [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) indicates "Prescription written".|
+|STOP_REASON|NULL||
+|REFILLS|NULL||
+|QUANTITY|NULL|Not provided.|
+|DAYS_SUPPLY|30|As descibed in the exercise.|
+|SIG|NULL|Not provided.|
+|ROUTE_CONCEPT_ID|4132161| [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) indicates "Oral".|
+|LOT_NUMBER|NULL|Not provided.|
+|PROVIDER_ID|NULL|Not provided.|
+|VISIT_OCCURRENCE_ID|NULL|No information on the visit was provided..|
+|VISIT_DETAIL_ID|NULL||
+|DRUG_SOURCE_VALUE|76168009520|This is provided NDC code.|
+|DRUG_SOURCE_CONCEPT_ID|583945| [583945](http://athena.ohdsi.org/search-terms/terms/750264) represents the drug source value (NDC code "76168009520").|
+|ROUTE_SOURCE_VALUE|NULL||
+
+#### Exercise \@ref(exr:exerciseGiBleedRecords) {-}
+
+To find the set of records, we can query the CONDITION_OCCURRENCE table:
+
+```{r eval=FALSE}
+library(DatabaseConnector)
+connection <- connect(connectionDetails)
+sql <- "SELECT *
+FROM @cdm.condition_occurrence
+WHERE condition_concept_id = 192671;"
+
+result <- renderTranslateQuerySql(connection, sql, cdm = "main")
+head(result)
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat(" CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
+1                    4657       273               192671 ...
+2                    1021        61               192671 ...
+3                    5978       351               192671 ...
+4                    9798       579               192671 ...
+5                    9301       549               192671 ...
+6                    1997       116               192671 ...
+")
+```
+
+#### Exercise \@ref(exr:exercisePerson61Records) {-}
+
+This information is stored in the OBSERVATION_PERIOD table:
+
+```{r eval=FALSE}
+library(DatabaseConnector)
+connection <- connect(connectionDetails)
+sql <- "SELECT *
+FROM @cdm.observation_period
+WHERE person_id = 61;"
+
+renderTranslateQuerySql(connection, sql, cdm = "main")
+
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("  OBSERVATION_PERIOD_ID PERSON_ID OBSERVATION_PERIOD_START_DATE ...
+1                    61        61                    1968-01-21 ...
+")
+```
+
+
 ## SQL and R {#SqlAndRanswers}
 
 #### Exercise \@ref(exr:exercisePeopleCount) {-}
