@@ -345,6 +345,110 @@ DROP TABLE #diagnoses;"
 renderTranslateExecuteSql(connection, sql)
 ```
 
+## Patient-Level Prediction {#Plpanswers}
+
+#### Exercise \@ref(exr:exercisePlp1) {-}
+
+We specify a set of covariate settings, and use the `getPlpData` function to extract the data from the database:
+
+```{r eval=FALSE}
+library(PatientLevelPrediction)
+covSettings <- createCovariateSettings(useDemographicsGender = TRUE,
+                                       useDemographicsAge = TRUE,
+                                       useConditionGroupEraLongTerm = TRUE,
+                                       useConditionGroupEraAnyTimePrior = TRUE,
+                                       useDrugGroupEraLongTerm = TRUE,
+                                       useDrugGroupEraAnyTimePrior = TRUE,
+                                       useVisitConceptCountLongTerm = TRUE,
+                                       longTermStartDays = -365,
+                                       endDays = -1)
+
+plpData <- getPlpData(connectionDetails = connectionDetails,
+                      cdmDatabaseSchema = "main",
+                      cohortDatabaseSchema = "main",
+                      cohortTable = "cohort",
+                      cohortId = 4,
+                      covariateSettings = covSettings,
+                      outcomeDatabaseSchema = "main",
+                      outcomeTable = "cohort",
+                      outcomeIds = 3)
+
+summary(plpData)
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("plpData object summary
+
+At risk cohort concept ID: -1
+Outcome concept ID(s): 3
+
+People: 2630
+
+Outcome counts:
+  Event count Person count
+3         479          479
+
+Covariates:
+Number of covariates: 245
+Number of non-zero covariate values: 54079
+")
+```
+
+#### Exercise \@ref(exr:exercisePlp2) {-}
+
+We create a study population for the outcome of interest (in this case the only outcome for which we extracted data), removing subjects who experienced the outcome before they started the NSAID, and requiring 364 days of time-at-risk:
+
+```{r eval=FALSE}
+population <- createStudyPopulation(plpData = plpData,
+                                    outcomeId = 3,
+                                    washoutPeriod = 364,
+                                    firstExposureOnly = FALSE,
+                                    removeSubjectsWithPriorOutcome = TRUE,
+                                    priorOutcomeLookback = 9999,
+                                    riskWindowStart = 1,
+                                    riskWindowEnd = 365,
+                                    addExposureDaysToStart = FALSE,
+                                    addExposureDaysToEnd = FALSE,
+                                    minTimeAtRisk = 364,
+                                    requireTimeAtRisk = TRUE,
+                                    includeAllOutcomes = TRUE)
+nrow(population)
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("[1] 2578")
+```
+
+In this case we have lost a few people by removing those that had the outcome prior, and by requiring a time-at-risk of at least 364 days.
+
+#### Exercise \@ref(exr:exercisePlp3) {-}
+
+We run a LASSO model by first creating a model settings object using the `setLassoLogisticRegression` function, and then calling the `runPlp` function. In this case we do a person split, training the model on 75% of the data and evaluating on 25% of the data:
+
+```{r eval=FALSE}
+lassoModel <- setLassoLogisticRegression(seed = 0)
+
+lassoResults <- runPlp(population = population, 
+                       plpData = plpData, 
+                       modelSettings = lassoModel, 
+                       testSplit = 'person',
+                       testFraction = 0.25, 
+                       nfold = 2, 
+                       splitSeed = 0)
+```
+
+Note that for this example set the random seeds both for the LASSO cross-validation and for the train-test split to make sure the results will be the same on multiple runs.
+
+We can now view the results using the Shiny app:
+
+```{r eval=FALSE}
+viewPlp(lassoResults)
+```
+
+This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
+
+```{r plpShiny, fig.cap='Patient-level prediction Shiny app.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/plpShiny.png")
+```
+
 
 ## Data Quality {#DataQualityanswers}
 

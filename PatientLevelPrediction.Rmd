@@ -959,62 +959,31 @@ The Eunomia package provides a simulated dataset in the CDM that will run inside
 connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 ```
 
-The CDM database schema is "main".
-
-*Problem Definition*
-
-In patients that started using NSAIDs for the first time, predict who will develop a GI Bleed in the next year.
-
-Find below the SQL code to generate the NSAID cohort cohort.
+The CDM database schema is "main". These exercises also make use of several cohorts. The `createCohorts` function in the Eunomia package will create these in the COHORT table:
 
 ```{r eval=FALSE}
-sqlNSAIDs <- "
-INSERT INTO @cohort_database_schema.@cohort_table 
-  (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
-SELECT 1 AS cohort_definition_id,
-  person_id AS subject_id,
-  MIN(drug_exposure_start_date) AS cohort_start_date,
-  MIN(drug_exposure_end_date) AS cohort_end_date
-FROM @cdm_database_schema.drug_exposure
-INNER JOIN @cdm_database_schema.concept_ancestor
-  ON drug_concept_id = descendant_concept_id
-WHERE ancestor_concept_id IN (1118084, 1124300) -- NSAIDS
-GROUP BY person_id;"
+Eunomia::createCohorts(connectionDetails)
 ```
 
-And here SQL code to generate the GI Bleed cohort:
+#### Problem definition {-}
 
-```{r eval=FALSE}
-sql <- "
-INSERT INTO @cohort_database_schema.@cohort_table 
-  (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
-SELECT 2 AS cohort_definition_id,
-  person_id AS subject_id,
-  MIN(condition_start_date) AS cohort_start_date,
-  MIN(condition_end_date) AS cohort_end_date
-FROM @cdm_database_schema.condition_occurrence
-INNER JOIN @cdm_database_schema.concept_ancestor
-  ON condition_concept_id = descendant_concept_id
-WHERE ancestor_concept_id = 192671 -- Gastrointestinal haemorrhage
-GROUP BY person_id;"
-```
+> In patients that started using NSAIDs for the first time, predict who will develop a gastrointestinal (GI) bleed in the next year.
 
+The NSAID new-user cohort has COHORT_DEFINITION_ID = 4. The GI bleed cohort has COHORT_DEFINITION_ID = 3.
 
 ```{exercise, exercisePlp1}
-Create a cohort table and execute the queries against the CDM to instantiate the two cohorts. How many people are in these cohort?
+Using the PatientLevelPrediction R package, define the covariates you want to use for the prediction and extract the plp data from the CDM. Create the summary of the plp data.
 
 ```
 
 ```{exercise, exercisePlp2}
-Define the covariates you want to use for the prediction and extract the plp data from the CDM. Create the summary of the plp data.
+Revisit the design choices you have to make to define the final target population and specify these using the `createStudyPopulation` function. What will the effect of your choices be on the final size of the target population?
+
 ```
 
 ```{exercise, exercisePlp3}
-Revisit the design choices you have to make to define the final target population and specify these using the CreateStudyPopulation function. What will the effect of your choices be on the final size of the target population?
+Build a prediction model using LASSO and evaluate its performance using the Shiny application. How well is your model performing?
+  
 ```
 
-```{exercise, exercisePlp4}
-Build a prediction model using Lasso and evaluate its performance using the Shiny application. How well is your model performing?
-```
-
-TODO: Decide on providing answers.
+Suggested answers can be found in Appendix \@ref(Plpanswers).
