@@ -255,52 +255,80 @@ We create initial event criteria encoding these requirements:
 
 When done, the cohort entry event section should look like Figure \@ref(fig:cohortsAtlasInitialEvents).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasInitialEvents.png" alt="Cohort entry event settings for new users of diclofenac" width="100%" />
-<p class="caption">(\#fig:cohortsAtlasInitialEvents)Cohort entry event settings for new users of diclofenac</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInitialEvents} 
+
+}
+
+\caption{Cohort entry event settings for new users of diclofenac}(\#fig:cohortsAtlasInitialEvents)
+\end{figure}
 
 The concept set expression for diclofenac should look like Figure \@ref(fig:cohortsAtlasConceptSet1), including the ingredient 'Diclofenac' and all of its descendant, thus including all drugs containing the ingredient diclofenac.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasConceptSet1.png" alt="Concept set expression for diclofenac." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasConceptSet1)Concept set expression for diclofenac.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet1} 
+
+}
+
+\caption{Concept set expression for diclofenac.}(\#fig:cohortsAtlasConceptSet1)
+\end{figure}
 
 Next, we require no prior exposure to any NSAID, as shown in Figure \@ref(fig:cohortsAtlasInclusion1). 
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasInclusion1.png" alt="Requiring no prior exposure to any NSAID." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasInclusion1)Requiring no prior exposure to any NSAID.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion1} 
+
+}
+
+\caption{Requiring no prior exposure to any NSAID.}(\#fig:cohortsAtlasInclusion1)
+\end{figure}
 
 The concept set expression for NSAIDs should look like Figure \@ref(fig:cohortsAtlasConceptSet2), including the NSAIDs class and all of its descendant, thus including all drugs containing any NSAID.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasConceptSet2.png" alt="Concept set expression for NSAIDs" width="100%" />
-<p class="caption">(\#fig:cohortsAtlasConceptSet2)Concept set expression for NSAIDs</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet2} 
+
+}
+
+\caption{Concept set expression for NSAIDs}(\#fig:cohortsAtlasConceptSet2)
+\end{figure}
 
 Additionally, we require no prior diagnosis of cancer, as shown in Figure \@ref(fig:cohortsAtlasInclusion2). 
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasInclusion2.png" alt="Requiring no prior cancer diagnosis." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasInclusion2)Requiring no prior cancer diagnosis.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion2} 
+
+}
+
+\caption{Requiring no prior cancer diagnosis.}(\#fig:cohortsAtlasInclusion2)
+\end{figure}
 
 The concept set expression for "Broad malignancies" should look like Figure \@ref(fig:cohortsAtlasConceptSet3), including the high level concept "Malignant neoplastic disease" and all of its descendant.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasConceptSet3.png" alt="Concept set expression for broad malignancies" width="100%" />
-<p class="caption">(\#fig:cohortsAtlasConceptSet3)Concept set expression for broad malignancies</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet3} 
+
+}
+
+\caption{Concept set expression for broad malignancies}(\#fig:cohortsAtlasConceptSet3)
+\end{figure}
 
 Finally, we define the cohort exit criteria as discontinuation of exposure (allowing for a 30-day gap), as shown in Figure \@ref(fig:cohortsAtlasExit). 
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasExit.png" alt="Setting the cohort exit date." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasExit)Setting the cohort exit date.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasExit} 
+
+}
+
+\caption{Setting the cohort exit date.}(\#fig:cohortsAtlasExit)
+\end{figure}
 
 #### Exercise \@ref(exr:exerciseCohortsSql) {-}
 
@@ -465,10 +493,14 @@ viewPlp(lassoResults)
 
 This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
-<p class="caption">(\#fig:plpShiny)Patient-level prediction Shiny app.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/plpShiny} 
+
+}
+
+\caption{Patient-level prediction Shiny app.}(\#fig:plpShiny)
+\end{figure}
 
 
 ## Data Quality {#DataQualityanswers}

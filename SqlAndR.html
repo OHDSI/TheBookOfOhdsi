@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 SQL and R | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.12.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.13.1 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 SQL and R | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -538,17 +538,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="20.3" data-path="StudySteps.html"><a href="StudySteps.html#summary-14"><i class="fa fa-check"></i><b>20.3</b> Summary</a></li>
 </ul></li>
 <li class="chapter" data-level="21" data-path="NetworkResearch.html"><a href="NetworkResearch.html"><i class="fa fa-check"></i><b>21</b> OHDSI Network Research</a><ul>
-<li class="chapter" data-level="21.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#what-is-the-ohdsi-research-network"><i class="fa fa-check"></i><b>21.1</b> What is the OHDSI Research Network?</a></li>
-<li class="chapter" data-level="21.2" data-path="NetworkResearch.html"><a href="NetworkResearch.html#what-is-an-ohdsi-network-study"><i class="fa fa-check"></i><b>21.2</b> What is an OHDSI Network Study?</a></li>
-<li class="chapter" data-level="21.3" data-path="NetworkResearch.html"><a href="NetworkResearch.html#executing-an-ohdsi-network-study"><i class="fa fa-check"></i><b>21.3</b> Executing an OHDSI Network Study</a><ul>
+<li class="chapter" data-level="21.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#ohdsi-research-network-1"><i class="fa fa-check"></i><b>21.1</b> OHDSI Research Network</a></li>
+<li class="chapter" data-level="21.2" data-path="NetworkResearch.html"><a href="NetworkResearch.html#defining-an-ohdsi-network-study"><i class="fa fa-check"></i><b>21.2</b> Defining an OHDSI Network Study</a><ul>
+<li class="chapter" data-level="21.2.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#design-considerations-for-an-ohdsi-network-study"><i class="fa fa-check"></i><b>21.2.1</b> Design Considerations for an OHDSI Network Study</a></li>
+<li class="chapter" data-level="21.2.2" data-path="NetworkResearch.html"><a href="NetworkResearch.html#logistical-considerations-for-an-ohdsi-network-study"><i class="fa fa-check"></i><b>21.2.2</b> Logistical Considerations for an OHDSI Network Study</a></li>
+</ul></li>
+<li class="chapter" data-level="21.3" data-path="NetworkResearch.html"><a href="NetworkResearch.html#running-an-ohdsi-network-study"><i class="fa fa-check"></i><b>21.3</b> Running an OHDSI Network Study</a><ul>
 <li class="chapter" data-level="21.3.1" data-path="NetworkResearch.html"><a href="NetworkResearch.html#study-feasibility-and-design"><i class="fa fa-check"></i><b>21.3.1</b> Study Feasibility and Design</a></li>
 <li class="chapter" data-level="21.3.2" data-path="NetworkResearch.html"><a href="NetworkResearch.html#study-execution"><i class="fa fa-check"></i><b>21.3.2</b> Study Execution</a></li>
 <li class="chapter" data-level="21.3.3" data-path="NetworkResearch.html"><a href="NetworkResearch.html#results-dissemination-and-publication"><i class="fa fa-check"></i><b>21.3.3</b> Results Dissemination and Publication</a></li>
 </ul></li>
-<li class="chapter" data-level="21.4" data-path="NetworkResearch.html"><a href="NetworkResearch.html#types-of-network-studies"><i class="fa fa-check"></i><b>21.4</b> Types of Network Studies</a></li>
-<li class="chapter" data-level="21.5" data-path="NetworkResearch.html"><a href="NetworkResearch.html#forward-looking-using-network-study-automation"><i class="fa fa-check"></i><b>21.5</b> Forward Looking: Using Network Study Automation</a></li>
-<li class="chapter" data-level="21.6" data-path="NetworkResearch.html"><a href="NetworkResearch.html#best-practices-for-network-research"><i class="fa fa-check"></i><b>21.6</b> Best Practices for Network Research</a></li>
-<li class="chapter" data-level="21.7" data-path="NetworkResearch.html"><a href="NetworkResearch.html#example-legend---hypertension"><i class="fa fa-check"></i><b>21.7</b> Example: LEGEND - Hypertension</a></li>
+<li class="chapter" data-level="21.4" data-path="NetworkResearch.html"><a href="NetworkResearch.html#forward-looking-using-network-study-automation"><i class="fa fa-check"></i><b>21.4</b> Forward Looking: Using Network Study Automation</a></li>
+<li class="chapter" data-level="21.5" data-path="NetworkResearch.html"><a href="NetworkResearch.html#summary-15"><i class="fa fa-check"></i><b>21.5</b> Summary</a></li>
 </ul></li>
 <li class="appendix"><span><b>Appendix</b></span></li>
 <li class="chapter" data-level="A" data-path="Glossary.html"><a href="Glossary.html"><i class="fa fa-check"></i><b>A</b> Glossary</a></li>
@@ -866,7 +867,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="SqlAndR.html#cb30-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb30-2"><a href="SqlAndR.html#cb30-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.idlvm2pychildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.d1x63ai7children ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
