@@ -1,6 +1,7 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{amsthm}
+\usepackage{xcolor}
 
 \usepackage{makeidx}
 \makeindex
@@ -13,6 +14,7 @@
 }
 \makeatother
 
+\definecolor{myShadeColor}{gray}{0.92}
 
 \makeatletter
 \newenvironment{kframe}{%
@@ -24,7 +26,7 @@
   \begin{minipage}{\columnwidth}%
  \fi\fi%
  \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
+ \colorbox{myShadeColor}{##1}\hskip-\fboxsep
      % There is no \\@totalrightmargin, so:
      \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
  \MakeFramed {\advance\hsize-\width
@@ -68,15 +70,62 @@
 %\usepackage{fontspec} % Requires xelatex
 %\setmainfont{Arial}
 
-%\usepackage{titlesec}
-%\titleformat{\chapter}[runin]{}{}{}{}[]
+\let\llncsparagraph\paragraph
+\let\paragraph\subsection
+\let\llncssubparagraph\subparagraph
+\let\subparagraph\paragraph
+
+\usepackage{titlesec}
 %\titleformat{\chapter}% reformat chapter headings
-%     [hang]% like section, with number on same line
-%     {\Huge\bfseries}% formatting applied to whole
-%     {\thechapter}% Chapter number
-%     {0.5em}% space between # and title
-%     {}% formatting applied just to title
+%   [hang]% like section, with number on same line
+%   {\Huge\bfseries\sffamily}% formatting applied to whole
+%   {Chapter \thechapter:}% Chapter number
+%   {0.5em}% space between # and title
+%   {}% formatting applied just to title
+
+\titleformat{\chapter}% reformat chapter headings
+   [display]% like section, with number on same line
+   {\huge\bfseries\sffamily}% formatting applied to whole
+   {Chapter \thechapter}% Chapter number
+   {1.0em}% space between # and title
+   {\Huge}% formatting applied just to title
+
+\titleformat{\section}% reformat chapter headings
+   [hang]% like section, with number on same line
+   {\Large\bfseries\sffamily}% formatting applied to whole
+   {\thesection}% Chapter number
+   {1.0em}% space between # and title
+   {}% formatting applied just to title
+
+\titleformat{\subsection}% reformat chapter headings
+   [hang]% like section, with number on same line
+   {\large\bfseries\sffamily}% formatting applied to whole
+   {\thesubsection}% Chapter number
+   {1.0em}% space between # and title
+   {}% formatting applied just to title
+   
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries}{}{0em}{}
+
+\let\paragraph\llncsparagraph
+\let\subparagraph\llncssubparagraph
 
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\small}
+
+% This is how to remove allcaps from chapter header without fancyhdr. Couldn't figure out how to do it for the section header:
+%\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+
+\usepackage{fancyhdr}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\itshape\nouppercase{\rightmark}}
+\fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0pt}
+
+\setlength{\headheight}{13.6pt} % Avoids warning: Package Fancyhdr Warning: \headheight is too small (12.0pt)
+
 
 \frontmatter

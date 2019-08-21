@@ -4,7 +4,7 @@ This Appendix contains cohort definitions used throughout the book.
 
 ## ACE inhibitors {#AceInhibitors}
 
-**Initial Event Cohort**
+#### Initial Event Cohort {-}
 
 People having any of the following:
 
@@ -14,7 +14,7 @@ with continuous observation of at least 365 days prior and 0 days after event in
 
 Limit qualifying cohort to: all events per person.
 
-**End Date Strategy**
+#### End Date Strategy {-}
 
 Custom Drug Era Exit Criteria
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
@@ -24,11 +24,11 @@ Use the era end date of *ACE inhibitors* (Table \@ref(tab:aceInhibitors))
 * allowing 30 days between exposures
 * adding 0 days after exposure end
 
-**Cohort Collapse Strategy**
+#### Cohort Collapse Strategy {-}
 
 Collapse cohort by era with a gap size of 30 days. 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:aceInhibitors) ACE inhibitors
 
@@ -48,7 +48,7 @@ Table: (\#tab:aceInhibitors) ACE inhibitors
 
 ##  New users of ACE inhibitors monotherapy {#AceInhibitorsMono}
 
-**Initial Event Cohort**
+#### Initial Event Cohort {-}
 
 People having any of the following:
 
@@ -56,7 +56,7 @@ People having any of the following:
 
 with continuous observation of at least 365 days prior and 0 days after event index date, and limit initial events to: earliest event per person.
 
-**Inclusion Rules**
+#### Inclusion Rules {-}
 
 Inclusion Criteria #1: has hypertension diagnosis in 1 yr prior to treatment
 
@@ -78,7 +78,7 @@ Having all of the following criteria:
 
 Limit qualifying cohort to: earliest event per person.
 
-**End Date Strategy**
+#### End Date Strategy {-}
 
 Custom Drug Era Exit Criteria. 
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
@@ -88,11 +88,11 @@ Use the era end date of *ACE inhibitors* (Table \@ref(tab:aceInhibitorsMono))
 * allowing 30 days between exposures
 * adding 0 days after exposure end
 
-**Cohort Collapse Strategy**
+#### Cohort Collapse Strategy {-}
 
 Collapse cohort by era with a gap size of 0 days. 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:aceInhibitorsMono) ACE inhibitors
 
@@ -181,7 +181,7 @@ Table: (\#tab:htnDrugsAceMono) Hypertension drugs
 
 ## Acute myocardial infarction (AMI) {#Ami}
 
-**Initial Event Cohort**
+#### Initial Event Cohort {-}
 
 People having any of the following: 
 
@@ -197,16 +197,16 @@ Limit cohort of initial events to: all events per person.
 
 Limit qualifying cohort to: all events per person.
 
-**End Date Strategy**
+#### End Date Strategy {-}
 
 Date Offset Exit Criteria. 
 This cohort defintion end date will be the index event's start date plus 7 days
 
-**Cohort Collapse Strategy**
+#### Cohort Collapse Strategy {-}
 
 Collapse cohort by era with a gap size of 180 days. 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:ami) Inpatient or ER visit
 
@@ -226,7 +226,7 @@ Table: (\#tab:inpatientOrErAmi) Inpatient or ER visit
 
 ## Angioedema {#Angioedema}
 
-**Initial Event Cohort**
+#### Initial Event Cohort {-}
 
 People having any of the following: 
 
@@ -243,15 +243,15 @@ Limit cohort of initial events to: all events per person.
 
 Limit qualifying cohort to: all events per person.
 
-**End Date Strategy**
+#### End Date Strategy {-}
 
 This cohort defintion end date will be the index event's start date plus 7 days
 
-**Cohort Collapse Strategy**
+#### Cohort Collapse Strategy {-}
 
 Collapse cohort by era with a gap size of 30 days. 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:angioedema) Angioedema
 
@@ -270,7 +270,7 @@ Table: (\#tab:inpatientOrEr) Inpatient or ER visit
 
 ## New users of Thiazide-like diuretics monotherapy {#ThiazidesMono}
 
-**Initial Event Cohort**
+#### Initial Event Cohort {-}
 
 People having any of the following:
 
@@ -278,7 +278,7 @@ People having any of the following:
 
 with continuous observation of at least 365 days prior and 0 days after event index date, and limit initial events to: earliest event per person.
 
-**Inclusion Rules**
+#### Inclusion Rules {-}
 
 Inclusion Criteria #1: has hypertension diagnosis in 1 yr prior to treatment
 
@@ -300,7 +300,7 @@ Having all of the following criteria:
 
 Limit qualifying cohort to: earliest event per person.
 
-**End Date Strategy**
+#### End Date Strategy {-}
 
 Custom Drug Era Exit Criteria. 
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
@@ -310,11 +310,11 @@ Use the era end date of *Thiazide or thiazide-like diuretic* (Table \@ref(tab:th
 * allowing 30 days between exposures
 * adding 0 days after exposure end
 
-**Cohort Collapse Strategy**
+#### Cohort Collapse Strategy {-}
 
 Collapse cohort by era with a gap size of 0 days. 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:thiazidesMono) Thiazide or thiazide-like diuretic
 
@@ -396,7 +396,7 @@ Table: (\#tab:htnDrugsThzMono) Hypertension drugs
 
 ## Patients initiating first-line therapy for hypertension {#HTN1yrFO}
 
-**Initial Event Cohort**
+#### Initial Event Cohort {-}
 
 People having any of the following: 
 
@@ -404,7 +404,7 @@ People having any of the following:
 
 with continuous observation of at least 365 days prior and 365 days after event index date, and limit initial events to: earliest event per person.
 
-**Inclusion Rules**
+#### Inclusion Rules {-}
 
 Having all of the following criteria:
 
@@ -414,15 +414,15 @@ Having all of the following criteria:
 Limit cohort of initial events to: earliest event per person.
 Limit qualifying cohort to: earliest event per person.
 
-**End Date Strategy**
+#### End Date Strategy {-}
 
 No end date strategy selected. By default, the cohort end date will be the end of the observation period that contains the index event.
 
-**Cohort Collapse Strategy**
+#### Cohort Collapse Strategy {-}
 
 Collapse cohort by era with a gap size of 0 days. 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:HTN1yrFO1stLine) First-line hypertension drugs
 
@@ -536,7 +536,7 @@ Same as *cohort definition \@ref(HTN1yrFO)* but with continuous observation of a
 
 ## ACE inhibitor use {#ACEiUse}
 
-**Initial Event Cohort**
+#### Initial Event Cohort {-}
 
 People having any of the following:
 
@@ -546,7 +546,7 @@ with continuous observation of at least 0 days prior and 0 days after event inde
 
 Limit qualifying cohort to: all events per person.
 
-**End Date Strategy**
+#### End Date Strategy {-}
 
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
 
@@ -555,11 +555,11 @@ Use the era end date of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE))
 * allowing 30 days between exposures
 * adding 0 days after exposure end
 
-**Cohort Collapse Strategy**
+#### Cohort Collapse Strategy {-}
 
 Collapse cohort by era with a gap size of 30 days. 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:ACEiUseACE) ACE inhibitors
 
@@ -580,7 +580,7 @@ Table: (\#tab:ACEiUseACE) ACE inhibitors
 
 Same as *cohort definition \@ref(ACEiUse)* with *Angiotensin Receptor Blockers (ARBs)* (Table \@ref(tab:ARBUseARBs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:ARBUseARBs) Angiotensin Receptor Blockers (ARBs)
 
@@ -599,7 +599,7 @@ Table: (\#tab:ARBUseARBs) Angiotensin Receptor Blockers (ARBs)
 
 Same as *cohort definition \@ref(ACEiUse)* with *Thiazide or thiazide-like diuretic* (Table \@ref(tab:THZUseTHZ)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:THZUseTHZ) Thiazide or thiazide-like diuretic
 
@@ -614,7 +614,7 @@ Table: (\#tab:THZUseTHZ) Thiazide or thiazide-like diuretic
 
 Same as *cohort definition \@ref(ACEiUse)* with *dihydropyridine Calcium Channel Blocker (dCCB)* (Table \@ref(tab:dCCBUsedCBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:dCCBUsedCBB) Dihydropyridine Calcium channel blockers (dCCB)
 
@@ -631,7 +631,7 @@ Table: (\#tab:dCCBUsedCBB) Dihydropyridine Calcium channel blockers (dCCB)
 
 Same as *cohort definition \@ref(ACEiUse)* with *non-dihydropyridine Calcium channel blockers (ndCCB)* (Table \@ref(tab:ndCCBUsendCCB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:ndCCBUsendCCB) non-dihydropyridine Calcium channel blockers (ndCCB)
 
@@ -644,7 +644,7 @@ Table: (\#tab:ndCCBUsendCCB) non-dihydropyridine Calcium channel blockers (ndCCB
 
 Same as *cohort definition \@ref(ACEiUse)* with *Beta blockers* (Table \@ref(tab:BBUseBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:BBUseBB) Beta blockers
 
@@ -667,7 +667,7 @@ Table: (\#tab:BBUseBB) Beta blockers
 
 Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - Loop* (Table \@ref(tab:DLoopUseDLoops)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:DLoopUseDLoops) Diuretics - Loop
 
@@ -681,7 +681,7 @@ Table: (\#tab:DLoopUseDLoops) Diuretics - Loop
 
 Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - potassium sparing* (Table \@ref(tab:DPUseDPs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:DPUseDPs) Diuretics - potassium sparing
 
@@ -694,7 +694,7 @@ Table: (\#tab:DPUseDPs) Diuretics - potassium sparing
 
 Same as *cohort definition \@ref(ACEiUse)* with *Alpha-1 blocker* (Table \@ref(tab:A1BUseA1Bs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
-**Concept Set Definitions**
+#### Concept Set Definitions {-}
 
 Table: (\#tab:A1BUseA1Bs) Alpha-1 blocker
 
