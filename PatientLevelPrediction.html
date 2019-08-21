@@ -579,7 +579,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="E.2" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#UseCasesanswers"><i class="fa fa-check"></i><b>E.2</b> Data Analytics Use Cases</a></li>
 <li class="chapter" data-level="E.3" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#SqlAndRanswers"><i class="fa fa-check"></i><b>E.3</b> SQL and R</a></li>
 <li class="chapter" data-level="E.4" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Cohortsanswers"><i class="fa fa-check"></i><b>E.4</b> Defining Cohorts</a></li>
-<li class="chapter" data-level="E.5" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#DataQualityanswers"><i class="fa fa-check"></i><b>E.5</b> Data Quality</a></li>
+<li class="chapter" data-level="E.5" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Plpanswers"><i class="fa fa-check"></i><b>E.5</b> Patient-Level Prediction</a></li>
+<li class="chapter" data-level="E.6" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#DataQualityanswers"><i class="fa fa-check"></i><b>E.6</b> Data Quality</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -1773,56 +1774,31 @@ Predictive models are not causal models, and predictors should not be mistaken f
 <span id="cb132-3"><a href="PatientLevelPrediction.html#cb132-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/PatientLevelPrediction&quot;</span>)</span></code></pre></div>
 <p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
 <div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="PatientLevelPrediction.html#cb133-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
-<p>The CDM database schema is “main”.</p>
-<p><em>Problem Definition</em></p>
-<p>In patients that started using NSAIDs for the first time, predict who will develop a GI Bleed in the next year.</p>
-<p>Find below the SQL code to generate the NSAID cohort cohort.</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="PatientLevelPrediction.html#cb134-1"></a>sqlNSAIDs &lt;-<span class="st"> &quot;</span></span>
-<span id="cb134-2"><a href="PatientLevelPrediction.html#cb134-2"></a><span class="st">INSERT INTO @cohort_database_schema.@cohort_table </span></span>
-<span id="cb134-3"><a href="PatientLevelPrediction.html#cb134-3"></a><span class="st">  (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)</span></span>
-<span id="cb134-4"><a href="PatientLevelPrediction.html#cb134-4"></a><span class="st">SELECT 1 AS cohort_definition_id,</span></span>
-<span id="cb134-5"><a href="PatientLevelPrediction.html#cb134-5"></a><span class="st">  person_id AS subject_id,</span></span>
-<span id="cb134-6"><a href="PatientLevelPrediction.html#cb134-6"></a><span class="st">  MIN(drug_exposure_start_date) AS cohort_start_date,</span></span>
-<span id="cb134-7"><a href="PatientLevelPrediction.html#cb134-7"></a><span class="st">  MIN(drug_exposure_end_date) AS cohort_end_date</span></span>
-<span id="cb134-8"><a href="PatientLevelPrediction.html#cb134-8"></a><span class="st">FROM @cdm_database_schema.drug_exposure</span></span>
-<span id="cb134-9"><a href="PatientLevelPrediction.html#cb134-9"></a><span class="st">INNER JOIN @cdm_database_schema.concept_ancestor</span></span>
-<span id="cb134-10"><a href="PatientLevelPrediction.html#cb134-10"></a><span class="st">  ON drug_concept_id = descendant_concept_id</span></span>
-<span id="cb134-11"><a href="PatientLevelPrediction.html#cb134-11"></a><span class="st">WHERE ancestor_concept_id IN (1118084, 1124300) -- NSAIDS</span></span>
-<span id="cb134-12"><a href="PatientLevelPrediction.html#cb134-12"></a><span class="st">GROUP BY person_id;&quot;</span></span></code></pre></div>
-<p>And here SQL code to generate the GI Bleed cohort:</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="PatientLevelPrediction.html#cb135-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
-<span id="cb135-2"><a href="PatientLevelPrediction.html#cb135-2"></a><span class="st">INSERT INTO @cohort_database_schema.@cohort_table </span></span>
-<span id="cb135-3"><a href="PatientLevelPrediction.html#cb135-3"></a><span class="st">  (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)</span></span>
-<span id="cb135-4"><a href="PatientLevelPrediction.html#cb135-4"></a><span class="st">SELECT 2 AS cohort_definition_id,</span></span>
-<span id="cb135-5"><a href="PatientLevelPrediction.html#cb135-5"></a><span class="st">  person_id AS subject_id,</span></span>
-<span id="cb135-6"><a href="PatientLevelPrediction.html#cb135-6"></a><span class="st">  MIN(condition_start_date) AS cohort_start_date,</span></span>
-<span id="cb135-7"><a href="PatientLevelPrediction.html#cb135-7"></a><span class="st">  MIN(condition_end_date) AS cohort_end_date</span></span>
-<span id="cb135-8"><a href="PatientLevelPrediction.html#cb135-8"></a><span class="st">FROM @cdm_database_schema.condition_occurrence</span></span>
-<span id="cb135-9"><a href="PatientLevelPrediction.html#cb135-9"></a><span class="st">INNER JOIN @cdm_database_schema.concept_ancestor</span></span>
-<span id="cb135-10"><a href="PatientLevelPrediction.html#cb135-10"></a><span class="st">  ON condition_concept_id = descendant_concept_id</span></span>
-<span id="cb135-11"><a href="PatientLevelPrediction.html#cb135-11"></a><span class="st">WHERE ancestor_concept_id = 192671 -- Gastrointestinal haemorrhage</span></span>
-<span id="cb135-12"><a href="PatientLevelPrediction.html#cb135-12"></a><span class="st">GROUP BY person_id;&quot;</span></span></code></pre></div>
+<p>The CDM database schema is “main”. These exercises also make use of several cohorts. The <code>createCohorts</code> function in the Eunomia package will create these in the COHORT table:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="PatientLevelPrediction.html#cb134-1"></a>Eunomia<span class="op">::</span><span class="kw">createCohorts</span>(connectionDetails)</span></code></pre></div>
+</div>
+<div id="problem-definition-3" class="section level4 unnumbered">
+<h4>Problem definition</h4>
+<blockquote>
+<p>In patients that started using NSAIDs for the first time, predict who will develop a gastrointestinal (GI) bleed in the next year.</p>
+</blockquote>
+<p>The NSAID new-user cohort has COHORT_DEFINITION_ID = 4. The GI bleed cohort has COHORT_DEFINITION_ID = 3.</p>
 
 <div class="exercise">
-<p><span id="exr:exercisePlp1" class="exercise"><strong>Exercise 14.1  </strong></span>Create a cohort table and execute the queries against the CDM to instantiate the two cohorts. How many people are in these cohort?</p>
+<p><span id="exr:exercisePlp1" class="exercise"><strong>Exercise 14.1  </strong></span>Using the PatientLevelPrediction R package, define the covariates you want to use for the prediction and extract the plp data from the CDM. Create the summary of the plp data.</p>
 </div>
 
 
 <div class="exercise">
-<span id="exr:exercisePlp2" class="exercise"><strong>Exercise 14.2  </strong></span>Define the covariates you want to use for the prediction and extract the plp data from the CDM. Create the summary of the plp data.
+<p><span id="exr:exercisePlp2" class="exercise"><strong>Exercise 14.2  </strong></span>Revisit the design choices you have to make to define the final target population and specify these using the <code>createStudyPopulation</code> function. What will the effect of your choices be on the final size of the target population?</p>
 </div>
 
 
 <div class="exercise">
-<span id="exr:exercisePlp3" class="exercise"><strong>Exercise 14.3  </strong></span>Revisit the design choices you have to make to define the final target population and specify these using the CreateStudyPopulation function. What will the effect of your choices be on the final size of the target population?
+<span id="exr:exercisePlp3" class="exercise"><strong>Exercise 14.3  </strong></span>Build a prediction model using LASSO and evaluate its performance using the Shiny application. How well is your model performing?
 </div>
 
-
-<div class="exercise">
-<span id="exr:exercisePlp4" class="exercise"><strong>Exercise 14.4  </strong></span>Build a prediction model using Lasso and evaluate its performance using the Shiny application. How well is your model performing?
-</div>
-
-<p>TODO: Decide on providing answers.</p>
+<p>Suggested answers can be found in Appendix <a href="SuggestedAnswers.html#Plpanswers">E.5</a>.</p>
 
 </div>
 </div>

@@ -106,14 +106,10 @@ The completed study package can then be used to execute only the preliminary dia
 
 Importantly, we recommend at this stage to have your finalized protocol reviewed by clinical collaborators and stakeholders.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/StudySteps/studyProcess} 
-
-}
-
-\caption{Diagram of the study Process.}(\#fig:studyProcess)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/StudySteps/studyProcess.png" alt="Diagram of the study Process." width="90%" />
+<p class="caption">(\#fig:studyProcess)Diagram of the study Process.</p>
+</div>
 
 ### Execute Study
 

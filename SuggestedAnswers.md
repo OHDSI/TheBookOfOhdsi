@@ -255,80 +255,52 @@ We create initial event criteria encoding these requirements:
 
 When done, the cohort entry event section should look like Figure \@ref(fig:cohortsAtlasInitialEvents).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInitialEvents} 
-
-}
-
-\caption{Cohort entry event settings for new users of diclofenac}(\#fig:cohortsAtlasInitialEvents)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasInitialEvents.png" alt="Cohort entry event settings for new users of diclofenac" width="100%" />
+<p class="caption">(\#fig:cohortsAtlasInitialEvents)Cohort entry event settings for new users of diclofenac</p>
+</div>
 
 The concept set expression for diclofenac should look like Figure \@ref(fig:cohortsAtlasConceptSet1), including the ingredient 'Diclofenac' and all of its descendant, thus including all drugs containing the ingredient diclofenac.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet1} 
-
-}
-
-\caption{Concept set expression for diclofenac.}(\#fig:cohortsAtlasConceptSet1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasConceptSet1.png" alt="Concept set expression for diclofenac." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasConceptSet1)Concept set expression for diclofenac.</p>
+</div>
 
 Next, we require no prior exposure to any NSAID, as shown in Figure \@ref(fig:cohortsAtlasInclusion1). 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion1} 
-
-}
-
-\caption{Requiring no prior exposure to any NSAID.}(\#fig:cohortsAtlasInclusion1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasInclusion1.png" alt="Requiring no prior exposure to any NSAID." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasInclusion1)Requiring no prior exposure to any NSAID.</p>
+</div>
 
 The concept set expression for NSAIDs should look like Figure \@ref(fig:cohortsAtlasConceptSet2), including the NSAIDs class and all of its descendant, thus including all drugs containing any NSAID.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet2} 
-
-}
-
-\caption{Concept set expression for NSAIDs}(\#fig:cohortsAtlasConceptSet2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasConceptSet2.png" alt="Concept set expression for NSAIDs" width="100%" />
+<p class="caption">(\#fig:cohortsAtlasConceptSet2)Concept set expression for NSAIDs</p>
+</div>
 
 Additionally, we require no prior diagnosis of cancer, as shown in Figure \@ref(fig:cohortsAtlasInclusion2). 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion2} 
-
-}
-
-\caption{Requiring no prior cancer diagnosis.}(\#fig:cohortsAtlasInclusion2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasInclusion2.png" alt="Requiring no prior cancer diagnosis." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasInclusion2)Requiring no prior cancer diagnosis.</p>
+</div>
 
 The concept set expression for "Broad malignancies" should look like Figure \@ref(fig:cohortsAtlasConceptSet3), including the high level concept "Malignant neoplastic disease" and all of its descendant.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet3} 
-
-}
-
-\caption{Concept set expression for broad malignancies}(\#fig:cohortsAtlasConceptSet3)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasConceptSet3.png" alt="Concept set expression for broad malignancies" width="100%" />
+<p class="caption">(\#fig:cohortsAtlasConceptSet3)Concept set expression for broad malignancies</p>
+</div>
 
 Finally, we define the cohort exit criteria as discontinuation of exposure (allowing for a 30-day gap), as shown in Figure \@ref(fig:cohortsAtlasExit). 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasExit} 
-
-}
-
-\caption{Setting the cohort exit date.}(\#fig:cohortsAtlasExit)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasExit.png" alt="Setting the cohort exit date." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasExit)Setting the cohort exit date.</p>
+</div>
 
 #### Exercise \@ref(exr:exerciseCohortsSql) {-}
 
@@ -387,6 +359,116 @@ DROP TABLE #diagnoses;"
 
 renderTranslateExecuteSql(connection, sql)
 ```
+
+## Patient-Level Prediction {#Plpanswers}
+
+#### Exercise \@ref(exr:exercisePlp1) {-}
+
+We specify a set of covariate settings, and use the `getPlpData` function to extract the data from the database:
+
+
+```r
+library(PatientLevelPrediction)
+covSettings <- createCovariateSettings(useDemographicsGender = TRUE,
+                                       useDemographicsAge = TRUE,
+                                       useConditionGroupEraLongTerm = TRUE,
+                                       useConditionGroupEraAnyTimePrior = TRUE,
+                                       useDrugGroupEraLongTerm = TRUE,
+                                       useDrugGroupEraAnyTimePrior = TRUE,
+                                       useVisitConceptCountLongTerm = TRUE,
+                                       longTermStartDays = -365,
+                                       endDays = -1)
+
+plpData <- getPlpData(connectionDetails = connectionDetails,
+                      cdmDatabaseSchema = "main",
+                      cohortDatabaseSchema = "main",
+                      cohortTable = "cohort",
+                      cohortId = 4,
+                      covariateSettings = covSettings,
+                      outcomeDatabaseSchema = "main",
+                      outcomeTable = "cohort",
+                      outcomeIds = 3)
+
+summary(plpData)
+```
+
+```
+## plpData object summary
+## 
+## At risk cohort concept ID: -1
+## Outcome concept ID(s): 3
+## 
+## People: 2630
+## 
+## Outcome counts:
+##   Event count Person count
+## 3         479          479
+## 
+## Covariates:
+## Number of covariates: 245
+## Number of non-zero covariate values: 54079
+```
+
+#### Exercise \@ref(exr:exercisePlp2) {-}
+
+We create a study population for the outcome of interest (in this case the only outcome for which we extracted data), removing subjects who experienced the outcome before they started the NSAID, and requiring 364 days of time-at-risk:
+
+
+```r
+population <- createStudyPopulation(plpData = plpData,
+                                    outcomeId = 3,
+                                    washoutPeriod = 364,
+                                    firstExposureOnly = FALSE,
+                                    removeSubjectsWithPriorOutcome = TRUE,
+                                    priorOutcomeLookback = 9999,
+                                    riskWindowStart = 1,
+                                    riskWindowEnd = 365,
+                                    addExposureDaysToStart = FALSE,
+                                    addExposureDaysToEnd = FALSE,
+                                    minTimeAtRisk = 364,
+                                    requireTimeAtRisk = TRUE,
+                                    includeAllOutcomes = TRUE)
+nrow(population)
+```
+
+```
+## [1] 2578
+```
+
+In this case we have lost a few people by removing those that had the outcome prior, and by requiring a time-at-risk of at least 364 days.
+
+#### Exercise \@ref(exr:exercisePlp3) {-}
+
+We run a LASSO model by first creating a model settings object using the `setLassoLogisticRegression` function, and then calling the `runPlp` function. In this case we do a person split, training the model on 75% of the data and evaluating on 25% of the data:
+
+
+```r
+lassoModel <- setLassoLogisticRegression(seed = 0)
+
+lassoResults <- runPlp(population = population, 
+                       plpData = plpData, 
+                       modelSettings = lassoModel, 
+                       testSplit = 'person',
+                       testFraction = 0.25, 
+                       nfold = 2, 
+                       splitSeed = 0)
+```
+
+Note that for this example set the random seeds both for the LASSO cross-validation and for the train-test split to make sure the results will be the same on multiple runs.
+
+We can now view the results using the Shiny app:
+
+
+```r
+viewPlp(lassoResults)
+```
+
+This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
+<p class="caption">(\#fig:plpShiny)Patient-level prediction Shiny app.</p>
+</div>
 
 
 ## Data Quality {#DataQualityanswers}
