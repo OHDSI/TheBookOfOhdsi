@@ -625,6 +625,45 @@ disconnect(conn)
 - Rule-based cohort definitions can be created in ATLAS, or using SQL
 </div>\EndKnitrBlock{rmdsummary}
 
-### Exercises
+## Exercises
 
-To be added
+#### Prerequisites {-}
+
+For the first exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCohortsAtlas"><strong>(\#exr:exerciseCohortsAtlas) </strong></span>Use ATLAS to create a cohort definition following these criteria:
+  
+- New users of diclofenac
+- Ages 16 or older
+- With at least 365 days of continous observation prior to exposure
+- Without prior exposure to any NSAID (Non-Steroidal Anti-Inflammatory Drug)
+- Without prior diagnose of cancer
+- With cohort exit defined as discontinuation of exposure (allowing for a 30-day gap)
+</div>\EndKnitrBlock{exercise}
+
+#### Prerequisites {-}
+
+For the second exercise we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+
+
+```r
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+```
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
+
+```r
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
+
+The CDM database schema is "main".
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCohortsSql"><strong>(\#exr:exerciseCohortsSql) </strong></span>Use SQL and R to create a cohort for acute myocardial infarction (AMI) in the existing COHORT table, following these criteria:
+  
+- An occurrence of a myocardial infarction diagnose (concept 4329847 "Myocardial infarction" and all of its descendants, excluding concept 314666 "Old myocardial infarction" and any of its descendants).
+- During an inpatient or ER visit (concepts 9201, 9203, and 262 for "Inpatient visit", "Emergency Room Visit", and "Emergency Room and Inpatient Visit", respectively).
+</div>\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \@ref(Cohortsanswers).

@@ -243,6 +243,152 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 Note that in this case it is essential to use the DRUG_ERA table instead of the DRUG_EXPOSURE table, because drug exposures with the same ingredient can overlap, but drug eras can. This could lead to double counting. For example, imagine a person received two drug drugs containing celecoxib at the same time. This would be recorded as two drug exposures, so any diagnoses occurring during the exposure would be counted twice. The two exposures will be merged into a single non-overlapping drug era.
 
 
+## Defining Cohorts {#Cohortsanswers}
+
+#### Exercise \@ref(exr:exerciseCohortsAtlas) {-}
+
+We create initial event criteria encoding these requirements:
+
+- New users of diclofenac
+- Ages 16 or older
+- With at least 365 days of continous observation prior to exposure
+
+When done, the cohort entry event section should look like Figure \@ref(fig:cohortsAtlasInitialEvents).
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInitialEvents} 
+
+}
+
+\caption{Cohort entry event settings for new users of diclofenac}(\#fig:cohortsAtlasInitialEvents)
+\end{figure}
+
+The concept set expression for diclofenac should look like Figure \@ref(fig:cohortsAtlasConceptSet1), including the ingredient 'Diclofenac' and all of its descendant, thus including all drugs containing the ingredient diclofenac.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet1} 
+
+}
+
+\caption{Concept set expression for diclofenac.}(\#fig:cohortsAtlasConceptSet1)
+\end{figure}
+
+Next, we require no prior exposure to any NSAID, as shown in Figure \@ref(fig:cohortsAtlasInclusion1). 
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion1} 
+
+}
+
+\caption{Requiring no prior exposure to any NSAID.}(\#fig:cohortsAtlasInclusion1)
+\end{figure}
+
+The concept set expression for NSAIDs should look like Figure \@ref(fig:cohortsAtlasConceptSet2), including the NSAIDs class and all of its descendant, thus including all drugs containing any NSAID.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet2} 
+
+}
+
+\caption{Concept set expression for NSAIDs}(\#fig:cohortsAtlasConceptSet2)
+\end{figure}
+
+Additionally, we require no prior diagnosis of cancer, as shown in Figure \@ref(fig:cohortsAtlasInclusion2). 
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion2} 
+
+}
+
+\caption{Requiring no prior cancer diagnosis.}(\#fig:cohortsAtlasInclusion2)
+\end{figure}
+
+The concept set expression for "Broad malignancies" should look like Figure \@ref(fig:cohortsAtlasConceptSet3), including the high level concept "Malignant neoplastic disease" and all of its descendant.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet3} 
+
+}
+
+\caption{Concept set expression for broad malignancies}(\#fig:cohortsAtlasConceptSet3)
+\end{figure}
+
+Finally, we define the cohort exit criteria as discontinuation of exposure (allowing for a 30-day gap), as shown in Figure \@ref(fig:cohortsAtlasExit). 
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasExit} 
+
+}
+
+\caption{Setting the cohort exit date.}(\#fig:cohortsAtlasExit)
+\end{figure}
+
+#### Exercise \@ref(exr:exerciseCohortsSql) {-}
+
+For readability we here split the SQL into two steps. We first find all condition occurrences of myocardial infarction, and store these in a temp table called "#diagnoses":
+
+
+```r
+library(DatabaseConnector)
+connection <- connect(connectionDetails)
+sql <- "SELECT person_id AS subject_id,
+  condition_start_date AS cohort_start_date
+INTO #diagnoses
+FROM @cdm.condition_occurrence
+WHERE condition_concept_id IN (
+    SELECT descendant_concept_id
+    FROM @cdm.concept_ancestor
+    WHERE ancestor_concept_id = 4329847 -- Myocardial infarction
+)
+  AND condition_concept_id NOT IN (
+    SELECT descendant_concept_id
+    FROM @cdm.concept_ancestor
+    WHERE ancestor_concept_id = 314666 -- Old myocardial infarction
+);"
+
+renderTranslateExecuteSql(connection, sql, cdm = "main")
+```
+
+We then select only those that occur during an inpatient or ER visit, using some unique COHORT_DEFINITION_ID (we selected '1'):
+
+
+```r
+sql <- "INSERT INTO @cdm.cohort (subject_id, cohort_start_date, cohort_definition_id)
+SELECT subject_id,
+  cohort_start_date,
+  CAST (1 AS INT) AS cohort_definition_id
+FROM #diagnoses
+INNER JOIN @cdm.visit_occurrence
+  ON subject_id = person_id
+    AND cohort_start_date >= visit_start_date
+    AND cohort_start_date <= visit_end_date
+WHERE visit_concept_id IN (9201, 9203, 262); -- Inpatient or ER;"
+
+renderTranslateExecuteSql(connection, sql, cdm = "main")
+```
+
+Note that an alternative approach would have been to join the conditions to the visits based on the VISIT_OCCURRENCE_ID, instead of requiring the condition date to fall within the visit start and end date. This would likely be more accurate, as it would guarantee that the condition was recorded in relation to the inpatient or ER visit. However, many observational databases do not record the link between visit and diagnose, and we therefore chose to use the dates instead, likely giving us a higher sensitivity but perhaps lower specificity.
+
+Note also that we ignored the cohort end date. Often, when a cohort is used to define an outcome we are only interested in the cohort start date, and there is no point in creating an (ill-defined) cohort end date.
+
+It is recommended to clean up any temp tables when no longer needed:
+
+
+```r
+sql <- "TRUNCATE TABLE #diagnoses;
+DROP TABLE #diagnoses;"
+
+renderTranslateExecuteSql(connection, sql)
+```
+
+
 ## Data Quality {#DataQualityanswers}
 
 #### Exercise \@ref(exr:exerciseRunAchilles) {-}

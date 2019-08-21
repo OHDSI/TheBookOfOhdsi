@@ -313,9 +313,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.6.8" data-path="Cohorts.html"><a href="Cohorts.html#cohort-exit"><i class="fa fa-check"></i><b>11.6.8</b> Cohort exit</a></li>
 <li class="chapter" data-level="11.6.9" data-path="Cohorts.html"><a href="Cohorts.html#cleanup"><i class="fa fa-check"></i><b>11.6.9</b> Cleanup</a></li>
 </ul></li>
-<li class="chapter" data-level="11.7" data-path="Cohorts.html"><a href="Cohorts.html#summary-7"><i class="fa fa-check"></i><b>11.7</b> Summary</a><ul>
-<li class="chapter" data-level="11.7.1" data-path="Cohorts.html"><a href="Cohorts.html#exercises-3"><i class="fa fa-check"></i><b>11.7.1</b> Exercises</a></li>
-</ul></li>
+<li class="chapter" data-level="11.7" data-path="Cohorts.html"><a href="Cohorts.html#summary-7"><i class="fa fa-check"></i><b>11.7</b> Summary</a></li>
+<li class="chapter" data-level="11.8" data-path="Cohorts.html"><a href="Cohorts.html#exercises-3"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="Characterization.html"><a href="Characterization.html"><i class="fa fa-check"></i><b>12</b> Characterization</a><ul>
 <li class="chapter" data-level="12.1" data-path="Characterization.html"><a href="Characterization.html#database-level-characterization"><i class="fa fa-check"></i><b>12.1</b> Database Level Characterization</a></li>
@@ -580,7 +579,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="E.1" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Cdmanswers"><i class="fa fa-check"></i><b>E.1</b> The Common Data Model</a></li>
 <li class="chapter" data-level="E.2" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#UseCasesanswers"><i class="fa fa-check"></i><b>E.2</b> Data Analytics Use Cases</a></li>
 <li class="chapter" data-level="E.3" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#SqlAndRanswers"><i class="fa fa-check"></i><b>E.3</b> SQL and R</a></li>
-<li class="chapter" data-level="E.4" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#DataQualityanswers"><i class="fa fa-check"></i><b>E.4</b> Data Quality</a></li>
+<li class="chapter" data-level="E.4" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Cohortsanswers"><i class="fa fa-check"></i><b>E.4</b> Defining Cohorts</a></li>
+<li class="chapter" data-level="E.5" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#DataQualityanswers"><i class="fa fa-check"></i><b>E.5</b> Data Quality</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -1098,9 +1098,44 @@ Figure 11.14: Cohort Exit Criteria
 </ul>
 </div>
 
-<div id="exercises-3" class="section level3">
-<h3><span class="header-section-number">11.7.1</span> Exercises</h3>
-<p>To be added</p>
+</div>
+<div id="exercises-3" class="section level2">
+<h2><span class="header-section-number">11.8</span> Exercises</h2>
+<div id="prerequisites-2" class="section level4 unnumbered">
+<h4>Prerequisites</h4>
+<p>For the first exercise, access to an ATLAS instance is required. You can use the instance at <a href="http://atlas-demo.ohdsi.org">http://atlas-demo.ohdsi.org</a>, or any other instance you have acces to.</p>
+
+<div class="exercise">
+<p><span id="exr:exerciseCohortsAtlas" class="exercise"><strong>Exercise 11.1  </strong></span>Use ATLAS to create a cohort definition following these criteria:</p>
+<ul>
+<li>New users of diclofenac</li>
+<li>Ages 16 or older</li>
+<li>With at least 365 days of continous observation prior to exposure</li>
+<li>Without prior exposure to any NSAID (Non-Steroidal Anti-Inflammatory Drug)</li>
+<li>Without prior diagnose of cancer</li>
+<li>With cohort exit defined as discontinuation of exposure (allowing for a 30-day gap)</li>
+</ul>
+</div>
+
+</div>
+<div id="prerequisites-3" class="section level4 unnumbered">
+<h4>Prerequisites</h4>
+<p>For the second exercise we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">9.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="Cohorts.html#cb81-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
+<span id="cb81-2"><a href="Cohorts.html#cb81-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span></code></pre></div>
+<p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="Cohorts.html#cb82-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
+<p>The CDM database schema is “main”.</p>
+
+<div class="exercise">
+<p><span id="exr:exerciseCohortsSql" class="exercise"><strong>Exercise 11.2  </strong></span>Use SQL and R to create a cohort for acute myocardial infarction (AMI) in the existing COHORT table, following these criteria:</p>
+<ul>
+<li>An occurrence of a myocardial infarction diagnose (concept 4329847 “Myocardial infarction” and all of its descendants, excluding concept 314666 “Old myocardial infarction” and any of its descendants).</li>
+<li>During an inpatient or ER visit (concepts 9201, 9203, and 262 for “Inpatient visit”, “Emergency Room Visit”, and “Emergency Room and Inpatient Visit”, respectively).</li>
+</ul>
+</div>
+
+<p>Suggested answers can be found in Appendix <a href="SuggestedAnswers.html#Cohortsanswers">E.4</a>.</p>
 
 </div>
 </div>
