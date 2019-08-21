@@ -1,21 +1,21 @@
 --- 
 title: "The Book of OHDSI"
-author: "Observational Health Data Science and Informatics"
+author: "Observational Health Data Sciences and Informatics"
 date: "`r Sys.Date()`"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
 - paperwidth=7in
 - margin=1in
-- inner=0.75in
-- outer=0.45in
-- top=0.7in
-- bottom=0.65in
+- inner=1in
+- outer=0.65in
+- top=0.8in
+- bottom=0.8in
 mainfont: Times New Roman
 bibliography:
 - book.bib
 - packages.bib
-description: A book about the Observational Health Data Science and Informatics (OHDS). It described the OHDSI community, open standards and open source software.
+description: A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software.
 documentclass: book
 favicon: images/favicon.ico
 github-repo: OHDSI/TheBookOfOhdsi
@@ -64,14 +64,13 @@ III) Data Analytics
 IV) Evidence Quality
 V) OHDSI Studies
 
-Each section has multiple chapters, and each chapter aims to follow the following main outline: Introduction, Theory, Practice, Excercises. 
+Each section has multiple chapters, and each chapter aims to follow the following main outline: Introduction, Theory, Practice, Summary, and Excercises. 
 
 ## Contributors {-}
 
-TODO: make list of contributors complete
-
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapters. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
+\begin{center}
 ```{r echo=FALSE, eval=TRUE}
 contributors <- read.csv("Contributors.csv")
 contributors <- contributors[order(contributors$lastName), ]
@@ -83,6 +82,27 @@ if (length(names) %% colCount != 0) {
 table <- matrix(names, ncol = colCount, byrow = TRUE)
 table <- as.data.frame(table)
 knitr::kable(table, col.names = NULL)
-# knitr::kable(table, col.names = rep("Contributor", colCount))
 ```
+\end{center}
+
+## Software versions {-}
+
+A large part of this book is about the open source software of OHDSI, and this software will evolve over time. Although the developers do their best to offer a consistent and stable experience to the users, it is inevitable that over time improvements to the software will make some of the instructions in this book out of date. The online version of the book will be updated to reflect those changes, and new editions of the hard copy will be released over time. For reference, these are the version numbers of the software used in this version of the book:
+
+- ACHILLES: version 1.6.6
+- ATLAS: version 2.7.3
+- EUNOMIA: version 1.0.0
+- Methods Library packages: see Table \@ref(tab:packageVersions)
+
+```{r packageVersions, echo=FALSE, eval=TRUE}
+packageVersions <- read.csv("PackageVersions.csv")
+packageVersions <- packageVersions[order(packageVersions$package), ]
+knitr::kable(packageVersions, col.names = c("Package", "Version"), row.names = FALSE, booktabs = TRUE, caption = 'Versions of packages in the Methods Library used in this book.')
+```
+
+## License {-}
+
+This book is licensed under the [Creative Commons Zero v1.0 Universal license](http://creativecommons.org/publicdomain/zero/1.0/).
+
+![](images/Preface/cc0.png)
 

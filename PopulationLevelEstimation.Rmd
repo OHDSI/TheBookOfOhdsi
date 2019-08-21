@@ -41,7 +41,7 @@ The choice of model specifies, among others, the type of model. For example, we 
 The new-user cohort method inherently is a method for comparative effect estimation, comparing one treatment to another. It is difficult to use this method to compare a treatment against no treatment, since it is hard to define a group of unexposed people that is comparable with the exposed group. If one wants to use this design for direct effect estimation, the preferred way is to select a comparator treatment for the same indication as the exposure of interest, where the comparator treatment is believed to have no effect on the outcome. Unfortunately, such a comparator might not always be available.
 ```
 
-A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is on average 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.  stroke) might then show substantial differences. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a “confounder.” \index{confounder}
+A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is on average 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.  stroke) might then show substantial differences. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a “confounder.” One mechanism to deal with confounders in observational studies is through propensity scores. \index{confounder}
 
 ### Propensity scores
 
@@ -93,20 +93,29 @@ Good practice always checks that the PS adjustment succeeds in creating balanced
 
 \index{self-controlled cohort design}
 
-```{r scc, fig.cap='The self-controlled cohort design. The rate of outcomes during exposure to the target is compared to the rate of outcomes in the time pre-exposure.',echo=FALSE, out.width='90%', fig.align='center'}
+```{r scc, fig.cap='The self-controlled cohort design. The rate of outcomes during exposure to the target is compared to the rate of outcomes in the time pre-exposure.',echo=FALSE, out.width='90%', fig.align='center', fig.pos='h'}
 knitr::include_graphics("images/PopulationLevelEstimation/selfControlledCohort.png")
 ```
 
 The self-controlled cohort (SCC) design [@ryan_2013] compares the rate of outcomes during exposure to the rate of outcomes in the time just prior to the exposure. The  four choices shown in Table \@ref(tab:sccChoices) define a self-controlled cohort question. \index{target cohort!self-controlled cohort design} \index{outcome cohort!self-controlled cohort design}
 
-Table: (\#tab:sccChoices) Main design choices in a self-controlled cohort design.
-
+```{r sccChoices, echo=FALSE}
+table <- read.table(header = TRUE, sep = "|", stringsAsFactors = FALSE, strip.white = TRUE, text = "
 | Choice            | Description                                              |
 |:----------------- |:-------------------------------------------------------- |
 | Target cohort     | A cohort representing the treatment                      |
 | Outcome cohort    | A cohort representing the outcome of interest            |
 | Time-at-risk      | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?  |
 | Control time      | The time period used as the control time                 |
+")
+table <- table[-1, 2:(ncol(table) - 1), -1]
+table <- knitr::kable(table, caption = "Main design choices in a self-controlled cohort design.", booktabs = TRUE, row.names = FALSE)
+if ( knitr:::is_latex_output()) {
+  table <- kableExtra::kable_styling(table, full_width = TRUE)
+  table <- kableExtra::column_spec(table, 2, width = "9cm")
+}
+table
+```
 
 Because the same subject that make up the exposed group are also used as the control group, no adjustment for between-person differences need to be made. However, the method is vulnerable to other differences, such as differences in the baseline risk of the outcome between different time periods.
 
@@ -114,14 +123,15 @@ Because the same subject that make up the exposed group are also used as the con
 
 \index{case-control design}
 
-```{r caseControl, fig.cap='The case-control design. Subjects with the outcome (‘cases’) are compared to subjects without the outcome (‘controls’) in terms of their exposure status. Often, cases and controls are matched on various characteristics such as age and sex.',echo=FALSE, out.width='90%', fig.align='center'}
+```{r caseControl, fig.cap='The case-control design. Subjects with the outcome (‘cases’) are compared to subjects without the outcome (‘controls’) in terms of their exposure status. Often, cases and controls are matched on various characteristics such as age and sex.',echo=FALSE, out.width='90%', fig.align='center', fig.pos='h'}
 knitr::include_graphics("images/PopulationLevelEstimation/caseControl.png")
 ```
 
 Case-control studies [@vandenbroucke_2012] consider the question “are persons with a specific disease outcome exposed more frequently to a specific agent than those without the disease?” Thus, the central idea is to compare “cases,” i.e., subjects that experience the outcome of interest, with “controls,” i.e., subjects that did not experience the outcome of interest. The choices in Table \@ref(tab:ccChoices) define a case-control question. \index{outcome cohort!case-control design} \index{target cohort!case-control design} \index{nesting cohort!case-control design}
 
-Table: (\#tab:ccChoices) Main design choices in a case-control design.
 
+```{r ccChoices, echo=FALSE}
+table <- read.table(header = TRUE, sep = "|", stringsAsFactors = FALSE, strip.white = TRUE, text = "
 | Choice            | Description                                               |
 |:----------------- |:--------------------------------------------------------- |
 | Outcome cohort    | A cohort representing the cases (the outcome of interest) |
@@ -129,6 +139,15 @@ Table: (\#tab:ccChoices) Main design choices in a case-control design.
 | Target cohort     | A cohort representing the treatment                       |
 | Nesting cohort  | Optionally, a cohort defining the subpopulation from which cases and controls are drawn  |
 | Time-at-risk      | At what time (often relative to the index date) do we consider exposure status?  |
+")
+table <- table[-1, 2:(ncol(table) - 1), -1]
+table <- knitr::kable(table, caption = "Main design choices in a case-control design.", booktabs = TRUE, row.names = FALSE)
+if ( knitr:::is_latex_output()) {
+  table <- kableExtra::kable_styling(table, full_width = TRUE)
+  table <- kableExtra::column_spec(table, 2, width = "9cm")
+}
+table
+```
 
 Often, one selects controls to match cases based on characteristics such as age and sex to make them more comparable. Another widespread practice is to nest the analysis within a specific subgroup of people, for example people that have all been diagnosed with one of the indications of the exposure of interest.
 
@@ -136,20 +155,29 @@ Often, one selects controls to match cases based on characteristics such as age 
 
 \index{case-crossover design}
 
-```{r caseCrossover, fig.cap='The case-crossover design. The time around the outcome is compared to a control date set at a predefined interval prior to the outcome date.',echo=FALSE, out.width='90%', fig.align='center'}
+```{r caseCrossover, fig.cap='The case-crossover design. The time around the outcome is compared to a control date set at a predefined interval prior to the outcome date.',echo=FALSE, out.width='90%', fig.align='center', fig.pos='h'}
 knitr::include_graphics("images/PopulationLevelEstimation/caseCrossover.png")
 ```
 
 The case-crossover [@maclure_1991] design evaluates whether the rate of exposure is different at the time of the outcome than at some predefined number of days prior to the outcome. It is trying to determine whether there is something special about the day the outcome occurred. Table \@ref(tab:ccrChoices) shows the choices that define a case-crossover question. \index{outcome cohort!case-crossover design} \index{target cohort!case-crossover design}
 
-Table: (\#tab:ccrChoices) Main design choices in a case-crossover design.
-
+```{r ccrChoices, echo=FALSE}
+table <- read.table(header = TRUE, sep = "|", stringsAsFactors = FALSE, strip.white = TRUE, text = "
 | Choice            | Description                                              |
 |:----------------- |:-------------------------------------------------------- |
 | Outcome cohort    | A cohort representing the cases (the outcome of interest)  |
 | Target cohort     | A cohort representing the treatment  |
 | Time-at-risk      | At what time (often relative to the index date) do we consider exposure status?  |
 | Control time      | The time period used as the control time                 |
+")
+table <- table[-1, 2:(ncol(table) - 1), -1]
+table <- knitr::kable(table, caption = "Main design choices in a case-crossover design.", booktabs = TRUE, row.names = FALSE)
+if ( knitr:::is_latex_output()) {
+  table <- kableExtra::kable_styling(table, full_width = TRUE)
+  table <- kableExtra::column_spec(table, 2, width = "9cm")
+}
+table
+```
 
 Cases serve as their own controls. As self-controlled designs, they should be robust to confounding due to between-person differences. One concern is that, because the outcome date is always later than the control date, the method will be positively biased if the overall frequency of exposure increases over time (or negatively biased if there is a decrease). To address this, the case-time-control design [@suissa_1995] was developed, which adds controls, matched for example on age and sex, to the case-crossover design to adjust for exposure trends. \index{case-time-control design}
 
@@ -157,28 +185,35 @@ Cases serve as their own controls. As self-controlled designs, they should be ro
 
 \index{self-controlled case series (SCCS) design}
 
-```{r selfControlledCaseSeries, fig.cap='The Self-Controlled Case Series design. The rate of outcomes during exposure is compared to the rate of outcomes when not exposed.',echo=FALSE, out.width='90%', fig.align='center'}
+```{r selfControlledCaseSeries, fig.cap='The Self-Controlled Case Series design. The rate of outcomes during exposure is compared to the rate of outcomes when not exposed.',echo=FALSE, out.width='90%', fig.align='center', fig.pos='h'}
 knitr::include_graphics("images/PopulationLevelEstimation/selfControlledCaseSeries.png")
 ```
 
 The Self-Controlled Case Series (SCCS) design [@farrington_1995; @whitaker_2006] compares the rate of outcomes during exposure to the rate of outcomes during all unexposed time, including before, between, and after exposures. It is a Poisson regression that is conditioned on the person. Thus, it seeks to answer the question: “Given that a patient has the outcome, is the outcome more likely during exposed time compared to non-exposed time?”. The choices in Table \@ref(tab:sccsChoices) define an SCCS question. \index{outcome cohort!SCCS design} \index{target cohort!SCCS design}
 
-Table: (\#tab:sccsChoices) Main design choices in a self-controlled case series design.
-
+```{r sccsChoices, echo=FALSE}
+table <- read.table(header = TRUE, sep = "|", stringsAsFactors = FALSE, strip.white = TRUE, text = "
 | Choice            | Description                                              |
 |:----------------- |:-------------------------------------------------------- |
 | Target cohort     | A cohort representing the treatment                      |
 | Outcome cohort    | A cohort representing the outcome of interest            |
 | Time-at-risk      | At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?  |
 | Model             | The model to estimate the effect, including any adjustments for time-varying confounders |
+")
+table <- table[-1, 2:(ncol(table) - 1), -1]
+table <- knitr::kable(table, caption = "Main design choices in a self-controlled case series design.", booktabs = TRUE, row.names = FALSE)
+if ( knitr:::is_latex_output()) {
+  table <- kableExtra::kable_styling(table, full_width = TRUE)
+  table <- kableExtra::column_spec(table, 2, width = "9cm")
+}
+table
+```
 
 Like other self-controlled designs, the SCCS is robust to confounding due to between-person differences, but vulnerable to confounding due to time-varying effects. Several adjustments are possible to attempt to account for these, for example by including age and season. A special variant of the SCCS includes not just the exposure of interest, but all other exposures to drugs recorded in the database  [@simpson_2013] potentially adding thousands of additional variables to the model. L1-regularization using cross-validation to select the regularization hyperparameter is applied to the coefficients of all exposures except the exposure of interest.
 
 One important assumption underlying the SCCS is that the observation period end is independent of the date of the outcome. For some outcomes, especially ones that can be fatal such as stroke, this assumption can be violated. An extension to the SCCS has been developed that corrects for any such dependency. [@farrington_2011]
 
-
 ## Designing a hypertension study
-
 
 ### Problem definition
 
@@ -241,7 +276,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/comparisons.png")
 
 Note that we can select multiple outcomes for a target-comparator pair. Each outcome will be treated independently, and will result in a separate analysis.
 
-**Negative control outcomes**
+#### Negative control outcomes {-}
 
 Negative control outcomes are outcomes that are not believed to be caused by either the target or the comparator, and where therefore the true hazard ratio equals 1. Ideally, we would have proper cohort definitions for each outcome cohort. However, typically, we only have a concept set, with one concept per negative control outcome, and some standard logic to turn these into outcome cohorts. Here we assume the concept set has already been created as described in Chapter \@ref(MethodValidity) and can simply be selected. The negative control concept set should contain a concept per negative control, and not include descendants. Figure \@ref(fig:ncConceptSet) shows the negative control concept set used for this study.
 
@@ -249,11 +284,11 @@ Negative control outcomes are outcomes that are not believed to be caused by eit
 knitr::include_graphics("images/PopulationLevelEstimation/ncConceptSet.png")
 ```
 
-**Concepts to include**
+#### Concepts to include {-}
 
 When selecting concept to include, we can specify which covariates we would like to generate, for example to use in a propensity model. When specifying covariates here, all other covariates (aside from those you specified) are left out. We usually want to include all baseline covariates, letting the regularized regression build a model that balances all covariates. The only reason we might want to specify particular covariates is to replicate an existing study that manually picked covariates. These inclusions can be specified in this comparison section or in the analysis section, because sometimes they pertain to a specific comparison (e.g. know confounders in a comparison), or sometimes they pertain to an analysis (e.g. when evaluating a particular covariate selection strategy).
 
-**Concepts to exclude**
+#### Concepts to exclude {-}
 
 Rather than specifying which concepts to include, we can instead specify concepts to *exclude*. When we submit a concept set in this field, we use every covariate except for those that we submitted. When using the default set of covariates, which includes all drugs and procedures occurring on the day of treatment initiation, we must exclude the target and comparator treatment, as well as any concepts that are directly related to these. For example, if the target exposure is an injectable, we should not only exclude the drug, but also the injection procedure from the propensity model. In this example, the covariates we want to exclude are ACEi and THZ. Figure \@ref(fig:covsToExclude) shows we select a concept set that includes all these concepts, including their descendants.
 
@@ -271,7 +306,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/comparisons2.png")
 
 After closing the comparisons dialog we can click on "Add Analysis Settings." In the box labeled "Analysis Name," we can give the analysis a unique name that is easy to remember and locate in the future. For example, we could set the name to "Propensity score matching."
 
-**Study population**
+#### Study population {-}
 
 There are a wide range of options to specify the study population, which is the set of subjects that will enter the analysis. Many of these overlap with options available when designing the target and comparator cohorts in the cohort definition tool. One reason for using the options in Estimation instead of in the cohort definition is re-usability; we can define the target, comparator, and outcome cohorts completely independently, and add dependencies between these at a later point in time. For example, if we wish to remove people who had the outcome before treatment initiation, we could do so in the definitions of the target and comparator cohort, but then we would need to create separate cohorts for every outcome! Instead, we can choose to have people with prior outcomes be removed in the analysis settings, and now we can reuse our target and comparator cohorts for our two outcomes of interest (as well as our negative control outcomes).
 
@@ -299,7 +334,7 @@ Our choices for our example study are shown in Figure \@ref(fig:studyPopulation)
 knitr::include_graphics("images/PopulationLevelEstimation/studyPopulation.png")
 ```
 
-**Covariate settings**
+#### Covariate settings {-}
 
 Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model (the Cox proporitional hazards model in this case). If we **click to view details** of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.
 
@@ -311,7 +346,7 @@ Figure \@ref(fig:covariateSettings) shows our choices for this study. Note that 
 knitr::include_graphics("images/PopulationLevelEstimation/covariateSettings.png")
 ```
 
-**Time at risk**
+#### Time at risk {-}
 
 Time-at-risk is defined relative to the start and end dates of our target and comparator cohorts. In our example, we had set the cohort start date to start on treatment initiation, and cohort end date when exposure stops (for at least 30 days). We set the start of time-at-risk to one day after cohort start, so one day after treatment initiation. A reason to set the time-at-risk start to be later than the cohort start is because we may want to exclude outcome events that occur on the day of treatment initiation if we do not believe it biologically plausible they can be caused by the drug.
 
@@ -327,7 +362,7 @@ A golden rule in designing a cohort study is to never use information that falls
 knitr::include_graphics("images/PopulationLevelEstimation/timeAtRisk.png")
 ```
 
-**Propensity score adjustment**
+#### Propensity score adjustment {-}
 
 We can opt to **trim** the study population, removing people with extreme PS values. We can choose to remove the top and bottom percentage, or we can remove subjects whose preference score falls outside the range we specify. Trimming the cohorts is generally not recommended because it requires discarding observations, which reduces statistical power. It may be desirable to trim in some cases, for example when using IPTW. \index{propensity score!trimming}
 
@@ -351,7 +386,7 @@ Figure \@ref(fig:psSettings) shows our choices for this study. Note that we sele
 knitr::include_graphics("images/PopulationLevelEstimation/psSettings.png")
 ```
 
-**Outcome model settings**
+#### Outcome model settings {-}
 
 First, we need to **specify the statistical model we will use to estimate the relative risk of the outcome between target and comparator cohorts**. We can choose between Cox, Poisson, and logistic regression, as discussed briefly in Section \@ref(CohortMethod). For our example we choose a Cox proportional hazards model, which considers time to first event with possible censoring. Next, we need to specify **whether the regression should be conditioned on the strata**. One way to understand conditioning is to imagine a separate estimate is produced in each stratum, and then combined across strata. For one-to-one matching this is likely unnecessary and would just lose power. For stratification or variable-ratio matching it is required. \index{conditioned model} \index{stratified model|see {conditioned model}}
 
@@ -371,7 +406,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/outcomeModelSettings.p
 
 As described in Chapter \@ref(MethodValidity), negative and positive controls should be included in our study to evaluate the operating characteristics, and perform empirical calibration.
 
-**Negative control outcome cohort definition**
+#### Negative control outcome cohort definition {-}
 
 In Section \@ref(ComparisonSettings) we selected a concept set representing the negative control outcomes. However, we need logic to convert concepts to cohorts to be used as outcomes in our analysis. ATLAS provides standard logic with three choices. The first choice is whether to **use all occurrences** or just  the **first occurrence** of the concept. The second choice determines **whether occurrences of descendant concepts should be considered**. For example, occurrences of the descendant "ingrown nail of foot" can also be counted as an occurrence of the ancestor "ingrown nail." The third choice specifies which domains should be considered when looking for the concepts.
 
@@ -379,7 +414,7 @@ In Section \@ref(ComparisonSettings) we selected a concept set representing the 
 knitr::include_graphics("images/PopulationLevelEstimation/ncSettings.png")
 ```
 
-**Positive control synthesis**
+#### Positive control synthesis {-}
 
 In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \@ref(MethodValidity). We can choose to **perform positive control synthesis**. If "yes", we must choose the **model type**, currently being "Poisson" and "surival". Since we use a survival (Cox) model in our estimation study, we should choose "survival". We define the time-at-risk model for the positive control synthesis to be the same as in our estimation settings, and similarly mimic the choices for the **minimum required continuous observation prior to exposure**, **should only the first exposure be included**, **should only the first outcome be included**, as well as **remove people with prior outcomes**. Figure \@ref(fig:outcomeModelSettings) shows the settings for the positive control synthesis.
 
@@ -506,7 +541,7 @@ saveCohortMethodData(cmData, "AceiVsThzForAngioedema")
 
 We can use the `loadCohortMethodData()` function to load the data in a future session.
 
-**Defining new users**
+#### Defining new users {-}
 
 Typically, a new user is defined as first time use of a drug (either target or comparator), and typically a washout period (a minimum number of days prior to first use) is used to increase the probability that it is truly first use. When using the CohortMethod package, you can enforce the necessary requirements for new use in three ways:
 
@@ -598,14 +633,14 @@ ois <- c(3, 4) # Angioedema, AMI
 
 # Negative controls:
 ncs <- c(434165,436409,199192,4088290,4092879,44783954,75911,137951,77965,
-         376707,4103640,73241,133655,73560,434327,4213540,140842,81378,432303,
-         4201390,46269889,134438,78619,201606,76786,4115402,45757370,433111
-         433527,4170770,4092896,259995,40481632,4166231,433577,4231770,440329,
-         4012570,4012934,441788,4201717,374375,4344500,139099,444132,196168,
-         432593,434203,438329,195873,4083487,4103703,4209423,377572,40480893,
-         136368,140648,438130,4091513,4202045,373478,46286594,439790,81634,
-         380706,141932,36713918,443172,81151,72748,378427,437264,194083,
-         140641,440193,4115367)
+         376707,4103640,73241,133655,73560,434327,4213540,140842,81378,
+         432303,4201390,46269889,134438,78619,201606,76786,4115402,
+         45757370,433111,433527,4170770,4092896,259995,40481632,4166231,
+         433577,4231770,440329,4012570,4012934,441788,4201717,374375,
+         4344500,139099,444132,196168,432593,434203,438329,195873,4083487,
+         4103703,4209423,377572,40480893,136368,140648,438130,4091513,
+         4202045,373478,46286594,439790,81634,380706,141932,36713918,
+         443172,81151,72748,378427,437264,194083,140641,440193,4115367)
 
 tcos <- createTargetComparatorOutcomes(targetId = 1,
                                        comparatorId = 2,
@@ -718,13 +753,13 @@ summ <- summarizeAnalyses(result, outputFolder = outputFolder)
 head(summ)
 ```
 ```{r echo=FALSE,message=FALSE,eval=TRUE}
-cat("    analysisId targetId comparatorId outcomeId        rr    ci95lb  ...
-1            1        1            2     72748 0.9734698 0.5691589  ...
-2            1        1            2     73241 0.7067981 0.4009951  ...
-3            1        1            2     73560 1.0623951 0.7187302  ...
-4            1        1            2     75911 0.9952184 0.6190344  ...
-5            1        1            2     76786 1.0861746 0.6730408  ...
-6            1        1            2     77965 1.1439772 0.5173222  ...")
+cat("    analysisId targetId comparatorId outcomeId        rr ...
+1            1        1            2     72748 0.9734698 ...
+2            1        1            2     73241 0.7067981 ...
+3            1        1            2     73560 1.0623951 ...
+4            1        1            2     75911 0.9952184 ...
+5            1        1            2     76786 1.0861746 ...
+6            1        1            2     77965 1.1439772 ...")
 ```
 
 ## Study outputs {#studyOutputs}
