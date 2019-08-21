@@ -36,10 +36,14 @@ Another method to characterize a population is to describe the treatment sequenc
 
 The pathway analysis aims to summarize the treatments (events) received by persons diagnosed with a specific condition from the first drug prescription/dispensation. In this study, treatments were described after the diagnosis of type 2 diabetes, hypertension and depression respectively. The events for each person were then aggregated to a set of summary statistics and visualized for each condition and for each database.
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/pnasTreatmentPathwaysSunburst.png" alt="OHDSI Treatment Pathways “sunburst” visualization for hypertension" width="90%" />
-<p class="caption">(\#fig:treatmentPathwaysSunburstDataViz)OHDSI Treatment Pathways “sunburst” visualization for hypertension</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/Characterization/pnasTreatmentPathwaysSunburst} 
+
+}
+
+\caption{OHDSI Treatment Pathways “sunburst” visualization for hypertension}(\#fig:treatmentPathwaysSunburstDataViz)
+\end{figure}
 
 As an example, figure \@ref(fig:treatmentPathwaysSunburstDataViz) represents a population of persons initiating treatment for hypertension. The first ring in the center shows the proportion of persons based on their first-line therapy. In this example, Hydrochlorothiazide is the most common first-line therapy for this population. The boxes that extend from the Hydrochlorothiazide section represent the 2nd and 3rd line therapies recorded for persons in the cohort. 
 
@@ -51,10 +55,14 @@ In classic DUS terminology, treatment pathway analyses include some population-l
 
 Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk (TAR). Figure \@ref(fig:incidenceTimeline) aims to show the components of an incidence calculation for a single person: \index{incidence}
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/incidenceTimeline.png" alt="Person-level view of incidence calculation components" width="100%" />
-<p class="caption">(\#fig:incidenceTimeline)Person-level view of incidence calculation components</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/incidenceTimeline} 
+
+}
+
+\caption{Person-level view of incidence calculation components}(\#fig:incidenceTimeline)
+\end{figure}
 
 In figure \@ref(fig:incidenceTimeline), a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the TAR, we count that as an incidence of the outcome. 
 
@@ -84,24 +92,36 @@ Observational data sources provide a way to characterize hypertensive population
  
 Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with [ACHILLES](https://github.com/OHDSI/Achilles) to find database level characteristics related to hypertensive persons. Start by clicking on ![](images/Characterization/atlasDataSourcesMenuItem.png) in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the database to explore. Next, use the drop down below the database to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasDataSourcesConditionTreemap.png" alt="Atlas Data Sources: Condition Occurrence Treemap" width="100%" />
-<p class="caption">(\#fig:atlasDataSourcesConditionTreemap)Atlas Data Sources: Condition Occurrence Treemap</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasDataSourcesConditionTreemap} 
+
+}
+
+\caption{Atlas Data Sources: Condition Occurrence Treemap}(\#fig:atlasDataSourcesConditionTreemap)
+\end{figure}
 
 To search for a specific condition of interest, click on the Table tab to reveal the full list of conditions in the database with person count, prevalence and records per person. Using the filter box on the top, we can filter down the entries in the table based on concept name containing the term “hypertension”:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasDataSourcesConditionFiltered.png" alt="Atlas Data Sources: Conditions with “hypertension” found in the concept name" width="100%" />
-<p class="caption">(\#fig:atlasDataSourcesConditionFiltered)Atlas Data Sources: Conditions with “hypertension” found in the concept name</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasDataSourcesConditionFiltered} 
+
+}
+
+\caption{Atlas Data Sources: Conditions with “hypertension” found in the concept name}(\#fig:atlasDataSourcesConditionFiltered)
+\end{figure}
 
 We can explore a detailed drill-down report of a condition by clicking on a row. In this case, we will select “essential hypertension” to get a breakdown of the trends of the selected condition over time and by gender, the prevalence of the condition by month, the type recorded with the condition and the age at first occurrence of the diagnosis:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasDataSourcesDrillDownReport.png" alt="Atlas Data Sources: Essential hypertension drill down report" width="100%" />
-<p class="caption">(\#fig:atlasDataSourcesDrillDownReport)Atlas Data Sources: Essential hypertension drill down report</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasDataSourcesDrillDownReport} 
+
+}
+
+\caption{Atlas Data Sources: Essential hypertension drill down report}(\#fig:atlasDataSourcesDrillDownReport)
+\end{figure}
 
 Now that we have reviewed the database’s characteristics for the presence of hypertension concepts and the trends over time, we can also explore drugs used to treat hypertensive persons. The process to do this follows the same steps except we use the Drug Era report to review characteristics of drugs summarized to their RxNorm Ingredient. Once we have explored the database characteristics to review items of interest, we are ready to move forward with constructing cohorts to identify the hypertensive persons to characterize.
 
@@ -115,10 +135,14 @@ A characterization analysis requires at least one cohort and at least one featur
 
 #### Cohort definitions {-}
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationCohortSelection.png" alt="Characterization design tab - cohort definition selection" width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationCohortSelection)Characterization design tab - cohort definition selection</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationCohortSelection} 
+
+}
+
+\caption{Characterization design tab - cohort definition selection}(\#fig:atlasCharacterizationCohortSelection)
+\end{figure}
 
 We assume the cohorts have already been created in ATLAS as described in Chapter \@ref(Cohorts). Click on ![](images/Characterization/atlasImportButton.png) and select the cohorts as shown in figure \@ref(fig:atlasCharacterizationCohortSelection). Next, we’ll define the features to use for characterizing these two cohorts.
 
@@ -128,10 +152,14 @@ ATLAS comes with nearly 100 preset feature analyses that are used to perform cha
 
 Click on ![](images/Characterization/atlasImportButton.png) to select the feature to characterize. Below is a list of features we will use to characterize these cohorts:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationFeatureSelection.png" alt="Characterization design tab - feature selection." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationFeatureSelection)Characterization design tab - feature selection.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationFeatureSelection} 
+
+}
+
+\caption{Characterization design tab - feature selection.}(\#fig:atlasCharacterizationFeatureSelection)
+\end{figure}
 
 The figure above shows the list of features selected along with a description of what each feature will characterize for each cohort. The features that start with the name “Demographics” will calculate the demographic information for each person at the cohort start date. For the features that start with a domain name (i.e. Visit, Procedure, Condition, Drug, etc), these will characterize all recorded observations in that domain. Each domain feature has four options of time window preceding the cohort star, namely:
 
@@ -146,10 +174,14 @@ What if we were interested in creating different characteristics based on gender
 
 To create a subgroup, click on and add your criteria for subgroup membership. This step is similar to the criteria used to identify cohort enrollment. In this example, we’ll define a set of criteria to identify females amongst our cohorts:
   
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationSubgroup.png" alt="Characterization design with female sub group analysis." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationSubgroup)Characterization design with female sub group analysis.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationSubgroup} 
+
+}
+
+\caption{Characterization design with female sub group analysis.}(\#fig:atlasCharacterizationSubgroup)
+\end{figure}
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">Subgroup analyses in ATLAS are not the same as strata. Strata are mutually exclusive while subgroups may include the same persons based on the criteria chosen.</div>\EndKnitrBlock{rmdimportant}
 
@@ -157,51 +189,75 @@ To create a subgroup, click on and add your criteria for subgroup membership. Th
 Once we have our characterization designed, we can execute this design against one or more databases in our environment.  Navigate to the Executions tab and click on the Generate button to start the analysis on a database:
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationExecutions.png" alt="Characterization design execution - CDM source selection." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationExecutions)Characterization design execution - CDM source selection.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationExecutions} 
+
+}
+
+\caption{Characterization design execution - CDM source selection.}(\#fig:atlasCharacterizationExecutions)
+\end{figure}
 
 Once the analysis is complete, we can view reports by clicking on the “All Executions” button and from the list of executions, select “View Reports”. Alternatively, you can click “View latest result” to view the last execution performed.
 
 ### Results
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationResultsSummary.png" alt="Characterization results - condition occurrence long term." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationResultsSummary)Characterization results - condition occurrence long term.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationResultsSummary} 
+
+}
+
+\caption{Characterization results - condition occurrence long term.}(\#fig:atlasCharacterizationResultsSummary)
+\end{figure}
 
 The results provide a tabular view of the different features for each cohort selected in the design. In figure \@ref(fig:atlasCharacterizationResultsSummary), a table provides a summary of all conditions present in the two cohorts in the preceding 365 days from the cohort start. Each covariate has a count and percentage for each cohort and the female subgroup we defined within each cohort. 
 
 We used the search box to filter the results to see what proportion of persons have a `cardiac arrhythmia` in their history in an effort to understand what cardiovascular-related diagnoses are observed in the populations. We can use the `Explore` link next to the cardiac arrhythmia concept to open a new window with more details about the concept for a single cohort as shown in figure \@ref(fig:atlasCharacterizationResultsExplore):
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationResultsExplore.png" alt="Characterization results - exploring a single concept." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationResultsExplore)Characterization results - exploring a single concept.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationResultsExplore} 
+
+}
+
+\caption{Characterization results - exploring a single concept.}(\#fig:atlasCharacterizationResultsExplore)
+\end{figure}
 
 Since we have characterized all condition concepts for our cohorts, the explore option enables a view of all ancestor and descendant concepts for the selected concept, in this case cardiac arrhythmia. This exploration allows us to navigate the hierarchy of concepts to explore other cardiac diseases that may appear for our hypertensive persons. Like in the summary view, the count and percentage are displayed.
 
 We can also use the same characterization results to find conditions that are contraindicated for some anti-hypertensive treatment such as angioedema. To do this, we’ll follow the same steps above but this time search for ‘edema’ as shown in figure \@ref(fig:atlasCharacterizationResultsContra):
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationResultsContra.png" alt="Characterization results - exploring a contraindicated condition." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationResultsContra)Characterization results - exploring a contraindicated condition.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationResultsContra} 
+
+}
+
+\caption{Characterization results - exploring a contraindicated condition.}(\#fig:atlasCharacterizationResultsContra)
+\end{figure}
 Once again, we’ll use the explore feature to see the characteristics of Edema in the hypertension population to find the prevalence of angioedema:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationResultsContraExplore.png" alt="Characterization results - exploring a contraindicated condition details." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationResultsContraExplore)Characterization results - exploring a contraindicated condition details.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationResultsContraExplore} 
+
+}
+
+\caption{Characterization results - exploring a contraindicated condition details.}(\#fig:atlasCharacterizationResultsContraExplore)
+\end{figure}
 
 Here we find that a portion of this population has a record of angioedema in the year prior to starting an anti-hypertensive medication. 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationResultsContinuous.png" alt="Characterization results of age for each cohort and sub group." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationResultsContinuous)Characterization results of age for each cohort and sub group.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationResultsContinuous} 
+
+}
+
+\caption{Characterization results of age for each cohort and sub group.}(\#fig:atlasCharacterizationResultsContinuous)
+\end{figure}
 
 While domain covariates are computed using a binary indicator (i.e. was a record of the code present in the prior timeframe), some variables provide a continuous value such as the age of persons at cohort start. In the example above, we show the age for the 2 cohorts characterized expressed with the count of persons, mean age, median age and standard deviation. 
 
@@ -211,17 +267,25 @@ In addition to the preset features, ATLAS supports the ability to allow for user
 
 In this example, we will define a custom feature that will identify the count of persons in each cohort that have a drug era of ACE inhibitors in their history after cohort start:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationCustomFeature.png" alt="Custom feature definition in ATLAS." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationCustomFeature)Custom feature definition in ATLAS.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationCustomFeature} 
+
+}
+
+\caption{Custom feature definition in ATLAS.}(\#fig:atlasCharacterizationCustomFeature)
+\end{figure}
 
 The criteria defined above assumes that it will be applied to a cohort start date. Once we have defined the criteria and saved it, we can apply it to the characterization design we created in the previous section. To do this, open the characterization design and navigate to the Feature Analysis section. Click the ![](images/Characterization/atlasImportButton.png) button and from the menu select the new custom features. They will now appear in the feature list for the characterization design. As described earlier, we can execute this design against a database to produce the characterization for this custom feature:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasCharacterizationCustomFeatureResults.png" alt="Custom feature results display." width="100%" />
-<p class="caption">(\#fig:atlasCharacterizationCustomFeatureResults)Custom feature results display.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasCharacterizationCustomFeatureResults} 
+
+}
+
+\caption{Custom feature results display.}(\#fig:atlasCharacterizationCustomFeatureResults)
+\end{figure}
 
 ## Cohort characterization in R
 
@@ -360,10 +424,14 @@ The goal with a pathway analysis is to understand the sequencing of treatments a
 
 Cohort pathways aims to provide analytic capabilities to summarize the events following the cohort start date of one or more target cohorts. To do this, we create a set of cohorts to identify the clinical events of interest for the target population called event cohort. Focusing on how this might look for a person in the target cohort:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/pathwaysPersonEventView.png" alt="Pathways analysis in the context of a single person." width="100%" />
-<p class="caption">(\#fig:pathwaysPersonEventView)Pathways analysis in the context of a single person.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/pathwaysPersonEventView} 
+
+}
+
+\caption{Pathways analysis in the context of a single person.}(\#fig:pathwaysPersonEventView)
+\end{figure}
 
 In figure \@ref(fig:pathwaysPersonEventView), the person is part of the target cohort with a defined start and end date. Then, the numbered line segments represent where that person also is identified in an event cohort for a duration of time. Event cohorts allow us to describe any clinical event of interest that is represented in the CDM such that we are not constrained to creating a pathway for a single domain or concept. 
 
@@ -374,18 +442,26 @@ To start, click on ![](images/Characterization/atlasPathwaysMenuItem.png) in the
 To start, we will continue to use the cohorts initiating a first-line therapy for hypertension with 1 and 3 years follow up (Appendix \@ref(HTN1yrFO), \@ref(HTN3yrFO)). Use the  button to import the 2 cohorts.
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasPathwaysTargetCohorts.png" alt="Pathways analysis with target cohorts selected." width="100%" />
-<p class="caption">(\#fig:atlasPathwaysTargetCohorts)Pathways analysis with target cohorts selected.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasPathwaysTargetCohorts} 
+
+}
+
+\caption{Pathways analysis with target cohorts selected.}(\#fig:atlasPathwaysTargetCohorts)
+\end{figure}
 
 Next we’ll define the event cohorts by creating a cohort for each first-line hypertensive drug of interest. For this, we’ll start by creating a cohort of ACE inhibitor users and define the cohort end date as the end of continuous exposure. We’ll do the same for 8 other hypertensive medications and note that these definitions are found in Appendix \@ref(ACEiUse)-\@ref(A1BUse). Once complete use the ![](images/Characterization/atlasImportButton.png) button to import these into the Event Cohort section of the pathway design:
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasPathwaysEventCohorts.png" alt="Event cohorts for pathway design for initiating a first-line antihypertensive therapy." width="100%" />
-<p class="caption">(\#fig:atlasPathwaysEventCohorts)Event cohorts for pathway design for initiating a first-line antihypertensive therapy.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasPathwaysEventCohorts} 
+
+}
+
+\caption{Event cohorts for pathway design for initiating a first-line antihypertensive therapy.}(\#fig:atlasPathwaysEventCohorts)
+\end{figure}
 
 When complete, your design should look like the one above. Next, we’ll need to decide on a few additional analysis settings:
 
@@ -399,20 +475,28 @@ Once we have our pathway analysis designed, we can execute this design against o
 
 ### Viewing Results
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasPathwaysResults.png" alt="Pathways results legend and sunburst visualization." width="100%" />
-<p class="caption">(\#fig:atlasPathwaysResults)Pathways results legend and sunburst visualization.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasPathwaysResults} 
+
+}
+
+\caption{Pathways results legend and sunburst visualization.}(\#fig:atlasPathwaysResults)
+\end{figure}
 
 The results of a pathway analysis are broken into 3 sections: The legend section displays the total number of persons in the target cohort along with the number of persons that had 1 or more events in the pathway analysis. Below that summary are the color designations for each of the cohorts that appear in the sunburst plot in the center section.
 
 The sunburst plot is a visualization that represents the various event pathways taken by persons over time. The center of the plot represents the cohort entry and the first color-coded ring shows the proportion of persons in each event cohort. In our example, the center of the circle represents hypertensive persons initiating a first line therapy. Then, the first ring in the sunburst plot shows the proportion of persons that initiated a type of first-line therapy defined by the event cohorts (i.e. ACE inhibitors, Angiotensin receptor blockers, etc). The second set of rings represents the 2nd event cohort for persons. In certain event sequences, a person may never have a 2nd event cohort observed in the data and that proportion is represented by the grey portion of the ring. 
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasPathwaysResultsPathDetails.png" alt="Pathways results displaying path details." width="100%" />
-<p class="caption">(\#fig:atlasPathwaysResultsPathDetails)Pathways results displaying path details.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasPathwaysResultsPathDetails} 
+
+}
+
+\caption{Pathways results displaying path details.}(\#fig:atlasPathwaysResultsPathDetails)
+\end{figure}
 
 Clicking on a section of the sunburst plot will display the path details on the right. Here we can see that the largest proportion of people in our target cohort initiated a first-line therapy with ACE inhibitors and from that group, a smaller proportion started a Thiazide or thiazide diuretics. 
 
@@ -428,27 +512,39 @@ To start, click on ![](images/Characterization/atlasIncidenceMenuItem.png) in th
 We assume the cohorts used in this example have already been created in ATLAS as described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target cohorts (Appendix \@ref(AceInhibitorsMono), \@ref(ThiazidesMono)), and outcomes (Appendix \@ref(Angioedema), \@ref(Ami), \@ref(ARBUse)) cohorts.
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasIncidenceCohortSelection.png" alt="Incidence Rate target and outcome definition." width="100%" />
-<p class="caption">(\#fig:atlasIncidenceCohortSelection)Incidence Rate target and outcome definition.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasIncidenceCohortSelection} 
+
+}
+
+\caption{Incidence Rate target and outcome definition.}(\#fig:atlasIncidenceCohortSelection)
+\end{figure}
 
 On the definition tab, click to choose the *New users of ACE inhibitors* cohort and the *New users of Thiazide or Thiazide-like diuretics* cohort. Close the dialog to view that these cohorts are added to the design. Next we add our outcome cohorts by clicking on and from the dialog box, select the outcome cohorts of *acute myocardial infarction events*, *angioedema events* and *Angiotensin receptor blocker (ARB) use*. Again, close the window to view that these cohorts are added to the outcome cohorts section of the design. 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasIncidenceTimeAtRisk.png" alt="Incidence Rate target and outcome definition." width="100%" />
-<p class="caption">(\#fig:atlasIncidenceTimeAtRisk)Incidence Rate target and outcome definition.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasIncidenceTimeAtRisk} 
+
+}
+
+\caption{Incidence Rate target and outcome definition.}(\#fig:atlasIncidenceTimeAtRisk)
+\end{figure}
 
 Next, we will define the time at risk window for the analysis. As shown above, the time at risk window is defined relative to the cohort start and end dates. Here we will define the time at risk start as 1 day after cohort start for our target cohorts. Next, we’ll define the time at risk to end at the cohort end date. In this case, the definition of the ACEi and THZ cohorts have a cohort end date when the drug exposure ends.
 
 ATLAS also provides a way to stratify the target cohorts as part of the analysis specification:
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasIncidenceStratifyFemale.png" alt="Incidence Rate strata definition for females." width="100%" />
-<p class="caption">(\#fig:atlasIncidenceStratifyFemale)Incidence Rate strata definition for females.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasIncidenceStratifyFemale} 
+
+}
+
+\caption{Incidence Rate strata definition for females.}(\#fig:atlasIncidenceStratifyFemale)
+\end{figure}
 
 To do this, click the New Stratify Criteria button and follow the same steps described in Chapter 11. Now that we have completed the design, we can move to executing our design against one or more databases.
 
@@ -456,10 +552,14 @@ To do this, click the New Stratify Criteria button and follow the same steps des
 
 Click the Generation tab and then the ![](images/Characterization/atlasIncidenceGenerate.png) button to reveal a list of databases to use to execute the analysis:
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasIncidenceSourceSelection.png" alt="Incidence Rate analysis execution." width="100%" />
-<p class="caption">(\#fig:atlasIncidenceSourceSelection)Incidence Rate analysis execution.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasIncidenceSourceSelection} 
+
+}
+
+\caption{Incidence Rate analysis execution.}(\#fig:atlasIncidenceSourceSelection)
+\end{figure}
 
 Select one or more databases and click the Generate button to start the analysis to analyze all combinations of targets and outcomes specified in the design.
 
@@ -470,10 +570,14 @@ On the Generation tab, the top portion of the screen allows you to select a targ
 Select the target cohort of ACEi users and the Acute Myocardial Infarction (AMI) from the respective dropdown lists. Click the ![](images/Characterization/atlasIncidenceReportButton.png) button to reveal the incidence analysis results:
 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasIncidenceResults.png" alt="Incidence Rate analysis output - New ACEi users with AMI outcome." width="100%" />
-<p class="caption">(\#fig:atlasIncidenceResults)Incidence Rate analysis output - New ACEi users with AMI outcome.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasIncidenceResults} 
+
+}
+
+\caption{Incidence Rate analysis output - New ACEi users with AMI outcome.}(\#fig:atlasIncidenceResults)
+\end{figure}
 
 A summary for the database shows the total persons in the cohort that were observed during the TAR along with the total number of cases. The proportion shows the number of cases per 1000 people. The time at risk, in years, is calculated for the target cohort. The incidence rate is expressed as the number of cases per 1000 person-years. 
 
@@ -481,10 +585,14 @@ We can also view the incidence metrics for the strata that we defined in the des
 
 We can gather the same information to see the incidence of new use of ARBs amongst the ACEi population. Using the dropdown at the top, change the outcome to ARBs use and click the ![](images/Characterization/atlasIncidenceReportButton.png) button to reveal the details. 
 
-<div class="figure" style="text-align: center">
-<img src="images/Characterization/atlasIncidenceResultsARB.png" alt="Incidence Rate - New users of ACEi receiving ARBs treatment during ACEi exposure." width="100%" />
-<p class="caption">(\#fig:atlasIncidenceResultsARB)Incidence Rate - New users of ACEi receiving ARBs treatment during ACEi exposure.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Characterization/atlasIncidenceResultsARB} 
+
+}
+
+\caption{Incidence Rate - New users of ACEi receiving ARBs treatment during ACEi exposure.}(\#fig:atlasIncidenceResultsARB)
+\end{figure}
 
 As shown, the metrics calculated are the same but the interpretation is different since the input (ARB use) references a drug utilization estimate instead of a health outcome.
 

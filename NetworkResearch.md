@@ -86,10 +86,9 @@ The network studies can be of different types - ranging from simple characteriza
 
 The current network study process is manual and rudimentary - with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, share code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes. The ARACHNE Research Network platform is a community-driven solution to streamline and automate the process of network studies. 
 
-<div class="figure">
-<img src="images/NetworkStudies/ARACHNE.png" alt="The ARACHNE Network Study Process." width="100%" />
-<p class="caption">(\#fig:arachne)The ARACHNE Network Study Process.</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNE} \caption{The ARACHNE Network Study Process.}(\#fig:arachne)
+\end{figure}
 
 The ARACHNE Platform includes multiple core components:
 
@@ -98,10 +97,9 @@ The ARACHNE Platform includes multiple core components:
  
 ARACHNE is built to provide a seamless integration with other OHDSI tools, including ACHILLES reports and an ability to import ATLAS design artefacts, create self-contained packages and automatically execute those across multiple sites. The future vision is to eventually enable multiple networks to be linked together for the purpose of conducting research not only between organizations within a single network, but also between organizations across multiple networks. 
 
-<div class="figure">
-<img src="images/NetworkStudies/ARACHNENON.png" alt="The ARACHNE Network of Networks." width="100%" />
-<p class="caption">(\#fig:arachneNon)The ARACHNE Network of Networks.</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNENON} \caption{The ARACHNE Network of Networks.}(\#fig:arachneNon)
+\end{figure}
  
 ## Best Practices for Network Research
 
