@@ -81,7 +81,7 @@ Running an OHDSI Network Study has three distinct stages:
 
 The study feasibility stage *(pre-study stage)* is focused on supporting a definition of a study and a creation of the study protocol. These activities make sure the study is feasible to be executed as described in the formal protocol.
 
-The feasibility stage does not have a well-defined process but rather is driven by various supporting activities, including identifying relevant newtork sites that contain the targeted patient population with required drug exposure, procedure information, condition or demographics information. A study lead may have enough data to do this inside their own organization and may opt for support from other OHDSI network sites. This can include asking collaborators to execute data characterization activities such as JSON files of cohort definitions from ATLAS and provisionally test of study R packages. 
+The feasibility stage does not have a well-defined process but rather is driven by various supporting activities, including identifying relevant network sites that contain the targeted patient population with required drug exposure, procedure information, condition or demographics information. A study lead may have enough data to do this inside their own organization and may opt for support from other OHDSI network sites. This can include asking collaborators to execute data characterization activities such as JSON files of cohort definitions from ATLAS and provisionally test of study R packages. 
 
 The outcome of the feasibility stage is generation of a finalized protocol and study package that is ready for network dissemination. The formal protocol will detail the study team, including the designated study lead (often the corresponding author for publication purposes), and information on the timeline for the study. The protocol is a critical component for additional network sites to review, approve and execute the full study package on their OMOP CDM data. A protocol must include information on study population, the methods being used, how the results will be stored and analyzed as well as how the study results will be disseminated after completion (e.g. a publication, a poster, etc).
 
@@ -137,12 +137,14 @@ ARACHNE is built to provide a seamless integration with other OHDSI tools, inclu
 knitr::include_graphics("images/NetworkStudies/ARACHNENON.png")
 ```
  
-## Best Practices for Network Research
+## Summary
 
-There are multiple best practices that study teams should be following while executing the network study, including:
-
-- Make sure that study questions can be supported by data available. Perform study feasibility to identify the best databases.
-- Write code in generic way and parametrize all functions and variables (e.g. do not hard database connection, local hard drive path, assume a certain operating system).
-- Ensure that each network site is CDM compliant and regularly updates the OMOP Standardized Vocabularies.
-- Ensure with each network site has performed and documented Data Quality checks on their OMOP CDM (e.g. ensuring ETL has followed THEMIS business rules and conventions, correct data was placed into correct CDM tables and fields).
-- Ensure that each data analyst updates their local R packages to the latest OHDSI package versions before executing the study
+```{block2, type='rmdsummary'}
+- An OHDSI study becomes an OHDSI Network study when it is run across multiple CDMs at different institutions.
+- When running a network study, make sure that you are not biasing your study design to a single type of data.
+- Perform study feasibility to identify the best databases.
+- Write study code in CDM compliant, database layer agnostic way using OHDSI packages. Be sure to parametrize all functions and variables (e.g. do not hard database connection, local hard drive path, assume a certain operating system).
+- When recruiting participating sites, ensure that each network site is CDM compliant and regularly updates the OMOP Standardized Vocabularies. Ensure with each network site has performed and documented Data Quality checks on their OMOP CDM (e.g. ensuring ETL has followed THEMIS business rules and conventions, correct data was placed into correct CDM tables and fields).
+- Encourage each data analyst updates their local R packages to the latest OHDSI package versions before executing the study.
+- Ensure each site is in compliance with local governance rules before results are shared.
+```
