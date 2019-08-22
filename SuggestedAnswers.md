@@ -55,7 +55,7 @@ Table: (\#tab:johnDrug) The DRUG_EXPOSURE table.
 Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
 |DRUG_EXPOSURE_ID|1001|Some unique integer|
-|PERSON_ID|1|This is a foreign key to John's record in the PERSON table.|
+|PERSON_ID|2|This is a foreign key to John's record in the PERSON table.|
 |DRUG_CONCEPT_ID|19078461|The provided NDC code maps to Standard Concept [19078461](http://athena.ohdsi.org/search-terms/terms/19078461).|
 |DRUG_EXPOSURE_START_DATE|2019-05-01|The start date of the exposure to the drug.|
 |DRUG_EXPOSURE_ START_DATETIME|2019-05-01 00:00:00|Midnight is used as the time is not known.|
@@ -255,80 +255,52 @@ We create initial event criteria encoding these requirements:
 
 When done, the cohort entry event section should look like Figure \@ref(fig:cohortsAtlasInitialEvents).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInitialEvents} 
-
-}
-
-\caption{Cohort entry event settings for new users of diclofenac}(\#fig:cohortsAtlasInitialEvents)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasInitialEvents.png" alt="Cohort entry event settings for new users of diclofenac" width="100%" />
+<p class="caption">(\#fig:cohortsAtlasInitialEvents)Cohort entry event settings for new users of diclofenac</p>
+</div>
 
 The concept set expression for diclofenac should look like Figure \@ref(fig:cohortsAtlasConceptSet1), including the ingredient 'Diclofenac' and all of its descendant, thus including all drugs containing the ingredient diclofenac.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet1} 
-
-}
-
-\caption{Concept set expression for diclofenac.}(\#fig:cohortsAtlasConceptSet1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasConceptSet1.png" alt="Concept set expression for diclofenac." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasConceptSet1)Concept set expression for diclofenac.</p>
+</div>
 
 Next, we require no prior exposure to any NSAID, as shown in Figure \@ref(fig:cohortsAtlasInclusion1). 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion1} 
-
-}
-
-\caption{Requiring no prior exposure to any NSAID.}(\#fig:cohortsAtlasInclusion1)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasInclusion1.png" alt="Requiring no prior exposure to any NSAID." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasInclusion1)Requiring no prior exposure to any NSAID.</p>
+</div>
 
 The concept set expression for NSAIDs should look like Figure \@ref(fig:cohortsAtlasConceptSet2), including the NSAIDs class and all of its descendant, thus including all drugs containing any NSAID.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet2} 
-
-}
-
-\caption{Concept set expression for NSAIDs}(\#fig:cohortsAtlasConceptSet2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasConceptSet2.png" alt="Concept set expression for NSAIDs" width="100%" />
+<p class="caption">(\#fig:cohortsAtlasConceptSet2)Concept set expression for NSAIDs</p>
+</div>
 
 Additionally, we require no prior diagnosis of cancer, as shown in Figure \@ref(fig:cohortsAtlasInclusion2). 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion2} 
-
-}
-
-\caption{Requiring no prior cancer diagnosis.}(\#fig:cohortsAtlasInclusion2)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasInclusion2.png" alt="Requiring no prior cancer diagnosis." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasInclusion2)Requiring no prior cancer diagnosis.</p>
+</div>
 
 The concept set expression for "Broad malignancies" should look like Figure \@ref(fig:cohortsAtlasConceptSet3), including the high level concept "Malignant neoplastic disease" and all of its descendant.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet3} 
-
-}
-
-\caption{Concept set expression for broad malignancies}(\#fig:cohortsAtlasConceptSet3)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasConceptSet3.png" alt="Concept set expression for broad malignancies" width="100%" />
+<p class="caption">(\#fig:cohortsAtlasConceptSet3)Concept set expression for broad malignancies</p>
+</div>
 
 Finally, we define the cohort exit criteria as discontinuation of exposure (allowing for a 30-day gap), as shown in Figure \@ref(fig:cohortsAtlasExit). 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasExit} 
-
-}
-
-\caption{Setting the cohort exit date.}(\#fig:cohortsAtlasExit)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/cohortsAtlasExit.png" alt="Setting the cohort exit date." width="100%" />
+<p class="caption">(\#fig:cohortsAtlasExit)Setting the cohort exit date.</p>
+</div>
 
 #### Exercise \@ref(exr:exerciseCohortsSql) {-}
 
@@ -360,7 +332,11 @@ We then select only those that occur during an inpatient or ER visit, using some
 
 
 ```r
-sql <- "INSERT INTO @cdm.cohort (subject_id, cohort_start_date, cohort_definition_id)
+sql <- "INSERT INTO @cdm.cohort (
+  subject_id, 
+  cohort_start_date, 
+  cohort_definition_id
+  )
 SELECT subject_id,
   cohort_start_date,
   CAST (1 AS INT) AS cohort_definition_id
@@ -397,15 +373,16 @@ We specify a set of covariate settings, and use the `getPlpData` function to ext
 
 ```r
 library(PatientLevelPrediction)
-covSettings <- createCovariateSettings(useDemographicsGender = TRUE,
-                                       useDemographicsAge = TRUE,
-                                       useConditionGroupEraLongTerm = TRUE,
-                                       useConditionGroupEraAnyTimePrior = TRUE,
-                                       useDrugGroupEraLongTerm = TRUE,
-                                       useDrugGroupEraAnyTimePrior = TRUE,
-                                       useVisitConceptCountLongTerm = TRUE,
-                                       longTermStartDays = -365,
-                                       endDays = -1)
+covSettings <- createCovariateSettings(
+  useDemographicsGender = TRUE,
+  useDemographicsAge = TRUE,
+  useConditionGroupEraLongTerm = TRUE,
+  useConditionGroupEraAnyTimePrior = TRUE,
+  useDrugGroupEraLongTerm = TRUE,
+  useDrugGroupEraAnyTimePrior = TRUE,
+  useVisitConceptCountLongTerm = TRUE,
+  longTermStartDays = -365,
+  endDays = -1)
 
 plpData <- getPlpData(connectionDetails = connectionDetails,
                       cdmDatabaseSchema = "main",
@@ -493,14 +470,10 @@ viewPlp(lassoResults)
 
 This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/plpShiny} 
-
-}
-
-\caption{Patient-level prediction Shiny app.}(\#fig:plpShiny)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
+<p class="caption">(\#fig:plpShiny)Patient-level prediction Shiny app.</p>
+</div>
 
 
 ## Data Quality {#DataQualityanswers}

@@ -13,7 +13,8 @@ OHDSI is open network, inviting healthcare institutions across the globe with ac
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">**Benefits of a Data Owner Joining the OHDSI Network**
 - **Access to free tools:** OHDSI publishes free, open source tools for data characterization and analytics (e.g. browsing the clinical concepts, defining and characterizing cohorts, running Population-Level Estimation and Patient-Level Prediction studies).
 - **Participate in a premier research community:** Author and publish network research, gain access to eminent leaders in global real-world evidence community.
-- **Opportunity to buildout care benchmarks:** Network can validate quality improvement benchmarks against other institutions *(e.g. On average how long does it take to get an appendectomy discharged?)*</div>\EndKnitrBlock{rmdimportant}
+- **Opportunity to buildout care benchmarks:** Network can validate quality improvement benchmarks against other institutions *(e.g. On average how long does it take to get an appendectomy discharged?)*
+</div>\EndKnitrBlock{rmdimportant}
 
 ## Defining an OHDSI Network Study
 
@@ -41,7 +42,8 @@ Designing a study to run across the OHDSI Network requires a paradigm shift in h
 
 In an OHDSI Network Study, you are no longer designing and building a study package just for your data. You are building a study package to be run across multiple sites across the globe. You will never see the underlying data -- OHDSI network studies only share results files. Your study package must be assembled on the principles of what data can be captured in the domains of the OMOP CDM and air towards an exhaustive approach to concept set creation to represent the diversity of care settings that observational health data are captured in. OHDSI study packages use the same cohort definition across all sites. This means that you must think holistically to avoid biasing a cohort definition to only represent a subset of eligible data (e.g. claims-centric data or EHR-specific data) in the network. You are encouraged to write an exhaustive cohort definition that can be ported across multiple CDMs. You **should never** be modifying the cohort definition for each site. OHDSI study packages are intended to be the same set of code run across all sites -- with only minor customizations for connecting into the database layer and where to store your local results.
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">**New to Network Studies?** The OHDSI Study Nurture Committee is a resource for you as you navigate your journey. This committee helps train and guide researchers to complete OHDSI Studies including how to effectively use OHDSI tools, providing guidance to the OHDSI study design for increase reproducibility and reliability and assisting with helping study investigators recruit data partners to run study packages.</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">**New to Network Studies?** The OHDSI Study Nurture Committee is a resource for you as you navigate your journey. This committee helps train and guide researchers to complete OHDSI Studies including how to effectively use OHDSI tools, providing guidance to the OHDSI study design for increase reproducibility and reliability and assisting with helping study investigators recruit data partners to run study packages.
+</div>\EndKnitrBlock{rmdimportant}
 
 In addition to clinical coding variation, you have to anticipate technical variations as well. Your study code will no longer be running in a single technical environment. Each OHDSI Network site makes its own independent choice of database layer. Luckily, the OHDSI Community has solutions such as Atlas and [SQL Render](http://www.github.com/OHDSI/SqlRender) to help you generalize your study package for CDM compliance across different database dialects. OHDSI investigators are encouraged to solicit help from other network study sites to test and validate the study package can be executed in different environments. When coding errors come up, OHDSI Researchers can utilize the [OHDSI Forums](http://forums.ohdsi.org) to discuss and debug packages.
 
@@ -114,9 +116,10 @@ Researchers are also invited to present OHDSI Network Studies on weekly OHDSI co
 
 The current network study process is manual - with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, sharing code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes. The ARACHNE Research Network platform is a community-driven solution to streamline and automate the process of network studies. 
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNE} \caption{The ARACHNE Network Study Process.}(\#fig:arachne)
-\end{figure}
+<div class="figure">
+<img src="images/NetworkStudies/ARACHNE.png" alt="The ARACHNE Network Study Process." width="100%" />
+<p class="caption">(\#fig:arachne)The ARACHNE Network Study Process.</p>
+</div>
 
 The ARACHNE Platform includes multiple core components:
 
@@ -125,9 +128,10 @@ The ARACHNE Platform includes multiple core components:
  
 ARACHNE is built to provide a seamless integration with other OHDSI tools, including ACHILLES reports and an ability to import ATLAS design artefacts, create self-contained packages and automatically execute those across multiple sites. The future vision is to eventually enable multiple networks to be linked together for the purpose of conducting research not only between organizations within a single network, but also between organizations across multiple networks. 
 
-\begin{figure}
-\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNENON} \caption{The ARACHNE Network of Networks.}(\#fig:arachneNon)
-\end{figure}
+<div class="figure">
+<img src="images/NetworkStudies/ARACHNENON.png" alt="The ARACHNE Network of Networks." width="100%" />
+<p class="caption">(\#fig:arachneNon)The ARACHNE Network of Networks.</p>
+</div>
  
 ## Summary
 
@@ -137,4 +141,5 @@ ARACHNE is built to provide a seamless integration with other OHDSI tools, inclu
 - Write study code in CDM compliant, database layer agnostic way using OHDSI packages. Be sure to parametrize all functions and variables (e.g. do not hard database connection, local hard drive path, assume a certain operating system).
 - When recruiting participating sites, ensure that each network site is CDM compliant and regularly updates the OMOP Standardized Vocabularies. Ensure with each network site has performed and documented Data Quality checks on their OMOP CDM (e.g. ensuring ETL has followed THEMIS business rules and conventions, correct data was placed into correct CDM tables and fields).
 - Encourage each data analyst updates their local R packages to the latest OHDSI package versions before executing the study.
-- Ensure each site is in compliance with local governance rules before results are shared.</div>\EndKnitrBlock{rmdsummary}
+- Ensure each site is in compliance with local governance rules before results are shared.
+</div>\EndKnitrBlock{rmdsummary}

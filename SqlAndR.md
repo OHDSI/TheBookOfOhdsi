@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.fbvpgrjachildren ;"
+## [1] "SELECT * FROM temp_schema.pm8ovi29children ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -359,14 +359,10 @@ launchSqlRenderDeveloper()
 
 That will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web[^sqlDeveloperUrl]. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/sqlDeveloper} 
-
-}
-
-\caption{The SqlDeveloper Shiny app.}(\#fig:sqlDeveloper)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
+<p class="caption">(\#fig:sqlDeveloper)The SqlDeveloper Shiny app.</p>
+</div>
 
 In the app you can enter OHDSI SQL, select the target dialect as well as provide values for the parameters that appear in your SQL, and the translation will automatically appear at the bottom.
 
@@ -644,7 +640,7 @@ GROUP BY concept_name;
 |      14927548 |       FEMALE |
 |      11371453 |         MALE |
 
-A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept *and all of its descendants*. For example, imagin	e we wish to count the number of prescriptions containing the ingredient ibuprofen:
+A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept *and all of its descendants*. For example, imagine we wish to count the number of prescriptions containing the ingredient ibuprofen:
 
 ```sql
 SELECT COUNT(*) AS prescription_count
@@ -669,14 +665,10 @@ QueryLibrary is a library of commonly-used SQL queries for the CDM. It is availa
 
 [^queryLibraryPackageUrl]: https://github.com/OHDSI/QueryLibrary
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/queryLibrary} 
-
-}
-
-\caption{QueryLibrary: a library of SQL queries against the CDM.}(\#fig:queryLibrary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/SqlAndR/queryLibrary.png" alt="QueryLibrary: a library of SQL queries against the CDM." width="100%" />
+<p class="caption">(\#fig:queryLibrary)QueryLibrary: a library of SQL queries against the CDM.</p>
+</div>
 
 The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but it is also a valuable resource for experienced users.
 
@@ -686,13 +678,13 @@ The QueryLibrary makes use of SqlRender to output the queries in the SQL dialect
 
 ### Problem definition
 
-Angioedema is a well-known side-effect of ACE inhibitors (ACEi). @slater_1988 estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisnopril. We thus answer the question
+Angioedema is a well-known side-effect of ACE inhibitors (ACEi). @slater_1988 estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisinopril. We thus answer the question
 
-> What is the rate of angioedema in the first week following lisnopril treatment initiation, stratified by age and gender?
+> What is the rate of angioedema in the first week following lisinopril treatment initiation, stratified by age and gender?
 
 ### Exposure
 
-We'll define exposure as first exposure to lisnopril. By first we mean no earlier exposure to lisnopril. We require 365 days of continuous observation time prior to the first exposure.
+We'll define exposure as first exposure to lisinopril. By first we mean no earlier exposure to lisinopril. We require 365 days of continuous observation time prior to the first exposure.
 
 ### Outcome
 
@@ -911,8 +903,7 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
   xlab("Age") +
   ylab("Incidence (per 1,000 patient weeks)")
 ```
-
-\begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
+<img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" />
 
 ### Clean up
 

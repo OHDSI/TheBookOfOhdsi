@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-08-21}
+    \date{2019-08-22}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -941,8 +941,8 @@ The CDM is platform-independent. Data types are defined generically using ANSI S
 
 \emph{Note}: While the data model itself is platform-independent, many of the tools that have been built to work with it require certain specifications. For more about this please see chapter \ref{OhdsiAnalyticsTools}.
 
-\hypertarget{general-conventions-of-domains}{%
-\subsection{General conventions of Domains}\label{general-conventions-of-domains}}
+\hypertarget{domains}{%
+\subsection{General conventions of domains}\label{domains}}
 
 Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \ref{concepts-sources}). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION\_CONCEPT\_ID of the CONDITION\_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an OMOP CDM, these records are found in the DRUG\_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \ref{tab:domains}.
 
@@ -2025,6 +2025,12 @@ This chapter covers only a portion of the tables available in the OMOP CDM as ex
 \hypertarget{exercises}{%
 \section{Exercises}\label{exercises}}
 
+\hypertarget{prerequisites}{%
+\subsubsection*{Prerequisites}\label{prerequisites}}
+\addcontentsline{toc}{subsubsection}{Prerequisites}
+
+For these first exercises you will need to review the CDM tables discussed earlier, and you will have to look up concepts in the Vocabulary, which can be done through ATHENA\footnote{\url{http://athena.ohdsi.org/}} or ATLAS\footnote{\url{http://atlas-demo.ohdsi.org}}.
+
 \BeginKnitrBlock{exercise}
 \protect\hypertarget{exr:exerciseJohnPerson}{}{\label{exr:exerciseJohnPerson} }John is an African American man born on August 4, 1974. Define an entry in the PERSON table that encodes this information.
 \EndKnitrBlock{exercise}
@@ -2037,8 +2043,8 @@ This chapter covers only a portion of the tables available in the OMOP CDM as ex
 \protect\hypertarget{exr:exerciseJohnDrug}{}{\label{exr:exerciseJohnDrug} }John was prescribed a 30-day supply of Ibuprofen 200 MG Oral tablets (NDC code: 76168009520) on May 1st, 2019. Define an entry in the DRUG\_EXPOSURE table that encodes this information.
 \EndKnitrBlock{exercise}
 
-\hypertarget{prerequisites}{%
-\subsubsection*{Prerequisites}\label{prerequisites}}
+\hypertarget{prerequisites-1}{%
+\subsubsection*{Prerequisites}\label{prerequisites-1}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these last two exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -2061,7 +2067,7 @@ The Eunomia package provides a simulated dataset in the CDM that will run inside
 The CDM database schema is ``main''.
 
 \BeginKnitrBlock{exercise}
-\protect\hypertarget{exr:exerciseGiBleedRecords}{}{\label{exr:exerciseGiBleedRecords} }Using SQL and R, retrieve all records of the condition ``Gastrointestinal hemorrhage'' (with concept ID \href{http://athena.ohdsi.org/search-terms/terms/192671}{192671}.
+\protect\hypertarget{exr:exerciseGiBleedRecords}{}{\label{exr:exerciseGiBleedRecords} }Using SQL and R, retrieve all records of the condition ``Gastrointestinal hemorrhage'' (with concept ID \href{http://athena.ohdsi.org/search-terms/terms/192671}{192671}).
 \EndKnitrBlock{exercise}
 
 \BeginKnitrBlock{exercise}
@@ -3849,7 +3855,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.r36dw06nchildren ;"
+## [1] "SELECT * FROM temp_schema.p2l6jpwnchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4295,7 +4301,7 @@ SUBJECT\_COUNT & CONCEPT\_NAME\tabularnewline
 \bottomrule
 \end{longtable}
 
-A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept \emph{and all of its descendants}. For example, imagin e we wish to count the number of prescriptions containing the ingredient ibuprofen:
+A very powerful feature of the Vocabulary is its hierarchy. A very common query looks for a specific concept \emph{and all of its descendants}. For example, imagine we wish to count the number of prescriptions containing the ingredient ibuprofen:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -4344,16 +4350,16 @@ The QueryLibrary makes use of SqlRender to output the queries in the SQL dialect
 \hypertarget{problem-definition}{%
 \subsection{Problem definition}\label{problem-definition}}
 
-Angioedema is a well-known side-effect of ACE inhibitors (ACEi). \citet{slater_1988} estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisnopril. We thus answer the question
+Angioedema is a well-known side-effect of ACE inhibitors (ACEi). \citet{slater_1988} estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisinopril. We thus answer the question
 
 \begin{quote}
-What is the rate of angioedema in the first week following lisnopril treatment initiation, stratified by age and gender?
+What is the rate of angioedema in the first week following lisinopril treatment initiation, stratified by age and gender?
 \end{quote}
 
 \hypertarget{exposure}{%
 \subsection{Exposure}\label{exposure}}
 
-We'll define exposure as first exposure to lisnopril. By first we mean no earlier exposure to lisnopril. We require 365 days of continuous observation time prior to the first exposure.
+We'll define exposure as first exposure to lisinopril. By first we mean no earlier exposure to lisinopril. We require 365 days of continuous observation time prior to the first exposure.
 
 \hypertarget{outcome}{%
 \subsection{Outcome}\label{outcome}}
@@ -4633,8 +4639,8 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 \hypertarget{exercises-2}{%
 \section{Exercises}\label{exercises-2}}
 
-\hypertarget{prerequisites-1}{%
-\subsubsection*{Prerequisites}\label{prerequisites-1}}
+\hypertarget{prerequisites-2}{%
+\subsubsection*{Prerequisites}\label{prerequisites-2}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -4681,8 +4687,8 @@ For example, a health insurance claims database is designed to capture all care 
 
 The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS or SQL.
 
-\hypertarget{cohort-definitions}{%
-\section{Cohort definitions}\label{cohort-definitions}}
+\hypertarget{what-is-a-cohort}{%
+\section{What is a cohort?}\label{what-is-a-cohort}}
 
 In OHDSI research, we define a cohort as a set of persons who satisfy one or more inclusion criteria for a duration of time. The term cohort is often interchanged with the term \emph{phenotype}. Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for executing a research question. For instance, in a study aiming to predict the risk of angioedema in a group of people initiation ACE inhibitors, we define two cohorts: the outcome cohort (angioedema), and the target cohort (people initiating ACE inhibitors). An important aspect of cohorts in OHDSI is that they are typically defined independently from the other cohorts in the study, thus allowing re-use. For example, in our example the angioedema cohort would identify all angioedema events in the population, including those outside the target population. Our analytics tools will take the intersection of these two cohorts when needed at analysis time. The advantage of this is that the same angioedema cohort definition can now also be used in other analyses, for example an estimation study comparing ACE inhibitors to some other exposure. Cohort definitions can vary from study to study depending on the research question of interest.
 
@@ -4723,7 +4729,7 @@ There are two main approaches to constructing a cohort:
 The next sections will discuss these approaches in further detail.
 
 \hypertarget{rule-based-cohort-definitions}{%
-\subsection{Rule-based cohort definitions}\label{rule-based-cohort-definitions}}
+\section{Rule-based cohort definitions}\label{rule-based-cohort-definitions}}
 
 A rule-based cohort definition begins with explicitly stating one or more inclusion criteria (e.g.~``people with angioedema'') in a specific duration of time (e.g.~``who developed this condition within the last 6 months''). \index{cohort!rule-based design}
 
@@ -4731,9 +4737,9 @@ The standard components we use to assemble these criteria are:
 
 \begin{itemize}
 \item
-  \textbf{Domain}: The CDM domain(s) where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE) define the type of clinical information and the allowable concepts that can be represented inside that CDM table.
+  \textbf{Domain}: The CDM domain(s) where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE) define the type of clinical information and the allowable concepts that can be represented inside that CDM table. Domains are discussed in Section \ref{domains}.
 \item
-  \textbf{Concept set}: A data-agnostic expression that defines one or more Standard Concepts encompassing the clinical entity of interest. These concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the Vocabulary.
+  \textbf{Concept set}: A data-agnostic expression that defines one or more Standard Concepts encompassing the clinical entity of interest. These concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the Vocabulary. Concept sets are discussed in Section \ref{conceptSets}.
 \item
   \textbf{Domain-specific attribute}: Additional attributes related to the clinical entity of interest (E.g. DAYS\_SUPPLY for a DRUG\_EXPOSURE, or VALUE\_AS\_NUMBER or RANGE\_HIGH for a MEASUREMENT.)
 \item
@@ -4773,8 +4779,13 @@ When creating a cohort definition, you need to ask yourself the following questi
 In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterium ``Exclude people with prior hypertension'' can be formulated as the inclusion criterium ``Include people with 0 occurrences of prior hypertension''.
 \EndKnitrBlock{rmdimportant}
 
+\hypertarget{conceptSets}{%
+\section{Concept sets}\label{conceptSets}}
+
+TODO: add section on concept sets
+
 \hypertarget{probabilistic-cohort-definitions}{%
-\subsection{Probabilistic cohort definitions}\label{probabilistic-cohort-definitions}}
+\section{Probabilistic cohort definitions}\label{probabilistic-cohort-definitions}}
 
 Rule-based cohort definitions are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this approach, supervised machine learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade-offs occur in overall study accuracy when choosing to modify phenotype criteria. \index{cohort!probabilistic design}
 
@@ -4790,7 +4801,7 @@ Your strategy to construct your cohort will depend on your the clinical stringen
 As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of ``gold standard'' reference (e.g.~manual chart review of cases). This is discussed in detail in Chapter \ref{ClinicalValidity} (``Clinical Validity'').
 
 \hypertarget{ohdsi-gold-standard-phenotype-library}{%
-\section{OHDSI Gold Standard Phenotype Library}\label{ohdsi-gold-standard-phenotype-library}}
+\subsection{OHDSI Gold Standard Phenotype Library}\label{ohdsi-gold-standard-phenotype-library}}
 
 To assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to develop a community-backed phenotype library from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These ``gold standard'' definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page \footnote{\url{https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg}}. Research within this workgroup includes APHRODITE \citep{Banda2017APHRODITE} and the PheValuator tool \citep{Swerdel2019phevaluator} , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics \href{https://emerge.mc.vanderbilt.edu/}{eMERGE} \href{https://phekb.org/phenotypes}{Phenotype Library} across the OHDSI network \citep{Hripcsak2019eMERGE}. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
 
@@ -5359,8 +5370,8 @@ Finally, it is always recommend to clean up any temp tables that were created, a
 \hypertarget{exercises-3}{%
 \section{Exercises}\label{exercises-3}}
 
-\hypertarget{prerequisites-2}{%
-\subsubsection*{Prerequisites}\label{prerequisites-2}}
+\hypertarget{prerequisites-3}{%
+\subsubsection*{Prerequisites}\label{prerequisites-3}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For the first exercise, access to an ATLAS instance is required. You can use the instance at \url{http://atlas-demo.ohdsi.org}, or any other instance you have acces to.
@@ -5385,8 +5396,8 @@ For the first exercise, access to an ATLAS instance is required. You can use the
 \end{itemize}
 \EndKnitrBlock{exercise}
 
-\hypertarget{prerequisites-3}{%
-\subsubsection*{Prerequisites}\label{prerequisites-3}}
+\hypertarget{prerequisites-4}{%
+\subsubsection*{Prerequisites}\label{prerequisites-4}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For the second exercise we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -5580,8 +5591,8 @@ Here we demonstrate how to use ATLAS to perform large-scale cohort characterizat
 
 A characterization analysis requires at least one cohort and at least one feature to characterize. For this example, we will use two cohorts. The first cohort will define persons initiating a treatment for hypertension as their index date with at least one diagnosis of hypertension in the year prior. We will also require that persons in this cohort have at least one year of observation after initiating the hypertensive drug (Appendix \ref{HTN1yrFO}). The second cohort is identical to the first cohort described with a requirement having at least three years of observation instead of one (Appendix \ref{HTN3yrFO}).
 
-\hypertarget{cohort-definitions-1}{%
-\subsubsection*{Cohort definitions}\label{cohort-definitions-1}}
+\hypertarget{cohort-definitions}{%
+\subsubsection*{Cohort definitions}\label{cohort-definitions}}
 \addcontentsline{toc}{subsubsection}{Cohort definitions}
 
 \begin{figure}
@@ -7575,11 +7586,11 @@ Parameter & Description & Typical values\tabularnewline
 Parameter & Description & Typical values\tabularnewline
 \midrule
 \endhead
-mtry & Number of features in each tree & ?\tabularnewline
-ntree & Number of trees & ?\tabularnewline
-maxDepth & Max levels in a tree & ?\tabularnewline
-minRows & Min data points in a node & ?\tabularnewline
-balance & Should class sizes be balanced? & ?\tabularnewline
+earlyStopRound & Stopping after rounds without improvement & 25\tabularnewline
+learningRate & The boosting learn rate & 0.005,0.01,0.1\tabularnewline
+maxDepth & Max levels in a tree & 4,6,17\tabularnewline
+minRows & Min data points in a node & 2\tabularnewline
+ntrees & Number of trees & 100,1000\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -7591,18 +7602,46 @@ Random forest is a bagging ensemble technique that combines multiple decision tr
 \begin{longtable}[]{@{}lll@{}}
 \caption{\label{tab:randomForestParameters} Hyper-parameters for random forests.}\tabularnewline
 \toprule
-Parameter & Description & Typical values\tabularnewline
+\begin{minipage}[b]{0.23\columnwidth}\raggedright
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage} & \begin{minipage}[b]{0.38\columnwidth}\raggedright
+Typical values\strut
+\end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-Parameter & Description & Typical values\tabularnewline
+\begin{minipage}[b]{0.23\columnwidth}\raggedright
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage} & \begin{minipage}[b]{0.38\columnwidth}\raggedright
+Typical values\strut
+\end{minipage}\tabularnewline
 \midrule
 \endhead
-mtry & Number of features in each tree & ?\tabularnewline
-ntree & Number of trees & ?\tabularnewline
-maxDepth & Max levels in a tree & ?\tabularnewline
-minRows & Min data points in a node & ?\tabularnewline
-balance & Should class sizes be balanced? & ?\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+maxDepth\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Max levels in a tree\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+4,10,17\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+mtries\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Number of features in each tree\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+-1 = square root of total features,5,20\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+ntrees\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Number of trees\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+500\strut
+\end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -7621,8 +7660,7 @@ Parameter & Description & Typical values\tabularnewline
 Parameter & Description & Typical values\tabularnewline
 \midrule
 \endhead
-k & Number of neighbors & ?\tabularnewline
-weighted & Weight by inverse frequency? & ?\tabularnewline
+k & Number of neighbors & 1000\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -7663,14 +7701,14 @@ nEstimators\strut
 \end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
 The maximum number of estimators at which boosting is terminated\strut
 \end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
-?\strut
+4\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.23\columnwidth}\raggedright
 learningRate\strut
 \end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
 Learning rate shrinks the contribution of each classifier by learning\_rate. There is a trade-off between learningRate and nEstimators\strut
 \end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
-?\strut
+1\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
@@ -7680,23 +7718,16 @@ Learning rate shrinks the contribution of each classifier by learning\_rate. The
 
 A decision tree is a classifier that partitions the variable space using individual tests selected using a greedy approach. It aims to find partitions that have the highest information gain to separate the classes. The decision tree can easily overfit by enabling a large number of partitions (tree depth) and often needs some regularization (e.g., pruning or specifying hyper-parameters that limit the complexity of the model). We use the sklearn DecisionTreeClassifier implementation in Python. \index{decision tree} \index{python}
 
-\begin{longtable}[]{@{}lll@{}}
-\caption{\label{tab:decisionTreeParameters} Hyper-parameters for decision trees.}\tabularnewline
-\toprule
-Parameter & Description & Typical values\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-Parameter & Description & Typical values\tabularnewline
-\midrule
-\endhead
-maxDepth & The maximum depth of the tree & ?\tabularnewline
-minSamplesSplit & ? & ?\tabularnewline
-minSamplesLeaf & ? & ?\tabularnewline
-minImpuritySplit & ? & ?\tabularnewline
-classWeight & ``Balance'' or ``None'' & ?\tabularnewline
-\bottomrule
-\end{longtable}
+Table: \label{tab:decisionTreeParameters} Hyper-parameters for decision trees.
+
+Parameter\textbar{} Description \textbar{} Typical values \textbar{}
+
+\textbar:-------- \textbar:----------- \textbar:-------------- \textbar{}\\
+\textbar{} classWeight \textbar{} ``Balance'' or ``None'' \textbar{} None \textbar{}
+\textbar{} maxDepth \textbar{} The maximum depth of the tree \textbar{} 10 \textbar{}
+\textbar{} minImpuritySplit \textbar{} Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf \textbar{} 10\^{}-7\textbar{}
+\textbar{} minSamplesLeaf \textbar{} The minimum number of samples per leaf \textbar{} 10 \textbar{}
+\textbar{} minSamplesSplit \textbar{} The minimum samples per split \textbar{} 2 \textbar{}
 
 \hypertarget{multilayer-perceptron}{%
 \subsection{Multilayer Perceptron}\label{multilayer-perceptron}}
@@ -7713,8 +7744,8 @@ Parameter & Description & Typical values\tabularnewline
 Parameter & Description & Typical values\tabularnewline
 \midrule
 \endhead
-size & The number of hidden nodes & ?\tabularnewline
-alpha & The l2 regularization & ?\tabularnewline
+alpha & The l2 regularization & 0.00001\tabularnewline
+size & The number of hidden nodes & 4\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -8923,8 +8954,8 @@ For more details see the help page of the function.
 \hypertarget{exercises-5}{%
 \section{Exercises}\label{exercises-5}}
 
-\hypertarget{prerequisites-4}{%
-\subsubsection*{Prerequisites}\label{prerequisites-4}}
+\hypertarget{prerequisites-5}{%
+\subsubsection*{Prerequisites}\label{prerequisites-5}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, \href{https://ohdsi.github.io/Eunomia/}{Eunomia} and \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction} packages, which can be installed using:
@@ -8990,7 +9021,7 @@ Suggested answers can be found in Appendix \ref{Plpanswers}.
 
 How do we know if the results of a study are reliable? Can they be trusted for use in clinical settings? What about in regulatory decision-making? Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or another type of analysis. \index{evidence quality} \index{regulatory decision-making}
 
-One of the concerns that is often raised around observational studies and the use of ``real world data'' is the topic of data quality \citep{botsis2010secondary, hersh2013caveats, sherman2016real}. Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well as inherent biases. These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality \citep{kahn2012pragmatic, liaw2013towards, weiskopf2013methods}. The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network \citep{huser_multisite_2016, kahn_transparent_2015, callahan2017comparison, yoon_2016}. \index{data quality} \index{community}
+One of the concerns that is often raised around observational studies and the use of ``real world data'' is the topic of data quality \citep{botsis2010secondary, hersh2013caveats, sherman2016real}. Commonly noted is that data used in observational research were not originally gathered for research purposes and thus may suffer from incomplete or inaccurate data capture as well as inherent biases. These concerns have given rise to a growing body of research around how to measure, characterize, and ideally improve data quality \citep{kahn2012pragmatic, liaw2013towards, weiskopf_2013}. The OHDSI community is a strong advocate of such research and community members have led and participated in many studies looking at data quality in the OMOP CDM and the OHDSI network \citep{huser_multisite_2016, kahn_transparent_2015, callahan2017comparison, yoon_2016}. \index{data quality} \index{community}
 
 Given the findings of the past decade in this area, it has become apparent that data quality is not perfect and never will be. This notion is nicely reflected in this quote from Dr.~Clem McDonald, a pioneer in the field of medical informatics:
 
@@ -9058,7 +9089,7 @@ The state of completeness, validity, consistency, timeliness and accuracy that m
 
 Note that it is unlikely that our data are perfect, but they may be good enough for our purposes.
 
-DQ cannot be observed directly, but methodology has been developed to assess it. Two types of DQ assessments can be distinguished \citep{weiskopf_methods_2013}: assessments to evaluate DQ in general, and assessments to evaluate DQ in the context of a specific study.
+DQ cannot be observed directly, but methodology has been developed to assess it. Two types of DQ assessments can be distinguished \citep{weiskopf_2013}: assessments to evaluate DQ in general, and assessments to evaluate DQ in the context of a specific study.
 
 In this chapter we will first review possible sources of DQ problems, after which we'll discuss the theory of general and study-specific DQ assessments, followed by a step-by-step description of how these assessments can be performed using the OHDSI tools.
 
@@ -9512,8 +9543,8 @@ The only potential orphan found that is actually used in the data is ``Angioneur
 \hypertarget{exercises-6}{%
 \section{Exercises}\label{exercises-6}}
 
-\hypertarget{prerequisites-5}{%
-\subsubsection*{Prerequisites}\label{prerequisites-5}}
+\hypertarget{prerequisites-6}{%
+\subsubsection*{Prerequisites}\label{prerequisites-6}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, \href{https://github.com/OHDSI/Achilles}{ACHILLES}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -10428,11 +10459,11 @@ Our evaluation of the designs in the Methods Library also shows that empirical c
 
 \emph{Chapter lead: Sara Dempster \& Martijn Schuemie}
 
-Here we aim to provide a general step by step guide to the design and implementation of an observational study with the OHDSI tools. We will break out each stage of the study process and then describe steps generically and in some cases discuss specific aspects of the main study types (1) characterization, (2) population level estimation (PLE), and (3) patient level prediction (PLP) described in earlier chapters of the Book of OHDSI. To do so, we will synthesize many elements discussed in the previous chapters in a way that is accessible for the beginner. At the same time, this chapter can stand alone for a reader who wants practical high level explanations with options to pursue more in depth materials in other chapters as needed. Finally, we will illustrate throughout with a few key examples.
+Here we aim to provide a general step-by-step guide to the design and implementation of an observational study with the OHDSI tools. We will break out each stage of the study process and then describe steps generically and in some cases discuss specific aspects of the main study types (1) characterization, (2) population level estimation (PLE), and (3) patient level prediction (PLP) described in earlier chapters of the Book of OHDSI. To do so, we will synthesize many elements discussed in the previous chapters in a way that is accessible for the beginner. At the same time, this chapter can stand alone for a reader who wants practical high-level explanations with options to pursue more in-depth materials in other chapters as needed. Finally, we will illustrate throughout with a few key examples.
 
-In addition, we will summarize guidelines and best practices for observational studies as recommended by the OHDSI community. Some principles that we will discuss are generic and shared with best practice recommendations found in many other guidelines for observational research while other recommended processes are more specific to the OHDSI framework. We will therefore highlight where OHDSI specific approaches are enabled by the OHDSI tool stack.
+In addition, we will summarize guidelines and best practices for observational studies as recommended by the OHDSI community. Some principles that we will discuss are generic and shared with best practice recommendations found in many other guidelines for observational research while other recommended processes are more specific to the OHDSI framework. We will therefore highlight where OHDSI-specific approaches are enabled by the OHDSI tool stack.
 
-Throughout the chapter, we assume that an infrastructure of OHDSI tools, R and SQL are available to the reader and therefore we do not discuss any aspects of setting up this infrastructure in this chapter (see Chapters \ref{OhdsiAnalyticsTools} and \ref{SqlAndR} for guidance). We also assume our reader is interested in running a study primarily on data at their own site using a database in OMOP CDM (for OMOP ETL, see Chapter \ref{ExtractTransformLoad}). However, we emphasize that once a study package is prepared as discussed below, it can in principle be distributed and executed at other sites. Additional considerations specific to running OHDSI network studies, including organizational and technical details are discussed in detail in Chapter \ref{NetworkResearch}.
+Throughout the chapter, we assume that an infrastructure of OHDSI tools, R and SQL are available to the reader and therefore we do not discuss any aspects of setting up this infrastructure in this chapter (see Chapters \ref{OhdsiAnalyticsTools} and \ref{SqlAndR} for guidance). We also assume our reader is interested in running a study primarily on data at their own site using a database in OMOP CDM (for OMOP ETL, see Chapter \ref{ExtractTransformLoad}). However, we emphasize that once a study package is prepared as discussed below, it can in principle be distributed and executed at other sites. Additional considerations specific to running OHDSI network studies, including organizational and technical details, are discussed in detail in Chapter \ref{NetworkResearch}.
 
 \hypertarget{general-best-practice-guidelines}{%
 \section{General Best Practice Guidelines}\label{general-best-practice-guidelines}}
@@ -10440,36 +10471,36 @@ Throughout the chapter, we assume that an infrastructure of OHDSI tools, R and S
 \hypertarget{observational-study-definition}{%
 \subsection{Observational Study Definition}\label{observational-study-definition}}
 
-An observational study is a study where, by definition, patients are simply observed and no attempt is made to intervene in the treatment of specific patients. Sometimes, observational data are collected for a specific purpose as in a registry study, but in many cases, these data are collected for some purpose other than the specific study question at hand. Common examples of the latter type of data are Electronic Health Records (EHRs) or administrative claims data. Observational studies are often referred to as secondary use of data. A fundamental guiding principle for performing any observational study is to explicitly describe one's research question and fully specify the approach in advance of executing a study. In this regard, an observational study should be no different than a clinical trial, except that in a clinical trial, patients are recruited and followed in time for the primary purpose of answering a specific question, usually about the efficacy and or safety of a therapeutic intervention. There are of course, many ways in which the analysis methods employed in observational studies are different than those used in clinical trials. Most notably, the lack of randomization in PLE observational studies requires approaches to control confounding if the goal is to draw causal inferences (see Chapters \ref{PopulationLevelEstimation} and \ref{MethodValidity} for detailed discussion of OHDSI supported study designs and methods for PLE such as methods to remove observed confounding by balancing populations across many characteristics).
+An observational study is a study where, by definition, patients are simply observed and no attempt is made to intervene in the treatment of specific patients. Sometimes, observational data are collected for a specific purpose as in a registry study, but in many cases, these data are collected for some purpose other than the specific study question at hand. Common examples of the latter type of data are Electronic Health Records (EHRs) or administrative claims data. Observational studies are often referred to as secondary use of data. A fundamental guiding principle for performing any observational study is to explicitly describe one's research question and fully specify the approach in advance of executing a study. In this regard, an observational study should be no different than a clinical trial, except that in a clinical trial, patients are recruited and followed in time for the primary purpose of answering a specific question, usually about the efficacy and/or safety of a therapeutic intervention. There are many ways in which the analysis methods employed in observational studies are different than those used in clinical trials. Most notably, the lack of randomization in PLE observational studies requires approaches to control confounding if the goal is to draw causal inferences (see Chapters \ref{PopulationLevelEstimation} and \ref{MethodValidity} for detailed discussion of OHDSI-supported study designs and methods for PLE such as methods to remove observed confounding by balancing populations across many characteristics).
 
 \hypertarget{pre-specification-of-study-design}{%
 \subsection{Pre-specification of Study Design}\label{pre-specification-of-study-design}}
 
-Pre-specification of an observational study design and parameters is critical to avoid introducing further bias by subconsciously or consciously evolving ones approach to achieve a desired result, sometimes referred to as p-hacking. The temptation not to fully specify the study details in advance is greater with secondary use of data than primary use because these data such as EHR and claims sometimes give the researcher a sense of infinite possibilities, leading to a meandering line of inquiry. The key then is to still impose the rigorous structure of scientific inquiry despite the apparent easy availability of pre-existing data. The principle of pre-specification is especially important in PLE or PLP to ensure rigorous or reproducible results as these findings may ultimately inform clinical practice or regulatory decisions. Even in the case of a characterization study being conducted purely for exploratory reasons, it is still preferable to have a well specified plan. Otherwise an evolving study design and analysis process will become unwieldy to document, explain and reproduce.
+Pre-specification of an observational study design and parameters is critical to avoid introducing further bias by subconsciously or consciously evolving one's approach to achieve a desired result, sometimes referred to as p-hacking. The temptation not to fully specify the study details in advance is greater with secondary use of data than primary use because these data, such as EHR and claims, sometimes give the researcher a sense of infinite possibilities, leading to a meandering line of inquiry. The key then is to still impose the rigorous structure of scientific inquiry despite the apparent easy availability of pre-existing data. The principle of pre-specification is especially important in PLE or PLP to ensure rigorous or reproducible results as these findings may ultimately inform clinical practice or regulatory decisions. Even in the case of a characterization study being conducted purely for exploratory reasons, it is still preferable to have a well-specified plan. Otherwise an evolving study design and analysis process will become unwieldy to document, explain and reproduce.
 
 \hypertarget{protocol}{%
 \subsection{Protocol}\label{protocol}}
 
 An observational study plan should be documented in the form of a protocol created prior to executing a study. At a minimum, a protocol describes the primary study question, the approach, and metrics that will be used to answer the question. The study population should be described to a level of detail such that the study population may be fully reproduced by others. In addition, all methods or statistical procedures and the form of expected study results such as metrics, tables and graphs should be described.
-Often, a protocol will also describe a set of pre-analyses designed to assess the feasibility or statistical power of the study. Furthermore, protocols may contain descriptions of variations on the primary study question referred to as sensitivity analyses. Sensitivity analyses are designed to evaluate the potential impact of study design choices on the overall study findings and should be described in advance whenever possible. Sometimes unanticipated issues arise that may necessitate a protocol amendment after a protocol is completed. If this becomes necessary, again it is critical to document the change and the reasons for the change in the protocol itself. Particularly in the case of PLE or PLP, a completed study protocol will ideally be recorded in an independent platform (such as clinicaltrials.gov or OHDSI's studyProtocols sandbox) where its versions and any amendments can be tracked independently with timestamps. It is also often the case that your institution or the owner of the data source will require the opportunity to review and approve your protocol prior to study execution.
+Often, a protocol will also describe a set of pre-analyses designed to assess the feasibility or statistical power of the study. Furthermore, protocols may contain descriptions of variations on the primary study question referred to as sensitivity analyses. Sensitivity analyses are designed to evaluate the potential impact of study design choices on the overall study findings and should be described in advance whenever possible. Sometimes unanticipated issues arise that may necessitate a protocol amendment after a protocol is completed. If this becomes necessary, it is critical to document the change and the reasons for the change in the protocol itself. Particularly in the case of PLE or PLP, a completed study protocol will ideally be recorded in an independent platform (such as clinicaltrials.gov or OHDSI's studyProtocols sandbox) where its versions and any amendments can be tracked independently with timestamps. It is also often the case that your institution or the owner of the data source will require the opportunity to review and approve your protocol prior to study execution.
 
 \hypertarget{standardized-analyses}{%
 \subsection{Standardized analyses}\label{standardized-analyses}}
 
-A unique advantage of OHDSI is the ways in which the tools support planning, documentation and reporting by recognizing that there are really a few main classes of questions that are asked repeatedly in observational studies (Chapters \ref{WhereToBegin}, \ref{DataAnalyticsUseCases}, \ref{Characterization}, \ref{PopulationLevelEstimation}, \ref{PatientLevelPrediction}); thereby streamlining the protocol development and study implementation process through automation of aspects that are repeated.
-Many of the tools are designed to parameterize a few study designs or metrics that address a majority of use cases that will be encountered. For example, the researcher specify their study populations and a few additional parameters and perform numerous comparative studies iterating over different drugs and/or outcomes. If a researcher's questions fit into the general template, there are ways to automate the generation of many of the basic descriptions of study populations and other parameters required for the protocol. Historically, these approaches were motivated out of the OMOP experiments which sought to evaluate how well observational study designs were able to reproduce known causal link between drugs and adverse events by iterating over many different study designs and parameters.
+A unique advantage of OHDSI is the ways in which the tools support planning, documentation and reporting by recognizing that there are really a few main classes of questions that are asked repeatedly in observational studies (Chapters \ref{WhereToBegin}, \ref{DataAnalyticsUseCases}, \ref{Characterization}, \ref{PopulationLevelEstimation}, \ref{PatientLevelPrediction}), thereby streamlining the protocol development and study implementation process through automation of aspects that are repeated.
+Many of the tools are designed to parameterize a few study designs or metrics that address a majority of use cases that will be encountered. For example, the researchers specify their study populations and a few additional parameters and perform numerous comparative studies iterating over different drugs and/or outcomes. If a researcher's questions fit into the general template, there are ways to automate the generation of many of the basic descriptions of study populations and other parameters required for the protocol. Historically, these approaches were motivated out of the OMOP experiments which sought to evaluate how well observational study designs were able to reproduce known causal links between drugs and adverse events by iterating over many different study designs and parameters.
 
 The OHDSI approach supports the inclusion of feasibility and study diagnostics within the protocol by again enabling these steps to be performed relatively simply within a common framework and tools (see section \ref{Feasibility} below).
 
 \hypertarget{study-packages}{%
 \subsection{Study packages}\label{study-packages}}
 
-Another motivation for standardized templates and designs is that even when a researcher thinks a study is described in complete detail in the form of a protocol, there may be elements that are not actually sufficiently specified to generate the full computer code to execute the study. A related fundamental principle which is enabled by the OHDSI framework is to generate a completely traceable and reproducible process documented in the form of computer code, often referred to as a ``study package''. OHDSI best practice is to record such a study package in the git environment (link). This study package contains all parameters, and versioning stamps for the code base. As mentioned previously, observational studies are often asking questions with potential to impact public health decisions and policy. Before acting on any findings therefore, ideally study findings should be replicated in multiple settings by different researchers. The only way to achieve such a goal is for every detail required to fully reproduce a study to be mapped out explicitly and not left to guess work or misinterpretation. To support this best practice, the OHDSI tools are designed to aid in the translation from a protocol in the form of a written document into a computer or machine-readable study package. One tradeoff of this framework is that not every use case or customized analysis can easily be addressed with the existing OHDSI tools. As the community grows and evolves, however, more functionality to address a larger array of use cases is being added. Anyone involved in the community may raise suggestions for new functionality driven by a novel use case.
+Another motivation for standardized templates and designs is that even when a researcher thinks a study is described in complete detail in the form of a protocol, there may be elements that are not actually sufficiently specified to generate the full computer code to execute the study. A related fundamental principle which is enabled by the OHDSI framework is to generate a completely traceable and reproducible process documented in the form of computer code, often referred to as a ``study package.'' OHDSI best practice is to record such a study package in the git environment. This study package contains all parameters and versioning stamps for the code base. As mentioned previously, observational studies are often asking questions with potential to impact public health decisions and policy. Therefore, before acting on any findings, they should ideally be replicated in multiple settings by different researchers. The only way to achieve such a goal is for every detail required to fully reproduce a study to be mapped out explicitly and not left to guesswork or misinterpretation. To support this best practice, the OHDSI tools are designed to aid in the translation from a protocol in the form of a written document into a computer or machine-readable study package. One tradeoff of this framework is that not every use case or customized analysis can easily be addressed with the existing OHDSI tools. As the community grows and evolves, however, more functionality to address a larger array of use cases is being added. Anyone involved in the community may raise suggestions for new functionality driven by a novel use case.
 
 \hypertarget{the-data-underlying-the-cdm}{%
 \subsection{The data underlying the CDM}\label{the-data-underlying-the-cdm}}
 
-OHDSI studies are premised on observational databases being translated into the OMOP common data model (CDM). All OHDSI tools and downstream analytics steps make an assumption that the data representation conforms to the specifications of the CDM (see Chapter \ref{CommonDataModel}). It is therefore also critical that the ETL process (see Chapter \ref{ExtractTransformLoad}) for doing so is well documented for your specific data sources as this process may introduce artifacts or differences between databases at different sites. The purpose of the OMOP CDM is to move in the direction of reducing site specific data representation, but this is far from a perfect process and still remains a challenging area that the community seeks to improve. It therefore remains critical when executing studies to collaborate with individuals at your site, or at external sites when executing network studies, who are intimately familiar with any source data that has been transformed into the OMOP CDM.
+OHDSI studies are premised on observational databases being translated into the OMOP common data model (CDM). All OHDSI tools and downstream analytics steps make an assumption that the data representation conforms to the specifications of the CDM (see Chapter \ref{CommonDataModel}). It is therefore also critical that the ETL process (see Chapter \ref{ExtractTransformLoad}) for doing so is well-documented for your specific data sources as this process may introduce artifacts or differences between databases at different sites. The purpose of the OMOP CDM is to move in the direction of reducing site specific data representation, but this is far from a perfect process and still remains a challenging area that the community seeks to improve. It therefore remains critical when executing studies to collaborate with individuals at your site, or at external sites when executing network studies, who are intimately familiar with any source data that has been transformed into the OMOP CDM.
 
 In addition to the CDM, the OMOP standardized vocabulary system (Chapter \ref{StandardizedVocabularies}) is also a critical component of working with the OHDSI framework to obtain interoperability across diverse data sources. The standardized vocabulary seeks to define a set of standard concepts within each vocabulary domain to which all other source vocabulary systems are mapped. In this way, two different databases which use a different source vocabulary system for drugs, diagnoses or procedures will be comparable when transformed into the CDM. The OMOP vocabularies also contain hierarchies which are useful in identifying the appropriate codes for a particular cohort definition. Again, it is recommended best practice to implement the vocabulary mappings and use the codes of OMOP standardized vocabularies in downstream queries in order to gain the full benefits of ETLing your database into the OMOP CDM and using the OMOP vocabulary.
 
@@ -10485,37 +10516,37 @@ In a characterization study, one could ask, ``do prescribing practices conform t
 
 Maybe you are also skeptical whether or not the prescribing guidelines for T2DM treatment are best for a particular subset of patients such as those with both a diagnosis of T2DM and heart disease. This line of inquiry can be translated into a PLE study. Specifically, you can ask a question about the comparative effectiveness of 2 different T2DM drug classes in preventing cardiovascular events, such as heart failure. You might design a study to examine the relative risks of hospitalization for heart failure in two separate cohorts of patients taking the different drugs, but where both cohorts have a diagnosis of T2DM and heart disease.
 
-Alternatively, you may want to develop a model to predict which patients will progress from mild T2DM to severe T2DM. This can be framed as a PLP question and could serve to flag patients at greater risk of transitioning yo severe T2DM for more vigilant care.
+Alternatively, you may want to develop a model to predict which patients will progress from mild T2DM to severe T2DM. This can be framed as a PLP question and could serve to flag patients at greater risk of transitioning to severe T2DM for more vigilant care.
 
-From a purely pragmatic point of view, defining a study question also requires assessing whether the approaches required to answer a question conforms to available functionality within the OHDSI tool set (see Chapter \ref{DataAnalyticsUseCases} for a detailed discussion of question types that can addressed with current tool). Of course it is always possible to design your on analytic tools or modify those currently available to answer other questions.
+From a purely pragmatic point of view, defining a study question also requires assessing whether the approaches required to answer a question conforms to available functionality within the OHDSI tool set (see Chapter \ref{DataAnalyticsUseCases} for a detailed discussion of question types that can addressed with current tool). Of course it is always possible to design your own analytic tools or modify those currently available to answer other questions.
 
 \hypertarget{review-data-availability-and-quality}{%
 \subsection{Review data availability and quality}\label{review-data-availability-and-quality}}
 
 Before committing to a particular study question, it is recommended to review the quality of the data (see Chapter \ref{DataQuality}) and really understand the nature of your particular observational healthcare database in terms of which fields are populated and what care settings the data covers. This can help to quickly identify issues that may make a study question infeasible in a particular database. Below, we point out some common issues that may arise.
 
-Let's return to the example above of developing a predictive model for progression from mild T2DM to severe T2DM. Ideally severity of T2DM might be assessed by examining glycosylated hemoglobin (HbA1c) levels which is a lab measurement which reflects a patient's blood sugar levels averaged over the prior 3 months. These values may or may not be available for all patients. If unavailable for all or even a portion of patients, you will have to consider whether other clinical criteria for severity of T2DM can be identified and used instead. Alternatively, if the HbA1c values are available for only a subset of patients, you will also need to evaluate whether focusing on this subset of patients only would lead to unwanted bias in the study. Also, see Chapter \ref{DataAnalyticsUseCases} for additional discussion of the issue of missing data.
+Let's return to the example above of developing a predictive model for progression from mild T2DM to severe T2DM. Ideally severity of T2DM might be assessed by examining glycosylated hemoglobin (HbA1c) levels which is a lab measurement that reflects a patient's blood sugar levels averaged over the prior 3 months. These values may or may not be available for all patients. If unavailable for all or even a portion of patients, you will have to consider whether other clinical criteria for severity of T2DM can be identified and used instead. Alternatively, if the HbA1c values are available for only a subset of patients, you will also need to evaluate whether focusing on this subset of patients only would lead to unwanted bias in the study. See Chapter \ref{DataAnalyticsUseCases} for additional discussion of the issue of missing data.
 
-Another common issue is the lack of information about a particular care setting. In the PLE example described above, the suggested outcome was hospitalization for heart failure. If a given database does not have any inpatient information, one may need to consider a different outcome to evaluate the comparative effectiveness of different T2DM treatment approaches. In other databases, outpatient diagnosis data may not be avaliable and therefore one would need to consider the design of the cohort.
+Another common issue is the lack of information about a particular care setting. In the PLE example described above, the suggested outcome was hospitalization for heart failure. If a given database does not have any inpatient information, one may need to consider a different outcome to evaluate the comparative effectiveness of different T2DM treatment approaches. In other databases, outpatient diagnosis data may not be available and therefore one would need to consider the design of the cohort.
 
 \hypertarget{study-populations}{%
 \subsection{Study Populations}\label{study-populations}}
 
 Defining a study population or populations is a fundamental step of any study. In observational research, a group of individuals that is representative of the study population of interest is often referred to as a cohort. The required patient characteristics for selection into a cohort will be determined by the study population that is relevant for the clinical question at hand. An example of a simple cohort would be patients older than 18 years of age AND with a diagnosis code for T2DM in their medical record. This cohort definition has two criteria connected by AND logic. Often cohort definitions contain many more criteria which are connected by more complex, nested boolean logic and additional temporal criteria such as specific study periods or required lengths of time for a patient's baseline period.
 
-A refined set of cohort definitions requires the review of appropriate scientific literature and advice from clinical and technical experts who understand some of the challenges in interpreting your specific database to identify appropriate groups of patients. It's important to keep in mind when working with observational data that these data do not provide a complete picture of a patient's medical history, but rather a snapshot in time whose fidelity is subject to both human error and bias that may have been introduced in recording of the information. A given patient may only be followed for a finite time referred to as their observation period. For a given database or care setting and disease or treatment under study, a clinical researcher may be able to make suggestions to avoid the most common sources of error. To give a straightforward example, a common issue in identifying patients with T2DM is that T1DM patients are mistakenly coded with a diagnosis of T2DM. Because patients with T1DM are fundamentally a different group, the unintentional inclusion of a group of T1DM in a study intended to examine T2DM patient could skew the results. In order to have a robust definition of a T2DM cohort, one may want to eliminate patients who have only ever been prescribed insulin as a diabetes treatment to avoid having patients with T1DM erroneously represented. At the same time, however, there may also be situations where one is simply interested in the characteristics of all patients who have T2DM diagnosis code in their medical record. In this case, it may not be appropriate to apply further qualifying criteria to attempt to remove erroneously coded T1DM patients.
+A refined set of cohort definitions requires the review of appropriate scientific literature and advice from clinical and technical experts who understand some of the challenges in interpreting your specific database to identify appropriate groups of patients. It's important to keep in mind when working with observational data that these data do not provide a complete picture of a patient's medical history, but rather a snapshot in time whose fidelity is subject to both human error and bias that may have been introduced in recording of the information. A given patient may only be followed for a finite time referred to as their observation period. For a given database or care setting and disease or treatment under study, a clinical researcher may be able to make suggestions to avoid the most common sources of error. To give a straightforward example, a common issue in identifying patients with T2DM is that T1DM patients are sometimes mistakenly coded with a diagnosis of T2DM. Because patients with T1DM are fundamentally a different group, the unintentional inclusion of a group of T1DM patients in a study intended to examine T2DM patients could skew the results. In order to have a robust definition of a T2DM cohort, one may want to eliminate patients who have only ever been prescribed insulin as a diabetes treatment to avoid having patients with T1DM erroneously represented. At the same time, however, there may also be situations where one is simply interested in the characteristics of all patients who have a T2DM diagnosis code in their medical record. In this case, it may not be appropriate to apply further qualifying criteria to attempt to remove erroneously coded T1DM patients.
 
-Once the definition of a study population or populations is described, the OHDSI tool ATLAS (reference chapter?) is a good starting point to create the relevant cohorts. ATLAS and the cohort generation process are described in detail in Chapters \ref{OhdsiAnalyticsTools} and \ref{Cohorts}. Briefly, ATLAS provides a user interface (UI) to define and generate cohorts with detailed inclusion criteria. Once cohorts are defined in ATLAS, a user can directly export their detailed definitions in a human-readable format for incorporation in a protocol. If for some reason an ATLAS instance is not connected to an observational health database, ATLAS can still be used to create a cohort definition and directly export the underlying SQL code for incorporation into a study package to be run separately on a SQL database server. Directly using ATLAS is recommended when possible because ATLAS provides some advantages above and beyond the creation of SQL code for the cohort definition (see below). Finally, there may be some rare situations where a cohort definition can not be implemented with the ATLAS UI and requires manual custom SQL code.
+Once the definition of a study population or populations is described, the OHDSI tool ATLAS is a good starting point to create the relevant cohorts. ATLAS and the cohort generation process are described in detail in Chapters \ref{OhdsiAnalyticsTools} and \ref{Cohorts}. Briefly, ATLAS provides a user interface (UI) to define and generate cohorts with detailed inclusion criteria. Once cohorts are defined in ATLAS, a user can directly export their detailed definitions in a human-readable format for incorporation in a protocol. If for some reason an ATLAS instance is not connected to an observational health database, ATLAS can still be used to create a cohort definition and directly export the underlying SQL code for incorporation into a study package to be run separately on a SQL database server. Directly using ATLAS is recommended when possible because ATLAS provides some advantages above and beyond the creation of SQL code for the cohort definition (see below). Finally, there may be some rare situations where a cohort definition can not be implemented with the ATLAS UI and requires manual custom SQL code.
 
-The ATLAS UI enables defining cohorts based on numerous selection criteria. Criteria for cohort entry and exit as well as baseline criteria can be defined on the basis of any domains of the OMOP CDM such as conditions, drugs, procedures etc. where standard codes must be specified for each domain. In addition, logical filters on the basis of these domains as well as time based filters to define study periods, and baseline timeframes can be defined within ATLAS. ATLAS can be particularly helpful when selecting codes for each criteria. ATLAS incorporates a vocabulary browsing feature which can be used to build sets of codes required for your cohort definitions. This feature relies solely on the OMOP standard vocabularies and has options to include all descendants in the vocabulary hierarchy (see Chapter \ref{StandardizedVocabularies}). Note therefore that this feature requires that all codes have been appropriately mapped to standard codes during the ETL process (see Chapter \ref{ExtractTransformLoad}).
+The ATLAS UI enables defining cohorts based on numerous selection criteria. Criteria for cohort entry and exit as well as baseline criteria can be defined on the basis of any domains of the OMOP CDM such as conditions, drugs, procedures, etc. where standard codes must be specified for each domain. In addition, logical filters on the basis of these domains, as well as time-based filters to define study periods, and baseline timeframes can be defined within ATLAS. ATLAS can be particularly helpful when selecting codes for each criteria. ATLAS incorporates a vocabulary-browsing feature which can be used to build sets of codes required for your cohort definitions. This feature relies solely on the OMOP standard vocabularies and has options to include all descendants in the vocabulary hierarchy (see Chapter \ref{StandardizedVocabularies}). Note therefore that this feature requires that all codes have been appropriately mapped to standard codes during the ETL process (see Chapter \ref{ExtractTransformLoad}).
 If the best codesets to use in your inclusion criteria are not clear, this may be a place where some exploratory analysis may be warranted in cohort definitions. Alternatively a more formal sensitivity analysis could be considered to account for different possible definitions of a cohort using different codesets.
 
-Assuming that ATLAS is configured appropriately to connect to a database, SQL queries to generate the defined cohorts can be run directly within ATLAS. ATLAS will automatically assign each cohort a unique id which can also be used to directly reference the cohort in its??the backend database for future use. The cohort may be directly used within ATLAS to run an incidence rate study or it may be pointed to directly in the backend database by code in a PLE or PLP study package. For a given cohort, ATLAS saves only the patient ids, index dates and cohort exit dates of the individuals in the cohorts. This information is sufficient to derive all the other attributes or covariates that may be needed for the patients such as patient's baseline covariates for a characterization, PLE or PLP study.
+Assuming that ATLAS is configured appropriately to connect to a database, SQL queries to generate the defined cohorts can be run directly within ATLAS. ATLAS will automatically assign each cohort a unique id which can also be used to directly reference the cohort in the backend database for future use. The cohort may be directly used within ATLAS to run an incidence rate study or it may be pointed to directly in the backend database by code in a PLE or PLP study package. For a given cohort, ATLAS saves only the patient ids, index dates and cohort exit dates of the individuals in the cohorts. This information is sufficient to derive all the other attributes or covariates that may be needed for the patients such as patient's baseline covariates for a characterization, PLE or PLP study.
 
 When a cohort is created, summary characteristics of the patient demographics and frequencies of the most frequent drugs and conditions observed can be created and viewed by default directly within ATLAS.
 
 In reality, most studies require specifying multiple cohorts or multiple sets of cohorts which are then compared in various ways to gain new clinical insights.
-For PLE and PLP, the OHDSI tools provide a structured framework to define these multiple cohorts. For example, in a PLE comparative effectiveness study, you will typically define at least 3 cohorts, a target cohort, a comparator and an outcome cohort (see Chapter \ref{PopulationLevelEstimation}). In addition, to run a full PLE comparative effectiveness study, you will also need a number of cohorts with a negative control outcomes and positive control outcomes. The OHDSI toolset provides ways to help speed and in some cases automate the generation of these negative and positive control cohorts as discussed in detail in Chapter \ref{MethodValidity}.
+For PLE and PLP, the OHDSI tools provide a structured framework to define these multiple cohorts. For example, in a PLE comparative effectiveness study, you will typically define at least 3 cohorts, a target cohort, a comparator and an outcome cohort (see Chapter \ref{PopulationLevelEstimation}). In addition, to run a full PLE comparative effectiveness study, you will also need a number of cohorts with negative control outcomes and positive control outcomes. The OHDSI toolset provides ways to help speed and in some cases automate the generation of these negative and positive control cohorts as discussed in detail in Chapter \ref{MethodValidity}.
 
 As a final note, defining cohorts for a study may benefit from ongoing work in the OHDSI community to define a library of robust and validated phenotypes where a phenotype is essentially an exportable cohort definition. If any of these existing cohort definitions are appropriate for your study, the exact definitions can be obtained by import of a json file into your ATLAS instance.
 
@@ -10528,14 +10559,14 @@ A primary activity at this stage will be to thoroughly review the distributions 
 
 Another common and important step to assess feasibility for a PLE or PLP is an assessment of cohort sizes and the counts of outcomes in the target and comparator cohorts. The incidence rate feature of ATLAS can be used to find these counts which can be used to perform power calculations as described elsewhere.
 
-Another option which is highly recommended for a PLE study is to complete the propensity score (PS) matching steps and relevant diagnostics to ensure that there is sufficient overlap between the populations in the target and comparator groups. These steps are described in detail in Chapter \ref{PopulationLevelEstimation}. In addition, the statistical power on the basis of these final matched cohorts can then be calculated. To implement this approach will require (???)
+Another option which is highly recommended for a PLE study is to complete the propensity score (PS) matching steps and relevant diagnostics to ensure that there is sufficient overlap between the populations in the target and comparator groups. These steps are described in detail in Chapter \ref{PopulationLevelEstimation}. In addition, using these final matched cohorts, the statistical power can then be calculated.
 
-In some cases, work in the OHDSI community examines the statistical power only after a study is run by reporting a minimal detectable relative risk (MDRR) given the available sample sizes. This approach may be more useful when running high throughput, automated studies across a lot of databases and sites. In this scenario, a studies' power in any given database is perhaps better explored after the all analyses have been performed rather than pre-filtering.
+In some cases, work in the OHDSI community examines the statistical power only after a study is run by reporting a minimal detectable relative risk (MDRR) given the available sample sizes. This approach may be more useful when running high throughput, automated studies across a lot of databases and sites. In this scenario, a study's power in any given database is perhaps better explored after the all analyses have been performed rather than pre-filtering.
 
 \hypertarget{finalize-protocol-and-study-package}{%
 \subsection{Finalize protocol and study package}\label{finalize-protocol-and-study-package}}
 
-Once the legwork for all the previous steps has been completed, a final protocol should be assembled that includes detailed cohort definitions and study design information ideally exported from ATLAS. In Appendix \ref{ProtocolTemplate}, we provide a sample table of contents for a full protocol for a PLE study. This can also be found on OHDSI github. We provide this sample as a comprehensive guide and checklist, but note some sections may or may not be relevant for your study.
+Once the legwork for all the previous steps has been completed, a final protocol should be assembled that includes detailed cohort definitions and study design information ideally exported from ATLAS. In Appendix \ref{ProtocolTemplate}, we provide a sample table of contents for a full protocol for a PLE study. This can also be found on the OHDSI github. We provide this sample as a comprehensive guide and checklist, but note some sections may or may not be relevant for your study.
 
 As shown in Figure \ref{fig:studyProcess}, assembling the final study protocol in human-readable form should be performed in parallel with preparing all the machine-readable study code that is incorporated into the final study package. These latter steps are referred to as study implementation in the diagram below. This will include export of the finalized study package from ATLAS and/or development of any custom code that may be required.
 
@@ -10549,7 +10580,7 @@ Importantly, we recommend at this stage to have your finalized protocol reviewed
 
 }
 
-\caption{Diagram of the study Process.}\label{fig:studyProcess}
+\caption{Diagram of the study process.}\label{fig:studyProcess}
 \end{figure}
 
 \hypertarget{execute-study}{%
@@ -10560,7 +10591,7 @@ Once all prior steps have been completed, study execution should ideally be stra
 \hypertarget{interpretation-and-write-up}{%
 \subsection{Interpretation and write-up}\label{interpretation-and-write-up}}
 
-In a well defined study where sample sizes are sufficient and data quality is reasonable, the interpretation of results will often be straightforward. Similarly, because most of the work of creating a final report other than writing up the final results is done in the planning and creation of the protocol, the final write-up of a report or manuscript for publication will often be straightforward as well.
+In a well-defined study where sample sizes are sufficient and data quality is reasonable, the interpretation of results will often be straightforward. Similarly, because most of the work of creating a final report other than writing up the final results is done in the planning and creation of the protocol, the final write-up of a report or manuscript for publication will often be straightforward as well.
 
 There are, however, some common situations where interpretation becomes more challenging and should be approached with caution.
 
@@ -10568,7 +10599,7 @@ There are, however, some common situations where interpretation becomes more cha
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Samples sizes are borderline for significance and confidence intervals become large
+  Sample sizes are borderline for significance and confidence intervals become large
 \item
   Specific for PLE: p-value calibration with negative controls may reveal substantial bias
 \item
@@ -10585,13 +10616,13 @@ As with the protocol development process, we also recommend that the study findi
 \begin{itemize}
 \tightlist
 \item
-  Study should examine a well defined question
+  Study should examine a well-defined question.
 \item
   Perform appropriate checks of data quality, completeness and relevance in advance.
 \item
-  Source observational database must be ETLed to OMOP common data mode and use standard vocabularies
+  Source observational database must be ETLed to OMOP common data mode and use standard vocabularies.
 \item
-  Identify expert on source database who can explain unique clinical aspects of source database and is knowledgeable of ETL rules to transform source data to OMOP CDM
+  Identify expert on source database who can explain unique clinical aspects of source database and is knowledgeable of ETL rules to transform source data to OMOP CDM.
 \item
   Recommend to also include source database expert in protocol development process if possible.
 \item
@@ -10599,73 +10630,98 @@ As with the protocol development process, we also recommend that the study findi
 \item
   Consult with clinical experts and literature in defining your cohorts and other aspects of study design.
 \item
-  Finalized protocol should be reviewed by clinical experts and other stakeholders
+  Finalized protocol should be reviewed by clinical experts and other stakeholders.
 \item
   Study should be registered and approved (if required) ahead of study execution.
 \item
   Cohorts representing study populations are created by ATLAS whenever possible.
 \item
-  OHDSI tools also the creation of complete computer code to execute the study, increasing the ability to exactly reproduce any study in order to test findings at a later date
+  OHDSI tools should be used in the creation of complete computer code to execute the study, increasing the ability to exactly reproduce any study in order to test findings at a later date.
 \item
   Generate study package code in parallel with written protocol and perform and describe any feasibility and diagnostics prior to executing the final study.
 \item
-  Finalized report or manuscript should be reviewed by clinical experts and other stakeholders
+  Finalized report or manuscript should be reviewed by clinical experts and other stakeholders.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
 \hypertarget{NetworkResearch}{%
 \chapter{OHDSI Network Research}\label{NetworkResearch}}
 
-Contributors: Greg Klebanov, Kristin Kostka \& Vojtech Huser
+Chapter Leads: Kristin Kostka, Sara Dempster, Greg Klebanov
 
 The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including Standardized Vocabularies , the Common Data Model (CDM) , analytical methods packages, ATLAS and the study steps (Chapter\ref{StudySteps}) to run a retrospective database study. OHDSI Network Studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
 
-\hypertarget{what-is-the-ohdsi-research-network}{%
-\section{What is the OHDSI Research Network?}\label{what-is-the-ohdsi-research-network}}
+\hypertarget{ohdsi-research-network-1}{%
+\section{OHDSI Research Network}\label{ohdsi-research-network-1}}
 
-The OHDSI Research Network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 1.2 billion patient records (\textasciitilde650 million de-duplicated patient records) in the OMOP CDM. This includes more than 200 researchers and 82 observational health databases across 17 countries with regional central coordinating centers housed at Columbia University (USA), Erasmus Medical Center (Europe) and Ajou University (South Korea). The OHDSI community continues to grow rapidly across Europe (in collaboration with the IMI EHDEN project), Central America (e.g.~Argentina, Brazil, Colombia), and Asia (e.g.~China, Japan, Singapore).
+The OHDSI Research Network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 1.2 billion patient records (\textasciitilde650 million de-duplicated patient records) in the OMOP CDM. This includes more than 220 researchers and 82 observational health databases across 17 countries with regional central coordinating centers housed at Columbia University (USA), Erasmus Medical Center (Europe) and Ajou University (South Korea). The OHDSI community continues to grow rapidly across Europe (in collaboration with the IMI EHDEN project), Central America (e.g.~Argentina, Brazil, Colombia), and Asia (e.g.~China, Japan, Singapore).
 
-OHDSI is open network, inviting healthcare institutions across the globe with active patient data to join the network and convert data to the OMOP CDM. As OMOP data conversions are complete, collaborators are invited to report site information in the Data Network census maintained by the OHDSI Program Manager (\href{mailto:beaton@ohdsi.org}{\nolinkurl{beaton@ohdsi.org}}). Each OHDSI network site participates voluntarily. There are no hard obligations. Each site opts-in to each respective network study. In each study, data remains at the site behind a firewall. No data pooling across network sites. Only aggregate results are shared.
-
-\BeginKnitrBlock{rmdimportant}
-\hypertarget{benefits-of-joining-the-ohdsi-network}{%
-\subsubsection*{Benefits of Joining the OHDSI Network}\label{benefits-of-joining-the-ohdsi-network}}
-\addcontentsline{toc}{subsubsection}{Benefits of Joining the OHDSI Network}
-
-Unlock the power of institutional data: Transforming institutional EHR data in the OMOP Common Data Model enables clinical research on populations of your patients, something EHR systems don't support.
-Access to free tools: OHDSI publishes free, open source tools for data characterization and analytics (e.g.~browsing the clinical concepts, defining and characterizing cohorts, running Population-Level Estimation and Patient-Level Prediction studies).
-Participate in a premier research community: Author and publish network research, gain access to eminent leaders in global real-world evidence community.
-Buildout Quality Benchmarks: Network can validate quality improvement benchmarks against other institutions (e.g.~On average how long does it take to get an appendectomy discharged?)
-\EndKnitrBlock{rmdimportant}
-
-\hypertarget{what-is-an-ohdsi-network-study}{%
-\section{What is an OHDSI Network Study?}\label{what-is-an-ohdsi-network-study}}
-
-In the study steps chapter (Chapter\ref{StudySteps}), we discussed the steps to execute a retrospective database study using the OMOP CDM. A study may be conducted on a single OMOP CDM or on multiple OMOP CDMs. It can be conducted within a single institution's OMOP CDM data or across many institutions. There is no requirement that an OHDSI research study package be shared across the entire OMOP network. In fact, there may be legitimate instances when a study protocol is written for specific clinical practice that cannot be generalized to the entirety of the network. The principal investigator of each OHDSI research study will determine which, if any, sites they would like to include in an analysis.
+OHDSI is open network, inviting healthcare institutions across the globe with active patient data to join the network and convert data to the OMOP CDM. As OMOP data conversions are complete, collaborators are invited to report site information in the Data Network census maintained by the \href{mailto:beaton@ohdsi.org}{OHDSI Program Manager}. Each OHDSI network site participates voluntarily. There are no hard obligations. Each site opts-in to each respective network study. In each study, data remains at the site behind a firewall. No data pooling across network sites. Only aggregate results are shared.
 
 \BeginKnitrBlock{rmdimportant}
-\textbf{When is a study considered a network study?} An OHDSI research project becomes a network study when it is published and shared for execution across the OHDSI community.
-
-Elements of a Network Study:
-- Must have a protocol (a description of the analysis to be performed)
-- Must have a study code package designed for the OMOP CDM
-- Must be executed across two or more network sites (not just 2 or more databases at a single site)
-- Encouraged to publish all documentation on GitHub
-- At the end of the analysis, the results are made available in Github or other public repository (e.g.~a Shiny Application)
+\textbf{Benefits of a Data Owner Joining the OHDSI Network}
+- \textbf{Access to free tools:} OHDSI publishes free, open source tools for data characterization and analytics (e.g.~browsing the clinical concepts, defining and characterizing cohorts, running Population-Level Estimation and Patient-Level Prediction studies).
+- \textbf{Participate in a premier research community:} Author and publish network research, gain access to eminent leaders in global real-world evidence community.
+- \textbf{Opportunity to buildout care benchmarks:} Network can validate quality improvement benchmarks against other institutions \emph{(e.g.~On average how long does it take to get an appendectomy discharged?)}
 \EndKnitrBlock{rmdimportant}
 
-\hypertarget{executing-an-ohdsi-network-study}{%
-\section{Executing an OHDSI Network Study}\label{executing-an-ohdsi-network-study}}
+\hypertarget{defining-an-ohdsi-network-study}{%
+\section{Defining an OHDSI Network Study}\label{defining-an-ohdsi-network-study}}
 
-Conducting an OHDSI Network Study requires a substantial amount of preparation to ensure success.
+In the prior chapter (\ref{StudySteps}), we discussed general design considerations for running a study using the OMOP CDM. In general, a study may be conducted on a single OMOP CDM or on multiple OMOP CDMs. It can be run within a single institution's OMOP CDM data or across many institutions.
+In this chapter we will discuss the considerations when an OHDSI study evolves to become a study run across the OHDSI network.
 
-\begin{quote}
-''You'll never walk alone in your OHDSI journey.'' - Peter Rijnbeek
-\end{quote}
+\BeginKnitrBlock{rmdimportant}
+\textbf{When is a study considered a \emph{network} study?} An OHDSI study becomes an OHDSI Network study when it is run across multiple CDMs at different institutions.
+\EndKnitrBlock{rmdimportant}
+
+Network studies are an important part of the OHDSI research community. However, there is no mandate that an OHDSI study be packaged and shared across the entire OMOP network. It is at the discretion of each investigator whether a study is designed to run on a single institution's CDM or across multiple OMOP CDMs across the OHDSI network. In limited instances, network studies may be semi-private in scope -- with invitation to collaborate targeted to specific research interests or data requirements that not all sites can fulfill. This chapter is intended to speak to the open network research that the OHDSI community conducts.
+
+\textbf{Elements of an Open OHDSI Network Study:}
+When conducting an open OHDSI Network study, there are a few components that make OHDSI research unique. This includes:
+- All documentation, study code and subsequent results are made publicly available on the OHDSI GitHub.
+- Investigators must create and publish a public study protocol detailing the scope and intent of the analysis to be performed.
+- Investigators must create a study package (typically with R or SQL) with code that is OMOP CDM compliant
+- Investigators are encouraged to attend OHDSI Community Calls to promote and recruit sites for their OHDSI network study.
+- At the conclusion of the analysis, aggregate study results are made available in the OHDSI GitHub.
+- Where possible, investigators are encouraged to publish study R Shiny Applications to \href{http://data.ohdsi.org}{data.ohdsi.org}.
+
+In the next section we will talk about how to create your own network study.
+
+\hypertarget{design-considerations-for-an-ohdsi-network-study}{%
+\subsection{Design Considerations for an OHDSI Network Study}\label{design-considerations-for-an-ohdsi-network-study}}
+
+Designing a study to run across the OHDSI Network requires a paradigm shift in how you design and assemble your study code. Ordinarily, you may design a study with a target data set in mind. In doing so, you may write code relative to what you know to be true in the data you are utilizing for your analysis. For example, if you were assembling an angioedema cohort -- you may opt to pick only concept codes for angioedema that are represented in your OMOP CDM. This may be problematic if your data are in a specific care setting (e.g.~primary care, ambulatory settings) or specific to a region (e.g.~US-centric). You are biasing your cohort definition.
+
+In an OHDSI Network Study, you are no longer designing and building a study package just for your data. You are building a study package to be run across multiple sites across the globe. You will never see the underlying data -- OHDSI network studies only share results files. Your study package must be assembled on the principles of what data can be captured in the domains of the OMOP CDM and air towards an exhaustive approach to concept set creation to represent the diversity of care settings that observational health data are captured in. OHDSI study packages use the same cohort definition across all sites. This means that you must think holistically to avoid biasing a cohort definition to only represent a subset of eligible data (e.g.~claims-centric data or EHR-specific data) in the network. You are encouraged to write an exhaustive cohort definition that can be ported across multiple CDMs. You \textbf{should never} be modifying the cohort definition for each site. OHDSI study packages are intended to be the same set of code run across all sites -- with only minor customizations for connecting into the database layer and where to store your local results.
 
 \BeginKnitrBlock{rmdimportant}
 \textbf{New to Network Studies?} The OHDSI Study Nurture Committee is a resource for you as you navigate your journey. This committee helps train and guide researchers to complete OHDSI Studies including how to effectively use OHDSI tools, providing guidance to the OHDSI study design for increase reproducibility and reliability and assisting with helping study investigators recruit data partners to run study packages.
 \EndKnitrBlock{rmdimportant}
+
+In addition to clinical coding variation, you have to anticipate technical variations as well. Your study code will no longer be running in a single technical environment. Each OHDSI Network site makes its own independent choice of database layer. Luckily, the OHDSI Community has solutions such as Atlas and \href{http://www.github.com/OHDSI/SqlRender}{SQL Render} to help you generalize your study package for CDM compliance across different database dialects. OHDSI investigators are encouraged to solicit help from other network study sites to test and validate the study package can be executed in different environments. When coding errors come up, OHDSI Researchers can utilize the \href{http://forums.ohdsi.org}{OHDSI Forums} to discuss and debug packages.
+
+\hypertarget{logistical-considerations-for-an-ohdsi-network-study}{%
+\subsection{Logistical Considerations for an OHDSI Network Study}\label{logistical-considerations-for-an-ohdsi-network-study}}
+
+OHDSI Network Studies require coordination between the lead investigator with participating network sites. Each site must perform its own due diligence to ensure the study protocol is approved and authorized to be executed on the local OMOP CDM. Data analysts may need to enlist assistance from the local IT team to enable appropriate permissions to run the study.
+
+Site start-up activities may include:
+- Registering the study with the Institutional Review Board (or equivalent)
+- Receiving Institutional Review Board approval to execute the study
+- Receiving database level permissions to read/write a schema to the approved OMOP CDM
+- Ensuring a functional R Studio environment to execute the study package
+- Reviewing the study code for any technical anomalies
+- Working with a local IT team to permit and install any dependent R packages needed to execute the package within technical constraints
+
+Each site will have a local data analyst who executes the study package. This individual must review the output of the study package to scrutinize the results to ensure no sensitive information is transmitted. When you using pre-built OHDSI methods such as Population Level Estimation and Patient-Level Prediction, there are configurable settings around the minimum cell count for the analysis performed. The data analyst is required to review these thresholds and ensure it is in compliance with local governance considerations.
+
+When sharing study results, the data analyst must comply with all local governance policies -- inclusive of method of results transmission and adhering to approval processes for external publication of results. OHDSI Network studies do not move data. Study packages create results files are designed to be aggregate (e.g.~point-estimates, diagnostic plots, etc) and do not share patient-level information. As such, most organizations do not require data sharing agreements be executed between the study team members. If you are a data owner interested in participating in network studies, you are strongly encouraged to consult your local governance team to understand what policies are in place and must be fulfilled in order to join OHDSI community studies.
+
+The OHDSI community has validated methodologies to aggregate results files shared from multiple network sites into a single answer. The \href{https://github.com/OHDSI/EvidenceSynthesis}{OHDSI EvidenceSynthesis} package is a freely available R package containing routines for combining evidence and diagnostics across multiple sources, such as multiple data sites in a distributed study. This includes functions for performing meta-analysis and forest plots.
+
+\hypertarget{running-an-ohdsi-network-study}{%
+\section{Running an OHDSI Network Study}\label{running-an-ohdsi-network-study}}
 
 Running an OHDSI Network Study has three distinct stages:
 
@@ -10682,46 +10738,33 @@ Running an OHDSI Network Study has three distinct stages:
 \hypertarget{study-feasibility-and-design}{%
 \subsection{Study Feasibility and Design}\label{study-feasibility-and-design}}
 
-The study feasibility stage \emph{(pre-study stage)} is focused on supporting a definition of a study and a creation of the study protocol, \emph{e.g.~undertaking activities to make sure the study is feasible to be executed as described in the formal protocol.}
+The study feasibility stage \emph{(pre-study stage)} is focused on supporting a definition of a study and a creation of the study protocol. These activities make sure the study is feasible to be executed as described in the formal protocol.
 
-The feasibility stage does not have a well-defined process but rather is driven by various supporting activities, including identification and enrollment of relevant databases that contain the targeted patient population with required drug exposure, procedure information, condition or demographics information through data characterization, validating and agreeing on target analytical methods and algorithms. These activities may involve sharing JSON files of cohort definitions from ATLAS and provisional test of study R packages. A study lead may have enough data to do this inside their own organization or may opt for support from other OHDSI network sites.
+The feasibility stage does not have a well-defined process but rather is driven by various supporting activities, including identifying relevant network sites that contain the targeted patient population with required drug exposure, procedure information, condition or demographics information. A study lead may have enough data to do this inside their own organization and may opt for support from other OHDSI network sites. This can include asking collaborators to execute data characterization activities such as JSON files of cohort definitions from ATLAS and provisionally test of study R packages.
 
-The outcome of the feasibility stage is generation of a final protocol as well as a list of target collaborators. The formal protocol will detail the study team, including the designated study lead (often the corresponding author for publication purposes), and information on the timeline for the study. The protocol is a critical component for additional network sites to review, approve and execute the study package on their OMOP CDM data. A protocol must include information on study population, the methods being used, how the results will be stored and analyzed as well as how the study results will be disseminated after completion (e.g.~a publication, a poster, etc).
+The outcome of the feasibility stage is generation of a finalized protocol and study package that is ready for network dissemination. The formal protocol will detail the study team, including the designated study lead (often the corresponding author for publication purposes), and information on the timeline for the study. The protocol is a critical component for additional network sites to review, approve and execute the full study package on their OMOP CDM data. A protocol must include information on study population, the methods being used, how the results will be stored and analyzed as well as how the study results will be disseminated after completion (e.g.~a publication, a poster, etc).
 
 \hypertarget{study-execution}{%
 \subsection{Study Execution}\label{study-execution}}
 
-After completing feasibility, a study advances to the execution phase. The key activities in executing a network study include the following:
+After completing feasibility exercises, the study advances to the execution phase. This phase is when the design and logistical considerations we discussed become most important.
 
-\begin{itemize}
-\tightlist
-\item
-  The study lead formally initiates a new OHDSI network study with the OHDSI Coordinating Center. \emph{In tandem, this may include undertaking other organization-specific processes to approve an OHDSI study.}
-\item
-  The study lead publishes the study protocol to the OHDSI GitHub.
-\item
-  The study lead announces the study on the OHDSI Community Call and OHDSI Forum, inviting participating centers and collaborators.
-\item
-  Study participating organizations assemble teams within each site, assign study roles (e.g.~data analyst(s) executing the study package, site leadership reviewing the study design and manuscript).
-\item
-  The data scientist/statisticians for the study lead will use a study protocol to design study analyses and generate study code.
-\item
-  The data scientist/statisticians will conduct a feasibility test of study code within their own environment. The package will be shared to 1-2 network sites for additional validation.
-\item
-  The data scientist/statistician will publish the validated study code in the OHDSI GitHub for execution at participating sites.
-\item
-  Site data scientists/statisticians access the OHDSI study package and generate results in the standardized format following OHDSI guidelines. Each participating site will follow internal institutional processes regarding data sharing rules. \textbf{Sites should not share results unless approval is obtained from IRB or other institutional approval processes.}
-\item
-  Data scientist/statisticians and Study Lead collect and review the analysis execution results.
-\item
-  Iterate steps 5-7, if reasonable adjustments required.
-\item
-  Collaboratively finalize study results. Study lead disseminates study results (e.g.~a Shiny Application).
-\item
-  Study lead formally closes the study out with OHDSI Coordinating Center.
-\end{itemize}
+The key activities in executing a network study include the following:
+- The study lead formally initiates a new OHDSI network study with the OHDSI Coordinating Center. \emph{In tandem, this will likely include undertaking other organization-specific processes to approve an OHDSI study at the organizing institution.}
+- The study lead publishes the study protocol to the OHDSI GitHub.
+- The study lead announces the study on the OHDSI Community Call and OHDSI Forum, inviting participating centers and collaborators.
+- The data scientist/statisticians for the study lead will use a study protocol to design study analyses and create the study code.
+- The data scientist/statisticians will conduct a feasibility test of study code within their own environment. It is encouraged to share the package across to 1-2 network sites for additional validation.
+- The data scientist/statistician will publish the validated study code in the OHDSI GitHub for execution at participating sites.
+- Participating sites will undergo their own institutional processes to receive IRB approval to execute the study.
+- Site data scientists/statisticians will ccess the OHDSI study package and generate results in the standardized format following OHDSI guidelines. Each participating site will follow internal institutional processes regarding data sharing rules. \textbf{Sites should not share results unless approval is obtained from IRB or other institutional approval processes.}
+- Data scientist/statisticians and Study Lead collect and review the analysis execution results.
+- Study teams may iterate on results, if reasonable adjustments required.
+- Study lead and their data scientist/statisticians will perform a meta analysis to aggregate study results across centers.
+- Study lead will disseminate study results (e.g.~a Shiny Application) for review.
+- Study lead will work with contributing sites to co-author a manuscript or other presentation showcasing the results of the study.
 
-While OHDSI processes can be executed rapidly, it is advised to allow for a few weeks to months for all participating sites to execute the study and receive appropriate approvals to publish results. A study leads should set study milestones and anticipated closure date in advance to assist with managing the overall study timeline.
+While OHDSI processes can be executed rapidly, it is advised to allow for a few weeks to several months for all participating sites to execute the study and receive appropriate approvals to publish results. A study leads should set study milestones in the protocol and communicate anticipated closure date in advance to assist with managing the overall study timeline.
 
 \hypertarget{results-dissemination-and-publication}{%
 \subsection{Results Dissemination and Publication}\label{results-dissemination-and-publication}}
@@ -10734,15 +10777,10 @@ Not sure where to publish your OHDSI network study? Consult JANE (Journal/Author
 
 Researchers are also invited to present OHDSI Network Studies on weekly OHDSI community calls and at OHDSI Symposiums across the globe.
 
-\hypertarget{types-of-network-studies}{%
-\section{Types of Network Studies}\label{types-of-network-studies}}
-
-The network studies can be of different types - ranging from simple characterization questions to more advanced predictive studies. A large number of studies conducted today are focused on epidemiology and drug efficacy and safety and thus carry different type of characterization analyses such as patient population characterization, incidence rates of certain outcomes/conditions, comparative drug effectiveness comparison, prevalence of disease and similar. However, more and more studies cary predictive nature including the probability of an outcome for a certain type of a patient (personalized medicine).
-
 \hypertarget{forward-looking-using-network-study-automation}{%
 \section{Forward Looking: Using Network Study Automation}\label{forward-looking-using-network-study-automation}}
 
-The current network study process is manual and rudimentary - with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, share code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes. The ARACHNE Research Network platform is a community-driven solution to streamline and automate the process of network studies.
+The current network study process is manual - with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, sharing code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes. The ARACHNE Research Network platform is a community-driven solution to streamline and automate the process of network studies.
 
 \begin{figure}
 \includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNE} \caption{The ARACHNE Network Study Process.}\label{fig:arachne}
@@ -10764,29 +10802,28 @@ ARACHNE is built to provide a seamless integration with other OHDSI tools, inclu
 \includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNENON} \caption{The ARACHNE Network of Networks.}\label{fig:arachneNon}
 \end{figure}
 
-\hypertarget{best-practices-for-network-research}{%
-\section{Best Practices for Network Research}\label{best-practices-for-network-research}}
+\hypertarget{summary-15}{%
+\section{Summary}\label{summary-15}}
 
-There are multiple best practices that study teams should be following while executing the network study:
-
+\BeginKnitrBlock{rmdsummary}
 \begin{itemize}
 \tightlist
 \item
-  Make sure that study questions can be supported by data available. Perform study feasibility to identify the best databases.
+  An OHDSI study becomes an OHDSI Network study when it is run across multiple CDMs at different institutions.
 \item
-  Write code in generic way and parametrize all functions and variables e.g.~do not hard database connection, local hard drive path, assume a certain operating system.
+  When running a network study, make sure that you are not biasing your study design to a single type of data.
 \item
-  Ensure the target databases have required OMOP CDM version and OMOP Standardized Vocabularies.
+  Perform study feasibility to identify the best databases.
 \item
-  Ensure the target database ETL has followed THEMIS business rules and conventions and correct data was placed into correct CDM tables and fields.
+  Write study code in CDM compliant, database layer agnostic way using OHDSI packages. Be sure to parametrize all functions and variables (e.g.~do not hard database connection, local hard drive path, assume a certain operating system).
 \item
-  Do not tweak the study code to get desired results
+  When recruiting participating sites, ensure that each network site is CDM compliant and regularly updates the OMOP Standardized Vocabularies. Ensure with each network site has performed and documented Data Quality checks on their OMOP CDM (e.g.~ensuring ETL has followed THEMIS business rules and conventions, correct data was placed into correct CDM tables and fields).
+\item
+  Encourage each data analyst updates their local R packages to the latest OHDSI package versions before executing the study.
+\item
+  Ensure each site is in compliance with local governance rules before results are shared.
 \end{itemize}
-
-\hypertarget{example-legend---hypertension}{%
-\section{Example: LEGEND - Hypertension}\label{example-legend---hypertension}}
-
-To be added.
+\EndKnitrBlock{rmdsummary}
 
 \hypertarget{appendix-appendix}{%
 \appendix \addcontentsline{toc}{chapter}{\appendixname}}
@@ -12332,7 +12369,7 @@ Some unique integer\strut
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 PERSON\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
-1\strut
+2\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is a foreign key to John's record in the PERSON table.\strut
 \end{minipage}\tabularnewline
@@ -12798,7 +12835,11 @@ We then select only those that occur during an inpatient or ER visit, using some
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sql <-}\StringTok{ "INSERT INTO @cdm.cohort (subject_id, cohort_start_date, cohort_definition_id)}
+\NormalTok{sql <-}\StringTok{ "INSERT INTO @cdm.cohort (}
+\StringTok{  subject_id, }
+\StringTok{  cohort_start_date, }
+\StringTok{  cohort_definition_id}
+\StringTok{  )}
 \StringTok{SELECT subject_id,}
 \StringTok{  cohort_start_date,}
 \StringTok{  CAST (1 AS INT) AS cohort_definition_id}
@@ -12840,15 +12881,16 @@ We specify a set of covariate settings, and use the \texttt{getPlpData} function
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(PatientLevelPrediction)}
-\NormalTok{covSettings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{,}
-                                       \DataTypeTok{useDemographicsAge =} \OtherTok{TRUE}\NormalTok{,}
-                                       \DataTypeTok{useConditionGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
-                                       \DataTypeTok{useConditionGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
-                                       \DataTypeTok{useDrugGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
-                                       \DataTypeTok{useDrugGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
-                                       \DataTypeTok{useVisitConceptCountLongTerm =} \OtherTok{TRUE}\NormalTok{,}
-                                       \DataTypeTok{longTermStartDays =} \DecValTok{-365}\NormalTok{,}
-                                       \DataTypeTok{endDays =} \DecValTok{-1}\NormalTok{)}
+\NormalTok{covSettings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}
+  \DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useDemographicsAge =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useConditionGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useConditionGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useDrugGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useDrugGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useVisitConceptCountLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{longTermStartDays =} \DecValTok{-365}\NormalTok{,}
+  \DataTypeTok{endDays =} \DecValTok{-1}\NormalTok{)}
 
 \NormalTok{plpData <-}\StringTok{ }\KeywordTok{getPlpData}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
                       \DataTypeTok{cdmDatabaseSchema =} \StringTok{"main"}\NormalTok{,}
