@@ -55,7 +55,7 @@ Table: (\#tab:johnDrug) The DRUG_EXPOSURE table.
 Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
 |DRUG_EXPOSURE_ID|1001|Some unique integer|
-|PERSON_ID|1|This is a foreign key to John's record in the PERSON table.|
+|PERSON_ID|2|This is a foreign key to John's record in the PERSON table.|
 |DRUG_CONCEPT_ID|19078461|The provided NDC code maps to Standard Concept [19078461](http://athena.ohdsi.org/search-terms/terms/19078461).|
 |DRUG_EXPOSURE_START_DATE|2019-05-01|The start date of the exposure to the drug.|
 |DRUG_EXPOSURE_ START_DATETIME|2019-05-01 00:00:00|Midnight is used as the time is not known.|
@@ -318,7 +318,11 @@ renderTranslateExecuteSql(connection, sql, cdm = "main")
 We then select only those that occur during an inpatient or ER visit, using some unique COHORT_DEFINITION_ID (we selected '1'):
 
 ```{r eval=FALSE}
-sql <- "INSERT INTO @cdm.cohort (subject_id, cohort_start_date, cohort_definition_id)
+sql <- "INSERT INTO @cdm.cohort (
+  subject_id, 
+  cohort_start_date, 
+  cohort_definition_id
+  )
 SELECT subject_id,
   cohort_start_date,
   CAST (1 AS INT) AS cohort_definition_id
@@ -353,15 +357,16 @@ We specify a set of covariate settings, and use the `getPlpData` function to ext
 
 ```{r eval=FALSE}
 library(PatientLevelPrediction)
-covSettings <- createCovariateSettings(useDemographicsGender = TRUE,
-                                       useDemographicsAge = TRUE,
-                                       useConditionGroupEraLongTerm = TRUE,
-                                       useConditionGroupEraAnyTimePrior = TRUE,
-                                       useDrugGroupEraLongTerm = TRUE,
-                                       useDrugGroupEraAnyTimePrior = TRUE,
-                                       useVisitConceptCountLongTerm = TRUE,
-                                       longTermStartDays = -365,
-                                       endDays = -1)
+covSettings <- createCovariateSettings(
+  useDemographicsGender = TRUE,
+  useDemographicsAge = TRUE,
+  useConditionGroupEraLongTerm = TRUE,
+  useConditionGroupEraAnyTimePrior = TRUE,
+  useDrugGroupEraLongTerm = TRUE,
+  useDrugGroupEraAnyTimePrior = TRUE,
+  useVisitConceptCountLongTerm = TRUE,
+  longTermStartDays = -365,
+  endDays = -1)
 
 plpData <- getPlpData(connectionDetails = connectionDetails,
                       cdmDatabaseSchema = "main",
