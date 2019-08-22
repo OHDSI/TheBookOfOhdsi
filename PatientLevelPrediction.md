@@ -133,11 +133,12 @@ Table: (\#tab:gbmParameters) Hyper-parameters for gradient boosting machines.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| mtry | Number of features in each tree | ? |
-| ntree | Number of trees | ? |
-| maxDepth | Max levels in a tree | ? |
-| minRows | Min data points in a node | ? |
-| balance | Should class sizes be balanced? | ? |
+| earlyStopRound | Stopping after rounds without improvement | 25 |
+| learningRate| The boosting learn rate | 0.005,0.01,0.1|
+| maxDepth | Max levels in a tree | 4,6,17 |
+| minRows | Min data points in a node | 2 |
+| ntrees | Number of trees |100,1000|
+
 
 ### Random forest
 
@@ -147,11 +148,10 @@ Table: (\#tab:randomForestParameters) Hyper-parameters for random forests.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| mtry | Number of features in each tree | ? |
-| ntree | Number of trees | ? |
-| maxDepth | Max levels in a tree | ? |
-| minRows | Min data points in a node | ? |
-| balance | Should class sizes be balanced? | ? |
+| maxDepth | Max levels in a tree | 4,10,17 |
+| mtries | Number of features in each tree | -1 = square root of total features,5,20 |
+| ntrees | Number of trees | 500 |
+
 
 ### K-nearest neighbors
 
@@ -161,8 +161,7 @@ Table: (\#tab:knnParameters) Hyper-parameters for K-nearest neighbors.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| k | Number of neighbors | ? |
-| weighted | Weight by inverse frequency? | ? |
+| k | Number of neighbors | 1000 |
 
 ### Naive Bayes
 
@@ -176,8 +175,8 @@ Table: (\#tab:adaBoostParameters) Hyper-parameters for AdaBoost.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| nEstimators | The maximum number of estimators at which boosting is terminated | ? |
-| learningRate | Learning rate shrinks the contribution of each classifier by learning_rate. There is a trade-off between learningRate and nEstimators | ? |
+| nEstimators | The maximum number of estimators at which boosting is terminated | 4 |
+| learningRate | Learning rate shrinks the contribution of each classifier by learning_rate. There is a trade-off between learningRate and nEstimators | 1 |
 
 ### Decision Tree
 
@@ -186,12 +185,13 @@ A decision tree is a classifier that partitions the variable space using individ
 Table: (\#tab:decisionTreeParameters) Hyper-parameters for decision trees.
 
 | Parameter| Description | Typical values |
-|:-------- |:----------- |:-------------- |
-| maxDepth | The maximum depth of the tree | ? |
-| minSamplesSplit | ? | ? |
-| minSamplesLeaf |?| ? |
-| minImpuritySplit | ? | ? |
-| classWeight | "Balance" or "None" | ? |
+|:-------- |:----------- |:-------------- |\
+| classWeight | "Balance" or "None" | None |
+| maxDepth | The maximum depth of the tree | 10 |
+| minImpuritySplit | Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf | 10^-7|
+| minSamplesLeaf | The minimum number of samples per leaf | 10 |
+| minSamplesSplit | The minimum samples per split | 2 |
+
 
 ### Multilayer Perceptron
 
@@ -201,8 +201,9 @@ Table: (\#tab:mpParameters) Hyper-parameters for Multilayer Perceptrons.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| size | The number of hidden nodes | ? |
-| alpha | The l2 regularization | ? |
+| alpha | The l2 regularization | 0.00001 |
+| size | The number of hidden nodes | 4 |
+
 
 ### Deep Learning
 

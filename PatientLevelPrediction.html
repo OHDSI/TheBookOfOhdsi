@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-08-21" />
+<meta name="date" content="2019-08-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -801,29 +801,29 @@ Figure 14.2: Decision boundary.
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">mtry</td>
-<td align="left">Number of features in each tree</td>
-<td align="left">?</td>
+<td align="left">earlyStopRound</td>
+<td align="left">Stopping after rounds without improvement</td>
+<td align="left">25</td>
 </tr>
 <tr class="even">
-<td align="left">ntree</td>
-<td align="left">Number of trees</td>
-<td align="left">?</td>
+<td align="left">learningRate</td>
+<td align="left">The boosting learn rate</td>
+<td align="left">0.005,0.01,0.1</td>
 </tr>
 <tr class="odd">
 <td align="left">maxDepth</td>
 <td align="left">Max levels in a tree</td>
-<td align="left">?</td>
+<td align="left">4,6,17</td>
 </tr>
 <tr class="even">
 <td align="left">minRows</td>
 <td align="left">Min data points in a node</td>
-<td align="left">?</td>
+<td align="left">2</td>
 </tr>
 <tr class="odd">
-<td align="left">balance</td>
-<td align="left">Should class sizes be balanced?</td>
-<td align="left">?</td>
+<td align="left">ntrees</td>
+<td align="left">Number of trees</td>
+<td align="left">100,1000</td>
 </tr>
 </tbody>
 </table>
@@ -833,6 +833,11 @@ Figure 14.2: Decision boundary.
 <p>Random forest is a bagging ensemble technique that combines multiple decision trees. The idea behind bagging is to reduce the likelihood of overfitting by using weak classifiers and combining them into a strong classifier. Random forest accomplishes this by training multiple decision trees but only using a subset of the variables in each tree and the subset of variables differ between trees. Our package uses the sklearn implementation of Random Forest in Python.   </p>
 <table>
 <caption><span id="tab:randomForestParameters">Table 14.6: </span> Hyper-parameters for random forests.</caption>
+<colgroup>
+<col width="25%" />
+<col width="33%" />
+<col width="41%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">Parameter</th>
@@ -842,29 +847,19 @@ Figure 14.2: Decision boundary.
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">mtry</td>
-<td align="left">Number of features in each tree</td>
-<td align="left">?</td>
-</tr>
-<tr class="even">
-<td align="left">ntree</td>
-<td align="left">Number of trees</td>
-<td align="left">?</td>
-</tr>
-<tr class="odd">
 <td align="left">maxDepth</td>
 <td align="left">Max levels in a tree</td>
-<td align="left">?</td>
+<td align="left">4,10,17</td>
 </tr>
 <tr class="even">
-<td align="left">minRows</td>
-<td align="left">Min data points in a node</td>
-<td align="left">?</td>
+<td align="left">mtries</td>
+<td align="left">Number of features in each tree</td>
+<td align="left">-1 = square root of total features,5,20</td>
 </tr>
 <tr class="odd">
-<td align="left">balance</td>
-<td align="left">Should class sizes be balanced?</td>
-<td align="left">?</td>
+<td align="left">ntrees</td>
+<td align="left">Number of trees</td>
+<td align="left">500</td>
 </tr>
 </tbody>
 </table>
@@ -885,12 +880,7 @@ Figure 14.2: Decision boundary.
 <tr class="odd">
 <td align="left">k</td>
 <td align="left">Number of neighbors</td>
-<td align="left">?</td>
-</tr>
-<tr class="even">
-<td align="left">weighted</td>
-<td align="left">Weight by inverse frequency?</td>
-<td align="left">?</td>
+<td align="left">1000</td>
 </tr>
 </tbody>
 </table>
@@ -920,12 +910,12 @@ Figure 14.2: Decision boundary.
 <tr class="odd">
 <td align="left">nEstimators</td>
 <td align="left">The maximum number of estimators at which boosting is terminated</td>
-<td align="left">?</td>
+<td align="left">4</td>
 </tr>
 <tr class="even">
 <td align="left">learningRate</td>
 <td align="left">Learning rate shrinks the contribution of each classifier by learning_rate. There is a trade-off between learningRate and nEstimators</td>
-<td align="left">?</td>
+<td align="left">1</td>
 </tr>
 </tbody>
 </table>
@@ -933,43 +923,14 @@ Figure 14.2: Decision boundary.
 <div id="decision-tree" class="section level3">
 <h3><span class="header-section-number">14.3.7</span> Decision Tree</h3>
 <p>A decision tree is a classifier that partitions the variable space using individual tests selected using a greedy approach. It aims to find partitions that have the highest information gain to separate the classes. The decision tree can easily overfit by enabling a large number of partitions (tree depth) and often needs some regularization (e.g., pruning or specifying hyper-parameters that limit the complexity of the model). We use the sklearn DecisionTreeClassifier implementation in Python.  </p>
-<table>
-<caption><span id="tab:decisionTreeParameters">Table 14.9: </span> Hyper-parameters for decision trees.</caption>
-<thead>
-<tr class="header">
-<th align="left">Parameter</th>
-<th align="left">Description</th>
-<th align="left">Typical values</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">maxDepth</td>
-<td align="left">The maximum depth of the tree</td>
-<td align="left">?</td>
-</tr>
-<tr class="even">
-<td align="left">minSamplesSplit</td>
-<td align="left">?</td>
-<td align="left">?</td>
-</tr>
-<tr class="odd">
-<td align="left">minSamplesLeaf</td>
-<td align="left">?</td>
-<td align="left">?</td>
-</tr>
-<tr class="even">
-<td align="left">minImpuritySplit</td>
-<td align="left">?</td>
-<td align="left">?</td>
-</tr>
-<tr class="odd">
-<td align="left">classWeight</td>
-<td align="left">“Balance” or “None”</td>
-<td align="left">?</td>
-</tr>
-</tbody>
-</table>
+<p>Table: (#tab:decisionTreeParameters) Hyper-parameters for decision trees.</p>
+<div class="line-block">Parameter| Description | Typical values |</div>
+<p>|:——– |:———– |:————– |<br />
+| classWeight | “Balance” or “None” | None |
+| maxDepth | The maximum depth of the tree | 10 |
+| minImpuritySplit | Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf | 10^-7|
+| minSamplesLeaf | The minimum number of samples per leaf | 10 |
+| minSamplesSplit | The minimum samples per split | 2 |</p>
 </div>
 <div id="multilayer-perceptron" class="section level3">
 <h3><span class="header-section-number">14.3.8</span> Multilayer Perceptron</h3>
@@ -985,14 +946,14 @@ Figure 14.2: Decision boundary.
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">size</td>
-<td align="left">The number of hidden nodes</td>
-<td align="left">?</td>
-</tr>
-<tr class="even">
 <td align="left">alpha</td>
 <td align="left">The l2 regularization</td>
-<td align="left">?</td>
+<td align="left">0.00001</td>
+</tr>
+<tr class="even">
+<td align="left">size</td>
+<td align="left">The number of hidden nodes</td>
+<td align="left">4</td>
 </tr>
 </tbody>
 </table>
