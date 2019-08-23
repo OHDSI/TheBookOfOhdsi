@@ -844,12 +844,56 @@ We observe a hazard ratio of 4.32 (95% confidence interval: 2.45 - 8.08) for ang
 </div>\EndKnitrBlock{rmdsummary}
 
 
-## Excercises
+## Exercises
 
-Note: The exercises still have to be defined. The idea is to require readers to define a study that estimates the effect of celecoxib on GI bleed, compared to diclofenac. For this they must use the Eunomia package, which is still under development.
+#### Prerequisites {-}
+
+For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), [Eunomia](https://ohdsi.github.io/Eunomia/) and [CohortMethod](https://ohdsi.github.io/CohortMethod/) packages, which can be installed using:
 
 
+```r
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+devtools::install_github("ohdsi/CohortMethod")
+```
+
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
 
 
+```r
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
 
+The CDM database schema is "main". These exercises also make use of several cohorts. The `createCohorts` function in the Eunomia package will create these in the COHORT table:
+
+
+```r
+Eunomia::createCohorts(connectionDetails)
+```
+
+#### Problem definition {-}
+
+> What is the risk of gastrointestinal (GI) bleed in new users of celecoxib compared to new users of diclofenac?
+
+The celecoxib new-user cohort has COHORT_DEFINITION_ID = 1. The diclofenac new-user cohort has COHORT_DEFINITION_ID = 2. The GI bleed cohort has COHORT_DEFINITION_ID = 3. The ingredient concept IDs for celecoxib and diclofenac are 1118084 and 1124300, respectively. Time-at-risk starts on day of treatment initiation, and stops at the end of observation (a so-called intent-to-treat analysis). 
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePle1"><strong>(\#exr:exercisePle1) </strong></span>Using the CohortMethod R package, use the default set of covariates and extract the CohortMethodData from the CDM. Create the summary of the CohortMethodData.
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePle2"><strong>(\#exr:exercisePle2) </strong></span>Create a study population using the `createStudyPopulation` function, requiring a 180-day washout period, excluding people who had a prior outcome, and removing people that appear in both cohorts. Did we lose people?
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePle3"><strong>(\#exr:exercisePle3) </strong></span>Fit a Cox proportional hazards model without using any adjustments. What could go wrong if you do this?
+  </div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePle4"><strong>(\#exr:exercisePle4) </strong></span>Fit a propensity model. Are the two groups comparable?
+  </div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePle5"><strong>(\#exr:exercisePle5) </strong></span>Perform PS stratification using 5 strata. Is covariate balance achieved?
+  </div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePle6"><strong>(\#exr:exercisePle6) </strong></span>Fit a Cox proportional hazards model using the PS strata. Why is the result different from the unadjusted model?
+  </div>\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \@ref(Pleanswers).
 

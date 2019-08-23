@@ -229,10 +229,10 @@ Next, we run the Dashboard...
 
 ```r
 DataQualityDashboard::executeDqChecks(connectionDetails = connectionDetails, 
-                              cdmDatabaseSchema = cdmDbSchema, 
-                              resultsDatabaseSchema = cdmDbSchema,
-                              cdmSourceName = "My database",
-                              outputFolder = "My output")
+                                      cdmDatabaseSchema = cdmDbSchema, 
+                                      resultsDatabaseSchema = cdmDbSchema,
+                                      cdmSourceName = "My database",
+                                      outputFolder = "My output")
 ```
 
 The above function will execute all available data quality checks on the schema specified. It will then write a table to the `resultsDatabaseSchema` which we have here set to the same schema as the CDM. This table will include all information about each check run including the CDM table, CDM field, check name, check description, Kahn category and subcategory, number of violating rows, the threshold level, and whether the check passes or fails, among others. In addition to a table this function also writes a JSON file to the location specified as the `outputFolder`. Using this JSON file we can launch a web viewer to inspect the results.
@@ -251,7 +251,7 @@ When you first open the Dashboard you will be presented with the overview table,
 <p class="caption">(\#fig:dqdOverview)Overview of Data Quality Checks in the Data Quality Dashboard.</p>
 </div>
 
-Clicking on *Results* in the left-hand menu will take you to the drilldown results for each check that was run (Figure \@ref(fig:dqdResults)). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the ![](images/DataQuality/plusIcon.png)  icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
+Clicking on *Results* in the left-hand menu will take you to the drilldown results for each check that was run (Figure \@ref(fig:dqdResults)). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the ![](images/DataQuality/plusIcon.png) icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
 
 <div class="figure" style="text-align: center">
 <img src="images/DataQuality/dqdResults.png" alt="Drilldown into Data Quality Checks in the Data Quality Dashboard." width="100%" />

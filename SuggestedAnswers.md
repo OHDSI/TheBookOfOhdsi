@@ -2,6 +2,9 @@
 
 This Appendix contains suggested answers for the exercises in the book.
 
+
+
+
 ## The Common Data Model {#Cdmanswers}
 
 #### Exercise \@ref(exr:exerciseJohnPerson) {-}
@@ -123,6 +126,10 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 ## 1                    61        61                    1968-01-21 ...
 ```
 
+
+
+
+
 ## Data Analytics Use Cases {#UseCasesanswers}
 
 #### Exercise \@ref(exr:exerciseUseCases1) {-}
@@ -136,6 +143,10 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 #### Exercise \@ref(exr:exerciseUseCases2) {-}
 
 Probably not. Defining a non-exposure cohort that is comparable to your diclofenac exposure cohort is often impossible, since people take diclofenac for a reason. This precludes a between-person comparison. It might possible to a within-person comparison, so for each patient in the diclofenac cohort identifying time when they are not exposed, but a similar problem occurs here: these times are likely incomparable, because there are reasons when at one time someone is exposed and at other times not.
+
+
+
+
 
 
 ## SQL and R {#SqlAndRanswers}
@@ -241,6 +252,10 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 ```
 
 Note that in this case it is essential to use the DRUG_ERA table instead of the DRUG_EXPOSURE table, because drug exposures with the same ingredient can overlap, but drug eras can. This could lead to double counting. For example, imagine a person received two drug drugs containing celecoxib at the same time. This would be recorded as two drug exposures, so any diagnoses occurring during the exposure would be counted twice. The two exposures will be merged into a single non-overlapping drug era.
+
+
+
+
 
 
 ## Defining Cohorts {#Cohortsanswers}
@@ -364,6 +379,168 @@ DROP TABLE #diagnoses;"
 renderTranslateExecuteSql(connection, sql)
 ```
 
+
+
+
+
+## Population-Level Estimation {#Pleanswers}
+
+#### Exercise \@ref(exr:exercisePle1) {-}
+
+We specify the default set of covariates, but we must exclude the two drugs we're comparing, including all their descendants, because else our propensity model will become perfectly predictive:
+
+
+```r
+library(CohortMethod)
+nsaids <- c(1118084, 1124300) # celecoxib, diclofenac
+covSettings <- createDefaultCovariateSettings(
+  excludedCovariateConceptIds = nsaids,
+  addDescendantsToExclude = TRUE)
+
+# Load data:
+cmData <- getDbCohortMethodData(
+  connectionDetails = connectionDetails,
+  cdmDatabaseSchema = "main",
+  targetId = 1,
+  comparatorId = 2,
+  outcomeIds = 3,
+  exposureDatabaseSchema = "main",
+  exposureTable = "cohort",
+  outcomeDatabaseSchema = "main",
+  outcomeTable = "cohort",
+  covariateSettings = covSettings)
+summary(cmData)
+```
+
+```
+## CohortMethodData object summary
+## 
+## Treatment concept ID: 1
+## Comparator concept ID: 2
+## Outcome concept ID(s): 3
+## 
+## Treated persons: 1800
+## Comparator persons: 830
+## 
+## Outcome counts:
+##   Event count Person count
+## 3         479          479
+## 
+## Covariates:
+## Number of covariates: 389
+## Number of non-zero covariate values: 26923
+```
+
+#### Exercise \@ref(exr:exercisePle2) {-}
+
+We create the study population following the specfications, and output the attrition diagram:
+
+
+```r
+studyPop <- createStudyPopulation(
+  cohortMethodData = cmData,
+  outcomeId = 3,
+  washoutPeriod = 180,
+  removeDuplicateSubjects = "remove all",
+  removeSubjectsWithPriorOutcome = TRUE,
+  riskWindowStart = 0,
+  startAnchor = "cohort start",
+  riskWindowEnd = 99999)
+drawAttritionDiagram(studyPop)
+```
+<img src="images/SuggestedAnswers/attrition.png" width="80%" style="display: block; margin: auto;" />
+
+We see that we did not lose any subjects compared to the original cohorts, probably because the restrictions used here were already applied in the cohort definitions.
+
+#### Exercise \@ref(exr:exercisePle3) {-}
+
+We fit a simple outcome model using a Cox regression:
+
+
+```r
+model <- fitOutcomeModel(population = studyPop,
+                         modelType = "cox")
+model
+```
+
+```
+## Model type: cox
+## Stratified: FALSE
+## Use covariates: FALSE
+## Use inverse probability of treatment weighting: FALSE
+## Status: OK
+## 
+##           Estimate lower .95 upper .95   logRr seLogRr
+## treatment  1.34612   1.10065   1.65741 0.29723  0.1044
+```
+
+It is likely that celecoxib users are not exchangeable with diclofenac users, and that these baseline differences already lead to different risks of the outcome. If we do not adjust for these difference, like in this analysis, we are likely producing biased estimaters.
+
+#### Exercise \@ref(exr:exercisePle4) {-}
+
+We fit a propensity model on our study population, using all covariates we extracted. We then show the preference score distribution:
+
+
+```r
+ps <- createPs(cohortMethodData = cmData,
+               population = studyPop)
+plotPs(ps, showCountsLabel = TRUE, showAucLabel = TRUE)
+```
+<img src="images/SuggestedAnswers/ps.png" width="80%" style="display: block; margin: auto;" />
+
+Note that this distribution looks a bit odd, with several spikes. This is because we are using a very small simulated dataset. Real preference score distributions tend to be much smoother.
+
+The propensity model achieves an AUC of 063, suggested there are differences between target and comparator cohort. We see quite a lot overlap between the two groups suggesting PS adjustment can make them more comparable.
+
+
+#### Exercise \@ref(exr:exercisePle5) {-}
+
+We stratify the population based on the propensity scores, and compute the covariate balance before and after stratification:
+
+
+```r
+strataPop <- stratifyByPs(ps, numberOfStrata = 5)
+bal <- computeCovariateBalance(strataPop, cmData)
+plotCovariateBalanceScatterPlot(bal, 
+                                showCovariateCountLabel = TRUE, 
+                                showMaxLabel = TRUE, 
+                                beforeLabel = "Before stratification", 
+                                afterLabel = "After stratification")
+```
+<img src="images/SuggestedAnswers/scatter.png" width="80%" style="display: block; margin: auto;" />
+
+We see that various baseline covariates showed a large (>0.3) standardized difference of means before stratification (x-axis). After stratification, balance is increased, with the maximum standardized difference <= 0.1.
+
+#### Exercise \@ref(exr:exercisePle6) {-}
+
+We fit a outcome model using a Cox regression, but stratify it by the PS strata:
+
+
+```r
+adjModel <- fitOutcomeModel(population = strataPop,
+                         modelType = "cox",
+                         stratified = TRUE)
+adjModel
+```
+
+```
+## Model type: cox
+## Stratified: TRUE
+## Use covariates: FALSE
+## Use inverse probability of treatment weighting: FALSE
+## Status: OK
+## 
+##           Estimate lower .95 upper .95   logRr seLogRr
+## treatment  1.13211   0.92132   1.40008 0.12409  0.1068
+```
+
+We see the adjusted estimate is lower than the unadjusted estimate, and that the 95% confidence interval now includes 1. This is because we are now adjusting for baseline differences between the two exposure groups, thus reducing bias.
+
+
+
+
+
+
 ## Patient-Level Prediction {#Plpanswers}
 
 #### Exercise \@ref(exr:exercisePlp1) {-}
@@ -474,6 +651,9 @@ This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an 
 <img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
 <p class="caption">(\#fig:plpShiny)Patient-level prediction Shiny app.</p>
 </div>
+
+
+
 
 
 ## Data Quality {#DataQualityanswers}
