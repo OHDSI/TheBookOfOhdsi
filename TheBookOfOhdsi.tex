@@ -2004,7 +2004,7 @@ The source code for the modifier as it appears in the source data.\strut
 \hypertarget{additional-information}{%
 \section{Additional Information}\label{additional-information}}
 
-This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}{]}.} for more information.
+This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site\footnote{\url{https://github.com/OHDSI/CommonDataModel/wiki}} for more information.
 
 \hypertarget{summary-2}{%
 \section{Summary}\label{summary-2}}
@@ -2490,7 +2490,7 @@ The typical sequence for using this software is:
 \subsubsection*{Importing Source Codes into Usagi}\label{importing-source-codes-into-usagi}}
 \addcontentsline{toc}{subsubsection}{Importing Source Codes into Usagi}
 
-Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g.\,dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g.~you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that.
+Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g.~dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g.~you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that.
 
 Note: source code extracts should be broken out by domain (i.e.~drugs, procedures, conditions, observations) and not lumped into one large file.
 
@@ -2885,6 +2885,8 @@ We describe these in detail below. Note, for all the use cases, the evidence we 
 \hypertarget{characterization}{%
 \section{Characterization}\label{characterization}}
 
+\index{characterization}
+
 Characterization attempts to answer the question
 
 \begin{quote}
@@ -2976,6 +2978,8 @@ And the desired output is:
 \hypertarget{population-level-estimation}{%
 \section{Population-level estimation}\label{population-level-estimation}}
 
+\index{population-level estimation}
+
 To a limited extent, the data can support causal inferences about the effects of healthcare interventions, answering the question
 
 \begin{quote}
@@ -3035,7 +3039,9 @@ And the desired output is:
 \end{itemize}
 
 \hypertarget{patient-level-prediction}{%
-\section{Patient-Level prediction}\label{patient-level-prediction}}
+\section{Patient-level prediction}\label{patient-level-prediction}}
+
+\index{patient-level prediction}
 
 Based on the collected patient health histories in the database, we can make patient-level predictions about future health events, answering the question
 
@@ -3106,6 +3112,8 @@ Independent of whether there is a causal effect of the exposures, you are also i
 \hypertarget{limitations-of-observational-research}{%
 \section{Limitations of observational research}\label{limitations-of-observational-research}}
 
+\index{limitations of obervational research}
+
 There are many important healthcare questions for which OHDSI databases cannot provide answers. These include:
 
 \begin{itemize}
@@ -3127,6 +3135,8 @@ Clinical data recorded in OHDSI databases can deviate from clinical reality. For
 
 \hypertarget{missing-data}{%
 \subsection{Missing data}\label{missing-data}}
+
+\index{missing data}
 
 Missingness in OHDSI databases presents subtle challenges. A health event (e.g., prescription, laboratory value, etc.) that should be recorded in a database, but isn't, is ``missing.'' The statistics literature distinguishes between types of missingness such as ``missing completely at random,'' ``missing at random,'' and ``missing not at random'' and methods of increasing complexity attempt to address these types. \citet{perkins2017principled} provide a useful introduction to this topic.
 
@@ -3931,7 +3941,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.kmab17u1children ;"
+## [1] "SELECT * FROM temp_schema.meq6ivb5children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4405,6 +4415,8 @@ PRESCRIPTION\_COUNT\tabularnewline
 \hypertarget{querylibrary}{%
 \section{QueryLibrary}\label{querylibrary}}
 
+\index{QueryLibrary}
+
 QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application \footnote{\url{http:/data.ohdsi.org/QueryLibrary}} shown in Figure \ref{fig:queryLibrary}, and as an R package\footnote{\url{https://github.com/OHDSI/QueryLibrary}}.
 
 \begin{figure}
@@ -4813,7 +4825,7 @@ The standard components we use to assemble these criteria are:
 
 \begin{itemize}
 \item
-  \textbf{Domain}: The CDM domain(s) where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE) define the type of clinical information and the allowable concepts that can be represented inside that CDM table. Domains are discussed in Section \ref{domains}.
+  \textbf{Domain}: The CDM domain(s) where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE) define the type of clinical information and the allowable concepts that can be represented inside that CDM table. Domains are discussed in more detail in Section \ref{domains}.
 \item
   \textbf{Concept set}: A data-agnostic expression that defines one or more Standard Concepts encompassing the clinical entity of interest. These concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the Vocabulary. Concept sets are discussed in Section \ref{conceptSets}.
 \item
@@ -4845,11 +4857,11 @@ When creating a cohort definition, you need to ask yourself the following questi
   \emph{What defines the time of cohort exit?}
 \end{itemize}
 
-\emph{Cohort entry event:} The cohort entry event (initial event) defines the time when people enter the cohort, called the \textbf{cohort index date}. A cohort entry event can be any event recorded in the CDM such as drug exposures, conditions, procedures, measurements and visits. Initial events are defined by the CDM domain where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE, etc), the concept sets built to identify the clinical activity (e.g.~SNOMED codes for conditions, RxNorm codes for drugs) as well as any other specific attributes (e.g.~age at occurrence, first diagnosis/procedure/etc, specifying start and end date, specifying visit type or criteria, days supply, etc). The set of people having an entry event is referred to as the \emph{inital event cohort}. \index{cohort!entry event}
+\textbf{Cohort entry event}: The cohort entry event (initial event) defines the time when people enter the cohort, called the \textbf{cohort index date}. A cohort entry event can be any event recorded in the CDM such as drug exposures, conditions, procedures, measurements and visits. Initial events are defined by the CDM domain where the data are stored (e.g.~PROCEDURE\_OCCURRENCE, DRUG\_EXPOSURE, etc), the concept sets built to identify the clinical activity (e.g.~SNOMED codes for conditions, RxNorm codes for drugs) as well as any other specific attributes (e.g.~age at occurrence, first diagnosis/procedure/etc, specifying start and end date, specifying visit type or criteria, days supply, etc). The set of people having an entry event is referred to as the \textbf{inital event cohort}. \index{cohort!entry event}
 
-\emph{Inclusion criteria:} Inclusion criteria are applied to the initial event cohort to further restrict the set of people. Each inclusion criterion is defined by the CDM domain(s) where the data are stored, concept set(s) representing the clinical activity, domain-specific attributes (e.g.~days supply, visit type, etc), and the temporal logic relative to the cohort index date. Each inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial event cohort. The \emph{qualifying cohort} is defined as all people in the initial event cohort that satisfy all inclusion criteria. \index{cohort!inclusion criteria}
+\textbf{Inclusion criteria}: Inclusion criteria are applied to the initial event cohort to further restrict the set of people. Each inclusion criterion is defined by the CDM domain(s) where the data are stored, concept set(s) representing the clinical activity, domain-specific attributes (e.g.~days supply, visit type, etc), and the temporal logic relative to the cohort index date. Each inclusion criterion can be evaluated to determine the impact of the criteria on the attrition of persons from the initial event cohort. The \textbf{qualifying cohort} is defined as all people in the initial event cohort that satisfy all inclusion criteria. \index{cohort!inclusion criteria}
 
-\emph{Cohort exit criteria:} The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
+\textbf{Cohort exit criteria}: The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
 
 \BeginKnitrBlock{rmdimportant}
 In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterium ``Exclude people with prior hypertension'' can be formulated as the inclusion criterium ``Include people with 0 occurrences of prior hypertension''.
@@ -4857,6 +4869,8 @@ In the OHDSI tools there is no distinction between inclusion and exclusion crite
 
 \hypertarget{conceptSets}{%
 \section{Concept sets}\label{conceptSets}}
+
+\index{concept set}
 
 TODO: add section on concept sets
 
@@ -9161,6 +9175,8 @@ Suggested answers can be found in Appendix \ref{Plpanswers}.
 
 \emph{Chapter lead: Jon Duke}
 
+\index{evidence quality}
+
 \hypertarget{understanding-evidence-quality}{%
 \section{Understanding Evidence Quality}\label{understanding-evidence-quality}}
 
@@ -9315,9 +9331,13 @@ Each component can be evaluated in two ways:
 \hypertarget{data-quality-checks}{%
 \subsection{Data quality checks}\label{data-quality-checks}}
 
+\index{ACHILLES} \index{data quality!checks}
+
 Kahn introduces the term \emph{data quality check} (sometimes referred to as a \emph{data quality rule}) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is \href{https://github.com/OHDSI/Achilles}{ACHILLES} (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) \citep{huser_methods_2018}. ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases \citep{huser_multisite_2016}. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the ``Data Sources'' function. \index{data quality!data quality check} \index{ACHILLES}
 
 ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, ``715: Distribution of DAYS\_SUPPLY by DRUG\_CONCEPT\_ID'' or ``506: Distribution of age at death by gender''. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS.
+
+\index{Data Quality Dashboard}
 
 Another tool created by the community to assess DQ is the \href{https://github.com/OHDSI/DataQualityDashboard}{Data Quality Dashboard (DQD)}. Where ACHILLES runs characterization analyses to provide an overall visual understanding of a CDM instance, the DQD goes table by table and field by field to quantify the number of records in a CDM that do not conform to the given specifications. In all, over 1,500 checks are performed, each one organized into the Kahn framework. For each check the result is compared to a threshold whereby a FAIL is considered to be any percentage of violating rows falling above that value. Table \ref{tab:dqdExamples} shows some example checks.
 
@@ -9404,6 +9424,8 @@ ACHILLES and DQD are executed against the data in the CDM. DQ issues identified 
 \hypertarget{etlUnitTests}{%
 \subsection{ETL unit tests}\label{etlUnitTests}}
 
+\index{ETL!unit tests}
+
 In addition to high level data quality checks individual level data checks should be performed. The ETL (Extract-Transform-Load) process by which data is converted to the CDM is often quite complex, and with that complexity comes the danger of making mistakes that may go unnoticed. Moreover, as time goes by the source data model may change, or the CDM may be updated, making it necessary to modify the ETL process. Changes to a process as complicated as an ETL can have unintended consequences, requiring all aspects of the ETL to be reconsidered and reviewed.
 
 To make sure the ETL does what it is supposed to do, and continues to do so, it is highly recommended to construct a set of unit tests. A unit test is a small piece of code that automatically checks a single aspect. The Rabbit-in-a-Hat tool described in Chapter \ref{ExtractTransformLoad} can create a unit test framework that makes writing such unit tests easier. This framework is a collection of R functions created specifically for the source database and target CDM version of the ETL. Some of these functions are for creating fake data entries that adhere to the source data schema, while other functions can be used to specify expectations on the data in the CDM format. Here is an example unit test:
@@ -9465,6 +9487,8 @@ The power of these unit tests is that we can easily rerun them any time the ETL 
 \hypertarget{study-specific-checks}{%
 \section{Study-specific checks}\label{study-specific-checks}}
 
+\index{data quality!study-specific checks}
+
 The chapter has so far focused on general DQ checks. Such checks should be executed prior to using the data for research. Since these checks are done regardless of the research question we recommend performing study-specific DQ assessments.
 
 Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90\% of the records for our exposure of interest specifies the length of exposure.
@@ -9489,7 +9513,7 @@ One way to review the source codes that do map is to use the \texttt{checkCohort
 \caption{Example output of the checkCohortSourceCodes function. }\label{fig:sourceCodes}
 \end{figure}
 
-Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the \texttt{findOrphanSourceCodes} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study the concept ``Gangrenous disorder'' (\href{http://athena.ohdsi.org/search-terms/terms/439928}{439928}) and all of its descendants was used to find all occurrences of gangrene. To evaluate whether this truly includes all source codes indicate gangrene, several terms (e.g.~``gangrene'') were used to search the descriptions in the CONCEPT and SOURCE\_TO\_CONCEPT\_MAP tables to identify source codes. An automated search is then used to evaluate whether each gangrene source code appearing in the data indeed directly or indirectly (through ancestry) maps to the concept ``Gangrenous disorder''. The result of this evaluation is shown in Figure \ref{fig:missingMapping}, revealing that the ICD-10 code J85.0 (``Gangrene and necrosis of lung'') was only mapped to concept \href{http://athena.ohdsi.org/search-terms/terms/4324261}{4324261} (``Pulmonary necrosis''), which is not a descendant of ``Gangrenous disorder''.
+Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the \texttt{findOrphanSourceCodes} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study the concept ``Gangrenous disorder'' (\href{http://athena.ohdsi.org/search-terms/terms/439928}{439928}) and all of its descendants was used to find all occurrences of gangrene. To evaluate whether this truly includes all source codes indicate gangrene, several terms (e.g.~``gangrene'') were used to search the descriptions in the CONCEPT and SOURCE\_TO\_CONCEPT\_MAP tables to identify source codes. An automated search is then used to evaluate whether each gangrene source code appearing in the data indeed directly or indirectly (through ancestry) maps to the concept ``Gangrenous disorder''. The result of this evaluation is shown in Figure \ref{fig:missingMapping}, revealing that the ICD-10 code J85.0 (``Gangrene and necrosis of lung'') was only mapped to concept \href{http://athena.ohdsi.org/search-terms/terms/4324261}{4324261} (``Pulmonary necrosis''), which is not a descendant of ``Gangrenous disorder''. \index{orphan codes}
 
 \begin{figure}
 
@@ -10078,6 +10102,8 @@ For more complex functionality it is not always obvious what the expected output
 \hypertarget{MethodValidity}{%
 \chapter{Method Validity}\label{MethodValidity}}
 
+\index{method validity}
+
 \emph{Chapter lead: Martijn Schuemie}
 
 When considering method validity we aim to answer the question
@@ -10094,6 +10120,8 @@ In this chapter we will focus on the validity of methods use in population-level
 
 \hypertarget{design-specific-diagnostics}{%
 \section{Design-specific diagnostics}\label{design-specific-diagnostics}}
+
+\index{study diagnostics}
 
 For each study design there are diagnostics specific to such a design. Many of these diagnostics are implemented and readily available in the R packages of the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}. For example, Section \ref{studyOutputs} lists a wide range of diagnostics generated by the \href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} package, including:
 
@@ -10132,6 +10160,8 @@ Next to the design-specific diagnostics, there are also several diagnostics that
 \hypertarget{NegativeControls}{%
 \subsection{Negative controls}\label{NegativeControls}}
 
+\index{negative controls}
+
 Negative controls are exposure-outcome pairs where one believes no causal effect exists, and it includes negative controls or ``falsification endpoints'' \citep{prased_2013} that have been recommended as a means to detect confounding, \citep{lipsitch_2010} selection bias, and measurement error. \citep{arnold_2016} For example, in one study \citep{zaadstra_2008} investigating the relationship between childhood diseases and later multiple sclerosis (MS), the authors include three negative controls that are not believed to cause MS: a broken arm, concussion, and tonsillectomy. Two of these three controls produce statistically significant associations with MS, suggesting that the study may be biased.
 
 We should select negative controls that are comparable to our hypothesis of interest, which means we typically select exposure-outcome pairs that either have the same exposure as the hypothesis of interest (so-called ``outcome controls'') or the same outcome (``exposure controls''). Our negative controls should further meet these criteria:
@@ -10157,7 +10187,11 @@ The absence of a causal relationship between an exposure and an outcome is rarel
 \hypertarget{PositiveControls}{%
 \subsection{Positive controls}\label{PositiveControls}}
 
+\index{positive controls}
+
 To understand the behavior of a method when the true relative risk is smaller or greater than one requires the use of positive controls where the null is believed to not be true. Unfortunately, real positive controls for observational research tend to be problematic for three reasons. First, in most research contexts, for example when comparing the effect of two treatments, there is a paucity of positive controls relevant for that specific context. Second, even if positive controls are available, the magnitude of the effect size may not be known with great accuracy, and often depends on the population in which one measures it. Third, when treatments are widely known to cause a particular outcome, this shapes the behavior of physicians prescribing the treatment, for example by taking actions to mitigate the risk of unwanted outcomes, thereby rendering the positive controls useless as a means for evaluation. \citep{noren_2014}
+
+\index{positive controls!synthesis}
 
 In OHDSI we therefore use synthetic positive controls, \citep{schuemie_2018} created by modifying a negative control through injection of additional, simulated occurrences of the outcome during the time at risk of the exposure. For example, assume that, during exposure to ACEi, n occurrences of our negative control outcome ``ingrowing nail'' were observed. If we now add an additional n simulated occurrences during exposure, we have doubled the risk. Since this was a negative control, the relative risk compared to the counterfactual was one, but after injection, it becomes two.
 
@@ -10178,6 +10212,8 @@ Although we refer to a single true ``effect size'' for each control, different m
 
 \hypertarget{metrics}{%
 \subsection{Empirical evaluation}\label{metrics}}
+
+\index{empirical evaluation}
 
 Based on the estimates of a particular method for the negative and positive controls, we can then understand the operating characteristics by computing a range of metrics, for example:
 
@@ -10204,6 +10240,8 @@ Depending on our use case, we can evaluate whether these operating characteristi
 \hypertarget{p-value-calibration}{%
 \subsection{P-value calibration}\label{p-value-calibration}}
 
+\index{p-value calibration} \index{empirical calibration}
+
 Often the type 1 error (at \(\alpha = 0.05\)) is larger than 5\%. In other words, we are often more likely than 5\% to reject the null hypothesis when in fact the null hypothesis is true. The reason is that the p-value only reflects random error, the error due to having a limited sample size. It does not reflect systematic error, for example the error due to confounding. OHDSI has developed a process for calibrating p-values to restore the type 1 error to nominal. \citep{schuemie_2014} We derive an empirical null distribution from the actual effect estimates for the negative controls. These negative control estimates give us an indication of what can be expected when the null hypothesis is true, and we use them to estimate an empirical null distribution.
 
 Formally, we fit a Gaussian probability distribution to the estimates, taking into account the sampling error of each estimate. Let \(\hat{\theta}_i\) denote the estimated log effect estimate (relative risk, odds or incidence rate ratio) from the \(i\)th negative control drug--outcome pair, and let \(\hat{\tau}_i\) denote the corresponding estimated standard error, \(i=1,\ldots,n\). Let \(\theta_i\) denote the true log effect size (assumed 0 for negative controls), and let \(\beta_i\) denote the true (but unknown) bias associated with pair \(i\) , that is, the difference between the log of the true effect size and the log of the estimate that the study would have returned for control \(i\) had it been infinitely large. As in the standard p-value computation, we assume that \(\hat{\theta}_i\) is normally distributed with mean \(\theta_i + \beta_i\) and standard deviation \(\hat{\tau}_i^2\). Note that in traditional p-value calculation, \(\beta_i\) is always assumed to be equal to zero, but that we assume the \(\beta_i\)'s, arise from a normal distribution with mean \(\mu\) and variance \(\sigma^2\). This represents the null (bias) distribution. We estimate \(\mu\) and \(\sigma^2\) via maximum likelihood. In summary, we assume the following:
@@ -10228,6 +10266,8 @@ where \(\phi(\cdot)\) denotes the cumulative distribution function of the standa
 
 \hypertarget{confidence-interval-calibration}{%
 \subsection{Confidence interval calibration}\label{confidence-interval-calibration}}
+
+\index{confidence interval calibration}
 
 Similarly, we typically observe that the coverage of the 95\% confidence interval is less than 95\%: the true effect size is inside the 95\% confidence interval less than 95\% of the time. For confidence interval calibration \citep{schuemie_2018} we extend the framework for p-value calibration by also making use of our positive controls. Typically, but not necessarily, the calibrated confidence interval is wider than the nominal confidence interval, reflecting the problems unaccounted for in the standard procedure (such as unmeasured confounding, selection bias and measurement error) but accounted for in the calibration.
 
@@ -10266,6 +10306,8 @@ Both p-value calibration and confidence interval calibration are implemented in 
 \hypertarget{replication-across-sites}{%
 \subsection{Replication across sites}\label{replication-across-sites}}
 
+\index{between-database heterogeneity}
+
 Another form of method validation comes from executing the study across several different databases that represent different populations, different health care systems, and/or different data capture processes. Prior research has shown that executing the same study design across different databases can produce vastly different effect size estimates, \citep{madigan_2013} suggesting that either the effect differs greatly for different populations, or that the design does not adequately address the different biases found in the different databases. In fact, we observe that accounting for residual bias in a database through empirical calibration of confidence intervals can greatly reduce between-study heterogeneity. \citep{schuemie_2018}
 
 One way to express between-database heterogeneity is the \(I^2\) score, describing the percentage of total variation across studies that is due to heterogeneity rather than chance. \citep{higgins_2003} A naive categorization of values for \(I^2\) would not be appropriate for all circumstances, although one could tentatively assign adjectives of low, moderate, and high to \(I^2\) values of 25\%, 50\%, and 75\%. In a study estimating the effects for many depression treatments using a new-user cohort design with large-scale propensity score adjustment, \citep{schuemie_2018b} observed only 58\% of the estimates to have an \(I^2\) below 25\%. After empirical calibration this increased to 83\%.
@@ -10276,6 +10318,8 @@ Observing between-database heterogeneity casts doubt on the validity of the esti
 
 \hypertarget{sensitivity-analyses}{%
 \subsection{Sensitivity analyses}\label{sensitivity-analyses}}
+
+\index{sensitivity analysis}
 
 When designing a study there are often design choices that are uncertain. For example, should propensity score matching of stratification be used? If stratification is used, how many strata? What is the appropriate time-at-risk? When faced with such uncertainty, one solution is to evaluate various options, and observe the sensitivity of the results to the design choice. If the estimate remains the same under various options, we can say the study is robust to the uncertainty.
 
@@ -10576,6 +10620,8 @@ Study diagnostics allow us to evaluate design choices even before fully executin
 \hypertarget{ohdsi-methods-benchmark}{%
 \section{OHDSI Methods Benchmark}\label{ohdsi-methods-benchmark}}
 
+\index{OHDSI Methods Benchmark}
+
 Although the recommended practice is to empirically evaluate a method's performance within the context that it is applied, using negative and positive controls that are in ways similar to the exposures-outcomes pairs of interest (for example using the same exposure or the same outcome) and on the database used in the study, there is also value in evaluating a method's performance in general. This is why the OHDSI Methods Evaluation Benchmark was developed. The benchmark evaluates performance using a wide range of control questions, including those with chronic or acute outcomes, and long-term or short-term exposures. The results on this benchmark can help demonstrate the overall usefulness of a method, and can be used to form a prior belief about the performance of a method when a context-specific empirical evaluation is not (yet) available. The benchmark consists of 200 carefully selected negative controls that can be stratified into eight categories, with the controls in each category either sharing the same exposure or the same outcome. From these 200 negative controls, 600 synthetic positive controls are derived as described in Section \ref{PositiveControls}. To evaluate a method, it must be used to produce effect size estimates for all controls, after which the metrics described in Section \ref{metrics} can be computed. The benchmark is publicly available, and can be deployed as described in the \href{https://ohdsi.github.io/MethodEvaluation/articles/OhdsiMethodsBenchmark.html}{Running the OHDSI Methods Benchmark vignette} in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} package.
 
 We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app\footnote{\url{http://data.ohdsi.org/MethodEvalViewer/}}, show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95\% confidence interval, as shown in Figure \ref{fig:methodEval}.
@@ -10643,6 +10689,8 @@ Pre-specification of an observational study design and parameters is critical to
 \hypertarget{protocol}{%
 \subsection{Protocol}\label{protocol}}
 
+\index{protocol}
+
 An observational study plan should be documented in the form of a protocol created prior to executing a study. At a minimum, a protocol describes the primary study question, the approach, and metrics that will be used to answer the question. The study population should be described to a level of detail such that the study population may be fully reproduced by others. In addition, all methods or statistical procedures and the form of expected study results such as metrics, tables and graphs should be described.
 Often, a protocol will also describe a set of pre-analyses designed to assess the feasibility or statistical power of the study. Furthermore, protocols may contain descriptions of variations on the primary study question referred to as sensitivity analyses. Sensitivity analyses are designed to evaluate the potential impact of study design choices on the overall study findings and should be described in advance whenever possible. Sometimes unanticipated issues arise that may necessitate a protocol amendment after a protocol is completed. If this becomes necessary, it is critical to document the change and the reasons for the change in the protocol itself. Particularly in the case of PLE or PLP, a completed study protocol will ideally be recorded in an independent platform (such as clinicaltrials.gov or OHDSI's studyProtocols sandbox) where its versions and any amendments can be tracked independently with timestamps. It is also often the case that your institution or the owner of the data source will require the opportunity to review and approve your protocol prior to study execution.
 
@@ -10656,6 +10704,8 @@ The OHDSI approach supports the inclusion of feasibility and study diagnostics w
 
 \hypertarget{study-packages}{%
 \subsection{Study packages}\label{study-packages}}
+
+\index{study package}
 
 Another motivation for standardized templates and designs is that even when a researcher thinks a study is described in complete detail in the form of a protocol, there may be elements that are not actually sufficiently specified to generate the full computer code to execute the study. A related fundamental principle which is enabled by the OHDSI framework is to generate a completely traceable and reproducible process documented in the form of computer code, often referred to as a ``study package.'' OHDSI best practice is to record such a study package in the git environment. This study package contains all parameters and versioning stamps for the code base. As mentioned previously, observational studies are often asking questions with potential to impact public health decisions and policy. Therefore, before acting on any findings, they should ideally be replicated in multiple settings by different researchers. The only way to achieve such a goal is for every detail required to fully reproduce a study to be mapped out explicitly and not left to guesswork or misinterpretation. To support this best practice, the OHDSI tools are designed to aid in the translation from a protocol in the form of a written document into a computer or machine-readable study package. One tradeoff of this framework is that not every use case or customized analysis can easily be addressed with the existing OHDSI tools. As the community grows and evolves, however, more functionality to address a larger array of use cases is being added. Anyone involved in the community may raise suggestions for new functionality driven by a novel use case.
 
@@ -10714,6 +10764,8 @@ As a final note, defining cohorts for a study may benefit from ongoing work in t
 
 \hypertarget{Feasibility}{%
 \subsection{Feasibility and Diagnostics}\label{Feasibility}}
+
+\index{study feasibility!single study} \index{study diagnostics}
 
 Once cohorts are defined and generated, a more formal process to examine study feasibility in available data sources can be undertaken and the findings summarized in the finalized protocol. An evaluation of study feasibility can encompass a number of exploratory and sometimes iterative activities. We describe a few common aspects here.
 
@@ -10782,25 +10834,13 @@ As with the protocol development process, we also recommend that the study findi
 \item
   Perform appropriate checks of data quality, completeness and relevance in advance.
 \item
-  Source observational database must be ETLed to OMOP common data mode and use standard vocabularies.
-\item
-  Identify expert on source database who can explain unique clinical aspects of source database and is knowledgeable of ETL rules to transform source data to OMOP CDM.
-\item
-  Recommend to also include source database expert in protocol development process if possible.
+  Recommend to include source database expert in protocol development process if possible.
 \item
   Document proposed study in a protocol ahead of time.
 \item
-  Consult with clinical experts and literature in defining your cohorts and other aspects of study design.
-\item
-  Finalized protocol should be reviewed by clinical experts and other stakeholders.
+  Generate study package code in parallel with written protocol and perform and describe any feasibility and diagnostics prior to executing the final study.
 \item
   Study should be registered and approved (if required) ahead of study execution.
-\item
-  Cohorts representing study populations are created by ATLAS whenever possible.
-\item
-  OHDSI tools should be used in the creation of complete computer code to execute the study, increasing the ability to exactly reproduce any study in order to test findings at a later date.
-\item
-  Generate study package code in parallel with written protocol and perform and describe any feasibility and diagnostics prior to executing the final study.
 \item
   Finalized report or manuscript should be reviewed by clinical experts and other stakeholders.
 \end{itemize}
@@ -10814,7 +10854,9 @@ Chapter Leads: Kristin Kostka, Sara Dempster, Greg Klebanov
 The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including Standardized Vocabularies ,the Common Data Model (CDM) ,analytical methods packages, ATLAS and the study steps (Chapter\ref{StudySteps}) to run a retrospective database study. OHDSI Network Studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
 
 \hypertarget{ohdsi-research-network-1}{%
-\section{OHDSI Research Network}\label{ohdsi-research-network-1}}
+\section{OHDSI research network}\label{ohdsi-research-network-1}}
+
+\index{research network}
 
 The OHDSI Research Network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 1.2 billion patient records (\textasciitilde650 million de-duplicated patient records) in the CDM. This includes more than 220 researchers and 82 observational health databases across 17 countries with regional central coordinating centers housed at Columbia University (USA), Erasmus Medical Center (Europe) and Ajou University (South Korea). The OHDSI community continues to grow rapidly across Europe (in collaboration with the IMI EHDEN project), Central America (e.g.~Argentina, Brazil, Colombia), and Asia (e.g.~China, Japan, Singapore).
 
@@ -10828,7 +10870,9 @@ OHDSI is an open network, inviting healthcare institutions across the globe with
 \EndKnitrBlock{rmdimportant}
 
 \hypertarget{defining-an-ohdsi-network-study}{%
-\section{Defining an OHDSI Network Study}\label{defining-an-ohdsi-network-study}}
+\section{Defining an OHDSI network study}\label{defining-an-ohdsi-network-study}}
+
+\index{network study}
 
 In the prior chapter (Chapter \ref{StudySteps}), we discussed general design considerations for running a study using the CDM. In general, a study may be conducted on a single CDM or on multiple CDMs. It can be run within a single institution's CDM data or across many institutions.
 In this chapter we will discuss the considerations when an OHDSI study evolves to become a study run across the OHDSI network.
@@ -10861,7 +10905,7 @@ When conducting an open OHDSI Network study, there are a few components that mak
 In the next section we will talk about how to create your own network study.
 
 \hypertarget{design-considerations-for-an-ohdsi-network-study}{%
-\subsection{Design Considerations for an OHDSI Network Study}\label{design-considerations-for-an-ohdsi-network-study}}
+\subsection{Design considerations for an OHDSI network study}\label{design-considerations-for-an-ohdsi-network-study}}
 
 Designing a study to run across the OHDSI Network requires a paradigm shift in how you design and assemble your study code. Ordinarily, you may design a study with a target data set in mind. In doing so, you may write code relative to what you know to be true in the data you are utilizing for your analysis. For example, if you were assembling an angioedema cohort you may opt to pick only concept codes for angioedema that are represented in your CDM. This may be problematic if your data are in a specific care setting (e.g.~primary care, ambulatory settings) or specific to a region (e.g.~US-centric). You might be biasing your cohort definition.
 
@@ -10870,7 +10914,7 @@ In an OHDSI Network Study, you are no longer designing and building a study pack
 In addition to clinical coding variation, you have to anticipate technical variations as well. Your study code will no longer be running in a single technical environment. Each OHDSI Network site makes its own independent choice of database layer. Luckily, the OHDSI Community has solutions such as ATLAS, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/SqlRender/}{SqlRender} to help you generalize your study package for CDM compliance across different database dialects. OHDSI investigators are encouraged to solicit help from other network study sites to test and validate the study package can be executed in different environments. When coding errors come up, OHDSI Researchers can utilize the \href{http://forums.ohdsi.org}{OHDSI Forums} to discuss and debug packages.
 
 \hypertarget{logistical-considerations-for-an-ohdsi-network-study}{%
-\subsection{Logistical Considerations for an OHDSI Network Study}\label{logistical-considerations-for-an-ohdsi-network-study}}
+\subsection{Logistical considerations for an OHDSI Network Study}\label{logistical-considerations-for-an-ohdsi-network-study}}
 
 OHDSI Network Studies require coordination between the lead investigator with participating network sites. Each site must perform its own due diligence to ensure the study protocol is approved and authorized to be executed on the local CDM. Data analysts may need to enlist assistance from the local IT team to enable appropriate permissions to run the study.
 
@@ -10899,7 +10943,7 @@ When sharing study results, the data analyst must comply with all local governan
 The OHDSI community has validated methodologies to aggregate results files shared from multiple network sites into a single answer. The \href{https://github.com/OHDSI/EvidenceSynthesis}{EvidenceSynthesis} package is a freely available R package containing routines for combining evidence and diagnostics across multiple sources, such as multiple data sites in a distributed study. This includes functions for performing meta-analysis and forest plots.
 
 \hypertarget{running-an-ohdsi-network-study}{%
-\section{Running an OHDSI Network Study}\label{running-an-ohdsi-network-study}}
+\section{Running an OHDSI network study}\label{running-an-ohdsi-network-study}}
 
 Running an OHDSI Network Study has three distinct stages:
 
@@ -10914,7 +10958,9 @@ Running an OHDSI Network Study has three distinct stages:
 \end{itemize}
 
 \hypertarget{study-feasibility-and-design}{%
-\subsection{Study Feasibility and Design}\label{study-feasibility-and-design}}
+\subsection{Study feasibility and design}\label{study-feasibility-and-design}}
+
+\index{study feasibility!network study}
 
 The study feasibility stage \emph{(pre-study stage)} is focused on supporting a definition of a study and a creation of the study protocol. These activities make sure the study is feasible to be executed as described in the formal protocol.
 
@@ -10923,7 +10969,7 @@ The feasibility stage does not have a well-defined process but rather is driven 
 The outcome of the feasibility stage is generation of a finalized protocol and study package that is ready for network dissemination. The formal protocol will detail the study team, including the designated study lead (often the corresponding author for publication purposes), and information on the timeline for the study. The protocol is a critical component for additional network sites to review, approve and execute the full study package on their CDM data. A protocol must include information on study population, the methods being used, how the results will be stored and analyzed as well as how the study results will be disseminated after completion (e.g.~a publication, a poster, etc).
 
 \hypertarget{study-execution}{%
-\subsection{Study Execution}\label{study-execution}}
+\subsection{Study execution}\label{study-execution}}
 
 After completing feasibility exercises, the study advances to the execution phase. This phase is when the design and logistical considerations we discussed become most important.
 
@@ -10962,7 +11008,7 @@ The key activities in executing a network study include the following:
 While OHDSI studies can be executed rapidly, it is advised to allow for a few weeks to several months for all participating sites to execute the study and receive appropriate approvals to publish results. A study leads should set study milestones in the protocol and communicate anticipated closure date in advance to assist with managing the overall study timeline.
 
 \hypertarget{results-dissemination-and-publication}{%
-\subsection{Results Dissemination and Publication}\label{results-dissemination-and-publication}}
+\subsection{Results dissemination and publication}\label{results-dissemination-and-publication}}
 
 During this stage, the study lead will collaborate with other sites on various administrative tasks, such as manuscript development and optimizing data visualizations.
 
