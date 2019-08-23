@@ -403,6 +403,79 @@ renderTranslateExecuteSql(connection, sql)
 
 
 
+## Characterization {#Characterizationanswers}
+
+#### Exercise \@ref(exr:exerciseCharacterization1) {-}
+
+In ATLAS we click on ![](images/Characterization/atlasDataSourcesMenuItem.png) and select the data source we're interested in. We could select the Drug Exposure report, select the "Table" tab, and search for "celecoxib" as shown in Figure \@ref(fig:dataSourcesAtlas). Here we see that this particular database has exosures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.
+
+```{r dataSourcesAtlas, fig.cap='Data source characterization.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/dataSourcesAtlas.png")
+```
+
+
+#### Exercise \@ref(exr:exerciseCharacterization2) {-}
+
+Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "Celecoxib new users") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "Celecoxib"). Open the  ![](images/Cohorts/search-2.png) module, search for "celecoxib", restrict the Class to "Ingredient" and Standard Concept to "Standard", and click the ![](images/Cohorts/shoppingcart.png) to add the concept to your concept set as show in Figure \@ref(fig:conceptSearchAtlas).
+
+```{r conceptSearchAtlas, fig.cap='Selecting the standard concept for the ingredient "celecoxib".',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/conceptSearchAtlas.png")
+```
+
+Click on the left arrow shown at the top left of Figure \@ref(fig:conceptSearchAtlas) to return to your cohort definition. Click on "+Add Initial Event" and then "Add Drug Era". Select your previously created concept set for the drug era criterion. Click on "Add attribute..." and select "Add First Exposure Criteria. Set the required continuous observation to at least 365 days before the index date. The result should look like Figure \@ref(fig:celecoxibCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
+
+```{r celecoxibCohortDefinition, fig.cap='A simple celecoxib new user cohort definition.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/celecoxibCohortDefinition.png")
+```
+
+Now that we have our cohort defined, we can characterize it. Click on ![](images/Characterization/atlasCharacterizationMenuItem.png) and then "New Characterization". Give you characterization a meaningful name (e.g. "Celecoxib new users characterization"). Under Cohort Definitions, click on "Import" and select your recently created cohort definition. Under "Feature Analyses", click on "Import" and select at least one condition analysis and one drug analysis, for example "Drug Group Era Any Time Prior" and "Condition Group Era Any Time Prior". Your characterization definition should now look like Figure \@ref(fig:celecoxibCharacterization). Make sure to save the characterization settings by clicking ![](images/Cohorts/save.png).
+
+```{r celecoxibCharacterization, fig.cap='Characterization settings.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/celecoxibCharacterization.png")
+```
+
+Click on the "Exections" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
+
+```{r celecoxibCharacterizationResults, fig.cap='Characterization settings.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/celecoxibCharacterizationResults.png")
+```
+
+#### Exercise \@ref(exr:exerciseCharacterization3) {-}
+
+Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "GI bleed") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "GI bleed"). Open the  ![](images/Cohorts/search-2.png) module, search for "Gastrointestinal hemorrhage", and click the ![](images/Cohorts/shoppingcart.png) next to the top concept to add the concept to your concept set as show in Figure \@ref(fig:giBleedSearch). 
+
+```{r giBleedSearch, fig.cap='Selecting the standard concept for "Gastrointestinal hemorrhage".',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/giBleedSearch.png")
+```
+
+Click on the left arrow shown at the top left of Figure \@ref(fig:giBleedSearch) to return to your cohort definition. Open the "Concept Sets" tab again, and check "Descendants" next to the GI hemorrhage concept, as shown in Figure \@ref(fig:giBleedDescendants).
+
+```{r giBleedDescendants, fig.cap='Adding all descendants to "Gastrointestinal hemorrhage".',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/giBleedDescendants.png")
+```
+
+Return to the "Definition" tab, click on "+Add Initial Event" and then "Add Condition Occurrence". Select your previously created concept set for the condition occurrence criterion. The result should look like Figure \@ref(fig:giBleedCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
+
+```{r giBleedCohortDefinition, fig.cap='A simple gastrointestinal bleed cohort definition.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/giBleedCohortDefinition.png")
+```
+
+Now that we have our cohort defined, we can compute the incidence rate. Click on ![](images/Characterization/atlasIncidenceMenuItem.png) and then "New Analysis". Give your analysis a meaningful name (e.g. "Incidence of GI bleed after celecoxib initiation"). Click "Add Target Cohort" and select our celecoxib new user cohort. Click on "Add Outcome Cohort" and add our new GI bleed cohort. Set the Time At Risk to end 1095 days after the start date. The analysis should now look like Figure \@ref(fig:irAnalysis). Make sure to save the analysis settings by clicking ![](images/Cohorts/save.png).
+
+```{r irAnalysis, fig.cap='A incidence rate analysis.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/irAnalysis.png")
+```
+
+Click on the "Generation" tab, and click on "Generate". Select one of the data sources and click "Generate". When done, we can see the computed incidence rate and proportion, as shown in Figure \@ref(fig:irResults).
+
+```{r irResults, fig.cap='Incidence results.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/irResults.png")
+```
+
+
+
+
+
 
 ## Population-Level Estimation {#Pleanswers}
 
