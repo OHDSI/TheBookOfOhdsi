@@ -1,7 +1,7 @@
 # Data Quality {#DataQuality}
 
 
-*Chapter leads: Martijn Schuemie, Vojtech Huser, Andrew Williams & Clair Blacketer* 
+*Chapter leads: Martijn Schuemie, Vojtech Huser & Clair Blacketer* 
 
 Most of the data used for observational healthcare research were not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and administrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with @vanDerLei_1991 even stating that "Data shall be used only for the purpose for which they were collected". The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:
 
@@ -340,7 +340,7 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 ```r
 install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
 devtools::install_github("ohdsi/Achilles")
-devtools:install_github("ohdsi/dataqualitydashboard")
+devtools:install_github("ohdsi/DataQualityDashboard")
 devtools::install_github("ohdsi/Eunomia")
 ```
 

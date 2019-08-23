@@ -797,11 +797,12 @@ To run the Data Quality Dashboard:
 
 
 ```r
-DataQualityDashboard::executeDqChecks(connectionDetails, 
-                                      cdmDatabaseSchema = "main", 
-                                      resultsDatabaseSchema = "main",
-                                      cdmSourceName = "Eunomia",
-                                      outputFolder = "C:/dataQualityExample") #or your folder of choice
+DataQualityDashboard::executeDqChecks(
+  connectionDetails, 
+  cdmDatabaseSchema = "main", 
+  resultsDatabaseSchema = "main",
+  cdmSourceName = "Eunomia",
+  outputFolder = "C:/dataQualityExample") #or your folder of choice
 ```
 
 #### Exercise \@ref(exr:exerciseViewDQD) {-}
@@ -810,5 +811,6 @@ To view the list of data quality checks:
 
 
 ```r
-DataQualityDashboard::viewDqDashboard("C:/dataQualityExample/Eunomia/results_Eunomia.json") #or your folder of choice
+DataQualityDashboard::viewDqDashboard(
+  "C:/dataQualityExample/Eunomia/results_Eunomia.json") #or your folder of choice
 ```
