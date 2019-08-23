@@ -3931,7 +3931,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.n5u0dg55children ;"
+## [1] "SELECT * FROM temp_schema.kmab17u1children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -6187,33 +6187,38 @@ As shown, the metrics calculated are the same but the interpretation is differen
 \BeginKnitrBlock{rmdsummary}
 \begin{itemize}
 \item
-  Characterization describes a cohort of interest during the time preceding the index date (\textbf{baseline}) and the time after index (\textbf{post-index}).
+  OHDSI offers tools to characterize an entire database, or a cohort of interest.
 \item
-  ATLAS' characterization module and the OHDSI Methods Library provide the capability to calculate baseline characteristics for multiple time windows.
+  Cohort characterization describes a cohort of interest during the time preceding the index date (\textbf{baseline}) and the time after index (\textbf{post-index}).
 \item
-  ATLAS' pathways and incidence rate modules provide descriptive statistics during the post-index time period.
+  ATLAS's characterization module and the OHDSI Methods Library provide the capability to calculate baseline characteristics for multiple time windows.
+\item
+  ATLAS's pathways and incidence rate modules provide descriptive statistics during the post-index time period.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
 \hypertarget{exercises-5}{%
 \section{Exercises}\label{exercises-5}}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  We would like to understand how hypertensive treatments are utilized in a real world setting. To start, we would like to understand the composition of data that a source has for a hypertensive medication such as Lisinopril. How would you use ATLAS data source module to find information on Lisinopril?
-\item
-  In the chapter we characterized new users of any hypertensive medication and utilized the cohort pathways tool in ATLAS to find that ACE Inhibitors and thiazides were the most commonly used first-line drug therapy. To better understand the disease natural history of patients initiating ACE inhibitors and Thiazides, use ATLAS to construct a cohort characterization for these populations to understand their demographics, concomitant medications and comorbid conditions.
-\item
-  How might we design a pathways analysis to characterize procedure sequences used to treat hypertension (i.e.~cardiac bypass surgery, carotid artery surgery and dialysis)?
-\item
-  Using the preceding conditions found in exercise \#2, construct an incidence rate analysis to find the rate of an outcome in the ACEi and THZ populations.
-\end{enumerate}
+\hypertarget{prerequisites-5}{%
+\subsubsection*{Prerequisites}\label{prerequisites-5}}
+\addcontentsline{toc}{subsubsection}{Prerequisites}
 
-\texttt{**TODO:\ Define\ exercises\ using\ Eunomia.**}
+For the first exercise, access to an ATLAS instance is required. You can use the instance at \url{http://atlas-demo.ohdsi.org}, or any other instance you have acces to.
 
-\texttt{Per\ chapter\ 13:\ Note:\ The\ excercises\ still\ have\ to\ be\ defined.\ The\ idea\ is\ to\ require\ readers\ to\ define\ a\ study\ that\ estimates\ the\ effect\ of\ celecoxib\ on\ GI\ bleed,\ compared\ to\ diclofenac.\ For\ this\ they\ must\ use\ the\ Eunomia\ package,\ which\ is\ still\ under\ development.}
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseCharacterization1}{}{\label{exr:exerciseCharacterization1} }We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseCharacterization2}{}{\label{exr:exerciseCharacterization2} }We would like to better understand the disease natural history of celecoxib users. Create a simple cohort of new users of celecoxib using a 365-day washout period (see Chapter \ref{Cohorts} for details on how to do this), and use ATLAS to create a characterization of this cohort, showing co-morbid conditions and drug-exposures.
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseCharacterization3}{}{\label{exr:exerciseCharacterization3} }We are interested in understand how often gastrointestinal (GI) bleeds occur any time after people initiate celecoxib treatment. Create a cohort of GI bleed events, simply defined as any occurrence of concept \href{http://athena.ohdsi.org/search-terms/terms/192671}{192671} (``Gastrointestinal hemorrhage'') or any of its descendants. Compute the incidence rate of these GI events after celecoxib initiation, using the exposure cohort defined in the previous exercise.
+\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \ref{Characterizationanswers}.
 
 \hypertarget{PopulationLevelEstimation}{%
 \chapter{Population-Level Estimation}\label{PopulationLevelEstimation}}
@@ -7417,8 +7422,8 @@ We observe a hazard ratio of 4.32 (95\% confidence interval: 2.45 - 8.08) for an
 \hypertarget{exercises-6}{%
 \section{Exercises}\label{exercises-6}}
 
-\hypertarget{prerequisites-5}{%
-\subsubsection*{Prerequisites}\label{prerequisites-5}}
+\hypertarget{prerequisites-6}{%
+\subsubsection*{Prerequisites}\label{prerequisites-6}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, \href{https://ohdsi.github.io/Eunomia/}{Eunomia} and \href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} packages, which can be installed using:
@@ -9094,8 +9099,8 @@ For more details see the help page of the function.
 \hypertarget{exercises-7}{%
 \section{Exercises}\label{exercises-7}}
 
-\hypertarget{prerequisites-6}{%
-\subsubsection*{Prerequisites}\label{prerequisites-6}}
+\hypertarget{prerequisites-7}{%
+\subsubsection*{Prerequisites}\label{prerequisites-7}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, \href{https://ohdsi.github.io/Eunomia/}{Eunomia} and \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction} packages, which can be installed using:
@@ -9700,8 +9705,8 @@ The only potential orphan found that is actually used in the data is ``Angioneur
 \hypertarget{exercises-8}{%
 \section{Exercises}\label{exercises-8}}
 
-\hypertarget{prerequisites-7}{%
-\subsubsection*{Prerequisites}\label{prerequisites-7}}
+\hypertarget{prerequisites-8}{%
+\subsubsection*{Prerequisites}\label{prerequisites-8}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, \href{https://github.com/OHDSI/Achilles}{ACHILLES}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
@@ -13191,6 +13196,131 @@ It is recommended to clean up any temp tables when no longer needed:
 \KeywordTok{renderTranslateExecuteSql}\NormalTok{(connection, sql)}
 \end{Highlighting}
 \end{Shaded}
+
+\hypertarget{Characterizationanswers}{%
+\section{Characterization}\label{Characterizationanswers}}
+
+\hypertarget{exercise-refexrexercisecharacterization1}{%
+\subsubsection*{Exercise \ref{exr:exerciseCharacterization1}}\label{exercise-refexrexercisecharacterization1}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseCharacterization1}}
+
+In ATLAS we click on \includegraphics{images/Characterization/atlasDataSourcesMenuItem.png} and select the data source we're interested in. We could select the Drug Exposure report, select the ``Table'' tab, and search for ``celecoxib'' as shown in Figure \ref{fig:dataSourcesAtlas}. Here we see that this particular database has exosures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/dataSourcesAtlas} 
+
+}
+
+\caption{Data source characterization.}\label{fig:dataSourcesAtlas}
+\end{figure}
+
+\hypertarget{exercise-refexrexercisecharacterization2}{%
+\subsubsection*{Exercise \ref{exr:exerciseCharacterization2}}\label{exercise-refexrexercisecharacterization2}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseCharacterization2}}
+
+Click on \includegraphics{images/Cohorts/cohortdefinition.png} and then ``New cohort'' to create a new cohort. Give the cohort a meaningful name (e.g.~``Celecoxib new users'') and go to the ``Concept Sets'' tab. Click on ``New Concept Set'', and give your concept set a meaningful names (e.g.~``Celecoxib''). Open the \includegraphics{images/Cohorts/search-2.png} module, search for ``celecoxib'', restrict the Class to ``Ingredient'' and Standard Concept to ``Standard'', and click the \includegraphics{images/Cohorts/shoppingcart.png} to add the concept to your concept set as show in Figure \ref{fig:conceptSearchAtlas}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/conceptSearchAtlas} 
+
+}
+
+\caption{Selecting the standard concept for the ingredient "celecoxib".}\label{fig:conceptSearchAtlas}
+\end{figure}
+
+Click on the left arrow shown at the top left of Figure \ref{fig:conceptSearchAtlas} to return to your cohort definition. Click on ``+Add Initial Event'' and then ``Add Drug Era''. Select your previously created concept set for the drug era criterion. Click on ``Add attribute\ldots{}'' and select "Add First Exposure Criteria. Set the required continuous observation to at least 365 days before the index date. The result should look like Figure \ref{fig:celecoxibCohortDefinition}. Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking \includegraphics{images/Cohorts/save.png}, and close it by clicking \includegraphics{images/SuggestedAnswers/close.png}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/celecoxibCohortDefinition} 
+
+}
+
+\caption{A simple celecoxib new user cohort definition.}\label{fig:celecoxibCohortDefinition}
+\end{figure}
+
+Now that we have our cohort defined, we can characterize it. Click on \includegraphics{images/Characterization/atlasCharacterizationMenuItem.png} and then ``New Characterization''. Give you characterization a meaningful name (e.g.~``Celecoxib new users characterization''). Under Cohort Definitions, click on ``Import'' and select your recently created cohort definition. Under ``Feature Analyses'', click on ``Import'' and select at least one condition analysis and one drug analysis, for example ``Drug Group Era Any Time Prior'' and ``Condition Group Era Any Time Prior''. Your characterization definition should now look like Figure \ref{fig:celecoxibCharacterization}. Make sure to save the characterization settings by clicking \includegraphics{images/Cohorts/save.png}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/celecoxibCharacterization} 
+
+}
+
+\caption{Characterization settings.}\label{fig:celecoxibCharacterization}
+\end{figure}
+
+Click on the ``Exections'' tab, and click on ``Generate'' for one of the data sources. It may take a while for the generation to complete. When done, we can click on ``View latest results''. The resulting screen will look something like Figure \ref{fig:celecoxibCharacterizationResults}, showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/celecoxibCharacterizationResults} 
+
+}
+
+\caption{Characterization settings.}\label{fig:celecoxibCharacterizationResults}
+\end{figure}
+
+\hypertarget{exercise-refexrexercisecharacterization3}{%
+\subsubsection*{Exercise \ref{exr:exerciseCharacterization3}}\label{exercise-refexrexercisecharacterization3}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseCharacterization3}}
+
+Click on \includegraphics{images/Cohorts/cohortdefinition.png} and then ``New cohort'' to create a new cohort. Give the cohort a meaningful name (e.g.~``GI bleed'') and go to the ``Concept Sets'' tab. Click on ``New Concept Set'', and give your concept set a meaningful names (e.g.~``GI bleed''). Open the \includegraphics{images/Cohorts/search-2.png} module, search for ``Gastrointestinal hemorrhage'', and click the \includegraphics{images/Cohorts/shoppingcart.png} next to the top concept to add the concept to your concept set as show in Figure \ref{fig:giBleedSearch}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/giBleedSearch} 
+
+}
+
+\caption{Selecting the standard concept for "Gastrointestinal hemorrhage".}\label{fig:giBleedSearch}
+\end{figure}
+
+Click on the left arrow shown at the top left of Figure \ref{fig:giBleedSearch} to return to your cohort definition. Open the ``Concept Sets'' tab again, and check ``Descendants'' next to the GI hemorrhage concept, as shown in Figure \ref{fig:giBleedDescendants}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/giBleedDescendants} 
+
+}
+
+\caption{Adding all descendants to "Gastrointestinal hemorrhage".}\label{fig:giBleedDescendants}
+\end{figure}
+
+Return to the ``Definition'' tab, click on ``+Add Initial Event'' and then ``Add Condition Occurrence''. Select your previously created concept set for the condition occurrence criterion. The result should look like Figure \ref{fig:giBleedCohortDefinition}. Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking \includegraphics{images/Cohorts/save.png}, and close it by clicking \includegraphics{images/SuggestedAnswers/close.png}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/giBleedCohortDefinition} 
+
+}
+
+\caption{A simple gastrointestinal bleed cohort definition.}\label{fig:giBleedCohortDefinition}
+\end{figure}
+
+Now that we have our cohort defined, we can compute the incidence rate. Click on \includegraphics{images/Characterization/atlasIncidenceMenuItem.png} and then ``New Analysis''. Give your analysis a meaningful name (e.g.~``Incidence of GI bleed after celecoxib initiation''). Click ``Add Target Cohort'' and select our celecoxib new user cohort. Click on ``Add Outcome Cohort'' and add our new GI bleed cohort. Set the Time At Risk to end 1095 days after the start date. The analysis should now look like Figure \ref{fig:irAnalysis}. Make sure to save the analysis settings by clicking \includegraphics{images/Cohorts/save.png}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/irAnalysis} 
+
+}
+
+\caption{A incidence rate analysis.}\label{fig:irAnalysis}
+\end{figure}
+
+Click on the ``Generation'' tab, and click on ``Generate''. Select one of the data sources and click ``Generate''. When done, we can see the computed incidence rate and proportion, as shown in Figure \ref{fig:irResults}.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/irResults} 
+
+}
+
+\caption{Incidence results.}\label{fig:irResults}
+\end{figure}
 
 \hypertarget{Pleanswers}{%
 \section{Population-Level Estimation}\label{Pleanswers}}

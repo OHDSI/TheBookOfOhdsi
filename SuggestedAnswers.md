@@ -418,6 +418,89 @@ renderTranslateExecuteSql(connection, sql)
 
 
 
+## Characterization {#Characterizationanswers}
+
+#### Exercise \@ref(exr:exerciseCharacterization1) {-}
+
+In ATLAS we click on ![](images/Characterization/atlasDataSourcesMenuItem.png) and select the data source we're interested in. We could select the Drug Exposure report, select the "Table" tab, and search for "celecoxib" as shown in Figure \@ref(fig:dataSourcesAtlas). Here we see that this particular database has exosures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/dataSourcesAtlas.png" alt="Data source characterization." width="100%" />
+<p class="caption">(\#fig:dataSourcesAtlas)Data source characterization.</p>
+</div>
+
+
+#### Exercise \@ref(exr:exerciseCharacterization2) {-}
+
+Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "Celecoxib new users") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "Celecoxib"). Open the  ![](images/Cohorts/search-2.png) module, search for "celecoxib", restrict the Class to "Ingredient" and Standard Concept to "Standard", and click the ![](images/Cohorts/shoppingcart.png) to add the concept to your concept set as show in Figure \@ref(fig:conceptSearchAtlas).
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/conceptSearchAtlas.png" alt="Selecting the standard concept for the ingredient &quot;celecoxib&quot;." width="100%" />
+<p class="caption">(\#fig:conceptSearchAtlas)Selecting the standard concept for the ingredient "celecoxib".</p>
+</div>
+
+Click on the left arrow shown at the top left of Figure \@ref(fig:conceptSearchAtlas) to return to your cohort definition. Click on "+Add Initial Event" and then "Add Drug Era". Select your previously created concept set for the drug era criterion. Click on "Add attribute..." and select "Add First Exposure Criteria. Set the required continuous observation to at least 365 days before the index date. The result should look like Figure \@ref(fig:celecoxibCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/celecoxibCohortDefinition.png" alt="A simple celecoxib new user cohort definition." width="100%" />
+<p class="caption">(\#fig:celecoxibCohortDefinition)A simple celecoxib new user cohort definition.</p>
+</div>
+
+Now that we have our cohort defined, we can characterize it. Click on ![](images/Characterization/atlasCharacterizationMenuItem.png) and then "New Characterization". Give you characterization a meaningful name (e.g. "Celecoxib new users characterization"). Under Cohort Definitions, click on "Import" and select your recently created cohort definition. Under "Feature Analyses", click on "Import" and select at least one condition analysis and one drug analysis, for example "Drug Group Era Any Time Prior" and "Condition Group Era Any Time Prior". Your characterization definition should now look like Figure \@ref(fig:celecoxibCharacterization). Make sure to save the characterization settings by clicking ![](images/Cohorts/save.png).
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/celecoxibCharacterization.png" alt="Characterization settings." width="100%" />
+<p class="caption">(\#fig:celecoxibCharacterization)Characterization settings.</p>
+</div>
+
+Click on the "Exections" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/celecoxibCharacterizationResults.png" alt="Characterization settings." width="100%" />
+<p class="caption">(\#fig:celecoxibCharacterizationResults)Characterization settings.</p>
+</div>
+
+#### Exercise \@ref(exr:exerciseCharacterization3) {-}
+
+Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "GI bleed") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "GI bleed"). Open the  ![](images/Cohorts/search-2.png) module, search for "Gastrointestinal hemorrhage", and click the ![](images/Cohorts/shoppingcart.png) next to the top concept to add the concept to your concept set as show in Figure \@ref(fig:giBleedSearch). 
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/giBleedSearch.png" alt="Selecting the standard concept for &quot;Gastrointestinal hemorrhage&quot;." width="100%" />
+<p class="caption">(\#fig:giBleedSearch)Selecting the standard concept for "Gastrointestinal hemorrhage".</p>
+</div>
+
+Click on the left arrow shown at the top left of Figure \@ref(fig:giBleedSearch) to return to your cohort definition. Open the "Concept Sets" tab again, and check "Descendants" next to the GI hemorrhage concept, as shown in Figure \@ref(fig:giBleedDescendants).
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/giBleedDescendants.png" alt="Adding all descendants to &quot;Gastrointestinal hemorrhage&quot;." width="100%" />
+<p class="caption">(\#fig:giBleedDescendants)Adding all descendants to "Gastrointestinal hemorrhage".</p>
+</div>
+
+Return to the "Definition" tab, click on "+Add Initial Event" and then "Add Condition Occurrence". Select your previously created concept set for the condition occurrence criterion. The result should look like Figure \@ref(fig:giBleedCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/giBleedCohortDefinition.png" alt="A simple gastrointestinal bleed cohort definition." width="100%" />
+<p class="caption">(\#fig:giBleedCohortDefinition)A simple gastrointestinal bleed cohort definition.</p>
+</div>
+
+Now that we have our cohort defined, we can compute the incidence rate. Click on ![](images/Characterization/atlasIncidenceMenuItem.png) and then "New Analysis". Give your analysis a meaningful name (e.g. "Incidence of GI bleed after celecoxib initiation"). Click "Add Target Cohort" and select our celecoxib new user cohort. Click on "Add Outcome Cohort" and add our new GI bleed cohort. Set the Time At Risk to end 1095 days after the start date. The analysis should now look like Figure \@ref(fig:irAnalysis). Make sure to save the analysis settings by clicking ![](images/Cohorts/save.png).
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/irAnalysis.png" alt="A incidence rate analysis." width="100%" />
+<p class="caption">(\#fig:irAnalysis)A incidence rate analysis.</p>
+</div>
+
+Click on the "Generation" tab, and click on "Generate". Select one of the data sources and click "Generate". When done, we can see the computed incidence rate and proportion, as shown in Figure \@ref(fig:irResults).
+
+<div class="figure" style="text-align: center">
+<img src="images/SuggestedAnswers/irResults.png" alt="Incidence results." width="100%" />
+<p class="caption">(\#fig:irResults)Incidence results.</p>
+</div>
+
+
+
+
+
 
 ## Population-Level Estimation {#Pleanswers}
 

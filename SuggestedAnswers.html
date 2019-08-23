@@ -584,9 +584,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="E.3" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#UseCasesanswers"><i class="fa fa-check"></i><b>E.3</b> Data Analytics Use Cases</a></li>
 <li class="chapter" data-level="E.4" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#SqlAndRanswers"><i class="fa fa-check"></i><b>E.4</b> SQL and R</a></li>
 <li class="chapter" data-level="E.5" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Cohortsanswers"><i class="fa fa-check"></i><b>E.5</b> Defining Cohorts</a></li>
-<li class="chapter" data-level="E.6" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Pleanswers"><i class="fa fa-check"></i><b>E.6</b> Population-Level Estimation</a></li>
-<li class="chapter" data-level="E.7" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Plpanswers"><i class="fa fa-check"></i><b>E.7</b> Patient-Level Prediction</a></li>
-<li class="chapter" data-level="E.8" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#DataQualityanswers"><i class="fa fa-check"></i><b>E.8</b> Data Quality</a></li>
+<li class="chapter" data-level="E.6" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Characterizationanswers"><i class="fa fa-check"></i><b>E.6</b> Characterization</a></li>
+<li class="chapter" data-level="E.7" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Pleanswers"><i class="fa fa-check"></i><b>E.7</b> Population-Level Estimation</a></li>
+<li class="chapter" data-level="E.8" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#Plpanswers"><i class="fa fa-check"></i><b>E.8</b> Patient-Level Prediction</a></li>
+<li class="chapter" data-level="E.9" data-path="SuggestedAnswers.html"><a href="SuggestedAnswers.html#DataQualityanswers"><i class="fa fa-check"></i><b>E.9</b> Data Quality</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -1259,8 +1260,90 @@ Figure E.7: Setting the cohort exit date.
 <span id="cb170-4"><a href="SuggestedAnswers.html#cb170-4"></a><span class="kw">renderTranslateExecuteSql</span>(connection, sql)</span></code></pre></div>
 </div>
 </div>
+<div id="Characterizationanswers" class="section level2">
+<h2><span class="header-section-number">E.6</span> Characterization</h2>
+<div id="exercise-refexrexercisecharacterization1" class="section level4 unnumbered">
+<h4>Exercise <a href="Characterization.html#exr:exerciseCharacterization1">12.1</a></h4>
+<p>In ATLAS we click on <img src="images/Characterization/atlasDataSourcesMenuItem.png" /> and select the data source we’re interested in. We could select the Drug Exposure report, select the “Table” tab, and search for “celecoxib” as shown in Figure <a href="SuggestedAnswers.html#fig:dataSourcesAtlas">E.8</a>. Here we see that this particular database has exosures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.</p>
+<div class="figure" style="text-align: center"><span id="fig:dataSourcesAtlas"></span>
+<img src="images/SuggestedAnswers/dataSourcesAtlas.png" alt="Data source characterization." width="100%" />
+<p class="caption">
+Figure E.8: Data source characterization.
+</p>
+</div>
+</div>
+<div id="exercise-refexrexercisecharacterization2" class="section level4 unnumbered">
+<h4>Exercise <a href="Characterization.html#exr:exerciseCharacterization2">12.2</a></h4>
+<p>Click on <img src="images/Cohorts/cohortdefinition.png" /> and then “New cohort” to create a new cohort. Give the cohort a meaningful name (e.g. “Celecoxib new users”) and go to the “Concept Sets” tab. Click on “New Concept Set”, and give your concept set a meaningful names (e.g. “Celecoxib”). Open the <img src="images/Cohorts/search-2.png" /> module, search for “celecoxib”, restrict the Class to “Ingredient” and Standard Concept to “Standard”, and click the <img src="images/Cohorts/shoppingcart.png" /> to add the concept to your concept set as show in Figure <a href="SuggestedAnswers.html#fig:conceptSearchAtlas">E.9</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:conceptSearchAtlas"></span>
+<img src="images/SuggestedAnswers/conceptSearchAtlas.png" alt="Selecting the standard concept for the ingredient &quot;celecoxib&quot;." width="100%" />
+<p class="caption">
+Figure E.9: Selecting the standard concept for the ingredient “celecoxib”.
+</p>
+</div>
+<p>Click on the left arrow shown at the top left of Figure <a href="SuggestedAnswers.html#fig:conceptSearchAtlas">E.9</a> to return to your cohort definition. Click on “+Add Initial Event” and then “Add Drug Era”. Select your previously created concept set for the drug era criterion. Click on “Add attribute…” and select "Add First Exposure Criteria. Set the required continuous observation to at least 365 days before the index date. The result should look like Figure <a href="SuggestedAnswers.html#fig:celecoxibCohortDefinition">E.10</a>. Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking <img src="images/Cohorts/save.png" />, and close it by clicking <img src="images/SuggestedAnswers/close.png" />.</p>
+<div class="figure" style="text-align: center"><span id="fig:celecoxibCohortDefinition"></span>
+<img src="images/SuggestedAnswers/celecoxibCohortDefinition.png" alt="A simple celecoxib new user cohort definition." width="100%" />
+<p class="caption">
+Figure E.10: A simple celecoxib new user cohort definition.
+</p>
+</div>
+<p>Now that we have our cohort defined, we can characterize it. Click on <img src="images/Characterization/atlasCharacterizationMenuItem.png" /> and then “New Characterization”. Give you characterization a meaningful name (e.g. “Celecoxib new users characterization”). Under Cohort Definitions, click on “Import” and select your recently created cohort definition. Under “Feature Analyses”, click on “Import” and select at least one condition analysis and one drug analysis, for example “Drug Group Era Any Time Prior” and “Condition Group Era Any Time Prior”. Your characterization definition should now look like Figure <a href="SuggestedAnswers.html#fig:celecoxibCharacterization">E.11</a>. Make sure to save the characterization settings by clicking <img src="images/Cohorts/save.png" />.</p>
+<div class="figure" style="text-align: center"><span id="fig:celecoxibCharacterization"></span>
+<img src="images/SuggestedAnswers/celecoxibCharacterization.png" alt="Characterization settings." width="100%" />
+<p class="caption">
+Figure E.11: Characterization settings.
+</p>
+</div>
+<p>Click on the “Exections” tab, and click on “Generate” for one of the data sources. It may take a while for the generation to complete. When done, we can click on “View latest results”. The resulting screen will look something like Figure <a href="SuggestedAnswers.html#fig:celecoxibCharacterizationResults">E.12</a>, showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.</p>
+<div class="figure" style="text-align: center"><span id="fig:celecoxibCharacterizationResults"></span>
+<img src="images/SuggestedAnswers/celecoxibCharacterizationResults.png" alt="Characterization settings." width="100%" />
+<p class="caption">
+Figure E.12: Characterization settings.
+</p>
+</div>
+</div>
+<div id="exercise-refexrexercisecharacterization3" class="section level4 unnumbered">
+<h4>Exercise <a href="Characterization.html#exr:exerciseCharacterization3">12.3</a></h4>
+<p>Click on <img src="images/Cohorts/cohortdefinition.png" /> and then “New cohort” to create a new cohort. Give the cohort a meaningful name (e.g. “GI bleed”) and go to the “Concept Sets” tab. Click on “New Concept Set”, and give your concept set a meaningful names (e.g. “GI bleed”). Open the <img src="images/Cohorts/search-2.png" /> module, search for “Gastrointestinal hemorrhage”, and click the <img src="images/Cohorts/shoppingcart.png" /> next to the top concept to add the concept to your concept set as show in Figure <a href="SuggestedAnswers.html#fig:giBleedSearch">E.13</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:giBleedSearch"></span>
+<img src="images/SuggestedAnswers/giBleedSearch.png" alt="Selecting the standard concept for &quot;Gastrointestinal hemorrhage&quot;." width="100%" />
+<p class="caption">
+Figure E.13: Selecting the standard concept for “Gastrointestinal hemorrhage”.
+</p>
+</div>
+<p>Click on the left arrow shown at the top left of Figure <a href="SuggestedAnswers.html#fig:giBleedSearch">E.13</a> to return to your cohort definition. Open the “Concept Sets” tab again, and check “Descendants” next to the GI hemorrhage concept, as shown in Figure <a href="SuggestedAnswers.html#fig:giBleedDescendants">E.14</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:giBleedDescendants"></span>
+<img src="images/SuggestedAnswers/giBleedDescendants.png" alt="Adding all descendants to &quot;Gastrointestinal hemorrhage&quot;." width="100%" />
+<p class="caption">
+Figure E.14: Adding all descendants to “Gastrointestinal hemorrhage”.
+</p>
+</div>
+<p>Return to the “Definition” tab, click on “+Add Initial Event” and then “Add Condition Occurrence”. Select your previously created concept set for the condition occurrence criterion. The result should look like Figure <a href="SuggestedAnswers.html#fig:giBleedCohortDefinition">E.15</a>. Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking <img src="images/Cohorts/save.png" />, and close it by clicking <img src="images/SuggestedAnswers/close.png" />.</p>
+<div class="figure" style="text-align: center"><span id="fig:giBleedCohortDefinition"></span>
+<img src="images/SuggestedAnswers/giBleedCohortDefinition.png" alt="A simple gastrointestinal bleed cohort definition." width="100%" />
+<p class="caption">
+Figure E.15: A simple gastrointestinal bleed cohort definition.
+</p>
+</div>
+<p>Now that we have our cohort defined, we can compute the incidence rate. Click on <img src="images/Characterization/atlasIncidenceMenuItem.png" /> and then “New Analysis”. Give your analysis a meaningful name (e.g. “Incidence of GI bleed after celecoxib initiation”). Click “Add Target Cohort” and select our celecoxib new user cohort. Click on “Add Outcome Cohort” and add our new GI bleed cohort. Set the Time At Risk to end 1095 days after the start date. The analysis should now look like Figure <a href="SuggestedAnswers.html#fig:irAnalysis">E.16</a>. Make sure to save the analysis settings by clicking <img src="images/Cohorts/save.png" />.</p>
+<div class="figure" style="text-align: center"><span id="fig:irAnalysis"></span>
+<img src="images/SuggestedAnswers/irAnalysis.png" alt="A incidence rate analysis." width="100%" />
+<p class="caption">
+Figure E.16: A incidence rate analysis.
+</p>
+</div>
+<p>Click on the “Generation” tab, and click on “Generate”. Select one of the data sources and click “Generate”. When done, we can see the computed incidence rate and proportion, as shown in Figure <a href="SuggestedAnswers.html#fig:irResults">E.17</a>.</p>
+<div class="figure" style="text-align: center"><span id="fig:irResults"></span>
+<img src="images/SuggestedAnswers/irResults.png" alt="Incidence results." width="100%" />
+<p class="caption">
+Figure E.17: Incidence results.
+</p>
+</div>
+</div>
+</div>
 <div id="Pleanswers" class="section level2">
-<h2><span class="header-section-number">E.6</span> Population-Level Estimation</h2>
+<h2><span class="header-section-number">E.7</span> Population-Level Estimation</h2>
 <div id="exercise-refexrexerciseple1" class="section level4 unnumbered">
 <h4>Exercise <a href="PopulationLevelEstimation.html#exr:exercisePle1">13.1</a></h4>
 <p>We specify the default set of covariates, but we must exclude the two drugs we’re comparing, including all their descendants, because else our propensity model will become perfectly predictive:</p>
@@ -1374,7 +1457,7 @@ Figure E.7: Setting the cohort exit date.
 </div>
 </div>
 <div id="Plpanswers" class="section level2">
-<h2><span class="header-section-number">E.7</span> Patient-Level Prediction</h2>
+<h2><span class="header-section-number">E.8</span> Patient-Level Prediction</h2>
 <div id="exercise-refexrexerciseplp1" class="section level4 unnumbered">
 <h4>Exercise <a href="PatientLevelPrediction.html#exr:exercisePlp1">14.1</a></h4>
 <p>We specify a set of covariate settings, and use the <code>getPlpData</code> function to extract the data from the database:</p>
@@ -1451,17 +1534,17 @@ Figure E.7: Setting the cohort exit date.
 <p>Note that for this example set the random seeds both for the LASSO cross-validation and for the train-test split to make sure the results will be the same on multiple runs.</p>
 <p>We can now view the results using the Shiny app:</p>
 <div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="SuggestedAnswers.html#cb185-1"></a><span class="kw">viewPlp</span>(lassoResults)</span></code></pre></div>
-<p>This will launch the app as shown in Figure <a href="SuggestedAnswers.html#fig:plpShiny">E.8</a>. Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.</p>
+<p>This will launch the app as shown in Figure <a href="SuggestedAnswers.html#fig:plpShiny">E.18</a>. Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.</p>
 <div class="figure" style="text-align: center"><span id="fig:plpShiny"></span>
 <img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
 <p class="caption">
-Figure E.8: Patient-level prediction Shiny app.
+Figure E.18: Patient-level prediction Shiny app.
 </p>
 </div>
 </div>
 </div>
 <div id="DataQualityanswers" class="section level2">
-<h2><span class="header-section-number">E.8</span> Data Quality</h2>
+<h2><span class="header-section-number">E.9</span> Data Quality</h2>
 <div id="exercise-refexrexerciserunachilles" class="section level4 unnumbered">
 <h4>Exercise <a href="DataQuality.html#exr:exerciseRunAchilles">16.1</a></h4>
 <p>To run ACHILLES:</p>

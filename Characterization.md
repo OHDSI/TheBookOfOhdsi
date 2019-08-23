@@ -490,21 +490,30 @@ As shown, the metrics calculated are the same but the interpretation is differen
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- Characterization describes a cohort of interest during the time preceding the index date (**baseline**) and the time after index (**post-index**).
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- OHDSI offers tools to characterize an entire database, or a cohort of interest.
 
-- ATLAS' characterization module and the OHDSI Methods Library provide the capability to calculate baseline characteristics for multiple time windows.
+- Cohort characterization describes a cohort of interest during the time preceding the index date (**baseline**) and the time after index (**post-index**).
 
-- ATLAS' pathways and incidence rate modules provide descriptive statistics during the post-index time period.
+- ATLAS's characterization module and the OHDSI Methods Library provide the capability to calculate baseline characteristics for multiple time windows.
+
+- ATLAS's pathways and incidence rate modules provide descriptive statistics during the post-index time period.
 </div>\EndKnitrBlock{rmdsummary}
 
 
 ## Exercises
 
-1. We would like to understand how hypertensive treatments are utilized in a real world setting. To start, we would like to understand the composition of data that a source has for a hypertensive medication such as Lisinopril. How would you use ATLAS data source module to find information on Lisinopril?
-2. In the chapter we characterized new users of any hypertensive medication and utilized the cohort pathways tool in ATLAS to find that ACE Inhibitors and thiazides were the most commonly used first-line drug therapy. To better understand the disease natural history of patients initiating ACE inhibitors and Thiazides, use ATLAS to construct a cohort characterization for these populations to understand their demographics, concomitant medications and comorbid conditions.
-3. How might we design a pathways analysis to characterize procedure sequences used to treat hypertension (i.e. cardiac bypass surgery, carotid artery surgery and dialysis)?
-4. Using the preceding conditions found in exercise #2, construct an incidence rate analysis to find the rate of an outcome in the ACEi and THZ populations. 
+#### Prerequisites {-}
 
-`**TODO: Define exercises using Eunomia.**`
+For the first exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
 
-`Per chapter 13: Note: The excercises still have to be defined. The idea is to require readers to define a study that estimates the effect of celecoxib on GI bleed, compared to diclofenac. For this they must use the Eunomia package, which is still under development.`
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCharacterization1"><strong>(\#exr:exerciseCharacterization1) </strong></span>We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCharacterization2"><strong>(\#exr:exerciseCharacterization2) </strong></span>We would like to better understand the disease natural history of celecoxib users. Create a simple cohort of new users of celecoxib using a 365-day washout period (see Chapter \@ref(Cohorts) for details on how to do this), and use ATLAS to create a characterization of this cohort, showing co-morbid conditions and drug-exposures.
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCharacterization3"><strong>(\#exr:exerciseCharacterization3) </strong></span>We are interested in understand how often gastrointestinal (GI) bleeds occur any time after people initiate celecoxib treatment. Create a cohort of GI bleed events, simply defined as any occurrence of concept [192671](http://athena.ohdsi.org/search-terms/terms/192671) ("Gastrointestinal hemorrhage") or any of its descendants. Compute the incidence rate of these GI events after celecoxib initiation, using the exposure cohort defined in the previous exercise.
+</div>\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \@ref(Characterizationanswers).
+
