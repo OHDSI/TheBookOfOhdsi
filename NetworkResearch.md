@@ -1,14 +1,14 @@
 # OHDSI Network Research {#NetworkResearch}
 
-Chapter Leads: Kristin Kostka, Sara Dempster, Greg Klebanov
+Chapter Leads: Kristin Kostka, Sara Dempster, Greg Klebano
 
-The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including Standardized Vocabularies ,the Common Data Model (CDM) ,analytical methods packages, ATLAS and the study steps (Chapter\@ref(StudySteps)) to run a retrospective database study. OHDSI Network Studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
+The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including Standardized Vocabularies, the Common Data Model (CDM), analytical methods packages, ATLAS and the study steps (Chapter \@ref(StudySteps)) to run a retrospective database study. OHDSI Network Studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
 
 ##  OHDSI as a research network
 
 \index{research network}
 
-The OHDSI research network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 1.2 billion patient records (~650 million de-duplicated patient records) in the CDM. This includes more than 220 researchers and 82 observational health databases across 17 countries with regional central coordinating centers housed at Columbia University (USA), Erasmus Medical Center (Europe) and Ajou University (South Korea). The OHDSI community continues to grow rapidly across Europe (in collaboration with the IMI EHDEN project), Central America (e.g. Argentina, Brazil, Colombia), and Asia (e.g. China, Japan, Singapore). 
+The OHDSI research network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 1.9 billion patient records (~650 million de-duplicated patient records) in the CDM. This includes more than 220 researchers and 82 observational health databases across 17 countries with regional central coordinating centers housed at Columbia University (USA), Erasmus Medical Center (Europe) and Ajou University (South Korea). The OHDSI community continues to grow rapidly across Europe (in collaboration with the IMI EHDEN project), Central America (e.g. Argentina, Brazil, Colombia), and Asia (e.g. China, Japan, Singapore). 
 
 OHDSI is an open network, inviting healthcare institutions across the globe with active patient data to join the network and convert data to the CDM. As data conversions are complete, collaborators are invited to report site information in the Data Network census maintained by the [OHDSI Program Manager](mailto:beaton@ohdsi.org). Each OHDSI network site participates voluntarily. There are no hard obligations. Each site opts-in to each respective network study. In each study, data remains at the site behind a firewall.  No data pooling occurs across network sites. Only aggregate results are shared.
 
@@ -31,7 +31,9 @@ The results of an observational study can be influenced by many factors that var
 
 Network studies therefore offer the opportunity to investigate the effects of “real world” factors on observational studies’ findings by examining a broad array of settings and data sources.  
 
-In general, a study may be conducted on a single CDM or on multiple CDMs. It can be run within a single institution’s CDM data or across many institutions. In this chapter we will discuss the considerations when an OHDSI study evolves to become a study run across the OHDSI network. *Note: OHDSI is not one person but many. Every network study will need its own study lead. OHDSI, by definition, does not do research -- people do research for OHDSI.* The OHDSI approach to network research uses the OMOP CDM and standardized tools and study packages which fully specify all parameters for running a study. OHDSI standardized analytics are designed specifically to reduce artifacts and improve the efficiency and scalability of network studies.  
+In general, a study may be conducted on a single CDM or on multiple CDMs. It can be run within a single institution’s CDM data or across many institutions. 
+
+In this chapter we will discuss the considerations when an OHDSI study evolves to become a study run across the OHDSI network. *Note: OHDSI is not one person but many. Every network study will need its own study lead. OHDSI, by definition, does not do research -- people do research for OHDSI.* The OHDSI approach to network research uses the OMOP CDM and standardized tools and study packages which fully specify all parameters for running a study. OHDSI standardized analytics are designed specifically to reduce artifacts and improve the efficiency and scalability of network studies.  
 
 ### Definition of an OHDSI network study
 
@@ -125,7 +127,7 @@ During the results dissemination and publication phase, the study lead will coll
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">Not sure where to publish your OHDSI network study? Consult JANE (Journal/Author Name Estimator), a tool which takes your abstract and scans publications for relevance and fit (http://jane.biosemantics.org/).</div>\EndKnitrBlock{rmdimportant}
 
-As manuscripts are written, each participating site is encouraged to review and ensure the output follows external publication processes. At a minimum, the participating site should designate a publication  The choice of which journal to submit a study to is at the discretion of the study lead. The presentation of results may occur in any forum of their choosing (e.g. an OHDSI Symposium, another academic proceeding or in a journal publication).  Researchers are also invited to present OHDSI Network Studies on weekly OHDSI community calls and at OHDSI Symposiums across the globe.
+As manuscripts are written, each participating site is encouraged to review and ensure the output follows external publication processes. At a minimum, the participating site should designate a publication  The choice of which journal to submit a study to is at the discretion of the study lead. The presentation of results may occur in any forum of their choosing (e.g. an OHDSI Symposium, another academic proceeding or in a journal publication).  Researchers are also invited to present OHDSI Network Studies on weekly OHDSI community calls and at OHDSI Symposia across the globe.
 
 
 ## Forward looking: using network study automation
