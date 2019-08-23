@@ -25,7 +25,7 @@ Two closely-integrated tools have been developed to support the ETL design proce
 
 To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the [White Rabbit](https://github.com/OHDSI/WhiteRabbit) tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the [OMOP CDM](https://github.com/OHDSI/CommonDataModel). White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub [^whiteRabbitGithubUrl]. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
-[^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit].
+[^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit.
 
 #### Scope and Purpose  {-}
 
@@ -389,3 +389,49 @@ The ETL process is a difficult one to master for many reasons, not the least of 
 
 - There are many ETL examples and agreed upon conventions you can use as a guide
 </div>\EndKnitrBlock{rmdsummary}
+
+## Exercises
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseEtl1"><strong>(\#exr:exerciseEtl1) </strong></span>Put the steps of the ETL process in the proper order:
+  
+A) Data experts and CDM experts together design the ETL
+B) A technical person implements the ETL
+C) People with medical knowledge create the code mappings
+D) All are involved in quality control 
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseEtl2"><strong>(\#exr:exerciseEtl2) </strong></span>Using OHDSI resources of your choice, spot four issues with the PERSON record show in Table \@ref(tab:exercisePersonTable) (table abbreviated for space):
+
+Table: (\#tab:exercisePersonTable) A PERSON table.
+
+Column | Value
+:---------------- |:-----------
+PERSON_ID | A123B456
+GENDER_CONCEPT_ID | 8532
+YEAR_OF_BIRTH | NULL
+MONTH_OF_BIRTH | NULL
+DAY_OF_BIRTH | NULL
+RACE_CONCEPT_ID | 0
+ETHNICITY_CONCEPT_ID | 8527
+PERSON_SOURCE_VALUE | A123B456
+GENDER_SOURCE_VALUE | F
+RACE_SOURCE_VALUE | WHITE
+ETHNICITY_SOURCE_VALUE | NONE PROVIDED
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseEtl3"><strong>(\#exr:exerciseEtl3) </strong></span>Let us try to generate VISIT_OCCURRENCE records.  Here is some example logic written for Synthea:
+Sort data in ascending order by PATIENT, START, END. Then by PERSON_ID, collapse lines of claim as long as the time between the END of one line and the START of the next is <=1 day. Each consolidated inpatient claim is then considered as one inpatient visit, set:
+  
+- MIN(START) as VISIT_START_DATE
+- MAX(END) as VISIT_END_DATE
+- "IP" as PLACE_OF_SERVICE_SOURCE_VALUE
+
+If you see a set of visits as shown in Figure \@ref(fig:exerciseSourceData) in your source data, how would you expect the resulting VISIT_OCCURRENCE record(s) to look in the CDM?
+</div>\EndKnitrBlock{exercise}
+
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/exerciseSourceData.png" alt="Example source data." width="100%" />
+<p class="caption">(\#fig:exerciseSourceData)Example source data.</p>
+</div>
+
+Suggested answers can be found in Appendix \@ref(Etlanswers).

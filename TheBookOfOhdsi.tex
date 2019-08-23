@@ -2118,7 +2118,7 @@ Two closely-integrated tools have been developed to support the ETL design proce
 \hypertarget{white-rabbit}{%
 \subsection{White Rabbit}\label{white-rabbit}}
 
-To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the \href{https://github.com/OHDSI/WhiteRabbit}{White Rabbit} tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the \href{https://github.com/OHDSI/CommonDataModel}{OMOP CDM}. White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub \footnote{\url{https://github.com/OHDSI/WhiteRabbit}{]}.}. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
+To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the \href{https://github.com/OHDSI/WhiteRabbit}{White Rabbit} tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the \href{https://github.com/OHDSI/CommonDataModel}{OMOP CDM}. White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub \footnote{\url{https://github.com/OHDSI/WhiteRabbit}.}. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
 \hypertarget{scope-and-purpose}{%
 \subsubsection*{Scope and Purpose}\label{scope-and-purpose}}
@@ -2784,6 +2784,82 @@ The ETL process is a difficult one to master for many reasons, not the least of 
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
+\hypertarget{exercises-1}{%
+\section{Exercises}\label{exercises-1}}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseEtl1}{}{\label{exr:exerciseEtl1} }Put the steps of the ETL process in the proper order:
+
+\begin{enumerate}
+\def\labelenumi{\Alph{enumi})}
+\tightlist
+\item
+  Data experts and CDM experts together design the ETL
+\item
+  A technical person implements the ETL
+\item
+  People with medical knowledge create the code mappings
+\item
+  All are involved in quality control
+\end{enumerate}
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseEtl2}{}{\label{exr:exerciseEtl2} }Using OHDSI resources of your choice, spot four issues with the PERSON record show in Table \ref{tab:exercisePersonTable} (table abbreviated for space):
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{\label{tab:exercisePersonTable} A PERSON table.}\tabularnewline
+\toprule
+Column & Value\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Column & Value\tabularnewline
+\midrule
+\endhead
+PERSON\_ID & A123B456\tabularnewline
+GENDER\_CONCEPT\_ID & 8532\tabularnewline
+YEAR\_OF\_BIRTH & NULL\tabularnewline
+MONTH\_OF\_BIRTH & NULL\tabularnewline
+DAY\_OF\_BIRTH & NULL\tabularnewline
+RACE\_CONCEPT\_ID & 0\tabularnewline
+ETHNICITY\_CONCEPT\_ID & 8527\tabularnewline
+PERSON\_SOURCE\_VALUE & A123B456\tabularnewline
+GENDER\_SOURCE\_VALUE & F\tabularnewline
+RACE\_SOURCE\_VALUE & WHITE\tabularnewline
+ETHNICITY\_SOURCE\_VALUE & NONE PROVIDED\tabularnewline
+\bottomrule
+\end{longtable}
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseEtl3}{}{\label{exr:exerciseEtl3} }Let us try to generate VISIT\_OCCURRENCE records. Here is some example logic written for Synthea:
+Sort data in ascending order by PATIENT, START, END. Then by PERSON\_ID, collapse lines of claim as long as the time between the END of one line and the START of the next is \textless=1 day. Each consolidated inpatient claim is then considered as one inpatient visit, set:
+
+\begin{itemize}
+\tightlist
+\item
+  MIN(START) as VISIT\_START\_DATE
+\item
+  MAX(END) as VISIT\_END\_DATE
+\item
+  ``IP'' as PLACE\_OF\_SERVICE\_SOURCE\_VALUE
+\end{itemize}
+
+If you see a set of visits as shown in Figure \ref{fig:exerciseSourceData} in your source data, how would you expect the resulting VISIT\_OCCURRENCE record(s) to look in the CDM?
+\EndKnitrBlock{exercise}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/exerciseSourceData} 
+
+}
+
+\caption{Example source data.}\label{fig:exerciseSourceData}
+\end{figure}
+
+Suggested answers can be found in Appendix \ref{Etlanswers}.
+
 \hypertarget{part-data-analytics}{%
 \part{Data Analytics}\label{part-data-analytics}}
 
@@ -3074,8 +3150,8 @@ Missingness in OHDSI databases presents subtle challenges. A health event (e.g.,
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-1}{%
-\section{Exercises}\label{exercises-1}}
+\hypertarget{exercises-2}{%
+\section{Exercises}\label{exercises-2}}
 
 \BeginKnitrBlock{exercise}
 \protect\hypertarget{exr:exerciseUseCases1}{}{\label{exr:exerciseUseCases1} }Which use case categories do these questions belong to?
@@ -3855,7 +3931,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.dws3zscschildren ;"
+## [1] "SELECT * FROM temp_schema.n5u0dg55children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4636,8 +4712,8 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-2}{%
-\section{Exercises}\label{exercises-2}}
+\hypertarget{exercises-3}{%
+\section{Exercises}\label{exercises-3}}
 
 \hypertarget{prerequisites-2}{%
 \subsubsection*{Prerequisites}\label{prerequisites-2}}
@@ -5367,8 +5443,8 @@ Finally, it is always recommend to clean up any temp tables that were created, a
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-3}{%
-\section{Exercises}\label{exercises-3}}
+\hypertarget{exercises-4}{%
+\section{Exercises}\label{exercises-4}}
 
 \hypertarget{prerequisites-3}{%
 \subsubsection*{Prerequisites}\label{prerequisites-3}}
@@ -6119,8 +6195,8 @@ As shown, the metrics calculated are the same but the interpretation is differen
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-4}{%
-\section{Exercises}\label{exercises-4}}
+\hypertarget{exercises-5}{%
+\section{Exercises}\label{exercises-5}}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -7338,8 +7414,8 @@ We observe a hazard ratio of 4.32 (95\% confidence interval: 2.45 - 8.08) for an
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-5}{%
-\section{Exercises}\label{exercises-5}}
+\hypertarget{exercises-6}{%
+\section{Exercises}\label{exercises-6}}
 
 \hypertarget{prerequisites-5}{%
 \subsubsection*{Prerequisites}\label{prerequisites-5}}
@@ -9015,8 +9091,8 @@ For more details see the help page of the function.
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-6}{%
-\section{Exercises}\label{exercises-6}}
+\hypertarget{exercises-7}{%
+\section{Exercises}\label{exercises-7}}
 
 \hypertarget{prerequisites-6}{%
 \subsubsection*{Prerequisites}\label{prerequisites-6}}
@@ -9621,8 +9697,8 @@ The only potential orphan found that is actually used in the data is ``Angioneur
 \end{itemize}
 \EndKnitrBlock{rmdsummary}
 
-\hypertarget{exercises-7}{%
-\section{Exercises}\label{exercises-7}}
+\hypertarget{exercises-8}{%
+\section{Exercises}\label{exercises-8}}
 
 \hypertarget{prerequisites-7}{%
 \subsubsection*{Prerequisites}\label{prerequisites-7}}
@@ -12681,6 +12757,139 @@ This information is stored in the OBSERVATION\_PERIOD table:
 ##   OBSERVATION_PERIOD_ID PERSON_ID OBSERVATION_PERIOD_START_DATE ...
 ## 1                    61        61                    1968-01-21 ...
 \end{verbatim}
+
+\hypertarget{Etlanswers}{%
+\section{Extract Transform Load}\label{Etlanswers}}
+
+\hypertarget{exercise-refexrexerciseetl1}{%
+\subsubsection*{Exercise \ref{exr:exerciseEtl1}}\label{exercise-refexrexerciseetl1}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseEtl1}}
+
+\begin{enumerate}
+\def\labelenumi{\Alph{enumi})}
+\tightlist
+\item
+  Data experts and CDM experts together design the ETL
+\item
+  People with medical knowledge create the code mappings
+\item
+  A technical person implements the ETL
+\item
+  All are involved in quality control
+\end{enumerate}
+
+\hypertarget{exercise-refexrexerciseetl2}{%
+\subsubsection*{Exercise \ref{exr:exerciseEtl2}}\label{exercise-refexrexerciseetl2}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseEtl2}}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule
+\begin{minipage}[b]{0.29\columnwidth}\raggedright
+Column\strut
+\end{minipage} & \begin{minipage}[b]{0.21\columnwidth}\raggedright
+Value\strut
+\end{minipage} & \begin{minipage}[b]{0.41\columnwidth}\raggedright
+Answer\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+PERSON\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+A123B456\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+This column has a data type of integer so the source record value needs to be translated to a numeric value.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+GENDER\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+8532\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+YEAR\_OF\_BIRTH\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+If we do not know the month or day of birth, we do not guess. A person can exist without a month or day of birth. If a person lacks a birth year that person should be dropped. This person would have to be dropped due to now year of birth.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+MONTH\_OF\_BIRTH\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+DAY\_OF\_BIRTH\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+NULL\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+RACE\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+0\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+The race is WHITE which should be mapped to 8527.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+ETHNICITY\_CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+8527\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+No ethnicity was provided, this should be mapped to 0.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+PERSON\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+A123B456\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+GENDER\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+F\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+RACE\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+WHITE\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+ETHNICITY\_SOURCE\_VALUE\strut
+\end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
+NONE PROVIDED\strut
+\end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
+\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{exercise-refexrexerciseetl3}{%
+\subsubsection*{Exercise \ref{exr:exerciseEtl3}}\label{exercise-refexrexerciseetl3}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseEtl3}}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Column & Value\tabularnewline
+\midrule
+\endhead
+VISIT\_OCCURRENCE\_ID & 1\tabularnewline
+PERSON\_ID & 11\tabularnewline
+VISIT\_START\_DATE & 2004-09-26\tabularnewline
+VISIT\_END\_DATE & 2004-09-30\tabularnewline
+VISIT\_CONCEPT\_ID & 9201\tabularnewline
+VISIT\_SOURCE\_VALUE & inpatient\tabularnewline
+\bottomrule
+\end{longtable}
 
 \hypertarget{UseCasesanswers}{%
 \section{Data Analytics Use Cases}\label{UseCasesanswers}}
