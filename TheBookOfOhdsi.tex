@@ -3986,7 +3986,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.fxr45h4rchildren ;"
+## [1] "SELECT * FROM temp_schema.l99vxa2jchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -9784,6 +9784,7 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 \begin{Highlighting}[]
 \KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
 \NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Achilles"}\NormalTok{)}
+\NormalTok{devtools}\OperatorTok{:}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/dataqualitydashboard"}\NormalTok{)}
 \NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -9803,7 +9804,11 @@ The CDM database schema is ``main''.
 \EndKnitrBlock{exercise}
 
 \BeginKnitrBlock{exercise}
-\protect\hypertarget{exr:exerciseViewHeel}{}{\label{exr:exerciseViewHeel} }Extract the ACHILLES Heel list of issues.
+\protect\hypertarget{exr:exerciseRunDQD}{}{\label{exr:exerciseRunDQD} }Execute the DataQualityDashboard against the Eunomia database.
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+\protect\hypertarget{exr:exerciseViewDQD}{}{\label{exr:exerciseViewDQD} }Extract the DQD list of checks.
 \EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \ref{DataQualityanswers}.
@@ -13733,17 +13738,31 @@ To run ACHILLES:
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{exercise-refexrexerciseviewheel}{%
-\subsubsection*{Exercise \ref{exr:exerciseViewHeel}}\label{exercise-refexrexerciseviewheel}}
-\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseViewHeel}}
+\hypertarget{exercise-refexrexerciserundqd}{%
+\subsubsection*{Exercise \ref{exr:exerciseRunDQD}}\label{exercise-refexrexerciserundqd}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseRunDQD}}
 
-To run extract the ACHILLES Heel issue list:
+To run the Data Quality Dashboard:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{heel <-}\StringTok{ }\KeywordTok{fetchAchillesHeelResults}\NormalTok{(connectionDetails,}
-                                 \DataTypeTok{resultsDatabaseSchema =} \StringTok{"main"}\NormalTok{)}
-\KeywordTok{View}\NormalTok{(heel)}
+\NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{executeDqChecks}\NormalTok{(connectionDetails, }
+                                      \DataTypeTok{cdmDatabaseSchema =} \StringTok{"main"}\NormalTok{, }
+                                      \DataTypeTok{resultsDatabaseSchema =} \StringTok{"main"}\NormalTok{,}
+                                      \DataTypeTok{cdmSourceName =} \StringTok{"Eunomia"}\NormalTok{,}
+                                      \DataTypeTok{outputFolder =} \StringTok{"C:/dataQualityExample"}\NormalTok{) }\CommentTok{#or your folder of choice}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{exercise-refexrexerciseviewdqd}{%
+\subsubsection*{Exercise \ref{exr:exerciseViewDQD}}\label{exercise-refexrexerciseviewdqd}}
+\addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exerciseViewDQD}}
+
+To view the list of data quality checks:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{viewDqDashboard}\NormalTok{(}\StringTok{"C:/dataQualityExample/Eunomia/results_Eunomia.json"}\NormalTok{) }\CommentTok{#or your folder of choice}
 \end{Highlighting}
 \end{Shaded}
 

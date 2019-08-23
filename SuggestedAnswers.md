@@ -791,13 +791,24 @@ result <- achilles(connectionDetails,
                    cdmVersion = "5.3.0")
 ```
 
-#### Exercise \@ref(exr:exerciseViewHeel) {-}
+#### Exercise \@ref(exr:exerciseRunDQD) {-}
 
-To run extract the ACHILLES Heel issue list:
+To run the Data Quality Dashboard:
 
 
 ```r
-heel <- fetchAchillesHeelResults(connectionDetails,
-                                 resultsDatabaseSchema = "main")
-View(heel)
+DataQualityDashboard::executeDqChecks(connectionDetails, 
+                                      cdmDatabaseSchema = "main", 
+                                      resultsDatabaseSchema = "main",
+                                      cdmSourceName = "Eunomia",
+                                      outputFolder = "C:/dataQualityExample") #or your folder of choice
+```
+
+#### Exercise \@ref(exr:exerciseViewDQD) {-}
+
+To view the list of data quality checks:
+
+
+```r
+DataQualityDashboard::viewDqDashboard("C:/dataQualityExample/Eunomia/results_Eunomia.json") #or your folder of choice
 ```

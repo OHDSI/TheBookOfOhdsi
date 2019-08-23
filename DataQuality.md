@@ -340,6 +340,7 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 ```r
 install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
 devtools::install_github("ohdsi/Achilles")
+devtools:install_github("ohdsi/dataqualitydashboard")
 devtools::install_github("ohdsi/Eunomia")
 ```
 
@@ -356,7 +357,10 @@ The CDM database schema is "main".
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseRunAchilles"><strong>(\#exr:exerciseRunAchilles) </strong></span>Execute ACHILLES against the Eunomia database.
 </div>\EndKnitrBlock{exercise}
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseViewHeel"><strong>(\#exr:exerciseViewHeel) </strong></span>Extract the ACHILLES Heel list of issues.
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseRunDQD"><strong>(\#exr:exerciseRunDQD) </strong></span>Execute the DataQualityDashboard against the Eunomia database.
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseViewDQD"><strong>(\#exr:exerciseViewDQD) </strong></span>Extract the DQD list of checks.
 </div>\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(DataQualityanswers).
