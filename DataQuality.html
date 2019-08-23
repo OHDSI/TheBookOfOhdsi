@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-08-22" />
+<meta name="date" content="2019-08-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -467,9 +467,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.3.1" data-path="DataQuality.html"><a href="DataQuality.html#checking-mappings"><i class="fa fa-check"></i><b>16.3.1</b> Checking mappings</a></li>
 </ul></li>
 <li class="chapter" data-level="16.4" data-path="DataQuality.html"><a href="DataQuality.html#achillesInPractice"><i class="fa fa-check"></i><b>16.4</b> ACHILLES in practice</a></li>
-<li class="chapter" data-level="16.5" data-path="DataQuality.html"><a href="DataQuality.html#study-specific-checks-in-practice"><i class="fa fa-check"></i><b>16.5</b> Study-specific checks in practice</a></li>
-<li class="chapter" data-level="16.6" data-path="DataQuality.html"><a href="DataQuality.html#summary-11"><i class="fa fa-check"></i><b>16.6</b> Summary</a></li>
-<li class="chapter" data-level="16.7" data-path="DataQuality.html"><a href="DataQuality.html#exercises-6"><i class="fa fa-check"></i><b>16.7</b> Exercises</a></li>
+<li class="chapter" data-level="16.5" data-path="DataQuality.html"><a href="DataQuality.html#dqdInPractice"><i class="fa fa-check"></i><b>16.5</b> Data Quality Dashboard in practice</a></li>
+<li class="chapter" data-level="16.6" data-path="DataQuality.html"><a href="DataQuality.html#study-specific-checks-in-practice"><i class="fa fa-check"></i><b>16.6</b> Study-specific checks in practice</a></li>
+<li class="chapter" data-level="16.7" data-path="DataQuality.html"><a href="DataQuality.html#summary-11"><i class="fa fa-check"></i><b>16.7</b> Summary</a></li>
+<li class="chapter" data-level="16.8" data-path="DataQuality.html"><a href="DataQuality.html#exercises-6"><i class="fa fa-check"></i><b>16.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="ClinicalValidity.html"><a href="ClinicalValidity.html"><i class="fa fa-check"></i><b>17</b> Clinical Validity</a></li>
 <li class="chapter" data-level="18" data-path="SoftwareValidity.html"><a href="SoftwareValidity.html"><i class="fa fa-check"></i><b>18</b> Software Validity</a><ul>
@@ -607,7 +608,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="DataQuality" class="section level1">
 <h1><span class="header-section-number">Chapter 16</span> Data Quality</h1>
-<p><em>Chapter leads: Martijn Schuemie, Vojtech Huser &amp; Andrew Williams</em></p>
+<p><em>Chapter leads: Martijn Schuemie, Vojtech Huser, Andrew Williams &amp; Clair Blacketer</em></p>
 <p>Most of the data used for observational healthcare research were not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and administrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with <span class="citation">Lei (<a href="#ref-vanDerLei_1991" role="doc-biblioref">1991</a>)</span> even stating that “Data shall be used only for the purpose for which they were collected”. The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:</p>
 <blockquote>
 <p>Are the data of sufficient quality for our research purposes?</p>
@@ -659,50 +660,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p> </p>
 <div id="data-quality-checks" class="section level3">
 <h3><span class="header-section-number">16.2.1</span> Data quality checks</h3>
-<p>Kahn introduces the term <em>data quality check</em> (sometimes referred to as a <em>data quality rule</em>) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is <a href="https://github.com/OHDSI/Achilles">ACHILLES</a> (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) <span class="citation">(Huser et al. <a href="#ref-huser_methods_2018" role="doc-biblioref">2018</a>)</span>. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases <span class="citation">(Huser et al. <a href="#ref-huser_multisite_2016" role="doc-biblioref">2016</a>)</span>. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the “Data Sources” function.  </p>
-<p>ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as “<em>ACHILLES Heel</em>”. These checks are categorized as “<em>error</em>”, “<em>warning</em>”, or “<em>notification</em>”. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table <a href="DataQuality.html#tab:heelExamples">16.1</a> show some example rules. </p>
+<p>Kahn introduces the term <em>data quality check</em> (sometimes referred to as a <em>data quality rule</em>) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is <a href="https://github.com/OHDSI/Achilles">ACHILLES</a> (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) <span class="citation">(Huser et al. <a href="#ref-huser_methods_2018" role="doc-biblioref">2018</a>)</span>. ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases <span class="citation">(Huser et al. <a href="#ref-huser_multisite_2016" role="doc-biblioref">2016</a>)</span>. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the “Data Sources” function.  </p>
+<p>ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS.</p>
+<p>Another tool created by the community to assess DQ is the <a href="https://github.com/OHDSI/DataQualityDashboard">Data Quality Dashboard (DQD)</a>. Where ACHILLES runs characterization analyses to provide an overall visual understanding of a CDM instance, the DQD goes table by table and field by field to quantify the number of records in a CDM that do not conform to the given specifications. In all, over 1,500 checks are performed, each one organized into the Kahn framework. For each check the result is compared to a threshold whereby a FAIL is considered to be any percentage of violating rows falling above that value. Table <a href="DataQuality.html#tab:dqdExamples">16.1</a> shows some example checks.</p>
 <table>
-<caption><span id="tab:heelExamples">Table 16.1: </span> Example data quality rules in ACHILLES Heel.</caption>
+<caption><span id="tab:dqdExamples">Table 16.1: </span> Example data quality rules in the Data Quality Dashboard.</caption>
 <colgroup>
-<col width="16%" />
-<col width="83%" />
+<col width="15%" />
+<col width="63%" />
+<col width="12%" />
+<col width="8%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">Type</th>
-<th align="left">Description</th>
+<th align="left">Fraction violated rows</th>
+<th align="left">Check description</th>
+<th align="left">Threshold</th>
+<th align="left">Status</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Error</td>
-<td align="left">Age &gt; 150 years</td>
+<td align="left">0.34</td>
+<td align="left">A yes or no value indicating if the provider_id in the VISIT_OCCURRENCE is the expected data type based on the specification.</td>
+<td align="left">0.05</td>
+<td align="left">FAIL</td>
 </tr>
 <tr class="even">
-<td align="left">Error</td>
-<td align="left">A CONDITION_CONCEPT_ID refers to a concept that is not in the CONDITION domain</td>
+<td align="left">0.99</td>
+<td align="left">The number and percent of distinct source values in the measurement_source_value field of the MEASUREMENT table mapped to 0.</td>
+<td align="left">0.30</td>
+<td align="left">FAIL</td>
 </tr>
 <tr class="odd">
-<td align="left">Warning</td>
-<td align="left">The rate of occurrence for a specific CONCEPT_ID changes more than 100% from one month to the next</td>
+<td align="left">0.09</td>
+<td align="left">The number and percent of records that have a value in the drug_concept_id field in the DRUG_ERA table that do not conform to the ingredient class.</td>
+<td align="left">0.10</td>
+<td align="left">PASS</td>
 </tr>
 <tr class="even">
-<td align="left">Warning</td>
-<td align="left">A prescription has a DAYS_SUPPLY &gt; 180</td>
+<td align="left">0.02</td>
+<td align="left">The number and percent of records with a value in the verbatim_end_date field of the DRUG_EXPOSURE that occurs prior to the date in the DRUG_EXPOSURE_START_DATE field of the DRUG_EXPOSURE table.</td>
+<td align="left">0.05</td>
+<td align="left">PASS</td>
 </tr>
 <tr class="odd">
-<td align="left">Notification</td>
-<td align="left">The number of patients without any visit exceeds a predefined threshold</td>
-</tr>
-<tr class="even">
-<td align="left">Notification</td>
-<td align="left">There is no weight data in the MEASUREMENT table</td>
+<td align="left">0.00</td>
+<td align="left">The number and percent of records that have a duplicate value in the procedure_occurrence_id field of the PROCEDURE_OCCURRENCE.</td>
+<td align="left">0.00</td>
+<td align="left">PASS</td>
 </tr>
 </tbody>
 </table>
+<p>Within the tool the checks are organized in multiple ways, one being into table, field, and concept level checks. Table checks are those done at a high-level within the CDM, for example determining if all required tables are present. The field level checks are carried out in such a way to evaluate every field within every table for conformance to CDM specifications. These include making sure all primary keys are truly unique and all standard concept fields contain concepts ids in the proper domain, among many others. Concept level checks go a little deeper to examine individual concept ids. Many of these fall into the plausibility category of the Kahn framework such as ensuring that gender-specific concepts are not attributed to persons of incorrect gender (i.e. prostate cancer in a female patient).</p>
 
 <div class="rmdimportant">
-<p>ACHILLES and ACHILLES Heel are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.</p>
+<p>ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.</p>
 </div>
 
 </div>
@@ -799,62 +812,11 @@ Figure 16.3: Example orphan source code.
 <span id="cb138-4"><a href="DataQuality.html#cb138-4"></a>                   <span class="dt">sourceName =</span> <span class="st">&quot;My database&quot;</span>,</span>
 <span id="cb138-5"><a href="DataQuality.html#cb138-5"></a>                   <span class="dt">cdmVersion =</span> cdmVersion)</span></code></pre></div>
 <p>This function will create several tables in the <code>resultsDatabaseSchema</code>, which here we’ve set to the same database schema as the CDM data.</p>
-<p>We can extract the results of ACHILLES Heel from that database using:</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="DataQuality.html#cb139-1"></a>heel &lt;-<span class="st"> </span><span class="kw">fetchAchillesHeelResults</span>(connectionDetails,</span>
-<span id="cb139-2"><a href="DataQuality.html#cb139-2"></a>                         <span class="dt">resultsDatabaseSchema =</span> cdmDatabaseSchema)</span>
-<span id="cb139-3"><a href="DataQuality.html#cb139-3"></a></span>
-<span id="cb139-4"><a href="DataQuality.html#cb139-4"></a><span class="kw">head</span>(heel)</span></code></pre></div>
-<table>
-<colgroup>
-<col width="13%" />
-<col width="75%" />
-<col width="11%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="center">ANALYSIS_ ID</th>
-<th align="left">ACHILLES_HEEL_WARNING</th>
-<th align="left">RECORD_ COUNT</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center">118</td>
-<td align="left">ERROR: 118-Number of observation periods with invalid PERSON_ID; count (n=2649) should not be &gt; 0</td>
-<td align="left">2649</td>
-</tr>
-<tr class="even">
-<td align="center">410</td>
-<td align="left">ERROR: 410-Number of condition occurrence records outside valid observation period; count (n=85) should not be &gt; 0</td>
-<td align="left">85</td>
-</tr>
-<tr class="odd">
-<td align="center">413</td>
-<td align="left">ERROR: 413-Number of condition occurrence records with invalid visit_id; count (n=64717) should not be &gt; 0</td>
-<td align="left">64717</td>
-</tr>
-<tr class="even">
-<td align="center">610</td>
-<td align="left">ERROR: 610-Number of procedure occurrence records outside valid observation period; count (n=15) should not be &gt; 0</td>
-<td align="left">15</td>
-</tr>
-<tr class="odd">
-<td align="center">613</td>
-<td align="left">ERROR: 613-Number of procedure occurrence records with invalid visit_id; count (n=36819) should not be &gt; 0</td>
-<td align="left">36819</td>
-</tr>
-<tr class="even">
-<td align="center">710</td>
-<td align="left">ERROR: 710-Number of drug exposure records outside valid observation period; count (n=80) should not be &gt; 0</td>
-<td align="left">80</td>
-</tr>
-</tbody>
-</table>
-<p>In this case, ACHILLES Heel has revealed several serious errors that will need to be fixed. We can also view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="DataQuality.html#cb140-1"></a><span class="kw">exportToJson</span>(connectionDetails,</span>
-<span id="cb140-2"><a href="DataQuality.html#cb140-2"></a>             <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,</span>
-<span id="cb140-3"><a href="DataQuality.html#cb140-3"></a>             <span class="dt">resultsDatabaseSchema =</span> cdmDatabaseSchema,</span>
-<span id="cb140-4"><a href="DataQuality.html#cb140-4"></a>             <span class="dt">outputPath =</span> <span class="st">&quot;achillesOut&quot;</span>)</span></code></pre></div>
+<p>We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="DataQuality.html#cb139-1"></a><span class="kw">exportToJson</span>(connectionDetails,</span>
+<span id="cb139-2"><a href="DataQuality.html#cb139-2"></a>             <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,</span>
+<span id="cb139-3"><a href="DataQuality.html#cb139-3"></a>             <span class="dt">resultsDatabaseSchema =</span> cdmDatabaseSchema,</span>
+<span id="cb139-4"><a href="DataQuality.html#cb139-4"></a>             <span class="dt">outputPath =</span> <span class="st">&quot;achillesOut&quot;</span>)</span></code></pre></div>
 <p>The JSON files will be written to the achillesOut sub-folder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure <a href="DataQuality.html#fig:achillesDataDensity">16.4</a> shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.</p>
 <div class="figure" style="text-align: center"><span id="fig:achillesDataDensity"></span>
 <img src="images/DataQuality/achillesDataDensity.png" alt="The data density plot in the ACHILLES web viewer." width="100%" />
@@ -870,33 +832,61 @@ Figure 16.5: Monthly rate of diabetes coded in the ACHILLES web viewer.
 </p>
 </div>
 </div>
+<div id="dqdInPractice" class="section level2">
+<h2><span class="header-section-number">16.5</span> Data Quality Dashboard in practice</h2>
+<p>Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section <a href="DataQuality.html#achillesInPractice">16.4</a>. For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable <code>cdmDbSchema</code> to tell R where to look for the data.</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="DataQuality.html#cb140-1"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data.dbo&quot;</span></span></code></pre></div>
+<p>Next, we run the Dashboard…</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="DataQuality.html#cb141-1"></a>DataQualityDashboard<span class="op">::</span><span class="kw">executeDqChecks</span>(<span class="dt">connectionDetails =</span> connectionDetails, </span>
+<span id="cb141-2"><a href="DataQuality.html#cb141-2"></a>                              <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema, </span>
+<span id="cb141-3"><a href="DataQuality.html#cb141-3"></a>                              <span class="dt">resultsDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb141-4"><a href="DataQuality.html#cb141-4"></a>                              <span class="dt">cdmSourceName =</span> <span class="st">&quot;My database&quot;</span>,</span>
+<span id="cb141-5"><a href="DataQuality.html#cb141-5"></a>                              <span class="dt">outputFolder =</span> <span class="st">&quot;My output&quot;</span>)</span></code></pre></div>
+<p>The above function will execute all available data quality checks on the schema specified. It will then write a table to the <code>resultsDatabaseSchema</code> which we have here set to the same schema as the CDM. This table will include all information about each check run including the CDM table, CDM field, check name, check description, Kahn category and subcategory, number of violating rows, the threshold level, and whether the check passes or fails, among others. In addition to a table this function also writes a JSON file to the location specified as the <code>outputFolder</code>. Using this JSON file we can launch a web viewer to inspect the results.</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="DataQuality.html#cb142-1"></a><span class="kw">viewDqDashboard</span>(jsonPath)</span></code></pre></div>
+<p>The variable <code>jsonPath</code> should be the path to the JSON file containing the results of the Dashboard. Most likely this will be in the format <code>outputFolder/cdmSourceName/results_cdmSourceName.json</code> where the parameters <code>outputFolder</code> and <code>cdmSourceName</code> are the values passed to the <code>executeDqChecks</code> function above.</p>
+<p>When you first open the Dashboard you will be presented with the overview table, as seen in Figure <a href="DataQuality.html#fig:dqdOverview">16.6</a>. This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate.</p>
+<div class="figure" style="text-align: center"><span id="fig:dqdOverview"></span>
+<img src="images/DataQuality/dqdOverview.png" alt="Overview of Data Quality Checks in the Data Quality Dashboard." width="100%" />
+<p class="caption">
+Figure 16.6: Overview of Data Quality Checks in the Data Quality Dashboard.
+</p>
+</div>
+<p>Clicking on <em>Results</em> in the left-hand menu will take you to the drilldown results for each check that was run (Figure <a href="DataQuality.html#fig:dqdResults">16.7</a>). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the <img src="images/DataQuality/plusIcon.png" /> icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.</p>
+<div class="figure" style="text-align: center"><span id="fig:dqdResults"></span>
+<img src="images/DataQuality/dqdResults.png" alt="Drilldown into Data Quality Checks in the Data Quality Dashboard." width="100%" />
+<p class="caption">
+Figure 16.7: Drilldown into Data Quality Checks in the Data Quality Dashboard.
+</p>
+</div>
+</div>
 <div id="study-specific-checks-in-practice" class="section level2">
-<h2><span class="header-section-number">16.5</span> Study-specific checks in practice</h2>
+<h2><span class="header-section-number">16.6</span> Study-specific checks in practice</h2>
 <p>Next, we will execute several checks specifically for the angioedema cohort definition provided in Appendix <a href="CohortDefinitions.html#Angioedema">B.4</a>. We will assume the connection details have been set as described in Section <a href="DataQuality.html#achillesInPractice">16.4</a>, and that the cohort definition JSON and SQL of the cohort definition have been saved in the files “cohort.json” and “cohort.sql”, respectively. The JSON and SQL can be obtained from the Export tab in the ATLAS cohort definition function.</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="DataQuality.html#cb141-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
-<span id="cb141-2"><a href="DataQuality.html#cb141-2"></a>json &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.json&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.json&quot;</span>)<span class="op">$</span>size)</span>
-<span id="cb141-3"><a href="DataQuality.html#cb141-3"></a>sql &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.sql&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.sql&quot;</span>)<span class="op">$</span>size)</span>
-<span id="cb141-4"><a href="DataQuality.html#cb141-4"></a><span class="kw">checkCohortSourceCodes</span>(connectionDetails,</span>
-<span id="cb141-5"><a href="DataQuality.html#cb141-5"></a>                       <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb141-6"><a href="DataQuality.html#cb141-6"></a>                       <span class="dt">cohortJson =</span> json,</span>
-<span id="cb141-7"><a href="DataQuality.html#cb141-7"></a>                       <span class="dt">cohortSql =</span> sql,</span>
-<span id="cb141-8"><a href="DataQuality.html#cb141-8"></a>                       <span class="dt">outputFile =</span> <span class="st">&quot;output.html&quot;</span>)</span></code></pre></div>
-<p>We can open the output file in a web browser as shown in Figure <a href="DataQuality.html#fig:sourceCodesAngioedema">16.6</a>. Here we see that the angioedema cohort definition has two concept sets: “Inpatient or ER visit”, and “Angioedema”. In this example database the visits were found through database-specific source codes “ER” and “IP”, that are not in the Vocabulary, although they were mapped during the ETL to standard concepts. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="DataQuality.html#cb143-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
+<span id="cb143-2"><a href="DataQuality.html#cb143-2"></a>json &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.json&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.json&quot;</span>)<span class="op">$</span>size)</span>
+<span id="cb143-3"><a href="DataQuality.html#cb143-3"></a>sql &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.sql&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.sql&quot;</span>)<span class="op">$</span>size)</span>
+<span id="cb143-4"><a href="DataQuality.html#cb143-4"></a><span class="kw">checkCohortSourceCodes</span>(connectionDetails,</span>
+<span id="cb143-5"><a href="DataQuality.html#cb143-5"></a>                       <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb143-6"><a href="DataQuality.html#cb143-6"></a>                       <span class="dt">cohortJson =</span> json,</span>
+<span id="cb143-7"><a href="DataQuality.html#cb143-7"></a>                       <span class="dt">cohortSql =</span> sql,</span>
+<span id="cb143-8"><a href="DataQuality.html#cb143-8"></a>                       <span class="dt">outputFile =</span> <span class="st">&quot;output.html&quot;</span>)</span></code></pre></div>
+<p>We can open the output file in a web browser as shown in Figure <a href="DataQuality.html#fig:sourceCodesAngioedema">16.8</a>. Here we see that the angioedema cohort definition has two concept sets: “Inpatient or ER visit”, and “Angioedema”. In this example database the visits were found through database-specific source codes “ER” and “IP”, that are not in the Vocabulary, although they were mapped during the ETL to standard concepts. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.</p>
 <div class="figure" style="text-align: center"><span id="fig:sourceCodesAngioedema"></span>
 <img src="images/DataQuality/sourceCodesAngioedema.png" alt="Source codes used in the angioedema cohort definition." width="100%" />
 <p class="caption">
-Figure 16.6: Source codes used in the angioedema cohort definition.
+Figure 16.8: Source codes used in the angioedema cohort definition.
 </p>
 </div>
 <p>Next, we can search for orphan source codes, that is source codes that do not map to standard concept codes. Here we look for the Standard Concept “Angioedema”, and look for any codes and concepts that have “Angioedema” or any of the synonyms we provide as part of their name:</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="DataQuality.html#cb142-1"></a>orphans &lt;-<span class="st"> </span><span class="kw">findOrphanSourceCodes</span>(connectionDetails,</span>
-<span id="cb142-2"><a href="DataQuality.html#cb142-2"></a>                                 <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb142-3"><a href="DataQuality.html#cb142-3"></a>                                 <span class="dt">conceptName =</span> <span class="st">&quot;Angioedema&quot;</span>,</span>
-<span id="cb142-4"><a href="DataQuality.html#cb142-4"></a>                                 <span class="dt">conceptSynonyms =</span> <span class="kw">c</span>(<span class="st">&quot;Angioneurotic edema&quot;</span>,</span>
-<span id="cb142-5"><a href="DataQuality.html#cb142-5"></a>                                                     <span class="st">&quot;Giant hives&quot;</span>,</span>
-<span id="cb142-6"><a href="DataQuality.html#cb142-6"></a>                                                     <span class="st">&quot;Giant urticaria&quot;</span>,</span>
-<span id="cb142-7"><a href="DataQuality.html#cb142-7"></a>                                                     <span class="st">&quot;Periodic edema&quot;</span>))</span>
-<span id="cb142-8"><a href="DataQuality.html#cb142-8"></a><span class="kw">View</span>(orphans)</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="DataQuality.html#cb144-1"></a>orphans &lt;-<span class="st"> </span><span class="kw">findOrphanSourceCodes</span>(connectionDetails,</span>
+<span id="cb144-2"><a href="DataQuality.html#cb144-2"></a>                                 <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb144-3"><a href="DataQuality.html#cb144-3"></a>                                 <span class="dt">conceptName =</span> <span class="st">&quot;Angioedema&quot;</span>,</span>
+<span id="cb144-4"><a href="DataQuality.html#cb144-4"></a>                                 <span class="dt">conceptSynonyms =</span> <span class="kw">c</span>(<span class="st">&quot;Angioneurotic edema&quot;</span>,</span>
+<span id="cb144-5"><a href="DataQuality.html#cb144-5"></a>                                                     <span class="st">&quot;Giant hives&quot;</span>,</span>
+<span id="cb144-6"><a href="DataQuality.html#cb144-6"></a>                                                     <span class="st">&quot;Giant urticaria&quot;</span>,</span>
+<span id="cb144-7"><a href="DataQuality.html#cb144-7"></a>                                                     <span class="st">&quot;Periodic edema&quot;</span>))</span>
+<span id="cb144-8"><a href="DataQuality.html#cb144-8"></a><span class="kw">View</span>(orphans)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -948,29 +938,29 @@ Figure 16.6: Source codes used in the angioedema cohort definition.
 <p>The only potential orphan found that is actually used in the data is “Angioneurotic edema, sequela”, which should not be mapped to angioedema. This analysis therefore did not reveal any missing codes.</p>
 </div>
 <div id="summary-11" class="section level2">
-<h2><span class="header-section-number">16.6</span> Summary</h2>
+<h2><span class="header-section-number">16.7</span> Summary</h2>
 
 <div class="rmdsummary">
 <ul>
 <li><p>Most observational healthcare data were not collected for research.</p></li>
 <li><p>Data quality checks are an integral part of research. Data quality must be assessed to determine whether the data are of sufficient quality for research purposes</p></li>
 <li><p>We should assess data quality for the purpose of research in general, and critically in the context of a specific study.</p></li>
-<li><p>Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in ACHILLES Heel.</p></li>
+<li><p>Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in the Data Quality Dashboard.</p></li>
 <li><p>Other tools exist to evaluate the mapping of codes relevant for a particular study.</p></li>
 </ul>
 </div>
 
 </div>
 <div id="exercises-6" class="section level2">
-<h2><span class="header-section-number">16.7</span> Exercises</h2>
+<h2><span class="header-section-number">16.8</span> Exercises</h2>
 <div id="prerequisites-6" class="section level4 unnumbered">
 <h4>Prerequisites</h4>
 <p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">9.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, <a href="https://github.com/OHDSI/Achilles">ACHILLES</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="DataQuality.html#cb143-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
-<span id="cb143-2"><a href="DataQuality.html#cb143-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Achilles&quot;</span>)</span>
-<span id="cb143-3"><a href="DataQuality.html#cb143-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="DataQuality.html#cb145-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
+<span id="cb145-2"><a href="DataQuality.html#cb145-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Achilles&quot;</span>)</span>
+<span id="cb145-3"><a href="DataQuality.html#cb145-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>)</span></code></pre></div>
 <p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="DataQuality.html#cb144-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="DataQuality.html#cb146-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
 <p>The CDM database schema is “main”.</p>
 
 <div class="exercise">

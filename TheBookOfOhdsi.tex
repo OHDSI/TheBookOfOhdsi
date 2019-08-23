@@ -126,7 +126,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-08-22}
+    \date{2019-08-23}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -3855,7 +3855,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.jk8ju0i8children ;"
+## [1] "SELECT * FROM temp_schema.udsfjrwdchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -9073,7 +9073,7 @@ An important aspect of evidence quality is the ability to express the uncertaint
 \hypertarget{DataQuality}{%
 \chapter{Data Quality}\label{DataQuality}}
 
-\emph{Chapter leads: Martijn Schuemie, Vojtech Huser \& Andrew Williams}
+\emph{Chapter leads: Martijn Schuemie, Vojtech Huser, Andrew Williams \& Clair Blacketer}
 
 Most of the data used for observational healthcare research were not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and administrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with \citet{vanDerLei_1991} even stating that ``Data shall be used only for the purpose for which they were collected''. The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:
 
@@ -9170,63 +9170,90 @@ Each component can be evaluated in two ways:
 \hypertarget{data-quality-checks}{%
 \subsection{Data quality checks}\label{data-quality-checks}}
 
-Kahn introduces the term \emph{data quality check} (sometimes referred to as a \emph{data quality rule}) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is \href{https://github.com/OHDSI/Achilles}{ACHILLES} (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) \citep{huser_methods_2018}. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases \citep{huser_multisite_2016}. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the ``Data Sources'' function. \index{data quality!data quality check} \index{ACHILLES}
+Kahn introduces the term \emph{data quality check} (sometimes referred to as a \emph{data quality rule}) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is \href{https://github.com/OHDSI/Achilles}{ACHILLES} (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) \citep{huser_methods_2018}. ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases \citep{huser_multisite_2016}. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the ``Data Sources'' function. \index{data quality!data quality check} \index{ACHILLES}
 
-ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, ``715: Distribution of DAYS\_SUPPLY by DRUG\_CONCEPT\_ID'' or ``506: Distribution of age at death by gender''. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as ``\emph{ACHILLES Heel}''. These checks are categorized as ``\emph{error}'', ``\emph{warning}'', or ``\emph{notification}''. Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \ref{tab:heelExamples} show some example rules. \index{ACHILLES!Heel}
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, ``715: Distribution of DAYS\_SUPPLY by DRUG\_CONCEPT\_ID'' or ``506: Distribution of age at death by gender''. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS.
 
-\begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:heelExamples} Example data quality rules in ACHILLES Heel.}\tabularnewline
+Another tool created by the community to assess DQ is the \href{https://github.com/OHDSI/DataQualityDashboard}{Data Quality Dashboard (DQD)}. Where ACHILLES runs characterization analyses to provide an overall visual understanding of a CDM instance, the DQD goes table by table and field by field to quantify the number of records in a CDM that do not conform to the given specifications. In all, over 1,500 checks are performed, each one organized into the Kahn framework. For each check the result is compared to a threshold whereby a FAIL is considered to be any percentage of violating rows falling above that value. Table \ref{tab:dqdExamples} shows some example checks.
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{\label{tab:dqdExamples} Example data quality rules in the Data Quality Dashboard.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.15\columnwidth}\raggedright
-Type\strut
-\end{minipage} & \begin{minipage}[b]{0.79\columnwidth}\raggedright
-Description\strut
+\begin{minipage}[b]{0.14\columnwidth}\raggedright
+Fraction violated rows\strut
+\end{minipage} & \begin{minipage}[b]{0.56\columnwidth}\raggedright
+Check description\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Threshold\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Status\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.15\columnwidth}\raggedright
-Type\strut
-\end{minipage} & \begin{minipage}[b]{0.79\columnwidth}\raggedright
-Description\strut
+\begin{minipage}[b]{0.14\columnwidth}\raggedright
+Fraction violated rows\strut
+\end{minipage} & \begin{minipage}[b]{0.56\columnwidth}\raggedright
+Check description\strut
+\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
+Threshold\strut
+\end{minipage} & \begin{minipage}[b]{0.08\columnwidth}\raggedright
+Status\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.15\columnwidth}\raggedright
-Error\strut
-\end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-Age \textgreater{} 150 years\strut
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
+0.34\strut
+\end{minipage} & \begin{minipage}[t]{0.56\columnwidth}\raggedright
+A yes or no value indicating if the provider\_id in the VISIT\_OCCURRENCE is the expected data type based on the specification.\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+FAIL\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.15\columnwidth}\raggedright
-Error\strut
-\end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-A CONDITION\_CONCEPT\_ID refers to a concept that is not in the CONDITION domain\strut
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
+0.99\strut
+\end{minipage} & \begin{minipage}[t]{0.56\columnwidth}\raggedright
+The number and percent of distinct source values in the measurement\_source\_value field of the MEASUREMENT table mapped to 0.\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+0.30\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+FAIL\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.15\columnwidth}\raggedright
-Warning\strut
-\end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-The rate of occurrence for a specific CONCEPT\_ID changes more than 100\% from one month to the next\strut
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
+0.09\strut
+\end{minipage} & \begin{minipage}[t]{0.56\columnwidth}\raggedright
+The number and percent of records that have a value in the drug\_concept\_id field in the DRUG\_ERA table that do not conform to the ingredient class.\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+0.10\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+PASS\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.15\columnwidth}\raggedright
-Warning\strut
-\end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-A prescription has a DAYS\_SUPPLY \textgreater{} 180\strut
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
+0.02\strut
+\end{minipage} & \begin{minipage}[t]{0.56\columnwidth}\raggedright
+The number and percent of records with a value in the verbatim\_end\_date field of the DRUG\_EXPOSURE that occurs prior to the date in the DRUG\_EXPOSURE\_START\_DATE field of the DRUG\_EXPOSURE table.\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+0.05\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+PASS\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.15\columnwidth}\raggedright
-Notification\strut
-\end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-The number of patients without any visit exceeds a predefined threshold\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.15\columnwidth}\raggedright
-Notification\strut
-\end{minipage} & \begin{minipage}[t]{0.79\columnwidth}\raggedright
-There is no weight data in the MEASUREMENT table\strut
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
+0.00\strut
+\end{minipage} & \begin{minipage}[t]{0.56\columnwidth}\raggedright
+The number and percent of records that have a duplicate value in the procedure\_occurrence\_id field of the PROCEDURE\_OCCURRENCE.\strut
+\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
+0.00\strut
+\end{minipage} & \begin{minipage}[t]{0.08\columnwidth}\raggedright
+PASS\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
+Within the tool the checks are organized in multiple ways, one being into table, field, and concept level checks. Table checks are those done at a high-level within the CDM, for example determining if all required tables are present. The field level checks are carried out in such a way to evaluate every field within every table for conformance to CDM specifications. These include making sure all primary keys are truly unique and all standard concept fields contain concepts ids in the proper domain, among many others. Concept level checks go a little deeper to examine individual concept ids. Many of these fall into the plausibility category of the Kahn framework such as ensuring that gender-specific concepts are not attributed to persons of incorrect gender (i.e.~prostate cancer in a female patient).
+
 \BeginKnitrBlock{rmdimportant}
-ACHILLES and ACHILLES Heel are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
+ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
 \EndKnitrBlock{rmdimportant}
 
 \hypertarget{etlUnitTests}{%
@@ -9364,74 +9391,7 @@ Next, we run ACHILLES:
 
 This function will create several tables in the \texttt{resultsDatabaseSchema}, which here we've set to the same database schema as the CDM data.
 
-We can extract the results of ACHILLES Heel from that database using:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{heel <-}\StringTok{ }\KeywordTok{fetchAchillesHeelResults}\NormalTok{(connectionDetails,}
-                         \DataTypeTok{resultsDatabaseSchema =}\NormalTok{ cdmDatabaseSchema)}
-
-\KeywordTok{head}\NormalTok{(heel)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{longtable}[]{@{}cll@{}}
-\toprule
-\begin{minipage}[b]{0.12\columnwidth}\centering
-ANALYSIS\_ ID\strut
-\end{minipage} & \begin{minipage}[b]{0.68\columnwidth}\raggedright
-ACHILLES\_HEEL\_WARNING\strut
-\end{minipage} & \begin{minipage}[b]{0.11\columnwidth}\raggedright
-RECORD\_ COUNT\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.12\columnwidth}\centering
-118\strut
-\end{minipage} & \begin{minipage}[t]{0.68\columnwidth}\raggedright
-ERROR: 118-Number of observation periods with invalid PERSON\_ID; count (n=2649) should not be \textgreater{} 0\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
-2649\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\centering
-410\strut
-\end{minipage} & \begin{minipage}[t]{0.68\columnwidth}\raggedright
-ERROR: 410-Number of condition occurrence records outside valid observation period; count (n=85) should not be \textgreater{} 0\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
-85\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\centering
-413\strut
-\end{minipage} & \begin{minipage}[t]{0.68\columnwidth}\raggedright
-ERROR: 413-Number of condition occurrence records with invalid visit\_id; count (n=64717) should not be \textgreater{} 0\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
-64717\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\centering
-610\strut
-\end{minipage} & \begin{minipage}[t]{0.68\columnwidth}\raggedright
-ERROR: 610-Number of procedure occurrence records outside valid observation period; count (n=15) should not be \textgreater{} 0\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
-15\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\centering
-613\strut
-\end{minipage} & \begin{minipage}[t]{0.68\columnwidth}\raggedright
-ERROR: 613-Number of procedure occurrence records with invalid visit\_id; count (n=36819) should not be \textgreater{} 0\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
-36819\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.12\columnwidth}\centering
-710\strut
-\end{minipage} & \begin{minipage}[t]{0.68\columnwidth}\raggedright
-ERROR: 710-Number of drug exposure records outside valid observation period; count (n=80) should not be \textgreater{} 0\strut
-\end{minipage} & \begin{minipage}[t]{0.11\columnwidth}\raggedright
-80\strut
-\end{minipage}\tabularnewline
-\bottomrule
-\end{longtable}
-
-In this case, ACHILLES Heel has revealed several serious errors that will need to be fixed. We can also view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
+We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -9462,6 +9422,61 @@ Another example is shown in Figure \ref{fig:achillesCodeChange}, revealing a sud
 }
 
 \caption{Monthly rate of diabetes coded in the ACHILLES web viewer.}\label{fig:achillesCodeChange}
+\end{figure}
+
+\hypertarget{dqdInPractice}{%
+\section{Data Quality Dashboard in practice}\label{dqdInPractice}}
+
+Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section \ref{achillesInPractice}. For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable \texttt{cdmDbSchema} to tell R where to look for the data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cdmDbSchema <-}\StringTok{ "my_cdm_data.dbo"}
+\end{Highlighting}
+\end{Shaded}
+
+Next, we run the Dashboard\ldots{}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{executeDqChecks}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails, }
+                              \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDbSchema, }
+                              \DataTypeTok{resultsDatabaseSchema =}\NormalTok{ cdmDbSchema,}
+                              \DataTypeTok{cdmSourceName =} \StringTok{"My database"}\NormalTok{,}
+                              \DataTypeTok{outputFolder =} \StringTok{"My output"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+The above function will execute all available data quality checks on the schema specified. It will then write a table to the \texttt{resultsDatabaseSchema} which we have here set to the same schema as the CDM. This table will include all information about each check run including the CDM table, CDM field, check name, check description, Kahn category and subcategory, number of violating rows, the threshold level, and whether the check passes or fails, among others. In addition to a table this function also writes a JSON file to the location specified as the \texttt{outputFolder}. Using this JSON file we can launch a web viewer to inspect the results.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{viewDqDashboard}\NormalTok{(jsonPath)}
+\end{Highlighting}
+\end{Shaded}
+
+The variable \texttt{jsonPath} should be the path to the JSON file containing the results of the Dashboard. Most likely this will be in the format \texttt{outputFolder/cdmSourceName/results\_cdmSourceName.json} where the parameters \texttt{outputFolder} and \texttt{cdmSourceName} are the values passed to the \texttt{executeDqChecks} function above.
+
+When you first open the Dashboard you will be presented with the overview table, as seen in Figure \ref{fig:dqdOverview}. This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/dqdOverview} 
+
+}
+
+\caption{Overview of Data Quality Checks in the Data Quality Dashboard.}\label{fig:dqdOverview}
+\end{figure}
+
+Clicking on \emph{Results} in the left-hand menu will take you to the drilldown results for each check that was run (Figure \ref{fig:dqdResults}). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the \includegraphics{images/DataQuality/plusIcon.png} icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/dqdResults} 
+
+}
+
+\caption{Drilldown into Data Quality Checks in the Data Quality Dashboard.}\label{fig:dqdResults}
 \end{figure}
 
 \hypertarget{study-specific-checks-in-practice}{%
@@ -9536,7 +9551,7 @@ The only potential orphan found that is actually used in the data is ``Angioneur
 \item
   We should assess data quality for the purpose of research in general, and critically in the context of a specific study.
 \item
-  Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in ACHILLES Heel.
+  Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in the Data Quality Dashboard.
 \item
   Other tools exist to evaluate the mapping of codes relevant for a particular study.
 \end{itemize}
