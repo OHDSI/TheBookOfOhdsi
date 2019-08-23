@@ -25,7 +25,7 @@ Two closely-integrated tools have been developed to support the ETL design proce
 
 To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the [White Rabbit](https://github.com/OHDSI/WhiteRabbit) tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the [OMOP CDM](https://github.com/OHDSI/CommonDataModel). White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub [^whiteRabbitGithubUrl]. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
-[^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit].
+[^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit.
 
 #### Scope and Purpose  {-}
 
@@ -200,7 +200,7 @@ The typical sequence for using this software is:
 
 #### Importing Source Codes into Usagi {-}
 
-Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g. dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g. you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that. 
+Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g. dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g. you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that. 
 
 Note: source code extracts should be broken out by domain (i.e. drugs, procedures, conditions, observations) and not lumped into one large file.
 
@@ -337,11 +337,11 @@ These are high-level ways to approach quality control from an ETL standpoint. Fo
 
 As more groups converted data to the CDM it became apparent that conventions needed to be specified. For example, what should the ETL do in a situation where a person record lacks a birth year? The goal of the CDM is to standardized healthcare data however if every group handles data specific scenarios differently it makes it more difficult to systematically use data across the network.  
 
-The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki [^cdmWikiUrl]. Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.  
+The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki [^cdmWikiUrl2]. Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.  
 
 While it will never be possible to document all possible data scenarios that exist and what to do when they occur, there is an OHDSI work group trying to document common scenarios. THEMIS[^themisUrl] is made up of individuals in the community who gather conventions, clarify them, share them with the community for comment, and then document finalized conventions in the CDM Wiki. Themis is an ancient Greek Titaness of divine order, fairness, law, natural law, and custom which seemed a good fit for this groups remit. When performing an ETL, if there is a scenario that you are unsure how to handle, THEMIS recommends that a question about the scenario is posed on the OHDSI Forums[^ohdsiForum]. Most likely if you have a question, others in the community probably have it as well. THEMIS uses these discussions, as well as work group meetings and face-to-face discussions, to help inform what other conventions need to be documented.        
 
-[^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki].
+[^cdmWikiUrl2]: https://github.com/OHDSI/CommonDataModel/wiki].
 [^themisUrl]: https://github.com/OHDSI/Themis
 [^ohdsiForum]: http://forums.ohdsi.org/
 
@@ -382,3 +382,54 @@ The ETL process is a difficult one to master for many reasons, not the least of 
 - There are many ETL examples and agreed upon conventions you can use as a guide
 
 ```
+
+## Exercises
+
+```{exercise, exerciseEtl1}
+Put the steps of the ETL process in the proper order:
+  
+A) Data experts and CDM experts together design the ETL
+B) A technical person implements the ETL
+C) People with medical knowledge create the code mappings
+D) All are involved in quality control 
+
+```
+
+```{exercise, exerciseEtl2}
+Using OHDSI resources of your choice, spot four issues with the PERSON record show in Table \@ref(tab:exercisePersonTable) (table abbreviated for space):
+
+Table: (\#tab:exercisePersonTable) A PERSON table.
+
+Column | Value
+:---------------- |:-----------
+PERSON_ID | A123B456
+GENDER_CONCEPT_ID | 8532
+YEAR_OF_BIRTH | NULL
+MONTH_OF_BIRTH | NULL
+DAY_OF_BIRTH | NULL
+RACE_CONCEPT_ID | 0
+ETHNICITY_CONCEPT_ID | 8527
+PERSON_SOURCE_VALUE | A123B456
+GENDER_SOURCE_VALUE | F
+RACE_SOURCE_VALUE | WHITE
+ETHNICITY_SOURCE_VALUE | NONE PROVIDED
+
+```
+
+```{exercise, exerciseEtl3}
+Let us try to generate VISIT_OCCURRENCE records.  Here is some example logic written for Synthea:
+Sort data in ascending order by PATIENT, START, END. Then by PERSON_ID, collapse lines of claim as long as the time between the END of one line and the START of the next is <=1 day. Each consolidated inpatient claim is then considered as one inpatient visit, set:
+  
+- MIN(START) as VISIT_START_DATE
+- MAX(END) as VISIT_END_DATE
+- "IP" as PLACE_OF_SERVICE_SOURCE_VALUE
+
+If you see a set of visits as shown in Figure \@ref(fig:exerciseSourceData) in your source data, how would you expect the resulting VISIT_OCCURRENCE record(s) to look in the CDM?
+
+```
+
+```{r exerciseSourceData, fig.cap='Example source data.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/ExtractTransformLoad/exerciseSourceData.png")
+```
+
+Suggested answers can be found in Appendix \@ref(Etlanswers).
