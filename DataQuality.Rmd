@@ -1,7 +1,7 @@
 # Data Quality {#DataQuality}
 
 
-*Chapter leads: Martijn Schuemie, Vojtech Huser & Andrew Williams* 
+*Chapter leads: Martijn Schuemie, Vojtech Huser, Andrew Williams & Clair Blacketer* 
 
 Most of the data used for observational healthcare research were not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and administrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with @vanDerLei_1991 even stating that "Data shall be used only for the purpose for which they were collected". The concern is that because the data was not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:
 
@@ -57,26 +57,26 @@ Each component can be evaluated in two ways:
 
 ### Data quality checks
 
-Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that not only executes a wide array of DQ checks, it also provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
+Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
 
-ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. Based on these analyses, a battery of DQ tests is performed know as "*ACHILLES Heel*". These checks are categorized as "*error*", "*warning*", or "*notification*". Errors are DQ issues that should not be present, constituting violations of some fundamental principles that must be resolved before the data can be used for research. Warnings indicate something is likely wrong although a closer investigation is needed to make a definite determination. Notifications hint add odd characteristics that should be explored, but fall within the range of what is expected. Table \@ref(tab:heelExamples) show some example rules. \index{ACHILLES!Heel}
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. 
 
-Table: (\#tab:heelExamples) Example data quality rules in ACHILLES Heel.
+Another tool created by the community to assess DQ is the [Data Quality Dashboard (DQD)](https://github.com/OHDSI/DataQualityDashboard). Where ACHILLES runs characterization analyses to provide an overall visual understanding of a CDM instance, the DQD goes table by table and field by field to quantify the number of records in a CDM that do not conform to the given specifications. In all, over 1,500 checks are performed, each one organized into the Kahn framework. For each check the result is compared to a threshold whereby a FAIL is considered to be any percentage of violating rows falling above that value. Table \@ref(tab:dqdExamples) shows some example checks.  
 
-|Type       | Description                                       |
-|:--------- |:--------------------------------------------------|
-| Error     | Age > 150 years                                   |
-| Error     | A CONDITION_CONCEPT_ID refers to a concept that is not in the CONDITION domain |
-| Warning   | The rate of occurrence for a specific CONCEPT_ID changes more than 100% from one month to the next |
-| Warning   | A prescription has a DAYS_SUPPLY > 180             |
-| Notification | The number of patients without any visit exceeds a predefined threshold |
-| Notification | There is no weight data in the MEASUREMENT table        | 
+Table: (\#tab:dqdExamples) Example data quality rules in the Data Quality Dashboard.
 
+|Pct Violated Rows  | Check Name  | Check Description | Threshold | Pass/Fail |
+|:-------- |:--------------------|: ------------------------------------|:------|:----|
+| 0.34|CDM_DATATYPE|A yes or no value indicating if the provider_id in the VISIT_OCCURRENCE is the expected data type based on the specification. | 0.05 | FAIL|
+| 0.99|SOURCE_VALUE_COMPLETENESS| The number and percent of distinct source values in the measurement_source_value field of the MEASUREMENT table mapped to 0. | 0.3 | FAIL|
+| 0.09|FK_CLASS| The number and percent of records that have a value in the drug_concept_id field in the DRUG_ERA table that do not conform to the ingredient class. | 0.1 | PASS|
+| 0.015|PLAUSIBLE_TEMPORAL_AFTER| The number and percent of records with a value in the verbatim_end_date field of the DRUG_EXPOSURE that occurs prior to the date in the DRUG_EXPOSURE_START_DATE field of the DRUG_EXPOSURE table.|0.05|PASS|
+| 0|IS_PRIMARY_KEY| The number and percent of records that have a duplicate value in the procedure_occurrence_id field of the PROCEDURE_OCCURRENCE. | 0 | PASS|
 
-```{block2, type='rmdimportant'}
-ACHILLES and ACHILLES Heel are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
+Within the tool the checks are organized in multiple ways, one being into table, field, and concept level checks. Table checks are those done at a high-level within the CDM, for example determining if all required tables are present. The field level checks are carried out in such a way to evaluate every field within every table for conformance to CDM specifications. These include making sure all primary keys are truly unique and all standard concept fields contain concepts ids in the proper domain, among many others. Concept level checks go a little deeper to examine individual concept ids. Many of these fall into the plausibility category of the Kahn framework such as ensuring that gender-specific concepts are not attributed to persons of incorrect gender (i.e. prostate cancer in a female patient).
 
-```
+\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
+</div>\EndKnitrBlock{rmdimportant}
 
 ### ETL unit tests {#etlUnitTests}
 
@@ -84,14 +84,14 @@ In addition to high level data quality checks individual level data checks shoul
 
 To make sure the ETL does what it is supposed to do, and continues to do so, it is highly recommended to construct a set of unit tests. A unit test is a small piece of code that automatically checks a single aspect. The Rabbit-in-a-Hat tool described in Chapter \@ref(ExtractTransformLoad) can create a unit test framework that makes writing such unit tests easier. This framework is a collection of R functions created specifically for the source database and target CDM version of the ETL. Some of these functions are for creating fake data entries that adhere to the source data schema, while other functions can be used to specify expectations on the data in the CDM format. Here is an example unit test:
 
-```{r eval=FALSE}
+
+```r
 source("Framework.R")
 declareTest(101, "Person gender mappings")
 add_enrollment(member_id = "M000000102", gender_of_member = "male")
 add_enrollment(member_id = "M000000103", gender_of_member = "female")
 expect_person(PERSON_ID = 102, GENDER_CONCEPT_ID = 8507
 expect_person(PERSON_ID = 103, GENDER_CONCEPT_ID = 8532)
-
 ```
 
 In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the MEMBER_ID and GENDER_OF_MEMBER fields. Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table, with various expected values.
@@ -100,7 +100,8 @@ Note that the ENROLLMENT table has many other fields, but we do not care much ab
 
 Similar unit tests can be created for all other logic in an ETL, typically resulting in hundreds of tests. When we are done defining the test, we can use the framework to generate two sets of SQL statements, one to create the fake source data, and one to create the tests on the ETL-ed data:
 
-```{r eval=FALSE}
+
+```r
 insertSql <- generateInsertSql(databaseSchema = "source_schema")
 testSql <- generateTestSql(databaseSchema = "cdm_test_schema")
 ```
@@ -156,7 +157,8 @@ Here we will demonstrate how to run ACHILLES against a database in the CDM forma
 
 We first need to tell R how to connect to the server. ACHILLES uses the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
-```{r tidy=FALSE,eval=FALSE}
+
+```{r tidy=FALSE, eval=FALSE}
 library(Achilles)
 connDetails <- createConnectionDetails(dbms = "postgresql",
                                        server = "localhost/ohdsi",
@@ -171,6 +173,7 @@ The last two lines define the `cdmDbSchema` variable, as well as the CDM version
 
 Next, we run ACHILLES:
 
+
 ```{r tidy=FALSE, eval=FALSE}
 result <- achilles(connectionDetails,
                    cdmDatabaseSchema = cdmDbSchema,
@@ -181,26 +184,10 @@ result <- achilles(connectionDetails,
 
 This function will create several tables in the `resultsDatabaseSchema`, which here we've set to the same database schema as the CDM data. 
 
-We can extract the results of ACHILLES Heel from that database using:
+We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
 
-```{r tidy=FALSE, eval=FALSE}
-heel <- fetchAchillesHeelResults(connectionDetails,
-                         resultsDatabaseSchema = cdmDatabaseSchema)
 
-head(heel)
-```
-|ANALYSIS_ ID|ACHILLES_HEEL_WARNING|RECORD_ COUNT|
-|:-----:|:-------------------------------------- |:-----|
-118|ERROR: 118-Number of observation periods with invalid PERSON_ID; count (n=2649) should not be > 0| 2649|
-410|ERROR: 410-Number of condition occurrence records outside valid observation period; count (n=85) should not be > 0| 85|
-413|ERROR: 413-Number of condition occurrence records with invalid visit_id; count (n=64717) should not be > 0|64717|
-610|ERROR: 610-Number of procedure occurrence records outside valid observation period; count (n=15) should not be > 0| 15|
-613|ERROR: 613-Number of procedure occurrence records with invalid visit_id; count (n=36819) should not be > 0|36819|
-710|ERROR: 710-Number of drug exposure records outside valid observation period; count (n=80) should not be > 0| 80|
-
-In this case, ACHILLES Heel has revealed several serious errors that will need to be fixed. We can also view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
-
-```{r tidy=FALSE, eval=FALSE}
+```r
 exportToJson(connectionDetails,
              cdmDatabaseSchema = cdmDatabaseSchema,
              resultsDatabaseSchema = cdmDatabaseSchema,
@@ -217,13 +204,53 @@ Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a su
 
 ```{r achillesCodeChange, fig.cap='Monthly rate of diabetes coded in the ACHILLES web viewer.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/DataQuality/achillesCodeChange.png")
+
+## Data Quality Dashboard in practice {#dqdInPractice}
+
+Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section \@ref(achillesInPractice). For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable `cdmDbSchema` to tell R where to look for the data.
+
+``` r
+cdmDbSchema <- "my_cdm_data.dbo"
 ```
+
+Next, we run the Dashboard...
+
+```r
+DataQualityDashboard::executeDqChecks(connectionDetails = connectionDetails, 
+                              cdmDatabaseSchema = cdmDbSchema, 
+                              resultsDatabaseSchema = cdmDbSchema,
+                              cdmSourceName = "My database",
+                              outputFolder = "My output")
+```
+
+The above function will execute all available data quality checks on the schema specified. It will then write a table to the `resultsDatabaseSchema` which we have here set to the same schema as the CDM. This table will include all information about each check run including the CDM table, CDM field, check name, check description, Kahn category and subcategory, number of violating rows, the threshold level, and whether the check passes or fails, among others. In addition to a table this function also writes a JSON file to the location specified as the `outputFolder`. Using this JSON file we can launch a web viewer to inspect the results.
+
+```r
+viewDqDashboard(jsonPath)
+```
+
+The variable `jsonPath` should be the path to the JSON file containing the results of the Dashboard. Most likely this will be in the format `outputFolder/cdmSourceName/results_cdmSourceName.json` where the parameters `outputFolder` and `cdmSourceName` are the values passed to the `executeDqChecks` function above. 
+
+When you first open the Dashboard you will be presented with the overview table, as seen in Figure \@ref(fig:dqdOverview). This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate. 
+
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/dqdOverview.png" alt="Overview of Data Quality Checks in the Data Quality Dashboard." width="100%" />
+<p class="caption">(\#fig:dqdOverview)Overview of Data Quality Checks in the Data Quality Dashboard.</p>
+</div>
+
+Clicking on *Results* in the left-hand menu will take you to the drilldown results for each check that was run (Figure \@ref(fig:dqdResults)). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the `r icon::fa('plus-square')` icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
+
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/dqdResults.png" alt="Drilldown into Data Quality Checks in the Data Quality Dashboard." width="100%" />
+<p class="caption">(\#fig:dqdResults)Drilldown into Data Quality Checks in the Data Quality Dashboard.</p>
+</div>
 
 ## Study-specific checks in practice
 
 Next, we will execute several checks specifically for the angioedema cohort definition provided in Appendix \@ref(Angioedema). We will assume the connection details have been set as described in Section \@ref(achillesInPractice), and that the cohort definition JSON and SQL of the cohort definition have been saved in the files "cohort.json" and "cohort.sql", respectively. The JSON and SQL can be obtained from the Export tab in the ATLAS cohort definition function.
 
-```{r tide=FALSE,eval=FALSE}
+
+```r
 library(MethodEvaluation)
 json <- readChar("cohort.json", file.info("cohort.json")$size)
 sql <- readChar("cohort.sql", file.info("cohort.sql")$size)
@@ -243,7 +270,8 @@ knitr::include_graphics("images/DataQuality/sourceCodesAngioedema.png")
 
 Next, we can search for orphan source codes, that is source codes that do not map to standard concept codes. Here we look for the Standard Concept "Angioedema", and look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
 
-```{r tidy=FALSE,eval=FALSE}
+
+```r
 orphans <- findOrphanSourceCodes(connectionDetails,
                                  cdmDatabaseSchema = cdmDbSchema,
                                  conceptName = "Angioedema",
@@ -273,7 +301,7 @@ The only potential orphan found that is actually used in the data is "Angioneuro
 
 - We should assess data quality for the purpose of research in general, and critically in the context of a specific study.
 
-- Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in ACHILLES Heel.
+- Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in the Data Quality Dashboard.
 
 - Other tools exist to evaluate the mapping of codes relevant for a particular study.
 
@@ -285,6 +313,7 @@ The only potential orphan found that is actually used in the data is "Angioneuro
 
 For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), [ACHILLES](https://github.com/OHDSI/Achilles),  and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
 
+
 ```{r eval=FALSE}
 install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
 devtools::install_github("ohdsi/Achilles")
@@ -292,6 +321,7 @@ devtools::install_github("ohdsi/Eunomia")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
+
 
 ```{r eval=FALSE}
 connectionDetails <- Eunomia::getEunomiaConnectionDetails()
@@ -310,3 +340,4 @@ Extract the ACHILLES Heel list of issues.
 ```
 
 Suggested answers can be found in Appendix \@ref(DataQualityanswers).
+
