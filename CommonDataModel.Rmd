@@ -4,22 +4,22 @@
 
 *Chapter lead: Clair Blacketer*
 
-Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content. \index{OMOP Common Data Model} \index{CDM |see {OMOP Common Data Model}} \index{relational data model|see {OMOP Common Data Model}}
+Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content. \index{Common Data Model} \index{CDM |see {Common Data Model}} \index{relational data model|see {Common Data Model}}
 
 Why do we need a Common Data Model for observational healthcare data? 
 
 Depending on their primary needs none of the observational databases capture all clinical events equally well. Therefore, research results must be drawn from many disparate data sources and compared and contrasted to understand the effect of potential capture bias. In addition, in order to draw conclusions with statistical power we need large numbers of observed patients. That explains the need for assessing and analyzing multiple data sources concurrently. In order to do that, data need to be harmonized into a common data standard. In addition, patient data require a high level of protection. To extract data for analysis purposes as it is done traditionally requires strict data use agreements and complex access control. A common data standard can eleviate this need by omitting the extraction step and allowing a standardized analytic to be executed on the data in it's native environment - the analytic comes to the data instead of the data to the analytic.
 
-This standard is provided by the OMOP Common Data Model (CDM). The CDM, combined with its standardized content (see chapter \@ref(StandardizedVocabularies)), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables. 
+This standard is provided by the Common Data Model (CDM). The CDM, combined with its standardized content (see chapter \@ref(StandardizedVocabularies)), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables. 
 
-An overview of all the tables in the CDM is provided in Figure \@ref(fig:cdmDiagram). \index{OMOP Common Data Model!data model diagram}
+An overview of all the tables in the CDM is provided in Figure \@ref(fig:cdmDiagram). \index{Common Data Model!data model diagram}
 
 ```{r cdmDiagram, fig.cap="Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.",echo=FALSE, out.width="100%"}
 knitr::include_graphics("images/CommonDataModel/cdmDiagram.png")
 ```
 ## Design Principles
 
-The CDM is optimized for typical observational research purposes of \index{OMOP Common Data Model!design principles}
+The CDM is optimized for typical observational research purposes of \index{Common Data Model!design principles}
 
 * Identifying patient populations with certain healthcare interventions (drug exposure, procedures, healthcare policy changes etc.) and outcomes (conditions, procedures, other drug exposures etc.),
 * Characterization of these patient populations for various parameters like demographic information, disease natural history, healthcare delivery, utilization and cost, morbidities, treatments and sequence of treatment etc.,
@@ -28,24 +28,24 @@ The CDM is optimized for typical observational research purposes of \index{OMOP 
 
 To achieve this goal, the development of the CDM follows the following design elements:
  
-  - **Suitability for purpose**: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers. \index{OMOP Common Data Model!suitability for purpose}
-  - **Data protection**: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible when the research expressly requires more detailed information, such as precise birth dates for the study of infants.\index{OMOP Common Data Model!data protection}
+  - **Suitability for purpose**: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers. \index{Common Data Model!suitability for purpose}
+  - **Data protection**: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible when the research expressly requires more detailed information, such as precise birth dates for the study of infants.\index{Common Data Model!data protection}
   - **Design of domains**: The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum. Here, a relational data model is one where the data is represented as a collection of tables linked by primary and foreign keys.
-  - **Rationale for domains**: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case (conditions, for example) and the domain has specific attributes that are not otherwise applicable.  All other data can be preserved as an observation in the observation table in an entity-attribute-value structure. \index{OMOP Common Data Model!domains}
+  - **Rationale for domains**: Domains are identified and separately defined in an entity-relationship model if they have an analysis use case (conditions, for example) and the domain has specific attributes that are not otherwise applicable.  All other data can be preserved as an observation in the observation table in an entity-attribute-value structure. \index{Common Data Model!domains}
   - **Standardized Vocabularies**: To standardize the content of those records, the CDM relies on the Standardized Vocabularies containing all necessary and appropriate corresponding standard healthcare concepts.
   - **Reuse of existing vocabularies**: If possible, these concepts are leveraged from national or industry standardization or vocabulary definition organizations or initiatives, such as the National Library of Medicine, the Department of Veterans' Affairs, the Center of Disease Control and Prevention, etc.
-  - **Maintaining source codes**: Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost. \index{OMOP Common Data Model!Source Codes} \index{OMOP Common Data Model!data loss prevention}
-  - **Technology neutrality**: The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or as SAS analytical datasets.\index{OMOP Common Data Model!technology neutrality}
-  - **Scalability**: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations. \index{OMOP Common Data Model!scalability}
-  - **Backwards compatibility**: All changes from previous CDMs are clearly delineated in the github repository  [(https://github.com/OHDSI/CommonDataModel)](https://github.com/OHDSI/CommonDataModel). Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously. \index{OMOP Common Data Model!backwards compatibility}
+  - **Maintaining source codes**: Even though all codes are mapped to the Standardized Vocabularies, the model also stores the original source code to ensure no information is lost. \index{Common Data Model!Source Codes} \index{Common Data Model!data loss prevention}
+  - **Technology neutrality**: The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or as SAS analytical datasets.\index{Common Data Model!technology neutrality}
+  - **Scalability**: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations. \index{Common Data Model!scalability}
+  - **Backwards compatibility**: All changes from previous CDMs are clearly delineated in the github repository  [(https://github.com/OHDSI/CommonDataModel)](https://github.com/OHDSI/CommonDataModel). Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously. \index{Common Data Model!backwards compatibility}
   
 ## Data Model Conventions
 
-There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions. \index{OMOP Common Data Model!conventions}
+There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions. \index{Common Data Model!conventions}
 
 ### General conventions of the model{#model-conv}
 
-The OMOP CDM is considered a "person-centric" model, meaning that all clinical Event tables are linked to the PERSON table. Together with the date or start date this allows for a longitudinal view on all healthcare-relevant Events by person. The exceptions from this rule are the standardized health system data tables, which are linked directly to Events of the various domains.
+The CDM is considered a "person-centric" model, meaning that all clinical Event tables are linked to the PERSON table. Together with the date or start date this allows for a longitudinal view on all healthcare-relevant Events by person. The exceptions from this rule are the standardized health system data tables, which are linked directly to Events of the various domains.
 
 ### General conventions of schemas
 
@@ -59,7 +59,7 @@ The CDM is platform-independent. Data types are defined generically using ANSI S
 
 ### General conventions of domains{#domains}
 
-Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \@ref(concepts-sources)). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION_CONCEPT_ID of the CONDITION_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an OMOP CDM, these records are found in the DRUG_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \@ref(tab:domains). 
+Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \@ref(concepts-sources)). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION_CONCEPT_ID of the CONDITION_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an CDM, these records are found in the DRUG_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \@ref(tab:domains). 
 
 Table: (\#tab:domains) Number of standard concepts belonging to each domain.
 
@@ -83,7 +83,7 @@ Concept Count|Domain ID|Concept Count|Domain ID
 
 ### Representation of content through Concepts 
 
-In CDM data tables the content of each record is fully normalized and represented through Concepts. Concepts are stored in Event tables with their CONCEPT_ID values, which are foreign keys to the CONCEPT table, which serves as the general reference table. All OMOP CDM instances use the same CONCEPT table as a reference of  the Concepts, which together with the Common Data Model is a key mechanism of interoperability and the foundation of the OHDSI research network. If a Standard Concept does not exist or cannot be identified, the value of the CONCEPT_ID is set to 0, representing a non-existing concept, an unknown or un-mappable value.
+In CDM data tables the content of each record is fully normalized and represented through Concepts. Concepts are stored in Event tables with their CONCEPT_ID values, which are foreign keys to the CONCEPT table, which serves as the general reference table. All CDM instances use the same CONCEPT table as a reference of  the Concepts, which together with the Common Data Model is a key mechanism of interoperability and the foundation of the OHDSI research network. If a Standard Concept does not exist or cannot be identified, the value of the CONCEPT_ID is set to 0, representing a non-existing concept, an unknown or un-mappable value.
 
 Records in the CONCEPT table contain detailed information about each concept (name, domain, class etc.). Concepts, Concept Relationships, Concept Ancestors and other information relating to Concepts is contained in the tables of the Standardized Vocabularies (see chapter \@ref(StandardizedVocabularies)).
 
@@ -105,12 +105,12 @@ Table: (\#tab:fieldConventions) Field name conventions.
 
 Many tables contain equivalent information in multiple places: as a Source Value, a Source Concept and as a Standard Concept.
 
-* **Source Values** are the original representation of an Event record in the source data. They can be codes from widely used coding systems, which are often public domain, such as ICD9CM, NDC or Read, proprietary coding systems like CPT4, GPI or MedDRA, or controlled vocabularies used only in the source data, such as F for female and M for male. They can also be short free text phrases that are not standardized and cotrolled. Source Values are stored in the [Event]_SOURCE_VALUE fields in the data tables.
+* **Source Values** are the original representation of an Event record in the source data. They can be codes from widely used coding systems, which are often public domain, such as ICD9CM, NDC or Read, proprietary coding systems like CPT4, GPI or MedDRA, or controlled vocabularies used only in the source data, such as F for female and M for male. They can also be short free text phrases that are not standardized and controlled. Source Values are stored in the [Event]_SOURCE_VALUE fields in the data tables.
 * **Concepts** are CDM-specific entities that normalize the meaning of a clinical fact. Most Concepts are based on existing public or proprietary coding systems in healthcare, while others were created de-novo (CONCEPT_CODE starts with "OMOP"). Concepts have unique IDs across all domains. 
 * **Source Concepts** are the Concepts that represent the code used in the source. Source Concepts are only used for existing public or proprietary coding systems, not for OMOP-generated Concepts. Source Concepts are stored in the [Event]_SOURCE_CONCEPT_ID field in the data tables.
-* **Standard Concepts** are those Concepts that are used to define the meaning of a clinical entity uniquely across all databases and independent from the codinng system used in the sources. Standard Concepts are typically drawn from existing public or proprietary vocabulary sources. Non-standard Concepts that have the equivalent meaning to a Standard Concept have a mapping to the Standard Concept in the Standardized Vocabularies. Standard Concepts are referred to in the [Event]_CONCEPT_ID field of the data tables. 
+* **Standard Concepts** are those Concepts that are used to define the meaning of a clinical entity uniquely across all databases and independent from the coding system used in the sources. Standard Concepts are typically drawn from existing public or proprietary vocabulary sources. Non-standard Concepts that have the equivalent meaning to a Standard Concept have a mapping to the Standard Concept in the Standardized Vocabularies. Standard Concepts are referred to in the [Event]_CONCEPT_ID field of the data tables. 
 
-Source Values are only provided for convenience and quality assurance (QA) purposes. They may contain information that is only meaningful in the context of a specific data source. The use of Source Values and Source Concepts is optional, even though **strongly recommended** if the source data make use of coding systems. Standard Concepts **are mandatory** however. This mandatory use of Standard Concepts is what allows all OMOP CDM instances to speak the same language. For example, the condition "Pulmonary Tuberculosis" (TB, Figure \@ref(fig:pulmTubICD9)) shows that the ICD9CM code for TB is 011. 
+Source Values are only provided for convenience and quality assurance (QA) purposes. They may contain information that is only meaningful in the context of a specific data source. The use of Source Values and Source Concepts is optional, even though **strongly recommended** if the source data make use of coding systems. Standard Concepts **are mandatory** however. This mandatory use of Standard Concepts is what allows all CDM instances to speak the same language. For example, the condition "Pulmonary Tuberculosis" (TB, Figure \@ref(fig:pulmTubICD9)) shows that the ICD9CM code for TB is 011. 
 
 ```{r pulmTubICD9, fig.cap="ICD9CM code for Pulmonary Tuberculosis",echo=FALSE, out.width="75%", fig.align="center"}
 knitr::include_graphics("images/CommonDataModel/pulmTubICD9.png")
@@ -124,11 +124,11 @@ knitr::include_graphics("images/CommonDataModel/pulmTubMap.png")
 
 An example of how the Standard Concept to Source Concept relationship is depicted is shown in Table \@ref(tab:conditionOccurrence).
 
-## OMOP CDM Standardized Tables
+## CDM Standardized Tables
 
-\index{OMOP Common Data Model!standardized tables}
+\index{Common Data Model!standardized tables}
 
-The OMOP CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl1].
+The CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl1].
 
 [^cdmWikiUrl1]: https://github.com/OHDSI/CommonDataModel/wiki
 
@@ -168,8 +168,8 @@ Column name|Value|Explanation
 |DAY_OF_BIRTH|12||
 |BIRTH_DATETIME|1982-03-12 00:00:00|When the time is not known midnight is used.|
 |DEATH_DATETIME|||
-|RACE_CONCEPT_ID|8527|The concept ID referring to white race is [8527](http://athena.ohdsi.org/search-terms/terms/8527). English ethnicity is [4093769](http://athena.ohdsi.org/search-terms/terms/4093769). Either one is correct, the latter will roll up to the former. Notice that enthnicities are stored here as part of Races, not in the ETHNICITY_CONCEPT_ID|
-|ETHNICITY_CONCEPT_ID|38003564|This is a US-typical notation to distingish Hispanics from the rest. Ethnicities, in this case English, is stored in the RACE_CONCEPT_ID. Outside the US this is not used. [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
+|RACE_CONCEPT_ID|8527|The concept ID referring to white race is [8527](http://athena.ohdsi.org/search-terms/terms/8527). English ethnicity is [4093769](http://athena.ohdsi.org/search-terms/terms/4093769). Either one is correct, the latter will roll up to the former. Notice that ethnicities are stored here as part of Races, not in the ETHNICITY_CONCEPT_ID|
+|ETHNICITY_CONCEPT_ID|38003564|This is a US-typical notation to distinguish Hispanics from the rest. Ethnicities, in this case English, is stored in the RACE_CONCEPT_ID. Outside the US this is not used. [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
 |LOCATION_ID||Her address is not known.|
 |PROVIDER_ID||Her primary care Provider is not known.|
 |CARE_SITE||Her primary Care Site is not known.|
@@ -298,10 +298,10 @@ Column name|Value|Explanation
 |VERBATIM_END_DATE|NULL|If the source recorded an explicit actual end date. The inferred end date banks on the assumption that the full range of days supply was utilized by the patient.|
 |DRUG_TYPE_CONCEPT_ID|38000177|This column is intended to provide information about the provenance of the record, i.e. does it come from an insurance claim, prescription record, etc. For this example the concept [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) ("Prescription written") is used.|
 |STOP_REASON|NULL|The reason the administration of the Drug was stopped. Reasons include regimen completed, changed, removed, etc. This information is very rarely captured.|
-|REFILLS|NULL|The number of automatic refills after the initial prescription that are part of the prescripion system in many countries. The initial prescription is not counted, values start with NULL. In the case of Lauren's acetaminophen she did not have any refills so the value is NULL.|
+|REFILLS|NULL|The number of automatic refills after the initial prescription that are part of the prescription system in many countries. The initial prescription is not counted, values start with NULL. In the case of Lauren's acetaminophen she did not have any refills so the value is NULL.|
 |QUANTITY|60|The quantity of drug as recorded in the original prescription or dispensing record.|
 |DAYS_SUPPLY|30|The number of days of supply of the medication as prescribed.|
-|SIG|NULL|The directions ("signetur") on the Drug prescription as recorded in the original prescription or dispensing record (and printed on the container in the US drug prescription system). Signeturs are not yet standardized in the OMOP CDM, and provided verbatim.|
+|SIG|NULL|The directions ("signetur") on the Drug prescription as recorded in the original prescription or dispensing record (and printed on the container in the US drug prescription system). Signeturs are not yet standardized in the CDM, and provided verbatim.|
 |ROUTE_CONCEPT_ID|4132161|This concept is meant to represent the route of administration  of the Drug the patient was was exposed to. Lauren took her acetaminophen orally so the concept ID [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) ("Oral") is used.|
 |LOT_NUMBER|NULL|An identifier assigned to a particular quantity or lot of Drug product from the manufacturer. This information is rarely captured.|
 |PROVIDER_ID|NULL|If the drug record has a prescribing Provider listed, the ID for that Provider goes in this field. In that case this contains the PROVIDER_ID from the PROVIDER table.|
@@ -343,7 +343,7 @@ Column name|Value|Explanation
 
 ## Additional Information
 
-This chapter covers only a portion of the tables available in the OMOP CDM as examples of how data is represented. You are encouraged to visit the wiki site[^cdmWikiUrl] for more information.
+This chapter covers only a portion of the tables available in the CDM as examples of how data is represented. You are encouraged to visit the wiki site[^cdmWikiUrl] for more information.
 
 [^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki
 
@@ -354,7 +354,7 @@ This chapter covers only a portion of the tables available in the OMOP CDM as ex
 
 - The CDM is a person-centric model.
 
-- The CDM not only standarizes the structure of the data, but through the Standardized Vocabularies it also standardizes the representation of the content.
+- The CDM not only standardizes the structure of the data, but through the Standardized Vocabularies it also standardizes the representation of the content.
 
 - Source codes are maintained in the CDM for full traceability.
 

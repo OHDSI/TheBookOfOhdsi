@@ -200,7 +200,7 @@ Limit qualifying cohort to: all events per person.
 #### End Date Strategy {-}
 
 Date Offset Exit Criteria. 
-This cohort defintion end date will be the index event's start date plus 7 days
+This cohort definition end date will be the index event's start date plus 7 days
 
 #### Cohort Collapse Strategy {-}
 
@@ -245,7 +245,7 @@ Limit qualifying cohort to: all events per person.
 
 #### End Date Strategy {-}
 
-This cohort defintion end date will be the index event's start date plus 7 days
+This cohort definition end date will be the index event's start date plus 7 days
 
 #### Cohort Collapse Strategy {-}
 
@@ -610,7 +610,7 @@ Table: (\#tab:THZUseTHZ) Thiazide or thiazide-like diuretic
 | 978555 | Indapamide | NO | YES | NO | 
 | 1395058 | Chlorthalidone | NO | YES | NO | 
 
-## dihydropyridine Calcium Channel Blocker (dCCB) use {#dCCBUse}
+## Dihydropyridine Calcium Channel Blocker (dCCB) use {#dCCBUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *dihydropyridine Calcium Channel Blocker (dCCB)* (Table \@ref(tab:dCCBUsedCBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -627,7 +627,7 @@ Table: (\#tab:dCCBUsedCBB) Dihydropyridine Calcium channel blockers (dCCB)
 | 1332418 | Amlodipine | NO | YES | NO | 
 | 1353776 | Felodipine | NO | YES | NO | 
 
-## non-dihydropyridine Calcium Channel Blocker (ndCCB) use {#ndCCBUse}
+## Non-dihydropyridine Calcium Channel Blocker (ndCCB) use {#ndCCBUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *non-dihydropyridine Calcium channel blockers (ndCCB)* (Table \@ref(tab:ndCCBUsendCCB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -640,7 +640,7 @@ Table: (\#tab:ndCCBUsendCCB) non-dihydropyridine Calcium channel blockers (ndCCB
 | 1307863 | Verapamil | NO | YES | NO | 
 | 1328165 | Diltiazem | NO | YES | NO | 
 
-## beta blocker use {#BBUse}
+## Beta-blocker use {#BBUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Beta blockers* (Table \@ref(tab:BBUseBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -690,7 +690,7 @@ Table: (\#tab:DPUseDPs) Diuretics - potassium sparing
 | 904542 | Triamterene | NO | YES | NO | 
 | 991382 | Amiloride | NO | YES | NO | 
 
-## alpha-1 blocker use {#A1BUse}
+## Alpha-1 blocker use {#A1BUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Alpha-1 blocker* (Table \@ref(tab:A1BUseA1Bs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
