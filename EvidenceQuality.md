@@ -4,6 +4,8 @@
 
 *Chapter lead: Jon Duke*
 
+\index{evidence quality}
+
 ## Understanding Evidence Quality
 
 How do we know if the results of a study are reliable?  Can they be trusted for use in clinical settings?  What about in regulatory decision-making?  Can they serve as a foundation for future research? Each time a new study is published or disseminated, readers must consider these questions, regardless of whether the work was a randomized controlled trial, an observational study, or another type of analysis. \index{evidence quality} \index{regulatory decision-making}

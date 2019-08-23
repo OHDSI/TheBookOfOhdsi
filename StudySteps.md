@@ -13,6 +13,7 @@ Throughout the chapter, we assume that an infrastructure of OHDSI tools, R and S
 ## General Best Practice Guidelines
 
 ### Observational Study Definition
+
 An observational study is a study where, by definition, patients are simply observed and no attempt is made to intervene in the treatment of specific patients. Sometimes, observational data are collected for a specific purpose as in a registry study, but in many cases, these data are collected for some purpose other than the specific study question at hand. Common examples of the latter type of data are Electronic Health Records (EHRs) or administrative claims data. Observational studies are often referred to as secondary use of data. A fundamental guiding principle for performing any observational study is to explicitly describe one’s research question and fully specify the approach in advance of executing a study. In this regard, an observational study should be no different than a clinical trial, except that in a clinical trial, patients are recruited and followed in time for the primary purpose of answering a specific question, usually about the efficacy and/or safety of a therapeutic intervention. There are many ways in which the analysis methods employed in observational studies are different than those used in clinical trials. Most notably, the lack of randomization in PLE observational studies requires approaches to control confounding if the goal is to draw causal inferences (see Chapters \@ref(PopulationLevelEstimation) and \@ref(MethodValidity) for detailed discussion of OHDSI-supported study designs and methods for PLE such as methods to remove observed confounding by balancing populations across many characteristics).
 
 
@@ -21,6 +22,8 @@ An observational study is a study where, by definition, patients are simply obse
 Pre-specification of an observational study design and parameters is critical to avoid introducing further bias by subconsciously or consciously evolving one's approach to achieve a desired result, sometimes referred to as p-hacking. The temptation not to fully specify the study details in advance is greater with secondary use of data than primary use because these data, such as EHR and claims, sometimes give the researcher a sense of infinite possibilities, leading to a meandering line of inquiry. The key then is to still impose the rigorous structure of scientific inquiry despite the apparent easy availability of pre-existing data. The principle of pre-specification is especially important in PLE or PLP to ensure rigorous or reproducible results as these findings may ultimately inform clinical practice or regulatory decisions. Even in the case of a characterization study being conducted purely for exploratory reasons, it is still preferable to have a well-specified plan. Otherwise an evolving study design and analysis process will become unwieldy to document, explain and reproduce. 
 
 ### Protocol
+
+\inedx{protocol}
 
 An observational study plan should be documented in the form of a protocol created prior to executing a study. At a minimum, a protocol describes the primary study question, the approach, and metrics that will be used to answer the question. The study population should be described to a level of detail such that the study population may be fully reproduced by others. In addition, all methods or statistical procedures and the form of expected study results such as metrics, tables and graphs should be described. 
 Often, a protocol will also describe a set of pre-analyses designed to assess the feasibility or statistical power of the study. Furthermore, protocols may contain descriptions of variations on the primary study question referred to as sensitivity analyses. Sensitivity analyses are designed to evaluate the potential impact of study design choices on the overall study findings and should be described in advance whenever possible. Sometimes unanticipated issues arise that may necessitate a protocol amendment after a protocol is completed. If this becomes necessary, it is critical to document the change and the reasons for the change in the protocol itself. Particularly in the case of PLE or PLP, a completed study protocol will ideally be recorded in an independent platform (such as clinicaltrials.gov or OHDSI’s studyProtocols sandbox) where its versions and any amendments can be tracked independently with timestamps. It is also often the case that your institution or the owner of the data source will require the opportunity to review and approve your protocol prior to study execution.
@@ -33,6 +36,8 @@ Many of the tools are designed to parameterize a few study designs or metrics th
 The OHDSI approach supports the inclusion of feasibility and study diagnostics within the protocol by again enabling these steps to be performed relatively simply within a common framework and tools (see section \@ref(Feasibility) below). 
 
 ### Study packages
+
+\index{study package}
 
 Another motivation for standardized templates and designs is that even when a researcher thinks a study is described in complete detail in the form of a protocol, there may be elements that are not actually sufficiently specified to generate the full computer code to execute the study. A related fundamental principle which is enabled by the OHDSI framework is to generate a completely traceable and reproducible process documented in the form of computer code, often referred to as a “study package.” OHDSI best practice is to record such a study package in the git environment. This study package contains all parameters and versioning stamps for the code base. As mentioned previously, observational studies are often asking questions with potential to impact public health decisions and policy. Therefore, before acting on any findings, they should ideally be replicated in multiple settings by different researchers. The only way to achieve such a goal is for every detail required to fully reproduce a study to be mapped out explicitly and not left to guesswork or misinterpretation. To support this best practice, the OHDSI tools are designed to aid in the translation from a protocol in the form of a written document into a computer or machine-readable study package. One tradeoff of this framework is that not every use case or customized analysis can easily be addressed with the existing OHDSI tools. As the community grows and evolves, however, more functionality to address a larger array of use cases is being added. Anyone involved in the community may raise suggestions for new functionality driven by a novel use case.
 
@@ -86,6 +91,8 @@ As a final note, defining cohorts for a study may benefit from ongoing work in t
 
 ### Feasibility and Diagnostics {#Feasibility}
 
+\index{study feasibility!single study} \index{study diagnostics}
+
 Once cohorts are defined and generated, a more formal process to examine study feasibility in available data sources can be undertaken and the findings summarized in the finalized protocol. An evaluation of study feasibility can encompass a number of exploratory and sometimes iterative activities. We describe a few common aspects here.
 
 A primary activity at this stage will be to thoroughly review the distributions of characteristics within your cohorts to ensure that the cohort you generated is consistent with the desired clinical characteristics and flag any unexpected characteristics. Returning to our T2DM example above, by characterizing this simple T2DM cohort by reviewing the frequencies of all other diagnoses received, one may be able to flag the issue of also capturing patients with T1DM or other unanticipated issues. It is good practice to build such a step of initially characterizing any new cohort into the study protocol as a quality check of clinical validity of the cohort definition. In terms of implementation, the easiest way to perform a first pass at this will be to examine the cohort demographics and top drugs and conditions that can be generated by default when a cohort is created in ATLAS. If the option to create the cohorts directly within ATLAS is not available, manual SQL or use of the R feature extraction package can be used to characterize a cohort. In practice, in a larger PLE study or PLP study, these steps can be built into the study package with feature extraction steps. 
@@ -106,10 +113,14 @@ The completed study package can then be used to execute only the preliminary dia
 
 Importantly, we recommend at this stage to have your finalized protocol reviewed by clinical collaborators and stakeholders.
 
-<div class="figure" style="text-align: center">
-<img src="images/StudySteps/studyProcess.png" alt="Diagram of the study process." width="90%" />
-<p class="caption">(\#fig:studyProcess)Diagram of the study process.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/StudySteps/studyProcess} 
+
+}
+
+\caption{Diagram of the study process.}(\#fig:studyProcess)
+\end{figure}
 
 ### Execute Study
 
@@ -132,16 +143,10 @@ As with the protocol development process, we also recommend that the study findi
 
 \BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- Study should examine a well-defined question.
 - Perform appropriate checks of data quality, completeness and relevance in advance.
-- Source observational database must be ETLed to OMOP common data mode and use standard vocabularies.
-- Identify expert on source database who can explain unique clinical aspects of source database and is knowledgeable of ETL rules to transform source data to OMOP CDM.
-- Recommend to also include source database expert in protocol development process if possible.
+- Recommend to include source database expert in protocol development process if possible.
 - Document proposed study in a protocol ahead of time.
-- Consult with clinical experts and literature in defining your cohorts and other aspects of study design.
-- Finalized protocol should be reviewed by clinical experts and other stakeholders. 
-- Study should be registered and approved (if required) ahead of study execution.
-- Cohorts representing study populations are created by ATLAS whenever possible.
-- OHDSI tools should be used in the creation of complete computer code to execute the study, increasing the ability to exactly reproduce any study in order to test findings at a later date.
 - Generate study package code in parallel with written protocol and perform and describe any feasibility and diagnostics prior to executing the final study.
+- Study should be registered and approved (if required) ahead of study execution.
 - Finalized report or manuscript should be reviewed by clinical experts and other stakeholders. 
 </div>\EndKnitrBlock{rmdsummary}
 

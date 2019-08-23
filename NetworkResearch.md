@@ -4,7 +4,9 @@ Chapter Leads: Kristin Kostka, Sara Dempster, Greg Klebanov
 
 The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including Standardized Vocabularies ,the Common Data Model (CDM) ,analytical methods packages, ATLAS and the study steps (Chapter\@ref(StudySteps)) to run a retrospective database study. OHDSI Network Studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
 
-##  OHDSI Research Network
+##  OHDSI research network
+
+\index{research network}
 
 The OHDSI Research Network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 1.2 billion patient records (~650 million de-duplicated patient records) in the CDM. This includes more than 220 researchers and 82 observational health databases across 17 countries with regional central coordinating centers housed at Columbia University (USA), Erasmus Medical Center (Europe) and Ajou University (South Korea). The OHDSI community continues to grow rapidly across Europe (in collaboration with the IMI EHDEN project), Central America (e.g. Argentina, Brazil, Colombia), and Asia (e.g. China, Japan, Singapore). 
 
@@ -16,7 +18,9 @@ OHDSI is an open network, inviting healthcare institutions across the globe with
 - **Opportunity to buildout care benchmarks:** Network can validate quality improvement benchmarks against other institutions *(e.g. On average how long does it take to get an appendectomy discharged?)*
 </div>\EndKnitrBlock{rmdimportant}
 
-## Defining an OHDSI Network Study
+## Defining an OHDSI network study
+
+\index{network study}
 
 In the prior chapter (Chapter \@ref(StudySteps)), we discussed general design considerations for running a study using the CDM.  In general, a study may be conducted on a single CDM or on multiple CDMs. It can be run within a single institution’s CDM data or across many institutions. 
 In this chapter we will discuss the considerations when an OHDSI study evolves to become a study run across the OHDSI network.
@@ -37,7 +41,7 @@ When conducting an open OHDSI Network study, there are a few components that mak
 
 In the next section we will talk about how to create your own network study.
 
-### Design Considerations for an OHDSI Network Study
+### Design considerations for an OHDSI network study
 
 Designing a study to run across the OHDSI Network requires a paradigm shift in how you design and assemble your study code. Ordinarily, you may design a study with a target data set in mind. In doing so, you may write code relative to what you know to be true in the data you are utilizing for your analysis. For example, if you were assembling an angioedema cohort you may opt to pick only concept codes for angioedema that are represented in your CDM. This may be problematic if your data are in a specific care setting (e.g. primary care, ambulatory settings) or specific to a region (e.g. US-centric). You might be biasing your cohort definition.
 
@@ -45,7 +49,7 @@ In an OHDSI Network Study, you are no longer designing and building a study pack
 
 In addition to clinical coding variation, you have to anticipate technical variations as well. Your study code will no longer be running in a single technical environment. Each OHDSI Network site makes its own independent choice of database layer. Luckily, the OHDSI Community has solutions such as ATLAS, [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [SqlRender](https://ohdsi.github.io/SqlRender/) to help you generalize your study package for CDM compliance across different database dialects. OHDSI investigators are encouraged to solicit help from other network study sites to test and validate the study package can be executed in different environments. When coding errors come up, OHDSI Researchers can utilize the [OHDSI Forums](http://forums.ohdsi.org) to discuss and debug packages.
 
-### Logistical Considerations for an OHDSI Network Study
+### Logistical considerations for an OHDSI Network Study
 
 OHDSI Network Studies require coordination between the lead investigator with participating network sites. Each site must perform its own due diligence to ensure the study protocol is approved and authorized to be executed on the local CDM. Data analysts may need to enlist assistance from the local IT team to enable appropriate permissions to run the study.
 
@@ -64,7 +68,7 @@ When sharing study results, the data analyst must comply with all local governan
 
 The OHDSI community has validated methodologies to aggregate results files shared from multiple network sites into a single answer. The [EvidenceSynthesis](https://github.com/OHDSI/EvidenceSynthesis) package is a freely available R package containing routines for combining evidence and diagnostics across multiple sources, such as multiple data sites in a distributed study. This includes functions for performing meta-analysis and forest plots.
 
-## Running an OHDSI Network Study
+## Running an OHDSI network study
 
 Running an OHDSI Network Study has three distinct stages:
 
@@ -72,7 +76,9 @@ Running an OHDSI Network Study has three distinct stages:
 - Study Execution
 - Results Dissemination and Publication
 
-### Study Feasibility and Design
+### Study feasibility and design
+
+\code{study feasibility!network study}
 
 The study feasibility stage *(pre-study stage)* is focused on supporting a definition of a study and a creation of the study protocol. These activities make sure the study is feasible to be executed as described in the formal protocol.
 
@@ -80,7 +86,7 @@ The feasibility stage does not have a well-defined process but rather is driven 
 
 The outcome of the feasibility stage is generation of a finalized protocol and study package that is ready for network dissemination. The formal protocol will detail the study team, including the designated study lead (often the corresponding author for publication purposes), and information on the timeline for the study. The protocol is a critical component for additional network sites to review, approve and execute the full study package on their CDM data. A protocol must include information on study population, the methods being used, how the results will be stored and analyzed as well as how the study results will be disseminated after completion (e.g. a publication, a poster, etc).
 
-### Study Execution
+### Study execution
 
 After completing feasibility exercises, the study advances to the execution phase. This phase is when the design and logistical considerations we discussed become most important.
 
@@ -103,7 +109,7 @@ The key activities in executing a network study include the following:
 
 While OHDSI studies can be executed rapidly, it is advised to allow for a few weeks to several months for all participating sites to execute the study and receive appropriate approvals to publish results. A study leads should set study milestones in the protocol and communicate anticipated closure date in advance to assist with managing the overall study timeline.
 
-### Results Dissemination and Publication
+### Results dissemination and publication
 
 During this stage, the study lead will collaborate with other sites on various administrative tasks, such as manuscript development and optimizing data visualizations. 
 
@@ -116,10 +122,9 @@ Researchers are also invited to present OHDSI Network Studies on weekly OHDSI co
 
 The current network study process is manual - with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, sharing code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes. The ARACHNE Research Network platform is a community-driven solution to streamline and automate the process of network studies. 
 
-<div class="figure">
-<img src="images/NetworkStudies/ARACHNE.png" alt="The ARACHNE Network Study Process." width="100%" />
-<p class="caption">(\#fig:arachne)The ARACHNE Network Study Process.</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNE} \caption{The ARACHNE Network Study Process.}(\#fig:arachne)
+\end{figure}
 
 The ARACHNE Platform includes multiple core components:
 
@@ -128,10 +133,9 @@ The ARACHNE Platform includes multiple core components:
  
 ARACHNE is built to provide a seamless integration with other OHDSI tools, including ACHILLES reports and an ability to import ATLAS design artefacts, create self-contained packages and automatically execute those across multiple sites. The future vision is to eventually enable multiple networks to be linked together for the purpose of conducting research not only between organizations within a single network, but also between organizations across multiple networks. 
 
-<div class="figure">
-<img src="images/NetworkStudies/ARACHNENON.png" alt="The ARACHNE Network of Networks." width="100%" />
-<p class="caption">(\#fig:arachneNon)The ARACHNE Network of Networks.</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/NetworkStudies/ARACHNENON} \caption{The ARACHNE Network of Networks.}(\#fig:arachneNon)
+\end{figure}
  
 ## Summary
 
