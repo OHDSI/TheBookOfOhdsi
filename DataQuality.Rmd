@@ -57,35 +57,43 @@ Each component can be evaluated in two ways:
 
 ### Data quality checks
 
+\index{ACHILLES} \index{data quality!checks}
+
 Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
 
 ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. 
+
+\index{Data Quality Dashboard}
 
 Another tool created by the community to assess DQ is the [Data Quality Dashboard (DQD)](https://github.com/OHDSI/DataQualityDashboard). Where ACHILLES runs characterization analyses to provide an overall visual understanding of a CDM instance, the DQD goes table by table and field by field to quantify the number of records in a CDM that do not conform to the given specifications. In all, over 1,500 checks are performed, each one organized into the Kahn framework. For each check the result is compared to a threshold whereby a FAIL is considered to be any percentage of violating rows falling above that value. Table \@ref(tab:dqdExamples) shows some example checks.  
 
 Table: (\#tab:dqdExamples) Example data quality rules in the Data Quality Dashboard.
 
-|Pct Violated Rows  | Check Name  | Check Description | Threshold | Pass/Fail |
-|:-------- |:--------------------|: ------------------------------------|:------|:----|
-| 0.34|CDM_DATATYPE|A yes or no value indicating if the provider_id in the VISIT_OCCURRENCE is the expected data type based on the specification. | 0.05 | FAIL|
-| 0.99|SOURCE_VALUE_COMPLETENESS| The number and percent of distinct source values in the measurement_source_value field of the MEASUREMENT table mapped to 0. | 0.3 | FAIL|
-| 0.09|FK_CLASS| The number and percent of records that have a value in the drug_concept_id field in the DRUG_ERA table that do not conform to the ingredient class. | 0.1 | PASS|
-| 0.015|PLAUSIBLE_TEMPORAL_AFTER| The number and percent of records with a value in the verbatim_end_date field of the DRUG_EXPOSURE that occurs prior to the date in the DRUG_EXPOSURE_START_DATE field of the DRUG_EXPOSURE table.|0.05|PASS|
-| 0|IS_PRIMARY_KEY| The number and percent of records that have a duplicate value in the procedure_occurrence_id field of the PROCEDURE_OCCURRENCE. | 0 | PASS|
+| Fraction violated rows  | Check description | Threshold | Status |
+|:-------- |:------------------------------------ |:------ |:---- |
+| 0.34|A yes or no value indicating if the provider_id in the VISIT_OCCURRENCE is the expected data type based on the specification. | 0.05 | FAIL|
+| 0.99| The number and percent of distinct source values in the measurement_source_value field of the MEASUREMENT table mapped to 0. | 0.30 | FAIL|
+| 0.09| The number and percent of records that have a value in the drug_concept_id field in the DRUG_ERA table that do not conform to the ingredient class. | 0.10 | PASS|
+| 0.02| The number and percent of records with a value in the verbatim_end_date field of the DRUG_EXPOSURE that occurs prior to the date in the DRUG_EXPOSURE_START_DATE field of the DRUG_EXPOSURE table.|0.05|PASS|
+| 0.00| The number and percent of records that have a duplicate value in the procedure_occurrence_id field of the PROCEDURE_OCCURRENCE. | 0.00 | PASS|
 
 Within the tool the checks are organized in multiple ways, one being into table, field, and concept level checks. Table checks are those done at a high-level within the CDM, for example determining if all required tables are present. The field level checks are carried out in such a way to evaluate every field within every table for conformance to CDM specifications. These include making sure all primary keys are truly unique and all standard concept fields contain concepts ids in the proper domain, among many others. Concept level checks go a little deeper to examine individual concept ids. Many of these fall into the plausibility category of the Kahn framework such as ensuring that gender-specific concepts are not attributed to persons of incorrect gender (i.e. prostate cancer in a female patient).
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
-</div>\EndKnitrBlock{rmdimportant}
+```{block2, type='rmdimportant'}
+ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
+
+```
 
 ### ETL unit tests {#etlUnitTests}
+
+\index{ETL!unit tests}
 
 In addition to high level data quality checks individual level data checks should be performed. The ETL (Extract-Transform-Load) process by which data is converted to the CDM is often quite complex, and with that complexity comes the danger of making mistakes that may go unnoticed. Moreover, as time goes by the source data model may change, or the CDM may be updated, making it necessary to modify the ETL process. Changes to a process as complicated as an ETL can have unintended consequences, requiring all aspects of the ETL to be reconsidered and reviewed. 
 
 To make sure the ETL does what it is supposed to do, and continues to do so, it is highly recommended to construct a set of unit tests. A unit test is a small piece of code that automatically checks a single aspect. The Rabbit-in-a-Hat tool described in Chapter \@ref(ExtractTransformLoad) can create a unit test framework that makes writing such unit tests easier. This framework is a collection of R functions created specifically for the source database and target CDM version of the ETL. Some of these functions are for creating fake data entries that adhere to the source data schema, while other functions can be used to specify expectations on the data in the CDM format. Here is an example unit test:
 
 
-```r
+```{r eval=FALSE}
 source("Framework.R")
 declareTest(101, "Person gender mappings")
 add_enrollment(member_id = "M000000102", gender_of_member = "male")
@@ -101,7 +109,7 @@ Note that the ENROLLMENT table has many other fields, but we do not care much ab
 Similar unit tests can be created for all other logic in an ETL, typically resulting in hundreds of tests. When we are done defining the test, we can use the framework to generate two sets of SQL statements, one to create the fake source data, and one to create the tests on the ETL-ed data:
 
 
-```r
+```{r eval=FALSE}
 insertSql <- generateInsertSql(databaseSchema = "source_schema")
 testSql <- generateTestSql(databaseSchema = "cdm_test_schema")
 ```
@@ -125,6 +133,8 @@ The power of these unit tests is that we can easily rerun them any time the ETL 
 
 ## Study-specific checks
 
+\index{data quality!study-specific checks}
+
 The chapter has so far focused on general DQ checks. Such checks should be executed prior to using the data for research. Since these checks are done regardless of the research question we recommend performing study-specific DQ assessments.
 
 Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specifies the length of exposure. 
@@ -145,7 +155,7 @@ One way to review the source codes that do map is to use the `checkCohortSourceC
 knitr::include_graphics("images/DataQuality/sourceCodes.png")
 ```
 
-Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the `findOrphanSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study the concept "Gangrenous disorder" ([439928](http://athena.ohdsi.org/search-terms/terms/439928)) and all of its descendants was used to find all occurrences of gangrene. To evaluate whether this truly includes all source codes indicate gangrene, several terms (e.g. "gangrene") were used to search the descriptions in the CONCEPT and SOURCE_TO_CONCEPT_MAP tables to identify source codes. An automated search is then used to evaluate whether each gangrene source code appearing in the data indeed directly or indirectly (through ancestry) maps to the concept "Gangrenous disorder".  The result of this evaluation is shown in Figure \@ref(fig:missingMapping), revealing that the ICD-10 code J85.0 ("Gangrene and necrosis of lung") was only mapped to concept [4324261](http://athena.ohdsi.org/search-terms/terms/4324261) ("Pulmonary necrosis"), which is not a descendant of "Gangrenous disorder". 
+Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the `findOrphanSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study the concept "Gangrenous disorder" ([439928](http://athena.ohdsi.org/search-terms/terms/439928)) and all of its descendants was used to find all occurrences of gangrene. To evaluate whether this truly includes all source codes indicate gangrene, several terms (e.g. "gangrene") were used to search the descriptions in the CONCEPT and SOURCE_TO_CONCEPT_MAP tables to identify source codes. An automated search is then used to evaluate whether each gangrene source code appearing in the data indeed directly or indirectly (through ancestry) maps to the concept "Gangrenous disorder".  The result of this evaluation is shown in Figure \@ref(fig:missingMapping), revealing that the ICD-10 code J85.0 ("Gangrene and necrosis of lung") was only mapped to concept [4324261](http://athena.ohdsi.org/search-terms/terms/4324261) ("Pulmonary necrosis"), which is not a descendant of "Gangrenous disorder".  \index{orphan codes}
 
 ```{r missingMapping, fig.cap='Example orphan source code. ',echo=FALSE, out.width='60%', fig.align='center'}
 knitr::include_graphics("images/DataQuality/missingMapping.png")
@@ -187,7 +197,7 @@ This function will create several tables in the `resultsDatabaseSchema`, which h
 We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
 
 
-```r
+```{r eval=FALSE}
 exportToJson(connectionDetails,
              cdmDatabaseSchema = cdmDatabaseSchema,
              resultsDatabaseSchema = cdmDatabaseSchema,
@@ -204,28 +214,28 @@ Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a su
 
 ```{r achillesCodeChange, fig.cap='Monthly rate of diabetes coded in the ACHILLES web viewer.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/DataQuality/achillesCodeChange.png")
-
+```
 ## Data Quality Dashboard in practice {#dqdInPractice}
 
 Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section \@ref(achillesInPractice). For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable `cdmDbSchema` to tell R where to look for the data.
 
-``` r
+```{r eval=FALSE}
 cdmDbSchema <- "my_cdm_data.dbo"
 ```
 
 Next, we run the Dashboard...
 
-```r
+```{r eval=FALSE}
 DataQualityDashboard::executeDqChecks(connectionDetails = connectionDetails, 
-                              cdmDatabaseSchema = cdmDbSchema, 
-                              resultsDatabaseSchema = cdmDbSchema,
-                              cdmSourceName = "My database",
-                              outputFolder = "My output")
+                                      cdmDatabaseSchema = cdmDbSchema, 
+                                      resultsDatabaseSchema = cdmDbSchema,
+                                      cdmSourceName = "My database",
+                                      outputFolder = "My output")
 ```
 
 The above function will execute all available data quality checks on the schema specified. It will then write a table to the `resultsDatabaseSchema` which we have here set to the same schema as the CDM. This table will include all information about each check run including the CDM table, CDM field, check name, check description, Kahn category and subcategory, number of violating rows, the threshold level, and whether the check passes or fails, among others. In addition to a table this function also writes a JSON file to the location specified as the `outputFolder`. Using this JSON file we can launch a web viewer to inspect the results.
 
-```r
+```{r eval=FALSE}
 viewDqDashboard(jsonPath)
 ```
 
@@ -233,24 +243,22 @@ The variable `jsonPath` should be the path to the JSON file containing the resul
 
 When you first open the Dashboard you will be presented with the overview table, as seen in Figure \@ref(fig:dqdOverview). This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate. 
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/dqdOverview.png" alt="Overview of Data Quality Checks in the Data Quality Dashboard." width="100%" />
-<p class="caption">(\#fig:dqdOverview)Overview of Data Quality Checks in the Data Quality Dashboard.</p>
-</div>
+```{r dqdOverview, fig.cap='Overview of Data Quality Checks in the Data Quality Dashboard.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/dqdOverview.png")
+```
 
-Clicking on *Results* in the left-hand menu will take you to the drilldown results for each check that was run (Figure \@ref(fig:dqdResults)). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the `r icon::fa('plus-square')` icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
+Clicking on *Results* in the left-hand menu will take you to the drilldown results for each check that was run (Figure \@ref(fig:dqdResults)). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the ![](images/DataQuality/plusIcon.png) icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/dqdResults.png" alt="Drilldown into Data Quality Checks in the Data Quality Dashboard." width="100%" />
-<p class="caption">(\#fig:dqdResults)Drilldown into Data Quality Checks in the Data Quality Dashboard.</p>
-</div>
+```{r dqdResults, fig.cap='Drilldown into Data Quality Checks in the Data Quality Dashboard.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/DataQuality/dqdResults.png")
+```
 
 ## Study-specific checks in practice
 
 Next, we will execute several checks specifically for the angioedema cohort definition provided in Appendix \@ref(Angioedema). We will assume the connection details have been set as described in Section \@ref(achillesInPractice), and that the cohort definition JSON and SQL of the cohort definition have been saved in the files "cohort.json" and "cohort.sql", respectively. The JSON and SQL can be obtained from the Export tab in the ATLAS cohort definition function.
 
 
-```r
+```{r eval=FALSE}
 library(MethodEvaluation)
 json <- readChar("cohort.json", file.info("cohort.json")$size)
 sql <- readChar("cohort.sql", file.info("cohort.sql")$size)
@@ -271,7 +279,7 @@ knitr::include_graphics("images/DataQuality/sourceCodesAngioedema.png")
 Next, we can search for orphan source codes, that is source codes that do not map to standard concept codes. Here we look for the Standard Concept "Angioedema", and look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
 
 
-```r
+```{r eval=FALSE}
 orphans <- findOrphanSourceCodes(connectionDetails,
                                  cdmDatabaseSchema = cdmDbSchema,
                                  conceptName = "Angioedema",
