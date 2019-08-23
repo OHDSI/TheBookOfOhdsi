@@ -1,6 +1,6 @@
 # Extract Transform Load {#ExtractTransformLoad}
 
-*Chapter leads: Clair Blacketer & Erica A. Voss*
+*Chapter leads: Clair Blacketer & Erica Voss*
 
 ## Introduction
 
@@ -44,7 +44,7 @@ The typical sequence for using the software to scan source data:
 
 After downloading and installing the White Rabbit application, the first thing you need to do is set a working folder. Any files that White Rabbit creates will be exported to this local folder. Use the "Pick Folder" button shown in Figure \@ref(fig:WhiteRabbitLocation) to navigate in your local environment where you would like the scan document to go. 
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/WhiteRabbitLocation.png" alt="The &quot;Pick Folder&quot; button allows the specification of a working folder for the White Rabbit application." width="100%" />
 <p class="caption">(\#fig:WhiteRabbitLocation)The "Pick Folder" button allows the specification of a working folder for the White Rabbit application.</p>
 </div>
@@ -57,7 +57,7 @@ White Rabbit supports delimited text files and various database platforms. Hover
 
 After connecting to a database, you can scan the tables contained therein. A scan generates a report containing information on the source data that can be used to help design the ETL. Using the Scan tab shown in Figure \@ref(fig:WhiteRabbitAddTables) you can either select individual tables in the selected source database by clicking on “Add” (Ctrl + mouse click), or automatically select all tables in the database by clicking on “Add all in DB”.
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/WhiteRabbitAddTables.png" alt="White Rabbit Scan tab." width="100%" />
 <p class="caption">(\#fig:WhiteRabbitAddTables)White Rabbit Scan tab.</p>
 </div>
@@ -74,14 +74,14 @@ Once all settings are completed, press the “Scan tables” button. After the s
 
 Once the scan is complete, an Excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. Figure \@ref(fig:ScanOverviewTab). shows an example overview tab.
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/ScanOverviewTab.png" alt="Example overview tab from a scan report." width="100%" />
 <p class="caption">(\#fig:ScanOverviewTab)Example overview tab from a scan report.</p>
 </div>
 
 The tabs for each of the tables show each field, the values in each field, and the frequency of each value. Each source table column will generate two columns in the Excel. One column will list all distinct values that have a “Min cell count” greater than what was set at time of the scan. If a list of unique values was truncated, the last value in the list will be “List truncated”; this indicates that there are one or more additional unique source values that appear less than the number entered in the “Min cell count”. Next to each distinct value will be a second column that contains the frequency (the number of times that value occurs in the sample). These two columns (distinct values and frequency) will repeat for all the source columns in the table profiled in the workbook. 
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/ScanSex.png" alt="Example values for a single column." width="30%" />
 <p class="caption">(\#fig:scanSex)Example values for a single column.</p>
 </div>
@@ -116,7 +116,7 @@ Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are re
 
 Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clinical tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person’s patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.  
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/flowOfEtl.png" alt="General flow of an ETL and which tables to map first." width="100%" />
 <p class="caption">(\#fig:etlFlow)General flow of an ETL and which tables to map first.</p>
 </div>
@@ -127,7 +127,7 @@ It is often the case that, during CDM conversion, you will need to make provisio
 
 The Synthea data structure contains 20 columns in the patients table but not all were needed to populate the PERSON table, as seen in Figure \@ref(fig:syntheaPerson). This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver’s license number, and passport number.
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/syntheaPersonTable.png" alt="Mapping of Synthea Patients table to CDM PERSON table." width="100%" />
 <p class="caption">(\#fig:syntheaPerson)Mapping of Synthea Patients table to CDM PERSON table.</p>
 </div>
@@ -212,7 +212,7 @@ Note: source code extracts should be broken out by domain (i.e. drugs, procedure
 
 Source codes are loaded into Usagi from the File –> Import codes menu. From here an “Import codes …” will display as seen in Figure \@ref(fig:usagiImport). In this figure, the source code terms were in Dutch and were also translated into English. Usagi will leverage the English translations to map to the standard vocabulary.
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/usagiImport.png" alt="Usagi source code input screen." width="100%" />
 <p class="caption">(\#fig:usagiImport)Usagi source code input screen.</p>
 </div>
@@ -235,7 +235,7 @@ Once all your settings are finalized, click the “Import” button to import th
 
 Once you have imported your input file of source codes, the mapping process begins. In Figure \@ref(fig:usagiOverview), you see the Usagi screen is made up of 3 main sections: an overview table, the selected mapping section, and place to perform searches. Note that in any of the tables, you can right-click to select the columns that are shown or hidden to reduce the visual complexity.
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/usagiOverview.png" alt="Usagi source code input screen." width="100%" />
 <p class="caption">(\#fig:usagiOverview)Usagi source code input screen.</p>
 </div>
@@ -262,7 +262,7 @@ When looking for appropriate concepts to map to, it is important to consider the
 
 
 
-<div class="figure">
+<div class="figure" style="text-align: center">
 <img src="images/ExtractTransformLoad/usagiConceptInfo.png" alt="Usagi concept information panel." width="100%" />
 <p class="caption">(\#fig:usagiConceptInfo)Usagi concept information panel.</p>
 </div>

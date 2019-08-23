@@ -1,6 +1,6 @@
 # Characterization {#Characterization}
 
-*Chapter leads: Anthony G. Sena, Daniel Prieto-Alhambra*
+*Chapter leads: Anthony Sena & Daniel Prieto-Alhambra*
 
 Observational healthcare databases provide a valuable resource to understand variations in populations based on a host of characteristics. Characterizing populations through the use of descriptive statistics is an important first step in generating hypotheses about the determinants of health and disease. In this chapter we cover methods for characterization:
 
@@ -22,7 +22,7 @@ Before we can answer any characterization question about a population of interes
 * How long are persons in this database observed for?
 * What is the proportion of persons having a {treatment, condition, procedure, etc} recorded/prescribed over time?
 
-These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \@ref(DataQuality) goes into further detail on data quality. \index{characterization!database Level}
+These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \@ref(DataQuality) goes into further detail on data quality. \index{characterization!database level}
 
 ## Cohort characterization
 
@@ -64,7 +64,7 @@ $$
 Incidence\;Proportion = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{\#\;persons\;in\;cohort\;with\;TAR}
 $$
 
-An incidence propoprtion provides a mesure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a defined timeframe.\index{incidence!proportion}
+An incidence proportion provides a measure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a defined timeframe.\index{incidence!proportion}
 
 $$
 Incidence\;Rate = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{person\;time\;at\;risk\;contributed\;by\;persons\;in\;cohort}
@@ -76,7 +76,7 @@ When calculated for therapies, incidence proportions and incidence rates of use 
 
 ## Characterizing hypertensive persons
 
-Per the World Health Organization’s (WHO) global brief on hypertension [@WHOHypertension], there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. The WHO brief provides an overview of hypertension and characterizes the burden ofthe diesease across different countries. The WHO provides descriptive statistics around hypertension for geographic regions, socio-economic class and gender. 
+Per the World Health Organization’s (WHO) global brief on hypertension [@WHOHypertension], there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. The WHO brief provides an overview of hypertension and characterizes the burden of the disease across different countries. The WHO provides descriptive statistics around hypertension for geographic regions, socio-economic class and gender. 
 
 Observational data sources provide a way to characterize hypertensive populations as was done by the WHO. In the subsequent sections of this chapter, we’ll explore the ways that we make use of ATLAS and R to explore a database to understand its composition for studying hypertensive populations. Then, we will use these same tools to describe the natural history and treatment patterns of hypertensive populations.
 

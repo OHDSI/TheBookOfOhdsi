@@ -69,7 +69,7 @@ Column name|Value|Explanation
 |STOP_REASON|NULL||
 |REFILLS|NULL||
 |QUANTITY|NULL|Not provided.|
-|DAYS_SUPPLY|30|As descibed in the exercise.|
+|DAYS_SUPPLY|30|As described in the exercise.|
 |SIG|NULL|Not provided.|
 |ROUTE_CONCEPT_ID|4132161| [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) indicates "Oral".|
 |LOT_NUMBER|NULL|Not provided.|
@@ -302,7 +302,7 @@ We create initial event criteria encoding these requirements:
 
 - New users of diclofenac
 - Ages 16 or older
-- With at least 365 days of continous observation prior to exposure
+- With at least 365 days of continuous observation prior to exposure
 
 When done, the cohort entry event section should look like Figure \@ref(fig:cohortsAtlasInitialEvents).
 
@@ -422,7 +422,7 @@ renderTranslateExecuteSql(connection, sql)
 
 #### Exercise \@ref(exr:exerciseCharacterization1) {-}
 
-In ATLAS we click on ![](images/Characterization/atlasDataSourcesMenuItem.png) and select the data source we're interested in. We could select the Drug Exposure report, select the "Table" tab, and search for "celecoxib" as shown in Figure \@ref(fig:dataSourcesAtlas). Here we see that this particular database has exosures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.
+In ATLAS we click on ![](images/Characterization/atlasDataSourcesMenuItem.png) and select the data source we're interested in. We could select the Drug Exposure report, select the "Table" tab, and search for "celecoxib" as shown in Figure \@ref(fig:dataSourcesAtlas). Here we see that this particular database has exposures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/dataSourcesAtlas.png" alt="Data source characterization." width="100%" />
@@ -552,7 +552,7 @@ summary(cmData)
 
 #### Exercise \@ref(exr:exercisePle2) {-}
 
-We create the study population following the specfications, and output the attrition diagram:
+We create the study population following the specifications, and output the attrition diagram:
 
 
 ```r
@@ -593,7 +593,7 @@ model
 ## treatment  1.34612   1.10065   1.65741 0.29723  0.1044
 ```
 
-It is likely that celecoxib users are not exchangeable with diclofenac users, and that these baseline differences already lead to different risks of the outcome. If we do not adjust for these difference, like in this analysis, we are likely producing biased estimaters.
+It is likely that celecoxib users are not exchangeable with diclofenac users, and that these baseline differences already lead to different risks of the outcome. If we do not adjust for these difference, like in this analysis, we are likely producing biased estimates.
 
 #### Exercise \@ref(exr:exercisePle4) {-}
 
@@ -626,7 +626,7 @@ plotCovariateBalanceScatterPlot(bal,
                                 beforeLabel = "Before stratification", 
                                 afterLabel = "After stratification")
 ```
-<img src="images/SuggestedAnswers/scatter.png" width="80%" style="display: block; margin: auto;" />
+<img src="images/SuggestedAnswers/scatter.png" width="70%" style="display: block; margin: auto;" />
 
 We see that various baseline covariates showed a large (>0.3) standardized difference of means before stratification (x-axis). After stratification, balance is increased, with the maximum standardized difference <= 0.1.
 

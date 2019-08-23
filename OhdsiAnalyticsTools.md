@@ -42,7 +42,7 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 
 ## ATLAS
 
-ATLAS is a free, publicaly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
+ATLAS is a free, publicly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
 
 [^atlasUrl]: http://www.ohdsi.org/web/atlas
 
@@ -297,7 +297,7 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
     - The interactive analysis platform ATLAS
     - The OHDSI Methods Libary R packages
 
-- Several stategies exist facilitating the deployment of the OHDSI tools.
+- Several strategies exist facilitating the deployment of the OHDSI tools.
 </div>\EndKnitrBlock{rmdsummary}
 
 

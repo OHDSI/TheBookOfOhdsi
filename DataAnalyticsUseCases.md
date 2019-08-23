@@ -138,7 +138,7 @@ Acute myocardial infarction is a cardiovascular complication that can occur in p
 
 The population-level effect estimation study (see Chapter \@ref(PopulationLevelEstimation)) estimates the relative risk of ACE inhibitor vs, thiazide use for the outcomes of AMI and angioedema.  Here, you further evaluate through study diagnostics and negative controls whether we can produce a reliable estimate of the average treatment effect.
 
-### Patient-level prediciton question
+### Patient-level prediction question
 
 Independent of whether there is a causal effect of the exposures, you are also interested in trying to determine which patients are at highest risk of the outcomes. This is a patient-level prediction problem (see Chapter \@ref(PatientLevelPrediction)). Here, you develop a prediction model that evaluates: amongst the patients who are new users of ACE inhibitors, which patients are at highest risk of developing acute myocardial infarction during the 1 year after starting treatment. The model allows us to predict, for a patient who has just been prescribed ACE for the first time, based on events observed from their medical history, what is the chance that they will experience AMI in the next 1 year.
 
