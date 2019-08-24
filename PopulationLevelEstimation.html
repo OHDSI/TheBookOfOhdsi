@@ -1235,15 +1235,15 @@ Figure 13.17: Negative control outcome cohort definition settings.
 <span id="cb96-12"><a href="PopulationLevelEstimation.html#cb96-12"></a>                                  <span class="dt">endAnchor =</span> <span class="st">&quot;cohort end&quot;</span>)</span></code></pre></div>
 <p>Note that we’ve set <code>firstExposureOnly</code> and <code>removeDuplicateSubjects</code> to FALSE, and <code>washoutPeriod</code> to 0 because we already applied those criteria in the cohort definitions. We specify the outcome ID we will use, and that people with outcomes prior to the risk window start date will be removed. The risk window is defined as starting on the day after the cohort start date (<code>riskWindowStart = 1</code> and <code>startAnchor = "cohort start"</code>), and the risk windows ends when the cohort exposure ends (<code>riskWindowEnd = 0</code> and <code>endAnchor = "cohort end"</code>), which was defined as the end of exposure in the cohort definition. Note that the risk windows are automatically truncated at the end of observation or the study end date. We also remove subjects who have no time at risk. To see how many people are left in the study population we can always use the <code>getAttritionTable</code> function:</p>
 <div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="PopulationLevelEstimation.html#cb97-1"></a><span class="kw">getAttritionTable</span>(studyPop)</span></code></pre></div>
-<pre><code>##                    description targetPersons comparatorPersons   ...
-## 1             Original cohorts         67212             35379   ...
-## 2 Removed subs in both cohorts         67166             35333   ...
-## 3             No prior outcome         67061             35238   ...
-## 4 Have at least 1 days at risk         66780             35086   ...</code></pre>
+<pre><code>##                    description targetPersons comparatorPersons ...
+## 1             Original cohorts         67212             35379 ...
+## 2 Removed subs in both cohorts         67166             35333 ...
+## 3             No prior outcome         67061             35238 ...
+## 4 Have at least 1 days at risk         66780             35086 ...</code></pre>
 </div>
 <div id="propensity-scores-1" class="section level3">
 <h3><span class="header-section-number">13.8.4</span> Propensity scores</h3>
-<p>We can fit a propensity model using the covariates constructed by the <code>getDbcohortMethodData()</code> function, and compute a PS for each person:</p>
+<p>We can fit a propensity model using the covariates constructed by <code>getDbcohortMethodData()</code>, and compute a PS for each person:</p>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="PopulationLevelEstimation.html#cb99-1"></a>ps &lt;-<span class="st"> </span><span class="kw">createPs</span>(<span class="dt">cohortMethodData =</span> cmData, <span class="dt">population =</span> studyPop)</span></code></pre></div>
 <p>The <code>createPs</code> function uses the <a href="https://ohdsi.github.io/Cyclops/">Cyclops</a> package to fit a large-scale regularized logistic regression. To fit the propensity model, Cyclops needs to know the hyperparameter value which specifies the variance of the prior. By default Cyclops will use cross-validation to estimate the optimal hyperparameter. However, be aware that this can take a really long time. You can use the <code>prior</code> and <code>control</code> parameters of the <code>createPs</code> function to specify Cyclops’ behavior, including using multiple CPUs to speed-up the cross-validation.</p>
 <p>Here we use the PS to perform variable-ratio matching:</p>
@@ -1459,9 +1459,9 @@ If a variable is found to be highly predictive, there are two possible conclusio
 <h3><span class="header-section-number">13.9.2</span> Covariate balance</h3>
 <p>The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checking whether the baseline covariates are indeed balanced after adjustment. We can use the <code>computeCovariateBalance</code> and <code>plotCovariateBalanceScatterPlot</code> functions to generate Figure <a href="PopulationLevelEstimation.html#fig:balance">13.19</a>. One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion. </p>
 <div class="figure" style="text-align: center"><span id="fig:balance"></span>
-<img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
+<img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each dot represents a covariate." width="70%" />
 <p class="caption">
-Figure 13.19: Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.
+Figure 13.19: Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each dot represents a covariate.
 </p>
 </div>
 </div>

@@ -144,7 +144,7 @@
 }
 \makeatother
 
-\definecolor{myShadeColor}{gray}{0.92}
+\definecolor{myShadeColor}{gray}{0.93}
 
 \makeatletter
 \newenvironment{kframe}{%
@@ -1015,7 +1015,7 @@ Unique identifier for each record, which serves as a foreign keys establishing r
 Foreign key to a Standard Concept record in the CONCEPT reference table. This is the main representation of the Event, serving as the primary basis for all standardized analytics. For example, CONDITION\_CONCEPT\_ID = \href{http://athena.ohdsi.org/search-terms/terms/31967}{31967} contains the reference value for the SNOMED concept of ``Nausea''.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.34\columnwidth}\raggedright
-{[}Event{]}\_SOURCE\_CONCEPT\_ID\strut
+{[}Event{]}\_SOURCE \_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.61\columnwidth}\raggedright
 Foreign key to a record in the CONCEPT reference table. This Concept is the equivalent of the Source Value (below), and it may happen to be a Standard Concept, at which point it would be identical to the {[}Event{]}\_CONCEPT\_ID, or another non-standard concept. For example, CONDITION\_SOURCE\_CONCEPT\_ID = \href{http://athena.ohdsi.org/search-terms/terms/45431665}{45431665} denotes the concept of ``Nausea'' in the Read terminology, and the analogous CONDITION\_CONCEPT\_ID is the Standard SNOMED-CT Concept \href{http://athena.ohdsi.org/search-terms/terms/31967}{31967}. The use of Source Concepts for standard analytics applications is discouraged since only Standard Concepts represent the semantic content of an Event in a unambiguous way and therefore Source Concepts are not interoperable.\strut
 \end{minipage}\tabularnewline
@@ -1190,7 +1190,7 @@ RACE\_CONCEPT\_ID\strut
 The concept ID referring to white race is \href{http://athena.ohdsi.org/search-terms/terms/8527}{8527}. English ethnicity is \href{http://athena.ohdsi.org/search-terms/terms/4093769}{4093769}. Either one is correct, the latter will roll up to the former. Notice that ethnicities are stored here as part of Races, not in the ETHNICITY\_CONCEPT\_ID\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ETHNICITY\_CONCEPT\_ID\strut
+ETHNICITY\_CONCEPT\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 38003564\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1218,14 +1218,14 @@ CARE\_SITE\strut
 Her primary Care Site is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-PERSON\_SOURCE\_VALUE\strut
+PERSON\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 Typically this would be her identifier in the source data, though often it is the same as the PERSON\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-GENDER\_SOURCE\_VALUE\strut
+GENDER\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 F\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1239,21 +1239,21 @@ GENDER\_SOURCE\_ CONCEPT\_ID\strut
 If the gender value in the source was coded using a coding scheme supported by OHDSI that Concept would go here. For example, if her gender was ``sex-F'' in the source and it was stated to be in the PCORNet vocabulary concept \href{http://athena.ohdsi.org/search-terms/terms/44814665}{44814665} would go in this field.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-RACE\_SOURCE\_VALUE\strut
+RACE\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 white\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 The race value as it appears in the source is stored here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-RACE\_SOURCE\_CONCEPT\_ID\strut
+RACE\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 Same principle as GENDER\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ETHNICITY\_SOURCE\_VALUE\strut
+ETHNICITY\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 english\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1304,9 +1304,9 @@ Based on the encounter records her OBSERVATION\_PERIOD table might look somethin
 \begin{longtable}[]{@{}lll@{}}
 \caption{\label{tab:observationPeriod} The OBSERVATION\_PERIOD table.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.28\columnwidth}\raggedright
+\begin{minipage}[b]{0.29\columnwidth}\raggedright
 Column name\strut
-\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
 Value\strut
 \end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
 Explanation\strut
@@ -1314,46 +1314,46 @@ Explanation\strut
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.28\columnwidth}\raggedright
+\begin{minipage}[b]{0.29\columnwidth}\raggedright
 Column name\strut
-\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
 Value\strut
 \end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
 Explanation\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-OBSERVATION\_PERIOD\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+OBSERVATION\_ PERIOD\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is typically an autogenerated value creating a unique identifier for each record in the table.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
 PERSON\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 1\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is a foreign key to Laura's record in the PERSON table and links PERSON to OBSERVATION\_PERIOD table.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-OBSERVATION\_PERIOD\_START\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+OBSERVATION\_PERIOD\_ START\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 2010-01-06\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is the start date of her earliest encounter on record.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-OBSERVATION\_PERIOD\_END\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+OBSERVATION\_PERIOD\_ END\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 2013-01-24\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is the end date of her latest encounter on record.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-PERIOD\_TYPE\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+PERIOD\_TYPE\_ CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 44814725\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 The best option in the Vocabulary with the concept class ``Obs Period Type'' is \href{http://athena.ohdsi.org/search-terms/terms/44814724}{44814724}, which stands for ``Period covering healthcare encounters''.\strut
@@ -1395,7 +1395,7 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-VISIT\_OCCURRENCE\_ID\strut
+VISIT\_OCCURRENCE\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 514\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1423,7 +1423,7 @@ VISIT\_START\_DATE\strut
 The start date of the Visit.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-VISIT\_START\_DATETIME\strut
+VISIT\_START\_ DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2013-01-17 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1444,7 +1444,7 @@ VISIT\_END\_DATETIME\strut
 The date and time of the Visit end. The time is unknown, so midnight is used.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-VISIT\_TYPE\_CONCEPT\_ID\strut
+VISIT\_TYPE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 32034\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1562,7 +1562,7 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-CONDITION\_OCCURRENCE\_ID\strut
+CONDITION\_ OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 964\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1576,14 +1576,14 @@ PERSON\_ID\strut
 This is a foreign key to Laura's record in the PERSON table and links PERSON to CONDITION\_OCCURRENCE.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-CONDITION\_CONCEPT\_ID\strut
+CONDITION\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 194696\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 A foreign key referring to the SNOMED code 266599000: \href{http://athena.ohdsi.org/search-terms/terms/194696}{194696}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-CONDITION\_START\_DATE\strut
+CONDITION\_START\_ DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2010-01-06\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1639,14 +1639,14 @@ NULL\strut
 If the condition record has a diagnosing provider listed, the ID for that provider goes in this field. This should be the provider\_id from the PROVIDER table that represents the provider on the encounter.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-VISIT\_OCCURRENCE\_ID\strut
+VISIT\_OCCURRENCE\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 509\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 The Visit (foreign key to the VISIT\_OCCURRENCE\_ID in the VISIT\_OCCURRENCE table) during which the Condition was diagnosed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-CONDITION\_SOURCE\_VALUE\strut
+CONDITION\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 266599000\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1724,7 +1724,7 @@ DRUG\_CONCEPT\_ID\strut
 The Concept for the Drug product. The NDC code for acetaminophen maps to the RxNorm code 313782 which is represented by the Concept \href{http://athena.ohdsi.org/search-terms/terms/1127433}{1127433}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_EXPOSURE\_START\_DATE\strut
+DRUG\_EXPOSURE\_ START\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2010-01-06\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1738,7 +1738,7 @@ DRUG\_EXPOSURE\_ START\_DATETIME\strut
 The start date and time of the drug exposure. Midnight is used as the time is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_EXPOSURE\_END\_DATE\strut
+DRUG\_EXPOSURE\_ END\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2010-02-05\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1759,7 +1759,7 @@ NULL\strut
 If the source recorded an explicit actual end date. The inferred end date banks on the assumption that the full range of days supply was utilized by the patient.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_TYPE\_CONCEPT\_ID\strut
+DRUG\_TYPE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 38000177\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1822,7 +1822,7 @@ NULL\strut
 If the drug record has a prescribing Provider listed, the ID for that Provider goes in this field. In that case this contains the PROVIDER\_ID from the PROVIDER table.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-VISIT\_OCCURRENCE\_ID\strut
+VISIT\_OCCURRENCE\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 509\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1836,21 +1836,21 @@ NULL\strut
 A foreign key to the VISIT\_DETAIL table during which the Drug was prescribed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_SOURCE\_VALUE\strut
+DRUG\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 69842087651\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is the source code for the Drug as it appears in the source data. In Lauren's case the NDC code is stored here.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_SOURCE\_CONCEPT\_ID\strut
+DRUG\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 750264\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is the Concept that represents the drug source value. The Concept \href{http://athena.ohdsi.org/search-terms/terms/750264}{750264} standing for the NDC code for ``Acetaminophen 325 MG Oral Tablet''.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ROUTE\_SOURCE\_VALUE\strut
+ROUTE\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1901,7 +1901,7 @@ Explanation\strut
 \midrule
 \endhead
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-PROCEDURE\_OCCURRENCE\_ID\strut
+PROCEDURE\_ OCCURRENCE\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 1277\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1915,7 +1915,7 @@ PERSON\_ID\strut
 This is a foreign key to Laura's record in the PERSON table and links PERSON to PROCEDURE\_OCCURRENCE\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-PROCEDURE\_CONCEPT\_ID\strut
+PROCEDURE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 4127451\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1929,7 +1929,7 @@ PROCEDURE\_DATE\strut
 The date on which the Procedure was performed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-PROCEDURE\_DATATIME\strut
+PROCEDURE\_ DATETIME\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2013-01-14 00:00:00\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1943,7 +1943,7 @@ PROCEDURE\_TYPE\_ CONCEPT\_ID\strut
 This column is intended to provide information about the provenance of the procedure record, i.e.~does it come from an insurance claim, EHR order, etc. For this example the concept ID \href{http://athena.ohdsi.org/search-terms/terms/38000275}{38000275} (``EHR order list entry'') is used as the procedure record is from an EHR record.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-MODIFIER\_CONCEPT\_ID\strut
+MODIFIER\_CONCEPT\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1964,7 +1964,7 @@ NULL\strut
 If the Procedure record has a Provider listed, the ID for that Provider goes in this field. This should be a foreign key to the PROVIDER\_ID from the PROVIDER table.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-VISIT\_OCCURRENCE\_ID\strut
+VISIT\_OCCURRENCE\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 740\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1978,7 +1978,7 @@ NULL\strut
 If known, this is the Visit detail (represented as VISIT\_detail\_id taken from the VISIT\_DETAIL table) during which the procedure was performed.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-PROCEDURE\_SOURCE\_VALUE\strut
+PROCEDURE\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 304435002\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -1992,7 +1992,7 @@ PROCEDURE\_SOURCE\_ CONCEPT\_ID\strut
 This is the Concept that represents the procedure source value.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-MODIFIER\_SOURCE\_VALUE\strut
+MODIFIER\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -3986,7 +3986,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.pgietl7hchildren ;"
+## [1] "SELECT * FROM temp_schema.z6gwt0e8children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -7161,17 +7161,17 @@ Note that we've set \texttt{firstExposureOnly} and \texttt{removeDuplicateSubjec
 \end{Shaded}
 
 \begin{verbatim}
-##                    description targetPersons comparatorPersons   ...
-## 1             Original cohorts         67212             35379   ...
-## 2 Removed subs in both cohorts         67166             35333   ...
-## 3             No prior outcome         67061             35238   ...
-## 4 Have at least 1 days at risk         66780             35086   ...
+##                    description targetPersons comparatorPersons ...
+## 1             Original cohorts         67212             35379 ...
+## 2 Removed subs in both cohorts         67166             35333 ...
+## 3             No prior outcome         67061             35238 ...
+## 4 Have at least 1 days at risk         66780             35086 ...
 \end{verbatim}
 
 \hypertarget{propensity-scores-1}{%
 \subsection{Propensity scores}\label{propensity-scores-1}}
 
-We can fit a propensity model using the covariates constructed by the \texttt{getDbcohortMethodData()} function, and compute a PS for each person:
+We can fit a propensity model using the covariates constructed by \texttt{getDbcohortMethodData()}, and compute a PS for each person:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -7479,7 +7479,7 @@ The goal of using PS is to make the two groups comparable (or at least to select
 
 }
 
-\caption{Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.}\label{fig:balance}
+\caption{Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each dot represents a covariate.}\label{fig:balance}
 \end{figure}
 
 \hypertarget{follow-up-and-power}{%
@@ -8742,8 +8742,8 @@ Now we can tell \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLe
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{covariateSettings <-}
-\StringTok{  }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{,}
+\NormalTok{covariateSettings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}
+\DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{,}
                           \DataTypeTok{useDemographicsAge =} \OtherTok{TRUE}\NormalTok{,}
                           \DataTypeTok{useConditionGroupEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
                           \DataTypeTok{useConditionGroupEraAnyTimePrior =} \OtherTok{TRUE}\NormalTok{,}
@@ -9016,7 +9016,7 @@ The Shiny app opens with a summary of the performance metrics on the test and tr
 \caption{The ROC plot.}\label{fig:shinyROC}
 \end{figure}
 
-The calibration plot in Figure \ref{fig:shinyCal} shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \ref{fig:shinyDemo} however shows that the model is not well calibrated for the younger patients, as the blue line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
+The calibration plot in Figure \ref{fig:shinyCal} shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \ref{fig:shinyDemo} however shows that the model is not well calibrated for the younger patients, as the curved line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
 
 \begin{figure}
 
@@ -9144,7 +9144,7 @@ Finally, we can also inspect the calibration of the model by clicking on the ``C
 \caption{The risk stratified calibration and demographic calibration}\label{fig:shinyPerformanceCal}
 \end{figure}
 
-We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the blue line is higher than the red line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.
+We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the expected line is higher than the observed line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.
 
 \hypertarget{viewing-the-model}{%
 \subsubsection*{Viewing the model}\label{viewing-the-model}}
@@ -9613,7 +9613,7 @@ Another assessment is to review the prevalence and changes in prevalence over ti
 
 One possible source of error that firmly falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker \footnote{\url{https://github.com/OHDSI/Vocabulary-v5.0/issues}} and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard concepts, but also the source codes. We can review both the source codes that do map to the concepts used in the study, as well as those that do not.
 
-One way to review the source codes that do map is to use the \texttt{checkCohortSourceCodes} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalences of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure \ref{fig:sourceCodes} shows a (partial) breakdown of a concept set called `Depressive disorder'. The most prevalent concept in this concept set in the database of interest is concept \href{http://athena.ohdsi.org/search-terms/terms/440383}{440383} (``Depressive disorder''). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-10 code F32.9 ("``Major depressive disorder, single episode, unspecified'') should also have mapped to the concept. This problem has since been resolved in the Vocabulary.
+One way to review the source codes that do map is to use the \texttt{checkCohortSourceCodes} function in the \href{https://ohdsi.github.io/MethodEvaluation/}{MethodEvaluation} R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalences of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure \ref{fig:sourceCodes} shows a (partial) breakdown of a concept set called `Depressive disorder'. The most prevalent concept in this concept set in the database of interest is concept \href{http://athena.ohdsi.org/search-terms/terms/440383}{440383} (``Depressive disorder''). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-10 code F32.9 (``Major depressive disorder, single episode, unspecified'') should also have mapped to the concept. This problem has since been resolved in the Vocabulary.
 
 \begin{figure}
 
@@ -9628,7 +9628,7 @@ Even though the previous example demonstrates a chance finding of a source code 
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.6\linewidth]{images/DataQuality/missingMapping} 
+{\centering \includegraphics[width=0.7\linewidth]{images/DataQuality/missingMapping} 
 
 }
 
@@ -10590,10 +10590,10 @@ We can use the estimates for our negative controls to calibrate our p-values. Th
 
 }
 
-\caption{P-value calibration: estimates below the dashed line have a conventional p < 0.05. Estimates in the orange area have calibrated p < 0.05. The pink area denotes the 95\% credible interval around the edge of the orange area. Blue dots indicate negative controls. Yellow diamonds indicate outcomes of interest.}\label{fig:pValueCal}
+\caption{P-value calibration: estimates below the dashed line have a conventional p < 0.05. Estimates in the shaded area have calibrated p < 0.05. The narrow band around the edge of the shaded area denotes the 95\% credible interval. Dots indicate negative controls. Diamonds indicate outcomes of interest.}\label{fig:pValueCal}
 \end{figure}
 
-In Figure \ref{fig:pValueCal} we see that the orange area almost exactly overlaps with the area denoted by the dashed lines, indicating hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the orange area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
+In Figure \ref{fig:pValueCal} we see that the shaded area almost exactly overlaps with the area denoted by the dashed lines, indicating hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the shaded area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
 
 We can compute the calibrated p-values:
 
@@ -12647,7 +12647,7 @@ RACE\_CONCEPT\_ID\strut
 The concept ID for black or African American is \href{http://athena.ohdsi.org/search-terms/terms/8516}{8516}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ETHNICITY\_CONCEPT\_ID\strut
+ETHNICITY\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 38003564\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12675,14 +12675,14 @@ CARE\_SITE\strut
 His primary Care Site is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-PERSON\_SOURCE\_VALUE\strut
+PERSON\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 Not provided.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-GENDER\_SOURCE\_VALUE\strut
+GENDER\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Man\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12696,21 +12696,21 @@ GENDER\_SOURCE\_ CONCEPT\_ID\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-RACE\_SOURCE\_VALUE\strut
+RACE\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 African American\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 The text used in the description.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-RACE\_SOURCE\_CONCEPT\_ID\strut
+RACE\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ETHNICITY\_SOURCE\_VALUE\strut
+ETHNICITY\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12735,9 +12735,9 @@ Based on the description in the exercise, John's record should look like Table \
 \begin{longtable}[]{@{}lll@{}}
 \caption{\label{tab:johnOp} The OBSERVATION\_PERIOD table.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.28\columnwidth}\raggedright
+\begin{minipage}[b]{0.29\columnwidth}\raggedright
 Column name\strut
-\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
 Value\strut
 \end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
 Explanation\strut
@@ -12745,46 +12745,46 @@ Explanation\strut
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.28\columnwidth}\raggedright
+\begin{minipage}[b]{0.29\columnwidth}\raggedright
 Column name\strut
-\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
 Value\strut
 \end{minipage} & \begin{minipage}[b]{0.49\columnwidth}\raggedright
 Explanation\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-OBSERVATION\_PERIOD\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+OBSERVATION\_ PERIOD\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 2\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 A unique integer.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
 PERSON\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 2\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is a foreign key to John's record in the PERSON table.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-OBSERVATION\_PERIOD\_START\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+OBSERVATION\_PERIOD\_ START\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 2015-01-01\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 The date of enrollment.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-OBSERVATION\_PERIOD\_END\_DATE\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+OBSERVATION\_PERIOD\_ END\_DATE\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 2019-07-01\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 No data can be expected after the data extraction date.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.28\columnwidth}\raggedright
-PERIOD\_TYPE\_CONCEPT\_ID\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
+\begin{minipage}[t]{0.29\columnwidth}\raggedright
+PERIOD\_TYPE\_ CONCEPT\_ID\strut
+\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
 44814722\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 \href{http://athena.ohdsi.org/search-terms/terms/44814722}{44814724} refers to ``Period while enrolled in insurance''.\strut
@@ -12842,7 +12842,7 @@ DRUG\_CONCEPT\_ID\strut
 The provided NDC code maps to Standard Concept \href{http://athena.ohdsi.org/search-terms/terms/19078461}{19078461}.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_EXPOSURE\_START\_DATE\strut
+DRUG\_EXPOSURE\_ START\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2019-05-01\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12856,7 +12856,7 @@ DRUG\_EXPOSURE\_ START\_DATETIME\strut
 Midnight is used as the time is not known.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_EXPOSURE\_END\_DATE\strut
+DRUG\_EXPOSURE\_ END\_DATE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 2019-05-31\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12877,7 +12877,7 @@ NULL\strut
 Not provided.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_TYPE\_CONCEPT\_ID\strut
+DRUG\_TYPE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 38000177\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12940,7 +12940,7 @@ NULL\strut
 Not provided.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-VISIT\_OCCURRENCE\_ID\strut
+VISIT\_OCCURRENCE\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12954,21 +12954,21 @@ NULL\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_SOURCE\_VALUE\strut
+DRUG\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 76168009520\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 This is provided NDC code.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-DRUG\_SOURCE\_CONCEPT\_ID\strut
+DRUG\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 583945\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
 \href{http://athena.ohdsi.org/search-terms/terms/750264}{583945} represents the drug source value (NDC code ``76168009520'').\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ROUTE\_SOURCE\_VALUE\strut
+ROUTE\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NULL\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
@@ -12997,7 +12997,7 @@ To find the set of records, we can query the CONDITION\_OCCURRENCE table:
 \end{Shaded}
 
 \begin{verbatim}
-##  CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
+##   CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
 ## 1                    4657       273               192671 ...
 ## 2                    1021        61               192671 ...
 ## 3                    5978       351               192671 ...
@@ -13107,21 +13107,21 @@ RACE\_CONCEPT\_ID\strut
 The race is WHITE which should be mapped to 8527.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.29\columnwidth}\raggedright
-ETHNICITY\_CONCEPT\_ID\strut
+ETHNICITY\_CONCEPT\_ ID\strut
 \end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
 8527\strut
 \end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
 No ethnicity was provided, this should be mapped to 0.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.29\columnwidth}\raggedright
-PERSON\_SOURCE\_VALUE\strut
+PERSON\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
 A123B456\strut
 \end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.29\columnwidth}\raggedright
-GENDER\_SOURCE\_VALUE\strut
+GENDER\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
 F\strut
 \end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
@@ -13135,7 +13135,7 @@ WHITE\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.29\columnwidth}\raggedright
-ETHNICITY\_SOURCE\_VALUE\strut
+ETHNICITY\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.21\columnwidth}\raggedright
 NONE PROVIDED\strut
 \end{minipage} & \begin{minipage}[t]{0.41\columnwidth}\raggedright
@@ -13851,7 +13851,7 @@ In this case we have lost a few people by removing those that had the outcome pr
 \subsubsection*{Exercise \ref{exr:exercisePlp3}}\label{exercise-refexrexerciseplp3}}
 \addcontentsline{toc}{subsubsection}{Exercise \ref{exr:exercisePlp3}}
 
-We run a LASSO model by first creating a model settings object using the \texttt{setLassoLogisticRegression} function, and then calling the \texttt{runPlp} function. In this case we do a person split, training the model on 75\% of the data and evaluating on 25\% of the data:
+We run a LASSO model by first creating a model settings object, and then calling the \texttt{runPlp} function. In this case we do a person split, training the model on 75\% of the data and evaluating on 25\% of the data:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -13921,7 +13921,7 @@ To run the Data Quality Dashboard:
   \DataTypeTok{cdmDatabaseSchema =} \StringTok{"main"}\NormalTok{, }
   \DataTypeTok{resultsDatabaseSchema =} \StringTok{"main"}\NormalTok{,}
   \DataTypeTok{cdmSourceName =} \StringTok{"Eunomia"}\NormalTok{,}
-  \DataTypeTok{outputFolder =} \StringTok{"C:/dataQualityExample"}\NormalTok{) }\CommentTok{#or your folder of choice}
+  \DataTypeTok{outputFolder =} \StringTok{"C:/dataQualityExample"}\NormalTok{) }
 \end{Highlighting}
 \end{Shaded}
 
@@ -13934,7 +13934,7 @@ To view the list of data quality checks:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{viewDqDashboard}\NormalTok{(}
-  \StringTok{"C:/dataQualityExample/Eunomia/results_Eunomia.json"}\NormalTok{) }\CommentTok{#or your folder of choice}
+  \StringTok{"C:/dataQualityExample/Eunomia/results_Eunomia.json"}\NormalTok{) }
 \end{Highlighting}
 \end{Shaded}
 

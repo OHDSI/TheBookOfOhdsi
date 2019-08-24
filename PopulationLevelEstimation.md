@@ -562,16 +562,16 @@ getAttritionTable(studyPop)
 ```
 
 ```
-##                    description targetPersons comparatorPersons	...
-## 1             Original cohorts         67212             35379	...
-## 2 Removed subs in both cohorts         67166             35333	...
-## 3             No prior outcome         67061             35238	...
-## 4 Have at least 1 days at risk         66780             35086	...
+##                    description targetPersons comparatorPersons ...
+## 1             Original cohorts         67212             35379 ...
+## 2 Removed subs in both cohorts         67166             35333 ...
+## 3             No prior outcome         67061             35238 ...
+## 4 Have at least 1 days at risk         66780             35086 ...
 ```
 
 ### Propensity scores
 
-We can fit a propensity model using the covariates constructed by the `getDbcohortMethodData()` function, and compute a PS for each person:
+We can fit a propensity model using the covariates constructed by `getDbcohortMethodData()`, and compute a PS for each person:
 
 
 ```r
@@ -797,8 +797,8 @@ Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and TH
 The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checking whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure \@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion. \index{covariate balance!example}
 
 <div class="figure" style="text-align: center">
-<img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate." width="70%" />
-<p class="caption">(\#fig:balance)Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.</p>
+<img src="images/PopulationLevelEstimation/balance.png" alt="Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each dot represents a covariate." width="70%" />
+<p class="caption">(\#fig:balance)Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each dot represents a covariate.</p>
 </div>
 
 ### Follow up and power

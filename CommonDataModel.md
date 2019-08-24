@@ -98,7 +98,7 @@ Table: (\#tab:fieldConventions) Field name conventions.
 |:------------------------------|:-------------------------------------------------------|
 |[Event]_ID|Unique identifier for each record, which serves as a foreign keys establishing relationships across Event tables. For example, PERSON_ID	uniquely identifies each individual. VISIT_OCCURRENCE_ID uniquely identifies a Visit.|
 |[Event]_CONCEPT_ID|Foreign key to a Standard Concept record in the CONCEPT reference table. This is the main representation of the Event, serving as the primary basis for all standardized analytics. For example, CONDITION_CONCEPT_ID = [31967](http://athena.ohdsi.org/search-terms/terms/31967) contains the reference value for the SNOMED concept of "Nausea".|
-|[Event]_SOURCE_CONCEPT_ID|Foreign key to a record in the CONCEPT reference table. This Concept is the equivalent of the Source Value (below), and it may happen to be a Standard Concept, at which point it would be identical to the [Event]_CONCEPT_ID, or another non-standard concept. For example, CONDITION_SOURCE_CONCEPT_ID = [45431665](http://athena.ohdsi.org/search-terms/terms/45431665) denotes the concept of "Nausea" in the Read terminology, and the analogous CONDITION_CONCEPT_ID is the Standard SNOMED-CT Concept [31967](http://athena.ohdsi.org/search-terms/terms/31967). The use of Source Concepts for standard analytics applications is discouraged since only Standard Concepts represent the semantic content of an Event in a unambiguous way and therefore Source Concepts are not interoperable.|
+|[Event]_SOURCE _CONCEPT_ID|Foreign key to a record in the CONCEPT reference table. This Concept is the equivalent of the Source Value (below), and it may happen to be a Standard Concept, at which point it would be identical to the [Event]_CONCEPT_ID, or another non-standard concept. For example, CONDITION_SOURCE_CONCEPT_ID = [45431665](http://athena.ohdsi.org/search-terms/terms/45431665) denotes the concept of "Nausea" in the Read terminology, and the analogous CONDITION_CONCEPT_ID is the Standard SNOMED-CT Concept [31967](http://athena.ohdsi.org/search-terms/terms/31967). The use of Source Concepts for standard analytics applications is discouraged since only Standard Concepts represent the semantic content of an Event in a unambiguous way and therefore Source Concepts are not interoperable.|
 |[Event]_TYPE_CONCEPT_ID|Foreign key to a record in the CONCEPT reference table, representing the origin of the source information, standardized within the Standardized Vocabularies. Note that despite the field name this is not a type of an Event, or type of a Concept, but declares the capture mechanism that created this record. For example, DRUG_TYPE_CONCEPT_ID discriminates if a Drug record was derived from a dispensing Event in the pharmacy ("Pharmacy dispensing") or from an e-prescribing application ("Prescription written")|
 |[Event]_SOURCE_VALUE|Verbatim code or free text string reflecting how this Event was represented in the source data. Its use is discouraged for standard analytics applications, as these Source Values are not harmonized across data sources. For example, CONDITION_SOURCE_VALUE might contain a record of "78702", corresponding to ICD-9 code 787.02 written in a notation omitting the dot.|
 
@@ -170,16 +170,16 @@ Column name|Value|Explanation
 |BIRTH_DATETIME|1982-03-12 00:00:00|When the time is not known midnight is used.|
 |DEATH_DATETIME|||
 |RACE_CONCEPT_ID|8527|The concept ID referring to white race is [8527](http://athena.ohdsi.org/search-terms/terms/8527). English ethnicity is [4093769](http://athena.ohdsi.org/search-terms/terms/4093769). Either one is correct, the latter will roll up to the former. Notice that ethnicities are stored here as part of Races, not in the ETHNICITY_CONCEPT_ID|
-|ETHNICITY_CONCEPT_ID|38003564|This is a US-typical notation to distinguish Hispanics from the rest. Ethnicities, in this case English, is stored in the RACE_CONCEPT_ID. Outside the US this is not used. [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
+|ETHNICITY_CONCEPT_ ID|38003564|This is a US-typical notation to distinguish Hispanics from the rest. Ethnicities, in this case English, is stored in the RACE_CONCEPT_ID. Outside the US this is not used. [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
 |LOCATION_ID||Her address is not known.|
 |PROVIDER_ID||Her primary care Provider is not known.|
 |CARE_SITE||Her primary Care Site is not known.|
-|PERSON_SOURCE_VALUE|1|Typically this would be her identifier in the source data, though often it is the same as the PERSON_ID.|
-|GENDER_SOURCE_VALUE|F|The gender value as it appears in the source is stored here.|
+|PERSON_SOURCE_ VALUE|1|Typically this would be her identifier in the source data, though often it is the same as the PERSON_ID.|
+|GENDER_SOURCE_ VALUE|F|The gender value as it appears in the source is stored here.|
 |GENDER_SOURCE_ CONCEPT_ID|0|If the gender value in the source was coded using a coding scheme supported by OHDSI that Concept would go here. For example, if her gender was "sex-F" in the source and it was stated to be in the PCORNet vocabulary concept [44814665](http://athena.ohdsi.org/search-terms/terms/44814665) would go in this field.|
-|RACE_SOURCE_VALUE|white|The race value as it appears in the source is stored here.|
-|RACE_SOURCE_CONCEPT_ID|0|Same principle as GENDER_CONCEPT_ID.|
-|ETHNICITY_SOURCE_VALUE|english|The ethnicity value as it appears in the source is stored here.|
+|RACE_SOURCE_ VALUE|white|The race value as it appears in the source is stored here.|
+|RACE_SOURCE_ CONCEPT_ID|0|Same principle as GENDER_CONCEPT_ID.|
+|ETHNICITY_SOURCE_ VALUE|english|The ethnicity value as it appears in the source is stored here.|
 |ETHNICITY_SOURCE_ CONCEPT_ID|0|Same principle as GENDER_SOURCE_CONCEPT_ID.|
 
 ### OBSERVATION_PERIOD table{#observationPeriod}
@@ -206,12 +206,12 @@ Based on the encounter records her OBSERVATION_PERIOD table might look something
 Table: (\#tab:observationPeriod) The OBSERVATION_PERIOD table.
 
 Column name|Value|Explanation
-:---------------------|:-----------|:--------------------------------------
-|OBSERVATION_PERIOD_ID|1|This is typically an autogenerated value creating a unique identifier for each record in the table.|
+:----------------------|:----------|:--------------------------------------
+|OBSERVATION_ PERIOD_ID|1|This is typically an autogenerated value creating a unique identifier for each record in the table.|
 |PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to OBSERVATION_PERIOD table.|
-|OBSERVATION_PERIOD_START_DATE|2010-01-06|This is the start date of her earliest encounter on record.|
-|OBSERVATION_PERIOD_END_DATE|2013-01-24|This is the end date of her latest encounter on record.|
-|PERIOD_TYPE_CONCEPT_ID|44814725|The best option in the Vocabulary with the concept class "Obs Period Type" is [44814724](http://athena.ohdsi.org/search-terms/terms/44814724), which stands for "Period covering healthcare encounters".|
+|OBSERVATION_PERIOD_ START_DATE|2010-01-06|This is the start date of her earliest encounter on record.|
+|OBSERVATION_PERIOD_ END_DATE|2013-01-24|This is the end date of her latest encounter on record.|
+|PERIOD_TYPE_ CONCEPT_ID|44814725|The best option in the Vocabulary with the concept class "Obs Period Type" is [44814724](http://athena.ohdsi.org/search-terms/terms/44814724), which stands for "Period covering healthcare encounters".|
 
 ### VISIT_OCCURRENCE{#visitOccurrence}
 
@@ -225,14 +225,14 @@ Table: (\#tab:visitOccurrence) the VISIT_OCCURRENCE table.
 
 Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|VISIT_OCCURRENCE_ID|514|This is typically an autogenerated value creating a unique identifier for each record.|
+|VISIT_OCCURRENCE_ ID|514|This is typically an autogenerated value creating a unique identifier for each record.|
 |PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to VISIT_OCCURRENCE.|
 |VISIT_CONCEPT_ID|9201|A foreign key referring to an Inpatient Visit is [9201](http://athena.ohdsi.org/search-terms/terms/9201).|
 |VISIT_START_DATE|2013-01-17|The start date of the Visit.|
-|VISIT_START_DATETIME|2013-01-17 00:00:00|The date and time of the Visit. The time is unknown, so midnight is used.|
+|VISIT_START_ DATETIME|2013-01-17 00:00:00|The date and time of the Visit. The time is unknown, so midnight is used.|
 |VISIT_END_DATE|2013-01-24|The end date of the Visit. If this is a one-day Visit the end date should match the start date.|
 |VISIT_END_DATETIME|2013-01-24 00:00:00|The date and time of the Visit end. The time is unknown, so midnight is used.|
-|VISIT_TYPE_CONCEPT_ID|32034|This provides information about the provenance of the Visit record, i.e. does it come from an insurance claim, hospital billing, EHR record, etc. For this example the concept ID [32035](http://athena.ohdsi.org/search-terms/terms/32035) ("Visit derived from EHR encounter record") is used as the encounters are similar to Electronic Health Records|
+|VISIT_TYPE_ CONCEPT_ID|32034|This provides information about the provenance of the Visit record, i.e. does it come from an insurance claim, hospital billing, EHR record, etc. For this example the concept ID [32035](http://athena.ohdsi.org/search-terms/terms/32035) ("Visit derived from EHR encounter record") is used as the encounters are similar to Electronic Health Records|
 |PROVIDER_ID*|NULL|If the encounter record has a provider associated the ID for that provider goes into this field. This should be the content of the PROVIDER_ID field from the PROVIDER table.|
 |CARE_SITE_ID|NULL|If the encounter record has a Care Site associated, the ID for that Care Site goes into this field. This should be the CARE_SITE_ID from the CARE_SITE table.|
 |VISIT_SOURCE_ VALUE|inpatient|The Visit value as it appears in the source goes here. Lauren's data do not have that.|
@@ -261,10 +261,10 @@ Table: (\#tab:conditionOccurrence) The CONDITION_OCCURRENCE table.
 
 Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|CONDITION_OCCURRENCE_ID|964|This is typically an autogenerated value creating a unique identifier for each record.|
+|CONDITION_ OCCURRENCE_ID|964|This is typically an autogenerated value creating a unique identifier for each record.|
 |PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to CONDITION_OCCURRENCE.|
-|CONDITION_CONCEPT_ID|194696|A foreign key referring to the SNOMED code 266599000: [194696](http://athena.ohdsi.org/search-terms/terms/194696).|
-|CONDITION_START_DATE|2010-01-06|The date when the instance of the Condition is recorded.|
+|CONDITION_ CONCEPT_ID|194696|A foreign key referring to the SNOMED code 266599000: [194696](http://athena.ohdsi.org/search-terms/terms/194696).|
+|CONDITION_START_ DATE|2010-01-06|The date when the instance of the Condition is recorded.|
 |CONDITION_START_ DATETIME|2010-01-06 00:00:00|The date and time when the instance of the Condition is recorded. Midnight is used since the time is unknown.|
 |CONDITION_END_ DATE|NULL|This is the date when the instance of the Condition is considered to have ended, but this is rarely recorded.|
 |CONDITION_END_ DATETIME|NULL|If known, this is the date and time when the instance of the Condition is considered to have ended.|
@@ -272,8 +272,8 @@ Column name|Value|Explanation
 |CONDITION_STATUS_ CONCEPT_ID|0|If known, the this tells the circumstance and . For example, a condition could be an admitting diagnosis, in which case the concept ID [4203942](http://athena.ohdsi.org/search-terms/terms/4203942) was used.|
 |STOP_REASON|NULL|If known, the reason that the Condition was no longer present, as indicated in the source data.|
 |PROVIDER_ID|NULL|If the condition record has a diagnosing provider listed, the ID for that provider goes in this field. This should be the provider_id from the PROVIDER table that represents the provider on the encounter.|
-|VISIT_OCCURRENCE_ID|509|The Visit (foreign key to the VISIT_OCCURRENCE_ID in the VISIT_OCCURRENCE table) during which the Condition was diagnosed.|
-|CONDITION_SOURCE_VALUE|266599000|This is the original source value representing the Condition. In Lauren's case of dysmenorrhea the SNOMED code for that Condition is stored here, while the Concept representing the code went to the CONDITION_SOURCE_CONCEPT_ID and the Standard Concept mapped from that is stored in the CONDITION_CONCEPT_ID field.|
+|VISIT_OCCURRENCE_ ID|509|The Visit (foreign key to the VISIT_OCCURRENCE_ID in the VISIT_OCCURRENCE table) during which the Condition was diagnosed.|
+|CONDITION_SOURCE_ VALUE|266599000|This is the original source value representing the Condition. In Lauren's case of dysmenorrhea the SNOMED code for that Condition is stored here, while the Concept representing the code went to the CONDITION_SOURCE_CONCEPT_ID and the Standard Concept mapped from that is stored in the CONDITION_CONCEPT_ID field.|
 |CONDITION_SOURCE_ CONCEPT_ID|194696|If the condition value from the source is coded using a vocabulary that is recognized by OHDSI, the concept ID that represents that value would go here. In the example of dysmennorhea the source value is a SNOMED code so the Concept representing that code is 194696. In this case it has the same value as the CONDITION_CONCEPT_ID field.|
 |CONDITION_STATUS_ SOURCE_VALUE|0|If the Condition Status value from the source is coded using a coding scheme supported by OHDSI that concept would go here.|
 
@@ -292,12 +292,12 @@ Column name|Value|Explanation
 |DRUG_EXPOSURE_ID|1001|This is typically an autogenerated value creating a unique identifier for each record.|
 |PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to DRUG_EXPOSURE.|
 |DRUG_CONCEPT_ID|1127433|The Concept for the Drug product. The NDC code for acetaminophen maps to the RxNorm code 313782 which is represented by the Concept [1127433](http://athena.ohdsi.org/search-terms/terms/1127433).|
-|DRUG_EXPOSURE_START_DATE|2010-01-06|The start date of the exposure to the Drug.|
+|DRUG_EXPOSURE_ START_DATE|2010-01-06|The start date of the exposure to the Drug.|
 |DRUG_EXPOSURE_ START_DATETIME|2010-01-06 00:00:00|The start date and time of the drug exposure. Midnight is used as the time is not known.|
-|DRUG_EXPOSURE_END_DATE|2010-02-05|The end date of the Drug Exposure. Depending on different sources, it could be a known or an inferred date and denotes the last day at which the patient was still exposed to the drug. In this case this date is inferred since we know Lauren had a 30 days supply.|
+|DRUG_EXPOSURE_ END_DATE|2010-02-05|The end date of the Drug Exposure. Depending on different sources, it could be a known or an inferred date and denotes the last day at which the patient was still exposed to the drug. In this case this date is inferred since we know Lauren had a 30 days supply.|
 |DRUG_EXPOSURE_ END_DATETIME|2010-02-05 00:00:00|The end date and time of the drug exposure. Similar rules apply as to DRUG_EXPOSURE_END_DATE. Midnight is used as time is unknown.|
 |VERBATIM_END_DATE|NULL|If the source recorded an explicit actual end date. The inferred end date banks on the assumption that the full range of days supply was utilized by the patient.|
-|DRUG_TYPE_CONCEPT_ID|38000177|This column is intended to provide information about the provenance of the record, i.e. does it come from an insurance claim, prescription record, etc. For this example the concept [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) ("Prescription written") is used.|
+|DRUG_TYPE_ CONCEPT_ID|38000177|This column is intended to provide information about the provenance of the record, i.e. does it come from an insurance claim, prescription record, etc. For this example the concept [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) ("Prescription written") is used.|
 |STOP_REASON|NULL|The reason the administration of the Drug was stopped. Reasons include regimen completed, changed, removed, etc. This information is very rarely captured.|
 |REFILLS|NULL|The number of automatic refills after the initial prescription that are part of the prescription system in many countries. The initial prescription is not counted, values start with NULL. In the case of Lauren's acetaminophen she did not have any refills so the value is NULL.|
 |QUANTITY|60|The quantity of drug as recorded in the original prescription or dispensing record.|
@@ -306,11 +306,11 @@ Column name|Value|Explanation
 |ROUTE_CONCEPT_ID|4132161|This concept is meant to represent the route of administration  of the Drug the patient was was exposed to. Lauren took her acetaminophen orally so the concept ID [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) ("Oral") is used.|
 |LOT_NUMBER|NULL|An identifier assigned to a particular quantity or lot of Drug product from the manufacturer. This information is rarely captured.|
 |PROVIDER_ID|NULL|If the drug record has a prescribing Provider listed, the ID for that Provider goes in this field. In that case this contains the PROVIDER_ID from the PROVIDER table.|
-|VISIT_OCCURRENCE_ID|509|A foreign key to the VISIT_OCCURRENCE table during which the Drug was prescribed.|
+|VISIT_OCCURRENCE_ ID|509|A foreign key to the VISIT_OCCURRENCE table during which the Drug was prescribed.|
 |VISIT_DETAIL_ID|NULL|A foreign key to the VISIT_DETAIL table during which the Drug was prescribed.|
-|DRUG_SOURCE_VALUE|69842087651|This is the source code for the Drug as it appears in the source data. In Lauren's case the NDC code is stored here.|
-|DRUG_SOURCE_CONCEPT_ID|750264|This is the Concept that represents the drug source value. The Concept [750264](http://athena.ohdsi.org/search-terms/terms/750264) standing for the NDC code for "Acetaminophen 325 MG Oral Tablet".|
-|ROUTE_SOURCE_VALUE|NULL|The verbatim information about the route of administration as detailed in the source.|
+|DRUG_SOURCE_ VALUE|69842087651|This is the source code for the Drug as it appears in the source data. In Lauren's case the NDC code is stored here.|
+|DRUG_SOURCE_ CONCEPT_ID|750264|This is the Concept that represents the drug source value. The Concept [750264](http://athena.ohdsi.org/search-terms/terms/750264) standing for the NDC code for "Acetaminophen 325 MG Oral Tablet".|
+|ROUTE_SOURCE_ VALUE|NULL|The verbatim information about the route of administration as detailed in the source.|
 
 ### PROCEDURE_OCCURRENCE{#procedureOccurrence}
 
@@ -327,20 +327,20 @@ Table: (\#tab:procedureOccurrence) The PROCEDURE_OCCURRENCE table.
 
 Column name|Value|Explanation
 :---------------------|:-----------|:--------------------------------------
-|PROCEDURE_OCCURRENCE_ID|1277|This is typically an autogenerated value creating a unique identifier for each record.|
+|PROCEDURE_ OCCURRENCE_ID|1277|This is typically an autogenerated value creating a unique identifier for each record.|
 |PERSON_ID|1|This is a foreign key to Laura's record in the PERSON table and links PERSON to PROCEDURE_OCCURRENCE|
-|PROCEDURE_CONCEPT_ID|4127451|The SNOMED procedure code for a pelvic ultrasound is 304435002 which is represented by Concept [4127451](http://athena.ohdsi.org/search-terms/terms/4127451).|
+|PROCEDURE_ CONCEPT_ID|4127451|The SNOMED procedure code for a pelvic ultrasound is 304435002 which is represented by Concept [4127451](http://athena.ohdsi.org/search-terms/terms/4127451).|
 |PROCEDURE_DATE|2013-01-14|The date on which the Procedure was performed.|
-|PROCEDURE_DATATIME|2013-01-14 00:00:00|The date and time on which the procedure was performed. Midnight is used as time is unknown.|
+|PROCEDURE_ DATETIME|2013-01-14 00:00:00|The date and time on which the procedure was performed. Midnight is used as time is unknown.|
 |PROCEDURE_TYPE_ CONCEPT_ID|38000275|This column is intended to provide information about the provenance of the procedure record, i.e. does it come from an insurance claim, EHR order, etc. For this example the concept ID [38000275](http://athena.ohdsi.org/search-terms/terms/38000275) ("EHR order list entry") is used as the procedure record is from an EHR record.|
-|MODIFIER_CONCEPT_ID|0|This is meant for a concept ID representing the modifier on the procedure. For example, if the record indicated that a CPT4 procedure was performed bilaterally then the concept ID [42739579](http://athena.ohdsi.org/search-terms/terms/42739579) ("Bilateral procedure") would be used.|
+|MODIFIER_CONCEPT_ ID|0|This is meant for a concept ID representing the modifier on the procedure. For example, if the record indicated that a CPT4 procedure was performed bilaterally then the concept ID [42739579](http://athena.ohdsi.org/search-terms/terms/42739579) ("Bilateral procedure") would be used.|
 |QUANTITY|0|The quantity of Procedures ordered or administered. A missing Quantity, the numbers 0 and 1 all mean the same thing.|
 |PROVIDER_ID|NULL|If the Procedure record has a Provider listed, the ID for that Provider goes in this field. This should be a foreign key to the PROVIDER_ID from the PROVIDER table.|
-|VISIT_OCCURRENCE_ID|740|If known, this is the Visit (represented as VISIT_occurrence_id taken from the VISIT_OCCURRENCE table) during which the procedure was performed.|
+|VISIT_OCCURRENCE_ ID|740|If known, this is the Visit (represented as VISIT_occurrence_id taken from the VISIT_OCCURRENCE table) during which the procedure was performed.|
 |VISIT_DETAIL_ID|NULL|If known, this is the Visit detail (represented as VISIT_detail_id taken from the VISIT_DETAIL table) during which the procedure was performed.|
-|PROCEDURE_SOURCE_VALUE|304435002|The code or information for the Procedure as it appears in the source data.|
+|PROCEDURE_SOURCE_ VALUE|304435002|The code or information for the Procedure as it appears in the source data.|
 |PROCEDURE_SOURCE_ CONCEPT_ID|4127451|This is the Concept that represents the procedure source value.|
-|MODIFIER_SOURCE_VALUE|NULL|The source code for the modifier as it appears in the source data.|
+|MODIFIER_SOURCE_ VALUE|NULL|The source code for the modifier as it appears in the source data.|
 
 ## Additional Information
 

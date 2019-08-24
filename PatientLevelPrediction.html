@@ -1430,8 +1430,8 @@ Figure 14.15: Training settings.
 ## 1                    1 527616
 ## 2                    2   3201</code></pre>
 <p>Now we can tell <a href="https://ohdsi.github.io/PatientLevelPrediction/">PatientLevelPrediction</a> to extract all necessary data for our analysis. Covariates are extracted using the <a href="https://ohdsi.github.io/FeatureExtraction/"><code>FeatureExtraction</code></a> package. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="PatientLevelPrediction.html#cb118-1"></a>covariateSettings &lt;-</span>
-<span id="cb118-2"><a href="PatientLevelPrediction.html#cb118-2"></a><span class="st">  </span><span class="kw">createCovariateSettings</span>(<span class="dt">useDemographicsGender =</span> <span class="ot">TRUE</span>,</span>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="PatientLevelPrediction.html#cb118-1"></a>covariateSettings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(</span>
+<span id="cb118-2"><a href="PatientLevelPrediction.html#cb118-2"></a><span class="dt">useDemographicsGender =</span> <span class="ot">TRUE</span>,</span>
 <span id="cb118-3"><a href="PatientLevelPrediction.html#cb118-3"></a>                          <span class="dt">useDemographicsAge =</span> <span class="ot">TRUE</span>,</span>
 <span id="cb118-4"><a href="PatientLevelPrediction.html#cb118-4"></a>                          <span class="dt">useConditionGroupEraLongTerm =</span> <span class="ot">TRUE</span>,</span>
 <span id="cb118-5"><a href="PatientLevelPrediction.html#cb118-5"></a>                          <span class="dt">useConditionGroupEraAnyTimePrior =</span> <span class="ot">TRUE</span>,</span>
@@ -1600,7 +1600,7 @@ Figure 14.16: Summary evaluation statistics in the Shiny app.
 Figure 14.17: The ROC plot.
 </p>
 </div>
-<p>The calibration plot in Figure <a href="PatientLevelPrediction.html#fig:shinyCal">14.18</a> shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure <a href="PatientLevelPrediction.html#fig:shinyDemo">14.19</a> however shows that the model is not well calibrated for the younger patients, as the blue line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).</p>
+<p>The calibration plot in Figure <a href="PatientLevelPrediction.html#fig:shinyCal">14.18</a> shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure <a href="PatientLevelPrediction.html#fig:shinyDemo">14.19</a> however shows that the model is not well calibrated for the younger patients, as the curved line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).</p>
 <div class="figure" style="text-align: center"><span id="fig:shinyCal"></span>
 <img src="images/PatientLevelPrediction/shiny/singleShiny/singleShinyCal.png" alt="The calibration of the model" width="100%" />
 <p class="caption">
@@ -1680,7 +1680,7 @@ Figure 14.25: The predicted risk distribution for those with and without the out
 Figure 14.26: The risk stratified calibration and demographic calibration
 </p>
 </div>
-<p>We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the blue line is higher than the red line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.</p>
+<p>We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the expected line is higher than the observed line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.</p>
 </div>
 <div id="viewing-the-model" class="section level4 unnumbered">
 <h4>Viewing the model</h4>
