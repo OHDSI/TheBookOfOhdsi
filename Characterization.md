@@ -52,8 +52,8 @@ In classic DUS terminology, treatment pathway analyses include some population-l
 Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk (TAR). Figure \@ref(fig:incidenceTimeline) aims to show the components of an incidence calculation for a single person: \index{incidence}
 
 <div class="figure" style="text-align: center">
-<img src="images/Characterization/incidenceTimeline.png" alt="Person-level view of incidence calculation components" width="100%" />
-<p class="caption">(\#fig:incidenceTimeline)Person-level view of incidence calculation components</p>
+<img src="images/Characterization/incidenceTimeline.png" alt="Person-level view of incidence calculation components. In this example, time-at-risk is defined to start one day after cohort start, and end at cohort end." width="100%" />
+<p class="caption">(\#fig:incidenceTimeline)Person-level view of incidence calculation components. In this example, time-at-risk is defined to start one day after cohort start, and end at cohort end.</p>
 </div>
 
 In figure \@ref(fig:incidenceTimeline), a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the TAR, we count that as an incidence of the outcome. 

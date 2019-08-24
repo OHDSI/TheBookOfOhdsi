@@ -3251,18 +3251,18 @@ Figure \ref{fig:implementations} shows the various ways in which we can choose t
 \caption{Different ways to implement an analysis against data in the CDM.}\label{fig:implementations}
 \end{figure}
 
-We may choose to write our analysis as custom code, and not make use of any of the tools OHDSI has to offer. One could write a de novo analysis in R, SAS, or any other language. This provides the maximum flexibility, and may in fact be the only option if the specific analysis is not supported by any of our tools. However, this path requires a lot of technical skill, time, and effort, and as the analysis increases in complexity it becomes harder to avoid errors in the code.
+There a three main approaches to implementing a study. The first is to write custom code that does not make use of any of the tools OHDSI has to offer. One could write a de novo analysis in R, SAS, or any other language. This provides the maximum flexibility, and may in fact be the only option if the specific analysis is not supported by any of our tools. However, this path requires a lot of technical skill, time, and effort, and as the analysis increases in complexity it becomes harder to avoid errors in the code.
 
-An alternative is to develop the analysis in R, and make use of the packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}. At a minimum, one could use the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} and \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} packages described in more detail in Chapter \ref{SqlAndR} that allow the same code to be executed on various database platforms, such as PostgreSQL, SQL Server, and Oracle. Other packages such as \href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} and \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction} offer R functions for advanced analytics against the CDM that can be called on in one's code. This still requires a lot of technical expertise, but by re-using the validated components of the Methods Library we can be more efficient and error-free than when using completely custom code.
+The second approach involves developing the analysis in R, and making use of the packages in the \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library}. At a minimum, one could use the \href{https://ohdsi.github.io/SqlRender/}{SqlRender} and \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector} packages described in more detail in Chapter \ref{SqlAndR} that allow the same code to be executed on various database platforms, such as PostgreSQL, SQL Server, and Oracle. Other packages such as \href{https://ohdsi.github.io/CohortMethod/}{CohortMethod} and \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction} offer R functions for advanced analytics against the CDM that can be called on in one's code. This still requires a lot of technical expertise, but by re-using the validated components of the Methods Library we can be more efficient and less prone to error than when using completely custom code.
 
-The third approach relies on our interactive analysis platform \href{https://github.com/OHDSI/Atlas/wiki}{ATLAS}, a web-based tool that allows non-programmers to perform a wide range of analyses efficiently. ATLAS makes use of the Methods Libraries but provides a simple, point and click interface to design analyses and in many cases generate the necessary R code to run the analysis. The pace of development can vary between the Methods Libraries and ATLAS which can lead to limited options in the ATLAS interface where the underlying libraries have more flexibility.
+The third approach relies on our interactive analysis platform \href{https://github.com/OHDSI/Atlas/wiki}{ATLAS}, a web-based tool that allows non-programmers to perform a wide range of analyses efficiently. ATLAS makes use of the Methods Libraries but provides a simple graphical interface to design analyses and in many cases generate the necessary R code to run the analysis. However, ATLAS does not support all options available in the Methods Library. While it is expected that the majority of studies can be performed through ATLAS, some studies may require the flexibility offered by the second approach.
 
 ATLAS and the Methods Library are not independent. Some of the more complicated analytics that can be invoked in ATLAS are executed through calls to the packages in the Methods Library. Similarly, cohorts used in the Methods Library are often designed in ATLAS.
 
 \hypertarget{analysis-strategies}{%
 \section{Analysis strategies}\label{analysis-strategies}}
 
-More or less independently of how we choose to implement our analysis is the strategy that our analytics takes in answering specific questions. Figure \ref{fig:strategies} highlights three strategies that are employed in OHDSI.
+In addition to the strategy used to implement our analysis against the CDM, for example through custom coding or use of standard analytic code in the Methods Library, there are also multiple strategies for using those analytic techniques to generate evidence. Figure \ref{fig:strategies} highlights three strategies that are employed in OHDSI.
 
 \begin{figure}
 
@@ -3333,12 +3333,12 @@ ATLAS and the WebAPI provide a granular security model to control access to feat
 \hypertarget{documentation}{%
 \subsection{Documentation}\label{documentation}}
 
-Documentation for ATLAS can be found online in the ATLAS Github repository wiki\footnote{\url{https://github.com/OHDSI/ATLAS/wiki}}. This wiki includes information on the various application features as well as links to online video tutorials. \index{ATLAS!documentation}
+Documentation for ATLAS can be found online in the ATLAS GitHub repository wiki\footnote{\url{https://github.com/OHDSI/ATLAS/wiki}}. This wiki includes information on the various application features as well as links to online video tutorials. \index{ATLAS!documentation}
 
 \hypertarget{how-to-install}{%
 \subsection{How to install}\label{how-to-install}}
 
-Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS Github repository Setup Guide\footnote{\url{https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide}} and WebAPI Github repository Installation Guide\footnote{\url{https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide}}. \index{ATLAS!installation}
+Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS GitHub repository Setup Guide\footnote{\url{https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide}} and WebAPI GitHub repository Installation Guide\footnote{\url{https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide}}. \index{ATLAS!installation}
 
 \hypertarget{methods-library}{%
 \section{Methods Library}\label{methods-library}}
@@ -3354,16 +3354,16 @@ The \href{https://ohdsi.github.io/MethodsLibrary/}{OHDSI Methods Library} is the
 \caption{Packages in the OHDSI Methods Library.}\label{fig:methodsLibrary}
 \end{figure}
 
-The packages offer R functions that together can be used to perform an observation study from data to estimates and supporting statistics, figures, and tables. The packages interact directly with observational data in the CDM, and can be used simply to provide cross-platform compatibility to completely custom analyses as described in Chapter \ref{SqlAndR}, or can provide advanced standardized analytics for population characterization (Chapter \ref{Characterization}), population-level causal effect estimation (Chapter \ref{PopulationLevelEstimation}), and patient-level prediction (Chapter \ref{PatientLevelPrediction}). The Methods Library supports best practices for use of observational data as learned from previous and ongoing research, such as transparency, reproducibility, as well as measuring of the operating characteristics of methods in a particular context and subsequent empirical calibration of estimates produced by the methods.
+The packages offer R functions that together can be used to perform a complete observational study, starting from data in the CDM, and resulting in estimates and supporting statistics, figures, and tables. The packages interact directly with observational data in the CDM, and can be used simply to provide cross-platform compatibility to completely custom analyses as described in Chapter \ref{SqlAndR}, or can provide advanced standardized analytics for population characterization (Chapter \ref{Characterization}), population-level effect estimation (Chapter \ref{PopulationLevelEstimation}), and patient-level prediction (Chapter \ref{PatientLevelPrediction}). The Methods Library supports best practices for use of observational data and observational study design as learned from previous and ongoing research, such as transparency, reproducibility, as well as measuring of the operating characteristics of methods in a particular context and subsequent empirical calibration of estimates produced by the methods.
 
-The Methods Library has already been used in many published clinical studies \citep{boland_2017, duke_2017, ramcharran_2017, weinstein_2017, wang_2017, ryan_2017, ryan_2018, vashisht_2018, yuan_2018, johnston_2019}, as well as methodological studies \citep{schuemie_2014, schuemie_2016, reps2018, tian_2018, schuemie_2018, schuemie_2018b, reps_2019}. Great care is taken to ensure the validity of the Methods Library, as described in Chapter \ref{SoftwareValidity}.
+The Methods Library has already been used in many published clinical studies \citep{boland_2017, duke_2017, ramcharran_2017, weinstein_2017, wang_2017, ryan_2017, ryan_2018, vashisht_2018, yuan_2018, johnston_2019}, as well as methodological studies \citep{schuemie_2014, schuemie_2016, reps2018, tian_2018, schuemie_2018, schuemie_2018b, reps_2019}. The validity of the implementations of methods in the Methods library is described in Chapter \ref{SoftwareValidity}.
 
 \hypertarget{support-for-large-scale-analytics}{%
 \subsection{Support for large-scale analytics}\label{support-for-large-scale-analytics}}
 
-One key feature incorporated in all packages is the ability to efficiently run many analyses. For example, when performing population-level estimation, the CohortMethod package allows for computing effect-size estimates for many exposures and outcomes, using various analysis settings, and the package will automatically choose the optimal path to compute all the required artifacts. Steps that can be re-used, such as extraction of covariates, or fitting a propensity model, will be executed only once. Where possible, computations will take place in parallel to maximize the use of computational resources.
+One key feature incorporated in all packages is the ability to efficiently run many analyses. For example, when performing population-level estimation, the CohortMethod package allows for computing effect-size estimates for many exposures and outcomes, using various analysis settings, and the package will automatically choose the optimal way to compute all the required intermediary and final data sets. Steps that can be re-used, such as extraction of covariates, or fitting a propensity model that is used for one target-comparator pair but multiple outcomes, will be executed only once. Where possible, computations will take place in parallel to maximize the use of computational resources.
 
-This feature allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g.~negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \ref{MethodValidity}. \index{control hypotheses}
+This computational efficiency allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g.~negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \ref{MethodValidity}. \index{control hypotheses}
 
 \hypertarget{BigDataSupport}{%
 \subsection{Support for big data}\label{BigDataSupport}}
@@ -3384,7 +3384,7 @@ The Methods Library is also designed to run against very large databases and be 
 \hypertarget{documentation-1}{%
 \subsection{Documentation}\label{documentation-1}}
 
-R provides a standard way of documenting package. Each package has a \emph{package manual} that documents every function and data set in the package. All package manuals are available online through the Methods Library website \footnote{\url{https://ohdsi.github.io/MethodsLibrary}}, through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. Furthermore, from within R the package manual can be consulted by using the question mark. For example, after loading the DatabaseConnector package, typing the command \texttt{?connect} brings up the documentation on the ``connect'' function.
+R provides a standard way to document packages. Each package has a \emph{package manual} that documents every function and data set contained in the package. All package manuals are available online through the Methods Library website \footnote{\url{https://ohdsi.github.io/MethodsLibrary}}, through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. Furthermore, from within R the package manual can be consulted by using the question mark. For example, after loading the DatabaseConnector package, typing the command \texttt{?connect} brings up the documentation on the ``connect'' function.
 
 In addition to the package manual, many packages provide \emph{vignettes}. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette \footnote{\url{https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html}} describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. \index{vignette}
 
@@ -3575,7 +3575,7 @@ Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, 
 \hypertarget{broadsea}{%
 \subsection{Broadsea}\label{broadsea}}
 
-BroadSea\footnote{\url{https://github.com/OHDSI/Broadsea}} uses Docker container technology\footnote{\url{https://www.docker.com/}}. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS. \index{tools deployment!Broadsea}
+Broadsea\footnote{\url{https://github.com/OHDSI/Broadsea}} uses Docker container technology\footnote{\url{https://www.docker.com/}}. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS. \index{tools deployment!Broadsea}
 
 \hypertarget{amazon-aws}{%
 \subsection{Amazon AWS}\label{amazon-aws}}
@@ -3986,7 +3986,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.jbpptl0echildren ;"
+## [1] "SELECT * FROM temp_schema.pgietl7hchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -5716,7 +5716,7 @@ Incidence rates and proportions are statistics that are used in public health to
 
 }
 
-\caption{Person-level view of incidence calculation components}\label{fig:incidenceTimeline}
+\caption{Person-level view of incidence calculation components. In this example, time-at-risk is defined to start one day after cohort start, and end at cohort end.}\label{fig:incidenceTimeline}
 \end{figure}
 
 In figure \ref{fig:incidenceTimeline}, a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the TAR, we count that as an incidence of the outcome.
@@ -6430,20 +6430,20 @@ The model used to estimate the effect while adjusting for differences between th
 \bottomrule
 \end{longtable}
 
-The choice of model specifies, among others, the type of model. For example, we could use a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or is irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards between target and comparator. \index{logistic regression} \index{Poisson regression} \index{Cox regression} \index{Cox proportional hazards model|see {Cox regression}}
+The choice of model specifies, among others, the type of outcome model. For example, we could use a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or is irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards between target and comparator. \index{logistic regression} \index{Poisson regression} \index{Cox regression} \index{Cox proportional hazards model|see {Cox regression}}
 
 \BeginKnitrBlock{rmdimportant}
 The new-user cohort method inherently is a method for comparative effect estimation, comparing one treatment to another. It is difficult to use this method to compare a treatment against no treatment, since it is hard to define a group of unexposed people that is comparable with the exposed group. If one wants to use this design for direct effect estimation, the preferred way is to select a comparator treatment for the same indication as the exposure of interest, where the comparator treatment is believed to have no effect on the outcome. Unfortunately, such a comparator might not always be available.
 \EndKnitrBlock{rmdimportant}
 
-A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is on average 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.~stroke) might then show substantial differences. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a ``confounder.'' One mechanism to deal with confounders in observational studies is through propensity scores. \index{confounder}
+A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is on average 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.~stroke) might then show substantial differences between the cohorts. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a ``confounder.'' One mechanism to deal with confounders in observational studies is through propensity scores. \index{confounder}
 
 \hypertarget{propensity-scores}{%
 \subsection{Propensity scores}\label{propensity-scores}}
 
 \index{propensity score}
 
-In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what's more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially \emph{cannot} differ systematically with respect to \emph{any} patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure. \index{randomized trial}
+In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what's more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially \emph{cannot} differ systematically with respect to \emph{any} patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure, such as patient genetic factors. \index{randomized trial}
 
 For a given patient, the \emph{propensity score} (PS) is the probability that that patient received the target treatment as against the comparator. \citep{rosenbaum_1983} In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received). This is a straightforward predictive modeling application; we fit a model (e.g.~a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways including matching target subjects to comparator subjects with similar PS, stratifying the study population based on the PS, or weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. \citep{rassen_2012} \index{propensity model} \index{propensity score!matching} \index{propensity score!stratification} \index{propensity score!weighting} \index{inverse probability of treatment weighting (IPTW)|see {propensity score!weighting}} \index{variable ratio matching}
 
@@ -6454,10 +6454,10 @@ Propensity scoring controls for measured confounders. In fact, if treatment assi
 \hypertarget{VariableSelection}{%
 \subsection{Variable selection}\label{VariableSelection}}
 
-In the past, PS were computed based on manually selected characteristics, and although the OHDSI tools can support such practices, we prefer using many generic characteristics (i.e.~characteristics that are not selected based on the specific exposures and outcomes in the study). \citep{tian_2018} These characteristics include demographics, as well as all diagnoses, drug exposures, measurement, and medical procedures observed prior to and on the day of treatment initiation. A model typically involves 10,000 to 100,000 unique characteristics, which we fit using large-scale regularized regression \citep{suchard_2013} implemented in the \href{https://ohdsi.github.io/Cyclops/}{Cyclops} package. In essence, we let the data appropriately weigh the characteristics.
+In the past, PS were computed based on manually selected characteristics, and although the OHDSI tools can support such practices, we prefer using many generic characteristics (i.e.~characteristics that are not selected based on the specific exposures and outcomes in the study). \citep{tian_2018} These characteristics include demographics, as well as all diagnoses, drug exposures, measurement, and medical procedures observed prior to and on the day of treatment initiation. A model typically involves 10,000 to 100,000 unique characteristics, which we fit using large-scale regularized regression \citep{suchard_2013} implemented in the \href{https://ohdsi.github.io/Cyclops/}{Cyclops} package. In essence, we let the data decide which characteristics are predictive of the treatment assignment and should be included in the model.
 
 \BeginKnitrBlock{rmdimportant}
-We typically include the day of treatment initiation in the covariate capture window because many relevant data points such as the diagnosis leading to the treatment are recorded on that date. This does require us to explicitly exclude the target and comparator treatment from the set of covariates, because these are the things we are trying to predict.
+We typically include the day of treatment initiation in the covariate capture window because many relevant data points such as the diagnosis leading to the treatment are recorded on that date. On this day the target and comparator treatment themselves are also recorded, but these should \emph{not} be included in the propensity model, because they are the very thing we are trying to predict. We must therefore explicitly exclude the target and comparator treatment from the set of covariates
 \EndKnitrBlock{rmdimportant}
 
 Some have argued that a data-driven approach to covariate selection that does not depend on clinical expertise to specify the ``right'' causal structure runs the risk of erroneously including so-called instrumental variables and colliders, thus increasing variance and potentially introducing bias. \citep{hernan_2002} However, these concerns are unlikely to have a large impact in real-world scenarios. \citep{schneeweiss_2018} Furthermore, in medicine the true causal structure is rarely known, and when different researchers are asked to identify the `right' covariates to include for a specific research question, each researcher invariably comes up with a different list, thus making the process irreproducible. Most importantly, our diagnostics such as inspection of the propensity model, evaluating balance on all covariates, and including negative controls would identify most problems related to colliders and instrumental variables. \index{instrumental variables} \index{colliders}
@@ -6930,7 +6930,7 @@ First, we need to \textbf{specify the statistical model we will use to estimate 
 
 We can also choose to \textbf{add the covariates to the outcome model} to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend keeping the outcome model as simple as possible and not include additional covariates.
 
-Instead of stratifying or matching on the propensity score we can also choose to \textbf{use inverse probability of treatment weighting} (IPTW). If weighting is used it is often recommended to use some form of trimming to avoid extreme weights and therefore unstable estimates.
+Instead of stratifying or matching on the propensity score we can also choose to \textbf{use inverse probability of treatment weighting} (IPTW).
 
 If we choose to include all covariates in the outcome model, it may make sense to use regularization when fitting the model if there are many covariates. Note that no regularization will be applied to the treatment variable to allow for unbiased estimation.
 
@@ -7394,7 +7394,7 @@ We first need to evaluate whether the target and comparator cohort are to some e
 In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive. Table \ref{tab:psModel} shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive. \index{propensity model!example}
 
 \begin{longtable}[]{@{}rl@{}}
-\caption{\label{tab:psModel} Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment.}\tabularnewline
+\caption{\label{tab:psModel} Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment. ``(Intercept)'' indicates the intercept of this logistic regression model.}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.06\columnwidth}\raggedleft
 Beta\strut
@@ -7512,7 +7512,7 @@ To gain a better understanding of the amount of follow-up available we can also 
 \hypertarget{kaplan-meier}{%
 \subsection{Kaplan-Meier}\label{kaplan-meier}}
 
-One last check is to review the Kaplan-Meier plot, showing the survival over time in both cohorts. Using the \texttt{plotKaplanMeier} function we can create \ref{fig:kmPlot}, which we can check for example if our assumption of proportionality of hazards holds. The Kaplan-Meier plot automatically adjusts for stratification or weighting by PS. In this case, because variable-ratio matching is used, the survival curve for the comparator groups is adjusted to mimick what the curve had looked like for the target group had they been exposued to the comparator instead. \index{Kaplan-Meier plot} \index{survival plot|see {Kaplan-Meier plot}}
+One last check is to review the Kaplan-Meier plot, showing the survival over time in both cohorts. Using the \texttt{plotKaplanMeier} function we can create \ref{fig:kmPlot}, which we can check for example if our assumption of proportionality of hazards holds. The Kaplan-Meier plot automatically adjusts for stratification or weighting by PS. In this case, because variable-ratio matching is used, the survival curve for the comparator groups is adjusted to mimic what the curve had looked like for the target group had they been exposed to the comparator instead. \index{Kaplan-Meier plot} \index{survival plot|see {Kaplan-Meier plot}}
 
 \begin{figure}
 
@@ -11203,11 +11203,101 @@ As you are conducting a network study, the OHDSI community is available to assis
 \hypertarget{Glossary}{%
 \chapter{Glossary}\label{Glossary}}
 
-Cohort
-A cohort is a list of PERSON\_IDs with start and end date. It is stored in a study specific cohort table or a CDM specified cohort table can also be used. Cohort can be represented as .json file. It is used for import and export but not during an analysis. OHDSI tools use SQL so Atlas also generates a .sql file that creates the cohort during analysis.
-
-Parametized SQL code
-An SQL code that allows for use of parameters. Parameters are prefixed with @. Such code has to be ``rendered''. Synonym: OHDSI SQL code.
+\begin{description}
+\tightlist
+\item[ACHILLES]
+A database-level characterization report.
+\item[ARACHNE]
+The OHDSI platform that is being developed to allow the orchestration and execution of federated network studies.
+\item[ATLAS]
+A web-based application that is installed on participating sites to support the design and execution of observational analyses to generate real world evidence from patient level clinical data.
+\item[Bias]
+The expected value of the error (the difference between the true value and the estimated value).
+\item[Boolean]
+Variable that has only two values (true or false).
+\item[Care site]
+A uniquely identified institutional (physical or organizational) unit where healthcare delivery is practiced (office, ward, hospital, clinic, etc.).
+\item[Characterization]
+Descriptive study of a cohort or entire database. See Chapter \ref{Characterization}.
+\item[Claims data]
+Data generated for the purpose of billing a health insurance company.
+\item[Clinical trial]
+Interventional clinical study.
+\item[Cohort]
+A set of persons who satisfy one or more inclusion criteria for a duration of time. See Chapter \ref{Cohorts}.
+\item[Concept]
+A term (with a code) defined in a medical terminology (e.g., SNOMED CT). See Chapter \ref{StandardizedVocabularies}.
+\item[Concept set]
+A concept set is an expression representing a list of concepts that can be used as a reusable component in various analyses. See Chapter \ref{Cohorts}.
+\item[Common Data Model (CDM)]
+A convention for representing healthcare data that allows portability of analysis (the same analysis unmodified can be executed on multiple datasets). See Chapter \ref{CommonDataModel}.
+\item[Comparative Effectiveness]
+A comparison of the effects of two different exposures on an outcome of interest. See Chapter \ref{PopulationLevelEstimation}.
+\item[Condition]
+A diagnosis, a sign, or a symptom, which is either observed by a provider or reported by the patient.
+\item[Confounding]
+Confounding is a distortion (inaccuracy) in the estimated measure of association that occurs when the primary exposure of interest is mixed up with some other factor that is associated with the outcome.
+\item[Covariate]
+Data element (e.g., weight) that is used in a statistical model as independent variable.
+\item[Data quality]
+The state of completeness, validity, consistency, timeliness and accuracy that makes data appropriate for a specific use.
+\item[Device]
+A foreign physical object or instrument which is used for diagnostic or therapeutic purposes through a mechanism beyond chemical action. Devices include implantable objects (e.g.~pacemakers, stents, artificial joints), medical equipment and supplies (e.g.~bandages, crutches, syringes), other instruments used in medical procedures (e.g.~sutures, defibrillators) and material used in clinical care (e.g.~adhesives, body material, dental material, surgical material).
+\item[Drug]
+A Drug is a biochemical substance formulated in such a way that when administered to a Person it will exert a certain physiological effect. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Radiological devices ingested or applied locally do not count as Drugs.
+\item[Domain]
+A Domain defines the set of allowable Concepts for the standardized fields in the CDM tables. For example, the ``Condition'' Domain contains Concepts that describe a condition of a patient, and these Concepts can only be stored in the condition\_concept\_id field of the CONDITION\_OCCURRENCE and CONDITION\_ERA tables.
+\item[Electronic Health Record (EHR)]
+Data generated during course of care and recorded in an electronic system.
+\item[ETL (Extract-Transform-Load)]
+The process of converting data from one format to another, for example from a source format to the CDM. See Chapter \ref{ExtractTransformLoad}.
+\item[Measurement]
+A structured value (numerical or categorical) obtained through systematic and standardized examination or testing of a person or person's sample.
+\item[Methods Library]
+A set of R packages developed by the OHDSI community for performing observational studies.
+\item[Negative control]
+An exposure-outcome pair where the exposure is believed to not cause or prevent the outcome. Can be used to assess whether effect estimation methods produce results in line with the truth. See Chapter \ref{MethodValidity}.
+\item[Observation]
+A clinical fact about a Person obtained in the context of examination, questioning or a procedure.
+\item[Observation period]
+The span of time for which a person is at-risk to have clinical events recorded within the source systems, even if no events in fact are recorded (healthy patient with no healthcare interactions).
+\item[Observational study]
+A study where the researcher has no control over the intervention.
+\item[OHDSI SQL]
+A SQL dialect that can be automatically translated to various other SQL dialects using the SqlRender R package. OHDSI SQL is mostly a subset of SQL Server SQL, but allows for additional parameterization. See Chapter \ref{SqlAndR}.
+\item[Open science]
+The movement to make scientific research (including publications, data, physical samples, and software) and its dissemination accessible to all levels of an inquiring society, amateur or professional. See Chapter \ref{OpenScience}.
+\item[Patient-level prediction]
+Development and application of predictive models to produce patient-specific probabilities for experiencing some future outcome based on baseline characteristics.
+\item[Population-level estimation]
+A study into causal effects. Estimates an average (population-level) effect size.
+\item[Positive control]
+An exposure-outcome pair where the exposure is believed to cause or prevent the outcome. Can be used to assess whether effect estimation methods produce results in line with the truth. See Chapter \ref{MethodValidity}.
+\item[Procedure]
+Activity or process ordered by, or carried out by, a healthcare provider on the patient to have a diagnostic or therapeutic purpose.
+\item[Propensity score (PS)]
+a single metric used in population-level estimation to balance populations in order to mimic randomization between two treatment groups in an observational study. The PS represents the probability of a patient receiving a treatment of interest as a function of a set of observed baseline covariates. It is most often calculated using a logistic regression model where the binary outcome is set to one for the group receiving the target treatment of interest and to zero for the comparator treatment. See Chapter \ref{PopulationLevelEstimation}.
+\item[Protocol]
+A human readable document that fully specifies the design of a study.
+\item[Rabbit-in-a-Hat]
+An interactive software tool to help define the ETL from source format to CDM. Uses the database profile generated by White Rabbit as input. See Chapter 7.
+\item[Sensitivity analysis]
+A variant of the main analysis used in a study to asses the impact of an analysis choice over which uncertainty exists.
+\item[Study diagnostics]
+Set of analytical steps where the goal is to determine whether a given analytical approach can be used (is valid) for answering a given research question. See Chapter \ref{MethodValidity}.
+\item[Study package]
+A computer-executable program that fully executes the study. See Chapter \ref{SoftwareValidity}.
+\item[Source code]
+A code used in a source database. For example an ICD-10 code.
+\item[Standard Concept]
+A concept that is designated as valid concept and allowed to appear in the CDM.
+\item[THEMIS]
+OHDSI workgroup that addresses target data format that is of higher granularity and detail with respect to CDM model specifications.
+\item[Visit]
+The span of time a person continuously receives medical services from one or more providers at a care site in a given setting within the health care system.
+\item[White Rabbit]
+A software tool for profiling a database before defining the ETL to the CDM. See Chapter \ref{ExtractTransformLoad}.
+\end{description}
 
 \hypertarget{CohortDefinitions}{%
 \chapter{Cohort definitions}\label{CohortDefinitions}}
