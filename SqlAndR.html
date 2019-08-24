@@ -303,7 +303,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="11.5.1" data-path="Cohorts.html"><a href="Cohorts.html#ohdsi-gold-standard-phenotype-library"><i class="fa fa-check"></i><b>11.5.1</b> OHDSI Gold Standard Phenotype Library</a></li>
 </ul></li>
 <li class="chapter" data-level="11.6" data-path="Cohorts.html"><a href="Cohorts.html#defining-a-cohort-for-hypertension"><i class="fa fa-check"></i><b>11.6</b> Defining a cohort for hypertension</a></li>
-<li class="chapter" data-level="11.7" data-path="Cohorts.html"><a href="Cohorts.html#implementing-a-cohort-using-atlas"><i class="fa fa-check"></i><b>11.7</b> Implementing a cohort using ATLAS</a></li>
+<li class="chapter" data-level="11.7" data-path="Cohorts.html"><a href="Cohorts.html#implementing-a-cohort-using-atlas"><i class="fa fa-check"></i><b>11.7</b> Implementing a cohort using ATLAS</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="Cohorts.html"><a href="Cohorts.html#initial-event-criteria"><i class="fa fa-check"></i><b>11.7.1</b> Initial event criteria</a></li>
+<li class="chapter" data-level="11.7.2" data-path="Cohorts.html"><a href="Cohorts.html#defining-the-concept-set"><i class="fa fa-check"></i><b>11.7.2</b> Defining the concept set</a></li>
+<li class="chapter" data-level="11.7.3" data-path="Cohorts.html"><a href="Cohorts.html#additional-initial-event-criteria"><i class="fa fa-check"></i><b>11.7.3</b> Additional initial event criteria</a></li>
+<li class="chapter" data-level="11.7.4" data-path="Cohorts.html"><a href="Cohorts.html#inclusion-criteria"><i class="fa fa-check"></i><b>11.7.4</b> Inclusion criteria</a></li>
+<li class="chapter" data-level="11.7.5" data-path="Cohorts.html"><a href="Cohorts.html#cohort-exit-criteria"><i class="fa fa-check"></i><b>11.7.5</b> Cohort exit criteria</a></li>
+</ul></li>
 <li class="chapter" data-level="11.8" data-path="Cohorts.html"><a href="Cohorts.html#implementing-the-cohort-using-sql"><i class="fa fa-check"></i><b>11.8</b> Implementing the cohort using SQL</a><ul>
 <li class="chapter" data-level="11.8.1" data-path="Cohorts.html"><a href="Cohorts.html#connecting-to-the-database"><i class="fa fa-check"></i><b>11.8.1</b> Connecting to the database</a></li>
 <li class="chapter" data-level="11.8.2" data-path="Cohorts.html"><a href="Cohorts.html#specifying-the-concepts"><i class="fa fa-check"></i><b>11.8.2</b> Specifying the concepts</a></li>
@@ -875,7 +881,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="SqlAndR.html#cb30-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb30-2"><a href="SqlAndR.html#cb30-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.dedto6e1children ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.bzsbrvxxchildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>

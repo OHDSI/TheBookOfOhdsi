@@ -60,7 +60,7 @@ Data Sources \index{ATLAS!Data Sources} \index{Achilles|see {ATLAS!data sources}
 Vocabulary Search \index{ATLAS!vocabulary search} 
 : Atlas provides the ability to search and explore the OMOP standardized vocabulary to understand what concepts exist within those vocabularies and how to apply those concepts in your standardized analysis against your data sources. This feature is discussed in Chapter \@ref(StandardizedVocabularies).
 
-Concept Sets \index{ATLAS!concept sets} \index{concept sets|see {ATLAS!concept sets}}
+Concept Sets \index{ATLAS!concept sets}
 : Concept sets provides the ability to create collections of logical expressions that can be used to identify a set of concepts to be used throughout your standardized analyses.  Concept sets provide more sophistication than a simple list of codes or values.  A concept set is comprised of multiple concepts from the standardized vocabulary in combination with logical indicators that allow a user to specify that they are interested in including or excluding related concepts in the vocabulary hierarchy.  Searching the vocabulary, identifying the set of concepts, and specifying the logic to be used to resolve a concept set provides a powerful mechanism for defining the often obscure medical language used in analysis plans.  These concept sets can be saved within ATLAS and then used throughout your analysis as part of cohort definitions or analysis specifications.
 
 Cohort Definitions \index{ATLAS!cohort definitions}

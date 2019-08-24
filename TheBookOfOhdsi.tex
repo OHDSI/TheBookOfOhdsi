@@ -3301,7 +3301,7 @@ A screenshot of ATLAS is provided in Figure \ref{fig:atlas}. On the left is a na
 Data sources provides the capability review descriptive, standardized reporting for each of the data sources that you have configured within your Atlas platform. This feature uses the large-scale analytics strategy: all descriptives have been pre-computed. Data sources is discussed in Chapter \ref{Characterization}.
 \item[Vocabulary Search \index{ATLAS!vocabulary search}]
 Atlas provides the ability to search and explore the OMOP standardized vocabulary to understand what concepts exist within those vocabularies and how to apply those concepts in your standardized analysis against your data sources. This feature is discussed in Chapter \ref{StandardizedVocabularies}.
-\item[Concept Sets \index{ATLAS!concept sets} \index{concept sets|see {ATLAS!concept sets}}]
+\item[Concept Sets \index{ATLAS!concept sets}]
 Concept sets provides the ability to create collections of logical expressions that can be used to identify a set of concepts to be used throughout your standardized analyses. Concept sets provide more sophistication than a simple list of codes or values. A concept set is comprised of multiple concepts from the standardized vocabulary in combination with logical indicators that allow a user to specify that they are interested in including or excluding related concepts in the vocabulary hierarchy. Searching the vocabulary, identifying the set of concepts, and specifying the logic to be used to resolve a concept set provides a powerful mechanism for defining the often obscure medical language used in analysis plans. These concept sets can be saved within ATLAS and then used throughout your analysis as part of cohort definitions or analysis specifications.
 \item[Cohort Definitions \index{ATLAS!cohort definitions}]
 Cohort definitions is the ability to construct a set of persons who satisfy one or more criteria for a duration of time and these cohorts can then serve as the basis of inputs for all of your subsequent analyses. This feature is discussed in Chapter \ref{Cohorts}.
@@ -3986,7 +3986,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.rw0m7fgcchildren ;"
+## [1] "SELECT * FROM temp_schema.jbpptl0echildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4887,7 +4887,7 @@ As you are building your cohort definition, you may find it helpful to think of 
 
 }
 
-\caption{Building Blocks of Cohort definitions}\label{fig:cohortLegos}
+\caption{Building Blocks of Cohort definitions.}\label{fig:cohortLegos}
 \end{figure}
 
 When creating a cohort definition, you need to ask yourself the following questions:
@@ -4917,7 +4917,45 @@ In the OHDSI tools there is no distinction between inclusion and exclusion crite
 
 \index{concept set}
 
-TODO: add section on concept sets
+A concept set is an expression representing a list of concepts that can be used as a reusable component in various analyses. It can be thought of as a standardized, computer-executable equivalent of the code lists often used in observational studies. A concept set expression consists of a list of concepts with the following attributes:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Exclude}: Exclude this concept (and any of its descendants if selected) from the concept set.
+\item
+  \textbf{Descendants}: Consider not only this concept, but also all of its descendants.
+\item
+  \textbf{Mapped}: Allow to search for non-standard concepts.
+\end{itemize}
+
+For example, a concept set expression could contains two concepts as depicted in Table \ref{tab:conceptSetExpression}. Here we include concept \href{http://athena.ohdsi.org/search-terms/terms/4329847}{4329847} (``Myocardial infarction'') and all of its descendants, but exclude concept \href{http://athena.ohdsi.org/search-terms/terms/314666}{314666} (``Old myocardial infarction'') and all of its descendants.
+
+\begin{longtable}[]{@{}lllll@{}}
+\caption{\label{tab:conceptSetExpression} An example concept set expression.}\tabularnewline
+\toprule
+Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Concept Id & Concept Name & Excluded & Descendants & Mapped\tabularnewline
+\midrule
+\endhead
+4329847 & Myocardial infarction & NO & YES & NO\tabularnewline
+314666 & Old myocardial infarction & YES & YES & NO\tabularnewline
+\bottomrule
+\end{longtable}
+
+As shown in Figure \ref{fig:conceptSet}, this will include ``Myocardial infarction'' and all of its descendants except ``Old myocardial infarction'' and its descendants. In total, this concept set expression implies nearly a hundred Standard Concepts. These Standard Concepts in turn reflect hundreds of source codes (e.g.~ICD-9 and ICD-10 codes) that may appear in the various databases.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Cohorts/conceptSet} 
+
+}
+
+\caption{A concept set including "Myocardial infaction (with descendants), but excluding "Old myocardial infarction" (with descendants).}\label{fig:conceptSet}
+\end{figure}
 
 \hypertarget{probabilistic-cohort-definitions}{%
 \section{Probabilistic cohort definitions}\label{probabilistic-cohort-definitions}}
@@ -4978,7 +5016,12 @@ Before you do anything else, you are encouraged to change the name of the cohort
 ATLAS will not allow two cohorts to have the same exact names. ATLAS will give you a pop-up error message if you choose a name already used by another ATLAS cohort.
 \EndKnitrBlock{rmdimportant}
 
-Once you have chosen a name, you can save the cohort by clicking \includegraphics{images/Cohorts/save.png}. Now we can proceed with defining the initial cohort event. You will click ``Add initial event''. You now have to pick which domain you are building a criteria around. You may ask yourself, ``how do I know which domain is the initial cohort event?'' Let's figure that out.
+Once you have chosen a name, you can save the cohort by clicking \includegraphics{images/Cohorts/save.png}.
+
+\hypertarget{initial-event-criteria}{%
+\subsection{Initial event criteria}\label{initial-event-criteria}}
+
+Now we can proceed with defining the initial cohort event. You will click ``Add initial event''. You now have to pick which domain you are building a criteria around. You may ask yourself, ``how do I know which domain is the initial cohort event?'' Let's figure that out.
 
 \begin{figure}
 
@@ -5002,6 +5045,9 @@ The screen will update with your selected criteria but you are not done yet. As 
 \caption{Defining a Drug Exposure}\label{fig:ATLASdrugexposure}
 \end{figure}
 
+\hypertarget{defining-the-concept-set}{%
+\subsection{Defining the concept set}\label{defining-the-concept-set}}
+
 You will need to click \includegraphics{images/Cohorts/downarrow.png} to open the dialogue box that will allow you to retrieve a concept set to define ACE Inhibitors.
 
 \hypertarget{scenario-1-you-have-not-built-a-concept-set}{%
@@ -5019,7 +5065,18 @@ If you have not assembled your concept sets to apply to your criteria, you will 
 \caption{Searching the Vocabulary - ACE Inhibitors}\label{fig:aceinhibitors}
 \end{figure}
 
-When you have found terms that you would like to use to define this drug exposure, you can select the concept by clicking on \includegraphics{images/Cohorts/shoppingcart.png}. You can return to your cohort definition by using the breadcrumbs at the top of right of the navigation window and clicking \includegraphics{images/Cohorts/save.png}. You can refer back to Chapter \ref{StandardizedVocabularies} (Standardized Vocabularies) on how to navigate the vocabularies to find clinical concepts of interest.
+When you have found terms that you would like to use to define this drug exposure, you can select the concept by clicking on \includegraphics{images/Cohorts/shoppingcart.png}. You can return to your cohort definition by using the left arrow in the top left of Figure \ref{fig:aceinhibitors}. You can refer back to Chapter \ref{StandardizedVocabularies} (Standardized Vocabularies) on how to navigate the vocabularies to find clinical concepts of interest.
+
+Figure \ref{fig:aceConceptSetExpression} shows our concept set expression. We selected all ACE inhibitor ingredients we are interested in, and include all their descendants, thus including all drugs that contain any of these ingredients. We can click on ``Included concepts'' to see all 21,536 concepts implied by this expression, or we can click on ``Included Source Codes'' to explore all source codes in the various coding systems that are implied.
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/Cohorts/aceConceptSetExpression} 
+
+}
+
+\caption{Importing a Concept Set from ATLAS Repository}\label{fig:aceConceptSetExpression}
+\end{figure}
 
 \hypertarget{scenario-2-you-have-already-built-a-concept-set}{%
 \subsubsection*{Scenario 2: You have already built a concept set}\label{scenario-2-you-have-already-built-a-concept-set}}
@@ -5038,7 +5095,10 @@ If you have already created a concept set and saved it in ATLAS, you can click t
 
 In the example in Figure \ref{fig:ATLASfindyourconcept}, the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set ``ace inhibitors'' in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.) You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.
 
-Now that you've attached a concept set, you are not done \textbf{yet}. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the \emph{first exposure} of ACE inhibitors in the patient's record. To specify this, you need to click ``+Add attribute''. You will want to select the ``Add first exposure criteria''. Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
+\hypertarget{additional-initial-event-criteria}{%
+\subsection{Additional initial event criteria}\label{additional-initial-event-criteria}}
+
+Now that you've attached a concept set, you are not done yet. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the \emph{first exposure} of ACE inhibitors in the patient's record. To specify this, you need to click ``+Add attribute''. You will want to select the ``Add first exposure criteria''. Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
 
 From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (Figure \ref{fig:atlasfirsttimeever}).
 
@@ -5079,6 +5139,9 @@ To further explain how this logic comes together, you can think about assembling
 
 In Figure \ref{fig:EarliestEventExplained}, each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first time occurrence. Logically, limiting to the initial event is redundant though it is helpful to maintain our explicit logic in every selection we make. When you are building your own cohorts, you may opt to engage the Researchers section of the \href{http://forums.ohdsi.org}{OHDSI Forum} to get a second opinion on how to construct your cohort logic.
 
+\hypertarget{inclusion-criteria}{%
+\subsection{Inclusion criteria}\label{inclusion-criteria}}
+
 Once we have specified a cohort entry event, you could proceed to one of two places to add your additional qualifying events: ``Restrict initial events'' and ``New inclusion criteria''. The fundamental difference between these two options is what interim information you want ATLAS to serve back to you. If you add additional qualifying criteria into the Cohort Entry Event box by selecting ``Restrict initial events'', when you choose to generate a count in ATLAS, you will only get back the number of people who meet ALL of these criteria. If you opt to add criteria into the ``New inclusion criteria'', you will get an attrition chart to show you how many patients are lost by applying additional inclusion criteria. It is highly encouraged to utilize the Inclusion Criteria section so you can understand the impact of each rule on the overall success of the cohort definition. You may find a certain inclusion criteria severely limits the number of people who end up in the cohort. You may choose to relax this criterion to get a larger cohort. This will ultimately be at the discretion of the expert consensus assembling this cohort.
 
 You will now want to click ``New inclusion criteria'' to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: \emph{With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)}. You will click ``New inclusion criteria'' to add a new criteria. You should name your criteria and, if desired, put a little description of what you are looking for. This is for your own purposes to recall what you build -- it will not impact the integrity of the cohort you are defining.
@@ -5117,6 +5180,9 @@ Lastly, you will want to add your another criterion to look for patients: \emph{
 
 \caption{Additional Inclusion Criteria 3}\label{fig:ATLASIC3}
 \end{figure}
+
+\hypertarget{cohort-exit-criteria}{%
+\subsection{Cohort exit criteria}\label{cohort-exit-criteria}}
 
 You have now added all of your qualifying inclusion criteria. You must now specify your cohort exit criteria. You will ask yourself, ``when are people no longer eligible to be included in this cohort?'' In this cohort, we are following new-users of a drug exposure. We want to look at continuous observation period as it relates to the drug exposure. As such, the exit criterion is specified to follow for the entirety of the continuous drug exposure. If there is a subsequent break in the drug exposure, the patient will exit the cohort at this time. We do this as we cannot determine what happened to the person during the break in the drug exposure. We can also set a criteria on the persistence window to specify an allowable gap between drug exposures. In this case, our experts leading this study concluded that a maximum of 30 days between exposure records is allowable when inferring the era of persistence exposure.
 
@@ -9785,7 +9851,7 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 \KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
 \NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Achilles"}\NormalTok{)}
 \NormalTok{devtools}\OperatorTok{:}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/DataQualityDashboard"}\NormalTok{)}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{)}
+\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
