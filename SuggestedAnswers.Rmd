@@ -23,16 +23,16 @@ Column name|Value|Explanation
 |BIRTH_DATETIME|1974-08-04 00:00:00|When the time is not known midnight is used.|
 |DEATH_DATETIME|NULL||
 |RACE_CONCEPT_ID|8516|The concept ID for black or African American is [8516](http://athena.ohdsi.org/search-terms/terms/8516).|
-|ETHNICITY_CONCEPT_ID|38003564| [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
+|ETHNICITY_ CONCEPT_ID|38003564| [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
 |LOCATION_ID||His address is not known.|
 |PROVIDER_ID||His primary care Provider is not known.|
 |CARE_SITE||His primary Care Site is not known.|
-|PERSON_SOURCE_VALUE|NULL|Not provided.|
-|GENDER_SOURCE_VALUE|Man|The text used in the description.|
+|PERSON_SOURCE_ VALUE|NULL|Not provided.|
+|GENDER_SOURCE_ VALUE|Man|The text used in the description.|
 |GENDER_SOURCE_ CONCEPT_ID|0||
-|RACE_SOURCE_VALUE|African American|The text used in the description.|
-|RACE_SOURCE_CONCEPT_ID|0||
-|ETHNICITY_SOURCE_VALUE|NULL||
+|RACE_SOURCE_ VALUE|African American|The text used in the description.|
+|RACE_SOURCE_ CONCEPT_ID|0||
+|ETHNICITY_SOURCE_ VALUE|NULL||
 |ETHNICITY_SOURCE_ CONCEPT_ID|0||
 
 #### Exercise \@ref(exr:exerciseJohnOp) {-}
@@ -42,12 +42,12 @@ Based on the description in the exercise, John's record should look like Table \
 Table: (\#tab:johnOp) The OBSERVATION_PERIOD table.
 
 Column name|Value|Explanation
-:---------------------|:-----------|:--------------------------------------
-|OBSERVATION_PERIOD_ID|2|A unique integer.|
+:----------------------|:----------|:--------------------------------------
+|OBSERVATION_ PERIOD_ID|2|A unique integer.|
 |PERSON_ID|2|This is a foreign key to John's record in the PERSON table.|
-|OBSERVATION_PERIOD_START_DATE|2015-01-01|The date of enrollment.|
-|OBSERVATION_PERIOD_END_DATE|2019-07-01|No data can be expected after the data extraction date.|
-|PERIOD_TYPE_CONCEPT_ID|44814722| [44814724](http://athena.ohdsi.org/search-terms/terms/44814722) refers to "Period while enrolled in insurance".|
+|OBSERVATION_PERIOD_ START_DATE|2015-01-01|The date of enrollment.|
+|OBSERVATION_PERIOD_ END_DATE|2019-07-01|No data can be expected after the data extraction date.|
+|PERIOD_TYPE_ CONCEPT_ID|44814722| [44814724](http://athena.ohdsi.org/search-terms/terms/44814722) refers to "Period while enrolled in insurance".|
 
 #### Exercise \@ref(exr:exerciseJohnDrug) {-}
 
@@ -60,12 +60,12 @@ Column name|Value|Explanation
 |DRUG_EXPOSURE_ID|1001|Some unique integer|
 |PERSON_ID|2|This is a foreign key to John's record in the PERSON table.|
 |DRUG_CONCEPT_ID|19078461|The provided NDC code maps to Standard Concept [19078461](http://athena.ohdsi.org/search-terms/terms/19078461).|
-|DRUG_EXPOSURE_START_DATE|2019-05-01|The start date of the exposure to the drug.|
+|DRUG_EXPOSURE_ START_DATE|2019-05-01|The start date of the exposure to the drug.|
 |DRUG_EXPOSURE_ START_DATETIME|2019-05-01 00:00:00|Midnight is used as the time is not known.|
-|DRUG_EXPOSURE_END_DATE|2019-05-31|Based on start date + days supply.|
+|DRUG_EXPOSURE_ END_DATE|2019-05-31|Based on start date + days supply.|
 |DRUG_EXPOSURE_ END_DATETIME|2019-05-31 00:00:00|Midnight is used as time is unknown.|
 |VERBATIM_END_DATE|NULL|Not provided.|
-|DRUG_TYPE_CONCEPT_ID|38000177| [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) indicates "Prescription written".|
+|DRUG_TYPE_ CONCEPT_ID|38000177| [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) indicates "Prescription written".|
 |STOP_REASON|NULL||
 |REFILLS|NULL||
 |QUANTITY|NULL|Not provided.|
@@ -74,11 +74,11 @@ Column name|Value|Explanation
 |ROUTE_CONCEPT_ID|4132161| [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) indicates "Oral".|
 |LOT_NUMBER|NULL|Not provided.|
 |PROVIDER_ID|NULL|Not provided.|
-|VISIT_OCCURRENCE_ID|NULL|No information on the visit was provided..|
+|VISIT_OCCURRENCE_ ID|NULL|No information on the visit was provided..|
 |VISIT_DETAIL_ID|NULL||
-|DRUG_SOURCE_VALUE|76168009520|This is provided NDC code.|
-|DRUG_SOURCE_CONCEPT_ID|583945| [583945](http://athena.ohdsi.org/search-terms/terms/750264) represents the drug source value (NDC code "76168009520").|
-|ROUTE_SOURCE_VALUE|NULL||
+|DRUG_SOURCE_ VALUE|76168009520|This is provided NDC code.|
+|DRUG_SOURCE_ CONCEPT_ID|583945| [583945](http://athena.ohdsi.org/search-terms/terms/750264) represents the drug source value (NDC code "76168009520").|
+|ROUTE_SOURCE_ VALUE|NULL||
 
 #### Exercise \@ref(exr:exerciseGiBleedRecords) {-}
 
@@ -95,7 +95,7 @@ result <- renderTranslateQuerySql(connection, sql, cdm = "main")
 head(result)
 ```
 ```{r echo=FALSE,message=FALSE,eval=TRUE}
-cat(" CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
+cat("  CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
 1                    4657       273               192671 ...
 2                    1021        61               192671 ...
 3                    5978       351               192671 ...
@@ -147,16 +147,16 @@ YEAR_OF_BIRTH | NULL | If we do not know the month or day of birth, we do not gu
 MONTH_OF_BIRTH | NULL | 
 DAY_OF_BIRTH | NULL | 
 RACE_CONCEPT_ID | 0 | The race is WHITE which should be mapped to 8527.
-ETHNICITY_CONCEPT_ID | 8527 | No ethnicity was provided, this should be mapped to 0.
-PERSON_SOURCE_VALUE | A123B456 | 
-GENDER_SOURCE_VALUE | F | 
+ETHNICITY_CONCEPT_ ID | 8527 | No ethnicity was provided, this should be mapped to 0.
+PERSON_SOURCE_ VALUE | A123B456 | 
+GENDER_SOURCE_ VALUE | F | 
 RACE_SOURCE_VALUE | WHITE | 
-ETHNICITY_SOURCE_VALUE | NONE PROVIDED | 
+ETHNICITY_SOURCE_ VALUE | NONE PROVIDED | 
 
 #### Exercise \@ref(exr:exerciseEtl3) {-}
 
 Column | Value
-:---------------- |:----------- 
+:------------------------ |:------------- 
 VISIT_OCCURRENCE_ID | 1
 PERSON_ID | 11
 VISIT_START_DATE | 2004-09-26
@@ -712,7 +712,7 @@ In this case we have lost a few people by removing those that had the outcome pr
 
 #### Exercise \@ref(exr:exercisePlp3) {-}
 
-We run a LASSO model by first creating a model settings object using the `setLassoLogisticRegression` function, and then calling the `runPlp` function. In this case we do a person split, training the model on 75% of the data and evaluating on 25% of the data:
+We run a LASSO model by first creating a model settings object, and then calling the `runPlp` function. In this case we do a person split, training the model on 75% of the data and evaluating on 25% of the data:
 
 ```{r eval=FALSE}
 lassoModel <- setLassoLogisticRegression(seed = 0)
@@ -770,7 +770,7 @@ DataQualityDashboard::executeDqChecks(
   cdmDatabaseSchema = "main", 
   resultsDatabaseSchema = "main",
   cdmSourceName = "Eunomia",
-  outputFolder = "C:/dataQualityExample") #or your folder of choice
+  outputFolder = "C:/dataQualityExample") 
 ```
 
 #### Exercise \@ref(exr:exerciseViewDQD) {-}
@@ -779,5 +779,5 @@ To view the list of data quality checks:
 
 ```{r eval=FALSE}
 DataQualityDashboard::viewDqDashboard(
-  "C:/dataQualityExample/Eunomia/results_Eunomia.json") #or your folder of choice
+  "C:/dataQualityExample/Eunomia/results_Eunomia.json") 
 ```
