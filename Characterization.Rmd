@@ -1,6 +1,6 @@
 # Characterization {#Characterization}
 
-*Chapter leads: Anthony G. Sena, Daniel Prieto-Alhambra*
+*Chapter leads: Anthony Sena & Daniel Prieto-Alhambra*
 
 Observational healthcare databases provide a valuable resource to understand variations in populations based on a host of characteristics. Characterizing populations through the use of descriptive statistics is an important first step in generating hypotheses about the determinants of health and disease. In this chapter we cover methods for characterization:
 
@@ -22,7 +22,7 @@ Before we can answer any characterization question about a population of interes
 * How long are persons in this database observed for?
 * What is the proportion of persons having a {treatment, condition, procedure, etc} recorded/prescribed over time?
 
-These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \@ref(DataQuality) goes into further detail on data quality. \index{characterization!database Level}
+These database-level descriptive statistics also help a researcher to understand what data may be missing in a database. Chapter \@ref(DataQuality) goes into further detail on data quality. \index{characterization!database level}
 
 ## Cohort characterization
 
@@ -48,33 +48,33 @@ In classic DUS terminology, treatment pathway analyses include some population-l
 
 ## Incidence
 
-Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk. Figure \@ref(fig:incidenceTimeline) aims to show the components of an incidence calculation for a single person: \index{incidence}
+Incidence rates and proportions are statistics that are used in public health to assess the occurrence of a new outcome in a population during a time-at-risk (TAR). Figure \@ref(fig:incidenceTimeline) aims to show the components of an incidence calculation for a single person: \index{incidence}
 
 ```{r incidenceTimeline, fig.cap='Person-level view of incidence calculation components',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Characterization/incidenceTimeline.png")
 ```
 
-In figure \@ref(fig:incidenceTimeline), a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the time-at-risk, we count that as an incidence of the outcome. 
+In figure \@ref(fig:incidenceTimeline), a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the TAR, we count that as an incidence of the outcome. 
 
 There are two metrics for calculating incidence:
 
-\begin{equation} 
-Incidence\;Proportion = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{\#\;persons\;in\;the\;cohort\;with\;time\;at\;risk}
-\end{equation} 
+$$ 
+Incidence\;Proportion = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{\#\;persons\;in\;cohort\;with\;TAR}
+$$
 
-An incidence propoprtion provides a mesure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a defined timeframe.\index{incidence!proportion}
+An incidence proportion provides a measure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a defined timeframe.\index{incidence!proportion}
 
-\begin{equation} 
-Incidence\;Rate = \frac{\#\;persons\;in\;the\;cohort\;with\;new\;outcome\;during\;time\;at\;risk}{person\;time\;at\;risk\;contributed\;by\;persons\;in\;the\;cohort}
-\end{equation} 
+$$
+Incidence\;Rate = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{person\;time\;at\;risk\;contributed\;by\;persons\;in\;cohort}
+$$
 
-An incidence rate is a mesure of the number of new outcomes during the cumulative time-at-risk for the population. When a person experiences the outcome in the time-at-risk, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative time-at-risk is referred to as **person-time** and is expressed in days, months or years.\index{incidence!rate} \index{person-time}
+An incidence rate is a mesure of the number of new outcomes during the cumulative TAR for the population. When a person experiences the outcome in the TAR, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative TAR is referred to as **person-time** and is expressed in days, months or years.\index{incidence!rate} \index{person-time}
 
 When calculated for therapies, incidence proportions and incidence rates of use of a given therapy are classic population-level DUS.
 
 ## Characterizing hypertensive persons
 
-Per the World Health Organization’s (WHO) global brief on hypertension [@WHOHypertension], there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. The WHO brief provides an overview of hypertension and characterizes the burden ofthe diesease across different countries. The WHO provides descriptive statistics around hypertension for geographic regions, socio-economic class and gender. 
+Per the World Health Organization’s (WHO) global brief on hypertension [@WHOHypertension], there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. The WHO brief provides an overview of hypertension and characterizes the burden of the disease across different countries. The WHO provides descriptive statistics around hypertension for geographic regions, socio-economic class and gender. 
 
 Observational data sources provide a way to characterize hypertensive populations as was done by the WHO. In the subsequent sections of this chapter, we’ll explore the ways that we make use of ATLAS and R to explore a database to understand its composition for studying hypertensive populations. Then, we will use these same tools to describe the natural history and treatment patterns of hypertensive populations.
 
@@ -108,7 +108,7 @@ Here we demonstrate how to use ATLAS to perform large-scale cohort characterizat
 
 A characterization analysis requires at least one cohort and at least one feature to characterize. For this example, we will use two cohorts. The first cohort will define persons initiating a treatment for hypertension as their index date with at least one diagnosis of hypertension in the year prior. We will also require that persons in this cohort have at least one year of observation after initiating the hypertensive drug (Appendix \@ref(HTN1yrFO)). The second cohort is identical to the first cohort described with a requirement having at least three years of observation instead of one (Appendix \@ref(HTN3yrFO)).
 
-#### Cohort definitions
+#### Cohort definitions {-}
 
 ```{r atlasCharacterizationCohortSelection, fig.cap='Characterization design tab - cohort definition selection',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Characterization/atlasCharacterizationCohortSelection.png")
@@ -116,7 +116,7 @@ knitr::include_graphics("images/Characterization/atlasCharacterizationCohortSele
 
 We assume the cohorts have already been created in ATLAS as described in Chapter \@ref(Cohorts). Click on ![](images/Characterization/atlasImportButton.png) and select the cohorts as shown in figure \@ref(fig:atlasCharacterizationCohortSelection). Next, we’ll define the features to use for characterizing these two cohorts.
 
-#### Feature Selection
+#### Feature Selection {-}
 
 ATLAS comes with nearly 100 preset feature analyses that are used to perform characterization across the clinical domains modeled in the OMOP CDM. Each of these preset feature analyses perform aggregation and summarization functions on clinical observations for the selected target cohorts. These calculations provide potentially thousands of features to describe the cohorts baseline and post-index characteristics. Under the hood, ATLAS is utilizing the OHDSI FeatureExtraction R package to perform the characterization for each cohort. We will cover the use of FeatureExtraction and R in more detail in the next section. \index{feature analyses}
 
@@ -133,7 +133,7 @@ The figure above shows the list of features selected along with a description of
 * **Medium term**: 180 days prior up to and including the cohort start date. 
 * **Short term**: 30 days prior up to and including the cohort start date. 
 
-#### Subgroup analysis
+#### Subgroup analysis {-}
 
 What if we were interested in creating different characteristics based on gender? We can use the “subgroup analyses” section to define new subgroups of interest to use in our characterization.
 
@@ -247,9 +247,10 @@ The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbT
 The function `createCovariateSettings` allow the user to choose from a large set of predefined covariates. Type `?createCovariateSettings` to get an overview of the available options. For example: 
 
 ```{r tidy=FALSE,eval=FALSE}
-settings <- createCovariateSettings(useDemographicsGender = TRUE, 
-                                    useDemographicsAgeGroup = TRUE, 
-                                    useConditionOccurrenceAnyTimePrior = TRUE) 
+settings <- createCovariateSettings(
+  useDemographicsGender = TRUE, 
+  useDemographicsAgeGroup = TRUE, 
+  useConditionOccurrenceAnyTimePrior = TRUE) 
 ```
 
 This will create binary covariates for gender, age (in 5 year age groups), and each concept observed in the condition_occurrence table any time prior to (and including) the cohort start date. 
@@ -301,13 +302,14 @@ The following code block will generate aggregated statistics for a cohort:
 ```{r tidy=FALSE,eval=FALSE}
 covariateSettings <- createDefaultCovariateSettings() 
 
-covariateData2 <- getDbCovariateData(connectionDetails = connectionDetails, 
-                                    cdmDatabaseSchema = cdmDatabaseSchema, 
-                                    cohortDatabaseSchema = resultsDatabaseSchema, 
-                                    cohortTable = "cohorts_of_interest", 
-                                    cohortId = 1, 
-                                    covariateSettings = covariateSettings, 
-                                    aggregated = TRUE) 
+covariateData2 <- getDbCovariateData(
+  connectionDetails = connectionDetails, 
+  cdmDatabaseSchema = cdmDatabaseSchema, 
+  cohortDatabaseSchema = resultsDatabaseSchema, 
+  cohortTable = "cohorts_of_interest", 
+  cohortId = 1, 
+  covariateSettings = covariateSettings, 
+  aggregated = TRUE) 
 
 summary(covariateData2) 
 ```
@@ -393,7 +395,7 @@ Clicking on a section of the sunburst plot will display the path details on the 
 
 ## Incidence analysis in ATLAS
 
-In an incidence calculation, we describe: amongst the persons in the target cohort, who experienced the outcome cohort during the time at risk period. Here we will design an incidence analysis to characterize angioedema and acute myocardial infarction outcomes amongst new users of ACE inhibitors (ACEi) and Thiazides and thiazide-like diuretics (THZ). We will assess these outcomes during the time-at-risk that a person was exposed to the drug. Additionally, we will add an outcome of drug exposure to Angiotensin receptor blockers (ARBs) to measure the incidence of new use of ARBs during exposure to the target cohorts (ACEi and THZ). This outcome definition provides an understanding of how ARBs are utilized amongst the target populations.
+In an incidence calculation, we describe: amongst the persons in the target cohort, who experienced the outcome cohort during the time at risk period. Here we will design an incidence analysis to characterize angioedema and acute myocardial infarction outcomes amongst new users of ACE inhibitors (ACEi) and Thiazides and thiazide-like diuretics (THZ). We will assess these outcomes during the TAR that a person was exposed to the drug. Additionally, we will add an outcome of drug exposure to Angiotensin receptor blockers (ARBs) to measure the incidence of new use of ARBs during exposure to the target cohorts (ACEi and THZ). This outcome definition provides an understanding of how ARBs are utilized amongst the target populations.
 
 
 To start, click on ![](images/Characterization/atlasIncidenceMenuItem.png) in the left bar of ATLAS to create a new incidence analysis. Provide a descriptive name and press the save button ![](images/PopulationLevelEstimation/save.png). 
@@ -445,7 +447,7 @@ Select the target cohort of ACEi users and the Acute Myocardial Infarction (AMI)
 knitr::include_graphics("images/Characterization/atlasIncidenceResults.png")
 ```
 
-A summary for the database shows the total persons in the cohort that were observed during the time-at-risk along with the total number of cases. The proportion shows the number of cases per 1000 people. The time at risk, in years, is calculated for the target cohort. The incidence rate is expressed as the number of cases per 1000 person-years. 
+A summary for the database shows the total persons in the cohort that were observed during the TAR along with the total number of cases. The proportion shows the number of cases per 1000 people. The time at risk, in years, is calculated for the target cohort. The incidence rate is expressed as the number of cases per 1000 person-years. 
 
 We can also view the incidence metrics for the strata that we defined in the design. The same metrics mentioned above are calculated for each stratum. Additionally, a treemap visualization provides a representation of the proportion of each stratum represented by the boxed areas. The color represents the incidence rate as shown in the scale along the bottom.
 
@@ -460,22 +462,37 @@ As shown, the metrics calculated are the same but the interpretation is differen
 ## Summary
 
 ```{block2, type='rmdsummary'}
-- Characterization describes a cohort of interest during the time preceding the index date (**baseline**) and the time after index (**post-index**).
+- OHDSI offers tools to characterize an entire database, or a cohort of interest.
 
-- ATLAS' characterization module and the OHDSI Methods Library provide the capability to calculate baseline characteristics for multiple time windows.
+- Cohort characterization describes a cohort of interest during the time preceding the index date (**baseline**) and the time after index (**post-index**).
 
-- ATLAS' pathways and incidence rate modules provide descriptive statistics during the post-index time period.
+- ATLAS's characterization module and the OHDSI Methods Library provide the capability to calculate baseline characteristics for multiple time windows.
+
+- ATLAS's pathways and incidence rate modules provide descriptive statistics during the post-index time period.
 
 ```
 
 
 ## Exercises
 
-1. We would like to understand how hypertensive treatments are utilized in a real world setting. To start, we would like to understand the composition of data that a source has for a hypertensive medication such as Lisinopril. How would you use ATLAS data source module to find information on Lisinopril?
-2. In the chapter we characterized new users of any hypertensive medication and utilized the cohort pathways tool in ATLAS to find that ACE Inhibitors and thiazides were the most commonly used first-line drug therapy. To better understand the disease natural history of patients initiating ACE inhibitors and Thiazides, use ATLAS to construct a cohort characterization for these populations to understand their demographics, concomitant medications and comorbid conditions.
-3. How might we design a pathways analysis to characterize procedure sequences used to treat hypertension (i.e. cardiac bypass surgery, carotid artery surgery and dialysis)?
-4. Using the preceding conditions found in exercise #2, construct an incidence rate analysis to find the rate of an outcome in the ACEi and THZ populations. 
+#### Prerequisites {-}
 
-`**TODO: Define exercises using Eunomia.**`
+For the first exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
 
-`Per chapter 13: Note: The excercises still have to be defined. The idea is to require readers to define a study that estimates the effect of celecoxib on GI bleed, compared to diclofenac. For this they must use the Eunomia package, which is still under development.`
+```{exercise, exerciseCharacterization1}
+We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.
+
+```
+
+```{exercise, exerciseCharacterization2}
+We would like to better understand the disease natural history of celecoxib users. Create a simple cohort of new users of celecoxib using a 365-day washout period (see Chapter \@ref(Cohorts) for details on how to do this), and use ATLAS to create a characterization of this cohort, showing co-morbid conditions and drug-exposures.
+
+```
+
+```{exercise, exerciseCharacterization3}
+We are interested in understand how often gastrointestinal (GI) bleeds occur any time after people initiate celecoxib treatment. Create a cohort of GI bleed events, simply defined as any occurrence of concept [192671](http://athena.ohdsi.org/search-terms/terms/192671) ("Gastrointestinal hemorrhage") or any of its descendants. Compute the incidence rate of these GI events after celecoxib initiation, using the exposure cohort defined in the previous exercise.
+
+```
+
+Suggested answers can be found in Appendix \@ref(Characterizationanswers).
+

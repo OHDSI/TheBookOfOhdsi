@@ -121,45 +121,30 @@ renderTranslateExecuteSql(conn, sql,
 
 sql <- "
 INSERT INTO @cohort_db_schema.@cohort_table (
-  cohort_definition_id,
-  cohort_start_date,
-  cohort_end_date,
-  subject_id
+ cohort_definition_id,
+cohort_start_date,
+cohort_end_date,
+subject_id
 )
-SELECT 1 AS cohort_definition_id,
-  cohort_start_date,
-  cohort_end_date,
-  subject_id
+SELECT 2 AS cohort_definition_id,
+cohort_start_date,
+cohort_end_date,
+subject_id
 FROM (
-  SELECT drug_exposure_start_date AS cohort_start_date,
-    COALESCE(drug_exposure_end_date,
-             DATEADD(DAY, 1, drug_exposure_start_date)
-    ) AS cohort_end_date,
-    person_id AS subject_id
-  FROM (
-    SELECT drug_exposure_start_date,
-      drug_exposure_end_date,
-      person_id,
-      ROW_NUMBER() OVER (
-        PARTITION BY person_id
-  			ORDER BY drug_exposure_start_date
-      ) order_nr
-    FROM @cdm_db_schema.drug_exposure
-    INNER JOIN @cdm_db_schema.concept_ancestor
-      ON drug_concept_id = descendant_concept_id
-    WHERE ancestor_concept_id IN (1335471, 1340128, 1341927,
-      1363749, 1308216, 1310756, 1373225, 1331235, 1334456,
-      1342439) -- ACE inhibitors
-  ) ordered_exposures
-  WHERE order_nr = 1
-) first_exposure
-INNER JOIN @cdm_db_schema.observation_period
-  ON subject_id = person_id
-    AND observation_period_start_date < cohort_start_date
-    AND observation_period_end_date > cohort_start_date
-WHERE DATEDIFF(DAY,
-               observation_period_start_date,
-               cohort_start_date) >= 365;
+SELECT DISTINCT person_id AS subject_id,
+condition_start_date AS cohort_start_date,
+condition_end_date AS cohort_end_date
+FROM @cdm_db_schema.condition_occurrence
+INNER JOIN @cdm_db_schema.concept_ancestor
+ON condition_concept_id = descendant_concept_id
+WHERE ancestor_concept_id = 432791 -- Angioedema
+) distinct_occurrence
+INNER JOIN @cdm_db_schema.visit_occurrence
+ON subject_id = person_id
+AND visit_start_date <= cohort_start_date
+AND visit_end_date >= cohort_start_date
+WHERE visit_concept_id IN (262, 9203,
+9201) -- Inpatient or ER;
 "
 
 renderTranslateExecuteSql(conn, sql,

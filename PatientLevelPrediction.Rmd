@@ -128,11 +128,12 @@ Table: (\#tab:gbmParameters) Hyper-parameters for gradient boosting machines.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| mtry | Number of features in each tree | ? |
-| ntree | Number of trees | ? |
-| maxDepth | Max levels in a tree | ? |
-| minRows | Min data points in a node | ? |
-| balance | Should class sizes be balanced? | ? |
+| earlyStopRound | Stopping after rounds without improvement | 25 |
+| learningRate| The boosting learn rate | 0.005,0.01,0.1|
+| maxDepth | Max levels in a tree | 4,6,17 |
+| minRows | Min data points in a node | 2 |
+| ntrees | Number of trees |100,1000|
+
 
 ### Random forest
 
@@ -142,11 +143,10 @@ Table: (\#tab:randomForestParameters) Hyper-parameters for random forests.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| mtry | Number of features in each tree | ? |
-| ntree | Number of trees | ? |
-| maxDepth | Max levels in a tree | ? |
-| minRows | Min data points in a node | ? |
-| balance | Should class sizes be balanced? | ? |
+| maxDepth | Max levels in a tree | 4,10,17 |
+| mtries | Number of features in each tree | -1 = square root of total features,5,20 |
+| ntrees | Number of trees | 500 |
+
 
 ### K-nearest neighbors
 
@@ -156,8 +156,7 @@ Table: (\#tab:knnParameters) Hyper-parameters for K-nearest neighbors.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| k | Number of neighbors | ? |
-| weighted | Weight by inverse frequency? | ? |
+| k | Number of neighbors | 1000 |
 
 ### Naive Bayes
 
@@ -171,8 +170,8 @@ Table: (\#tab:adaBoostParameters) Hyper-parameters for AdaBoost.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| nEstimators | The maximum number of estimators at which boosting is terminated | ? |
-| learningRate | Learning rate shrinks the contribution of each classifier by learning_rate. There is a trade-off between learningRate and nEstimators | ? |
+| nEstimators | The maximum number of estimators at which boosting is terminated | 4 |
+| learningRate | Learning rate shrinks the contribution of each classifier by learning_rate. There is a trade-off between learningRate and nEstimators | 1 |
 
 ### Decision Tree
 
@@ -181,12 +180,13 @@ A decision tree is a classifier that partitions the variable space using individ
 Table: (\#tab:decisionTreeParameters) Hyper-parameters for decision trees.
 
 | Parameter| Description | Typical values |
-|:-------- |:----------- |:-------------- |
-| maxDepth | The maximum depth of the tree | ? |
-| minSamplesSplit | ? | ? |
-| minSamplesLeaf |?| ? |
-| minImpuritySplit | ? | ? |
-| classWeight | "Balance" or "None" | ? |
+|:-------- |:----------- |:-------------- |\
+| classWeight | "Balance" or "None" | None |
+| maxDepth | The maximum depth of the tree | 10 |
+| minImpuritySplit | Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf | 10^-7|
+| minSamplesLeaf | The minimum number of samples per leaf | 10 |
+| minSamplesSplit | The minimum samples per split | 2 |
+
 
 ### Multilayer Perceptron
 
@@ -196,8 +196,9 @@ Table: (\#tab:mpParameters) Hyper-parameters for Multilayer Perceptrons.
 
 | Parameter| Description | Typical values |
 |:-------- |:----------- |:-------------- |
-| size | The number of hidden nodes | ? |
-| alpha | The l2 regularization | ? |
+| alpha | The l2 regularization | 0.00001 |
+| size | The number of hidden nodes | 4 |
+
 
 ### Deep Learning
 
@@ -234,7 +235,7 @@ External validation aims to assess model performance on data from another databa
 
 ### Performance Metrics {#performance}
 
-**Threshold measures**
+#### Threshold measures {-}
 
 A prediction model assigns a value between 0 and 1 for each patient corresponding to the risk of the patient having the outcome during the time at risk. A value of 0 means 0% risk, a value of 0.5 means 50% risk and a value of 1 means 100% risk. Common metrics such as accuracy, sensitivity, specificity, positive predictive value can be calculated by first specifying a threshold that is used to classify patients as having the outcome or not during the time at risk. For example, given Table \@ref(tab:tabletheorytab), if we set the threshold as 0.5, patients 1, 3, 7 and 10 have a predicted risk greater than or equal to the threshold of 0.5 so they would be predicted to have the outcome. All other patients had a predicted risk less than 0.5, so they would be predicted to not have the outcome. \index{performance metrics} \index{accuracy} \index{sensitivity} \index{specificity} \index{positive predictive value}
 
@@ -264,19 +265,19 @@ The following threshold based metrics can be calculated:
 
 Note that these values can either decrease or increase if the threshold is lowered. Lowering the threshold of a classifier may increase the denominator by increasing the number of results returned. If the threshold was previously set too high, the new results may all be true positives, which will increase positive predictive value. If the previous threshold was about right or too low, further lowering the threshold will introduce false positives, decreasing positive predictive value. For sensitivity the denominator does not depend on the classifier threshold ($TP+FN$ is a constant). This means that lowering the classifier threshold may increase sensitivity by increasing the number of true positive results. It is also possible that lowering the threshold may leave sensitivity unchanged, while the positive predictive value fluctuates.
 
-**Discrimination**
+#### Discrimination {-}
 
 Discrimination is the ability to assign a higher risk to patients who will experience the outcome during the time at risk. The Receiver Operating Characteristics (ROC) curve is created by plotting 1 – specificity on the x-axis and sensitivity on the y-axis at all possible thresholds. An example ROC plot is presented later in this chapter in Figure \@ref(fig:shinyROC). The area under the receiver operating characteristic curve (AUC) gives an overall measure of discrimination where a value of 0.5 corresponds to randomly assigning the risk and a value of 1 means perfect discrimination. Most published prediction models obtain AUCs between 0.6-0.8. \index{AUC} \index{ROC} \index{discrimination}
 
 The AUC provides a way to determine how different the predicted risk distributions are between the patients who experience the outcome during the time at risk and those who do not. If the AUC is high, then the distributions will be mostly disjointed, whereas when there is a lot of overlap, the AUC will be closer to 0.5, as shown in Figure \@ref(fig:figuretheoryroctheory).
 
-```{r figuretheoryroctheory, fig.cap='How the ROC plots are linked to discrimination. If the two classes have similar distributions of prediced risk, the ROC will be close to the diagonal, with AUC close to 0.5.',echo=FALSE, out.width='100%'}
+```{r figuretheoryroctheory, fig.cap='How the ROC plots are linked to discrimination. If the two classes have similar distributions of predicted risk, the ROC will be close to the diagonal, with AUC close to 0.5.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/roctheory.png")
 ```
 
 For rare outcomes even a model with a high AUC may not be practical, because for every positive above a given threshold there could also be many negatives (i.e. the positive predictive value will be low). Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a high false positive rate may be unwanted. When the outcome is rare another measure known as the area under the precision-recall curve (AUPRC) is therefore recommended. The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. \index{area under the precision-recall curve} 
 
-**Calibration**
+#### Calibration {-}
 
 Calibration is the ability of the model to assign the correct risk. For example, if the model assigned one hundred patients a risk of 10% then ten of the patients should experience the outcome during the time at risk. If the model assigned 100 patients a risk of 80% then eighty of the patients should experience the outcome during the time at risk. The calibration is generally calculated by partitioning the patients into deciles based on the predicted risk and in each group calculating the mean predicted risk and the fraction of the patients who experienced the outcome during the time at risk. We then plot these ten points (predicted risk on the y-axis and observed risk on the x-axis) and see whether they fall on the x = y line, indicating the model is well calibrated. An example calibration plot is presented later in this chapter in Figure \@ref(fig:shinyCal). We also fit a linear model using the points to calculate the intercept (which should be close to zero) and the gradient (which should be close to one). If the gradient is greater than one then the model is assigning a higher risk than the true risk and if the gradient is less than one the model is assigning a lower risk than the true risk. Note that we also implemented Smooth Calibration Curves in our R-package to better capture the non-linear relationship between predicted and observed risk. \index{calibration}
 
@@ -349,7 +350,7 @@ knitr::include_graphics("images/PatientLevelPrediction/problemSettings.png")
 
 The analysis settings enable selection of the supervised learning algorithm, the covariates and population settings.
 
-**Model Settings**
+#### Model Settings {-}
 
 We can pick one or more supervised learning algorithms for model development. To add a supervised learning algorithms click on the "Add Model Settings" button. A dropdown containing all the models currently supported in the ATLAS interface will appear. We can select the supervised learning model we want to include in the study by clicking on the name in the dropdown menu. This will then show a view for that specific model, allowing the selection of the hyper-parameter values. If multiple values are provided, a grid search is performed across all possible combinations of values to select the optimal combination using cross-validation.
 
@@ -359,7 +360,7 @@ For our example we select gradient boosting machines, and set the hyper-paramete
 knitr::include_graphics("images/PatientLevelPrediction/gbmSettings.png")
 ```
 
-**Covariate Settings**
+#### Covariate Settings {-}
 
 We have defined a set of standard covariates that can be extracted from the observational data in the CDM format. In the covariate settings view, it is possible to select which of the standard covariates to include. We can define different types of covariate settings, and each model will be created separately with each specified covariate setting.
 
@@ -422,18 +423,18 @@ knitr::include_graphics("images/PatientLevelPrediction/covariateSettings4.png")
 The next option selects covariates corresponding to concept IDs in each domain for the various time intervals:
 
 - Condition: Construct covariates for each condition concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the condition occurrence table, the covariate value is 1, otherwise 0.
-- Condition Primary Inpatient: TODO
+- Condition Primary Inpatient: One binary covariate per condition observed as a primary diagnosis in an inpatient setting in the condition_occurrence table.
 - Drug: Construct covariates for each drug concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the drug exposure table, the covariate value is 1, otherwise 0.
 - Procedure: Construct covariates for each procedure concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the procedure occurrence table, the covariate value is 1, otherwise 0.
 - Measurement: Construct covariates for each measurement concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the measurement table, the covariate value is 1, otherwise 0.
 - Measurement Value: Construct covariates for each measurement concept ID with a value and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the measurement table, the covariate value is the measurement value, otherwise 0.
-- Measurement range group: TODO
+- Measurement range group: Binary covariates indicating whether measurements are below, within, or above normal range.
 - Observation: Construct covariates for each observation concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the observation table, the covariate value is 1, otherwise 0.
 - Device: Construct covariates for each device concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the device table, the covariate value is 1, otherwise 0.
 - Visit Count: Construct covariates for each visit and time interval selected and count the number of visits recorded during the time interval as the covariate value.
 - Visit Concept Count: Construct covariates for each visit, domain and time interval selected and count the number of records per domain recorded during the visit type and time interval as the covariate value. 
 
-The distinct count option counts the number of records per domain and time interval [TODO].
+The distinct count option counts the number of distinct concept IDs per domain and time interval.
 
 Once done, this section should look like Figure \@ref(fig:covariateSettings5).
 
@@ -447,7 +448,7 @@ The final option is whether to include commonly used risk scores as covariates. 
 knitr::include_graphics("images/PatientLevelPrediction/covariateSettings6.png")
 ```
 
-**Population Settings**
+#### Population Settings {-}
 
 The population settings is where addition inclusion criteria can be applied to the target population and is also where the time-at-risk is defined. To add a population setting into the study, click on the "Add Population Settings" button. This will open up the population setting view.
 
@@ -528,12 +529,7 @@ Some of the machine learning algorithms require additional software to be instal
 
 To use the study R package we recommend using R Studio. If you are running R Studio locally, unzip the file generated by ATLAS, and double click the .Rproj file to open it in R Studio. If you are running R Studio on an R studio server, click ![](images/PopulationLevelEstimation/upload.png) to upload and unzip the file, then click on the .Rproj file to open the project.
 
-TODO: full instructions for running the package should be in the package README, not in the book.
-
-After running the R package analysis we can view the results in an interactive shiny app by running:
-```{r tidy=FALSE,eval=FALSE}
-PatientLevelPrediction::viewMultiplePlp(outputFolder)
-```
+Once you have opened the project in R Studio, you can open the README file, and follow the instructions. Make sure to change all file paths to existing paths on your system.
 
 ## Implementing the study in R
 
@@ -581,15 +577,16 @@ data.frame(cohort_definition_id = c(1, 2),count = c(527616, 3201))
 Now we can tell [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) to extract all necessary data for our analysis. Covariates are extracted using the [`FeatureExtraction`](https://ohdsi.github.io/FeatureExtraction/) package. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
 
 ```{r tidy=FALSE,eval=FALSE}
-covSettings <- createCovariateSettings(useDemographicsGender = TRUE,
-                                       useDemographicsAge = TRUE,
-                                       useConditionGroupEraLongTerm = TRUE,
-                                       useConditionGroupEraAnyTimePrior = TRUE,
-                                       useDrugGroupEraLongTerm = TRUE,
-                                       useDrugGroupEraAnyTimePrior = TRUE,
-                                       useVisitConceptCountLongTerm = TRUE,
-                                       longTermStartDays = -365,
-                                       endDays = -1)
+covariateSettings <-
+  createCovariateSettings(useDemographicsGender = TRUE,
+                          useDemographicsAge = TRUE,
+                          useConditionGroupEraLongTerm = TRUE,
+                          useConditionGroupEraAnyTimePrior = TRUE,
+                          useDrugGroupEraLongTerm = TRUE,
+                          useDrugGroupEraAnyTimePrior = TRUE,
+                          useVisitConceptCountLongTerm = TRUE,
+                          longTermStartDays = -365,
+                          endDays = -1)
 ```
 
 The final step for extracting the data is to run the `getPlpData` function and input the connection details, the database schema where the cohorts are stored, the cohort definition IDs for the cohort and outcome, and the washout period which is the minimum number of days prior to cohort index date that the person must have been observed to be included into the data, and finally input the previously constructed covariate settings.
@@ -705,7 +702,7 @@ plotPlp(gbmResults, "plots")
 
 The plots are described in more detail in Section \@ref(performance).
 
-#### External validation
+### External validation
 
 We recommend to always perform external validation, i.e. apply the final model on as much new datasets as feasible and evaluate its performance. Here we assume the data extraction has already been performed on a second database and stored in the `newData` folder. We load the model we previously fitted from the `model` folder:
 
@@ -782,7 +779,9 @@ valResults <- externalValidatePlp(
 )
 ```
 
-## Single model viewer app
+## Results dissemination
+
+### Model performance
 
 Exploring the performance of a prediction model is easiest with the `viewPlp` function. This requires a results object as the input. If developing models in R we can use the result of `runPLp` as the input. If using the ATLAS-generated study package, then we need to load one of the models (in this example we will load Analysis_1): \index{model viewer app}
 
@@ -827,11 +826,11 @@ Finally, the attrition plot shows the loss of patients from the labelled data ba
 ```
 
 
-## Multiple model viewer app
+### Comparing models
 
 The study package as generated by ATLAS allows generating and evaluating many different prediction models for different prediction problems. Therefore, specifically for the output generated by the study package an additional Shiny app has been developed for viewing multiple models. To start this app, run `viewMultiplePlp(outputFolder)` where `outputFolder` is the path containing the analysis results as specified when running the `execute` command (and should for example contain a sub-folder named "Analysis_1").
 
-### Viewing the model summary and settings
+#### Viewing the model summary and settings {-}
 
 The interactive Shiny app will start at the summary page as shown in Figure \@ref(fig:multiShinySummary).
 
@@ -855,7 +854,7 @@ To explore a model click on the corresponding row, a selected row will be highli
 
 Similarly, we can explore the population and covariate settings used to generate the model in the other tabs.
 
-### Viewing model performance
+#### Viewing model performance {-}
 
 Once a model row has been selected we can also view the model performance. Click on ![](images/PatientLevelPrediction/performance.png) to open the threshold performance summary shown in Figure \@ref(fig:shinyPerformanceSum).
 
@@ -873,7 +872,7 @@ To look at the overall discrimination of the model click on the "Discrimination"
 
 Figure \@ref(fig:shinyPerformanceDist) shows the prediction and preference score distributions.
 
-```{r shinyPerformanceDist, fig.cap='The predicted risk distribtion for those with and without the outcome. The more these overlap the worse the discrimination',echo=FALSE, out.width='100%', fig.align='center'}
+```{r shinyPerformanceDist, fig.cap='The predicted risk distribution for those with and without the outcome. The more these overlap the worse the discrimination',echo=FALSE, out.width='100%', fig.align='center'}
  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceDist.png")
 ```
 
@@ -886,7 +885,7 @@ Finally, we can also inspect the calibration of the model by clicking on the "Ca
 We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the blue line is higher than the red line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.
 
 
-### Viewing the model
+#### Viewing the model {-}
 
 To inspect the final model, select the ![](images/PatientLevelPrediction/modelButton.png) option from the left hand menu. This will open a view containing plots for each variable in the model, shown in Figure \@ref(fig:shinyModelPlots), and a table summarizing all the candidate covariates, shown in Figure \@ref(fig:shinyModelTable). The variable plots are separated into binary variables and continuous variables. The x-axis is the prevalence/mean in patients without the outcome and the y-axis is the prevalence/mean in patients with the outcome. Therefore, any variable's dot falling above the diagonal is more common in patients with the outcome and any variable's dot falling below the diagonal is less common in patients with the outcome.
 
@@ -930,7 +929,6 @@ For more details see the help page of the function.
 
 ## Summary
 
-
 ```{block2, type='rmdsummary'}
 - Patient-level prediction aims to develop a model that predicts future events using data from the past.
 
@@ -944,15 +942,16 @@ For more details see the help page of the function.
 
 ```
 
+## Exercises
 
+#### Prerequisites {-}
 
-**Prerequisites**
-
-For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), and [Eunomia](https://ohdsi.github.io/Eunomia/) packages, which can be installed using:
+For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), [Eunomia](https://ohdsi.github.io/Eunomia/) and [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) packages, which can be installed using:
 
 ```{r eval=FALSE}
 install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
-devtools::install_github("ohdsi/Eunomia")
+devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+devtools::install_github("ohdsi/PatientLevelPrediction")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
@@ -961,60 +960,31 @@ The Eunomia package provides a simulated dataset in the CDM that will run inside
 connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 ```
 
-The CDM database schema is "main".
-
-*Problem Definition*
-
-In patients that started using NSAIDs for the first time, predict who will develop a GI Bleed in the next year.
-
-Find below the SQL code to generate the NSAID cohort cohort.
+The CDM database schema is "main". These exercises also make use of several cohorts. The `createCohorts` function in the Eunomia package will create these in the COHORT table:
 
 ```{r eval=FALSE}
-sqlNSAIDs <- "
-INSERT INTO @cohort_database_schema.@cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
-SELECT 1 AS cohort_definition_id,
-  person_id AS subject_id,
-  MIN(drug_exposure_start_date) AS cohort_start_date,
-  MIN(drug_exposure_end_date) AS cohort_end_date
-FROM @cdm_database_schema.drug_exposure
-INNER JOIN @cdm_database_schema.concept_ancestor
-  ON drug_concept_id = descendant_concept_id
-WHERE ancestor_concept_id IN (1118084, 1124300) -- NSAIDS
-GROUP BY person_id;"
+Eunomia::createCohorts(connectionDetails)
 ```
 
-And here SQL code to generate the GI Bleed cohort:
+#### Problem definition {-}
 
-```{r eval=FALSE}
-sql <- "
-INSERT INTO @cohort_database_schema.@cohort_table (cohort_definition_id, subject_id, cohort_start_date, cohort_end_date)
-SELECT 2 AS cohort_definition_id,
-  person_id AS subject_id,
-  MIN(condition_start_date) AS cohort_start_date,
-  MIN(condition_end_date) AS cohort_end_date
-FROM @cdm_database_schema.condition_occurrence
-INNER JOIN @cdm_database_schema.concept_ancestor
-  ON condition_concept_id = descendant_concept_id
-WHERE ancestor_concept_id = 192671 -- Gastrointestinal haemorrhage
-GROUP BY person_id;"
-```
+> In patients that started using NSAIDs for the first time, predict who will develop a gastrointestinal (GI) bleed in the next year.
 
+The NSAID new-user cohort has COHORT_DEFINITION_ID = 4. The GI bleed cohort has COHORT_DEFINITION_ID = 3.
 
-```{exercise, instantiate the cohorts}
-Create a cohort table and execute the queries against the CDM to instantiate the two cohorts. How many people are in these cohort?
+```{exercise, exercisePlp1}
+Using the PatientLevelPrediction R package, define the covariates you want to use for the prediction and extract the PLP data from the CDM. Create the summary of the PLP data.
 
 ```
 
-```{exercise, extract the data}
-Define the covariates you want to use for the prediction and extract the plp data from the CDM. Create the summary of the plp data.
+```{exercise, exercisePlp2}
+Revisit the design choices you have to make to define the final target population and specify these using the `createStudyPopulation` function. What will the effect of your choices be on the final size of the target population?
+
 ```
 
-```{exercise, specify the population settings}
-Revisit the design choices you have to make to define the final target population and specify these using the CreateStudyPopulation function. What will the effect of your choices be on the final size of the target population?
+```{exercise, exercisePlp3}
+Build a prediction model using LASSO and evaluate its performance using the Shiny application. How well is your model performing?
+  
 ```
 
-```{exercise, buildin and evaluating a prediction model}
-Build a prediction model using Lasso and evaluate its performance using the Shiny application. How well is your model performing?
-```
-
-TODO: Decide on providing answers.
+Suggested answers can be found in Appendix \@ref(Plpanswers).
