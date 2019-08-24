@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-08-23" />
+<meta name="date" content="2019-08-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -643,7 +643,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">16.2</span> Data quality in general</h2>
 <p>We can ask the question whether our data is fit for the general purpose of observational research. <span class="citation">Kahn et al. (<a href="#ref-kahn_harmonized_2016" role="doc-biblioref">2016</a>)</span> define such generic DQ as consisting of three components:</p>
 <ol style="list-style-type: decimal">
-<li><strong>Conformance</strong>: Do data values adhere to do specified standard and formats? Three sub-types are identified:
+<li><strong>Conformance</strong>: Do data values adhere to specified standards and formats? Three sub-types are identified:
 <ul>
 <li><strong>Value</strong>: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties?</li>
 <li><strong>Relational</strong>: Is the recorded data in agreement with specified relational constraints? For example, does the PROVIDER_ID in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?</li>
@@ -780,7 +780,7 @@ Figure 16.1: Unit testing an ETL (Extract-Transform-Load) process using the Rabb
 <h2><span class="header-section-number">16.3</span> Study-specific checks</h2>
 <p></p>
 <p>The chapter has so far focused on general DQ checks. Such checks should be executed prior to using the data for research. Since these checks are done regardless of the research question we recommend performing study-specific DQ assessments.</p>
-<p>Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specifies the length of exposure.</p>
+<p>Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specify the length of exposure.</p>
 <p>A standard assessment is to review the concepts that are most relevant for the study in ACHILLES, for example those specified in the study cohort definitions. Sudden changes over time in the rate with which a code is observed may hint at DQ problems. Some examples will be discussed later in this chapter.</p>
 <p>Another assessment is to review the prevalence and changes in prevalence over time of the resulting cohorts generated using the cohort definitions developed for the study, and see whether these agree with expectations based on external clinical knowledge. For example, exposure of a new drug should be absent before introduction to the market, and will likely increase over time after introduction. Similarly, the prevalence of outcomes should be in line with what is know of the prevalence of the condition in the population. If a study is executed across a network of databases, we can compare the prevalences of cohorts across databases. If a cohort is highly prevalent in one database, but is missing in another database, there might be a DQ issue. Note that such an assessment overlaps with the notion of <em>clinical validity</em>, as discussed in Chapter <a href="ClinicalValidity.html#ClinicalValidity">17</a>; We may find unexpected prevalences in some databases not because of DQ issues, but because our cohort definition is not truly capturing the health state we are interested in, or because these health state rightly vary over databases that capture different patient populations.</p>
 <div id="checking-mappings" class="section level3">
@@ -814,14 +814,14 @@ Figure 16.3: Example orphan source code.
 <span id="cb140-6"><a href="DataQuality.html#cb140-6"></a></span>
 <span id="cb140-7"><a href="DataQuality.html#cb140-7"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span></span>
 <span id="cb140-8"><a href="DataQuality.html#cb140-8"></a>cdmVersion &lt;-<span class="st"> &quot;5.3.0&quot;</span></span></code></pre></div>
-<p>The last two lines define the <code>cdmDbSchema</code> variable, as well as the CDM version. We will use these later to tell R where the data in CDM format live, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- "my_cdm_data.dbo"</code>.</p>
+<p>The last two lines define the <code>cdmDbSchema</code> variable, as well as the CDM version. We will use these later to tell R where the data in the CDM format live, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- "my_cdm_data.dbo"</code>.</p>
 <p>Next, we run ACHILLES:</p>
 <div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="DataQuality.html#cb141-1"></a>result &lt;-<span class="st"> </span><span class="kw">achilles</span>(connectionDetails,</span>
 <span id="cb141-2"><a href="DataQuality.html#cb141-2"></a>                   <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
 <span id="cb141-3"><a href="DataQuality.html#cb141-3"></a>                   <span class="dt">resultsDatabaseSchema =</span> cdmDbSchema,</span>
 <span id="cb141-4"><a href="DataQuality.html#cb141-4"></a>                   <span class="dt">sourceName =</span> <span class="st">&quot;My database&quot;</span>,</span>
 <span id="cb141-5"><a href="DataQuality.html#cb141-5"></a>                   <span class="dt">cdmVersion =</span> cdmVersion)</span></code></pre></div>
-<p>This function will create several tables in the <code>resultsDatabaseSchema</code>, which here we’ve set to the same database schema as the CDM data.</p>
+<p>This function will create several tables in the <code>resultsDatabaseSchema</code>, which we’ve set here to the same database schema as the CDM data.</p>
 <p>We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:</p>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="DataQuality.html#cb142-1"></a><span class="kw">exportToJson</span>(connectionDetails,</span>
 <span id="cb142-2"><a href="DataQuality.html#cb142-2"></a>             <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,</span>

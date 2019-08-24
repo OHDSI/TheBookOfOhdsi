@@ -36,7 +36,7 @@ Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not us
 
 We can ask the question whether our data is fit for the general purpose of observational research. @kahn_harmonized_2016 define such generic DQ as consisting of three components: 
 
-1. **Conformance**: Do data values adhere to do specified standard and formats? Three sub-types are identified:
+1. **Conformance**: Do data values adhere to specified standards and formats? Three sub-types are identified:
    - **Value**: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties? 
    - **Relational**: Is the recorded data in agreement with specified relational constraints? For example, does the PROVIDER_ID in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?
    - **Computation**: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?
@@ -138,7 +138,7 @@ The power of these unit tests is that we can easily rerun them any time the ETL 
 
 The chapter has so far focused on general DQ checks. Such checks should be executed prior to using the data for research. Since these checks are done regardless of the research question we recommend performing study-specific DQ assessments.
 
-Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specifies the length of exposure. 
+Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specify the length of exposure. 
 
 A standard assessment is to review the concepts that are most relevant for the study in ACHILLES, for example those specified in the study cohort definitions. Sudden changes over time in the rate with which a code is observed may hint at DQ problems. Some examples will be discussed later in this chapter.
 
@@ -183,7 +183,7 @@ cdmDbSchema <- "my_cdm_data"
 cdmVersion <- "5.3.0"
 ```
 
-The last two lines define the `cdmDbSchema` variable, as well as the CDM version. We will use these later to tell R where the data in CDM format live, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
+The last two lines define the `cdmDbSchema` variable, as well as the CDM version. We will use these later to tell R where the data in the CDM format live, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
 
 Next, we run ACHILLES:
 
@@ -197,7 +197,7 @@ result <- achilles(connectionDetails,
                    cdmVersion = cdmVersion)
 ```
 
-This function will create several tables in the `resultsDatabaseSchema`, which here we've set to the same database schema as the CDM data. 
+This function will create several tables in the `resultsDatabaseSchema`, which we've set here to the same database schema as the CDM data. 
 
 We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
 
@@ -292,7 +292,6 @@ We can open the output file in a web browser as shown in Figure \@ref(fig:source
 </div>
 
 Next, we can search for orphan source codes, that is source codes that do not map to standard concept codes. Here we look for the Standard Concept "Angioedema", and look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
-
 
 
 ```r
