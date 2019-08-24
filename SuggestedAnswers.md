@@ -306,52 +306,80 @@ We create initial event criteria encoding these requirements:
 
 When done, the cohort entry event section should look like Figure \@ref(fig:cohortsAtlasInitialEvents).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasInitialEvents.png" alt="Cohort entry event settings for new users of diclofenac" width="100%" />
-<p class="caption">(\#fig:cohortsAtlasInitialEvents)Cohort entry event settings for new users of diclofenac</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInitialEvents} 
+
+}
+
+\caption{Cohort entry event settings for new users of diclofenac}(\#fig:cohortsAtlasInitialEvents)
+\end{figure}
 
 The concept set expression for diclofenac should look like Figure \@ref(fig:cohortsAtlasConceptSet1), including the ingredient 'Diclofenac' and all of its descendant, thus including all drugs containing the ingredient diclofenac.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasConceptSet1.png" alt="Concept set expression for diclofenac." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasConceptSet1)Concept set expression for diclofenac.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet1} 
+
+}
+
+\caption{Concept set expression for diclofenac.}(\#fig:cohortsAtlasConceptSet1)
+\end{figure}
 
 Next, we require no prior exposure to any NSAID, as shown in Figure \@ref(fig:cohortsAtlasInclusion1). 
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasInclusion1.png" alt="Requiring no prior exposure to any NSAID." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasInclusion1)Requiring no prior exposure to any NSAID.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion1} 
+
+}
+
+\caption{Requiring no prior exposure to any NSAID.}(\#fig:cohortsAtlasInclusion1)
+\end{figure}
 
 The concept set expression for NSAIDs should look like Figure \@ref(fig:cohortsAtlasConceptSet2), including the NSAIDs class and all of its descendant, thus including all drugs containing any NSAID.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasConceptSet2.png" alt="Concept set expression for NSAIDs" width="100%" />
-<p class="caption">(\#fig:cohortsAtlasConceptSet2)Concept set expression for NSAIDs</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet2} 
+
+}
+
+\caption{Concept set expression for NSAIDs}(\#fig:cohortsAtlasConceptSet2)
+\end{figure}
 
 Additionally, we require no prior diagnosis of cancer, as shown in Figure \@ref(fig:cohortsAtlasInclusion2). 
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasInclusion2.png" alt="Requiring no prior cancer diagnosis." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasInclusion2)Requiring no prior cancer diagnosis.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasInclusion2} 
+
+}
+
+\caption{Requiring no prior cancer diagnosis.}(\#fig:cohortsAtlasInclusion2)
+\end{figure}
 
 The concept set expression for "Broad malignancies" should look like Figure \@ref(fig:cohortsAtlasConceptSet3), including the high level concept "Malignant neoplastic disease" and all of its descendant.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasConceptSet3.png" alt="Concept set expression for broad malignancies" width="100%" />
-<p class="caption">(\#fig:cohortsAtlasConceptSet3)Concept set expression for broad malignancies</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasConceptSet3} 
+
+}
+
+\caption{Concept set expression for broad malignancies}(\#fig:cohortsAtlasConceptSet3)
+\end{figure}
 
 Finally, we define the cohort exit criteria as discontinuation of exposure (allowing for a 30-day gap), as shown in Figure \@ref(fig:cohortsAtlasExit). 
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/cohortsAtlasExit.png" alt="Setting the cohort exit date." width="100%" />
-<p class="caption">(\#fig:cohortsAtlasExit)Setting the cohort exit date.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/cohortsAtlasExit} 
+
+}
+
+\caption{Setting the cohort exit date.}(\#fig:cohortsAtlasExit)
+\end{figure}
 
 #### Exercise \@ref(exr:exerciseCohortsSql) {-}
 
@@ -424,78 +452,118 @@ renderTranslateExecuteSql(connection, sql)
 
 In ATLAS we click on ![](images/Characterization/atlasDataSourcesMenuItem.png) and select the data source we're interested in. We could select the Drug Exposure report, select the "Table" tab, and search for "celecoxib" as shown in Figure \@ref(fig:dataSourcesAtlas). Here we see that this particular database has exposures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/dataSourcesAtlas.png" alt="Data source characterization." width="100%" />
-<p class="caption">(\#fig:dataSourcesAtlas)Data source characterization.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/dataSourcesAtlas} 
+
+}
+
+\caption{Data source characterization.}(\#fig:dataSourcesAtlas)
+\end{figure}
 
 
 #### Exercise \@ref(exr:exerciseCharacterization2) {-}
 
 Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "Celecoxib new users") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "Celecoxib"). Open the  ![](images/Cohorts/search-2.png) module, search for "celecoxib", restrict the Class to "Ingredient" and Standard Concept to "Standard", and click the ![](images/Cohorts/shoppingcart.png) to add the concept to your concept set as show in Figure \@ref(fig:conceptSearchAtlas).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/conceptSearchAtlas.png" alt="Selecting the standard concept for the ingredient &quot;celecoxib&quot;." width="100%" />
-<p class="caption">(\#fig:conceptSearchAtlas)Selecting the standard concept for the ingredient "celecoxib".</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/conceptSearchAtlas} 
+
+}
+
+\caption{Selecting the standard concept for the ingredient "celecoxib".}(\#fig:conceptSearchAtlas)
+\end{figure}
 
 Click on the left arrow shown at the top left of Figure \@ref(fig:conceptSearchAtlas) to return to your cohort definition. Click on "+Add Initial Event" and then "Add Drug Era". Select your previously created concept set for the drug era criterion. Click on "Add attribute..." and select "Add First Exposure Criteria. Set the required continuous observation to at least 365 days before the index date. The result should look like Figure \@ref(fig:celecoxibCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/celecoxibCohortDefinition.png" alt="A simple celecoxib new user cohort definition." width="100%" />
-<p class="caption">(\#fig:celecoxibCohortDefinition)A simple celecoxib new user cohort definition.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/celecoxibCohortDefinition} 
+
+}
+
+\caption{A simple celecoxib new user cohort definition.}(\#fig:celecoxibCohortDefinition)
+\end{figure}
 
 Now that we have our cohort defined, we can characterize it. Click on ![](images/Characterization/atlasCharacterizationMenuItem.png) and then "New Characterization". Give you characterization a meaningful name (e.g. "Celecoxib new users characterization"). Under Cohort Definitions, click on "Import" and select your recently created cohort definition. Under "Feature Analyses", click on "Import" and select at least one condition analysis and one drug analysis, for example "Drug Group Era Any Time Prior" and "Condition Group Era Any Time Prior". Your characterization definition should now look like Figure \@ref(fig:celecoxibCharacterization). Make sure to save the characterization settings by clicking ![](images/Cohorts/save.png).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/celecoxibCharacterization.png" alt="Characterization settings." width="100%" />
-<p class="caption">(\#fig:celecoxibCharacterization)Characterization settings.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/celecoxibCharacterization} 
+
+}
+
+\caption{Characterization settings.}(\#fig:celecoxibCharacterization)
+\end{figure}
 
 Click on the "Exections" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/celecoxibCharacterizationResults.png" alt="Characterization settings." width="100%" />
-<p class="caption">(\#fig:celecoxibCharacterizationResults)Characterization settings.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/celecoxibCharacterizationResults} 
+
+}
+
+\caption{Characterization settings.}(\#fig:celecoxibCharacterizationResults)
+\end{figure}
 
 #### Exercise \@ref(exr:exerciseCharacterization3) {-}
 
 Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "GI bleed") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "GI bleed"). Open the  ![](images/Cohorts/search-2.png) module, search for "Gastrointestinal hemorrhage", and click the ![](images/Cohorts/shoppingcart.png) next to the top concept to add the concept to your concept set as show in Figure \@ref(fig:giBleedSearch). 
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/giBleedSearch.png" alt="Selecting the standard concept for &quot;Gastrointestinal hemorrhage&quot;." width="100%" />
-<p class="caption">(\#fig:giBleedSearch)Selecting the standard concept for "Gastrointestinal hemorrhage".</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/giBleedSearch} 
+
+}
+
+\caption{Selecting the standard concept for "Gastrointestinal hemorrhage".}(\#fig:giBleedSearch)
+\end{figure}
 
 Click on the left arrow shown at the top left of Figure \@ref(fig:giBleedSearch) to return to your cohort definition. Open the "Concept Sets" tab again, and check "Descendants" next to the GI hemorrhage concept, as shown in Figure \@ref(fig:giBleedDescendants).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/giBleedDescendants.png" alt="Adding all descendants to &quot;Gastrointestinal hemorrhage&quot;." width="100%" />
-<p class="caption">(\#fig:giBleedDescendants)Adding all descendants to "Gastrointestinal hemorrhage".</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/giBleedDescendants} 
+
+}
+
+\caption{Adding all descendants to "Gastrointestinal hemorrhage".}(\#fig:giBleedDescendants)
+\end{figure}
 
 Return to the "Definition" tab, click on "+Add Initial Event" and then "Add Condition Occurrence". Select your previously created concept set for the condition occurrence criterion. The result should look like Figure \@ref(fig:giBleedCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/giBleedCohortDefinition.png" alt="A simple gastrointestinal bleed cohort definition." width="100%" />
-<p class="caption">(\#fig:giBleedCohortDefinition)A simple gastrointestinal bleed cohort definition.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/giBleedCohortDefinition} 
+
+}
+
+\caption{A simple gastrointestinal bleed cohort definition.}(\#fig:giBleedCohortDefinition)
+\end{figure}
 
 Now that we have our cohort defined, we can compute the incidence rate. Click on ![](images/Characterization/atlasIncidenceMenuItem.png) and then "New Analysis". Give your analysis a meaningful name (e.g. "Incidence of GI bleed after celecoxib initiation"). Click "Add Target Cohort" and select our celecoxib new user cohort. Click on "Add Outcome Cohort" and add our new GI bleed cohort. Set the Time At Risk to end 1095 days after the start date. The analysis should now look like Figure \@ref(fig:irAnalysis). Make sure to save the analysis settings by clicking ![](images/Cohorts/save.png).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/irAnalysis.png" alt="A incidence rate analysis." width="100%" />
-<p class="caption">(\#fig:irAnalysis)A incidence rate analysis.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/irAnalysis} 
+
+}
+
+\caption{A incidence rate analysis.}(\#fig:irAnalysis)
+\end{figure}
 
 Click on the "Generation" tab, and click on "Generate". Select one of the data sources and click "Generate". When done, we can see the computed incidence rate and proportion, as shown in Figure \@ref(fig:irResults).
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/irResults.png" alt="Incidence results." width="100%" />
-<p class="caption">(\#fig:irResults)Incidence results.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/irResults} 
+
+}
+
+\caption{Incidence results.}(\#fig:irResults)
+\end{figure}
 
 
 
@@ -567,7 +635,8 @@ studyPop <- createStudyPopulation(
   riskWindowEnd = 99999)
 drawAttritionDiagram(studyPop)
 ```
-<img src="images/SuggestedAnswers/attrition.png" width="80%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.8\linewidth]{images/SuggestedAnswers/attrition} \end{center}
 
 We see that we did not lose any subjects compared to the original cohorts, probably because the restrictions used here were already applied in the cohort definitions.
 
@@ -605,7 +674,8 @@ ps <- createPs(cohortMethodData = cmData,
                population = studyPop)
 plotPs(ps, showCountsLabel = TRUE, showAucLabel = TRUE)
 ```
-<img src="images/SuggestedAnswers/ps.png" width="80%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.8\linewidth]{images/SuggestedAnswers/ps} \end{center}
 
 Note that this distribution looks a bit odd, with several spikes. This is because we are using a very small simulated dataset. Real preference score distributions tend to be much smoother.
 
@@ -626,7 +696,8 @@ plotCovariateBalanceScatterPlot(bal,
                                 beforeLabel = "Before stratification", 
                                 afterLabel = "After stratification")
 ```
-<img src="images/SuggestedAnswers/scatter.png" width="70%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.7\linewidth]{images/SuggestedAnswers/scatter} \end{center}
 
 We see that various baseline covariates showed a large (>0.3) standardized difference of means before stratification (x-axis). After stratification, balance is increased, with the maximum standardized difference <= 0.1.
 
@@ -766,10 +837,14 @@ viewPlp(lassoResults)
 
 This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
 
-<div class="figure" style="text-align: center">
-<img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
-<p class="caption">(\#fig:plpShiny)Patient-level prediction Shiny app.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SuggestedAnswers/plpShiny} 
+
+}
+
+\caption{Patient-level prediction Shiny app.}(\#fig:plpShiny)
+\end{figure}
 
 
 
