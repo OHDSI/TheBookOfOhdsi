@@ -19,7 +19,7 @@ In this chapter we first describe various population-level estimation study desi
 
 \index{cohort method}
 
-```{r cohortMethod, fig.cap='The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characteristcs to the outcome model. The characteristics included in the propensity model or outcome model are captured prior to treatment initiation.',echo=FALSE, out.width='90%', fig.align='center'}
+```{r cohortMethod, fig.cap='The new-user cohort design. Subjects observed to initiate the target treatment are compared to those initiating the comparator treatment. To adjust for differences between the two treatment groups several adjustment strategies can be used, such as stratification, matching, or weighting by the propensity score, or by adding baseline characteristics to the outcome model. The characteristics included in the propensity model or outcome model are captured prior to treatment initiation.',echo=FALSE, out.width='90%', fig.align='center'}
 knitr::include_graphics("images/PopulationLevelEstimation/cohortMethod.png")
 ```
 
@@ -35,19 +35,19 @@ Table: (\#tab:cmChoices) Main design choices in a comparative cohort design.
 | Time-at-risk      | At what time (often relative to the target and comparator cohort start and end dates) do we consider the risk of the outcome?  |
 | Model             | The model used to estimate the effect while adjusting for differences between the target and comparator  |
 
-The choice of model specifies, among others, the type of model. For example, we could use a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or is irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards between target and comparator. \index{logistic regression} \index{Poisson regression} \index{Cox regression} \index{Cox proportional hazards model|see {Cox regression}}
+The choice of model specifies, among others, the type of outcome model. For example, we could use a logistic regression, which evaluates whether or not the outcome has occurred, and produces an odds ratio. A logistic regression assumes the time-at-risk is of the same length for both target and comparator, or is irrelevant. Alternatively, we could choose a Poisson regression which estimates the incidence rate ratio, assuming a constant incidence rate. Often a Cox regression is used which considers time to first outcome to estimate the hazard ratio, assuming proportional hazards between target and comparator. \index{logistic regression} \index{Poisson regression} \index{Cox regression} \index{Cox proportional hazards model|see {Cox regression}}
 
 ```{block2, type='rmdimportant'}
 The new-user cohort method inherently is a method for comparative effect estimation, comparing one treatment to another. It is difficult to use this method to compare a treatment against no treatment, since it is hard to define a group of unexposed people that is comparable with the exposed group. If one wants to use this design for direct effect estimation, the preferred way is to select a comparator treatment for the same indication as the exposure of interest, where the comparator treatment is believed to have no effect on the outcome. Unfortunately, such a comparator might not always be available.
 ```
 
-A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is on average 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.  stroke) might then show substantial differences. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a “confounder.” One mechanism to deal with confounders in observational studies is through propensity scores. \index{confounder}
+A key concern is that the patients receiving the target treatment may systematically differ from those receiving the comparator treatment. For example, suppose the target cohort is on average 60 years old, whereas the comparator cohort is on average 40 years old. Comparing target to comparator with respect to any age-related health outcome (e.g.  stroke) might then show substantial differences between the cohorts. An uninformed investigator might reach the conclusion there is a causal association between the target treatment and stroke as compared to the comparator. More prosaically or commonplace, the investigator might conclude that there exist target patients that experienced stroke that would not have done so had they received the comparator. This conclusion could well be entirely incorrect! Maybe those target patients disproportionately experienced stroke simply because they are older; maybe the target patients that experienced stroke might well have done so even if they had received the comparator. In this context, age is a “confounder.” One mechanism to deal with confounders in observational studies is through propensity scores. \index{confounder}
 
 ### Propensity scores
 
 \index{propensity score}
 
-In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what’s more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially *cannot* differ systematically with respect to *any* patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure. \index{randomized trial}
+In a randomized trial, a (virtual) coin toss assigns patients to their respective groups. Thus, by design, the probability that a patient receives the target treatment as against the comparator treatment does not relate in any way to patient characteristics such as age. The coin has no knowledge of the patient, and, what’s more, we know with certainty the exact probability that a patient receives the target exposure. As a consequence, and with increasing confidence as the number of patients in the trial increases, the two groups of patients essentially *cannot* differ systematically with respect to *any* patient characteristic. This guaranteed balance holds true for characteristics that the trial measured (such as age) as well as characteristics that the trial failed to measure, such as patient genetic factors. \index{randomized trial}
 
 For a given patient, the *propensity score* (PS) is the probability that that patient received the target treatment as against the comparator. [@rosenbaum_1983] In a balanced two-arm randomized trial, the propensity score is 0.5 for every patient. In a propensity score-adjusted observational study, we estimate the probability of a patient receiving the target treatment based on what we can observe in the data on and before the time of treatment initiation (irrespective of the treatment they actually received).  This is a straightforward predictive modeling application; we fit a model (e.g. a logistic regression) that predicts whether a subject receives the target treatment, and use this model to generate predicted probabilities (the PS) for each subject. Unlike in a standard randomized trial, different patients will have different probabilities of receiving the target treatment. The PS can be used in several ways including matching target subjects to comparator subjects with similar PS, stratifying the study population based on the PS, or weighting subjects using Inverse Probability of Treatment Weighting (IPTW) derived from the PS. When matching we can select just one comparator subject for each target subject, or we can allow more than one comparator subject per target subject, a technique know as variable-ratio matching. [@rassen_2012] \index{propensity model} \index{propensity score!matching} \index{propensity score!stratification} \index{propensity score!weighting} \index{inverse probability of treatment weighting (IPTW)|see {propensity score!weighting}} \index{variable ratio matching}
 
@@ -57,10 +57,10 @@ Propensity scoring controls for measured confounders. In fact, if treatment assi
 
 ### Variable selection {#VariableSelection}
 
-In the past, PS were computed based on manually selected characteristics, and although the OHDSI tools can support such practices, we prefer using many generic characteristics (i.e. characteristics that are not selected based on the specific exposures and outcomes in the study). [@tian_2018] These characteristics include demographics, as well as all diagnoses, drug exposures, measurement, and medical procedures observed prior to and on the day of treatment initiation. A model typically involves 10,000 to 100,000 unique characteristics, which we fit using large-scale regularized regression [@suchard_2013] implemented in the [Cyclops](https://ohdsi.github.io/Cyclops/) package. In essence, we let the data appropriately weigh the characteristics.
+In the past, PS were computed based on manually selected characteristics, and although the OHDSI tools can support such practices, we prefer using many generic characteristics (i.e. characteristics that are not selected based on the specific exposures and outcomes in the study). [@tian_2018] These characteristics include demographics, as well as all diagnoses, drug exposures, measurement, and medical procedures observed prior to and on the day of treatment initiation. A model typically involves 10,000 to 100,000 unique characteristics, which we fit using large-scale regularized regression [@suchard_2013] implemented in the [Cyclops](https://ohdsi.github.io/Cyclops/) package. In essence, we let the data decide which characteristics are predictive of the treatment assignment and should be included in the model.
 
 ```{block2, type='rmdimportant'}
-We typically include the day of treatment initiation in the covariate capture window because many relevant data points such as the diagnosis leading to the treatment are recorded on that date. This does require us to explicitly exclude the target and comparator treatment from the set of covariates, because these are the things we are trying to predict.
+We typically include the day of treatment initiation in the covariate capture window because many relevant data points such as the diagnosis leading to the treatment are recorded on that date. On this day the target and comparator treatment themselves are also recorded, but these should *not* be included in the propensity model, because they are the very thing we are trying to predict. We must therefore explicitly exclude the target and comparator treatment from the set of covariates
 ```
 
 Some have argued that a data-driven approach to covariate selection that does not depend on clinical expertise to specify the "right" causal structure runs the risk of erroneously including so-called instrumental variables and colliders, thus increasing variance and potentially introducing bias. [@hernan_2002] However, these concerns are unlikely to have a large impact in real-world scenarios. [@schneeweiss_2018] Furthermore, in medicine the true causal structure is rarely known, and when different researchers are asked to identify the ‘right’ covariates to include for a specific research question, each researcher invariably comes up with a different list, thus making the process irreproducible. Most importantly, our diagnostics such as inspection of the propensity model, evaluating balance on all covariates, and including negative controls would identify most problems related to colliders and instrumental variables. \index{instrumental variables} \index{colliders}
@@ -223,7 +223,7 @@ The following will demonstrate how to apply our population-level estimation fram
 
 > What is the risk of angioedema in new users of ACE inhibitors compared to new users of thiazide and thiazide-like diuretics?
 
-> What is the risk of acute myocaridal infarction in new users of ACE inhibitors compared to new users of thiazide and thiazide-like diuretics?
+> What is the risk of acute myocardial infarction in new users of ACE inhibitors compared to new users of thiazide and thiazide-like diuretics?
 
 Since these are comparative effect estimation questions we will apply the cohort method as described in Section \@ref(CohortMethod).
 
@@ -336,7 +336,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/studyPopulation.png")
 
 #### Covariate settings {-}
 
-Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model (the Cox proporitional hazards model in this case). If we **click to view details** of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.
+Here we specify the covariates to construct. These covariates are typically used in the propensity model, but can also be included in the outcome model (the Cox proportional hazards model in this case). If we **click to view details** of our covariate settings, we can select which sets of covariates to construct. However, the recommendation is to use the default set, which constructs covariates for demographics, all conditions, drugs, procedures, measurements, etc.
 
 We can modify the set of covariates by specifying concepts to **include** and/or **exclude**. These settings are the same as the ones found in Section \@ref(ComparisonSettings) on comparison settings. The reason why they can be found in two places is because sometimes these settings are related to a specific comparison, as is the case here because we wish to exclude the drugs we are comparing, and sometimes the settings are related to a specific analysis. When executing an analysis for a specific comparison using specific analysis settings, the OHDSI tools will take the union of these sets.
 
@@ -392,7 +392,7 @@ First, we need to **specify the statistical model we will use to estimate the re
 
 We can also choose to **add the covariates to the outcome model** to adjust the analysis. This can be done in addition or instead of using a propensity model. However, whereas there usually is ample data to fit a propensity model, with many people in both treatment groups, there is typically very little data to fit the outcome model, with only few people having the outcome. We therefore recommend keeping the outcome model as simple as possible and not include additional covariates.
 
-Instead of stratifying or matching on the propensity score we can also choose to **use inverse probability of treatment weighting** (IPTW). If weighting is used it is often recommended to use some form of trimming to avoid extreme weights and therefore unstable estimates.
+Instead of stratifying or matching on the propensity score we can also choose to **use inverse probability of treatment weighting** (IPTW). 
 
 If we choose to include all covariates in the outcome model, it may make sense to use regularization when fitting the model if there are many covariates. Note that no regularization will be applied to the treatment variable to allow for unbiased estimation.
 
@@ -416,7 +416,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/ncSettings.png")
 
 #### Positive control synthesis {-}
 
-In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \@ref(MethodValidity). We can choose to **perform positive control synthesis**. If "yes", we must choose the **model type**, currently being "Poisson" and "surival". Since we use a survival (Cox) model in our estimation study, we should choose "survival". We define the time-at-risk model for the positive control synthesis to be the same as in our estimation settings, and similarly mimic the choices for the **minimum required continuous observation prior to exposure**, **should only the first exposure be included**, **should only the first outcome be included**, as well as **remove people with prior outcomes**. Figure \@ref(fig:outcomeModelSettings) shows the settings for the positive control synthesis.
+In addition to negative controls we can also include positive controls, which are exposure-outcome pairs where a causal effect is believed to exist with known effect size. For various reasons real positive controls are problematic, so instead we rely on synthetic positive controls, derived from negative controls as described in Chapter \@ref(MethodValidity). We can choose to **perform positive control synthesis**. If "yes", we must choose the **model type**, currently being "Poisson" and "survival". Since we use a survival (Cox) model in our estimation study, we should choose "survival". We define the time-at-risk model for the positive control synthesis to be the same as in our estimation settings, and similarly mimic the choices for the **minimum required continuous observation prior to exposure**, **should only the first exposure be included**, **should only the first outcome be included**, as well as **remove people with prior outcomes**. Figure \@ref(fig:outcomeModelSettings) shows the settings for the positive control synthesis.
 
 ```{r pcSynthesis, fig.cap='Negative control outcome cohort definition settings.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/PopulationLevelEstimation/pcSynthesis.png")
@@ -576,16 +576,16 @@ Note that we've set `firstExposureOnly` and `removeDuplicateSubjects` to FALSE, 
 getAttritionTable(studyPop)
 ```
 ```{r echo=FALSE,message=FALSE}
-cat("                   description targetPersons comparatorPersons	...
-1             Original cohorts         67212             35379	...
-2 Removed subs in both cohorts         67166             35333	...
-3             No prior outcome         67061             35238	...
-4 Have at least 1 days at risk         66780             35086	...")
+cat("                   description targetPersons comparatorPersons ...
+1             Original cohorts         67212             35379 ...
+2 Removed subs in both cohorts         67166             35333 ...
+3             No prior outcome         67061             35238 ...
+4 Have at least 1 days at risk         66780             35086 ...")
 ```
 
 ### Propensity scores
 
-We can fit a propensity model using the covariates constructed by the `getDbcohortMethodData()` function, and compute a PS for each person:
+We can fit a propensity model using the covariates constructed by `getDbcohortMethodData()`, and compute a PS for each person:
 
 ```{r tidy=TRUE,eval=FALSE}
 ps <- createPs(cohortMethodData = cmData, population = studyPop)
@@ -776,7 +776,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/ps.png")
 
 In general it is a good idea to also inspect the propensity model itself, and especially so if the model is very predictive. That way we may discover which variables are most predictive. Table \@ref(tab:psModel) shows the top predictors in our propensity model. Note that if a variable is too predictive, the CohortMethod package will throw an informative error rather than attempt to fit a model that is already known to be perfectly predictive. \index{propensity model!example}
 
-Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment.
+Table: (\#tab:psModel) Top 10 predictors in the propensity model for ACEi and THZ. Positive values mean subjects with the covariate are more likely to receive the target treatment. "(Intercept)" indicates the intercept of this logistic regression model.
 
 | Beta | Covariate
 | ----:|:----------------------------------------------------------------------------|
@@ -799,7 +799,7 @@ If a variable is found to be highly predictive, there are two possible conclusio
 
 The goal of using PS is to make the two groups comparable (or at least to select comparable groups). We must verify whether this is achieved, for example by checking whether the baseline covariates are indeed balanced after adjustment. We can use the `computeCovariateBalance` and `plotCovariateBalanceScatterPlot` functions to generate Figure \@ref(fig:balance). One rule-of-thumb to use is that no covariate may have an absolute standardized difference of means greater than 0.1 after propensity score adjustment. Here we see that although there was substantial imbalance before matching, after matching we meet this criterion. \index{covariate balance!example}
 
-```{r balance, fig.cap='Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each blue dot represents a covariate.',echo=FALSE, out.width='70%', fig.align='center'}
+```{r balance, fig.cap='Covariate balance, showing the absolute standardized difference of mean before and after propensity score matching. Each dot represents a covariate.',echo=FALSE, out.width='70%', fig.align='center'}
 knitr::include_graphics("images/PopulationLevelEstimation/balance.png")
 ```
 
@@ -821,7 +821,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/followUp.png")
 
 ### Kaplan-Meier
 
-One last check is to review the Kaplan-Meier plot, showing the survival over time in both cohorts. Using the `plotKaplanMeier` function we can create \@ref(fig:kmPlot), which we can check for example if our assumption of proportionality of hazards holds. The Kaplan-Meier plot automatically adjusts for stratification or weighting by PS. In this case, because variable-ratio matching is used, the survival curve for the comparator groups is adjusted to mimick what the curve had looked like for the target group had they been exposued to the comparator instead. \index{Kaplan-Meier plot} \index{survival plot|see {Kaplan-Meier plot}}
+One last check is to review the Kaplan-Meier plot, showing the survival over time in both cohorts. Using the `plotKaplanMeier` function we can create \@ref(fig:kmPlot), which we can check for example if our assumption of proportionality of hazards holds. The Kaplan-Meier plot automatically adjusts for stratification or weighting by PS. In this case, because variable-ratio matching is used, the survival curve for the comparator groups is adjusted to mimic what the curve had looked like for the target group had they been exposed to the comparator instead. \index{Kaplan-Meier plot} \index{survival plot|see {Kaplan-Meier plot}}
 
 ```{r kmPlot, fig.cap='Kaplan-Meier plot.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/PopulationLevelEstimation/kmPlot.png")
@@ -829,7 +829,7 @@ knitr::include_graphics("images/PopulationLevelEstimation/kmPlot.png")
 
 ### Effect size estimate
 
-We observe a hazard ratio of 4.32 (95% confidence interval: 2.45 - 8.08) for angioedema, which tells us that ACEi appears to increase the risk of angioedema compared to THZ. Similarly, we observe a hazard ratio of 1.13 (95% confidence interval: 0.59 - 2.18) for AMI, suggesting little or no effect for AMI. Our diagnostics, as reviewed earlier, give no reason for doubt. However, ultimately the quality of this evidence, and whether we choose to trust it, depends on many factors that are not covererd by the study diagnostics as described in Chapter \@ref(EvidenceQuality).
+We observe a hazard ratio of 4.32 (95% confidence interval: 2.45 - 8.08) for angioedema, which tells us that ACEi appears to increase the risk of angioedema compared to THZ. Similarly, we observe a hazard ratio of 1.13 (95% confidence interval: 0.59 - 2.18) for AMI, suggesting little or no effect for AMI. Our diagnostics, as reviewed earlier, give no reason for doubt. However, ultimately the quality of this evidence, and whether we choose to trust it, depends on many factors that are not covered by the study diagnostics as described in Chapter \@ref(EvidenceQuality).
 
 ## Summary
 
@@ -845,12 +845,65 @@ We observe a hazard ratio of 4.32 (95% confidence interval: 2.45 - 8.08) for ang
 ```
 
 
-## Excercises
+## Exercises
 
-Note: The exercises still have to be defined. The idea is to require readers to define a study that estimates the effect of celecoxib on GI bleed, compared to diclofenac. For this they must use the Eunomia package, which is still under development.
+#### Prerequisites {-}
 
+For these exercises we assume R, R-Studio and Java have been installed as described in Section \@ref(installR). Also required are the [SqlRender](https://ohdsi.github.io/SqlRender/), [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/), [Eunomia](https://ohdsi.github.io/Eunomia/) and [CohortMethod](https://ohdsi.github.io/CohortMethod/) packages, which can be installed using:
 
+```{r eval=FALSE}
+install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
+devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+devtools::install_github("ohdsi/CohortMethod")
+```
 
+The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
 
+```{r eval=FALSE}
+connectionDetails <- Eunomia::getEunomiaConnectionDetails()
+```
 
+The CDM database schema is "main". These exercises also make use of several cohorts. The `createCohorts` function in the Eunomia package will create these in the COHORT table:
+
+```{r eval=FALSE}
+Eunomia::createCohorts(connectionDetails)
+```
+
+#### Problem definition {-}
+
+> What is the risk of gastrointestinal (GI) bleed in new users of celecoxib compared to new users of diclofenac?
+
+The celecoxib new-user cohort has COHORT_DEFINITION_ID = 1. The diclofenac new-user cohort has COHORT_DEFINITION_ID = 2. The GI bleed cohort has COHORT_DEFINITION_ID = 3. The ingredient concept IDs for celecoxib and diclofenac are 1118084 and 1124300, respectively. Time-at-risk starts on day of treatment initiation, and stops at the end of observation (a so-called intent-to-treat analysis). 
+
+```{exercise, exercisePle1}
+Using the CohortMethod R package, use the default set of covariates and extract the CohortMethodData from the CDM. Create the summary of the CohortMethodData.
+
+```
+
+```{exercise, exercisePle2}
+Create a study population using the `createStudyPopulation` function, requiring a 180-day washout period, excluding people who had a prior outcome, and removing people that appear in both cohorts. Did we lose people?
+
+```
+
+```{exercise, exercisePle3}
+Fit a Cox proportional hazards model without using any adjustments. What could go wrong if you do this?
+  
+```
+
+```{exercise, exercisePle4}
+Fit a propensity model. Are the two groups comparable?
+  
+```
+
+```{exercise, exercisePle5}
+Perform PS stratification using 5 strata. Is covariate balance achieved?
+  
+```
+
+```{exercise, exercisePle6}
+Fit a Cox proportional hazards model using the PS strata. Why is the result different from the unadjusted model?
+  
+```
+
+Suggested answers can be found in Appendix \@ref(Pleanswers).
 

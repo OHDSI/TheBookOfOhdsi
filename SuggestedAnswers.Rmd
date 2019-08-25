@@ -2,6 +2,9 @@
 
 This Appendix contains suggested answers for the exercises in the book.
 
+
+
+
 ## The Common Data Model {#Cdmanswers}
 
 #### Exercise \@ref(exr:exerciseJohnPerson) {-}
@@ -20,16 +23,16 @@ Column name|Value|Explanation
 |BIRTH_DATETIME|1974-08-04 00:00:00|When the time is not known midnight is used.|
 |DEATH_DATETIME|NULL||
 |RACE_CONCEPT_ID|8516|The concept ID for black or African American is [8516](http://athena.ohdsi.org/search-terms/terms/8516).|
-|ETHNICITY_CONCEPT_ID|38003564| [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
+|ETHNICITY_ CONCEPT_ID|38003564| [38003564](http://athena.ohdsi.org/search-terms/terms/38003564) refers to "Not hispanic".|
 |LOCATION_ID||His address is not known.|
 |PROVIDER_ID||His primary care Provider is not known.|
 |CARE_SITE||His primary Care Site is not known.|
-|PERSON_SOURCE_VALUE|NULL|Not provided.|
-|GENDER_SOURCE_VALUE|Man|The text used in the description.|
+|PERSON_SOURCE_ VALUE|NULL|Not provided.|
+|GENDER_SOURCE_ VALUE|Man|The text used in the description.|
 |GENDER_SOURCE_ CONCEPT_ID|0||
-|RACE_SOURCE_VALUE|African American|The text used in the description.|
-|RACE_SOURCE_CONCEPT_ID|0||
-|ETHNICITY_SOURCE_VALUE|NULL||
+|RACE_SOURCE_ VALUE|African American|The text used in the description.|
+|RACE_SOURCE_ CONCEPT_ID|0||
+|ETHNICITY_SOURCE_ VALUE|NULL||
 |ETHNICITY_SOURCE_ CONCEPT_ID|0||
 
 #### Exercise \@ref(exr:exerciseJohnOp) {-}
@@ -39,12 +42,12 @@ Based on the description in the exercise, John's record should look like Table \
 Table: (\#tab:johnOp) The OBSERVATION_PERIOD table.
 
 Column name|Value|Explanation
-:---------------------|:-----------|:--------------------------------------
-|OBSERVATION_PERIOD_ID|2|A unique integer.|
+:----------------------|:----------|:--------------------------------------
+|OBSERVATION_ PERIOD_ID|2|A unique integer.|
 |PERSON_ID|2|This is a foreign key to John's record in the PERSON table.|
-|OBSERVATION_PERIOD_START_DATE|2015-01-01|The date of enrollment.|
-|OBSERVATION_PERIOD_END_DATE|2019-07-01|No data can be expected after the data extraction date.|
-|PERIOD_TYPE_CONCEPT_ID|44814722| [44814724](http://athena.ohdsi.org/search-terms/terms/44814722) refers to "Period while enrolled in insurance".|
+|OBSERVATION_PERIOD_ START_DATE|2015-01-01|The date of enrollment.|
+|OBSERVATION_PERIOD_ END_DATE|2019-07-01|No data can be expected after the data extraction date.|
+|PERIOD_TYPE_ CONCEPT_ID|44814722| [44814724](http://athena.ohdsi.org/search-terms/terms/44814722) refers to "Period while enrolled in insurance".|
 
 #### Exercise \@ref(exr:exerciseJohnDrug) {-}
 
@@ -57,25 +60,25 @@ Column name|Value|Explanation
 |DRUG_EXPOSURE_ID|1001|Some unique integer|
 |PERSON_ID|2|This is a foreign key to John's record in the PERSON table.|
 |DRUG_CONCEPT_ID|19078461|The provided NDC code maps to Standard Concept [19078461](http://athena.ohdsi.org/search-terms/terms/19078461).|
-|DRUG_EXPOSURE_START_DATE|2019-05-01|The start date of the exposure to the drug.|
+|DRUG_EXPOSURE_ START_DATE|2019-05-01|The start date of the exposure to the drug.|
 |DRUG_EXPOSURE_ START_DATETIME|2019-05-01 00:00:00|Midnight is used as the time is not known.|
-|DRUG_EXPOSURE_END_DATE|2019-05-31|Based on start date + days supply.|
+|DRUG_EXPOSURE_ END_DATE|2019-05-31|Based on start date + days supply.|
 |DRUG_EXPOSURE_ END_DATETIME|2019-05-31 00:00:00|Midnight is used as time is unknown.|
 |VERBATIM_END_DATE|NULL|Not provided.|
-|DRUG_TYPE_CONCEPT_ID|38000177| [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) indicates "Prescription written".|
+|DRUG_TYPE_ CONCEPT_ID|38000177| [38000177](http://athena.ohdsi.org/search-terms/terms/38000177) indicates "Prescription written".|
 |STOP_REASON|NULL||
 |REFILLS|NULL||
 |QUANTITY|NULL|Not provided.|
-|DAYS_SUPPLY|30|As descibed in the exercise.|
+|DAYS_SUPPLY|30|As described in the exercise.|
 |SIG|NULL|Not provided.|
 |ROUTE_CONCEPT_ID|4132161| [4132161](http://athena.ohdsi.org/search-terms/terms/4132161) indicates "Oral".|
 |LOT_NUMBER|NULL|Not provided.|
 |PROVIDER_ID|NULL|Not provided.|
-|VISIT_OCCURRENCE_ID|NULL|No information on the visit was provided..|
+|VISIT_OCCURRENCE_ ID|NULL|No information on the visit was provided..|
 |VISIT_DETAIL_ID|NULL||
-|DRUG_SOURCE_VALUE|76168009520|This is provided NDC code.|
-|DRUG_SOURCE_CONCEPT_ID|583945| [583945](http://athena.ohdsi.org/search-terms/terms/750264) represents the drug source value (NDC code "76168009520").|
-|ROUTE_SOURCE_VALUE|NULL||
+|DRUG_SOURCE_ VALUE|76168009520|This is provided NDC code.|
+|DRUG_SOURCE_ CONCEPT_ID|583945| [583945](http://athena.ohdsi.org/search-terms/terms/750264) represents the drug source value (NDC code "76168009520").|
+|ROUTE_SOURCE_ VALUE|NULL||
 
 #### Exercise \@ref(exr:exerciseGiBleedRecords) {-}
 
@@ -92,7 +95,7 @@ result <- renderTranslateQuerySql(connection, sql, cdm = "main")
 head(result)
 ```
 ```{r echo=FALSE,message=FALSE,eval=TRUE}
-cat(" CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
+cat("  CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
 1                    4657       273               192671 ...
 2                    1021        61               192671 ...
 3                    5978       351               192671 ...
@@ -122,6 +125,46 @@ cat("  OBSERVATION_PERIOD_ID PERSON_ID OBSERVATION_PERIOD_START_DATE ...
 ")
 ```
 
+
+
+
+## Extract Transform Load {#Etlanswers}
+
+#### Exercise \@ref(exr:exerciseEtl1) {-}
+
+A) Data experts and CDM experts together design the ETL
+C) People with medical knowledge create the code mappings
+B) A technical person implements the ETL
+D) All are involved in quality control 
+
+#### Exercise \@ref(exr:exerciseEtl2) {-}
+
+Column | Value | Answer
+:---------------- |:----------- |:-----------------------
+PERSON_ID | A123B456 | This column has a data type of integer so the source record value needs to be translated to a numeric value.
+GENDER_CONCEPT_ID | 8532 | 
+YEAR_OF_BIRTH | NULL | If we do not know the month or day of birth, we do not guess. A person can exist without a month or day of birth. If a person lacks a birth year that person should be dropped.  This person would have to be dropped due to now year of birth.
+MONTH_OF_BIRTH | NULL | 
+DAY_OF_BIRTH | NULL | 
+RACE_CONCEPT_ID | 0 | The race is WHITE which should be mapped to 8527.
+ETHNICITY_CONCEPT_ ID | 8527 | No ethnicity was provided, this should be mapped to 0.
+PERSON_SOURCE_ VALUE | A123B456 | 
+GENDER_SOURCE_ VALUE | F | 
+RACE_SOURCE_VALUE | WHITE | 
+ETHNICITY_SOURCE_ VALUE | NONE PROVIDED | 
+
+#### Exercise \@ref(exr:exerciseEtl3) {-}
+
+Column | Value
+:------------------------ |:------------- 
+VISIT_OCCURRENCE_ID | 1
+PERSON_ID | 11
+VISIT_START_DATE | 2004-09-26
+VISIT_END_DATE | 2004-09-30
+VISIT_CONCEPT_ID | 9201
+VISIT_SOURCE_VALUE | inpatient
+
+
 ## Data Analytics Use Cases {#UseCasesanswers}
 
 #### Exercise \@ref(exr:exerciseUseCases1) {-}
@@ -135,6 +178,10 @@ cat("  OBSERVATION_PERIOD_ID PERSON_ID OBSERVATION_PERIOD_START_DATE ...
 #### Exercise \@ref(exr:exerciseUseCases2) {-}
 
 Probably not. Defining a non-exposure cohort that is comparable to your diclofenac exposure cohort is often impossible, since people take diclofenac for a reason. This precludes a between-person comparison. It might possible to a within-person comparison, so for each patient in the diclofenac cohort identifying time when they are not exposed, but a similar problem occurs here: these times are likely incomparable, because there are reasons when at one time someone is exposed and at other times not.
+
+
+
+
 
 
 ## SQL and R {#SqlAndRanswers}
@@ -238,6 +285,10 @@ cat("  DIAGNOSE_COUNT
 Note that in this case it is essential to use the DRUG_ERA table instead of the DRUG_EXPOSURE table, because drug exposures with the same ingredient can overlap, but drug eras can. This could lead to double counting. For example, imagine a person received two drug drugs containing celecoxib at the same time. This would be recorded as two drug exposures, so any diagnoses occurring during the exposure would be counted twice. The two exposures will be merged into a single non-overlapping drug era.
 
 
+
+
+
+
 ## Defining Cohorts {#Cohortsanswers}
 
 #### Exercise \@ref(exr:exerciseCohortsAtlas) {-}
@@ -246,7 +297,7 @@ We create initial event criteria encoding these requirements:
 
 - New users of diclofenac
 - Ages 16 or older
-- With at least 365 days of continous observation prior to exposure
+- With at least 365 days of continuous observation prior to exposure
 
 When done, the cohort entry event section should look like Figure \@ref(fig:cohortsAtlasInitialEvents).
 
@@ -349,6 +400,241 @@ DROP TABLE #diagnoses;"
 renderTranslateExecuteSql(connection, sql)
 ```
 
+
+
+
+## Characterization {#Characterizationanswers}
+
+#### Exercise \@ref(exr:exerciseCharacterization1) {-}
+
+In ATLAS we click on ![](images/Characterization/atlasDataSourcesMenuItem.png) and select the data source we're interested in. We could select the Drug Exposure report, select the "Table" tab, and search for "celecoxib" as shown in Figure \@ref(fig:dataSourcesAtlas). Here we see that this particular database has exposures to various formulations of celecoxib. We could click on any of these drugs to get a more detailed view, for example showing age and gender distributions for these drugs.
+
+```{r dataSourcesAtlas, fig.cap='Data source characterization.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/dataSourcesAtlas.png")
+```
+
+
+#### Exercise \@ref(exr:exerciseCharacterization2) {-}
+
+Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "Celecoxib new users") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "Celecoxib"). Open the  ![](images/Cohorts/search-2.png) module, search for "celecoxib", restrict the Class to "Ingredient" and Standard Concept to "Standard", and click the ![](images/Cohorts/shoppingcart.png) to add the concept to your concept set as show in Figure \@ref(fig:conceptSearchAtlas).
+
+```{r conceptSearchAtlas, fig.cap='Selecting the standard concept for the ingredient "celecoxib".',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/conceptSearchAtlas.png")
+```
+
+Click on the left arrow shown at the top left of Figure \@ref(fig:conceptSearchAtlas) to return to your cohort definition. Click on "+Add Initial Event" and then "Add Drug Era". Select your previously created concept set for the drug era criterion. Click on "Add attribute..." and select "Add First Exposure Criteria. Set the required continuous observation to at least 365 days before the index date. The result should look like Figure \@ref(fig:celecoxibCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
+
+```{r celecoxibCohortDefinition, fig.cap='A simple celecoxib new user cohort definition.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/celecoxibCohortDefinition.png")
+```
+
+Now that we have our cohort defined, we can characterize it. Click on ![](images/Characterization/atlasCharacterizationMenuItem.png) and then "New Characterization". Give you characterization a meaningful name (e.g. "Celecoxib new users characterization"). Under Cohort Definitions, click on "Import" and select your recently created cohort definition. Under "Feature Analyses", click on "Import" and select at least one condition analysis and one drug analysis, for example "Drug Group Era Any Time Prior" and "Condition Group Era Any Time Prior". Your characterization definition should now look like Figure \@ref(fig:celecoxibCharacterization). Make sure to save the characterization settings by clicking ![](images/Cohorts/save.png).
+
+```{r celecoxibCharacterization, fig.cap='Characterization settings.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/celecoxibCharacterization.png")
+```
+
+Click on the "Exections" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
+
+```{r celecoxibCharacterizationResults, fig.cap='Characterization settings.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/celecoxibCharacterizationResults.png")
+```
+
+#### Exercise \@ref(exr:exerciseCharacterization3) {-}
+
+Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "GI bleed") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "GI bleed"). Open the  ![](images/Cohorts/search-2.png) module, search for "Gastrointestinal hemorrhage", and click the ![](images/Cohorts/shoppingcart.png) next to the top concept to add the concept to your concept set as show in Figure \@ref(fig:giBleedSearch). 
+
+```{r giBleedSearch, fig.cap='Selecting the standard concept for "Gastrointestinal hemorrhage".',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/giBleedSearch.png")
+```
+
+Click on the left arrow shown at the top left of Figure \@ref(fig:giBleedSearch) to return to your cohort definition. Open the "Concept Sets" tab again, and check "Descendants" next to the GI hemorrhage concept, as shown in Figure \@ref(fig:giBleedDescendants).
+
+```{r giBleedDescendants, fig.cap='Adding all descendants to "Gastrointestinal hemorrhage".',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/giBleedDescendants.png")
+```
+
+Return to the "Definition" tab, click on "+Add Initial Event" and then "Add Condition Occurrence". Select your previously created concept set for the condition occurrence criterion. The result should look like Figure \@ref(fig:giBleedCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
+
+```{r giBleedCohortDefinition, fig.cap='A simple gastrointestinal bleed cohort definition.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/giBleedCohortDefinition.png")
+```
+
+Now that we have our cohort defined, we can compute the incidence rate. Click on ![](images/Characterization/atlasIncidenceMenuItem.png) and then "New Analysis". Give your analysis a meaningful name (e.g. "Incidence of GI bleed after celecoxib initiation"). Click "Add Target Cohort" and select our celecoxib new user cohort. Click on "Add Outcome Cohort" and add our new GI bleed cohort. Set the Time At Risk to end 1095 days after the start date. The analysis should now look like Figure \@ref(fig:irAnalysis). Make sure to save the analysis settings by clicking ![](images/Cohorts/save.png).
+
+```{r irAnalysis, fig.cap='A incidence rate analysis.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/irAnalysis.png")
+```
+
+Click on the "Generation" tab, and click on "Generate". Select one of the data sources and click "Generate". When done, we can see the computed incidence rate and proportion, as shown in Figure \@ref(fig:irResults).
+
+```{r irResults, fig.cap='Incidence results.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/irResults.png")
+```
+
+
+
+
+
+
+## Population-Level Estimation {#Pleanswers}
+
+#### Exercise \@ref(exr:exercisePle1) {-}
+
+We specify the default set of covariates, but we must exclude the two drugs we're comparing, including all their descendants, because else our propensity model will become perfectly predictive:
+
+```{r eval=FALSE}
+library(CohortMethod)
+nsaids <- c(1118084, 1124300) # celecoxib, diclofenac
+covSettings <- createDefaultCovariateSettings(
+  excludedCovariateConceptIds = nsaids,
+  addDescendantsToExclude = TRUE)
+
+# Load data:
+cmData <- getDbCohortMethodData(
+  connectionDetails = connectionDetails,
+  cdmDatabaseSchema = "main",
+  targetId = 1,
+  comparatorId = 2,
+  outcomeIds = 3,
+  exposureDatabaseSchema = "main",
+  exposureTable = "cohort",
+  outcomeDatabaseSchema = "main",
+  outcomeTable = "cohort",
+  covariateSettings = covSettings)
+summary(cmData)
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("CohortMethodData object summary
+
+Treatment concept ID: 1
+Comparator concept ID: 2
+Outcome concept ID(s): 3
+
+Treated persons: 1800
+Comparator persons: 830
+
+Outcome counts:
+  Event count Person count
+3         479          479
+
+Covariates:
+Number of covariates: 389
+Number of non-zero covariate values: 26923
+")
+```
+
+#### Exercise \@ref(exr:exercisePle2) {-}
+
+We create the study population following the specifications, and output the attrition diagram:
+
+```{r eval=FALSE}
+studyPop <- createStudyPopulation(
+  cohortMethodData = cmData,
+  outcomeId = 3,
+  washoutPeriod = 180,
+  removeDuplicateSubjects = "remove all",
+  removeSubjectsWithPriorOutcome = TRUE,
+  riskWindowStart = 0,
+  startAnchor = "cohort start",
+  riskWindowEnd = 99999)
+drawAttritionDiagram(studyPop)
+```
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/attrition.png")
+```
+
+We see that we did not lose any subjects compared to the original cohorts, probably because the restrictions used here were already applied in the cohort definitions.
+
+#### Exercise \@ref(exr:exercisePle3) {-}
+
+We fit a simple outcome model using a Cox regression:
+
+```{r eval=FALSE}
+model <- fitOutcomeModel(population = studyPop,
+                         modelType = "cox")
+model
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("Model type: cox
+Stratified: FALSE
+Use covariates: FALSE
+Use inverse probability of treatment weighting: FALSE
+Status: OK
+
+          Estimate lower .95 upper .95   logRr seLogRr
+treatment  1.34612   1.10065   1.65741 0.29723  0.1044
+")
+```
+
+It is likely that celecoxib users are not exchangeable with diclofenac users, and that these baseline differences already lead to different risks of the outcome. If we do not adjust for these difference, like in this analysis, we are likely producing biased estimates.
+
+#### Exercise \@ref(exr:exercisePle4) {-}
+
+We fit a propensity model on our study population, using all covariates we extracted. We then show the preference score distribution:
+
+```{r eval=FALSE}
+ps <- createPs(cohortMethodData = cmData,
+               population = studyPop)
+plotPs(ps, showCountsLabel = TRUE, showAucLabel = TRUE)
+```
+```{r echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/ps.png")
+```
+
+Note that this distribution looks a bit odd, with several spikes. This is because we are using a very small simulated dataset. Real preference score distributions tend to be much smoother.
+
+The propensity model achieves an AUC of 063, suggested there are differences between target and comparator cohort. We see quite a lot overlap between the two groups suggesting PS adjustment can make them more comparable.
+
+
+#### Exercise \@ref(exr:exercisePle5) {-}
+
+We stratify the population based on the propensity scores, and compute the covariate balance before and after stratification:
+
+```{r eval=FALSE}
+strataPop <- stratifyByPs(ps, numberOfStrata = 5)
+bal <- computeCovariateBalance(strataPop, cmData)
+plotCovariateBalanceScatterPlot(bal, 
+                                showCovariateCountLabel = TRUE, 
+                                showMaxLabel = TRUE, 
+                                beforeLabel = "Before stratification", 
+                                afterLabel = "After stratification")
+```
+```{r echo=FALSE, out.width='70%', fig.align='center'}
+knitr::include_graphics("images/SuggestedAnswers/scatter.png")
+```
+
+We see that various baseline covariates showed a large (>0.3) standardized difference of means before stratification (x-axis). After stratification, balance is increased, with the maximum standardized difference <= 0.1.
+
+#### Exercise \@ref(exr:exercisePle6) {-}
+
+We fit a outcome model using a Cox regression, but stratify it by the PS strata:
+
+```{r eval=FALSE}
+adjModel <- fitOutcomeModel(population = strataPop,
+                         modelType = "cox",
+                         stratified = TRUE)
+adjModel
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("Model type: cox
+Stratified: TRUE
+Use covariates: FALSE
+Use inverse probability of treatment weighting: FALSE
+Status: OK
+
+          Estimate lower .95 upper .95   logRr seLogRr
+treatment  1.13211   0.92132   1.40008 0.12409  0.1068
+")
+```
+
+We see the adjusted estimate is lower than the unadjusted estimate, and that the 95% confidence interval now includes 1. This is because we are now adjusting for baseline differences between the two exposure groups, thus reducing bias.
+
+
+
+
+
+
 ## Patient-Level Prediction {#Plpanswers}
 
 #### Exercise \@ref(exr:exercisePlp1) {-}
@@ -426,7 +712,7 @@ In this case we have lost a few people by removing those that had the outcome pr
 
 #### Exercise \@ref(exr:exercisePlp3) {-}
 
-We run a LASSO model by first creating a model settings object using the `setLassoLogisticRegression` function, and then calling the `runPlp` function. In this case we do a person split, training the model on 75% of the data and evaluating on 25% of the data:
+We run a LASSO model by first creating a model settings object, and then calling the `runPlp` function. In this case we do a person split, training the model on 75% of the data and evaluating on 25% of the data:
 
 ```{r eval=FALSE}
 lassoModel <- setLassoLogisticRegression(seed = 0)
@@ -455,6 +741,9 @@ knitr::include_graphics("images/SuggestedAnswers/plpShiny.png")
 ```
 
 
+
+
+
 ## Data Quality {#DataQualityanswers}
 
 #### Exercise \@ref(exr:exerciseRunAchilles) {-}
@@ -471,12 +760,24 @@ result <- achilles(connectionDetails,
 
 ```
 
-#### Exercise \@ref(exr:exerciseViewHeel) {-}
+#### Exercise \@ref(exr:exerciseRunDQD) {-}
 
-To run extract the ACHILLES Heel issue list:
+To run the Data Quality Dashboard:
 
 ```{r eval=FALSE}
-heel <- fetchAchillesHeelResults(connectionDetails,
-                                 resultsDatabaseSchema = "main")
-View(heel)
+DataQualityDashboard::executeDqChecks(
+  connectionDetails, 
+  cdmDatabaseSchema = "main", 
+  resultsDatabaseSchema = "main",
+  cdmSourceName = "Eunomia",
+  outputFolder = "C:/dataQualityExample") 
+```
+
+#### Exercise \@ref(exr:exerciseViewDQD) {-}
+
+To view the list of data quality checks:
+
+```{r eval=FALSE}
+DataQualityDashboard::viewDqDashboard(
+  "C:/dataQualityExample/Eunomia/results_Eunomia.json") 
 ```

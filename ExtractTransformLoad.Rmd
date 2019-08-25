@@ -1,6 +1,6 @@
 # Extract Transform Load {#ExtractTransformLoad}
 
-*Chapter leads: Clair Blacketer & Erica A. Voss*
+*Chapter leads: Clair Blacketer & Erica Voss*
 
 ## Introduction
 
@@ -25,7 +25,7 @@ Two closely-integrated tools have been developed to support the ETL design proce
 
 To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the [White Rabbit](https://github.com/OHDSI/WhiteRabbit) tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the [OMOP CDM](https://github.com/OHDSI/CommonDataModel). White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub [^whiteRabbitGithubUrl]. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
-[^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit].
+[^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit.
 
 #### Scope and Purpose  {-}
 
@@ -44,7 +44,7 @@ The typical sequence for using the software to scan source data:
 
 After downloading and installing the White Rabbit application, the first thing you need to do is set a working folder. Any files that White Rabbit creates will be exported to this local folder. Use the "Pick Folder" button shown in Figure \@ref(fig:WhiteRabbitLocation) to navigate in your local environment where you would like the scan document to go. 
 
-```{r WhiteRabbitLocation, fig.cap='The "Pick Folder" button allows the specification of a working folder for the White Rabbit application.',echo=FALSE, out.width='100%'}
+```{r WhiteRabbitLocation, fig.cap='The "Pick Folder" button allows the specification of a working folder for the White Rabbit application.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/WhiteRabbitLocation.png")
 ```
 
@@ -56,7 +56,7 @@ White Rabbit supports delimited text files and various database platforms. Hover
 
 After connecting to a database, you can scan the tables contained therein. A scan generates a report containing information on the source data that can be used to help design the ETL. Using the Scan tab shown in Figure \@ref(fig:WhiteRabbitAddTables) you can either select individual tables in the selected source database by clicking on “Add” (Ctrl + mouse click), or automatically select all tables in the database by clicking on “Add all in DB”.
 
-```{r WhiteRabbitAddTables, fig.cap='White Rabbit Scan tab.', echo=FALSE, out.width='100%'}
+```{r WhiteRabbitAddTables, fig.cap='White Rabbit Scan tab.', echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/WhiteRabbitAddTables.png")
 ```
 
@@ -72,13 +72,13 @@ Once all settings are completed, press the “Scan tables” button. After the s
 
 Once the scan is complete, an Excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. Figure \@ref(fig:ScanOverviewTab). shows an example overview tab.
 
-```{r ScanOverviewTab, fig.cap="Example overview tab from a scan report.", echo=FALSE, out.width='100%'}
+```{r ScanOverviewTab, fig.cap="Example overview tab from a scan report.", echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/ScanOverviewTab.png")
 ```
 
 The tabs for each of the tables show each field, the values in each field, and the frequency of each value. Each source table column will generate two columns in the Excel. One column will list all distinct values that have a “Min cell count” greater than what was set at time of the scan. If a list of unique values was truncated, the last value in the list will be “List truncated”; this indicates that there are one or more additional unique source values that appear less than the number entered in the “Min cell count”. Next to each distinct value will be a second column that contains the frequency (the number of times that value occurs in the sample). These two columns (distinct values and frequency) will repeat for all the source columns in the table profiled in the workbook. 
 
-```{r scanSex, fig.cap="Example values for a single column.", echo=FALSE, out.width='30%'}
+```{r scanSex, fig.cap="Example values for a single column.", echo=FALSE, out.width='30%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/ScanSex.png")
 ```
 
@@ -112,7 +112,7 @@ Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are re
 
 Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clinical tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person’s patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.  
 
-```{r etlFlow, fig.cap="General flow of an ETL and which tables to map first.", echo=FALSE, out.width='100%'}
+```{r etlFlow, fig.cap="General flow of an ETL and which tables to map first.", echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/flowOfEtl.png")
 ```
 
@@ -122,7 +122,7 @@ It is often the case that, during CDM conversion, you will need to make provisio
 
 The Synthea data structure contains 20 columns in the patients table but not all were needed to populate the PERSON table, as seen in Figure \@ref(fig:syntheaPerson). This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver’s license number, and passport number.
 
-```{r syntheaPerson, fig.cap='Mapping of Synthea Patients table to CDM PERSON table.',echo=FALSE, out.width='100%'}
+```{r syntheaPerson, fig.cap='Mapping of Synthea Patients table to CDM PERSON table.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/syntheaPersonTable.png")
 ```
 
@@ -200,13 +200,13 @@ The typical sequence for using this software is:
 
 #### Importing Source Codes into Usagi {-}
 
-Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g. dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g. you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that. 
+Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g. dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g. you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that. 
 
 Note: source code extracts should be broken out by domain (i.e. drugs, procedures, conditions, observations) and not lumped into one large file.
 
 Source codes are loaded into Usagi from the File –> Import codes menu. From here an “Import codes …” will display as seen in Figure \@ref(fig:usagiImport). In this figure, the source code terms were in Dutch and were also translated into English. Usagi will leverage the English translations to map to the standard vocabulary.
 
-```{r usagiImport, fig.cap="Usagi source code input screen.", echo=FALSE, out.width='100%'}
+```{r usagiImport, fig.cap="Usagi source code input screen.", echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/usagiImport.png")
 ```
 
@@ -228,7 +228,7 @@ Once all your settings are finalized, click the “Import” button to import th
 
 Once you have imported your input file of source codes, the mapping process begins. In Figure \@ref(fig:usagiOverview), you see the Usagi screen is made up of 3 main sections: an overview table, the selected mapping section, and place to perform searches. Note that in any of the tables, you can right-click to select the columns that are shown or hidden to reduce the visual complexity.
 
-```{r usagiOverview, fig.cap="Usagi source code input screen.", echo=FALSE, out.width='100%'}
+```{r usagiOverview, fig.cap="Usagi source code input screen.", echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/usagiOverview.png")
 ```
 
@@ -254,7 +254,7 @@ When looking for appropriate concepts to map to, it is important to consider the
 
 
 
-```{r usagiConceptInfo, fig.cap="Usagi concept information panel.", echo=FALSE, out.width='100%'}
+```{r usagiConceptInfo, fig.cap="Usagi concept information panel.", echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/ExtractTransformLoad/usagiConceptInfo.png")
 ```
 
@@ -337,11 +337,11 @@ These are high-level ways to approach quality control from an ETL standpoint. Fo
 
 As more groups converted data to the CDM it became apparent that conventions needed to be specified. For example, what should the ETL do in a situation where a person record lacks a birth year? The goal of the CDM is to standardized healthcare data however if every group handles data specific scenarios differently it makes it more difficult to systematically use data across the network.  
 
-The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki [^cdmWikiUrl]. Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.  
+The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki [^cdmWikiUrl2]. Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.  
 
 While it will never be possible to document all possible data scenarios that exist and what to do when they occur, there is an OHDSI work group trying to document common scenarios. THEMIS[^themisUrl] is made up of individuals in the community who gather conventions, clarify them, share them with the community for comment, and then document finalized conventions in the CDM Wiki. Themis is an ancient Greek Titaness of divine order, fairness, law, natural law, and custom which seemed a good fit for this groups remit. When performing an ETL, if there is a scenario that you are unsure how to handle, THEMIS recommends that a question about the scenario is posed on the OHDSI Forums[^ohdsiForum]. Most likely if you have a question, others in the community probably have it as well. THEMIS uses these discussions, as well as work group meetings and face-to-face discussions, to help inform what other conventions need to be documented.        
 
-[^cdmWikiUrl]: https://github.com/OHDSI/CommonDataModel/wiki].
+[^cdmWikiUrl2]: https://github.com/OHDSI/CommonDataModel/wiki].
 [^themisUrl]: https://github.com/OHDSI/Themis
 [^ohdsiForum]: http://forums.ohdsi.org/
 
@@ -382,3 +382,54 @@ The ETL process is a difficult one to master for many reasons, not the least of 
 - There are many ETL examples and agreed upon conventions you can use as a guide
 
 ```
+
+## Exercises
+
+```{exercise, exerciseEtl1}
+Put the steps of the ETL process in the proper order:
+  
+A) Data experts and CDM experts together design the ETL
+B) A technical person implements the ETL
+C) People with medical knowledge create the code mappings
+D) All are involved in quality control 
+
+```
+
+```{exercise, exerciseEtl2}
+Using OHDSI resources of your choice, spot four issues with the PERSON record show in Table \@ref(tab:exercisePersonTable) (table abbreviated for space):
+
+Table: (\#tab:exercisePersonTable) A PERSON table.
+
+Column | Value
+:---------------- |:-----------
+PERSON_ID | A123B456
+GENDER_CONCEPT_ID | 8532
+YEAR_OF_BIRTH | NULL
+MONTH_OF_BIRTH | NULL
+DAY_OF_BIRTH | NULL
+RACE_CONCEPT_ID | 0
+ETHNICITY_CONCEPT_ID | 8527
+PERSON_SOURCE_VALUE | A123B456
+GENDER_SOURCE_VALUE | F
+RACE_SOURCE_VALUE | WHITE
+ETHNICITY_SOURCE_VALUE | NONE PROVIDED
+
+```
+
+```{exercise, exerciseEtl3}
+Let us try to generate VISIT_OCCURRENCE records.  Here is some example logic written for Synthea:
+Sort data in ascending order by PATIENT, START, END. Then by PERSON_ID, collapse lines of claim as long as the time between the END of one line and the START of the next is <=1 day. Each consolidated inpatient claim is then considered as one inpatient visit, set:
+  
+- MIN(START) as VISIT_START_DATE
+- MAX(END) as VISIT_END_DATE
+- "IP" as PLACE_OF_SERVICE_SOURCE_VALUE
+
+If you see a set of visits as shown in Figure \@ref(fig:exerciseSourceData) in your source data, how would you expect the resulting VISIT_OCCURRENCE record(s) to look in the CDM?
+
+```
+
+```{r exerciseSourceData, fig.cap='Example source data.',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/ExtractTransformLoad/exerciseSourceData.png")
+```
+
+Suggested answers can be found in Appendix \@ref(Etlanswers).

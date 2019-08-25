@@ -271,7 +271,7 @@ Discrimination is the ability to assign a higher risk to patients who will exper
 
 The AUC provides a way to determine how different the predicted risk distributions are between the patients who experience the outcome during the time at risk and those who do not. If the AUC is high, then the distributions will be mostly disjointed, whereas when there is a lot of overlap, the AUC will be closer to 0.5, as shown in Figure \@ref(fig:figuretheoryroctheory).
 
-```{r figuretheoryroctheory, fig.cap='How the ROC plots are linked to discrimination. If the two classes have similar distributions of prediced risk, the ROC will be close to the diagonal, with AUC close to 0.5.',echo=FALSE, out.width='100%'}
+```{r figuretheoryroctheory, fig.cap='How the ROC plots are linked to discrimination. If the two classes have similar distributions of predicted risk, the ROC will be close to the diagonal, with AUC close to 0.5.',echo=FALSE, out.width='100%'}
 knitr::include_graphics("images/PatientLevelPrediction/theory/roctheory.png")
 ```
 
@@ -577,8 +577,8 @@ data.frame(cohort_definition_id = c(1, 2),count = c(527616, 3201))
 Now we can tell [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) to extract all necessary data for our analysis. Covariates are extracted using the [`FeatureExtraction`](https://ohdsi.github.io/FeatureExtraction/) package. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
 
 ```{r tidy=FALSE,eval=FALSE}
-covariateSettings <-
-  createCovariateSettings(useDemographicsGender = TRUE,
+covariateSettings <- createCovariateSettings(
+useDemographicsGender = TRUE,
                           useDemographicsAge = TRUE,
                           useConditionGroupEraLongTerm = TRUE,
                           useConditionGroupEraAnyTimePrior = TRUE,
@@ -809,7 +809,7 @@ The Shiny app opens with a summary of the performance metrics on the test and tr
  knitr::include_graphics("images/PatientLevelPrediction/shiny/singleShiny/singleShinyRoc.png")
 ```
 
-The calibration plot in Figure \@ref(fig:shinyCal) shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \@ref(fig:shinyDemo) however shows that the model is not well calibrated for the younger patients, as the blue line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
+The calibration plot in Figure \@ref(fig:shinyCal) shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \@ref(fig:shinyDemo) however shows that the model is not well calibrated for the younger patients, as the curved line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
 
 ```{r shinyCal, fig.cap='The calibration of the model',echo=FALSE, out.width='100%', fig.align='center'}
  knitr::include_graphics("images/PatientLevelPrediction/shiny/singleShiny/singleShinyCal.png")
@@ -872,7 +872,7 @@ To look at the overall discrimination of the model click on the "Discrimination"
 
 Figure \@ref(fig:shinyPerformanceDist) shows the prediction and preference score distributions.
 
-```{r shinyPerformanceDist, fig.cap='The predicted risk distribtion for those with and without the outcome. The more these overlap the worse the discrimination',echo=FALSE, out.width='100%', fig.align='center'}
+```{r shinyPerformanceDist, fig.cap='The predicted risk distribution for those with and without the outcome. The more these overlap the worse the discrimination',echo=FALSE, out.width='100%', fig.align='center'}
  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceDist.png")
 ```
 
@@ -882,7 +882,7 @@ Finally, we can also inspect the calibration of the model by clicking on the "Ca
  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceCal.png")
 ```
 
-We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the blue line is higher than the red line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.
+We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the expected line is higher than the observed line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.
 
 
 #### Viewing the model {-}
@@ -973,7 +973,7 @@ Eunomia::createCohorts(connectionDetails)
 The NSAID new-user cohort has COHORT_DEFINITION_ID = 4. The GI bleed cohort has COHORT_DEFINITION_ID = 3.
 
 ```{exercise, exercisePlp1}
-Using the PatientLevelPrediction R package, define the covariates you want to use for the prediction and extract the plp data from the CDM. Create the summary of the plp data.
+Using the PatientLevelPrediction R package, define the covariates you want to use for the prediction and extract the PLP data from the CDM. Create the summary of the PLP data.
 
 ```
 
