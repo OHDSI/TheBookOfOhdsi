@@ -8,7 +8,7 @@ The vision of OHDSI is "A world in which observational research produces a compr
 
 ## Characteristics of health care databases {#CharacteristicsOfDatabase}
 
-It is possible that what we found is the relationship between **prescription** of ACE inhibitor and angioedema rather than relationship between **use** of ACE inhibitor and angioedema. We’ve already discussed data quality in the previous chapter (\@ref(DataQuality)). The quality of the converted database into CDM cannot exceed the original database. Here we are addressing the characteristics of most healthcare utilization databases. Many databases used in OHDSI originated from administrative claims or electronic health records (EHR). Claims and EHR have different data capture processes, neither of which has research as a primary intention. Data elements from claims records are captured for the purpose of reimbursement, financial transactions between clinicians and payers whereby services provided to patients by providers are sufficiently justified to enable agreement on payments by the responsible parties. Data elements in EHR records are captured to support clinical care and administrative operations, and commonly only reflect the information that providers within a given health system feel are necessary to document the current service and provide necessary context for anticipated follow-up care within their health system, but may not represent a patient’s complete medical history and may not integrate data from across health systems. 
+It is possible that what we found is the relationship between **prescription** of ACE inhibitor and angioedema rather than relationship between **use** of ACE inhibitor and angioedema. We’ve already discussed data quality in the previous chapter (\@ref(DataQuality)). The quality of the converted database into Common Data Model (CDM) cannot exceed the original database. Here we are addressing the characteristics of most healthcare utilization databases. Many databases used in OHDSI originated from administrative claims or electronic health records (EHR). Claims and EHR have different data capture processes, neither of which has research as a primary intention. Data elements from claims records are captured for the purpose of reimbursement, financial transactions between clinicians and payers whereby services provided to patients by providers are sufficiently justified to enable agreement on payments by the responsible parties. Data elements in EHR records are captured to support clinical care and administrative operations, and commonly only reflect the information that providers within a given health system feel are necessary to document the current service and provide necessary context for anticipated follow-up care within their health system, but may not represent a patient’s complete medical history and may not integrate data from across health systems. 
 
 To generate reliable evidence from observational data, it is useful for a researcher to understand the journey that the data undergoes from the moment that a patient seeks care through the moment that the data reflecting that care are used in an analysis. As an example, "drug exposure" can be inferred from various sources of observational data, including prescriptions written by clinicians, pharmacy dispensing records, hospital procedural administrations, or patient self-reported medication history. The source of data can impact our level of confidence in the inference we draw about which patients did and did not use the drug, when and for how long. The data capture process can result in under-estimation of exposure, such as if free samples or over-the counter drugs are not recorded, or over-estimation of exposure, such as if a patient doesn’t fill the prescription written or doesn’t adherently consume the prescription dispensed. Understanding the potential biases in exposure and outcome ascertainment, and more ideally quantifying and adjusting for these measurement errors, can improve our confidence in the validity of the evidence we draw from the data we have available.   
 
@@ -87,7 +87,7 @@ An example of the process to conduct a cohort definition validation using chart 
 
 1. Submitted proposal and obtained IRB consent for OHDSI cancer phenotyping study
 2. Developed a cohort definition for prostate cancer: Using ATHENA and ATLAS to explore the vocabulary, we created a cohort definition to include all patients with a condition occurrence for Malignant Tumor of Prostate (concept ID 4163261), excluding Secondary Neoplasm of Prostate (concept ID 4314337) or Non-Hodgkin’s Lymphoma of Prostate (concept ID 4048666).
-3. Generated cohort using ATLAS and randomly selected 100 patients for manual review, mapping each OMOP person_id back to patient MRN using mapping tables. 100 patients were selected in order to achieve our desired level of statistical precision for the performance metric of PPV.
+3. Generated cohort using ATLAS and randomly selected 100 patients for manual review, mapping each PERSON_ID back to patient MRN using mapping tables. 100 patients were selected in order to achieve our desired level of statistical precision for the performance metric of PPV.
 4. Manually reviewed records in the various EHRs—both inpatient and outpatient—in order to determine whether each person in the random subset was a true or false positive
 5. Manual review and clinical adjudication was performed by one physician (although ideally in future, more rigorous validation studies, this would be done by a higher number of reviewers to assess for consensus and inter-rater reliability)
 6. Determination of a reference standard was based on clinical documentation, pathology reports, labs, medications and procedures as documented in the entirety of the available electronic patient record 
@@ -142,7 +142,7 @@ We then develop an extremely sensitive cohort (xSens). This cohort may be define
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{images/ClinicalValidity/xSens} 
+{\centering \includegraphics[width=1\linewidth]{images/ClinicalValidity/xSens} 
 
 }
 
@@ -151,15 +151,15 @@ We then develop an extremely sensitive cohort (xSens). This cohort may be define
  
 #### Step 3: Fit the predictive model {-}
 
-The function *createPhenoModel* develops the diagnostic predictive model for assessing the probability of having the health outcome of interest in the evaluation cohort. To use this function, we utilize the xSpec and xSens cohorts developed in Steps 1 and 2. The xSpec cohort will be entered as the *xSpecCohort* parameter in the function. The xSens cohort will be entered as the *exclCohort* parameter in the function to indicate that those in the xSens cohort should be excluded from the target cohort used in the modeling process. Using this exclusion method, we can determine persons with a low likelihood of having the health outcome. We may think of this group as “noisy negative” persons, i.e., a group of persons likely negative for the health outcome but allowing for a small possibility of including some persons positive for the health outcome. We may also use the xSens cohort as the *prevCohort* parameter in the function. This parameter is used in the process to determine an approximate prevalence of the health outcome in the population. Normally, a large random sample of persons from a database should produce a population of persons where the persons with the outcome of interest are about in proportion to the prevalence of the outcome in the database. Using the method we described, we no longer have a random sample of persons and need to re-calibrate the predictive model based on resetting the proportion of persons with the outcome to those without the outcome. 
+The function `createPhenoModel` develops the diagnostic predictive model for assessing the probability of having the health outcome of interest in the evaluation cohort. To use this function, we utilize the xSpec and xSens cohorts developed in Steps 1 and 2. The xSpec cohort will be entered as the `xSpecCohort` parameter in the function. The xSens cohort will be entered as the `exclCohort` parameter in the function to indicate that those in the xSens cohort should be excluded from the target cohort used in the modeling process. Using this exclusion method, we can determine persons with a low likelihood of having the health outcome. We may think of this group as “noisy negative” persons, i.e., a group of persons likely negative for the health outcome but allowing for a small possibility of including some persons positive for the health outcome. We may also use the xSens cohort as the `prevCohort` parameter in the function. This parameter is used in the process to determine an approximate prevalence of the health outcome in the population. Normally, a large random sample of persons from a database should produce a population of persons where the persons with the outcome of interest are about in proportion to the prevalence of the outcome in the database. Using the method we described, we no longer have a random sample of persons and need to re-calibrate the predictive model based on resetting the proportion of persons with the outcome to those without the outcome. 
 
-All concepts used to define the xSpec cohort must be excluded from the modeling process. To do this we set the *excludedConcepts* parameter to the list of concepts used in the xSpec definition. For example, for MI we created a concept set in ATLAS using the concept for Myocardial infarction plus all its descendants. For this example, we would set the excludedConcepts parameter to 4329847, the concept Id for Myocardial infarction, and we would also set the addDescendantsToExclude parameter to TRUE, indicating that any descendants of the excluded concepts should also be excluded.
+All concepts used to define the xSpec cohort must be excluded from the modeling process. To do this we set the `excludedConcepts` parameter to the list of concepts used in the xSpec definition. For example, for MI we created a concept set in ATLAS using the concept for Myocardial infarction plus all its descendants. For this example, we would set the excludedConcepts parameter to 4329847, the concept Id for Myocardial infarction, and we would also set the addDescendantsToExclude parameter to TRUE, indicating that any descendants of the excluded concepts should also be excluded.
 
-There are several parameters that may be used to specify the characteristics of the persons included in the modeling process. We can set the ages of the persons included in the modeling process by setting the *lowerAgeLimit* to the lower bounds of age desired in the model and the *upperAgeLimit* to the upper bounds. We may wish to do this if the cohort definitions for a planned study will be created for a certain age group. For example, if the cohort definition to be used in a study is for Type 1 diabetes mellitus in children, you may want to limit the ages used to develop the diagnostic predictive model to ages, say, 5 to 17 years old. In doing so, we will produce a model with features that are likely more closely related to the persons selected by the cohort definitions to be tested. We can also specify which sex is included in the model by setting the *gender* parameter to the concept ID for either male or female. By default, the parameter is set to include both males and females. This feature may be useful in sex-specific health outcomes such as prostate cancer. We can set the time frame for person inclusion based on the first visit in the person’s record by setting the *startDate* and *endDate* parameters to the lower and upper bounds of the date range, respectively. Finally, the *mainPopnCohort* parameter may be used to specify a large population cohort from which all persons in the target and outcome cohorts will be selected. In most instances this will be set to 0, indicating no limitation on selecting persons for the target and outcome cohorts. There may be times, however, when this parameter is useful for building a better model, possibly in cases where the prevalence of the health outcome is extremely low, perhaps 0.01% or lower. For example:
+There are several parameters that may be used to specify the characteristics of the persons included in the modeling process. We can set the ages of the persons included in the modeling process by setting the `lowerAgeLimit` to the lower bounds of age desired in the model and the `upperAgeLimit` to the upper bounds. We may wish to do this if the cohort definitions for a planned study will be created for a certain age group. For example, if the cohort definition to be used in a study is for Type 1 diabetes mellitus in children, you may want to limit the ages used to develop the diagnostic predictive model to ages, say, 5 to 17 years old. In doing so, we will produce a model with features that are likely more closely related to the persons selected by the cohort definitions to be tested. We can also specify which sex is included in the model by setting the `gender` parameter to the concept ID for either male or female. By default, the parameter is set to include both males and females. This feature may be useful in sex-specific health outcomes such as prostate cancer. We can set the time frame for person inclusion based on the first visit in the person’s record by setting the `startDate` and `endDate` parameters to the lower and upper bounds of the date range, respectively. Finally, the `mainPopnCohort` parameter may be used to specify a large population cohort from which all persons in the target and outcome cohorts will be selected. In most instances this will be set to 0, indicating no limitation on selecting persons for the target and outcome cohorts. There may be times, however, when this parameter is useful for building a better model, possibly in cases where the prevalence of the health outcome is extremely low, perhaps 0.01% or lower. For example:
 
 
 ```r
-setwd("c:/phenotyping")
+setwd("c:/temp")
 library(PheValuator)
 connectionDetails <- createConnectionDetails(
   dbms = "postgresql",
@@ -174,7 +174,7 @@ phenoTest <- createPhenoModel(
   cohortDatabaseSchema = "my_results",
   cohortDatabaseTable = "cohort",
   outDatabaseSchema = "scratch.dbo", #should have write access
-  trainOutFile = "PheVal_5XMI_train",
+  trainOutFile = "5XMI_train",
   exclCohort = 1770120, #the xSens cohort
   prevCohort = 1770119, #the cohort for prevalence determination
   modelAnalysisId = "20181206V1",
@@ -189,17 +189,17 @@ phenoTest <- createPhenoModel(
   endDate = "20171231")
 ```
 
-In this example, we used the cohorts defined in the “my_results” database, specifying the location of the cohort table (cohortDatabaseSchema, cohortDatabaseTable - “my_results.cohort”) and where the model will find the conditions, drug exposures, etc. to inform the model (cdmDatabaseSchema - “my_cdm_data”). The persons included in the model will be those whose first visit in the CDM is between January 1, 2010 and December 31, 2017. We are also specifically excluding the concept IDs 312327, 314666, and their descendants which was used to create the xSpec cohort. Their ages at the time of first visit will be between 18 and 90. With the parameters above, the name of the predictive model output from this step will be: “c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”
+In this example, we used the cohorts defined in the “my_results” database, specifying the location of the cohort table (cohortDatabaseSchema, cohortDatabaseTable - “my_results.cohort”) and where the model will find the conditions, drug exposures, etc. to inform the model (cdmDatabaseSchema - “my_cdm_data”). The persons included in the model will be those whose first visit in the CDM is between January 1, 2010 and December 31, 2017. We are also specifically excluding the concept IDs 312327, 314666, and their descendants which was used to create the xSpec cohort. Their ages at the time of first visit will be between 18 and 90. With the parameters above, the name of the predictive model output from this step will be: “c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”
 
 #### Step 4: Creating the evaluation cohort {-}
 
-The function *createEvalCohort* uses the PatientLevelPrediction package function *applyModel* to produce a large cohort of persons, each with a predicted probability for the health outcome of interest. The function requires specifying the xSpec cohort (by setting the *xSpecCohort* parameter to the xSpec cohort ID). We may also specify the characteristics of the persons included in the evaluation cohort as we did in the previous step. This could include specifying the lower and upper ages limits (by setting, as ages, the *lowerAgeLimit* and *upperAgeLimit* arguments, respectively), the sex (by setting the *gender* parameter to the concept IDs for male and/or female), the starting and ending dates (by setting, as dates, the *startDate* and *endDate* arguments, respectively), and designating a large population from which to select the persons by setting the *mainPopnCohort* to the cohort Id for the population to use.
+The function `createEvalCohort` uses the PatientLevelPrediction package function `applyModel` to produce a large cohort of persons, each with a predicted probability for the health outcome of interest. The function requires specifying the xSpec cohort (by setting the `xSpecCohort` parameter to the xSpec cohort ID). We may also specify the characteristics of the persons included in the evaluation cohort as we did in the previous step. This could include specifying the lower and upper ages limits (by setting, as ages, the `lowerAgeLimit` and `upperAgeLimit` arguments, respectively), the sex (by setting the `gender` parameter to the concept IDs for male and/or female), the starting and ending dates (by setting, as dates, the `startDate` and `endDate` arguments, respectively), and designating a large population from which to select the persons by setting the `mainPopnCohort` to the cohort Id for the population to use.
 
 For example:
 
 
 ```r
-setwd("c:/phenotyping")
+setwd("c:/temp")
 connectionDetails <- createConnectionDetails(
   dbms = "postgresql",
   server = "localhost/ohdsi",
@@ -213,8 +213,8 @@ evalCohort <- createEvalCohort(
   cohortDatabaseSchema = "my_results",
   cohortDatabaseTable = "cohort",
   outDatabaseSchema = "scratch.dbo",
-  testOutFile = "PheVal_5XMI_eval",
-  trainOutFile = "PheVal_5XMI_train",
+  testOutFile = "5XMI_eval",
+  trainOutFile = "5XMI_train",
   modelAnalysisId = "20181206V1",
   evalAnalysisId = "20181206V1",
   cdmShortName = "myCDM",
@@ -226,8 +226,8 @@ evalCohort <- createEvalCohort(
   endDate = "20171231")
 ```
 
-In this example, the parameters specify that the function should use the model file: “c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”
-to produce the evaluation cohort file: “c:/phenotyping/lr_results_PheVal_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”
+In this example, the parameters specify that the function should use the model file: “c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”
+to produce the evaluation cohort file: “c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”
 The model and the evaluation cohort files created in this step will be used in the evaluation of the cohort definitions provided in the next step.
 
 #### Step 5: Creating and testing cohort definitions {-}
@@ -253,37 +253,22 @@ We estimated the values for True Positives, True Negatives, False Positives, and
 
 After summing these values over the full set of persons in the evaluation cohort, we filled the four cells of the confusion matrix with the expected values of counts for each cell, and we were able to create point estimates of the PA performance characteristics like sensitivity, specificity, and positive predictive value (Figure 1C). We emphasize that these expected cell counts cannot be used to assess the variance of the estimates, only the point estimates. In the example, the sensitivity, specificity, PPV, and NPV were 0.99, 0.63, 0.42, and 0.99, respectively.
 
-Determining the performance characteristics of the cohort definition uses the function testPhenotype. This function uses the output from the prior two steps where we created the model and evaluation cohorts. We would set the modelFileName parameter to the RDS file output from createPhenoModel function, in this example, “c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”. We would set the resultsFileName parameter to the RDS file output from createEvalCohort function, in this example, “c:/phenotyping/lr_results_PheVal_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”. To test the cohort definition we wish to use in our study, we set the cohortPheno to the cohort Id for that cohort definition. We can set the phenText parameter to some human readable description for the cohort definition, such as “MI Occurrence, Hospital In-Patient Setting”. We will set the testText parameter to some human readable description for the xSpec definition, such as “5 X MI”. The output from this step is a data frame that contains the performance characteristics for the cohort definition tested. The settings for the cutPoints parameter is a list of values that will be used to develop the performance characteristics results. The performance characteristics are usually calculated using the “expected values” as described in Figure 1. To retrieve the performance characteristics based on the expected values, we include “EV” in the list for the cutPoints parameter. We may also want to see the performance characteristics based on specific predicted probabilities, i.e., cut points. For example, if wanted to see the performance characteristics if all those at or above a predicted probability of 0.5 were considered positive for the health outcome and all those under a predicted probability of 0.5 were considered negative, we would add “0.5” to the cutPoints parameter List.
-
-The function testPhenotype has the following inputs:
-
--	connectionDetails - ConnectionDetails created using the function createConnectionDetails in the DatabaseConnector package.
--	cutPoints - A list of threshold predictions for the evaluations. Include "EV" for the expected value
--	resultsFileName - The full file name with path for the evaluation file
--	modelFileName - The full file name with path for the model file
--	cohortPheno - The number of the cohort of the cohort definition to test
--	phenText - A string to identify the cohort definition in the output file
--	order - The order of this algorithm for sorting in the output file (used when there are multiple cohort definitions to test)
--	testText - Descriptive name for the model
--	cohortDatabaseSchema - The name of the database schema that is the location where the cohort data used to define the at risk cohort is available. Requires read permissions to this database.
--	cohortTable - The tablename that contains the at risk cohort. The expectation is cohortTable has format of COHORT table: cohort_concept_id, SUBJECT_ID, COHORT_START_DATE, COHORT_END_DATE.
--	cdmShortName - A short name for the current database (CDM)
-
-For example:
+Determining the performance characteristics of the cohort definition uses the function `testPhenotype`. This function uses the output from the prior two steps where we created the model and evaluation cohorts. We would set the modelFileName parameter to the RDS file output from createPhenoModel function, in this example, “c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”. We would set the resultsFileName parameter to the RDS file output from createEvalCohort function, in this example, “c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”. To test the cohort definition we wish to use in our study, we set the `cohortPheno` to the cohort ID for that cohort definition. We can set the `phenText` parameter to some human readable description for the cohort definition, such as “MI Occurrence, Hospital In-Patient Setting”. We will set the `testText` parameter to some human readable description for the xSpec definition, such as “5 X MI”. The output from this step is a data frame that contains the performance characteristics for the cohort definition tested. The settings for the `cutPoints` parameter is a list of values that will be used to develop the performance characteristics results. The performance characteristics are usually calculated using the “expected values” as described in Figure 1. To retrieve the performance characteristics based on the expected values, we include “EV” in the list for the `cutPoints` parameter. We may also want to see the performance characteristics based on specific predicted probabilities, i.e., cut points. For example, if wanted to see the performance characteristics if all those at or above a predicted probability of 0.5 were considered positive for the health outcome and all those under a predicted probability of 0.5 were considered negative, we would add “0.5” to the `cutPoints` parameter list. For example:
 
 
 ```r
-setwd("c:/phenotyping")
+setwd("c:/temp")
 connectionDetails <- createConnectionDetails(
   dbms = "postgresql",
   server = "localhost/ohdsi",
   user = "joe",
   password = "supersecret")
+
 phenoResult <- testPhenotype(
   connectionDetails = connectionDetails,
   cutPoints = c(0.1, 0.2, 0.3, 0.4, 0.5, "EV", 0.6, 0.7, 0.8, 0.9),
-  resultsFileName = "c:/phenotyping/lr_results_PheVal_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds",
-  modelFileName = "c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds",
+  resultsFileName = "c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds",
+  modelFileName = "c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds",
   cohortPheno = 1769702,
   phenText = "All MI by Phenotype 1 X In-patient, 1st Position",
   order = 1,
@@ -295,22 +280,39 @@ phenoResult <- testPhenotype(
 
 In this example, a wide range of prediction thresholds are provided (cutPoints) including the expected value (“EV”). Given that parameter setting, the output from this step will provide performance characteristics (i.e, sensitivity, specificity, etc.) at each prediction threshold as well as those using the expected value calculations. The evaluation uses the prediction information for the evaluation cohort developed in the prior step. The data frames produced from this step may be saved to a csv file for detailed examination.
 
-Using this process, Figure \@ref(fig:figure5) displays the performance characteristics for four cohort definitions for MI across five datasets. For a cohort definition similar to the one evaluated by Cutrona and colleagues, “>=1 X HOI, In-Patient”, we found a mean PPV of 67% (range: 59%-74%).
+Using this process, Table \@ref(tab:phevalStats) displays the performance characteristics for four cohort definitions for MI across five datasets. For a cohort definition similar to the one evaluated by Cutrona and colleagues, “>=1 X HOI, In-Patient”, we found a mean PPV of 67% (range: 59%-74%).
 
-\begin{figure}
+Table: (\#tab:phevalStats) Performance characteristics of four cohort definitions using diagnostic condition codes to determine myocardial infarction on multiple datasets using pheValuator. Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the cohort; 
 
-{\centering \includegraphics[width=0.75\linewidth]{images/ClinicalValidity/MIcohortperformance} 
+| Phenotype   Algorithm                        | Database  | Sens  | PPV   | Spec  | NPV   |
+|:---------------------------- |:--------- |:-----:|:-----:|:-----:|:-----:|
+| >=1 X   HOI | CCAE      | 0.761 | 0.598 | 0.997 | 0.999 |
+|             | Optum1862 | 0.723 | 0.530 | 0.995 | 0.998 |
+|             | OptumGE66 | 0.643 | 0.534 | 0.973 | 0.982 |
+|             | MDCD      | 0.676 | 0.468 | 0.990 | 0.996 |
+|             | MDCR      | 0.665 | 0.553 | 0.977 | 0.985 |
+| >= 2 X   HOI| CCAE      | 0.585 | 0.769 | 0.999 | 0.998 |
+|             | Optum1862 | 0.495 | 0.693 | 0.998 | 0.996 |
+|             | OptumGE66 | 0.382 | 0.644 | 0.990 | 0.971 |
+|             | MDCD      | 0.454 | 0.628 | 0.996 | 0.993 |
+|             | MDCR      | 0.418 | 0.674 | 0.991 | 0.975 |
+| >=1 X   HOI, In-Patient| CCAE      | 0.674 | 0.737 | 0.999 | 0.998 |
+|             | Optum1862 | 0.623 | 0.693 | 0.998 | 0.997 |
+|             | OptumGE66 | 0.521 | 0.655 | 0.987 | 0.977 |
+|             | MDCD      | 0.573 | 0.593 | 0.995 | 0.994 |
+|             | MDCR      | 0.544 | 0.649 | 0.987 | 0.980 |
+| 1 X HOI, In-Patient, 1st Position | CCAE      | 0.633 | 0.788 | 0.999 | 0.998 |
+|             | Optum1862 | 0.581 | 0.754 | 0.999 | 0.997 |
+|             | OptumGE66 | 0.445 | 0.711 | 0.991 | 0.974 |
+|             | MDCD      | 0.499 | 0.666 | 0.997 | 0.993 |
+|             | MDCR      | 0.445 | 0.711 | 0.991 | 0.974 |
 
-}
-
-\caption{Performance characteristics of four cohort definitions using diagnostic condition codes to determine myocardial infarction on multiple datasets using pheValuator. Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the cohort; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database – Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater}(\#fig:figure5)
-\end{figure}
 
 ## Generalizability of the evidence {#GeneralizabilityOfEvidence}
 
-While a cohort can be well-defined and fully evaluated within the context of a given observational database, the clinical validity of the limited by the extent to which the results are considered generalizable to the target population of interest. Multiple observational studies on the same topic can yield different results, which can be caused by not only in their designs and analytic methods, but also in their choice of data source. Madigan et al demonstrated that choice of database affects the result of observational study [@madigan_2013]. They systematically investigated heterogeneity in the results for 53 drug-outcome pairs and two study designs (cohort studies and self-controlled case series) across the 10 observational databases. Even though they held study design constant, substantial heterogeneity in effect estimates was observed. 
+While a cohort can be well-defined and fully evaluated within the context of a given observational database, the clinical validity of the limited by the extent to which the results are considered generalizable to the target population of interest. Multiple observational studies on the same topic can yield different results, which can be caused by not only in their designs and analytic methods, but also in their choice of data source. @madigan_2013 demonstrated that choice of database affects the result of observational study. They systematically investigated heterogeneity in the results for 53 drug-outcome pairs and two study designs (cohort studies and self-controlled case series) across the 10 observational databases. Even though they held study design constant, substantial heterogeneity in effect estimates was observed. 
 
-Across the OHDSI network, observational databases vary considerably in the populations they represent (e.g. pediatric vs. elderly, privately-insured employees vs. publicly-insured unemployed), the care settings where data are captured (e.g. inpatient vs. outpatient, primary vs. secondary/specialty care), the data capture processes (e.g. administrative claims, EHRs, clinical registries), and the national and regional health system from which care is based. These differences can manifest as heterogeneity observed when studying disease and the effects of medical interventions and can also influence the confidence we have in the quality of each data source that may contribute evidence within a network study. While all databases within the OHDSI network are standardized to the OMOP common data model, it is important to reinforce that standardization does not reduce the true inherent heterogeneity that is present across populations, but simply provides a consistent framework to investigate and better understand the heterogeneity across the network. The OHDSI research network provides the environment to apply the same analytic process on various databases across the world, so that researchers can interpret results across multiple data sources while holding other methodological aspects constant. OHDSI’s collaborative approach to open science in network research, where researchers across participating data partners work together alongside those with clinical domain knowledge and methodologists with analytical expertise, is one way of reaching a collective level of understanding of the clinical validity of data across a network that should serve as a foundation for building confidence in the evidence generated using these data.
+Across the OHDSI network, observational databases vary considerably in the populations they represent (e.g. pediatric vs. elderly, privately-insured employees vs. publicly-insured unemployed), the care settings where data are captured (e.g. inpatient vs. outpatient, primary vs. secondary/specialty care), the data capture processes (e.g. administrative claims, EHRs, clinical registries), and the national and regional health system from which care is based. These differences can manifest as heterogeneity observed when studying disease and the effects of medical interventions and can also influence the confidence we have in the quality of each data source that may contribute evidence within a network study. While all databases within the OHDSI network are standardized to the CDM, it is important to reinforce that standardization does not reduce the true inherent heterogeneity that is present across populations, but simply provides a consistent framework to investigate and better understand the heterogeneity across the network. The OHDSI research network provides the environment to apply the same analytic process on various databases across the world, so that researchers can interpret results across multiple data sources while holding other methodological aspects constant. OHDSI’s collaborative approach to open science in network research, where researchers across participating data partners work together alongside those with clinical domain knowledge and methodologists with analytical expertise, is one way of reaching a collective level of understanding of the clinical validity of data across a network that should serve as a foundation for building confidence in the evidence generated using these data.
 
 ## Summary
 

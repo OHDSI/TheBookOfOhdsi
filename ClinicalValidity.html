@@ -679,7 +679,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The vision of OHDSI is “A world in which observational research produces a comprehensive understanding of health and disease”. Retrospective designs provide a vehicle for research using existing data but can be riddled with threats to various aspects of validity as discussed in the Chapter<a href="EvidenceQuality.html#EvidenceQuality">15</a>. It is not easy to isolate clinical validity from quality of data and statistical methodology, but here we will focus on three aspects in terms of clinical validity: “Characteristics of health care databases”, “Cohort validation”, and “Generalizability of the evidence”. Let’s go back to the example of the population-level estimation (Chapter <a href="PopulationLevelEstimation.html#PopulationLevelEstimation">13</a>). We tried to answer the question “Do ACE inhibitors cause angioedema compared to thiazide or thiazide-like diuretics?” And in that example, we demonstrated that ACE inhibitors caused more angioedema than thiazide or thiazide-like diuretics. This chapter is dedicated to answer the question: “To what extent does the analysis conducted match the clinical intention?” </p>
 <div id="CharacteristicsOfDatabase" class="section level2">
 <h2><span class="header-section-number">17.1</span> Characteristics of health care databases</h2>
-<p>It is possible that what we found is the relationship between <strong>prescription</strong> of ACE inhibitor and angioedema rather than relationship between <strong>use</strong> of ACE inhibitor and angioedema. We’ve already discussed data quality in the previous chapter (<a href="DataQuality.html#DataQuality">16</a>). The quality of the converted database into CDM cannot exceed the original database. Here we are addressing the characteristics of most healthcare utilization databases. Many databases used in OHDSI originated from administrative claims or electronic health records (EHR). Claims and EHR have different data capture processes, neither of which has research as a primary intention. Data elements from claims records are captured for the purpose of reimbursement, financial transactions between clinicians and payers whereby services provided to patients by providers are sufficiently justified to enable agreement on payments by the responsible parties. Data elements in EHR records are captured to support clinical care and administrative operations, and commonly only reflect the information that providers within a given health system feel are necessary to document the current service and provide necessary context for anticipated follow-up care within their health system, but may not represent a patient’s complete medical history and may not integrate data from across health systems.</p>
+<p>It is possible that what we found is the relationship between <strong>prescription</strong> of ACE inhibitor and angioedema rather than relationship between <strong>use</strong> of ACE inhibitor and angioedema. We’ve already discussed data quality in the previous chapter (<a href="DataQuality.html#DataQuality">16</a>). The quality of the converted database into Common Data Model (CDM) cannot exceed the original database. Here we are addressing the characteristics of most healthcare utilization databases. Many databases used in OHDSI originated from administrative claims or electronic health records (EHR). Claims and EHR have different data capture processes, neither of which has research as a primary intention. Data elements from claims records are captured for the purpose of reimbursement, financial transactions between clinicians and payers whereby services provided to patients by providers are sufficiently justified to enable agreement on payments by the responsible parties. Data elements in EHR records are captured to support clinical care and administrative operations, and commonly only reflect the information that providers within a given health system feel are necessary to document the current service and provide necessary context for anticipated follow-up care within their health system, but may not represent a patient’s complete medical history and may not integrate data from across health systems.</p>
 <p>To generate reliable evidence from observational data, it is useful for a researcher to understand the journey that the data undergoes from the moment that a patient seeks care through the moment that the data reflecting that care are used in an analysis. As an example, “drug exposure” can be inferred from various sources of observational data, including prescriptions written by clinicians, pharmacy dispensing records, hospital procedural administrations, or patient self-reported medication history. The source of data can impact our level of confidence in the inference we draw about which patients did and did not use the drug, when and for how long. The data capture process can result in under-estimation of exposure, such as if free samples or over-the counter drugs are not recorded, or over-estimation of exposure, such as if a patient doesn’t fill the prescription written or doesn’t adherently consume the prescription dispensed. Understanding the potential biases in exposure and outcome ascertainment, and more ideally quantifying and adjusting for these measurement errors, can improve our confidence in the validity of the evidence we draw from the data we have available.</p>
 </div>
 <div id="CohortValidation" class="section level2">
@@ -736,7 +736,7 @@ The methods used to determine the gold standard are described in the remainder o
 <ol style="list-style-type: decimal">
 <li>Submitted proposal and obtained IRB consent for OHDSI cancer phenotyping study</li>
 <li>Developed a cohort definition for prostate cancer: Using ATHENA and ATLAS to explore the vocabulary, we created a cohort definition to include all patients with a condition occurrence for Malignant Tumor of Prostate (concept ID 4163261), excluding Secondary Neoplasm of Prostate (concept ID 4314337) or Non-Hodgkin’s Lymphoma of Prostate (concept ID 4048666).</li>
-<li>Generated cohort using ATLAS and randomly selected 100 patients for manual review, mapping each OMOP person_id back to patient MRN using mapping tables. 100 patients were selected in order to achieve our desired level of statistical precision for the performance metric of PPV.</li>
+<li>Generated cohort using ATLAS and randomly selected 100 patients for manual review, mapping each PERSON_ID back to patient MRN using mapping tables. 100 patients were selected in order to achieve our desired level of statistical precision for the performance metric of PPV.</li>
 <li>Manually reviewed records in the various EHRs—both inpatient and outpatient—in order to determine whether each person in the random subset was a true or false positive</li>
 <li>Manual review and clinical adjudication was performed by one physician (although ideally in future, more rigorous validation studies, this would be done by a higher number of reviewers to assess for consensus and inter-rater reliability)</li>
 <li>Determination of a reference standard was based on clinical documentation, pathology reports, labs, medications and procedures as documented in the entirety of the available electronic patient record</li>
@@ -780,7 +780,7 @@ Figure 17.2: An extremely specific cohort definition (xSpec) for myocardial infa
 <h4>Step 2: Define the xSens cohort</h4>
 <p>We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure <a href="ClinicalValidity.html#fig:xSens">17.3</a> illustrates the xSens cohort definition for MI in ATLAS.</p>
 <div class="figure" style="text-align: center"><span id="fig:xSens"></span>
-<img src="images/ClinicalValidity/xSens.png" alt="An extremely sensitive cohort definition (xSens) for myocardial infarction." width="75%" />
+<img src="images/ClinicalValidity/xSens.png" alt="An extremely sensitive cohort definition (xSens) for myocardial infarction." width="100%" />
 <p class="caption">
 Figure 17.3: An extremely sensitive cohort definition (xSens) for myocardial infarction.
 </p>
@@ -788,10 +788,10 @@ Figure 17.3: An extremely sensitive cohort definition (xSens) for myocardial inf
 </div>
 <div id="step-3-fit-the-predictive-model" class="section level4 unnumbered">
 <h4>Step 3: Fit the predictive model</h4>
-<p>The function <em>createPhenoModel</em> develops the diagnostic predictive model for assessing the probability of having the health outcome of interest in the evaluation cohort. To use this function, we utilize the xSpec and xSens cohorts developed in Steps 1 and 2. The xSpec cohort will be entered as the <em>xSpecCohort</em> parameter in the function. The xSens cohort will be entered as the <em>exclCohort</em> parameter in the function to indicate that those in the xSens cohort should be excluded from the target cohort used in the modeling process. Using this exclusion method, we can determine persons with a low likelihood of having the health outcome. We may think of this group as “noisy negative” persons, i.e., a group of persons likely negative for the health outcome but allowing for a small possibility of including some persons positive for the health outcome. We may also use the xSens cohort as the <em>prevCohort</em> parameter in the function. This parameter is used in the process to determine an approximate prevalence of the health outcome in the population. Normally, a large random sample of persons from a database should produce a population of persons where the persons with the outcome of interest are about in proportion to the prevalence of the outcome in the database. Using the method we described, we no longer have a random sample of persons and need to re-calibrate the predictive model based on resetting the proportion of persons with the outcome to those without the outcome.</p>
-<p>All concepts used to define the xSpec cohort must be excluded from the modeling process. To do this we set the <em>excludedConcepts</em> parameter to the list of concepts used in the xSpec definition. For example, for MI we created a concept set in ATLAS using the concept for Myocardial infarction plus all its descendants. For this example, we would set the excludedConcepts parameter to 4329847, the concept Id for Myocardial infarction, and we would also set the addDescendantsToExclude parameter to TRUE, indicating that any descendants of the excluded concepts should also be excluded.</p>
-<p>There are several parameters that may be used to specify the characteristics of the persons included in the modeling process. We can set the ages of the persons included in the modeling process by setting the <em>lowerAgeLimit</em> to the lower bounds of age desired in the model and the <em>upperAgeLimit</em> to the upper bounds. We may wish to do this if the cohort definitions for a planned study will be created for a certain age group. For example, if the cohort definition to be used in a study is for Type 1 diabetes mellitus in children, you may want to limit the ages used to develop the diagnostic predictive model to ages, say, 5 to 17 years old. In doing so, we will produce a model with features that are likely more closely related to the persons selected by the cohort definitions to be tested. We can also specify which sex is included in the model by setting the <em>gender</em> parameter to the concept ID for either male or female. By default, the parameter is set to include both males and females. This feature may be useful in sex-specific health outcomes such as prostate cancer. We can set the time frame for person inclusion based on the first visit in the person’s record by setting the <em>startDate</em> and <em>endDate</em> parameters to the lower and upper bounds of the date range, respectively. Finally, the <em>mainPopnCohort</em> parameter may be used to specify a large population cohort from which all persons in the target and outcome cohorts will be selected. In most instances this will be set to 0, indicating no limitation on selecting persons for the target and outcome cohorts. There may be times, however, when this parameter is useful for building a better model, possibly in cases where the prevalence of the health outcome is extremely low, perhaps 0.01% or lower. For example:</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="ClinicalValidity.html#cb150-1"></a><span class="kw">setwd</span>(<span class="st">&quot;c:/phenotyping&quot;</span>)</span>
+<p>The function <code>createPhenoModel</code> develops the diagnostic predictive model for assessing the probability of having the health outcome of interest in the evaluation cohort. To use this function, we utilize the xSpec and xSens cohorts developed in Steps 1 and 2. The xSpec cohort will be entered as the <code>xSpecCohort</code> parameter in the function. The xSens cohort will be entered as the <code>exclCohort</code> parameter in the function to indicate that those in the xSens cohort should be excluded from the target cohort used in the modeling process. Using this exclusion method, we can determine persons with a low likelihood of having the health outcome. We may think of this group as “noisy negative” persons, i.e., a group of persons likely negative for the health outcome but allowing for a small possibility of including some persons positive for the health outcome. We may also use the xSens cohort as the <code>prevCohort</code> parameter in the function. This parameter is used in the process to determine an approximate prevalence of the health outcome in the population. Normally, a large random sample of persons from a database should produce a population of persons where the persons with the outcome of interest are about in proportion to the prevalence of the outcome in the database. Using the method we described, we no longer have a random sample of persons and need to re-calibrate the predictive model based on resetting the proportion of persons with the outcome to those without the outcome.</p>
+<p>All concepts used to define the xSpec cohort must be excluded from the modeling process. To do this we set the <code>excludedConcepts</code> parameter to the list of concepts used in the xSpec definition. For example, for MI we created a concept set in ATLAS using the concept for Myocardial infarction plus all its descendants. For this example, we would set the excludedConcepts parameter to 4329847, the concept Id for Myocardial infarction, and we would also set the addDescendantsToExclude parameter to TRUE, indicating that any descendants of the excluded concepts should also be excluded.</p>
+<p>There are several parameters that may be used to specify the characteristics of the persons included in the modeling process. We can set the ages of the persons included in the modeling process by setting the <code>lowerAgeLimit</code> to the lower bounds of age desired in the model and the <code>upperAgeLimit</code> to the upper bounds. We may wish to do this if the cohort definitions for a planned study will be created for a certain age group. For example, if the cohort definition to be used in a study is for Type 1 diabetes mellitus in children, you may want to limit the ages used to develop the diagnostic predictive model to ages, say, 5 to 17 years old. In doing so, we will produce a model with features that are likely more closely related to the persons selected by the cohort definitions to be tested. We can also specify which sex is included in the model by setting the <code>gender</code> parameter to the concept ID for either male or female. By default, the parameter is set to include both males and females. This feature may be useful in sex-specific health outcomes such as prostate cancer. We can set the time frame for person inclusion based on the first visit in the person’s record by setting the <code>startDate</code> and <code>endDate</code> parameters to the lower and upper bounds of the date range, respectively. Finally, the <code>mainPopnCohort</code> parameter may be used to specify a large population cohort from which all persons in the target and outcome cohorts will be selected. In most instances this will be set to 0, indicating no limitation on selecting persons for the target and outcome cohorts. There may be times, however, when this parameter is useful for building a better model, possibly in cases where the prevalence of the health outcome is extremely low, perhaps 0.01% or lower. For example:</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="ClinicalValidity.html#cb150-1"></a><span class="kw">setwd</span>(<span class="st">&quot;c:/temp&quot;</span>)</span>
 <span id="cb150-2"><a href="ClinicalValidity.html#cb150-2"></a><span class="kw">library</span>(PheValuator)</span>
 <span id="cb150-3"><a href="ClinicalValidity.html#cb150-3"></a>connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(</span>
 <span id="cb150-4"><a href="ClinicalValidity.html#cb150-4"></a>  <span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
@@ -806,7 +806,7 @@ Figure 17.3: An extremely sensitive cohort definition (xSens) for myocardial inf
 <span id="cb150-13"><a href="ClinicalValidity.html#cb150-13"></a>  <span class="dt">cohortDatabaseSchema =</span> <span class="st">&quot;my_results&quot;</span>,</span>
 <span id="cb150-14"><a href="ClinicalValidity.html#cb150-14"></a>  <span class="dt">cohortDatabaseTable =</span> <span class="st">&quot;cohort&quot;</span>,</span>
 <span id="cb150-15"><a href="ClinicalValidity.html#cb150-15"></a>  <span class="dt">outDatabaseSchema =</span> <span class="st">&quot;scratch.dbo&quot;</span>, <span class="co">#should have write access</span></span>
-<span id="cb150-16"><a href="ClinicalValidity.html#cb150-16"></a>  <span class="dt">trainOutFile =</span> <span class="st">&quot;PheVal_5XMI_train&quot;</span>,</span>
+<span id="cb150-16"><a href="ClinicalValidity.html#cb150-16"></a>  <span class="dt">trainOutFile =</span> <span class="st">&quot;5XMI_train&quot;</span>,</span>
 <span id="cb150-17"><a href="ClinicalValidity.html#cb150-17"></a>  <span class="dt">exclCohort =</span> <span class="dv">1770120</span>, <span class="co">#the xSens cohort</span></span>
 <span id="cb150-18"><a href="ClinicalValidity.html#cb150-18"></a>  <span class="dt">prevCohort =</span> <span class="dv">1770119</span>, <span class="co">#the cohort for prevalence determination</span></span>
 <span id="cb150-19"><a href="ClinicalValidity.html#cb150-19"></a>  <span class="dt">modelAnalysisId =</span> <span class="st">&quot;20181206V1&quot;</span>,</span>
@@ -819,13 +819,13 @@ Figure 17.3: An extremely sensitive cohort definition (xSens) for myocardial inf
 <span id="cb150-26"><a href="ClinicalValidity.html#cb150-26"></a>  <span class="dt">gender =</span> <span class="kw">c</span>(<span class="dv">8507</span>, <span class="dv">8532</span>),</span>
 <span id="cb150-27"><a href="ClinicalValidity.html#cb150-27"></a>  <span class="dt">startDate =</span> <span class="st">&quot;20100101&quot;</span>,</span>
 <span id="cb150-28"><a href="ClinicalValidity.html#cb150-28"></a>  <span class="dt">endDate =</span> <span class="st">&quot;20171231&quot;</span>)</span></code></pre></div>
-<p>In this example, we used the cohorts defined in the “my_results” database, specifying the location of the cohort table (cohortDatabaseSchema, cohortDatabaseTable - “my_results.cohort”) and where the model will find the conditions, drug exposures, etc. to inform the model (cdmDatabaseSchema - “my_cdm_data”). The persons included in the model will be those whose first visit in the CDM is between January 1, 2010 and December 31, 2017. We are also specifically excluding the concept IDs 312327, 314666, and their descendants which was used to create the xSpec cohort. Their ages at the time of first visit will be between 18 and 90. With the parameters above, the name of the predictive model output from this step will be: “c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”</p>
+<p>In this example, we used the cohorts defined in the “my_results” database, specifying the location of the cohort table (cohortDatabaseSchema, cohortDatabaseTable - “my_results.cohort”) and where the model will find the conditions, drug exposures, etc. to inform the model (cdmDatabaseSchema - “my_cdm_data”). The persons included in the model will be those whose first visit in the CDM is between January 1, 2010 and December 31, 2017. We are also specifically excluding the concept IDs 312327, 314666, and their descendants which was used to create the xSpec cohort. Their ages at the time of first visit will be between 18 and 90. With the parameters above, the name of the predictive model output from this step will be: “c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”</p>
 </div>
 <div id="step-4-creating-the-evaluation-cohort" class="section level4 unnumbered">
 <h4>Step 4: Creating the evaluation cohort</h4>
-<p>The function <em>createEvalCohort</em> uses the PatientLevelPrediction package function <em>applyModel</em> to produce a large cohort of persons, each with a predicted probability for the health outcome of interest. The function requires specifying the xSpec cohort (by setting the <em>xSpecCohort</em> parameter to the xSpec cohort ID). We may also specify the characteristics of the persons included in the evaluation cohort as we did in the previous step. This could include specifying the lower and upper ages limits (by setting, as ages, the <em>lowerAgeLimit</em> and <em>upperAgeLimit</em> arguments, respectively), the sex (by setting the <em>gender</em> parameter to the concept IDs for male and/or female), the starting and ending dates (by setting, as dates, the <em>startDate</em> and <em>endDate</em> arguments, respectively), and designating a large population from which to select the persons by setting the <em>mainPopnCohort</em> to the cohort Id for the population to use.</p>
+<p>The function <code>createEvalCohort</code> uses the PatientLevelPrediction package function <code>applyModel</code> to produce a large cohort of persons, each with a predicted probability for the health outcome of interest. The function requires specifying the xSpec cohort (by setting the <code>xSpecCohort</code> parameter to the xSpec cohort ID). We may also specify the characteristics of the persons included in the evaluation cohort as we did in the previous step. This could include specifying the lower and upper ages limits (by setting, as ages, the <code>lowerAgeLimit</code> and <code>upperAgeLimit</code> arguments, respectively), the sex (by setting the <code>gender</code> parameter to the concept IDs for male and/or female), the starting and ending dates (by setting, as dates, the <code>startDate</code> and <code>endDate</code> arguments, respectively), and designating a large population from which to select the persons by setting the <code>mainPopnCohort</code> to the cohort Id for the population to use.</p>
 <p>For example:</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="ClinicalValidity.html#cb151-1"></a><span class="kw">setwd</span>(<span class="st">&quot;c:/phenotyping&quot;</span>)</span>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="ClinicalValidity.html#cb151-1"></a><span class="kw">setwd</span>(<span class="st">&quot;c:/temp&quot;</span>)</span>
 <span id="cb151-2"><a href="ClinicalValidity.html#cb151-2"></a>connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(</span>
 <span id="cb151-3"><a href="ClinicalValidity.html#cb151-3"></a>  <span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
 <span id="cb151-4"><a href="ClinicalValidity.html#cb151-4"></a>  <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,</span>
@@ -839,8 +839,8 @@ Figure 17.3: An extremely sensitive cohort definition (xSens) for myocardial inf
 <span id="cb151-12"><a href="ClinicalValidity.html#cb151-12"></a>  <span class="dt">cohortDatabaseSchema =</span> <span class="st">&quot;my_results&quot;</span>,</span>
 <span id="cb151-13"><a href="ClinicalValidity.html#cb151-13"></a>  <span class="dt">cohortDatabaseTable =</span> <span class="st">&quot;cohort&quot;</span>,</span>
 <span id="cb151-14"><a href="ClinicalValidity.html#cb151-14"></a>  <span class="dt">outDatabaseSchema =</span> <span class="st">&quot;scratch.dbo&quot;</span>,</span>
-<span id="cb151-15"><a href="ClinicalValidity.html#cb151-15"></a>  <span class="dt">testOutFile =</span> <span class="st">&quot;PheVal_5XMI_eval&quot;</span>,</span>
-<span id="cb151-16"><a href="ClinicalValidity.html#cb151-16"></a>  <span class="dt">trainOutFile =</span> <span class="st">&quot;PheVal_5XMI_train&quot;</span>,</span>
+<span id="cb151-15"><a href="ClinicalValidity.html#cb151-15"></a>  <span class="dt">testOutFile =</span> <span class="st">&quot;5XMI_eval&quot;</span>,</span>
+<span id="cb151-16"><a href="ClinicalValidity.html#cb151-16"></a>  <span class="dt">trainOutFile =</span> <span class="st">&quot;5XMI_train&quot;</span>,</span>
 <span id="cb151-17"><a href="ClinicalValidity.html#cb151-17"></a>  <span class="dt">modelAnalysisId =</span> <span class="st">&quot;20181206V1&quot;</span>,</span>
 <span id="cb151-18"><a href="ClinicalValidity.html#cb151-18"></a>  <span class="dt">evalAnalysisId =</span> <span class="st">&quot;20181206V1&quot;</span>,</span>
 <span id="cb151-19"><a href="ClinicalValidity.html#cb151-19"></a>  <span class="dt">cdmShortName =</span> <span class="st">&quot;myCDM&quot;</span>,</span>
@@ -850,8 +850,8 @@ Figure 17.3: An extremely sensitive cohort definition (xSens) for myocardial inf
 <span id="cb151-23"><a href="ClinicalValidity.html#cb151-23"></a>  <span class="dt">gender =</span> <span class="kw">c</span>(<span class="dv">8507</span>, <span class="dv">8532</span>),</span>
 <span id="cb151-24"><a href="ClinicalValidity.html#cb151-24"></a>  <span class="dt">startDate =</span> <span class="st">&quot;20100101&quot;</span>,</span>
 <span id="cb151-25"><a href="ClinicalValidity.html#cb151-25"></a>  <span class="dt">endDate =</span> <span class="st">&quot;20171231&quot;</span>)</span></code></pre></div>
-<p>In this example, the parameters specify that the function should use the model file: “c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”
-to produce the evaluation cohort file: “c:/phenotyping/lr_results_PheVal_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”
+<p>In this example, the parameters specify that the function should use the model file: “c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”
+to produce the evaluation cohort file: “c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”
 The model and the evaluation cohort files created in this step will be used in the evaluation of the cohort definitions provided in the next step.</p>
 </div>
 <div id="step-5-creating-and-testing-cohort-definitions" class="section level4 unnumbered">
@@ -870,55 +870,210 @@ Figure 17.4: Determining the Performance Characteristics of a Cohort Definition 
 <li><p>Similarly, if the cohort definition did not include a person from the evaluation cohort, i.e., the cohort definition considered the person a “negative”, one minus the predicted probability for the phenotype for that person was the expected value of counts contributed to True Negatives and was added to it, and the predicted probability for the phenotype was the expected value of counts contributed to the False Negatives and was added to it. For example, PersonId 017 had a predicted probability of 1% for the presence of the health outcome (and, correspondingly, 99% for the absence of the health outcome) and 1.00 – 0.01 = 0.99 was added to the True Negatives and 0.01 was added to the False Negatives. This was repeated for all the persons from the evaluation cohort not included in the cohort definition (i.e., PersonIds 018, 020, 021, and 024).</p></li>
 </ol>
 <p>After summing these values over the full set of persons in the evaluation cohort, we filled the four cells of the confusion matrix with the expected values of counts for each cell, and we were able to create point estimates of the PA performance characteristics like sensitivity, specificity, and positive predictive value (Figure 1C). We emphasize that these expected cell counts cannot be used to assess the variance of the estimates, only the point estimates. In the example, the sensitivity, specificity, PPV, and NPV were 0.99, 0.63, 0.42, and 0.99, respectively.</p>
-<p>Determining the performance characteristics of the cohort definition uses the function testPhenotype. This function uses the output from the prior two steps where we created the model and evaluation cohorts. We would set the modelFileName parameter to the RDS file output from createPhenoModel function, in this example, “c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”. We would set the resultsFileName parameter to the RDS file output from createEvalCohort function, in this example, “c:/phenotyping/lr_results_PheVal_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”. To test the cohort definition we wish to use in our study, we set the cohortPheno to the cohort Id for that cohort definition. We can set the phenText parameter to some human readable description for the cohort definition, such as “MI Occurrence, Hospital In-Patient Setting”. We will set the testText parameter to some human readable description for the xSpec definition, such as “5 X MI”. The output from this step is a data frame that contains the performance characteristics for the cohort definition tested. The settings for the cutPoints parameter is a list of values that will be used to develop the performance characteristics results. The performance characteristics are usually calculated using the “expected values” as described in Figure 1. To retrieve the performance characteristics based on the expected values, we include “EV” in the list for the cutPoints parameter. We may also want to see the performance characteristics based on specific predicted probabilities, i.e., cut points. For example, if wanted to see the performance characteristics if all those at or above a predicted probability of 0.5 were considered positive for the health outcome and all those under a predicted probability of 0.5 were considered negative, we would add “0.5” to the cutPoints parameter List.</p>
-<p>The function testPhenotype has the following inputs:</p>
-<ul>
-<li>connectionDetails - ConnectionDetails created using the function createConnectionDetails in the DatabaseConnector package.</li>
-<li>cutPoints - A list of threshold predictions for the evaluations. Include “EV” for the expected value</li>
-<li>resultsFileName - The full file name with path for the evaluation file</li>
-<li>modelFileName - The full file name with path for the model file</li>
-<li>cohortPheno - The number of the cohort of the cohort definition to test</li>
-<li>phenText - A string to identify the cohort definition in the output file</li>
-<li>order - The order of this algorithm for sorting in the output file (used when there are multiple cohort definitions to test)</li>
-<li>testText - Descriptive name for the model</li>
-<li>cohortDatabaseSchema - The name of the database schema that is the location where the cohort data used to define the at risk cohort is available. Requires read permissions to this database.</li>
-<li>cohortTable - The tablename that contains the at risk cohort. The expectation is cohortTable has format of COHORT table: cohort_concept_id, SUBJECT_ID, COHORT_START_DATE, COHORT_END_DATE.</li>
-<li>cdmShortName - A short name for the current database (CDM)</li>
-</ul>
-<p>For example:</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="ClinicalValidity.html#cb152-1"></a><span class="kw">setwd</span>(<span class="st">&quot;c:/phenotyping&quot;</span>)</span>
+<p>Determining the performance characteristics of the cohort definition uses the function <code>testPhenotype</code>. This function uses the output from the prior two steps where we created the model and evaluation cohorts. We would set the modelFileName parameter to the RDS file output from createPhenoModel function, in this example, “c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”. We would set the resultsFileName parameter to the RDS file output from createEvalCohort function, in this example, “c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”. To test the cohort definition we wish to use in our study, we set the <code>cohortPheno</code> to the cohort ID for that cohort definition. We can set the <code>phenText</code> parameter to some human readable description for the cohort definition, such as “MI Occurrence, Hospital In-Patient Setting”. We will set the <code>testText</code> parameter to some human readable description for the xSpec definition, such as “5 X MI”. The output from this step is a data frame that contains the performance characteristics for the cohort definition tested. The settings for the <code>cutPoints</code> parameter is a list of values that will be used to develop the performance characteristics results. The performance characteristics are usually calculated using the “expected values” as described in Figure 1. To retrieve the performance characteristics based on the expected values, we include “EV” in the list for the <code>cutPoints</code> parameter. We may also want to see the performance characteristics based on specific predicted probabilities, i.e., cut points. For example, if wanted to see the performance characteristics if all those at or above a predicted probability of 0.5 were considered positive for the health outcome and all those under a predicted probability of 0.5 were considered negative, we would add “0.5” to the <code>cutPoints</code> parameter list. For example:</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="ClinicalValidity.html#cb152-1"></a><span class="kw">setwd</span>(<span class="st">&quot;c:/temp&quot;</span>)</span>
 <span id="cb152-2"><a href="ClinicalValidity.html#cb152-2"></a>connectionDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(</span>
 <span id="cb152-3"><a href="ClinicalValidity.html#cb152-3"></a>  <span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
 <span id="cb152-4"><a href="ClinicalValidity.html#cb152-4"></a>  <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,</span>
 <span id="cb152-5"><a href="ClinicalValidity.html#cb152-5"></a>  <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
 <span id="cb152-6"><a href="ClinicalValidity.html#cb152-6"></a>  <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)</span>
-<span id="cb152-7"><a href="ClinicalValidity.html#cb152-7"></a>phenoResult &lt;-<span class="st"> </span><span class="kw">testPhenotype</span>(</span>
-<span id="cb152-8"><a href="ClinicalValidity.html#cb152-8"></a>  <span class="dt">connectionDetails =</span> connectionDetails,</span>
-<span id="cb152-9"><a href="ClinicalValidity.html#cb152-9"></a>  <span class="dt">cutPoints =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="st">&quot;EV&quot;</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>),</span>
-<span id="cb152-10"><a href="ClinicalValidity.html#cb152-10"></a>  <span class="dt">resultsFileName =</span> <span class="st">&quot;c:/phenotyping/lr_results_PheVal_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds&quot;</span>,</span>
-<span id="cb152-11"><a href="ClinicalValidity.html#cb152-11"></a>  <span class="dt">modelFileName =</span> <span class="st">&quot;c:/phenotyping/lr_results_PheVal_5XMI_train_myCDM_ePPV0.75_20181206V1.rds&quot;</span>,</span>
-<span id="cb152-12"><a href="ClinicalValidity.html#cb152-12"></a>  <span class="dt">cohortPheno =</span> <span class="dv">1769702</span>,</span>
-<span id="cb152-13"><a href="ClinicalValidity.html#cb152-13"></a>  <span class="dt">phenText =</span> <span class="st">&quot;All MI by Phenotype 1 X In-patient, 1st Position&quot;</span>,</span>
-<span id="cb152-14"><a href="ClinicalValidity.html#cb152-14"></a>  <span class="dt">order =</span> <span class="dv">1</span>,</span>
-<span id="cb152-15"><a href="ClinicalValidity.html#cb152-15"></a>  <span class="dt">testText =</span> <span class="st">&quot;MI xSpec Model - 5 X MI&quot;</span>,</span>
-<span id="cb152-16"><a href="ClinicalValidity.html#cb152-16"></a>  <span class="dt">cohortDatabaseSchema =</span> <span class="st">&quot;my_results&quot;</span>,</span>
-<span id="cb152-17"><a href="ClinicalValidity.html#cb152-17"></a>  <span class="dt">cohortTable =</span> <span class="st">&quot;cohort&quot;</span>,</span>
-<span id="cb152-18"><a href="ClinicalValidity.html#cb152-18"></a>  <span class="dt">cdmShortName =</span> <span class="st">&quot;myCDM&quot;</span>)</span></code></pre></div>
+<span id="cb152-7"><a href="ClinicalValidity.html#cb152-7"></a></span>
+<span id="cb152-8"><a href="ClinicalValidity.html#cb152-8"></a>phenoResult &lt;-<span class="st"> </span><span class="kw">testPhenotype</span>(</span>
+<span id="cb152-9"><a href="ClinicalValidity.html#cb152-9"></a>  <span class="dt">connectionDetails =</span> connectionDetails,</span>
+<span id="cb152-10"><a href="ClinicalValidity.html#cb152-10"></a>  <span class="dt">cutPoints =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="st">&quot;EV&quot;</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>),</span>
+<span id="cb152-11"><a href="ClinicalValidity.html#cb152-11"></a>  <span class="dt">resultsFileName =</span> <span class="st">&quot;c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds&quot;</span>,</span>
+<span id="cb152-12"><a href="ClinicalValidity.html#cb152-12"></a>  <span class="dt">modelFileName =</span> <span class="st">&quot;c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds&quot;</span>,</span>
+<span id="cb152-13"><a href="ClinicalValidity.html#cb152-13"></a>  <span class="dt">cohortPheno =</span> <span class="dv">1769702</span>,</span>
+<span id="cb152-14"><a href="ClinicalValidity.html#cb152-14"></a>  <span class="dt">phenText =</span> <span class="st">&quot;All MI by Phenotype 1 X In-patient, 1st Position&quot;</span>,</span>
+<span id="cb152-15"><a href="ClinicalValidity.html#cb152-15"></a>  <span class="dt">order =</span> <span class="dv">1</span>,</span>
+<span id="cb152-16"><a href="ClinicalValidity.html#cb152-16"></a>  <span class="dt">testText =</span> <span class="st">&quot;MI xSpec Model - 5 X MI&quot;</span>,</span>
+<span id="cb152-17"><a href="ClinicalValidity.html#cb152-17"></a>  <span class="dt">cohortDatabaseSchema =</span> <span class="st">&quot;my_results&quot;</span>,</span>
+<span id="cb152-18"><a href="ClinicalValidity.html#cb152-18"></a>  <span class="dt">cohortTable =</span> <span class="st">&quot;cohort&quot;</span>,</span>
+<span id="cb152-19"><a href="ClinicalValidity.html#cb152-19"></a>  <span class="dt">cdmShortName =</span> <span class="st">&quot;myCDM&quot;</span>)</span></code></pre></div>
 <p>In this example, a wide range of prediction thresholds are provided (cutPoints) including the expected value (“EV”). Given that parameter setting, the output from this step will provide performance characteristics (i.e, sensitivity, specificity, etc.) at each prediction threshold as well as those using the expected value calculations. The evaluation uses the prediction information for the evaluation cohort developed in the prior step. The data frames produced from this step may be saved to a csv file for detailed examination.</p>
-<p>Using this process, Figure <a href="ClinicalValidity.html#fig:figure5">17.5</a> displays the performance characteristics for four cohort definitions for MI across five datasets. For a cohort definition similar to the one evaluated by Cutrona and colleagues, “&gt;=1 X HOI, In-Patient”, we found a mean PPV of 67% (range: 59%-74%).</p>
-<div class="figure" style="text-align: center"><span id="fig:figure5"></span>
-<img src="images/ClinicalValidity/MIcohortperformance.png" alt="Performance characteristics of four cohort definitions using diagnostic condition codes to determine myocardial infarction on multiple datasets using pheValuator. Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the cohort; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database – Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater" width="75%" />
-<p class="caption">
-Figure 17.5: Performance characteristics of four cohort definitions using diagnostic condition codes to determine myocardial infarction on multiple datasets using pheValuator. Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the cohort; CCAE - IBM® MarketScan® Commercial Claims and Encounters Database, ages 18-62 years; MDCR - IBM® MarketScan® Medicare Supplemental and Coordination of Benefits Database, ages 66 years and greater; MDCD - IBM® MarketScan® Multi-State Medicaid, ages 18-62 years; Optum1862 - Optum© De-Identified Clinformatics® Data Mart Database – Date of Death, ages 18-62 years; OptumGE66 - ages 66 years and greater
-</p>
-</div>
+<p>Using this process, Table <a href="ClinicalValidity.html#tab:phevalStats">17.1</a> displays the performance characteristics for four cohort definitions for MI across five datasets. For a cohort definition similar to the one evaluated by Cutrona and colleagues, “&gt;=1 X HOI, In-Patient”, we found a mean PPV of 67% (range: 59%-74%).</p>
+<table>
+<caption><span id="tab:phevalStats">Table 17.1: </span> Performance characteristics of four cohort definitions using diagnostic condition codes to determine myocardial infarction on multiple datasets using pheValuator. Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the cohort;</caption>
+<thead>
+<tr class="header">
+<th align="left">Phenotype Algorithm</th>
+<th align="left">Database</th>
+<th align="center">Sens</th>
+<th align="center">PPV</th>
+<th align="center">Spec</th>
+<th align="center">NPV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">&gt;=1 X HOI</td>
+<td align="left">CCAE</td>
+<td align="center">0.761</td>
+<td align="center">0.598</td>
+<td align="center">0.997</td>
+<td align="center">0.999</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Optum1862</td>
+<td align="center">0.723</td>
+<td align="center">0.530</td>
+<td align="center">0.995</td>
+<td align="center">0.998</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">OptumGE66</td>
+<td align="center">0.643</td>
+<td align="center">0.534</td>
+<td align="center">0.973</td>
+<td align="center">0.982</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">MDCD</td>
+<td align="center">0.676</td>
+<td align="center">0.468</td>
+<td align="center">0.990</td>
+<td align="center">0.996</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">MDCR</td>
+<td align="center">0.665</td>
+<td align="center">0.553</td>
+<td align="center">0.977</td>
+<td align="center">0.985</td>
+</tr>
+<tr class="even">
+<td align="left">&gt;= 2 X HOI</td>
+<td align="left">CCAE</td>
+<td align="center">0.585</td>
+<td align="center">0.769</td>
+<td align="center">0.999</td>
+<td align="center">0.998</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Optum1862</td>
+<td align="center">0.495</td>
+<td align="center">0.693</td>
+<td align="center">0.998</td>
+<td align="center">0.996</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">OptumGE66</td>
+<td align="center">0.382</td>
+<td align="center">0.644</td>
+<td align="center">0.990</td>
+<td align="center">0.971</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">MDCD</td>
+<td align="center">0.454</td>
+<td align="center">0.628</td>
+<td align="center">0.996</td>
+<td align="center">0.993</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">MDCR</td>
+<td align="center">0.418</td>
+<td align="center">0.674</td>
+<td align="center">0.991</td>
+<td align="center">0.975</td>
+</tr>
+<tr class="odd">
+<td align="left">&gt;=1 X HOI, In-Patient</td>
+<td align="left">CCAE</td>
+<td align="center">0.674</td>
+<td align="center">0.737</td>
+<td align="center">0.999</td>
+<td align="center">0.998</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">Optum1862</td>
+<td align="center">0.623</td>
+<td align="center">0.693</td>
+<td align="center">0.998</td>
+<td align="center">0.997</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">OptumGE66</td>
+<td align="center">0.521</td>
+<td align="center">0.655</td>
+<td align="center">0.987</td>
+<td align="center">0.977</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">MDCD</td>
+<td align="center">0.573</td>
+<td align="center">0.593</td>
+<td align="center">0.995</td>
+<td align="center">0.994</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">MDCR</td>
+<td align="center">0.544</td>
+<td align="center">0.649</td>
+<td align="center">0.987</td>
+<td align="center">0.980</td>
+</tr>
+<tr class="even">
+<td align="left">1 X HOI, In-Patient, 1st Position</td>
+<td align="left">CCAE</td>
+<td align="center">0.633</td>
+<td align="center">0.788</td>
+<td align="center">0.999</td>
+<td align="center">0.998</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">Optum1862</td>
+<td align="center">0.581</td>
+<td align="center">0.754</td>
+<td align="center">0.999</td>
+<td align="center">0.997</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">OptumGE66</td>
+<td align="center">0.445</td>
+<td align="center">0.711</td>
+<td align="center">0.991</td>
+<td align="center">0.974</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left">MDCD</td>
+<td align="center">0.499</td>
+<td align="center">0.666</td>
+<td align="center">0.997</td>
+<td align="center">0.993</td>
+</tr>
+<tr class="even">
+<td align="left"></td>
+<td align="left">MDCR</td>
+<td align="center">0.445</td>
+<td align="center">0.711</td>
+<td align="center">0.991</td>
+<td align="center">0.974</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div id="GeneralizabilityOfEvidence" class="section level2">
 <h2><span class="header-section-number">17.5</span> Generalizability of the evidence</h2>
-<p>While a cohort can be well-defined and fully evaluated within the context of a given observational database, the clinical validity of the limited by the extent to which the results are considered generalizable to the target population of interest. Multiple observational studies on the same topic can yield different results, which can be caused by not only in their designs and analytic methods, but also in their choice of data source. Madigan et al demonstrated that choice of database affects the result of observational study <span class="citation">(Madigan et al. <a href="#ref-madigan_2013" role="doc-biblioref">2013</a>)</span>. They systematically investigated heterogeneity in the results for 53 drug-outcome pairs and two study designs (cohort studies and self-controlled case series) across the 10 observational databases. Even though they held study design constant, substantial heterogeneity in effect estimates was observed.</p>
-<p>Across the OHDSI network, observational databases vary considerably in the populations they represent (e.g. pediatric vs. elderly, privately-insured employees vs. publicly-insured unemployed), the care settings where data are captured (e.g. inpatient vs. outpatient, primary vs. secondary/specialty care), the data capture processes (e.g. administrative claims, EHRs, clinical registries), and the national and regional health system from which care is based. These differences can manifest as heterogeneity observed when studying disease and the effects of medical interventions and can also influence the confidence we have in the quality of each data source that may contribute evidence within a network study. While all databases within the OHDSI network are standardized to the OMOP common data model, it is important to reinforce that standardization does not reduce the true inherent heterogeneity that is present across populations, but simply provides a consistent framework to investigate and better understand the heterogeneity across the network. The OHDSI research network provides the environment to apply the same analytic process on various databases across the world, so that researchers can interpret results across multiple data sources while holding other methodological aspects constant. OHDSI’s collaborative approach to open science in network research, where researchers across participating data partners work together alongside those with clinical domain knowledge and methodologists with analytical expertise, is one way of reaching a collective level of understanding of the clinical validity of data across a network that should serve as a foundation for building confidence in the evidence generated using these data.</p>
+<p>While a cohort can be well-defined and fully evaluated within the context of a given observational database, the clinical validity of the limited by the extent to which the results are considered generalizable to the target population of interest. Multiple observational studies on the same topic can yield different results, which can be caused by not only in their designs and analytic methods, but also in their choice of data source. <span class="citation">Madigan et al. (<a href="#ref-madigan_2013" role="doc-biblioref">2013</a>)</span> demonstrated that choice of database affects the result of observational study. They systematically investigated heterogeneity in the results for 53 drug-outcome pairs and two study designs (cohort studies and self-controlled case series) across the 10 observational databases. Even though they held study design constant, substantial heterogeneity in effect estimates was observed.</p>
+<p>Across the OHDSI network, observational databases vary considerably in the populations they represent (e.g. pediatric vs. elderly, privately-insured employees vs. publicly-insured unemployed), the care settings where data are captured (e.g. inpatient vs. outpatient, primary vs. secondary/specialty care), the data capture processes (e.g. administrative claims, EHRs, clinical registries), and the national and regional health system from which care is based. These differences can manifest as heterogeneity observed when studying disease and the effects of medical interventions and can also influence the confidence we have in the quality of each data source that may contribute evidence within a network study. While all databases within the OHDSI network are standardized to the CDM, it is important to reinforce that standardization does not reduce the true inherent heterogeneity that is present across populations, but simply provides a consistent framework to investigate and better understand the heterogeneity across the network. The OHDSI research network provides the environment to apply the same analytic process on various databases across the world, so that researchers can interpret results across multiple data sources while holding other methodological aspects constant. OHDSI’s collaborative approach to open science in network research, where researchers across participating data partners work together alongside those with clinical domain knowledge and methodologists with analytical expertise, is one way of reaching a collective level of understanding of the clinical validity of data across a network that should serve as a foundation for building confidence in the evidence generated using these data.</p>
 </div>
 <div id="summary-13" class="section level2">
 <h2><span class="header-section-number">17.6</span> Summary</h2>
