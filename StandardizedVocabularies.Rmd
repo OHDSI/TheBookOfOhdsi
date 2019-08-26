@@ -6,7 +6,7 @@ The OMOP Standardized Vocabularies as part of the OMOP CDM is a foundational par
 
 In this chapter we first describe the main principles of the Standardized Vocabularies, it’s components, and the relevant rules and conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
 
-## Why vocabularies, and why standardizing 
+## Why Vocabularies, and Why Standardizing 
 
 Medical vocabularies go back to the Bills of Mortality in medieval London to manage outbreaks of the plague and other diseases (see Figure \@ref(fig:bill)). 
   
@@ -41,7 +41,7 @@ In order to obtain the Standardized Vocabularies, you do not have to run Pallas 
 
 To download a zip file with all Standardized Vocabularies tables select all the vocabularies you need for your OMOP CDM. Vocabularies with Standard Concepts (see below) and very common usage are preselected. Add vocabularies that are used in your source data. Vocabularies that are proprietary have no select button. Click on the "License required" button to incorporate such a vocabulary into your list. The Vocabulary Team will contact you and request you demonstrate your license or help you connect to the right folks to obtain one. 
 
-### Source of vocabularies: Adopt versus build
+### Source of Vocabularies: Adopt Versus Build
 
 OHDSI generally prefers adopting existing vocabularies, rather than de-novo construction, because (i) many vocabularies have already been utilized in observational data in the community, and (ii) construction and maintenance of vocabularies is complex and requires the input of many stakeholders over long periods of time to mature. For that reason, dedicated organizations provide vocabularies, which are subject to a life cycle of generation, deprecation, merging and splitting (see below). Currently, OHDSI only produces internal administrative vocabularies like Type Concepts and, with the only exception being RxNorm Extension, which is a drug vocabulary covering the ex-US (see below).
 
@@ -97,7 +97,7 @@ Horizontal Concept Classes allow to determine a specific hierarchical level. For
 
 For each clinical Event, out of all the Concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define "Atrial fibrillation" in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-Standard or source Concepts and mapped to the Standard ones. Standard Concepts are indicated through an "S" in the STANDARD_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "_CONCEPT_ID". 
 
-### Non-standard Concepts
+### Non-Standard Concepts
 
 Non-Standard Concepts are not used to represent the clinical Events, but are still part of the Standardized Vocabularies, and are often found in the source data. For that reason, they are also called source Concepts. The conversion of source Concepts to Standard Concepts is a process called Mapping (see below). Non-Standard Concepts have no value (NULL) In the STANDARD_CONCEPT field.
 
@@ -139,7 +139,7 @@ Concept ID | Concept Code | Concept Name | Domain ID | Vocabulary ID | Concept C
 45417187 | 1001 | Brompheniramine Maleate, 10 mg/mL injectable solution | Drug | Multum | Multum
 45912144 | 1001 | Serum | Specimen | CIEL | Specimen
 
-### Life cycle
+### Life Cycle
 
 Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible situations, as described in Table \@ref(tab:validityRules).
 
@@ -200,11 +200,11 @@ A more detailed description of mapping conventions can be found in the OHDSI Wik
 
 Relationship which indicate a hierarchy are defined through the "Is a"/"Subsumes" Relationship pair. Hierarchical Relationships are defined such that the child Concept has all the attributes of the parent Concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 "Atrial fibrillation" is related to SNOMED 17366009 "Atrial arrhythmia" through a "Is a" relationship. Both Concepts have an identical set of attributes, except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent, and more than one child Concept. In this example, SNOMED 49436004 "Atrial fibrillation" is also an "Is a" to SNOMED 40593004 "Fibrillation".
 
-### Relationships between Concepts of different vocabularies
+### Relationships Between Concepts of Different Vocabularies
 
 These Relationships are typically of the type "Vocabulary A - Vocabulary B eq", which is either supplied by the original source of the vocabulary or is built by the OHDSI Vocabulary team. They may serve as approximate mappings but often times are less precise than the better curated mapping Relationships. High-quality equivalence relationships  (such as ‘Source - RxNorm eq’)  are always duplicated by "Maps to" relationship.
 
-### Relationships between Concepts of the same vocabulary
+### Relationships Between Concepts of the Same Vocabulary
 
 Internal vocabulary relationships are usually supplied by the vocabulary provider. A full descriptions can be found in the vocabulary documentation under the individual vocabulary at the OHDSI Wiki[^vocabVocabulariesUrl]. 
 
@@ -239,13 +239,13 @@ The ancestral degree, or the number of steps between Ancestor and Descendant, is
 
 At the moment, a high-quality comprehensive hierarchy exists only for two Domains: Drug and Condition. Procedure, Measurement and Observation Domains are only partially covered and in the process of construction. The Ancestry is particularly useful for the Drug domain as it allows browsing all drugs with a given ingredient or members of drug classes irrespective of the country of origin, brand name or other attributes.
 
-## Internal reference tables
+## Internal Reference Tables
 
 DOMAIN_ID, VOCABULARY_ID, CONCEPT_CLASS_ID (all in CONCEPT records) and CONCEPT_RELATIONSHIP_ID (in CONCEPT_RELATIONSHIP) are all controlled by their own vocabularies. They are defined in the four reference tables DOMAIN, VOCABULARY, CONCEPT_CLASS and RELATIONSHIP, containing the *_ID fields as primary keys, a more detailed *_NAME field and a *_CONCEPT_ID field with a reference back to the CONCEPT table, which contains a Concept for each of the reference table records. The purpose of these duplicate records is to support an information model allowing for automatic navigation engines. 
 
 The VOCABULARY table also contains the VOCABULARY_REFERENCE and VOCABULARY_VERSION fields referring to the source and version of the original Vocabulary. The RELATIONSHIP table has the additional fields DEFINES_ANCESTRY, IS_HIERARCHICAL and REVERSE_RELATIONSHIP_ID. The latter defines the counter Relationship ID for a pair of Relationships.
 
-## Special situations
+## Special Situations
 
 ### Gender
 
@@ -255,11 +255,11 @@ Gender in the OMOP CDM and Standardized Vocabularies denotes the biological sex 
 
 These follow the definitions of how the US government defines this. Ethnicity is a differentiation of Hispanic or non-Hispanic populations, which can have any race. Race is divided into the common 5 top races, which have ethnicities as their hierarchical descendants. Mixed races are not included.
 
-### Diagnostic coding schemes and OMOP Conditions
+### Diagnostic Coding Schemes and OMOP Conditions
 
 Commonly used coding schemes such as ICD9 or ICD10 define more or less well-defined diagnoses based on a proper diagnostic work-up. The Condition domain is not identical with this semantic space, but partially overlapping. On one hand, Conditions in additional contain signs and symptoms that are recorded before a diagnosis is derived, but on the other hand ICDs contain Concepts of different Domains (see above).
 
-### Procedure coding systems
+### Procedure Coding Systems
 
 Similarly, coding schemes like HCPCS and CPT4 are thought to be listings of medical procedures. In reality, the are more like a menu of justifications for payment for medical service. Many of these services are subsumed under the Procedure Domain, but many Concepts fall outside this realm.
 
@@ -275,7 +275,7 @@ Visits Concepts define the nature of healthcare encounters. In many source syste
 
 Any human Provider is defined in the Provider Domain. These can be medical professionals such as doctors and nurses, but also non-medical providers like optometrists or shoemakers. Specialities are descendants of the Provider "Physician". Care Sites cannot carry a specialty, even though they are often defined by the specialty of their main staff ("Surgical department").
 
-### Therapeutic areas with special requirements
+### Therapeutic Areas With Special Requirements
 
 The Standardized Vocabularies are covering all aspects of healthcare in a comprehensive fashion. However, some therapeutic areas have special needs and require special Vocabularies. Examples are Oncology, Radiology, Genomics. Special OHDSI Working Groups develop these extensions. As a result, the OMOP Standardized Vocabularies constitutes an integrated system, where Concepts from different origins and purposes all reside in the same Domain-specific hierarchies.
 

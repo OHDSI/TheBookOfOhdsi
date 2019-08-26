@@ -6,7 +6,7 @@ OHDSI offers a wide range of open source tools to support various data-analytics
 
 In this chapter we first describe various ways in which we can choose to implement an analysis, and what strategies the analysis can employ. We then review the various OHDSI tools and how they fit the various use cases.
 
-## Analysis implementation {#analysisImplementation}
+## Analysis Implementation {#analysisImplementation}
 
 Figure \@ref(fig:implementations) shows the various ways in which we can choose to implement a study against a database using the CDM. \index{analysis implementation}
 
@@ -22,7 +22,7 @@ The third approach relies on our interactive analysis platform [ATLAS](https://g
 
 ATLAS and the Methods Library are not independent. Some of the more complicated analytics that can be invoked in ATLAS are executed through calls to the packages in the Methods Library. Similarly, cohorts used in the Methods Library are often designed in ATLAS.
 
-## Analysis strategies
+## Analysis Strategies
 
 In addition to the strategy used to implement our analysis against the CDM, for example through custom coding or use of standard analytic code in the Methods Library, there are also multiple strategies for using those analytic techniques to generate evidence. Figure \@ref(fig:strategies) highlights three strategies that are employed in OHDSI.
 
@@ -102,7 +102,7 @@ Documentation for ATLAS can be found online in the ATLAS GitHub repository wiki[
 
 [^atlasRepoWikiUrl]: https://github.com/OHDSI/ATLAS/wiki 
 
-### How to install
+### How to Install
 
 Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS GitHub repository Setup Guide[^atlasSetupGuideUrl] and WebAPI GitHub repository Installation Guide[^webApiInstallationGuideUrl]. \index{ATLAS!installation}
 
@@ -121,13 +121,13 @@ The packages offer R functions that together can be used to perform a complete o
 
 The Methods Library has already been used in many published clinical studies [@boland_2017; @duke_2017; @ramcharran_2017; @weinstein_2017; @wang_2017; @ryan_2017; @ryan_2018; @vashisht_2018; @yuan_2018; @johnston_2019], as well as methodological studies [@schuemie_2014; @schuemie_2016; @reps2018; @tian_2018; @schuemie_2018; @schuemie_2018b; @reps_2019]. The validity of the implementations of methods in the Methods library is described in Chapter \@ref(SoftwareValidity).
 
-### Support for large-scale analytics
+### Support for Large-Scale Analytics
 
 One key feature incorporated in all packages is the ability to efficiently run many analyses. For example, when performing population-level estimation, the CohortMethod package allows for computing effect-size estimates for many exposures and outcomes, using various analysis settings, and the package will automatically choose the optimal way to compute all the required intermediary and final data sets. Steps that can be re-used, such as extraction of covariates, or fitting a propensity model that is used for one target-comparator pair but multiple outcomes, will be executed only once. Where possible, computations will take place in parallel to maximize the use of computational resources.
 
 This computational efficiency allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g. negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \@ref(MethodValidity). \index{control hypotheses} 
 
-### Support for big data {#BigDataSupport}
+### Support for Big Data {#BigDataSupport}
 
 The Methods Library is also designed to run against very large databases and be able to perform computations involving large amounts of data. This achieved in three ways:
 
@@ -145,7 +145,7 @@ In addition to the package manual, many packages provide *vignettes*. Vignettes 
 
 [^vignetteUrl]: https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html
 
-###  System requirements
+###  System Requirements
 
 Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation. \index{system requirements}
 
@@ -153,7 +153,7 @@ The database server must hold the observational healthcare data in CDM format. T
 
 The analytics workstation is where the Methods Library is installed and run. This can either be a local machine, such as someone's laptop, or a remote server running RStudio Server. In all cases the requirements are that R is installed, preferably together with RStudio. The Methods Library also requires that Java is installed. The analytics workstation should also be able to connect to the database server, specifically, any firewall between them should have the database server access ports opened the the workstation. Some of the analytics can be computationally intensive, so having multiple processing cores and ample memory can help speed up the analyses. We recommend having at least four cores and 16 gigabytes of memory.
 
-### How to install {#installR}
+### How to Install {#installR}
 
 Here are the steps for installing the required environment to run the OHDSI R packages. Four things needs to be installed: \index{R!installation}
 
@@ -215,7 +215,7 @@ knitr::include_graphics("images/OhdsiAnalyticsTools/downloadJava.png")
 
 2. After downloading just run the installer.
 
-#### Verifying the installation {-}
+#### Verifying the Installation {-}
 
 You should now be ready to go, but we should make sure. Start RStudio, and type
 
@@ -239,7 +239,7 @@ install.packages("CohortMethod")
 ```
 
 
-## Deployment strategies
+## Deployment Strategies
 
 Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, in an organization is a daunting task. There are many components with dependencies that have to be considered, and configurations to set. For this reason, two initiatives have developed integrated deployment strategies that allow the entire stack to be installed as one package, using some forms of virtualization: Broadsea and Amazon Web Services (AWS).  \index{tools deployment}
 

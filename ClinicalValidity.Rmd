@@ -6,7 +6,7 @@
 
 The vision of OHDSI is "A world in which observational research produces a comprehensive understanding of health and disease". Retrospective designs provide a vehicle for research using existing data but can be riddled with threats to various aspects of validity as discussed in the Chapter\@ref(EvidenceQuality). It is not easy to isolate clinical validity from quality of data and statistical methodology, but here we will focus on three aspects in terms of clinical validity: "Characteristics of health care databases", "Cohort validation", and "Generalizability of the evidence". Let’s go back to the example of the population-level estimation (Chapter \@ref(PopulationLevelEstimation)). We tried to answer the question "Do ACE inhibitors cause angioedema compared to thiazide or thiazide-like diuretics?" And in that example, we demonstrated that ACE inhibitors caused more angioedema than thiazide or thiazide-like diuretics. This chapter is dedicated to answer the question: "To what extent does the analysis conducted match the clinical intention?" \index{clinical validity} 
 
-## Characteristics of health care databases {#CharacteristicsOfDatabase}
+## Characteristics of Health Care Databases {#CharacteristicsOfDatabase}
 
 It is possible that what we found is the relationship between **prescription** of ACE inhibitor and angioedema rather than relationship between **use** of ACE inhibitor and angioedema. We’ve already discussed data quality in the previous chapter (\@ref(DataQuality)). The quality of the converted database into Common Data Model (CDM) cannot exceed the original database. Here we are addressing the characteristics of most healthcare utilization databases. Many databases used in OHDSI originated from administrative claims or electronic health records (EHR). Claims and EHR have different data capture processes, neither of which has research as a primary intention. Data elements from claims records are captured for the purpose of reimbursement, financial transactions between clinicians and payers whereby services provided to patients by providers are sufficiently justified to enable agreement on payments by the responsible parties. Data elements in EHR records are captured to support clinical care and administrative operations, and commonly only reflect the information that providers within a given health system feel are necessary to document the current service and provide necessary context for anticipated follow-up care within their health system, but may not represent a patient’s complete medical history and may not integrate data from across health systems. 
 
@@ -61,7 +61,7 @@ Perfect scores for these measures are 100%. Due to the nature of observational d
 Once the performance metrics have been established for the cohort definition, these may be used to adjust the results for studies using these definitions. In theory, adjusting study results for these measurement error estimates has been well established. In practice, though, because of the difficulty in obtaining the performance characteristics, these adjustments are rarely considered. 
 The methods used to determine the gold standard are described in the remainder of this section.
 
-## Source record verification 
+## Source Record Verification 
 
 A common method used to validate cohort definitions has been clinical adjudication through source record verification: a thorough examination of a person’s records by one or more domain experts with sufficient knowledge to competently classify the clinical condition or characteristic of interest. Chart review generally follows the following steps:
 
@@ -76,7 +76,7 @@ Results from a chart review are typically limited to the evaluation of one perfo
 
 There are a number of limitations to clinical adjudication through source record verification. As alluded to earlier, chart review can be a very time-consuming and resource-intensive process, even just for the evaluation of a single metric such as PPV. This limitation significantly impedes the practicality of evaluating an entire population to fill out a complete confusion matrix. In addition, multiple steps in the above process have the potential to bias the results of the study. For example, if records are not equally accessible in the EHR, if there is no EHR, or if individual patient consent is required, then the subset under evaluation may not be truly random and could introduce sampling or selection bias. In addition, manual adjudication is susceptible to human error or misclassification and thereby may not represent a perfectly accurate metric. There can often be disagreement between clinical adjudicators due to the data in the person’s record being vague, subjective, or of low quality. In many studies, the process involves a majority-rules decision for consensus which yields a binary classification for persons that does not reflect the inter-rater discordance. 
 
-### Example of source record verification
+### Example of Source Record Verification
 
 An example of the process to conduct a cohort definition validation using chart review is provided from a study by Columbia University Irving Medical Center (CUIMC) which validated a cohort definition for multiple cancers as part of a feasibility study for the National Cancer Institute (NCI). The steps used to conduct the validation for the example of one of these cancers—prostate cancer—are as follows:
 
@@ -112,13 +112,13 @@ The primary limitation to using this approach is that the estimation of the prob
 
 In diagnostic predictive modeling we create a model that discriminates between those with the disease and those without the disease. As described in the Patient-Level Prediction chapter (Chapter \@ref(PatientLevelPrediction)), prediction models are developed using a *target cohort* and an *outcome cohort*. The target cohort includes persons with and without the health outcome; the outcome cohort identifies those persons in the target cohort with the health outcome. For the PheValuator process, we use an extremely specific cohort definition, the “xSpec” cohort, to determine the outcome cohort for the prediction model. The xSpec cohort uses a definition to find those with a very high probability of having the disease of interest. The xSpec cohort may be defined as those persons who have multiple condition occurrence records for the health outcome of interest. For example, for atrial fibrillation, we may have persons who have 10 or more records with the atrial fibrillation diagnosis code. For MI, an acute outcome, we may use 5 occurrences of MI and include the requirement of having at least two occurrences from an inpatient setting. The target cohort for the predictive model is constructed from the union of persons with a low likelihood of having the health outcome of interest and those persons in the xSpec cohort. To determine those persons with a low likelihood of having the health outcome of interest, we sample from the entire database and exclude persons who have some evidence suggestive of belonging to the phenotype, typically by removing persons with any records containing the concepts used to define the xSpec cohort. There are limitations to this method. It is possible that these xSpec cohort persons may have different characteristics than others with the disease. It may also be that these persons had longer observation time after initial diagnosis than the average patient. We use LASSO logistic regression to create the prediction model used to generate the probabilistic gold standard. [@suchard_2013] This algorithm produces a parsimonious model and typically removes many of the collinear covariates which may be present across the dataset. In the current version of the PheValuator software, outcome status (yes/no) is evaluated based on all data for a person (all observation time), and does not evaluate the accuracy of the cohort start date. 
 
-### Example validation by PheValuator
+### Example Validation By PheValuator
 
 We may use PheValuator to assess the complete performance characteristics for a cohort definition to be used in a study where it is necessary to determine those persons who have had an acute myocardial infarction. 
 
 The following are the steps for testing cohort definitions for MI using PheValuator:
 
-#### Step 1: Define the xSpec cohort {-}
+#### Step 1: Define the xSpec Cohort {-}
 
 To determine those with MI with a high probability. We required a condition occurrence record with a concept for myocardial infarction or any of its descendants, with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. Figure \@ref(fig:xSpec) illustrates this cohort definition for MI in ATLAS.
 
@@ -126,7 +126,7 @@ To determine those with MI with a high probability. We required a condition occu
 knitr::include_graphics("images/ClinicalValidity/xSpec.png")
 ``` 
  
-#### Step 2: Define the xSens cohort {-}
+#### Step 2: Define the xSens Cohort {-}
  
 We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure \@ref(fig:xSens) illustrates the xSens cohort definition for MI in ATLAS.
 
@@ -134,7 +134,7 @@ We then develop an extremely sensitive cohort (xSens). This cohort may be define
 knitr::include_graphics("images/ClinicalValidity/xSens.png")
 ```
  
-#### Step 3: Fit the predictive model {-}
+#### Step 3: Fit the Predictive Model {-}
 
 The function `createPhenoModel` develops the diagnostic predictive model for assessing the probability of having the health outcome of interest in the evaluation cohort. To use this function, we utilize the xSpec and xSens cohorts developed in Steps 1 and 2. The xSpec cohort will be entered as the `xSpecCohort` parameter in the function. The xSens cohort will be entered as the `exclCohort` parameter in the function to indicate that those in the xSens cohort should be excluded from the target cohort used in the modeling process. Using this exclusion method, we can determine persons with a low likelihood of having the health outcome. We may think of this group as “noisy negative” persons, i.e., a group of persons likely negative for the health outcome but allowing for a small possibility of including some persons positive for the health outcome. We may also use the xSens cohort as the `prevCohort` parameter in the function. This parameter is used in the process to determine an approximate prevalence of the health outcome in the population. Normally, a large random sample of persons from a database should produce a population of persons where the persons with the outcome of interest are about in proportion to the prevalence of the outcome in the database. Using the method we described, we no longer have a random sample of persons and need to re-calibrate the predictive model based on resetting the proportion of persons with the outcome to those without the outcome. 
 
@@ -175,7 +175,7 @@ phenoTest <- createPhenoModel(
 
 In this example, we used the cohorts defined in the “my_results” database, specifying the location of the cohort table (cohortDatabaseSchema, cohortDatabaseTable - “my_results.cohort”) and where the model will find the conditions, drug exposures, etc. to inform the model (cdmDatabaseSchema - “my_cdm_data”). The persons included in the model will be those whose first visit in the CDM is between January 1, 2010 and December 31, 2017. We are also specifically excluding the concept IDs 312327, 314666, and their descendants which was used to create the xSpec cohort. Their ages at the time of first visit will be between 18 and 90. With the parameters above, the name of the predictive model output from this step will be: “c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds”
 
-#### Step 4: Creating the evaluation cohort {-}
+#### Step 4: Creating the Evaluation Cohort {-}
 
 The function `createEvalCohort` uses the PatientLevelPrediction package function `applyModel` to produce a large cohort of persons, each with a predicted probability for the health outcome of interest. The function requires specifying the xSpec cohort (by setting the `xSpecCohort` parameter to the xSpec cohort ID). We may also specify the characteristics of the persons included in the evaluation cohort as we did in the previous step. This could include specifying the lower and upper ages limits (by setting, as ages, the `lowerAgeLimit` and `upperAgeLimit` arguments, respectively), the sex (by setting the `gender` parameter to the concept IDs for male and/or female), the starting and ending dates (by setting, as dates, the `startDate` and `endDate` arguments, respectively), and designating a large population from which to select the persons by setting the `mainPopnCohort` to the cohort Id for the population to use.
 
@@ -213,7 +213,7 @@ In this example, the parameters specify that the function should use the model f
 to produce the evaluation cohort file: “c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds”
 The model and the evaluation cohort files created in this step will be used in the evaluation of the cohort definitions provided in the next step.
 
-#### Step 5: Creating and testing cohort definitions {-}
+#### Step 5: Creating and Testing Cohort Definitions {-}
 
 The next step is to create and test the cohort definitions to be evaluated. The desired performance characteristics may depend on the intended use of the cohort to address the research question of interest. For certain questions, a very sensitive algorithm may be required; others may require a more specific algorithm. The process for determining the performance characteristics for a cohort definition using PheValuator is shown in Figure \@ref(fig:phevaluatorDiagram).
 
@@ -285,7 +285,7 @@ Table: (\#tab:phevalStats) Performance characteristics of four cohort definition
 |             | MDCR      | 0.445 | 0.711 | 0.991 | 0.974 |
 
 
-## Generalizability of the evidence {#GeneralizabilityOfEvidence}
+## Generalizability of the Evidence {#GeneralizabilityOfEvidence}
 
 While a cohort can be well-defined and fully evaluated within the context of a given observational database, the clinical validity of the limited by the extent to which the results are considered generalizable to the target population of interest. Multiple observational studies on the same topic can yield different results, which can be caused by not only in their designs and analytic methods, but also in their choice of data source. @madigan_2013 demonstrated that choice of database affects the result of observational study. They systematically investigated heterogeneity in the results for 53 drug-outcome pairs and two study designs (cohort studies and self-controlled case series) across the 10 observational databases. Even though they held study design constant, substantial heterogeneity in effect estimates was observed. 
 

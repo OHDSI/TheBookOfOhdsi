@@ -17,7 +17,7 @@ DQ cannot be observed directly, but methodology has been developed to assess it.
 
 In this chapter we will first review possible sources of DQ problems, after which we'll discuss the theory of general and study-specific DQ assessments, followed by a step-by-step description of how these assessments can be performed using the OHDSI tools.
 
-## Sources of data quality problems
+## Sources of Data Quality Problems
 
 There are many threats to the quality of the data, starting as noted in Chapter \@ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the life cycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
 
@@ -32,7 +32,7 @@ Similarly, we often receive the data in a specific form, so we have little influ
 
 Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not use the term DQ for the quality issues during this step, but rather the terms *clinical validity*, *software validity* and *method validity*, which are discussed at length in Chapters \@ref(ClinicalValidity), \@ref(SoftwareValidity), and \@ref(MethodValidity), respectively.
 
-## Data quality in general
+## Data Quality in General
 
 We can ask the question whether our data is fit for the general purpose of observational research. @kahn_harmonized_2016 define such generic DQ as consisting of three components: 
 
@@ -55,7 +55,7 @@ Each component can be evaluated in two ways:
 
 \index{data quality!verification} \index{data quality!validation}
 
-### Data quality checks
+### Data Quality Checks
 
 \index{ACHILLES} \index{data quality!checks}
 
@@ -84,7 +84,7 @@ ACHILLES and DQD are executed against the data in the CDM. DQ issues identified 
 
 ```
 
-### ETL unit tests {#etlUnitTests}
+### ETL Unit Tests {#etlUnitTests}
 
 \index{ETL!unit tests}
 
@@ -131,7 +131,7 @@ Table: (\#tab:exampleTestResults) Example ETL unit test results.
 
 The power of these unit tests is that we can easily rerun them any time the ETL process is changed. 
 
-## Study-specific checks
+## Study-Specific Checks
 
 \index{data quality!study-specific checks}
 
@@ -143,7 +143,7 @@ A standard assessment is to review the concepts that are most relevant for the s
 
 Another assessment is to review the prevalence and changes in prevalence over time of the resulting cohorts generated using the cohort definitions developed for the study, and see whether these agree with expectations based on external clinical knowledge. For example, exposure of a new drug should be absent before introduction to the market, and will likely increase over time after introduction. Similarly, the prevalence of outcomes should be in line with what is know of the prevalence of the condition in the population. If a study is executed across a network of databases, we can compare the prevalences of cohorts across databases. If a cohort is highly prevalent in one database, but is missing in another database, there might be a DQ issue. Note  that such an assessment overlaps with the notion of *clinical validity*, as discussed in Chapter \@ref(ClinicalValidity); We may find unexpected prevalences in some databases not because of DQ issues, but because our cohort definition is not truly capturing the health state we are interested in, or because these health state rightly vary over databases that capture different patient populations.
 
-### Checking mappings
+### Checking Mappings
 
 One possible source of error that firmly falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker [^vocabIssueTrackerUrl] and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard concepts, but also the source codes. We can review both the source codes that do map to the concepts used in the study, as well as those that do not.
 
@@ -161,7 +161,7 @@ Even though the previous example demonstrates a chance finding of a source code 
 knitr::include_graphics("images/DataQuality/missingMapping.png")
 ```
 
-## ACHILLES in practice {#achillesInPractice}
+## ACHILLES in Practice {#achillesInPractice}
 
 Here we will demonstrate how to run ACHILLES against a database in the CDM format. 
 
@@ -215,7 +215,7 @@ Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a su
 ```{r achillesCodeChange, fig.cap='Monthly rate of diabetes coded in the ACHILLES web viewer.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/DataQuality/achillesCodeChange.png")
 ```
-## Data Quality Dashboard in practice {#dqdInPractice}
+## Data Quality Dashboard in Practice {#dqdInPractice}
 
 Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section \@ref(achillesInPractice). For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable `cdmDbSchema` to tell R where to look for the data.
 
@@ -253,7 +253,7 @@ Clicking on *Results* in the left-hand menu will take you to the drilldown resul
 knitr::include_graphics("images/DataQuality/dqdResults.png")
 ```
 
-## Study-specific checks in practice
+## Study-Specific Checks in Practice
 
 Next, we will execute several checks specifically for the angioedema cohort definition provided in Appendix \@ref(Angioedema). We will assume the connection details have been set as described in Section \@ref(achillesInPractice), and that the cohort definition JSON and SQL of the cohort definition have been saved in the files "cohort.json" and "cohort.sql", respectively. The JSON and SQL can be obtained from the Export tab in the ATLAS cohort definition function.
 
