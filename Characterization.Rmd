@@ -36,7 +36,7 @@ Another method to characterize a population is to describe the treatment sequenc
 
 The pathway analysis aims to summarize the treatments (events) received by persons diagnosed with a specific condition from the first drug prescription/dispensation. In this study, treatments were described after the diagnosis of type 2 diabetes, hypertension and depression respectively. The events for each person were then aggregated to a set of summary statistics and visualized for each condition and for each database.
 
-```{r treatmentPathwaysSunburstDataViz, fig.cap='OHDSI Treatment Pathways “sunburst” visualization for hypertension',echo=FALSE, out.width='100%', fig.align='center'}
+```{r treatmentPathwaysSunburstDataViz, fig.cap='OHDSI Treatment Pathways "sunburst" visualization for hypertension', echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Characterization/pnasTreatmentPathwaysSunburst.png")
 ```
 
@@ -86,13 +86,13 @@ Here we demonstrate how to use the data sources module in ATLAS to explore datab
 knitr::include_graphics("images/Characterization/atlasDataSourcesConditionTreemap.png")
 ```
 
-To search for a specific condition of interest, click on the Table tab to reveal the full list of conditions in the database with person count, prevalence and records per person. Using the filter box on the top, we can filter down the entries in the table based on concept name containing the term “hypertension”:
+To search for a specific condition of interest, click on the Table tab to reveal the full list of conditions in the database with person count, prevalence and records per person. Using the filter box on the top, we can filter down the entries in the table based on concept name containing the term "hypertension":
 
-```{r atlasDataSourcesConditionFiltered, fig.cap='Atlas Data Sources: Conditions with “hypertension” found in the concept name',echo=FALSE, out.width='100%', fig.align='center'}
+```{r atlasDataSourcesConditionFiltered, fig.cap='Atlas Data Sources: Conditions with "hypertension" found in the concept name',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Characterization/atlasDataSourcesConditionFiltered.png")
 ```
 
-We can explore a detailed drill-down report of a condition by clicking on a row. In this case, we will select “essential hypertension” to get a breakdown of the trends of the selected condition over time and by gender, the prevalence of the condition by month, the type recorded with the condition and the age at first occurrence of the diagnosis:
+We can explore a detailed drill-down report of a condition by clicking on a row. In this case, we will select "essential hypertension" to get a breakdown of the trends of the selected condition over time and by gender, the prevalence of the condition by month, the type recorded with the condition and the age at first occurrence of the diagnosis:
 
 ```{r atlasDataSourcesDrillDownReport, fig.cap='Atlas Data Sources: Essential hypertension drill down report',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Characterization/atlasDataSourcesDrillDownReport.png")
@@ -126,7 +126,7 @@ Click on ![](images/Characterization/atlasImportButton.png) to select the featur
 knitr::include_graphics("images/Characterization/atlasCharacterizationFeatureSelection.png")
 ```
 
-The figure above shows the list of features selected along with a description of what each feature will characterize for each cohort. The features that start with the name “Demographics” will calculate the demographic information for each person at the cohort start date. For the features that start with a domain name (i.e. Visit, Procedure, Condition, Drug, etc), these will characterize all recorded observations in that domain. Each domain feature has four options of time window preceding the cohort star, namely:
+The figure above shows the list of features selected along with a description of what each feature will characterize for each cohort. The features that start with the name "Demographics" will calculate the demographic information for each person at the cohort start date. For the features that start with a domain name (i.e. Visit, Procedure, Condition, Drug, etc), these will characterize all recorded observations in that domain. Each domain feature has four options of time window preceding the cohort star, namely:
 
 * **Any time prior**: uses all available time prior to cohort start that fall into the person’s observation period
 * **Long term**: 365 days prior up to and including the cohort start date. 
@@ -135,7 +135,7 @@ The figure above shows the list of features selected along with a description of
 
 #### Subgroup Analysis {-}
 
-What if we were interested in creating different characteristics based on gender? We can use the “subgroup analyses” section to define new subgroups of interest to use in our characterization.
+What if we were interested in creating different characteristics based on gender? We can use the "subgroup analyses" section to define new subgroups of interest to use in our characterization.
 
 To create a subgroup, click on and add your criteria for subgroup membership. This step is similar to the criteria used to identify cohort enrollment. In this example, we’ll define a set of criteria to identify females amongst our cohorts:
   
@@ -155,7 +155,7 @@ Once we have our characterization designed, we can execute this design against o
 knitr::include_graphics("images/Characterization/atlasCharacterizationExecutions.png")
 ```
 
-Once the analysis is complete, we can view reports by clicking on the “All Executions” button and from the list of executions, select “View Reports”. Alternatively, you can click “View latest result” to view the last execution performed.
+Once the analysis is complete, we can view reports by clicking on the "All Executions" button and from the list of executions, select "View Reports". Alternatively, you can click "View latest result" to view the last execution performed.
 
 ### Results
 
@@ -368,7 +368,7 @@ knitr::include_graphics("images/Characterization/atlasPathwaysEventCohorts.png")
 
 When complete, your design should look like the one above. Next, we’ll need to decide on a few additional analysis settings:
 
-* **Combination window**: This setting allows you to define a window of time, in days, in which overlap between events is considered a combination of events. For example, if two drugs represented by 2 event cohorts (event cohort 1 and event cohort 2) overlap within the combination window the pathways algorithm will combine them into “event cohort 1 + event cohort 2”.
+* **Combination window**: This setting allows you to define a window of time, in days, in which overlap between events is considered a combination of events. For example, if two drugs represented by 2 event cohorts (event cohort 1 and event cohort 2) overlap within the combination window the pathways algorithm will combine them into "event cohort 1 + event cohort 2".
 * **Minimum cell count**: Event cohorts with less than this number of people will be censored (removed) from the output to protect privacy.
 * **Max path length**: This refers to the maximum number of sequential events to consider for the analysis. 
   

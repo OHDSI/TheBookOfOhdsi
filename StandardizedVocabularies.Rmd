@@ -4,7 +4,7 @@
 
 *Chapter leads: Christian Reich & Anna Ostropolets*
 
-The OMOP Standardized Vocabularies as part of the OMOP CDM is a foundational part of the OHDSI research network. It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all th way through to the researcher, who is faced with a myriad of different ways to describe clinical Events. OMOP requires harmonization not only to a standardized format, but also a rigorous standard content. 
+The OMOP Standardized Vocabularies as part of the OMOP CDM is a foundational part of the OHDSI research network. It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical Events. OMOP requires harmonization not only to a standardized format, but also a rigorous standard content. 
 
 In this chapter we first describe the main principles of the Standardized Vocabularies, it’s components, and the relevant rules and conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
 
@@ -55,7 +55,7 @@ All clinical Events in the OMOP CDM are expressed as Concepts, which represent t
 knitr::include_graphics("images/StandardizedVocabularies/concept.png")
 ```  
 
-This system is meant to be **comprehensive**, i.e. there are enough Concepts to cover anyEvent relevant to the patient's healthcare experience (e.g. Conditions, Procedures, Exposures to Drug, etc.) as well as some of the administrative information of the healthcare system (e.g. Visits, Care Sites, etc.).
+This system is meant to be **comprehensive**, i.e. there are enough Concepts to cover any event relevant to the patient's healthcare experience (e.g. Conditions, Procedures, Exposures to Drug, etc.) as well as some of the administrative information of the healthcare system (e.g. Visits, Care Sites, etc.).
 
 ### Concept IDs
 
@@ -65,12 +65,12 @@ Each Concept is assigned a Concept ID to be used as Primary Key. This meaningles
 
 Each concept has one name. Names are always in English. They are imported from the source of the vocabulary. If the source vocabulary has more than one name, the most expressive is selected and the remaining ones are stored in the CONCEPT_SYNONYM table under the same CONCEPT_ID key. Non-English names are recorded in CONCEPT_SYNONYM as well, with the appropriate language Concept ID in the LANGUAGE_CONCEPT_ID field. The name is 255 characters long, which means that very long names get truncated and the full length version recorded as another synonym, which can hold up to 1000 characters. 
 
-### Domains
+### Domains {#conceptDomains}
 
 Each Concept is assigned a Domain in the DOMAIN_ID field, which in contrast to the numerical CONCEPT_ID is a short case-sensitive unique alphanumeric ID for the Domain. Examples of such Domain identifiers are Condition, Drug, Procedure, Visit, Device, Specimen, etc. "Dirty", ambiguous or pre-coordinated (combination) Concepts can belong to a combination Domain, but Standard Concepts (see below) are always assigned a singular Domain. Domains also direct to which CDM table and field a clinical Event or Event attribute is recorded.
 Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in [Pallas](https://github.com/ohDSI/vocabulary-v5.0). Source vocabularies tend to combine codes of mixed Domains, but to a varying degree (see Figure \@ref(fig:domains)). \index{domain!concept}
 
-```{r domains, fig.cap='Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single Domain, but in reality they are mixed.',echo=FALSE, out.width='80%', fig.align='center'}
+```{r domains, fig.cap='Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single Domain, but in reality they are mixed.',echo=FALSE, out.width='70%', fig.align='center'}
 knitr::include_graphics("images/StandardizedVocabularies/domains.png")
 ```  
 
@@ -84,7 +84,7 @@ Each Vocabulary has a short case-sensitive unique alphanumeric ID, which general
 
 Some vocabularies classify their codes or Concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such Concept Classes, which SNOMED refers to as "Semantic Tags": "Clinical Finding", "Social Context", "Body Structure" etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have Concept Classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any Concept Classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID. \index{concept!class}
 
-Table: (\#tab:sublassification) Vocabularies with or without horizontal and vertical subclassification principles in Concept Class.
+Table: (\#tab:sublassification) Vocabularies with or without horizontal and vertical sub-classification principles in Concept Class.
 
 Concept Class subdivision principle |	Vocabulary
 :-------- |:----------------------------------
@@ -116,7 +116,7 @@ The choice of Concept designation as Standard, non-Standard and Classification i
 Table: (\#tab:vocabList) List of vocabularies to utilize for Standard/non-Standard/Classification Concept assignments. 
 
 Domain | for Standard Concepts | for Source Concepts | for Classification Concepts
-:------ |:--------------- |:--------------- |:---------------
+:-------- |:--------------- |:--------------- |:-------------
 Condition | SNOMED, ICDO3 | SNOMED Veterinary | MedDRA
 Procedure | SNOMED, CPT4, HCPCS, ICD10PCS, ICD9Proc, OPCS4 | SNOMED Veterinary, HemOnc, NAACCR | None at this point
 Measurement | SNOMED, LOINC | SNOMED Veterinary, NAACCR, CPT4, HCPCS, OPCS4, PPI | None at this point
@@ -132,7 +132,7 @@ These are the identifiers used in the source vocabularies. For example, ICD9CM o
 Table: (\#tab:code1001) Concepts with identical Concept Code 1001, but different Vocabularies, Domains and Concept Classes.
 
 Concept ID | Concept Code | Concept Name | Domain ID | Vocabulary ID | Concept Class
-:---------- |:---------- |:---------- |:---------- |:---------- |:---------- 
+:--------- |:---- |:------------ |:---------- |:---------- |:---------- 
 35803438 | 1001 | Granulocyte colony-stimulating factors | Drug | HemOnc | Component Class
 35942070 | 1001 | AJCC TNM Clin T | Measurement | NAACCR | NAACCR Variable
 1036059 | 1001 | Antipyrine | Drug | RxNorm | Ingredient
@@ -143,16 +143,28 @@ Concept ID | Concept Code | Concept Name | Domain ID | Vocabulary ID | Concept C
 
 ### Life Cycle
 
-Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible situations, as described in Table \@ref(tab:validityRules). \index{concept!life cycle}
+Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible life-cycle statuses:
 
-Table: (\#tab:validityRules) Validity rules for concepts, with active, deprecated, upgraded and reused concepts. 
-
-Life cycle state | Explanation | VALID_START_DATE | VALID_END_DATE | INVALID_REASON
-:---------- |:---------- |:---------- |:---------- |:---------- 
-Active or new Concept | Concept in use | Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1 | Set to 2099-12-31 as a convention to indicate "Might become invalid in an undefined future, but active right now" | NULL
-Deprecated Concept with no successor | Concept inactive and cannot be used as Standard (see below) | as above | Day in the past indicating deprecation, or if that is not known day of vocabulary refresh where Concept in vocabulary went missing or set to inactive | "D"
-Upgraded Concept with successor | Concept inactive, but has defined successor. These are typically Concepts which went through de-duplication. | as above | Day in the past indicating an upgrade, or if that is not known day of vocabulary refresh where the upgrade was included | "U"
-Reused code for another new Concept | The vocabulary reused the Concept code of this deprecated Concept for a new Concept | as above | As in deprecated Concept with no successor above. | "R"
+- **Active or new concept**
+	- Description: Concept in use.
+	- VALID_START_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1.
+	- VALID_END_DATE: Set to 2099-12-31 as a convention to indicate "Might become invalid in an undefined future, but active right now".
+	- INVALID_REASON: NULL
+- **Deprecated Concept with no successor**
+	- Description:  Concept inactive and cannot be used as Standard (see below).
+	- VALID_START_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1. 
+	- VALID_END_DATE: Day in the past indicating deprecation, or if that is not known day of vocabulary refresh where Concept in vocabulary went missing or set to inactive.
+	- INVALID_REASON: "D"
+- **Upgraded Concept with successor**
+	- Description: Concept inactive, but has defined successor. These are typically Concepts which went through de-duplication.
+	- VALID_START_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1. 
+	- VALID_END_DATE: Day in the past indicating an upgrade, or if that is not known day of vocabulary refresh where the upgrade was included.
+	- INVALID_REASON: "U"
+- **Reused code for another new Concept**
+	- Description: The vocabulary reused the Concept code of this deprecated Concept for a new Concept.
+	- VALID_START_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1. 
+	- VALID_END_DATE: Day in the past indicating deprecation, or if that is not known day of vocabulary refresh where Concept in vocabulary went missing or set to inactive.
+	- INVALID_REASON: "R"
 
 In general, Concept Codes are not reused. But there are a few vocabularies that deviate from this rule, in particular HCPCS, NDC and DRG. For those, the same concept code appears in more than one concept of the same vocabulary. There CONCPT_ID value stays unique. These reused Concept Codes are marked with an "R" in the INVALID_REASON field, and the VALID_START_DATE to VALID_END_DATE period should be used to distinguish Concepts with the same Concept Codes.
 
@@ -169,7 +181,7 @@ These relationships provide translations from non-Standard to Standard concepts,
 Table: (\#tab:mappingRelationships) Type of mapping relationships.
 
 Relationship ID pair | Purpose
-:------- | :-------------------------------------------------------------
+:------------- | :----------------------------------------------------
 "Maps to" and "Mapped from" | Mapping to Standard Concepts. Standard Concepts are mapped to themselves, non-Standard Concepts to Standard Concepts. Most non-Standard and all Standard Concepts have this relationship to a Standard Concept. The former are stored in *_SOURCE_CONCEPT_ID, and the latter in the *_CONCEPT_ID fields. Classification Concepts are not mapped.
 "Maps to value" and "Value mapped from" | Mapping to a Concept that represents a Value to be placed into the VALUE_AS_CONCEPT_ID fields of the MEASUREMENT and OBSERVATION tables.
 	
@@ -217,7 +229,7 @@ Many of these define relationships between clinical Events and can be used for i
 Table: (\#tab:findingSite) "Finding site of" relationship of the "Urethra", indicating Conditions that are situated all in the this anatomical structure.
 
 CONCEPT_ID_1 | CONCEPT_ID_2
-:---------------------- | :----------------------
+:---------------- | :----------------------------
 4000504 "Urethra part" | 36713433 "Partial duplication of urethra Urethra part"
 4000504 "Urethra part" | 433583 "Epispadias"
 4000504 "Urethra part" | 443533 "Epispadias, male"
@@ -308,10 +320,10 @@ Many vocabularies contain contain codes about absence of information. For exampl
 
 #### Prerequisites {-}
 
-For these first exercises you will need to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdmUrl] or ATLAS[^atlasCdmUrl].
+For these first exercises you will need to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdm2Url] or ATLAS[^atlasCdm2Url].
 
-[^athenaCdmUrl]: http://athena.ohdsi.org/
-[^atlasCdmUrl]: http://atlas-demo.ohdsi.org
+[^athenaCdm2Url]: http://athena.ohdsi.org/
+[^atlasCdm2Url]: http://atlas-demo.ohdsi.org
 
 ```{exercise, exerciseVocab1}
 What is the Standard Concept ID for "Gastrointestinal hemorrhage"?
