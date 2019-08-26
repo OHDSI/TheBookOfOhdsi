@@ -38,7 +38,7 @@ All vocabularies of the Standardized Vocabularies are consolidated into the same
 
 In order to obtain the Standardized Vocabularies, you do not have to run Pallas yourself. Instead, you can download the latest version from ATHENA[^athenaUrl] and load it into your local database. ATHENA also allows faceted search of the Vocabularies.
 
-[^athenaUrl] http://athena.ohdsi.org
+[^athenaUrl]: http://athena.ohdsi.org
 
 To download a zip file with all Standardized Vocabularies tables select all the vocabularies you need for your OMOP CDM. Vocabularies with Standard Concepts (see below) and very common usage are preselected. Add vocabularies that are used in your source data. Vocabularies that are proprietary have no select button. Click on the "License required" button to incorporate such a vocabulary into your list. The Vocabulary Team will contact you and request you demonstrate your license or help you connect to the right folks to obtain one. 
 
@@ -305,3 +305,23 @@ Many vocabularies contain contain codes about absence of information. For exampl
 - Concepts within a Domain are organized into hierarchies. The quality of he hierarchy differes between Domains, and the completion of the hierarchy system is an ongoing task
 - You are strongly encouraged to engage with the community if you believe you found a mistake or inaccuracy
 </div>\EndKnitrBlock{rmdsummary}
+
+## Exercises
+
+#### Prerequisites {-}
+
+For these first exercises you will need to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdmUrl] or ATLAS[^atlasCdmUrl].
+
+[^athenaCdmUrl]: http://athena.ohdsi.org/
+[^atlasCdmUrl]: http://atlas-demo.ohdsi.org
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseVocab1"><strong>(\#exr:exerciseVocab1) </strong></span>What is the Standard Concept ID for "Gastrointestinal hemorrhage"?
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseVocab2"><strong>(\#exr:exerciseVocab2) </strong></span>Which ICD-10CM codes map to the Standard Concept for "Gastrointestinal hemorrhage"? Which ICD-9CM codes map to this Standard Concept?
+</div>\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseVocab3"><strong>(\#exr:exerciseVocab3) </strong></span>What are the MedDRA preferred terms that are equivalent to the Standard Concept for "Gastrointestinal hemorrhage"?
+</div>\EndKnitrBlock{exercise}
+
+Suggested answers can be found in Appendix \@ref(Vocabanswers).

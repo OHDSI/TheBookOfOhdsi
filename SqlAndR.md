@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.l12ubsv6children ;"
+## [1] "SELECT * FROM temp_schema.y0pyk3xqchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -625,7 +625,7 @@ Here we grouped records in the CONDITION_OCCURRENCE table by values of the CONDI
 
 ## Using the Vocabulary When Querying
 
-Many operations require the vocabulary to be useful. The Vocabulary tables are part of the CDM, and are therefore available using SQL queries. Querying the Vocabulary is already described at length in Chapter \@ref(StandardizedVocabularies). Here we show how queries against the Vocabulary can be combined with queries against the CDM. Many fields in the CDM contain concept IDs which can be resolved using the CONCEPT table. For example, we may wish to count the number of persons in the database stratified by gender, and it would be convenient to resolve the GENDER_CONCEPT_ID field to a concept name:
+Many operations require the vocabulary to be useful. The Vocabulary tables are part of the CDM, and are therefore available using SQL queries. Here we show how queries against the Vocabulary can be combined with queries against the CDM. Many fields in the CDM contain concept IDs which can be resolved using the CONCEPT table. For example, we may wish to count the number of persons in the database stratified by gender, and it would be convenient to resolve the GENDER_CONCEPT_ID field to a concept name:
 
 ```sql
 SELECT COUNT(*) AS subject_count,

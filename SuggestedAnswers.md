@@ -152,6 +152,34 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 
 
 
+## Standardized Vocabularies {Vocabanswers}
+
+#### Exercise \@ref(exr:exerciseVocab1) {-}
+
+Concept ID 192671 ("Gastrointestinal hemorrhage")
+
+#### Exercise \@ref(exr:exerciseVocab2) {-}
+
+ICD-10CM codes:
+
+- K29.91 "Gastroduodenitis, unspecified, with bleeding"
+- K92.2 "Gastrointestinal hemorrhage, unspecified"
+
+ICD-9CM codes:
+
+- 578 "Gastrointestinal hemorrhage"
+- 578.9 "Hemorrhage of gastrointestinal tract, unspecified"
+
+#### Exercise \@ref(exr:exerciseVocab3) {-}
+
+MedDRA preferred terms:
+
+- "Gastrointestinal haemorrhage" (Concept ID 35707864)
+- "Intestinal haemorrhage" (Concept ID 35707858)
+
+
+
+
 
 ## Extract Transform Load {#Etlanswers}
 

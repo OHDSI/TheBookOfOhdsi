@@ -1,8 +1,8 @@
 # Clinical Validity {#ClinicalValidity}
 
-*Chapter leads: Joel Swerdel, Seng Chan You, Ray Chen, Patrick Ryan*
+*Chapter leads: Joel Swerdel, Seng Chan You, Ray Chen & Patrick Ryan*
 
->The likelihood of transforming matter into energy is something akin to shooting birds in the dark in a country where there are only a few birds. *Einstein, 1935*
+> The likelihood of transforming matter into energy is something akin to shooting birds in the dark in a country where there are only a few birds. *Einstein, 1935*
 
 The vision of OHDSI is "A world in which observational research produces a comprehensive understanding of health and disease". Retrospective designs provide a vehicle for research using existing data but can be riddled with threats to various aspects of validity as discussed in the Chapter\@ref(EvidenceQuality). It is not easy to isolate clinical validity from quality of data and statistical methodology, but here we will focus on three aspects in terms of clinical validity: "Characteristics of health care databases", "Cohort validation", and "Generalizability of the evidence". Let’s go back to the example of the population-level estimation (Chapter \@ref(PopulationLevelEstimation)). We tried to answer the question "Do ACE inhibitors cause angioedema compared to thiazide or thiazide-like diuretics?" And in that example, we demonstrated that ACE inhibitors caused more angioedema than thiazide or thiazide-like diuretics. This chapter is dedicated to answer the question: "To what extent does the analysis conducted match the clinical intention?" \index{clinical validity} 
 
@@ -105,7 +105,7 @@ The process is as follows:
 
 1. Create an extremely specific (“**xSpec**”) cohort: Determine a set of persons with a very high likelihood of having the outcome of interest to be used as noisy positive labels when training a diagnostic predictive model.
 2. Create an extremely sensitive (“**xSens**”) cohort: Determine a set of persons that should include anyone who could possible have the outcome. This cohort will be used to identify its inverse: the set of people we are confident do not have the outcome, to be used as noisy negative labels when training a diagnostic predictive model.
-3. Fit a predictive model using the xSpec and xSens cohort: As described in Chapter \@ref(PatientLevelPredicition), we fit a model using a wide array of patient features as predictors, and aim to predict whether a person belongs to the xSpec cohort (those we believe have the outcome) or the inverse of the xSens cohort (those we believe do not have the outcome).
+3. Fit a predictive model using the xSpec and xSens cohort: As described in Chapter \@ref(PatientLevelPrediction), we fit a model using a wide array of patient features as predictors, and aim to predict whether a person belongs to the xSpec cohort (those we believe have the outcome) or the inverse of the xSens cohort (those we believe do not have the outcome).
 4. Apply the fitted model to estimate the probability of the outcome for a hold-out set of persons who will be used to evaluate cohort definition performance: The set of predictors from the model can be applied to a person’s data to estimate the predicted probability that the person belongs to the phenotype. We use these predictions as a **probabilistic gold standard**. 
 5. Evaluate the performance characteristics of the cohort definitions: We compare the predicted probability to the binary classification of a cohort definition (the test conditions for the confusion matrix). Using the test conditions and the estimates for the true conditions, we can fully populate the confusion matrix and estimate the entire set of performance characteristics, i.e., sensitivity, specificity, and predictive values. 
 
@@ -251,8 +251,10 @@ connectionDetails <- createConnectionDetails(
 phenoResult <- testPhenotype(
   connectionDetails = connectionDetails,
   cutPoints = c(0.1, 0.2, 0.3, 0.4, 0.5, "EV", 0.6, 0.7, 0.8, 0.9),
-  resultsFileName = "c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds",
-  modelFileName = "c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds",
+  resultsFileName = 
+    "c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds",
+  modelFileName = 
+    "c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds",
   cohortPheno = 1769702,
   phenText = "All MI by Phenotype 1 X In-patient, 1st Position",
   order = 1,
@@ -266,7 +268,7 @@ In this example, a wide range of prediction thresholds are provided (cutPoints) 
 
 Using this process, Table \@ref(tab:phevalStats) displays the performance characteristics for four cohort definitions for MI across five datasets. For a cohort definition similar to the one evaluated by Cutrona and colleagues, “>=1 X HOI, In-Patient”, we found a mean PPV of 67% (range: 59%-74%).
 
-Table: (\#tab:phevalStats) Performance characteristics of four cohort definitions using diagnostic condition codes to determine myocardial infarction on multiple datasets using pheValuator. Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the cohort; 
+Table: (\#tab:phevalStats) Performance characteristics of four cohort definitions using diagnostic condition codes to determine myocardial infarction on multiple datasets using pheValuator. Sens – Sensitivity ; PPV – Positive Predictive Value ; Spec – Specificity; NPV – Negative Predictive Value; Dx Code – Diagnosis code for the cohort.
 
 | Phenotype   Algorithm                        | Database  | Sens  | PPV   | Spec  | NPV   |
 |:---------------------------- |:--------- |:-----:|:-----:|:-----:|:-----:|
