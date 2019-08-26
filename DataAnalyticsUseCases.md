@@ -62,7 +62,7 @@ And the desired output is:
 - Treatment pathways
 - Line of therapy
 
-## Population-level estimation
+## Population-Level Estimation
 
 \index{population-level estimation}
 
@@ -97,7 +97,7 @@ And the desired output is:
 - Safety surveillance
 - Comparative effectiveness
 
-## Patient-level prediction
+## Patient-Level Prediction
 
 \index{patient-level prediction}
 
@@ -126,23 +126,23 @@ Population-level estimation and patient-level prediction overlap to a certain ex
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">People have a natural tendency to erroneously interpret predictive models as if they are causal models. But a predictive model can only show correlation, never causation. For example, diabetic drug use might be a strong predictor for myocardial infarction (MI) because diabetes is a strong risk factor for MI. However, that does not mean that stopping the diabetic drugs will prevent MI!</div>\EndKnitrBlock{rmdimportant}
 
-## Example use cases in hypertension
+## Example Use Cases in Hypertension
 
 You’re a researcher interested in studying the effects of ACE inhibitor monotherapy vs. thiazide diuretic monotherapy on the outcomes of acute myocardial infarction and angioedema as first-line treatment for hypertension. You understand that based on the OHDSI literature, you are asking a population-level effect estimation question but first, you need to do some homework on how to characterize this particular treatment of interest.
 
-### Characterization questions
+### Characterization Questions
 
 Acute myocardial infarction is a cardiovascular complication that can occur in patients with high blood pressure, so effective treatment for hypertension should reduce the risk. Angioedema is a known side effect of ACE inhibitors, which is rare but potentially serious.  You start by creating cohorts (see Chapter \@ref(Cohorts))  for the exposures of interest (new users of ACE inhibitors and new users of thiazide diuretics). You perform a characterization (see Chapter \@ref(Characterization)) analysis to summarize baseline characteristics of these exposure populations, including demographics, co morbid conditions, and concomitant medications.  You perform another characterization analysis to estimate the incidence of selected outcomes within these exposure populations.  Here, you ask ‘how often does 1) acute myocardial infarction and 2) angioedema occur during the period of exposure to ACE inhibitors and thiazide diuretics?’ These characterizations allow us to assess the feasibility of conducting a population-level estimation study, to evaluate whether the two treatment groups are comparable, and to identify ‘risk factors’ that might predict which treatment choice that patients made.  
 
-### Population-level estimation question
+### Population-Level Estimation Question
 
 The population-level effect estimation study (see Chapter \@ref(PopulationLevelEstimation)) estimates the relative risk of ACE inhibitor vs, thiazide use for the outcomes of AMI and angioedema.  Here, you further evaluate through study diagnostics and negative controls whether we can produce a reliable estimate of the average treatment effect.
 
-### Patient-level prediction question
+### Patient-Level Prediction Question
 
 Independent of whether there is a causal effect of the exposures, you are also interested in trying to determine which patients are at highest risk of the outcomes. This is a patient-level prediction problem (see Chapter \@ref(PatientLevelPrediction)). Here, you develop a prediction model that evaluates: amongst the patients who are new users of ACE inhibitors, which patients are at highest risk of developing acute myocardial infarction during the 1 year after starting treatment. The model allows us to predict, for a patient who has just been prescribed ACE for the first time, based on events observed from their medical history, what is the chance that they will experience AMI in the next 1 year.
 
-## Limitations of observational research
+## Limitations of Observational Research
 
 \index{limitations of obervational research}
 
@@ -153,11 +153,11 @@ There are many important healthcare questions for which OHDSI databases cannot p
 - Many outcomes and other variables are sparsely recorded if at all. These include mortality, behavioral outcomes, lifestyle, and socioeconomic status.
 - Since patients tend to encounter the healthcare system only when they are unwell, measurement of the benefits of treatments can prove elusive.
 
-### Erroneous data
+### Erroneous Data
 
 Clinical data recorded in OHDSI databases can deviate from clinical reality. For example, a patient's record may include a code for myocardial infarction even though the patient never experienced a myocardial infarction. Similarly, a lab value may be erroneous or an incorrect code for a procedure may appear in the database. Chapters \@ref(DataQuality) and \@ref(ClinicalValidity) discuss several of these issues and good practice aims to identify and correct for as many of these kinds of issues as possible. Nonetheless, erroneous data inevitably persist to some extent and can undermine the validity of subsequent analyses. An extensive literature focuses on adjustment of statistical inferences to account for errors-in-data - see, for example, @fuller2009measurement.
 
-### Missing data
+### Missing Data
 
 \index{missing data}
 

@@ -23,7 +23,7 @@ Two closely-integrated tools have been developed to support the ETL design proce
 
 ### White Rabbit
 
-To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the [White Rabbit](https://github.com/OHDSI/WhiteRabbit) tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the [OMOP CDM](https://github.com/OHDSI/CommonDataModel). White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub [^whiteRabbitGithubUrl]. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
+To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the [White Rabbit](https://github.com/OHDSI/WhiteRabbit) tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the [OMOP CDM](https://github.com/OHDSI/CommonDataModel). White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub[^whiteRabbitGithubUrl]. \index{White Rabbit} \index{data profiling|see {White Rabbit}}
 
 [^whiteRabbitGithubUrl]: https://github.com/OHDSI/WhiteRabbit.
 
@@ -44,14 +44,10 @@ The typical sequence for using the software to scan source data:
 
 After downloading and installing the White Rabbit application, the first thing you need to do is set a working folder. Any files that White Rabbit creates will be exported to this local folder. Use the "Pick Folder" button shown in Figure \@ref(fig:WhiteRabbitLocation) to navigate in your local environment where you would like the scan document to go. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitLocation} 
-
-}
-
-\caption{The "Pick Folder" button allows the specification of a working folder for the White Rabbit application.}(\#fig:WhiteRabbitLocation)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/WhiteRabbitLocation.png" alt="The &quot;Pick Folder&quot; button allows the specification of a working folder for the White Rabbit application." width="100%" />
+<p class="caption">(\#fig:WhiteRabbitLocation)The "Pick Folder" button allows the specification of a working folder for the White Rabbit application.</p>
+</div>
 
 #### Connection to a Database {-}
 
@@ -61,14 +57,10 @@ White Rabbit supports delimited text files and various database platforms. Hover
 
 After connecting to a database, you can scan the tables contained therein. A scan generates a report containing information on the source data that can be used to help design the ETL. Using the Scan tab shown in Figure \@ref(fig:WhiteRabbitAddTables) you can either select individual tables in the selected source database by clicking on “Add” (Ctrl + mouse click), or automatically select all tables in the database by clicking on “Add all in DB”.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/WhiteRabbitAddTables} 
-
-}
-
-\caption{White Rabbit Scan tab.}(\#fig:WhiteRabbitAddTables)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/WhiteRabbitAddTables.png" alt="White Rabbit Scan tab." width="100%" />
+<p class="caption">(\#fig:WhiteRabbitAddTables)White Rabbit Scan tab.</p>
+</div>
 
 There are a few setting options as well with the scan:
 
@@ -82,25 +74,17 @@ Once all settings are completed, press the “Scan tables” button. After the s
 
 Once the scan is complete, an Excel file is generated in the selected folder with one tab present for each table scanned as well as an overview tab. The overview tab lists all tables scanned, each field in each table, the data type of each field, the maximum length of the field, the number of rows in the table, the number of rows scanned, and how often each field was found to be empty. Figure \@ref(fig:ScanOverviewTab). shows an example overview tab.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/ScanOverviewTab} 
-
-}
-
-\caption{Example overview tab from a scan report.}(\#fig:ScanOverviewTab)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/ScanOverviewTab.png" alt="Example overview tab from a scan report." width="100%" />
+<p class="caption">(\#fig:ScanOverviewTab)Example overview tab from a scan report.</p>
+</div>
 
 The tabs for each of the tables show each field, the values in each field, and the frequency of each value. Each source table column will generate two columns in the Excel. One column will list all distinct values that have a “Min cell count” greater than what was set at time of the scan. If a list of unique values was truncated, the last value in the list will be “List truncated”; this indicates that there are one or more additional unique source values that appear less than the number entered in the “Min cell count”. Next to each distinct value will be a second column that contains the frequency (the number of times that value occurs in the sample). These two columns (distinct values and frequency) will repeat for all the source columns in the table profiled in the workbook. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.3\linewidth]{images/ExtractTransformLoad/ScanSex} 
-
-}
-
-\caption{Example values for a single column.}(\#fig:scanSex)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/ScanSex.png" alt="Example values for a single column." width="30%" />
+<p class="caption">(\#fig:scanSex)Example values for a single column.</p>
+</div>
 
 The report is powerful in understanding your source data by highlighting what exists. For example, if the results shown in Figure \@ref(fig:scanSex) were given back on the “Sex” column within one of the tables scanned, we can see that there were two common values (1 and 2) that appeared 61,491 and 35,401 times respectively. White Rabbit will not define 1 as male and 2 as female; the data holder will typically need to define source codes unique to the source system. However, these two values (1 & 2) are not the only values present in the data because we see this list was truncated. These other values appear with very low frequency (defined by “Min cell count”) and often represent incorrect or highly suspicious values. When generating an ETL we should not only plan to handle the high-frequency gender concepts 1 and 2 but the other low-frequency values that exist within this column. For example, if those lower frequency genders were “NULL” we want to make sure the ETL can handle processing that data and knows what to do in that situation. 
 
@@ -108,7 +92,7 @@ The report is powerful in understanding your source data by highlighting what ex
 
 With the White Rabbit scan in hand, we have a clear picture of the source data. We also know the full specification of the CDM. Now we need to define the logic to go from one to the other. This design activity requires thorough knowledge of both the source data and the CDM. The Rabbit-in-a-Hat tools that comes with the White Rabbit software is specifically designed to support a team of experts in these areas. In a typical setting, the ETL design team sits together in a room, while Rabbit-in-a-Hat is projected on a screen. In a first round, the table-to-table mappings can be collaboratively decided, after which field-to-field mappings can be designed, while defining the logic by which values will be transformed. \index{Rabbit-In-A-Hat} \index{ETL design|see {Rabbit-In-A-Hat}}
 
-#### Scope and purpose {-}
+#### Scope and Purpose {-}
 
 Rabbit-In-a-Hat is designed to read and display a White Rabbit scan document. White Rabbit generates information about the source data while Rabbit-In-a-Hat uses that information and through a graphical user interface to allow a user to connect source data to tables and columns within the CDM. Rabbit-In-a-Hat generates documentation for the ETL process, it does not generate code to create an ETL.  
 
@@ -132,29 +116,21 @@ Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are re
 
 Since the CDM is a person-centric model it is always a good idea to start mapping the PERSON table first. Every clinical event table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, etc.) refers to the PERSON table by way of the person_id so working out the logic for the PERSON table first makes it easier later on. After the PERSON table a good rule of thumb is to convert the OBSERVATION_PERIOD table next. Each person in a CDM database should have at least one OBSERVATION_PERIOD and, generally, most events for a person fall within this timeframe. Once the PERSON and OBSERVATION_PERIOD tables are done the dimensional tables like PROVIDER, CARE_SITE, and LOCATION are typically next. The final table logic that should be worked out prior to the clinical tables is VISIT_OCCURRENCE. Often this is the most complicated logic in the entire ETL and it is some of the most crucial since most events that occur during the course of a person’s patient journey will happen during visits. Once those tables are finished it is your choice which CDM tables to map and in which order.  
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/flowOfEtl} 
-
-}
-
-\caption{General flow of an ETL and which tables to map first.}(\#fig:etlFlow)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/flowOfEtl.png" alt="General flow of an ETL and which tables to map first." width="100%" />
+<p class="caption">(\#fig:etlFlow)General flow of an ETL and which tables to map first.</p>
+</div>
 
 It is often the case that, during CDM conversion, you will need to make provisions for intermediate tables. This could be for assigning the correct VISIT_OCCURRENCE_IDs to events, or for mapping source codes to standard concepts (doing this step on the fly is often very slow). Intermediate tables are 100% allowed and encouraged. What is discouraged is the persistence and reliance on these intermediate tables once the conversion is complete. 
 
-#### Mapping Example: Person table  {-}
+#### Mapping Example: Person Table  {-}
 
 The Synthea data structure contains 20 columns in the patients table but not all were needed to populate the PERSON table, as seen in Figure \@ref(fig:syntheaPerson). This is very common and should not be cause for alarm. In this example many of the data points in the Synthea patients table that were not used in the CDM PERSON table were additional identifiers like patient name, driver’s license number, and passport number.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/syntheaPersonTable} 
-
-}
-
-\caption{Mapping of Synthea Patients table to CDM PERSON table.}(\#fig:syntheaPerson)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/syntheaPersonTable.png" alt="Mapping of Synthea Patients table to CDM PERSON table." width="100%" />
+<p class="caption">(\#fig:syntheaPerson)Mapping of Synthea Patients table to CDM PERSON table.</p>
+</div>
 
 Table \@ref(tab:syntheaEtlPerson) below shows the logic that was imposed on the Synthea patients table to convert it to the CDM PERSON table. The ‘Destination Field’ discusses where in the CDM data is being mapped to. The ‘Source field’ highlights the column from the source table (in this case patients) that will be used to populate the CDM column. Finally, the ‘Logic & comments’ column gives explanations for the logic. 
 
@@ -181,11 +157,11 @@ Table: (\#tab:syntheaEtlPerson) ETL logic to convert the Synthea Patients table 
 | ETHNICITY_SOURCE_VALUE      | ethnicity   |  In this case the ETHNICITY_SOURCE_VALUE will have more granularity than the ETHNICITY_CONCEPT_ID.  |
 | ETHNICITY_SOURCE_CONCEPT_ID |             |   |
 
-For more examples on how the Synthea dataset was mapped to the CDM please see the full specification document [^syntheaEtlUrl].
+For more examples on how the Synthea dataset was mapped to the CDM please see the full specification document[^syntheaEtlUrl].
 
 [^syntheaEtlUrl]: https://ohdsi.github.io/ETL-Synthea/
 
-## Step 2: Create the code mappings
+## Step 2: Create the Code Mappings
 
 More and more source codes are being added to the OMOP Vocabulary all the time. This means that the coding systems in the data being transformed to the CDM may already be included and mapped. Check the VOCABULARY table in the OMOP Vocabulary to see which vocabularies are included. To extract the mapping from non-standard source codes (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having relationship_id = “Maps to”. For example, to find the standard concept ID for the ICD-10CM code ‘I21’ (“Acute Myocardial Infarction”), we can use the following SQL: 
 
@@ -210,12 +186,12 @@ Unfortunately, sometimes the source data uses coding systems that are not in the
 
 ### Usagi
 
-Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate [^GoogleTranslateUrl] often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub [^UsagiUrl]. \index{Usagi} \index{source code mapping|see {Usagi}}
+Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate[^GoogleTranslateUrl] often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub[^UsagiUrl]. \index{Usagi} \index{source code mapping|see {Usagi}}
 
 [^GoogleTranslateUrl]: https://translate.google.com/
 [^UsagiUrl]: https://github.com/OHDSI/Usagi
 
-#### Scope and purpose {-}
+#### Scope and Purpose {-}
 
 Source codes that need mapping are loaded into the Usagi (if the codes are not in English additional translations columns are needed). A term similarity approach is used to connect source codes to Vocabulary concepts. However, these code connections need to be manually reviewed and Usagi provides an interface to facilitate that. Usagi will only propose concepts that are marked as Standard concepts in the Vocabulary. 
 
@@ -236,14 +212,10 @@ Note: source code extracts should be broken out by domain (i.e. drugs, procedure
 
 Source codes are loaded into Usagi from the File –> Import codes menu. From here an “Import codes …” will display as seen in Figure \@ref(fig:usagiImport). In this figure, the source code terms were in Dutch and were also translated into English. Usagi will leverage the English translations to map to the standard vocabulary.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/usagiImport} 
-
-}
-
-\caption{Usagi source code input screen.}(\#fig:usagiImport)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/usagiImport.png" alt="Usagi source code input screen." width="100%" />
+<p class="caption">(\#fig:usagiImport)Usagi source code input screen.</p>
+</div>
 
 The “Column mapping” section (bottom left) is where you define for Usagi how to use the imported table. If you mouse hover over the drop downs, a pop-up will appear defining each column. Usagi will not use the “Additional info” column(s) as information to associate source codes to Vocabulary concept codes; however, this additional information may help the individual reviewing the source code mapping and should be included. 
 
@@ -263,14 +235,10 @@ Once all your settings are finalized, click the “Import” button to import th
 
 Once you have imported your input file of source codes, the mapping process begins. In Figure \@ref(fig:usagiOverview), you see the Usagi screen is made up of 3 main sections: an overview table, the selected mapping section, and place to perform searches. Note that in any of the tables, you can right-click to select the columns that are shown or hidden to reduce the visual complexity.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/usagiOverview} 
-
-}
-
-\caption{Usagi source code input screen.}(\#fig:usagiOverview)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/usagiOverview.png" alt="Usagi source code input screen." width="100%" />
+<p class="caption">(\#fig:usagiOverview)Usagi source code input screen.</p>
+</div>
 
 #### Approving a Suggested Mapping {-}
 
@@ -288,20 +256,16 @@ To continue our example, suppose we used the search term “Cough” to see if w
 
 When we apply these search criteria we find “254761-Cough” and feel this may be an appropriate Vocabulary concept to map to our Dutch code. In order to do that we can hit the “Replace concept” button, which you will see in the “Selected Source Code” section update, followed by the “Approve” button. There is also an “Add concept” button, this allows for multiple standardized Vocabulary concepts to map to one source code (e.g. some source codes may bundle multiple diseases together while the standardized vocabulary may not). 
 
-#### Concept information {-}
+#### Concept Information {-}
 
 When looking for appropriate concepts to map to, it is important to consider the “social life” of a concept. The meaning of a concept might depend partially on its place in the hierarchy, and sometimes there are “orphan concepts” in the vocabulary with few or no hierarchical relationships, which would be ill-suited as target concepts. Usagi will often report the number of parents and children a concept has, and it also possible to show more information by pressing ALT + C or selecting view –> Concept information in the top menu bar.
 
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/usagiConceptInfo} 
-
-}
-
-\caption{Usagi concept information panel.}(\#fig:usagiConceptInfo)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/usagiConceptInfo.png" alt="Usagi concept information panel." width="100%" />
+<p class="caption">(\#fig:usagiConceptInfo)Usagi concept information panel.</p>
+</div>
 
 
 Figure \@ref(fig:usagiConceptInfo) shows the concept information panel. It shows general information about a concept, as well as its parents, children, and other source codes that map to the concept. Users can use this panel to navigate the hierarchy and potentially choose a different target concept. 
@@ -325,7 +289,7 @@ To export your mappings, go to File –> Export source_to_concept_map. A pop-up 
 
 After selecting the SOURCE_VOCABULARY_ID, you give your export CSV a name and save to location. The export CSV structure is in that of the SOURCE_TO_CONCEPT_MAP table. This mapping could be appended to the Vocabulary’s SOURCE_TO_CONCEPT_MAP table. It would also make sense to append a single row to the VOCABULARY table defining the SOURCE_VOCABULARY_ID you defined in the step above. Finally, it is important to note that only mappings with the “Approved” status will be exported into the CSV file; the mapping needs to be completed in USAGI in order to export it. 
 
-#### Updating an Usagi mapping {-}
+#### Updating an Usagi Mapping {-}
 
 Often a mapping is not a one-time effort. As data is updated perhaps new source codes are added, and the vocabulary is updated regularly, perhaps requiring an update of the mapping. 
 
@@ -361,7 +325,7 @@ It should be noted that after several independent attempts, we have given up on 
 
 Once the technical individuals are ready to start implementing, the ETL design document should be shared with them. There should be enough information in the documentation for them to get started however it should be expected that the developers have access to the ETL designers to ask questions during their development process.  Logic that may be clear to the designers may be less clear to an implementer who might not be familiar with the data and CDM. The implementation phase should remain a team effort. It is considered acceptable practice to go through the process of CDM creation and testing between the implementers and designers, respectively, until both groups are in agreement that all logic has been executed correctly.  
 
-## Step 4: Quality control
+## Step 4: Quality Control
 
 For the extract, transform, load process, quality control is iterative. The typical pattern is to write logic -> implement logic -> test logic -> fix/write logic. There are many ways to go about testing a CDM but below are recommend steps that have been developed across the community through years of ETL implementation. \index{ETL!quality control}
 
@@ -382,7 +346,7 @@ These are high-level ways to approach quality control from an ETL standpoint. Fo
 
 As more groups converted data to the CDM it became apparent that conventions needed to be specified. For example, what should the ETL do in a situation where a person record lacks a birth year? The goal of the CDM is to standardized healthcare data however if every group handles data specific scenarios differently it makes it more difficult to systematically use data across the network.  
 
-The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki [^cdmWikiUrl2]. Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.  
+The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki[^cdmWikiUrl2]. Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.  
 
 While it will never be possible to document all possible data scenarios that exist and what to do when they occur, there is an OHDSI work group trying to document common scenarios. THEMIS[^themisUrl] is made up of individuals in the community who gather conventions, clarify them, share them with the community for comment, and then document finalized conventions in the CDM Wiki. Themis is an ancient Greek Titaness of divine order, fairness, law, natural law, and custom which seemed a good fit for this groups remit. When performing an ETL, if there is a scenario that you are unsure how to handle, THEMIS recommends that a question about the scenario is posed on the OHDSI Forums[^ohdsiForum]. Most likely if you have a question, others in the community probably have it as well. THEMIS uses these discussions, as well as work group meetings and face-to-face discussions, to help inform what other conventions need to be documented.        
 
@@ -390,7 +354,7 @@ While it will never be possible to document all possible data scenarios that exi
 [^themisUrl]: https://github.com/OHDSI/Themis
 [^ohdsiForum]: http://forums.ohdsi.org/
 
-## CDM and ETL maintenance {#CDMandETLMaintenance}
+## CDM and ETL Maintenance {#CDMandETLMaintenance}
 
 It is no small effort to design the ETL, create the mappings, implement the ETL, and build out quality control measures. Unfortunately, the effort does not stop there. There is a cycle of ETL maintenance that is a continuous process after the first CDM is built. Some common triggers that require maintenance are:  changes in the source data, a bug in the ETL, a new OMOP Vocabulary is released, or the CDM itself has changed or updated. If one of these triggers occur the following might need updating: the ETL documentation, the software programming running the ETL, and test cases and quality controls. 
 
@@ -402,7 +366,7 @@ The OMOP Vocabulary is also ever changing just as our source data may be. In fac
 
 The final trigger that could require CDM or ETL maintenance is when the common data model itself updates. As the community grows and new data requirements are found this may lead to additional data being stored in the CDM. This might mean data that you previously were not storing in the CDM might have a location in a new CDM version. Less frequently are changes to existing CDM structure, however it is a possibility. For example, the CDM is moved to adopting DATETIME fields over the original DATE fields would could cause an error in ETL processing. CDM versions are not released often and sites can choose when they migrate.
 
-## Final thoughts on ETL
+## Final Thoughts on ETL
 
 The ETL process is a difficult one to master for many reasons, not the least of which the fact that we are all working off unique source data, making it hard to create a “one-size-fits-all” solution. However, there are some hard won lessons we have learned over the years. 
 
@@ -465,13 +429,9 @@ Sort data in ascending order by PATIENT, START, END. Then by PERSON_ID, collapse
 If you see a set of visits as shown in Figure \@ref(fig:exerciseSourceData) in your source data, how would you expect the resulting VISIT_OCCURRENCE record(s) to look in the CDM?
 </div>\EndKnitrBlock{exercise}
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ExtractTransformLoad/exerciseSourceData} 
-
-}
-
-\caption{Example source data.}(\#fig:exerciseSourceData)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ExtractTransformLoad/exerciseSourceData.png" alt="Example source data." width="100%" />
+<p class="caption">(\#fig:exerciseSourceData)Example source data.</p>
+</div>
 
 Suggested answers can be found in Appendix \@ref(Etlanswers).

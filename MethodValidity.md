@@ -14,7 +14,7 @@ The core activity when establishing method validity is evaluating whether import
 
 In this chapter we will focus on the validity of methods use in population-level estimation. We will first briefly highlight some study design-specific diagnostics, and will then discuss diagnostics that are applicable to most if not all population-level estimation studies. Following this is a step-by-step description of how to execute these diagnostics using the OHDSI tools. We close this chapter with an advanced topic, reviewing the OHDSI Methods Benchmark and its application to the OHDSI Methods Library.
 
-## Design-specific diagnostics
+## Design-Specific Diagnostics
 
 \index{study diagnostics}
 
@@ -29,20 +29,16 @@ For each study design there are diagnostics specific to such a design. Many of t
 
 Other study designs require different diagnostics to test the different assumptions in those designs. For example, for the self-controlled case series (SCCS) design we may check the necessary assumption  that the end of observation is independent of the outcome. This assumption is often violated in the case of serious, potentially lethal, events such as myocardial infarction. We can evaluate whether the assumption holds by generating the plot shown in Figure \@ref(fig:timeToObsEnd), which shows histograms of the time to observation period end for those that are censored, and those that are uncensored. In our data we consider those whose observation period ends at the end date of data capture (the date when observation stopped for the entire data base, for example the date of extraction, or the study end date) to be uncensored, and all others to be censored. In Figure \@ref(fig:timeToObsEnd) we see only minor differences between the two distributions, suggesting our assumptions holds.
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/timeToObsEnd.png" alt="Time to observation end for those that are censored, and those that are uncensored." width="100%" />
+<p class="caption">(\#fig:timeToObsEnd)Time to observation end for those that are censored, and those that are uncensored.</p>
+</div>
 
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/timeToObsEnd} 
-
-}
-
-\caption{Time to observation end for those that are censored, and those that are uncensored.}(\#fig:timeToObsEnd)
-\end{figure}
-
-## Diagnostics for all estimation
+## Diagnostics for All Estimation
 
 Next to the design-specific diagnostics, there are also several diagnostics that are applicable across all causal effect estimation methods. Many of these rely on the use of control hypotheses, research questions where the answer is already known. Using control hypotheses we can then evaluate whether our design produces results in line with the truth. Controls can be divided into negative controls and positive controls.
 
-### Negative controls {#NegativeControls}
+### Negative Controls {#NegativeControls}
 
 \index{negative controls}
 
@@ -58,9 +54,9 @@ We should select negative controls that are comparable to our hypothesis of inte
 
 Some argue that negative controls should also have the same confounding structure as the exposure-outcome pair of interest. [@lipsitch_2010] However, we believe this confounding structure is unknowable; the relationships between variables found in reality is often far more complex than people imagine. Also, even if the confounder structure was known, it is unlikely that a negative control exists having that exact same confounding structure, but lacking the direct causal effect. For this reason in OHDSI we rely on a large number of negative controls, assuming that such a set represents many different types of bias, including the ones present in the hypothesis of interest.
 
-The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studied extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this principe in mind we have developed a semi-automated procedure for selecting negative controls [@voss_2016]. In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.
+The absence of a causal relationship between an exposure and an outcome is rarely documented. Instead, we often make the assumption that a lack of evidence of a relationship implies the lack of a relationship. This assumption is more likely to hold if the exposure and outcome have both been studied extensively, so a relationship could have been detected. For example, the lack of evidence for a completely novel drug likely implies a lack of knowledge, not the lack of a relationship. With this principe in mind we have developed a semi-automated procedure for selecting negative controls. [@voss_2016] In brief, information from literature, product labels, and spontaneous reporting is automatically extracted and synthesized to produce a candidate list of negative controls. This list must then undergo manual review, not only to verify that the automated extraction was accurate, but also to impose additional criteria such as biological plausibility.
 
-### Positive controls {#PositiveControls}
+### Positive Controls {#PositiveControls}
 
 \index{positive controls}
 
@@ -74,18 +70,14 @@ One issue that stands important is the preservation of confounding. The negative
 
 Figure \@ref(fig:posControlSynth) depicts this process. Note that although this procedure simulates several important sources of bias, it does not capture all. For example, some effects of measurement error are not present. The synthetic positive controls imply constant positive predictive value and sensitivity, which may not be true in reality.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/MethodValidity/posControlSynth} 
-
-}
-
-\caption{Synthesizing positive controls from negative controls.}(\#fig:posControlSynth)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/posControlSynth.png" alt="Synthesizing positive controls from negative controls." width="90%" />
+<p class="caption">(\#fig:posControlSynth)Synthesizing positive controls from negative controls.</p>
+</div>
 
 Although we refer to a single true "effect size" for each control, different methods estimate different statistics of the treatment effect. For negative controls, where we believe no causal effect exists, all such statistics, including the relative risk, hazard ratio, odds ratio, incidence rate ratio, both conditional and marginal, as well as the average treatment effect in the treated (ATT) and the overall average treatment effect (ATE) will be identical to 1. Our process for creating positive controls synthesizes outcomes with a constant incidence rate ratio over time and between patients, using a model conditioned on the patient where this ratio is held constant, up to the point where the marginal effect is achieved. The true effect size is thus guaranteed to hold as the marginal incidence rate ratio in the treated. Under the assumption that our outcome model used during synthesis is correct, this also holds for the conditional effect size and the ATE. Since all outcomes are rare, odds ratios are all but identical to the relative risk.
 
-### Empirical evaluation {#metrics}
+### Empirical Evaluation {#metrics}
 
 \index{empirical evaluation}
 
@@ -101,7 +93,7 @@ Based on the estimates of a particular method for the negative and positive cont
 
 Depending on our use case, we can evaluate whether these operating characteristics are suitable for our goal. For example, if we wish to perform signal detection, we may care about type 1 and type 2 error, or if we are willing to modify our $\alpha$ threshold, we may inspect the AUC instead. 
 
-### P-value calibration
+### P-Value Calibration
 
 \index{p-value calibration} \index{empirical calibration}
 
@@ -109,7 +101,7 @@ Often the type 1 error (at $\alpha = 0.05$) is larger than 5%. In other words, w
 
 Formally, we fit a Gaussian probability distribution to the estimates, taking into account the sampling error of each estimate. Let $\hat{\theta}_i$ denote the estimated log effect estimate (relative risk, odds or incidence rate ratio) from the $i$th negative control drug–outcome pair, and let $\hat{\tau}_i$ denote the corresponding estimated standard error, $i=1,\ldots,n$. Let $\theta_i$ denote the true log effect size (assumed 0 for negative controls), and let $\beta_i$ denote the true (but unknown) bias associated with pair $i$ , that is, the difference between the log of the true effect size and the log of the estimate that the study would have returned for control $i$ had it been infinitely large. As in the standard p-value computation, we assume that $\hat{\theta}_i$  is normally distributed with mean $\theta_i + \beta_i$ and standard deviation $\hat{\tau}_i^2$. Note that in traditional p-value calculation, $\beta_i$ is always assumed to be equal to zero, but that we assume the $\beta_i$’s, arise from a normal distribution with mean $\mu$ and variance $\sigma^2$. This represents the null (bias) distribution. We estimate $\mu$ and $\sigma^2$ via maximum likelihood. In summary, we assume the following:
 
-$$\beta_i \sim N(\mu,\sigma^2) \text{  and} \\ \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)$$
+$$\beta_i \sim N(\mu,\sigma^2) \text{  and  } \hat{\theta}_i \sim N(\theta_i + \beta_i, \tau_i^2)$$
 
 where $N(a,b)$ denotes a Gaussian distribution with mean $a$ and variance $b$, and estimate $\mu$ and $\sigma^2$ by maximizing the following likelihood:
 
@@ -127,7 +119,7 @@ where $\phi(\cdot)$ denotes the cumulative distribution function of the standard
 
 $$1-\phi\left(\frac{\theta_{n+1} - \hat{\mu}}{\sqrt{\hat{\sigma}^2 + \hat{\tau}_{n+1}^2}}\right)$$
 
-### Confidence interval calibration
+### Confidence Interval Calibration
 
 \index{confidence interval calibration}
 
@@ -166,7 +158,7 @@ where $\Phi(\cdot)$ denotes the cumulative distribution function of the standard
 
 Both p-value calibration and confidence interval calibration are implemented in the [EmpiricalCalibration](https://ohdsi.github.io/EmpiricalCalibration/) package.
 
-### Replication across sites
+### Replication Across Sites
 
 \index{between-database heterogeneity}
 
@@ -176,7 +168,7 @@ One way to express between-database heterogeneity is the $I^2$ score, describing
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">Observing between-database heterogeneity casts doubt on the validity of the estimates. Unfortunately, the inverse is not true. Not observing heterogeneity does not guarantee an unbiased estimate. It is not unlikely that all databases share a similar bias, and that all estimates are therefore consistently wrong.</div>\EndKnitrBlock{rmdimportant}
 
-### Sensitivity analyses
+### Sensitivity Analyses
 
 \index{sensitivity analysis}
 
@@ -184,35 +176,27 @@ When designing a study there are often design choices that are uncertain. For ex
 
 This definition of sensitivity analysis should not be confused with the definitions used by others such as, @rosenbaum_2005 who defines sensitivity analysis to "appraise how the conclusions of a study might be altered by hidden biases of various magnitudes."
 
-## Method validation in practice
+## Method Validation in Practice
 
 Here we build on the example in Chapter \@ref(PopulationLevelEstimation), where we investigate the effect of ACE inhibitors (ACEi) on the risk of angioedema and acute myocardial infarction (AMI), compared to thiazides and thiazide-like diuretics (THZ). In that chapter we already explore many of the diagnostics specific to the design we used, the cohort method. Here, we apply additional diagnostics that could also have been applied had other designs been used. If the study is implemented using ATLAS as described in Section \@ref(PleAtlas) these diagnostics are available in the Shiny app that is included in the study R package generated by ATLAS. If the study is implemented using R instead, as described in Section \@ref(pleR), then R functions available in the various packages should be used, as described in the next sections.
 
-### Selecting negative controls
+### Selecting Negative Controls
 
 We must select negative controls, exposure-outcome pairs where no causal effect is believed to exist. For comparative effect estimation such as our example study, we select negative control outcomes that are believed to be neither caused by the target nor the comparator exposure. We want enough negative controls to make sure we have a diverse mix of biases represented in the controls, and also to allow empirical calibration. As a rule-of-thumb we typically aim to have 50-100 such negative controls. We could come up with these controls completely manually, but fortunately ATLAS provides features to aid the selection of negative controls using data from literature, product labels, and spontaneous reports. 
 
 To generate a candidate list of negative controls, we first must create a concept set containing all exposures of interest. In this case we select all ingredients in the ACEi and THZ classes, as shown in Figure \@ref(fig:exposuresConceptSet).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/exposuresConceptSet} 
-
-}
-
-\caption{A concept set containing the concepts defining the target and comparator exposures.}(\#fig:exposuresConceptSet)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/exposuresConceptSet.png" alt="A concept set containing the concepts defining the target and comparator exposures." width="100%" />
+<p class="caption">(\#fig:exposuresConceptSet)A concept set containing the concepts defining the target and comparator exposures.</p>
+</div>
 
 Next, we go to the "Explore Evidence" tab, and click on the ![](images/MethodValidity/generate.png) button. Generating the evidence overview will take a few minutes, after which you can click on the ![](images/MethodValidity/viewEvidence.png) button. This will open the list of outcomes as shown in Figure \@ref(fig:candidateNcs).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/candidateNcs} 
-
-}
-
-\caption{Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports.}(\#fig:candidateNcs)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/candidateNcs.png" alt="Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports." width="100%" />
+<p class="caption">(\#fig:candidateNcs)Candidate control outcomes with an overview of the evidence found in literature, product labels, and spontaneous reports.</p>
+</div>
 
 This list shows condition concepts, along with an overview of the evidence linking the condition to any of the exposures we defined. For example, we see the number of publications that link the exposures to the outcomes found in PubMed using various strategies, the number of product labels of our exposures of interest that list the condition as a possible adverse effect, and the number of spontaneous reports. By default the list is sorted to show candidate negative controls first. It is then sorted by the "Sort Order," which represents the prevalence of the condition in a collection of observational databases. The higher the Sort Order, the higher the prevalence. Although the prevalence in these databases might not correspond with the prevalence in the database we wish to run the study, it is likely a good approximation.
 
@@ -220,7 +204,7 @@ The next step is to manually review the candidate list, typically starting at th
 
 For our example study we select the 76 negative controls listed in Appendix \@ref(AceiThzNsc).
 
-### Including controls 
+### Including Controls 
 
 Once we have defined our set of negative controls we must include them in our study. First we must define some logic for turning our negative control condition concepts into outcome cohorts. Section \@ref(evaluationSettings) discusses how ATLAS allows creating such cohorts based on a few choices the user must make. Often we simply choose to create a cohort based on any occurrence of a negative control concept or any of its descendants. If the study is implemented in R, then SQL (Structured Query Language) can be used to construct the negative control cohorts. Chapter \@ref(SqlAndR) describes how cohorts can be created using SQL and R. We leave it as an exercise for the reader to write the appropriate SQL and R.
 
@@ -255,26 +239,21 @@ pcs <- synthesizePositiveControls(
   exposureOutcomePairs = eoPairs,
   effectSizes = c(1.5, 2, 4),
   cdmVersion = cdmVersion,
-  workFolder = file.path(outputFolder,
-                         "pcSynthesis"))
+  workFolder = file.path(outputFolder, "pcSynthesis"))
 ```
 
 Note that we must mimic the time-at-risk settings used in our estimation study design. The `synthesizePositiveControls` function will extract information about the exposures and negative control outcomes, fit outcome models per exposure-outcome pair, and synthesize outcomes. The positive control outcome cohorts will be added to the cohort table specified by `cohortDbSchema` and `cohortTable`. The resulting `pcs` data frame contains the information on the synthesized positive controls.
 
 Next we must execute the same study used to estimate the effect of interest to also estimate effects for the negative and positive controls. Setting the set of negative controls in the comparisons dialog in ATLAS instructs ATLAS to compute estimates for these controls. Similarly, specifying that positive controls be generated in the Evaluation Settings includes these in our analysis. In R, the negative and positive controls should be treated as any other outcome. All estimation packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) readily allow estimation of many effects in an efficient manner.
 
-### Empirical performance
+### Empirical Performance
 
 Figure \@ref(fig:controls) shows the estimated effect sizes for the negative and positive controls included in our example study, stratified by true effect size. This plot is included in the Shiny app that comes with the study R package generated by ATLAS, and can be generated using the `plotControls` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package. Note that the number of controls is often lower than what was defined because there was not enough data to either produce an estimate or to synthesize a positive control.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/controls} 
-
-}
-
-\caption{Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio > 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size.}(\#fig:controls)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/controls.png" alt="Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio &gt; 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size." width="100%" />
+<p class="caption">(\#fig:controls)Estimates for the negative (true hazard ratio = 1) and positive controls (true hazard ratio > 1). Each dot represents a control. Estimates below the dashed line have a confidence interval that doesn't include the true effect size.</p>
+</div>
 
 Based on these estimates we can compute the metrics shown in Table \@ref(tab:exampleMetrics) using the `computeMetrics` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) package.
 
@@ -294,7 +273,7 @@ We see that coverage and type 1 error are very close to their nominal values of 
 
 Note that although in Figure \@ref(fig:controls) not all confidence intervals include one when the true hazard ratio is one, the type 1 error in Table \@ref(tab:exampleMetrics) is 0%. This is an exceptional situation, caused by the fact that confidence intervals in the [Cyclops](https://ohdsi.github.io/Cyclops/) package are estimated using likelihood profiling, which is more accurate than traditional methods but can result in asymmetric confidence intervals. The p-value instead is computed assuming symmetrical confidence intervals, and this is what was used to compute the type 1 error.
 
-### P-value calibration
+### P-Value Calibration
 
 We can use the estimates for our negative controls to calibrate our p-values. This is done automatically in the Shiny app, and can be done manually in R. Assuming we have created the summary object `summ` as described in Section \@ref(MultipleAnalyses), we can plot the empirical calibration effect plot:
 
@@ -311,14 +290,10 @@ plotCalibrationEffect(logRrNegatives = ncEstimates$logRr,
                       seLogRrPositives = oiEstimates$seLogRr,
                       showCis = TRUE)
 ```
-\begin{figure}
-
-{\centering \includegraphics[width=0.7\linewidth]{images/MethodValidity/pValueCal} 
-
-}
-
-\caption{P-value calibration: estimates below the dashed line have a conventional p < 0.05. Estimates in the shaded area have calibrated p < 0.05. The narrow band around the edge of the shaded area denotes the 95\% credible interval. Dots indicate negative controls. Diamonds indicate outcomes of interest.}(\#fig:pValueCal)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/pValueCal.png" alt="P-value calibration: estimates below the dashed line have a conventional p &lt; 0.05. Estimates in the shaded area have calibrated p &lt; 0.05. The narrow band around the edge of the shaded area denotes the 95\% credible interval. Dots indicate negative controls. Diamonds indicate outcomes of interest." width="70%" />
+<p class="caption">(\#fig:pValueCal)P-value calibration: estimates below the dashed line have a conventional p < 0.05. Estimates in the shaded area have calibrated p < 0.05. The narrow band around the edge of the shaded area denotes the 95\% credible interval. Dots indicate negative controls. Diamonds indicate outcomes of interest.</p>
+</div>
 
 In Figure \@ref(fig:pValueCal) we see that the shaded area almost exactly overlaps with the area denoted by the dashed lines, indicating hardly any bias was observed for the negative controls. One of the outcomes of interest (AMI) is above the dashed line and the shaded area, indicating we cannot reject the null according to both the uncalibrated and calibrated p-value. The other outcome (angioedema) clearly stands out from the negative control, and falls well within the area where both uncalibrated and calibrated p-values are smaller than 0.05.
 
@@ -350,37 +325,29 @@ oiEstimates$p
 
 As expected, because little to no bias was observed, the uncalibrated and calibrated p-values are very similar.
 
-### Confidence interval calibration
+### Confidence Interval Calibration
 
 Similarly, we can use the estimates for our negative and positive controls to calibrate the confidence intervals. The Shiny app automatically reports the calibrate confidence intervals. In R we can calibrate intervals using the `fitSystematicErrorModel` and `calibrateConfidenceInterval` functions in the [EmpiricalCalibration](https://ohdsi.github.io/EmpiricalCalibration/) package, as described in detail in the ["Empirical calibration of confidence intervals" vignette](https://ohdsi.github.io/EmpiricalCalibration/articles/EmpiricalCiCalibrationVignette.html).
 
 Before calibration, the estimated hazard ratios (95% confidence interval) are 4.32 (2.45 - 8.08) and 1.13 (0.59 - 2.18), for angioedema and AMI respectively. The calibrated hazard ratios are 4.75 (2.52 - 9.04) and 1.15 (0.58 - 2.30).
 
-### Between-database heterogeneity
+### Between-Database Heterogeneity
 
 Just as we executed our analysis on one database, in this case the IBM MarketScan Medicaid (MDCD) database, we can also run the same analysis code on other databases that adhere to the Common Data Model (CDM). Figure \@ref(fig:forest) shows the forest plot and meta-analytic estimates (assuming random effects) [@dersimonian_1986] across a total of five databases for the outcome of angioedema. This figure was generated using the `plotMetaAnalysisForest` function in the [EvidenceSynthesis](https://ohdsi.github.io/EvidenceSynthesis/) package.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/MethodValidity/forest} 
-
-}
-
-\caption{Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate when comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.}(\#fig:forest)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/forest.png" alt="Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate when comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema." width="90%" />
+<p class="caption">(\#fig:forest)Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate when comparing ACE inhibitors to thiazides and thiazide-like diuretics for the risk of angioedema.</p>
+</div>
 
 Although all confidence intervals are above one, suggesting agreement on the fact that there is an effect, the $I^2$ suggests between-database heterogeneity. However, if we compute the $I^2$ using the calibrated confidence intervals as shown in Figure \@ref(fig:forestCal), we see that this heterogeneity can be explained by the bias measured in each database through the negative and positive controls. The empirical calibration appears to properly take this bias into account.
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/forestCal.png" alt="Calibrated Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics." width="90%" />
+<p class="caption">(\#fig:forestCal)Calibrated Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics.</p>
+</div>
 
-{\centering \includegraphics[width=0.9\linewidth]{images/MethodValidity/forestCal} 
-
-}
-
-\caption{Calibrated Effect size estimates and 95\% confidence intervals (CI) from five different databases and a meta-analytic estimate for the hazard ratio of angioedema when comparing ACE inhibitors to thiazides and thiazide-like diuretics.}(\#fig:forestCal)
-\end{figure}
-
-### Sensitivity analyses
+### Sensitivity Analyses
 
 One of the design choices in our analysis was to use variable-ratio matching on the propensity score. However, we could have also used stratification on the propensity score. Because we are uncertain about this choice, we may decide to use both. Table \@ref(tab:sensAnalysis) shows the effect size estimates for AMI and angioedema, both calibrated and uncalibrated, when using variable-ratio matching and stratification (with 10 equally-sized strata).
 
@@ -407,14 +374,10 @@ We have run all the methods in the OHDSI Methods Library through this benchmark,
 
 [^methodEvalViewerUrl]: http://data.ohdsi.org/MethodEvalViewer/
 
-\begin{figure}[h]
-
-{\centering \includegraphics[width=1\linewidth]{images/MethodValidity/methodEval} 
-
-}
-
-\caption{Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease.}(\#fig:methodEval)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/MethodValidity/methodEval.png" alt="Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease." width="100%" />
+<p class="caption">(\#fig:methodEval)Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease.</p>
+</div>
 
 This emphasizes the need for empirical evaluation and calibration: if no empirical evaluation is performed, which is true for almost all published observational studies, we must assume a prior informed by the results in Figure \@ref(fig:methodEval), and conclude that it is likely that the true effect size is not contained in the 95% confidence interval!
 

@@ -6,18 +6,14 @@ OHDSI offers a wide range of open source tools to support various data-analytics
 
 In this chapter we first describe various ways in which we can choose to implement an analysis, and what strategies the analysis can employ. We then review the various OHDSI tools and how they fit the various use cases.
 
-## Analysis implementation {#analysisImplementation}
+## Analysis Implementation {#analysisImplementation}
 
 Figure \@ref(fig:implementations) shows the various ways in which we can choose to implement a study against a database using the CDM. \index{analysis implementation}
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/OhdsiAnalyticsTools/implementations} 
-
-}
-
-\caption{Different ways to implement an analysis against data in the CDM.}(\#fig:implementations)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/implementations.png" alt="Different ways to implement an analysis against data in the CDM." width="90%" />
+<p class="caption">(\#fig:implementations)Different ways to implement an analysis against data in the CDM.</p>
+</div>
 
 There a three main approaches to implementing a study.  The first is to write custom code that does not make use of any of the tools OHDSI has to offer. One could write a de novo analysis in R, SAS, or any other language. This provides the maximum flexibility, and may in fact be the only option if the specific analysis is not supported by any of our tools. However, this path requires a lot of technical skill, time, and effort, and as the analysis increases in complexity it becomes harder to avoid errors in the code.
 
@@ -27,42 +23,34 @@ The third approach relies on our interactive analysis platform [ATLAS](https://g
 
 ATLAS and the Methods Library are not independent. Some of the more complicated analytics that can be invoked in ATLAS are executed through calls to the packages in the Methods Library. Similarly, cohorts used in the Methods Library are often designed in ATLAS.
 
-## Analysis strategies
+## Analysis Strategies
 
 In addition to the strategy used to implement our analysis against the CDM, for example through custom coding or use of standard analytic code in the Methods Library, there are also multiple strategies for using those analytic techniques to generate evidence. Figure \@ref(fig:strategies) highlights three strategies that are employed in OHDSI.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/OhdsiAnalyticsTools/strategies} 
-
-}
-
-\caption{Strategies for generating evidence for (clinical) questions.}(\#fig:strategies)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/strategies.png" alt="Strategies for generating evidence for (clinical) questions." width="90%" />
+<p class="caption">(\#fig:strategies)Strategies for generating evidence for (clinical) questions.</p>
+</div>
 
 The first strategy views every analysis as a single individual study. The analysis must be pre-specified in a protocol, implemented as code, executed against the data, after which the result can be compiled and interpreted. For every question, all steps must be repeated. An example of such an analysis is the OHDSI study into the risk of angioedema associated with levetiracetam compared with phenytoin. [@duke_2017] Here, a protocol was first written, analysis code using the OHDSI Methods Library was developed and executed across the OHDSI network, and results were compiled and disseminated in a journal publication.
 
 The second strategy develops an application that allows users to answer a specific class of questions in real time or near-real time. Once the application has been developed, users can interactively define queries, submit them, and view the results. An example of this strategy is the cohort definition and generation tool in ATLAS. This tool allows users to specify cohort definitions of varying complexity, and execute the definition against a database to see how many people meet the various inclusion and exclusion criteria. 
 
-The third strategy similarly focuses on a class of questions, but then attempts to exhaustively generate all the evidence for the questions within the class. Users can then explore the evidence as needed through a variety of interfaces. One example is the OHDSI study into the effects of depression treatments [@schuemie_2018b]. In this study all depression treatments are compared for a large set of outcomes of interest across four large observational databases. The full set of results, including 17,718 empirically calibrated hazard ratios along with extensive study diagnostics, is available in an interactive web app [^systematicEvidenceUrl].
+The third strategy similarly focuses on a class of questions, but then attempts to exhaustively generate all the evidence for the questions within the class. Users can then explore the evidence as needed through a variety of interfaces. One example is the OHDSI study into the effects of depression treatments. [@schuemie_2018b] In this study all depression treatments are compared for a large set of outcomes of interest across four large observational databases. The full set of results, including 17,718 empirically calibrated hazard ratios along with extensive study diagnostics, is available in an interactive web app[^systematicEvidenceUrl].
 
 [^systematicEvidenceUrl]: http://data.ohdsi.org/SystematicEvidence/
 
 ## ATLAS
 
-ATLAS is a free, publicly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS [^atlasUrl], and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
+ATLAS is a free, publicly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS[^atlasUrl], and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
 
 [^atlasUrl]: http://www.ohdsi.org/web/atlas
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/atlas} 
-
-}
-
-\caption{ATLAS user interface.}(\#fig:atlas)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/atlas.png" alt="ATLAS user interface." width="100%" />
+<p class="caption">(\#fig:atlas)ATLAS user interface.</p>
+</div>
 
 A screenshot of ATLAS is provided in Figure \@ref(fig:atlas). On the left is a navigation bar showing the various functions provided by ATLAS:
 
@@ -117,7 +105,7 @@ Documentation for ATLAS can be found online in the ATLAS GitHub repository wiki[
 
 [^atlasRepoWikiUrl]: https://github.com/OHDSI/ATLAS/wiki 
 
-### How to install
+### How to Install
 
 Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS GitHub repository Setup Guide[^atlasSetupGuideUrl] and WebAPI GitHub repository Installation Guide[^webApiInstallationGuideUrl]. \index{ATLAS!installation}
 
@@ -128,26 +116,22 @@ Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation
 
 The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the collection of open source R packages show in Figure \@ref(fig:methodsLibrary). \index{methods library}
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/methodsLibrary} 
-
-}
-
-\caption{Packages in the OHDSI Methods Library.}(\#fig:methodsLibrary)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/methodsLibrary.png" alt="Packages in the OHDSI Methods Library." width="100%" />
+<p class="caption">(\#fig:methodsLibrary)Packages in the OHDSI Methods Library.</p>
+</div>
 
 The packages offer R functions that together can be used to perform a complete observational study, starting from data in the CDM, and resulting in estimates and supporting statistics, figures, and tables. The packages interact directly with observational data in the CDM, and can be used simply to provide cross-platform compatibility to completely custom analyses as described in Chapter \@ref(SqlAndR), or can provide advanced standardized analytics for population characterization (Chapter \@ref(Characterization)), population-level effect estimation (Chapter \@ref(PopulationLevelEstimation)), and patient-level prediction (Chapter \@ref(PatientLevelPrediction)). The Methods Library supports best practices for use of observational data and observational study design as learned from previous and ongoing research, such as transparency, reproducibility, as well as measuring of the operating characteristics of methods in a particular context and subsequent empirical calibration of estimates produced by the methods. 
 
-The Methods Library has already been used in many published clinical studies [@boland_2017; @duke_2017; @ramcharran_2017; @weinstein_2017; @wang_2017; @ryan_2017; @ryan_2018; @vashisht_2018; @yuan_2018; @johnston_2019], as well as methodological studies [@schuemie_2014; @schuemie_2016; @reps2018; @tian_2018; @schuemie_2018; @schuemie_2018b; @reps_2019]. The validity of the implementations of methods in the Methods library is described in Chapter \@ref(SoftwareValidity).
+The Methods Library has already been used in many published clinical studies [@boland_2017; @duke_2017; @ramcharran_2017; @weinstein_2017; @wang_2017; @ryan_2017; @ryan_2018; @vashisht_2018; @yuan_2018; @johnston_2019], as well as methodological studies. [@schuemie_2014; @schuemie_2016; @reps2018; @tian_2018; @schuemie_2018; @schuemie_2018b; @reps_2019] The validity of the implementations of methods in the Methods library is described in Chapter \@ref(SoftwareValidity).
 
-### Support for large-scale analytics
+### Support for Large-Scale Analytics
 
 One key feature incorporated in all packages is the ability to efficiently run many analyses. For example, when performing population-level estimation, the CohortMethod package allows for computing effect-size estimates for many exposures and outcomes, using various analysis settings, and the package will automatically choose the optimal way to compute all the required intermediary and final data sets. Steps that can be re-used, such as extraction of covariates, or fitting a propensity model that is used for one target-comparator pair but multiple outcomes, will be executed only once. Where possible, computations will take place in parallel to maximize the use of computational resources.
 
 This computational efficiency allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g. negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \@ref(MethodValidity). \index{control hypotheses} 
 
-### Support for big data {#BigDataSupport}
+### Support for Big Data {#BigDataSupport}
 
 The Methods Library is also designed to run against very large databases and be able to perform computations involving large amounts of data. This achieved in three ways:
 
@@ -157,15 +141,15 @@ The Methods Library is also designed to run against very large databases and be 
 
 ### Documentation
 
-R provides a standard way to document packages. Each package has a *package manual* that documents every function and data set contained in the package. All package manuals are available online through the Methods Library website [^methodsLibraryUrl], through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. Furthermore, from within R the package manual can be consulted by using the question mark. For example, after loading the DatabaseConnector package, typing the command `?connect` brings up the documentation on the "connect" function.
+R provides a standard way to document packages. Each package has a *package manual* that documents every function and data set contained in the package. All package manuals are available online through the Methods Library website[^methodsLibraryUrl], through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. Furthermore, from within R the package manual can be consulted by using the question mark. For example, after loading the DatabaseConnector package, typing the command `?connect` brings up the documentation on the "connect" function.
 
 [^methodsLibraryUrl]: https://ohdsi.github.io/MethodsLibrary
 
-In addition to the package manual, many packages provide *vignettes*. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette [^vignetteUrl] describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. \index{vignette}
+In addition to the package manual, many packages provide *vignettes*. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette[^vignetteUrl] describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. \index{vignette}
 
 [^vignetteUrl]: https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html
 
-###  System requirements
+###  System Requirements
 
 Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation. \index{system requirements}
 
@@ -173,7 +157,7 @@ The database server must hold the observational healthcare data in CDM format. T
 
 The analytics workstation is where the Methods Library is installed and run. This can either be a local machine, such as someone's laptop, or a remote server running RStudio Server. In all cases the requirements are that R is installed, preferably together with RStudio. The Methods Library also requires that Java is installed. The analytics workstation should also be able to connect to the database server, specifically, any firewall between them should have the database server access ports opened the the workstation. Some of the analytics can be computationally intensive, so having multiple processing cores and ample memory can help speed up the analyses. We recommend having at least four cores and 16 gigabytes of memory.
 
-### How to install {#installR}
+### How to Install {#installR}
 
 Here are the steps for installing the required environment to run the OHDSI R packages. Four things needs to be installed: \index{R!installation}
 
@@ -190,34 +174,22 @@ Below we describe how to install each of these in a Windows environment.
 
 1. Go to [https://cran.r-project.org/](https://cran.r-project.org/), click on "Download R for Windows", then "base", then click the Download link indicated in Figure \@ref(fig:downloadR).  
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/downloadR} 
-
-}
-
-\caption{Downloading R from CRAN.}(\#fig:downloadR)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/downloadR.png" alt="Downloading R from CRAN." width="100%" />
+<p class="caption">(\#fig:downloadR)Downloading R from CRAN.</p>
+</div>
 
 2. After the download has completed, run the installer. Use the default options everywhere, with two exceptions: First, it is better not to install into program files. Instead, just make R a subfolder of your C drive as shown in Figure \@ref(fig:rDestination). Second, to avoid problems due to differing architectures between R and Java, disable the 32-bit architecture as shown in Figure \@ref(fig:no32Bits).
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/rDestination.png" alt="Settings the destination folder for R." width="80%" />
+<p class="caption">(\#fig:rDestination)Settings the destination folder for R.</p>
+</div>
 
-{\centering \includegraphics[width=0.8\linewidth]{images/OhdsiAnalyticsTools/rDestination} 
-
-}
-
-\caption{Settings the destination folder for R.}(\#fig:rDestination)
-\end{figure}
-
-\begin{figure}
-
-{\centering \includegraphics[width=0.8\linewidth]{images/OhdsiAnalyticsTools/no32Bits} 
-
-}
-
-\caption{Disabling the 32-bit version of R.}(\#fig:no32Bits)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/no32Bits.png" alt="Disabling the 32-bit version of R." width="80%" />
+<p class="caption">(\#fig:no32Bits)Disabling the 32-bit version of R.</p>
+</div>
 
 Once completed, you should be able to select R from your Start Menu. 
 
@@ -231,14 +203,10 @@ Once completed, you should be able to select R from your Start Menu.
 
 1. Go to [https://www.rstudio.com/](https://www.rstudio.com/), select "Download RStudio" (or the "Download" button under "RStudio"), opt for the free version, and download the installer for Windows as shown in Figure \@ref(fig:downloadRStudio).
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/downloadRStudio} 
-
-}
-
-\caption{Downloading RStudio.}(\#fig:downloadRStudio)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/downloadRStudio.png" alt="Downloading RStudio." width="100%" />
+<p class="caption">(\#fig:downloadRStudio)Downloading RStudio.</p>
+</div>
 
 2. After downloading, start the installer, and use the default options everywhere.
 
@@ -247,18 +215,14 @@ Once completed, you should be able to select R from your Start Menu.
 1. Go to [https://java.com/en/download/manual.jsp](https://java.com/en/download/manual.jsp), and select the Windows 64-bit installer as shown in Figure \@ref(fig:downloadJava). If you also installed the 32-bit version of R, you *must* also install the other (32-bit) version of Java.
 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/downloadJava} 
-
-}
-
-\caption{Downloading Java.}(\#fig:downloadJava)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/downloadJava.png" alt="Downloading Java." width="100%" />
+<p class="caption">(\#fig:downloadJava)Downloading Java.</p>
+</div>
 
 2. After downloading just run the installer.
 
-#### Verifying the installation {-}
+#### Verifying the Installation {-}
 
 You should now be ready to go, but we should make sure. Start RStudio, and type
 
@@ -284,7 +248,7 @@ install.packages("CohortMethod")
 ```
 
 
-## Deployment strategies
+## Deployment Strategies
 
 Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, in an organization is a daunting task. There are many components with dependencies that have to be considered, and configurations to set. For this reason, two initiatives have developed integrated deployment strategies that allow the entire stack to be installed as one package, using some forms of virtualization: Broadsea and Amazon Web Services (AWS).  \index{tools deployment}
 
@@ -303,27 +267,19 @@ OHDSI-in-a-Box is specifically created as a learning environment, and is used in
 
 [^ohdsiInaBoxUrl]: https://github.com/OHDSI/OHDSI-in-a-Box
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/OHDSI-in-a-BoxDiagram} 
-
-}
-
-\caption{The Amazon Web Services architecure for OHDSI-in-a-Box.}(\#fig:ohdsiinaboxDiagram)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/OHDSI-in-a-BoxDiagram.png" alt="The Amazon Web Services architecure for OHDSI-in-a-Box." width="100%" />
+<p class="caption">(\#fig:ohdsiinaboxDiagram)The Amazon Web Services architecure for OHDSI-in-a-Box.</p>
+</div>
 
 OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalable and fault tolerant OHDSI environments that can be used by organizations to perform their data analytics. It includes several sample datasets and can also automatically load your organization's real healthcare data. The data is placed in the Amazon Redshift database platform, which is supported by the OHDSI tools. Intermediary results of ATLAS are stored in a PostgreSQL database. On the front end, users have access to ATLAS and to RStudio through a web interface (leveraging RStudio Server). In RStudio the OHDSI Methods Library has already been installed, and can be used to connect to the databases. The automation to deploy OHDSIonAWS is open-source, and can be customized to include your organization's management tools and best practices.  The architecture for OHDSIonAWS is depicted in Figure \@ref(fig:ohdsionawsDiagram).
 
 [^ohdsiOnAwsUrl]: https://github.com/OHDSI/OHDSIonAWS
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiAnalyticsTools/OHDSIonAWSDiagram} 
-
-}
-
-\caption{The Amazon Web Services architecure for OHDSIonAWS.}(\#fig:ohdsionawsDiagram)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiAnalyticsTools/OHDSIonAWSDiagram.png" alt="The Amazon Web Services architecure for OHDSIonAWS." width="100%" />
+<p class="caption">(\#fig:ohdsionawsDiagram)The Amazon Web Services architecure for OHDSIonAWS.</p>
+</div>
 
 ## Summary
 

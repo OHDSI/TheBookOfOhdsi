@@ -17,7 +17,7 @@ DQ cannot be observed directly, but methodology has been developed to assess it.
 
 In this chapter we will first review possible sources of DQ problems, after which we'll discuss the theory of general and study-specific DQ assessments, followed by a step-by-step description of how these assessments can be performed using the OHDSI tools.
 
-## Sources of data quality problems
+## Sources of Data Quality Problems
 
 There are many threats to the quality of the data, starting as noted in Chapter \@ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the life cycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
 
@@ -32,7 +32,7 @@ Similarly, we often receive the data in a specific form, so we have little influ
 
 Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not use the term DQ for the quality issues during this step, but rather the terms *clinical validity*, *software validity* and *method validity*, which are discussed at length in Chapters \@ref(ClinicalValidity), \@ref(SoftwareValidity), and \@ref(MethodValidity), respectively.
 
-## Data quality in general
+## Data Quality in General
 
 We can ask the question whether our data is fit for the general purpose of observational research. @kahn_harmonized_2016 define such generic DQ as consisting of three components: 
 
@@ -55,11 +55,11 @@ Each component can be evaluated in two ways:
 
 \index{data quality!verification} \index{data quality!validation}
 
-### Data quality checks
+### Data Quality Checks
 
 \index{ACHILLES} \index{data quality!checks}
 
-Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems) [@huser_methods_2018]. ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases [@huser_multisite_2016]. ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
+Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software, creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems). [@huser_methods_2018] ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases. [@huser_multisite_2016] ACHILLES is available as a stand-alone tool, and is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
 
 ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis, for example, “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” or “506: Distribution of age at death by gender”. The results of these analyses are stored in a database, and can be accessed by a web viewer or by ATLAS. 
 
@@ -82,7 +82,7 @@ Within the tool the checks are organized in multiple ways, one being into table,
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data is at fault the only course of action may be to delete the offending records.
 </div>\EndKnitrBlock{rmdimportant}
 
-### ETL unit tests {#etlUnitTests}
+### ETL Unit Tests {#etlUnitTests}
 
 \index{ETL!unit tests}
 
@@ -116,14 +116,10 @@ testSql <- generateTestSql(databaseSchema = "cdm_test_schema")
 
 The overall process is depicted in Figure \@ref(fig:testFramework).
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/DataQuality/testFramework} 
-
-}
-
-\caption{Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework.}(\#fig:testFramework)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/testFramework.png" alt="Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework." width="90%" />
+<p class="caption">(\#fig:testFramework)Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework.</p>
+</div>
 
 The test SQL returns a table that will look like Table \@ref(tab:exampleTestResults). In this table we see that we passed the two tests we defined earlier.
 
@@ -136,7 +132,7 @@ Table: (\#tab:exampleTestResults) Example ETL unit test results.
 
 The power of these unit tests is that we can easily rerun them any time the ETL process is changed. 
 
-## Study-specific checks
+## Study-Specific Checks
 
 \index{data quality!study-specific checks}
 
@@ -148,35 +144,27 @@ A standard assessment is to review the concepts that are most relevant for the s
 
 Another assessment is to review the prevalence and changes in prevalence over time of the resulting cohorts generated using the cohort definitions developed for the study, and see whether these agree with expectations based on external clinical knowledge. For example, exposure of a new drug should be absent before introduction to the market, and will likely increase over time after introduction. Similarly, the prevalence of outcomes should be in line with what is know of the prevalence of the condition in the population. If a study is executed across a network of databases, we can compare the prevalences of cohorts across databases. If a cohort is highly prevalent in one database, but is missing in another database, there might be a DQ issue. Note  that such an assessment overlaps with the notion of *clinical validity*, as discussed in Chapter \@ref(ClinicalValidity); We may find unexpected prevalences in some databases not because of DQ issues, but because our cohort definition is not truly capturing the health state we are interested in, or because these health state rightly vary over databases that capture different patient populations.
 
-### Checking mappings
+### Checking Mappings
 
-One possible source of error that firmly falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker [^vocabIssueTrackerUrl] and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard concepts, but also the source codes. We can review both the source codes that do map to the concepts used in the study, as well as those that do not.
+One possible source of error that firmly falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker[^vocabIssueTrackerUrl] and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard concepts, but also the source codes. We can review both the source codes that do map to the concepts used in the study, as well as those that do not.
 
 [^vocabIssueTrackerUrl]: https://github.com/OHDSI/Vocabulary-v5.0/issues
 
 One way to review the source codes that do map is to use the `checkCohortSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalences of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure \@ref(fig:sourceCodes) shows a (partial) breakdown of a concept set called 'Depressive disorder'. The most prevalent concept in this concept set in the database of interest is concept  [440383](http://athena.ohdsi.org/search-terms/terms/440383) ("Depressive disorder"). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-10 code F32.9 ("Major depressive disorder, single episode, unspecified") should also have mapped to the concept. This problem has since been resolved in the Vocabulary.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/sourceCodes} 
-
-}
-
-\caption{Example output of the checkCohortSourceCodes function. }(\#fig:sourceCodes)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/sourceCodes.png" alt="Example output of the checkCohortSourceCodes function. " width="100%" />
+<p class="caption">(\#fig:sourceCodes)Example output of the checkCohortSourceCodes function. </p>
+</div>
 
 Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the `findOrphanSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept, or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study the concept "Gangrenous disorder" ([439928](http://athena.ohdsi.org/search-terms/terms/439928)) and all of its descendants was used to find all occurrences of gangrene. To evaluate whether this truly includes all source codes indicate gangrene, several terms (e.g. "gangrene") were used to search the descriptions in the CONCEPT and SOURCE_TO_CONCEPT_MAP tables to identify source codes. An automated search is then used to evaluate whether each gangrene source code appearing in the data indeed directly or indirectly (through ancestry) maps to the concept "Gangrenous disorder".  The result of this evaluation is shown in Figure \@ref(fig:missingMapping), revealing that the ICD-10 code J85.0 ("Gangrene and necrosis of lung") was only mapped to concept [4324261](http://athena.ohdsi.org/search-terms/terms/4324261) ("Pulmonary necrosis"), which is not a descendant of "Gangrenous disorder".  \index{orphan codes}
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/missingMapping.png" alt="Example orphan source code. " width="70%" />
+<p class="caption">(\#fig:missingMapping)Example orphan source code. </p>
+</div>
 
-{\centering \includegraphics[width=0.7\linewidth]{images/DataQuality/missingMapping} 
-
-}
-
-\caption{Example orphan source code. }(\#fig:missingMapping)
-\end{figure}
-
-## ACHILLES in practice {#achillesInPractice}
+## ACHILLES in Practice {#achillesInPractice}
 
 Here we will demonstrate how to run ACHILLES against a database in the CDM format. 
 
@@ -224,26 +212,18 @@ exportToJson(connectionDetails,
 
 The JSON files will be written to the achillesOut sub-folder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure \@ref(fig:achillesDataDensity) shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/achillesDataDensity} 
-
-}
-
-\caption{The data density plot in the ACHILLES web viewer.}(\#fig:achillesDataDensity)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/achillesDataDensity.png" alt="The data density plot in the ACHILLES web viewer." width="100%" />
+<p class="caption">(\#fig:achillesDataDensity)The data density plot in the ACHILLES web viewer.</p>
+</div>
 
 Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a sudden change in the prevalence of a diabetes diagnosis code. This change coincides with changes in the reimbursement rules in this specific country, leading to more diagnoses but probably not a true increase in prevalence in the underlying population. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/achillesCodeChange} 
-
-}
-
-\caption{Monthly rate of diabetes coded in the ACHILLES web viewer.}(\#fig:achillesCodeChange)
-\end{figure}
-## Data Quality Dashboard in practice {#dqdInPractice}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/achillesCodeChange.png" alt="Monthly rate of diabetes coded in the ACHILLES web viewer." width="100%" />
+<p class="caption">(\#fig:achillesCodeChange)Monthly rate of diabetes coded in the ACHILLES web viewer.</p>
+</div>
+## Data Quality Dashboard in Practice {#dqdInPractice}
 
 Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section \@ref(achillesInPractice). For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable `cdmDbSchema` to tell R where to look for the data.
 
@@ -274,27 +254,19 @@ The variable `jsonPath` should be the path to the JSON file containing the resul
 
 When you first open the Dashboard you will be presented with the overview table, as seen in Figure \@ref(fig:dqdOverview). This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate. 
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/dqdOverview} 
-
-}
-
-\caption{Overview of Data Quality Checks in the Data Quality Dashboard.}(\#fig:dqdOverview)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/dqdOverview.png" alt="Overview of Data Quality Checks in the Data Quality Dashboard." width="100%" />
+<p class="caption">(\#fig:dqdOverview)Overview of Data Quality Checks in the Data Quality Dashboard.</p>
+</div>
 
 Clicking on *Results* in the left-hand menu will take you to the drilldown results for each check that was run (Figure \@ref(fig:dqdResults)). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the ![](images/DataQuality/plusIcon.png) icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/dqdResults.png" alt="Drilldown into Data Quality Checks in the Data Quality Dashboard." width="100%" />
+<p class="caption">(\#fig:dqdResults)Drilldown into Data Quality Checks in the Data Quality Dashboard.</p>
+</div>
 
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/dqdResults} 
-
-}
-
-\caption{Drilldown into Data Quality Checks in the Data Quality Dashboard.}(\#fig:dqdResults)
-\end{figure}
-
-## Study-specific checks in practice
+## Study-Specific Checks in Practice
 
 Next, we will execute several checks specifically for the angioedema cohort definition provided in Appendix \@ref(Angioedema). We will assume the connection details have been set as described in Section \@ref(achillesInPractice), and that the cohort definition JSON and SQL of the cohort definition have been saved in the files "cohort.json" and "cohort.sql", respectively. The JSON and SQL can be obtained from the Export tab in the ATLAS cohort definition function.
 
@@ -314,14 +286,10 @@ checkCohortSourceCodes(connectionDetails,
 
 We can open the output file in a web browser as shown in Figure \@ref(fig:sourceCodesAngioedema). Here we see that the angioedema cohort definition has two concept sets: "Inpatient or ER visit", and "Angioedema". In this example database the visits were found through database-specific source codes "ER" and "IP", that are not in the Vocabulary, although they were mapped during the ETL to standard concepts. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/DataQuality/sourceCodesAngioedema} 
-
-}
-
-\caption{Source codes used in the angioedema cohort definition.}(\#fig:sourceCodesAngioedema)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/DataQuality/sourceCodesAngioedema.png" alt="Source codes used in the angioedema cohort definition." width="100%" />
+<p class="caption">(\#fig:sourceCodesAngioedema)Source codes used in the angioedema cohort definition.</p>
+</div>
 
 Next, we can search for orphan source codes, that is source codes that do not map to standard concept codes. Here we look for the Standard Concept "Angioedema", and look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
 
