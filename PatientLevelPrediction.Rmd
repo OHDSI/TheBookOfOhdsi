@@ -14,7 +14,7 @@ Massive-scale, patient-specific predictive modeling has become reality due to OH
 
 In this chapter we describe OHDSI’s standardized framework for patient-level prediction, [@reps2018] and discuss the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) R package that implements established best practices for development and validation. We start with providing the necessary theory behind the development and evaluation of patient-level prediction and provide a high-level overview of the implemented machine learning algorithms. We then discuss an example prediction problem and provide step-by-step guidance on its definition and implementation using ATLAS or custom R code. Finally, we discuss the use of Shiny applications for the dissemination of study results. 
 
-## The prediction problem
+## The Prediction Problem
 
 Figure \@ref(fig:figure1) illustrates the prediction problem we address. Among a population at risk, we aim to predict which patients at a defined moment in time (t = 0) will experience some outcome during a time-at-risk. Prediction is done using only information about the patients in an observation window prior to that moment in time.
 
@@ -56,7 +56,7 @@ This conceptual framework works for all types of prediction problems, for exampl
   - **Structure**: Among new users of *[a treatment]*, who will achieve *[adherence metric]* at *[time window]*?
   - **Example**: Which patients with diabetes who start on metformin achieve >=80% proportion of days covered at one year?
   
-## Data extraction
+## Data Extraction
 
 When creating a predictive model we use a process know as supervised learning --- a form of machine learning --- that infers the relationship between the covariates and the outcome status based on a labelled set of examples\index{supervised learning}. Therefore, we need methods to extract the covariates from the CDM for the persons in the target cohort and we need to obtain their outcome labels.
 
@@ -64,7 +64,7 @@ The **covariates** (also referred to as "predictors", "features" or "independent
 
 We also need to obtain the **outcome status** (also referred to as the "labels" or "classes") of all the patients during the time-at-risk. If the outcome occurs within the time-at-risk, the outcome status is defined as "positive." \index{outcome status} \index{labels} \index{classes}
 
-### Data extraction example
+### Data Extraction Example
 
 Table \@ref(tab:plpExampleCohorts) shows an example COHORT table with two cohorts. The cohort with cohort definition ID 1 is the target cohort (e.g. "people recently diagnosed with atrial fibrillation"). Cohort definition ID 2 defines the outcome cohort (e.g. "stroke").
 
@@ -91,7 +91,7 @@ Based on this example data, and assuming the time at risk is the year following 
 
 Observational healthcare data rarely reflects whether data is missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present at that time, or because it was not recorded. It is important to realize that the machine learning algorithm cannot distinguish between the two scenarios and will simply assess the predictive value in the available data. \index{missing data}
 
-## Fitting the model {#modelFitting}
+## Fitting the Model {#modelFitting}
 
 When fitting a prediction model we are trying to learn the relationship between the covariates and the observed outcome status from labelled examples. Suppose we only have two covariates, systolic and diastolic blood pressure, then we can represent each patient as a plot in two dimensional space as shown in Figure \@ref(fig:decisionBoundary). In this figure the shape of the data point corresponds to the patient's outcome status (e.g. stroke). 
 
@@ -107,7 +107,7 @@ Each supervised learning algorithm has a different way to learn the decision bou
 
 The following algorithms are available in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package:
 
-### Regularized logistic regression
+### Regularized Logistic Regression
 
 LASSO (least absolute shrinkage and selection operator) logistic regression belongs to the family of generalized linear models, where a linear combination of the variables is learned and finally a logistic function maps the linear combination to a value between 0 and 1. The LASSO regularization adds a cost based on model complexity to the objective function when training the model. This cost is the sum of the absolute values of the linear combination of the coefficients. The model automatically performs feature selection by minimizing this cost. We use the [Cyclops](https://ohdsi.github.io/Cyclops/) (Cyclic coordinate descent for logistic, Poisson and survival analysis) package to perform large-scale regularized logistic regression. \index{LASSO} \index{logistic regression} \index{regularization} \index{Cyclops}
 
@@ -120,7 +120,7 @@ Table: (\#tab:lassoParameters) Hyper-parameters for the regularized logistic reg
 Note that the variance is optimized by maximizing the out-of-sample likelihood in a cross-validation, so the starting variance has little impact on the performance of the resulting model. However, picking a starting variance that is too far from the optimal value may lead to long fitting time. \index{variance} \index{hyper-parameter} \index{cross-validation}
 
 
-### Gradient boosting machines
+### Gradient Boosting Machines
 
 Gradient boosting machines is a boosting ensemble technique and in our framework it combines multiple decision trees. Boosting works by iteratively adding decision trees but adds more weight to the data-points that are misclassified by prior decision trees in the cost function when training the next tree. We use Extreme Gradient Boosting, which is an efficient implementation of the gradient boosting framework implemented in the xgboost R package available from CRAN. \index{gradient boosting} \index{xgboost}
 
@@ -135,7 +135,7 @@ Table: (\#tab:gbmParameters) Hyper-parameters for gradient boosting machines.
 | ntrees | Number of trees |100,1000|
 
 
-### Random forest
+### Random Forest
 
 Random forest is a bagging ensemble technique that combines multiple decision trees. The idea behind bagging is to reduce the likelihood of overfitting by using weak classifiers and combining them into a strong classifier. Random forest accomplishes this by training multiple decision trees but only using a subset of the variables in each tree and the subset of variables differ between trees. Our package uses the sklearn implementation of Random Forest in Python. \index{random forest} \index{python} \index{sklearn}
 
@@ -148,7 +148,7 @@ Table: (\#tab:randomForestParameters) Hyper-parameters for random forests.
 | ntrees | Number of trees | 500 |
 
 
-### K-nearest neighbors
+### K-Nearest Neighbors
 
 K-nearest neighbors (KNN) is an algorithm that uses some distance metric to find the K closest labelled data-points to a new unlabeled data-point. The prediction of the new data-points is then the most prevalent class of the K-nearest labelled data-points. There is a sharing limitation of KNN, as the model requires labelled data to perform the prediction on new data, and it is often not possible to share this data across data sites. We included the [BigKnn](https://github.com/OHDSI/BigKnn) package developed in OHDSI which is a large scale KNN classifier. \index{k-nearest neighbors} \index{bigknn}
 
@@ -204,11 +204,11 @@ Table: (\#tab:mpParameters) Hyper-parameters for Multilayer Perceptrons.
 
 Deep learning such as deep nets, convolutional neural networks or recurrent neural networks are similar to Multilayer Perceptrons but have multiple hidden layers that aim to learn latent representations useful for prediction. In a separate [vignette](https://ohdsi.github.io/PatientLevelPrediction/articles/BuildingDeepLearningModels.html) in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package we describe these models and hyper-parameters in more detail. \index{deep learning} \index{convolutional neural network} \index{recurrent neural networks}
 
-### Other algorithms
+### Other Algorithms
 
 Other algorithms can be added to the patient-level prediction framework. This is out-of-scope for this chapter. Details can be found in the ["Adding Custom Patient-Level Prediction Algorithms" vignette](https://ohdsi.github.io/PatientLevelPrediction/articles/AddingCustomAlgorithms.html) in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. 
 
-## Evaluating prediction models
+## Evaluating Prediction Models
 
 ### Evaluation Types
 
@@ -235,7 +235,7 @@ External validation aims to assess model performance on data from another databa
 
 ### Performance Metrics {#performance}
 
-#### Threshold measures {-}
+#### Threshold Measures {-}
 
 A prediction model assigns a value between 0 and 1 for each patient corresponding to the risk of the patient having the outcome during the time at risk. A value of 0 means 0% risk, a value of 0.5 means 50% risk and a value of 1 means 100% risk. Common metrics such as accuracy, sensitivity, specificity, positive predictive value can be calculated by first specifying a threshold that is used to classify patients as having the outcome or not during the time at risk. For example, given Table \@ref(tab:tabletheorytab), if we set the threshold as 0.5, patients 1, 3, 7 and 10 have a predicted risk greater than or equal to the threshold of 0.5 so they would be predicted to have the outcome. All other patients had a predicted risk less than 0.5, so they would be predicted to not have the outcome. \index{performance metrics} \index{accuracy} \index{sensitivity} \index{specificity} \index{positive predictive value}
 
@@ -281,19 +281,19 @@ For rare outcomes even a model with a high AUC may not be practical, because for
 
 Calibration is the ability of the model to assign the correct risk. For example, if the model assigned one hundred patients a risk of 10% then ten of the patients should experience the outcome during the time at risk. If the model assigned 100 patients a risk of 80% then eighty of the patients should experience the outcome during the time at risk. The calibration is generally calculated by partitioning the patients into deciles based on the predicted risk and in each group calculating the mean predicted risk and the fraction of the patients who experienced the outcome during the time at risk. We then plot these ten points (predicted risk on the y-axis and observed risk on the x-axis) and see whether they fall on the x = y line, indicating the model is well calibrated. An example calibration plot is presented later in this chapter in Figure \@ref(fig:shinyCal). We also fit a linear model using the points to calculate the intercept (which should be close to zero) and the gradient (which should be close to one). If the gradient is greater than one then the model is assigning a higher risk than the true risk and if the gradient is less than one the model is assigning a lower risk than the true risk. Note that we also implemented Smooth Calibration Curves in our R-package to better capture the non-linear relationship between predicted and observed risk. \index{calibration}
 
-## Designing a patient-level prediction Study
+## Designing a Patient-Level Prediction Study
 
 In this section we will demonstrate how to design a prediction study. The first step is to clearly define the prediction problem. Interestingly, in many published papers the prediction problem is poorly defined, for example it is unclear how the index date (start of the target cohort) is defined. A poorly defined prediction problem does not allow for external validation by others, let alone implementation in clinical practice. In the patient-level prediction framework we enforce proper specification of the prediction problem by requiring the key choices defined in Table \@ref(tab:plpDesign) to be explicitly defined. Here we will walk through this process using a "treatment safety" type prediction problem as an example. \index{index date}
 
-### Problem definition
+### Problem Definition
 
-Angioedema is a well known side-effect of ACE inhibitors, and the incidence of angioedema reported in the labeling for ACE inhibitors is in the range of 0.1% to 0.7% [@byrd_2006]. Monitoring patients for this adverse effect is important, because although angioedema is rare, it may be life-threatening, leading to respiratory arrest and death [@norman_2013]. Further, if angioedema is not initially recognized, it may lead to extensive and expensive workups before it is identified as a cause [@norman_2013; @thompson_1993]. Other than the higher risk among African-American patients, there are no known predisposing factors for the development of ACE inhibitor related angioedema [@byrd_2006]. Most reactions occur within the first week or month of initial therapy and often within hours of the initial dose [@circardi_2004]. However, some cases may occur years after therapy has begun [@mara_1996]. No diagnostic test is available that specifically identifies those at risk. If we could identify those at risk, doctors could act, for example by discontinuing the ACE inhibitor in favor of another hypertension drug. \index{angioedema} \index{ACE inhibitors}
+Angioedema is a well known side-effect of ACE inhibitors, and the incidence of angioedema reported in the labeling for ACE inhibitors is in the range of 0.1% to 0.7%. [@byrd_2006] Monitoring patients for this adverse effect is important, because although angioedema is rare, it may be life-threatening, leading to respiratory arrest and death. [@norman_2013] Further, if angioedema is not initially recognized, it may lead to extensive and expensive workups before it is identified as a cause. [@norman_2013; @thompson_1993] Other than the higher risk among African-American patients, there are no known predisposing factors for the development of ACE inhibitor related angioedema. [@byrd_2006] Most reactions occur within the first week or month of initial therapy and often within hours of the initial dose.  [@circardi_2004] However, some cases may occur years after therapy has begun. [@mara_1996] No diagnostic test is available that specifically identifies those at risk. If we could identify those at risk, doctors could act, for example by discontinuing the ACE inhibitor in favor of another hypertension drug. \index{angioedema} \index{ACE inhibitors}
 
 We will apply the patient-level prediction framework to observational healthcare data to address the following patient-level prediction question:
 
 > Among patients who have just started on an ACE inhibitor for the first time, who will experience angioedema in the following year?
 
-### Study population definition
+### Study Population Definition
 
 The final study population in which we will develop our model is often a subset of the target cohort, because we may for example apply criteria that are dependent on the outcome, or we want to perform sensitivity analyses with sub-populations of the target cohort. For this we have to answer the following questions:
 
@@ -307,17 +307,17 @@ The final study population in which we will develop our model is often a subset 
 
 - *Do we require a minimum amount of time-at-risk?* We have to decide if we want to include patients that did not experience the outcome but did leave the database earlier than the end of our time-at-risk period. These patients may experience the outcome when we no longer observe them. For our prediction problem we decide to answer this question with "yes," requiring a minimum time-at-risk for that reason. Furthermore, we have to decide if this constraint also applies to persons who experienced the outcome or we will include all persons with the outcome irrespective of their total time at risk. For example, if the outcome is death, then persons with the outcome are likely censored before the full time-at-risk period is complete.
 
-### Model development settings
+### Model Development Settings
 
 To develop the prediction model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. we prefer to let the data speak for itself and try different approaches to find the best one. In our framework we have therefore implemented many algorithms as described in Section \@ref(modelFitting), and allow others to be added. In this example, to keep things simple, we select just one algorithm: Gradient Boosting Machines. 
 
 Furthermore, we have to decide on the covariates that we will use to train our model. In our example, we like to add gender, age, all conditions, drugs and drug groups, and visit counts. We will look for these clinical events in the year before and any time prior to the index date.
 
-### Model evaluation
+### Model Evaluation
 
 Finally, we have to define how we will evaluate our model. For simplicity, we here choose internal validation. We have to decide how we divide our dataset in a training and test dataset and how we assign patients to these two sets. Here we will use a typical 75% - 25% split. Note that for very large datasets we could use more data for training. 
 
-### Study summary
+### Study Summary
 
 We have now completely defined our study as shown in Table \@ref(tab:plpSummary).
 
@@ -330,7 +330,7 @@ Table: (\#tab:plpSummary) Main design choices for our study.
 | Time-at-risk   | 1 day until 365 days from cohort start. We will require at least 364 days at risk. |
 | Model       | Gradient Boosting Machine with hyper-parameters ntree: 5000, max depth: 4 or 7 or 10 and learning rate: 0.001 or 0.01 or 0.1 or 0.9. Covariates will include gender, age, conditions, drugs, drug groups, and visit count. Data split: 75% train - 25% test, randomly assigned by person. |
 
-## Implementing the study in ATLAS
+## Implementing the Study in ATLAS
 
 The interface for designing a prediction study can be opened by clicking on the ![](images/PatientLevelPrediction/predictionButton.png) button in the left hand side ATLAS menu. Create a new prediction study. Make sure to give the study an easy-to-recognize name. The study design can be saved at any time by clicking the ![](images/PopulationLevelEstimation/save.png) button. \index{ATLAS}
 
@@ -476,7 +476,7 @@ Now that we are finished with the Analysis Settings, the entire dialog should lo
 knitr::include_graphics("images/PatientLevelPrediction/analysisSettings.png")
 ```
 
-### Execution settings
+### Execution Settings
 
 There are three options:
 
@@ -490,7 +490,7 @@ For our example we make the choices shown in Figure \@ref(fig:executionSettings)
 knitr::include_graphics("images/PatientLevelPrediction/executionSettings.png")
 ```
 
-### Training settings
+### Training Settings
 
 There are four options:
 
@@ -505,17 +505,17 @@ For our example we make the choices shown in Figure \@ref(fig:trainingSettings).
 knitr::include_graphics("images/PatientLevelPrediction/trainingSettings.png")
 ```
 
-### Importing and exporting a study
+### Importing and Exporting a Study
 
 To export a study, click on the "Export" tab under "Utilities." ATLAS will produce JSON that can be directly copied and pasted into a file that contains all of the data, such as the study name, cohort definitions, models selected, covariates, settings, needed to run the study. 
 
 To import a study, click on the "Import" tab under "Utilities." Paste the contents of a patient-level prediction study JSON into this window, then click on the Import button below the other tab buttons. Note that this will overwrite all previous settings for that study, so this is typically done using a new, empty study design.
 
-### Downloading the study package
+### Downloading the Study Package
 
 Click on the "Review & Download" tab under "Utilities." In the "Download Study Package" section, enter a descriptive name for the R package, noting that any illegal characters in R will automatically be removed from the file name by ATLAS. Click on ![](images/PatientLevelPrediction/download.png) to download the R package to a local folder.
 
-### Running the study
+### Running the Study
 
 To run the R package requires having R, RStudio, and Java installed as described in Section \@ref(installR). Also required is the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package, which can be installed in R using:
 
@@ -531,15 +531,15 @@ To use the study R package we recommend using R Studio. If you are running R Stu
 
 Once you have opened the project in R Studio, you can open the README file, and follow the instructions. Make sure to change all file paths to existing paths on your system.
 
-## Implementing the study in R
+## Implementing the Study in R
 
 An alternative to implementing our study design using ATLAS is to write the study code ourselves in R. We can make use of the functions provided in the  [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
 
-### Cohort instantiation
+### Cohort Instantiation
 
 We first need to instantiate the target and outcome cohorts. Instantiating cohorts is described in Chapter \@ref(Cohorts). The Appendix provides the full definitions of the target (Appendix \@ref(AceInhibitors)) and outcome (Appendix \@ref(Angioedema)) cohorts. In this example we will assume the ACE inhibitors cohort has ID 1, and the angioedema cohort has ID 2.
 
-### Data extraction
+### Data Extraction
 
 We first need to tell R how to connect to the server. [`PatientLevelPrediction`](https://ohdsi.github.io/PatientLevelPrediction/) uses the [`DatabaseConnector`](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
@@ -577,8 +577,8 @@ data.frame(cohort_definition_id = c(1, 2),count = c(527616, 3201))
 Now we can tell [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) to extract all necessary data for our analysis. Covariates are extracted using the [`FeatureExtraction`](https://ohdsi.github.io/FeatureExtraction/) package. For more detailed information on the FeatureExtraction package see its vignettes. For our example study we decided to use these settings:
 
 ```{r tidy=FALSE,eval=FALSE}
-covariateSettings <-
-  createCovariateSettings(useDemographicsGender = TRUE,
+covariateSettings <- createCovariateSettings(
+useDemographicsGender = TRUE,
                           useDemographicsAge = TRUE,
                           useConditionGroupEraLongTerm = TRUE,
                           useConditionGroupEraAnyTimePrior = TRUE,
@@ -615,7 +615,7 @@ savePlpData(plpData, "angio_in_ace_data")
 
 We can use the `loadPlpData()` function to load the data in a future session.
 
-### Additional inclusion criteria
+### Additional Inclusion Criteria
 
 The final study population is obtained by applying additional constraints on the two earlier defined cohorts, e.g., a minimum time at risk can be enforced (`requireTimeAtRisk, minTimeAtRisk`) and we can specify if this also applies to patients with the outcome (`includeAllOutcomes`). Here we also specify the start and end of the risk window relative to target cohort start. For example, if we like the risk window to start 30 days after the at-risk cohort start and end a year later we can set `riskWindowStart = 30` and `riskWindowEnd = 365`. In some cases the risk window needs to start at the cohort end date. This can be achieved by setting `addExposureToStart = TRUE` which adds the cohort (exposure) time to the start date.
 
@@ -702,7 +702,7 @@ plotPlp(gbmResults, "plots")
 
 The plots are described in more detail in Section \@ref(performance).
 
-### External validation
+### External Validation
 
 We recommend to always perform external validation, i.e. apply the final model on as much new datasets as feasible and evaluate its performance. Here we assume the data extraction has already been performed on a second database and stored in the `newData` folder. We load the model we previously fitted from the `model` folder:
 
@@ -779,9 +779,9 @@ valResults <- externalValidatePlp(
 )
 ```
 
-## Results dissemination
+## Results Dissemination
 
-### Model performance
+### Model Performance
 
 Exploring the performance of a prediction model is easiest with the `viewPlp` function. This requires a results object as the input. If developing models in R we can use the result of `runPLp` as the input. If using the ATLAS-generated study package, then we need to load one of the models (in this example we will load Analysis_1): \index{model viewer app}
 
@@ -809,7 +809,7 @@ The Shiny app opens with a summary of the performance metrics on the test and tr
  knitr::include_graphics("images/PatientLevelPrediction/shiny/singleShiny/singleShinyRoc.png")
 ```
 
-The calibration plot in Figure \@ref(fig:shinyCal) shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \@ref(fig:shinyDemo) however shows that the model is not well calibrated for the younger patients, as the blue line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
+The calibration plot in Figure \@ref(fig:shinyCal) shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \@ref(fig:shinyDemo) however shows that the model is not well calibrated for the younger patients, as the curved line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
 
 ```{r shinyCal, fig.cap='The calibration of the model',echo=FALSE, out.width='100%', fig.align='center'}
  knitr::include_graphics("images/PatientLevelPrediction/shiny/singleShiny/singleShinyCal.png")
@@ -826,11 +826,11 @@ Finally, the attrition plot shows the loss of patients from the labelled data ba
 ```
 
 
-### Comparing models
+### Comparing Models
 
 The study package as generated by ATLAS allows generating and evaluating many different prediction models for different prediction problems. Therefore, specifically for the output generated by the study package an additional Shiny app has been developed for viewing multiple models. To start this app, run `viewMultiplePlp(outputFolder)` where `outputFolder` is the path containing the analysis results as specified when running the `execute` command (and should for example contain a sub-folder named "Analysis_1").
 
-#### Viewing the model summary and settings {-}
+#### Viewing the Model Summary and Settings {-}
 
 The interactive Shiny app will start at the summary page as shown in Figure \@ref(fig:multiShinySummary).
 
@@ -854,7 +854,7 @@ To explore a model click on the corresponding row, a selected row will be highli
 
 Similarly, we can explore the population and covariate settings used to generate the model in the other tabs.
 
-#### Viewing model performance {-}
+#### Viewing Model Performance {-}
 
 Once a model row has been selected we can also view the model performance. Click on ![](images/PatientLevelPrediction/performance.png) to open the threshold performance summary shown in Figure \@ref(fig:shinyPerformanceSum).
 
@@ -882,10 +882,10 @@ Finally, we can also inspect the calibration of the model by clicking on the "Ca
  knitr::include_graphics("images/PatientLevelPrediction/shiny/shinyPerformanceCal.png")
 ```
 
-We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the blue line is higher than the red line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.
+We see that the average predicted risk appears to match the observed fraction who experienced the outcome within a year, so the model is well calibrated. Interestingly, the demographic calibration shows that the expected line is higher than the observed line for young patients, so we are predicting a higher risk for young age groups. Conversely, for the patients above 80 the model is predicting a lower risk than the observed risk. This may prompt us to develop separate models for the younger or older patients.
 
 
-#### Viewing the model {-}
+#### Viewing the Model {-}
 
 To inspect the final model, select the ![](images/PatientLevelPrediction/modelButton.png) option from the left hand menu. This will open a view containing plots for each variable in the model, shown in Figure \@ref(fig:shinyModelPlots), and a table summarizing all the candidate covariates, shown in Figure \@ref(fig:shinyModelTable). The variable plots are separated into binary variables and continuous variables. The x-axis is the prevalence/mean in patients without the outcome and the y-axis is the prevalence/mean in patients with the outcome. Therefore, any variable's dot falling above the diagonal is more common in patients with the outcome and any variable's dot falling below the diagonal is less common in patients with the outcome.
 
@@ -903,9 +903,9 @@ The table in Figure \@ref(fig:shinyModelTable) displays the name, value (coeffic
 Predictive models are not causal models, and predictors should not be mistaken for causes. There is no guarantee that modifying any of the variables in Figure \@ref(fig:shinyModelTable) will have an effect on the risk of the outcome.
 ```
 
-## Additional Patient-level Prediction Features
+## Additional Patient-Level Prediction Features
 
-### Journal paper generation
+### Journal Paper Generation
 
 We have added functionality to automatically generate a word document we can use as start of a journal paper. It contains many of the generated study details and results. If we have performed external validation these results will can be added as well. Optionally, we can add a "Table 1" that contains data on many covariates for the target population. We can create the draft journal paper by running this function:
 
@@ -966,7 +966,7 @@ The CDM database schema is "main". These exercises also make use of several coho
 Eunomia::createCohorts(connectionDetails)
 ```
 
-#### Problem definition {-}
+#### Problem Definition {-}
 
 > In patients that started using NSAIDs for the first time, predict who will develop a gastrointestinal (GI) bleed in the next year.
 

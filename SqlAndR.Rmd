@@ -39,11 +39,11 @@ install.packages("SqlRender")
 
 SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.
 
-### SQL parameterization
+### SQL Parameterization
 
 One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the `render()` function. \index{SqlRender!parameterization}
 
-#### Substituting parameter values {-}
+#### Substituting Parameter Values {-}
 
 The `@` character can be used to indicate parameter names that need to be exchanged for actual parameter values when rendering. In the following example, a variable called `a` is mentioned in the SQL. In the call to the render function the value of this parameter is defined:
 
@@ -66,7 +66,7 @@ sql <- "SELECT * FROM concept WHERE concept_id IN (@a);"
 render(sql, a = c(123, 234, 345))
 ```
 
-#### If-then-else {-}
+#### If-Then-Else {-}
 
 Sometimes blocks of codes need to be turned on or off based on the values of one or more parameters. This is done using the `{Condition} ? {if true} : {if false}` syntax. If the *condition* evaluates to true or 1, the *if true* block is used, else the *if false* block is shown (if present).
 
@@ -91,7 +91,7 @@ sql <- "SELECT * FROM cohort {@x IN (1,2,3)} ? {WHERE subject_id = 1};"
 render(sql,x = 2)
 ```
 
-### Translation to other SQL dialects
+### Translation to Other SQL Dialects
 
 Another function of the [SqlRender](https://ohdsi.github.io/SqlRender/) package is to translate from OHDSI SQL to other SQL dialects. For example:
 
@@ -108,7 +108,7 @@ There are limits to what SQL functions and constructs can be translated properly
 
 Despite our best efforts, there are quite a few things to consider when writing OHDSI SQL that will run without error on all supported platforms. In what follows we discuss these considerations in detail.
 
-#### Functions and structures supported by translate {-}
+#### Functions and Structures Supported By Translate {-}
 
 These SQL Server functions have been tested and were found to be translated correctly to the various dialects:\index{SqlRender!supported functions}
 
@@ -195,11 +195,11 @@ SELECT * FROM a INTERSECT SELECT * FROM b;
 SELECT * FROM a EXCEPT SELECT * FROM b;
 ```
 
-#### String concatenation {-}
+#### String Concatenation {-}
 
 String concatenation is one area where SQL Server is less specific than other dialects. In SQL Server, one would write `SELECT first_name + ' ' + last_name AS full_name FROM table`, but this should be `SELECT first_name || ' ' || last_name AS full_name FROM table` in PostgreSQL and Oracle. SqlRender tries to guess when values that are being concatenated are strings. In the example above, because we have an explicit string (the space surrounded by single quotation marks), the translation will be correct. However, if the query had been `SELECT first_name + last_name AS full_name FROM table`, SqlRender would have had no clue the two fields were strings, and would incorrectly leave the plus sign. Another clue that a value is a string is an explicit cast to VARCHAR, so `SELECT last_name + CAST(age AS VARCHAR(3)) AS full_name FROM table` would also be translated correctly. To avoid ambiguity altogether, it is probable best to use the ```CONCAT()``` function to concatenate two or more strings.
 
-#### Table aliases and the AS keyword {-}
+#### Table Aliases and the AS Keyword {-}
 
 Many SQL dialects allow the use of the `AS` keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:
 
@@ -223,7 +223,7 @@ ON table_1.person_id = table_2.person_id;
 
 However, Oracle will throw an error when the `AS` keyword is used. In the above example, the first query will fail. It is therefore recommended to not use the `AS` keyword when aliasing tables. (Note: we can't make SqlRender handle this, because it can't easily distinguish between table aliases where Oracle doesn't allow `AS` to be used, and field aliases, where Oracle requires `AS` to be used.)
 
-#### Temp tables {-}
+#### Temp Tables {-}
 
 Temp tables can be very useful to store intermediate results, and when used correctly can dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they're only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by
 
@@ -242,7 +242,7 @@ Also note that because Oracle has a limit on table names of 30 characters. **Tem
 
 Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly ```TRUNCATE``` and ```DROP``` all temp tables once you're done with them to prevent orphan tables accumulating in the Oracle temp schema.
 
-#### Implicit casts {-}
+#### Implicit Casts {-}
 
 One of the few points where SQL Server is less explicit than other dialects is that it allows implicit casts. For example, this code will work on SQL Server:
 
@@ -269,7 +269,7 @@ or
 SELECT * FROM #temp WHERE CAST(txt AS INT) = 1;
 ```
 
-#### Case sensitivity in string comparisons {-}
+#### Case Sensitivity in String Comparisons {-}
 
 Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of 
 
@@ -281,7 +281,7 @@ it is preferred to use
 SELECT * FROM concept WHERE LOWER(concep_class_id) = 'clinical finding'
 ```
 
-#### Schemas and databases {-}
+#### Schemas and Databases {-}
 
 In SQL Server, tables are located in a schema, and schemas reside in a database. For example, `cdm_data.dbo.person` refers to the `person` table in the `dbo` schema in the `cdm_data` database. In other dialects, even though a similar hierarchy often exists they are used very differently. In SQL Server, there is typically one schema per database (often called `dbo`), and users can easily use data in different databases. On other platforms, for example in PostgreSQL, it is not possible to use data across databases in a single session, but there are often many schemas in a database. In PostgreSQL one could say that the equivalent of SQL Server's database is the schema.
 
@@ -294,7 +294,7 @@ where on SQL Server we can include both database and schema names in the value: 
 The one situation where this will fail is the `USE` command, since `USE cdm_data.dbo;` will throw an error. It is therefore preferred not to use the `USE` command, but always specify the database / schema where a table is located. 
 
 
-#### Debugging parameterized SQL {-}
+#### Debugging Parameterized SQL {-}
 
 Debugging parameterized SQL can be a bit complicated. Only the rendered SQL can be tested against a database server, but changes to the code should be made in the parameterized (pre-rendered) SQL. \index{SqlRender!debugging}
 
@@ -324,7 +324,7 @@ install.packages("DatabaseConnector")
 
 DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type `?jdbcDrivers` for instructions on how to download these drivers. Once downloaded, you can use the `pathToDriver` argument of the `connect`, `dbConnect`, and `createConnectionDetails` functions.
 
-### Creating a connection
+### Creating a Connection
 
 To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the `connect` function and specify these details directly: \index{DatabaseConnector!creating a connection}
 
@@ -392,7 +392,7 @@ executeSql(conn, "TRUNCATE TABLE foo; DROP TABLE foo;")
 
 Both functions provide extensive error reporting: When an error is thrown by the server, the error message and the offending piece of SQL are written to a text file to allow better debugging. The `executeSql` function also by default shows a progress bar, indicating the percentage of SQL statements that has been executed. If those attributes are not desired, the package also offers the `lowLevelQuerySql` and `lowLevelExecuteSql` functions.
 
-### Querying using ffdf objects
+### Querying Using Ffdf Objects
 
 Sometimes the data to be fetched from the database is too large to fit into memory. As mentioned in Section \@ref(BigDataSupport), in such a case we can use the `ff` package to store R data objects on file, and use them as if they are available in memory. `DatabaseConnector` can download data directly into ffdf objects:
 
@@ -402,7 +402,7 @@ x <- querySql.ffdf(conn, "SELECT * FROM person")
 
 x is now an ffdf object. 
 
-### Querying different platforms using the same SQL
+### Querying Different Platforms Using the Same SQL
 
 The following convenience functions are available that first call the `render` and `translate` functions in the SqlRender package: `renderTranslateExecuteSql`, `renderTranslateQuerySql`, `renderTranslateQuerySql.ffdf`. For example:
 
@@ -413,7 +413,7 @@ x <- renderTranslateQuerySql(conn,
 ```
 Note that the SQL Server-specific 'TOP 10' syntax will be translated to for example 'LIMIT 10' on PostgreSQL, and that the SQL parameter `@schema` will be instantiated with the provided value 'cdm_synpuf'.
 
-### Inserting tables
+### Inserting Tables
 
 Although it is also possible to insert data in the database by sending SQL statements using the `executeSql` function, it is often more convenient and faster (due to some optimization) to use the `insertTable` function:
 
@@ -551,9 +551,9 @@ ORDER BY -COUNT(*);
 
 Here we grouped records in the CONDITION_OCCURRENCE table by values of the CONDITION_SOURCE_VALUE field, and counted the number of records in each group. We retrieve the CONDITION_SOURCE_VALUE and the count, and reverse-order it by the count.
 
-## Using the vocabulary when querying
+## Using the Vocabulary When Querying
 
-Many operations require the vocabulary to be useful. The Vocabulary tables are part of the CDM, and are therefore available using SQL queries. Querying the Vocabulary is already described at length in Chapter \@ref(StandardizedVocabularies). Here we show how queries against the Vocabulary can be combined with queries against the CDM. Many fields in the CDM contain concept IDs which can be resolved using the CONCEPT table. For example, we may wish to count the number of persons in the database stratified by gender, and it would be convenient to resolve the GENDER_CONCEPT_ID field to a concept name:
+Many operations require the vocabulary to be useful. The Vocabulary tables are part of the CDM, and are therefore available using SQL queries. Here we show how queries against the Vocabulary can be combined with queries against the CDM. Many fields in the CDM contain concept IDs which can be resolved using the CONCEPT table. For example, we may wish to count the number of persons in the database stratified by gender, and it would be convenient to resolve the GENDER_CONCEPT_ID field to a concept name:
 
 ```sql
 SELECT COUNT(*) AS subject_count,
@@ -589,9 +589,9 @@ WHERE LOWER(ingredient.concept_name) = 'ibuprofen'
 
 \index{QueryLibrary}
 
-QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application [^queryLibraryUrl] shown in Figure \@ref(fig:queryLibrary), and as an R package[^queryLibraryPackageUrl]. 
+QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application[^queryLibraryUrl] shown in Figure \@ref(fig:queryLibrary), and as an R package[^queryLibraryPackageUrl]. 
 
-[^queryLibraryUrl]: http:/data.ohdsi.org/QueryLibrary
+[^queryLibraryUrl]: http://data.ohdsi.org/QueryLibrary
 
 [^queryLibraryPackageUrl]: https://github.com/OHDSI/QueryLibrary
 
@@ -603,9 +603,9 @@ The purpose of the library is to help new users learn how to query the CDM. The 
 
 The QueryLibrary makes use of SqlRender to output the queries in the SQL dialect of choice. Users can also specify the CDM database schema, vocabulary database schema (if separate), and the Oracle temp schema (if needed), so the queries will be automatically rendered with these settings.
 
-## Designing a simple study
+## Designing a Simple Study
 
-### Problem definition
+### Problem Definition
 
 Angioedema is a well-known side-effect of ACE inhibitors (ACEi). @slater_1988 estimate the incidence rate of angioedema in the first week of ACEi treatment to be one case per 3,000 patients per week. Here we seek to replicate this finding, and stratify by age and gender. For simplicity, we focus on one ACEi: lisinopril. We thus answer the question
 
@@ -619,11 +619,11 @@ We'll define exposure as first exposure to lisinopril. By first we mean no earli
 
 We define angioedema as any occurrence of an angioedema diagnosis code during an inpatient or emergency room (ER) visit. 
 
-### Time-at-risk
+### Time-At-Risk
 
 We will compute the incidence rate in the first week following treatment initiation, irrespective of whether patients were exposed for the full week.
 
-## Implementing the study using SQL and R
+## Implementing the Study Using SQL and R
 
 Although we are not bound to any of the OHDSI tool conventions, it is helpful to follow the same principles. In this case, we will use SQL to populate a cohort table, similarly to how the OHDSI tools work. The COHORT table is defined in the CDM, and has a predefined set of fields that we will also use. We first must create the COHORT table in a database schema where we have write access, which likely is not the same as the database schema that holds the data in CDM format. 
 
@@ -652,7 +652,7 @@ renderTranslateExecuteSql(conn, sql,
 
 Here we have parameterized the database schema and table names, so we can easily adapt them to different environments. The result is an empty table on the database server.
 
-### Exposure cohort
+### Exposure Cohort
 
 Next we create our exposure cohort, and insert it into our COHORT table:
 
@@ -702,7 +702,7 @@ renderTranslateExecuteSql(conn, sql,
 
 Here we use the DRUG_ERA table, a standard table in the CDM that is automatically derived from the DRUG_EXPOSURE table. The DRUG_ERA table contains eras of continuous exposure at the ingredient level. We can thus search for lisinopril, and this will automatically identify all exposures to drugs containing lisinopril. We take the first drug exposure per person, and then join to the OBSERVATION_PERIOD table, and because a person can have several observation periods we must make sure we only join to the period containing the drug exposure. We then require at least 365 days between the OBSERVATION_PERIOD_START_DATE and the COHORT_START_DATE.
 
-### Outcome cohort
+### Outcome Cohort
 
 Finally, we must create our outcome cohort:
 
@@ -743,7 +743,7 @@ renderTranslateExecuteSql(conn, sql,
 
 Here we join the CONDITION_OCCURRENCE table to the CONCEPT_ANCESTOR table to find all occurrences of angioedema or any of its descendants. We use DISTINCT to make sure we only select one record per day, as we believe multiple angioedema diagnoses on the same day are more likely to be the same occurrence rather than multiple angioedema events. We join these occurrences to the VISIT_OCCURRENCE table to ensure the diagnosis was made in and inpatient or ER setting.
 
-### Incidence rate calculation
+### Incidence Rate Calculation
 
 Now that our cohorts are in place, we can compute the incidence rate, stratified by age and gender:
 
@@ -831,7 +831,7 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
 knitr::include_graphics("images/SqlAndR/ir.png")
 ```
 
-### Clean up
+### Clean Up
 
 Don't forget to clean up the table we created, and to close the connection:
 

@@ -53,7 +53,7 @@ versions <- sapply(packages, getPackageVersion)
 packageVersions <- data.frame(package = packages, version = versions)
 write.csv(packageVersions, "PackageVersions.csv", row.names = FALSE)
 
-## Turn implicit subsubsections into explicit ones ----------------------------
+# Turn implicit subsubsections into explicit ones ----------------------------
 rmdFiles <- list.files(pattern = ".*Rmd")
 
 convertSubsubsection <- function(rmdFile) {
@@ -72,3 +72,50 @@ convertSubsubsection <- function(rmdFile) {
   }
 }
 lapply(rmdFiles, convertSubsubsection)
+
+# Fix header capitalization --------------------------------------------------
+ignoreWords <- c("in", "the", "a", "an", "of", "for", "and", "to", "into", "from", "xSpec", "xSens", "on", "this")
+
+fixWordCapitalization <- function(word) {
+  if (word %in% ignoreWords) {
+    return(word)
+  } else {
+    return(paste0(toupper(substr(word, 1, 1)), substr(word, 2, nchar(word))))
+  }
+}
+
+fixSingleHeader <- function(header) {
+  words <- strsplit(header, " ")[[1]]
+  words <- sapply(words, fixWordCapitalization)
+  header <- paste(words, collapse = " ")
+  words <- strsplit(header, "-")[[1]]
+  if (length(words) > 1) {
+    words <- sapply(words, fixWordCapitalization)
+    header <- paste(words, collapse = "-")
+  }
+  return(header)
+}
+
+rmdFiles <- list.files(pattern = ".*Rmd")
+
+fixHeaderCapitalization <- function(rmdFile) {
+  print(rmdFile)
+  rmd <- readChar(rmdFile, file.info(rmdFile)$size)
+  matches <- gregexpr("\n(##|###)[^\r\n]*[\r]", rmd)
+  headers <- regmatches(rmd, matches)[[1]]
+  if (length(headers) > 0) {
+    for (header in headers) {
+      newHeader   <- fixSingleHeader(header)
+      rmd <- gsub(header, newHeader, rmd, fixed = TRUE)
+    }
+    sink(rmdFile)
+    rmd <- gsub("\r", "", rmd)
+    cat(rmd)
+    sink()
+  }
+}
+lapply(rmdFiles, fixHeaderCapitalization)
+
+
+
+

@@ -2,7 +2,7 @@
 
 This Appendix contains cohort definitions used throughout the book.
 
-## ACE inhibitors {#AceInhibitors}
+## ACE Inhibitors {#AceInhibitors}
 
 #### Initial Event Cohort {-}
 
@@ -46,7 +46,7 @@ Table: (\#tab:aceInhibitors) ACE inhibitors
 | 1373225 | Perindopril | NO | YES | NO |
 
 
-##  New users of ACE inhibitors monotherapy {#AceInhibitorsMono}
+##  New Users of ACE Inhibitors Monotherapy {#AceInhibitorsMono}
 
 #### Initial Event Cohort {-}
 
@@ -179,7 +179,7 @@ Table: (\#tab:htnDrugsAceMono) Hypertension drugs
 | 40235485 | azilsartan | NO | YES | NO |
 
 
-## Acute myocardial infarction (AMI) {#Ami}
+## Acute Myocardial Infarction (AMI) {#Ami}
 
 #### Initial Event Cohort {-}
 
@@ -268,7 +268,7 @@ Table: (\#tab:inpatientOrEr) Inpatient or ER visit
 | 9203 | Emergency Room Visit | NO | YES | NO |
 
 
-## New users of Thiazide-like diuretics monotherapy {#ThiazidesMono}
+## New Users of Thiazide-Like Diuretics Monotherapy {#ThiazidesMono}
 
 #### Initial Event Cohort {-}
 
@@ -394,7 +394,7 @@ Table: (\#tab:htnDrugsThzMono) Hypertension drugs
 | 40226742 | olmesartan | NO | YES | NO |
 | 40235485 | azilsartan | NO | YES | NO |
 
-## Patients initiating first-line therapy for hypertension {#HTN1yrFO}
+## Patients Initiating First-Line Therapy for Hypertension {#HTN1yrFO}
 
 #### Initial Event Cohort {-}
 
@@ -530,11 +530,11 @@ Table: (\#tab:HTN1yrFOHypertensiveDisorder) Hypertensive disorder
 | ---------- |:------------ | -------- | ----------- | ------ |
 | 316866 | Hypertensive disorder | NO	| YES	| NO |
 
-## Patients initiating first-line therapy for hypertension with >3 yr follow-up {#HTN3yrFO}
+## Patients Initiating First-Line Therapy for Hypertension With >3 Yr Follow-Up {#HTN3yrFO}
 
 Same as *cohort definition \@ref(HTN1yrFO)* but with continuous observation of at least 365 days prior and **1095 days** after event index date
 
-## ACE inhibitor use {#ACEiUse}
+## ACE Inhibitor Use {#ACEiUse}
 
 #### Initial Event Cohort {-}
 
@@ -576,7 +576,7 @@ Table: (\#tab:ACEiUseACE) ACE inhibitors
 | 1363749 | Fosinopril | NO | YES | NO | 
 | 1373225 | Perindopril | NO | YES | NO | 
 
-## Angiotensin receptor blocker (ARB) use {#ARBUse}
+## Angiotensin Receptor Blocker (ARB) Use {#ARBUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Angiotensin Receptor Blockers (ARBs)* (Table \@ref(tab:ARBUseARBs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -595,7 +595,7 @@ Table: (\#tab:ARBUseARBs) Angiotensin Receptor Blockers (ARBs)
 | 40226742 | olmesartan | NO | YES | NO | 
 | 40235485 | azilsartan | NO | YES | NO | 
 
-## Thiazide or thiazide-like diuretic use {#THZUse}
+## Thiazide Or Thiazide-Like Diuretic Use {#THZUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Thiazide or thiazide-like diuretic* (Table \@ref(tab:THZUseTHZ)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -610,7 +610,7 @@ Table: (\#tab:THZUseTHZ) Thiazide or thiazide-like diuretic
 | 978555 | Indapamide | NO | YES | NO | 
 | 1395058 | Chlorthalidone | NO | YES | NO | 
 
-## Dihydropyridine Calcium Channel Blocker (dCCB) use {#dCCBUse}
+## Dihydropyridine Calcium Channel Blocker (dCCB) Use {#dCCBUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *dihydropyridine Calcium Channel Blocker (dCCB)* (Table \@ref(tab:dCCBUsedCBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -627,7 +627,7 @@ Table: (\#tab:dCCBUsedCBB) Dihydropyridine Calcium channel blockers (dCCB)
 | 1332418 | Amlodipine | NO | YES | NO | 
 | 1353776 | Felodipine | NO | YES | NO | 
 
-## Non-dihydropyridine Calcium Channel Blocker (ndCCB) use {#ndCCBUse}
+## Non-Dihydropyridine Calcium Channel Blocker (ndCCB) Use {#ndCCBUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *non-dihydropyridine Calcium channel blockers (ndCCB)* (Table \@ref(tab:ndCCBUsendCCB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -640,7 +640,7 @@ Table: (\#tab:ndCCBUsendCCB) non-dihydropyridine Calcium channel blockers (ndCCB
 | 1307863 | Verapamil | NO | YES | NO | 
 | 1328165 | Diltiazem | NO | YES | NO | 
 
-## Beta-blocker use {#BBUse}
+## Beta-Blocker Use {#BBUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Beta blockers* (Table \@ref(tab:BBUseBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -663,7 +663,7 @@ Table: (\#tab:BBUseBB) Beta blockers
 | 1353766 | Propranolol | NO | YES | NO | 
 | 1386957 | Labetalol | NO | YES | NO | 
 
-## Diuretic-loop use {#DLoopUse}
+## Diuretic-Loop Use {#DLoopUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - Loop* (Table \@ref(tab:DLoopUseDLoops)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -677,7 +677,7 @@ Table: (\#tab:DLoopUseDLoops) Diuretics - Loop
 | 942350 | torsemide | NO | YES | NO | 
 | 956874 | Furosemide | NO | YES | NO | 
 
-## Diuretic-potassium sparing use {#DPUse}
+## Diuretic-Potassium Sparing Use {#DPUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - potassium sparing* (Table \@ref(tab:DPUseDPs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
@@ -690,7 +690,7 @@ Table: (\#tab:DPUseDPs) Diuretics - potassium sparing
 | 904542 | Triamterene | NO | YES | NO | 
 | 991382 | Amiloride | NO | YES | NO | 
 
-## Alpha-1 blocker use {#A1BUse}
+## Alpha-1 Blocker Use {#A1BUse}
 
 Same as *cohort definition \@ref(ACEiUse)* with *Alpha-1 blocker* (Table \@ref(tab:A1BUseA1Bs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
 
