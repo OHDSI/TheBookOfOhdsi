@@ -1,5 +1,7 @@
 # Standardized Vocabularies {#StandardizedVocabularies}
 
+\index{standardized vocabularies}
+
 *Chapter leads: Christian Reich & Anna Ostropolets*
 
 The OMOP Standardized Vocabularies as part of the OMOP CDM is a foundational part of the OHDSI research network. It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all th way through to the researcher, who is faced with a myriad of different ways to describe clinical Events. OMOP requires harmonization not only to a standardized format, but also a rigorous standard content. 
@@ -8,7 +10,7 @@ In this chapter we first describe the main principles of the Standardized Vocabu
 
 ## Why Vocabularies, and Why Standardizing 
 
-Medical vocabularies go back to the Bills of Mortality in medieval London to manage outbreaks of the plague and other diseases (see Figure \@ref(fig:bill)). 
+Medical vocabularies go back to the Bills of Mortality in medieval London to manage outbreaks of the plague and other diseases (see Figure \@ref(fig:bill)). \index{Bill of Mortality}
   
 <div class="figure" style="text-align: center">
 <img src="images/StandardizedVocabularies/bill.jpg" alt="1660 London Bill of Mortality, showing the cause of death for deceased inhabitants using a classification system of 62 diseases known at the time." width="100%" />
@@ -28,7 +30,7 @@ The Standardized Vocabularies are available to the community free of charge and 
 
 ### Building the Standardized Vocabularies
 
-All vocabularies of the Standardized Vocabularies are consolidated into the same common format. This relieves the researchers from having to understand and handle multiple different formats and life cycle conventions of the originating vocabularies. All vocabularies are regularly refreshed and incorporated using the Pallas System[^pallasUrl]. It is built and run by the OHDSI Vocabulary Team, which is part of the overall OMOP CDM Workgroup. If you find mistakes please report and help improve our resource by posting in either the OHDSI Forums[^forums2Url] or CDM Github page[^cdmIssuesUrl].
+All vocabularies of the Standardized Vocabularies are consolidated into the same common format. This relieves the researchers from having to understand and handle multiple different formats and life cycle conventions of the originating vocabularies. All vocabularies are regularly refreshed and incorporated using the Pallas system[^pallasUrl]. It is built and run by the OHDSI Vocabulary Team, which is part of the overall OMOP CDM Workgroup. If you find mistakes please report and help improve our resource by posting in either the OHDSI Forums[^forums2Url] or CDM Github page[^cdmIssuesUrl]. \index{Pallas system}
 
 [^pallasUrl]: https://github.com/OHDSI/Vocabulary-v5.0
 [^forums2Url]: https://forums.ohdsi.org
@@ -36,7 +38,7 @@ All vocabularies of the Standardized Vocabularies are consolidated into the same
 
 ### Access to the Standardized Vocabularies
 
-In order to obtain the Standardized Vocabularies, you do not have to run Pallas yourself. Instead, you can download the latest version from ATHENA[^athenaUrl] and load it into your local database. ATHENA also allows faceted search of the Vocabularies.
+In order to obtain the Standardized Vocabularies, you do not have to run Pallas yourself. Instead, you can download the latest version from ATHENA[^athenaUrl] and load it into your local database. ATHENA also allows faceted search of the Vocabularies. \index{ATHENA} \index{standardized vocabularies!download} \index{standardized vocabularies!search}
 
 [^athenaUrl]: http://athena.ohdsi.org
 
@@ -48,7 +50,7 @@ OHDSI generally prefers adopting existing vocabularies, rather than de-novo cons
 
 ## Concepts
 
-All clinical Events in the OMOP CDM are expressed as Concepts, which represent the semantic notion of each Event. They are the fundamental building blocks of the data records, making almost tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure \@ref(fig:concept)).
+All clinical Events in the OMOP CDM are expressed as Concepts, which represent the semantic notion of each Event. They are the fundamental building blocks of the data records, making almost all tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure \@ref(fig:concept)). \index{concept}
   
 <div class="figure" style="text-align: center">
 <img src="images/StandardizedVocabularies/concept.png" alt="Standard representation of vocabulary Concepts in the OMOP CDM. The example provided is the CONCEPT table record for the SNOMED code for Atrial Fibrillation." width="90%" />
@@ -59,7 +61,7 @@ This system is meant to be **comprehensive**, i.e. there are enough Concepts to 
 
 ### Concept IDs
 
-Each Concept is assigned a Concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM Event tables. 
+Each Concept is assigned a Concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM Event tables.  \index{concept!identifier}
 
 ### Concept Names
 
@@ -68,7 +70,7 @@ Each concept has one name. Names are always in English. They are imported from t
 ### Domains
 
 Each Concept is assigned a Domain in the DOMAIN_ID field, which in contrast to the numerical CONCEPT_ID is a short case-sensitive unique alphanumeric ID for the Domain. Examples of such Domain identifiers are Condition, Drug, Procedure, Visit, Device, Specimen, etc. "Dirty", ambiguous or pre-coordinated (combination) Concepts can belong to a combination Domain, but Standard Concepts (see below) are always assigned a singular Domain. Domains also direct to which CDM table and field a clinical Event or Event attribute is recorded.
-Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in [Pallas](https://github.com/ohDSI/vocabulary-v5.0). Source vocabularies tend to combine codes of mixed Domains, but to a varying degree (see Figure \@ref(fig:domains)).
+Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in [Pallas](https://github.com/ohDSI/vocabulary-v5.0). Source vocabularies tend to combine codes of mixed Domains, but to a varying degree (see Figure \@ref(fig:domains)). \index{domain!concept}
 
 <div class="figure" style="text-align: center">
 <img src="images/StandardizedVocabularies/domains.png" alt="Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single Domain, but in reality they are mixed." width="80%" />
@@ -79,11 +81,11 @@ The Domain heuristic follows the definitions of the Domains. These definitions a
 
 ### Vocabularies
 
-Each Vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID "ICD9CM". There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file (see below). 
+Each Vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID "ICD9CM". There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file (see below). \index{vocabulary}
 
 ### Concept Classes
 
-Some vocabularies classify their codes or Concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such Concept Classes, which SNOMED refers to as "Semantic Tags": "Clinical Finding", "Social Context", "Body Structure" etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have Concept Classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any Concept Classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID. 
+Some vocabularies classify their codes or Concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such Concept Classes, which SNOMED refers to as "Semantic Tags": "Clinical Finding", "Social Context", "Body Structure" etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have Concept Classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any Concept Classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID. \index{concept!class}
 
 Table: (\#tab:sublassification) Vocabularies with or without horizontal and vertical subclassification principles in Concept Class.
 
@@ -98,7 +100,7 @@ Horizontal Concept Classes allow to determine a specific hierarchical level. For
 
 ### Standard Concepts
 
-For each clinical Event, out of all the Concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define "Atrial fibrillation" in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-Standard or source Concepts and mapped to the Standard ones. Standard Concepts are indicated through an "S" in the STANDARD_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "_CONCEPT_ID". 
+For each clinical Event, out of all the Concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define "Atrial fibrillation" in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-Standard or source Concepts and mapped to the Standard ones. Standard Concepts are indicated through an "S" in the STANDARD_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "_CONCEPT_ID". \index{standard concept}
 
 ### Non-Standard Concepts
 
@@ -106,7 +108,7 @@ Non-Standard Concepts are not used to represent the clinical Events, but are sti
 
 ### Classification Concepts
 
-These Concepts are not Standard, and hence cannot be used to represent the data. But they are participating in the hierarchy with the Standard Concepts, and can therefore be used to perform hierarchical queries. For example, querying for all descendants of MedDRA code 10037908 (not visible for users who have not obtained a MedDRA license, see above for access restrictions) will retrieve the Standard SNOMED concept for Atrial Fibrillation (see below for hierarchical queries using the CONCEPT_ANCESTOR table) - see Figure \@ref(fig:hierarchy).
+These Concepts are not Standard, and hence cannot be used to represent the data. But they are participating in the hierarchy with the Standard Concepts, and can therefore be used to perform hierarchical queries. For example, querying for all descendants of MedDRA code 10037908 (not visible for users who have not obtained a MedDRA license, see above for access restrictions) will retrieve the Standard SNOMED concept for Atrial Fibrillation (see below for hierarchical queries using the CONCEPT_ANCESTOR table) - see Figure \@ref(fig:hierarchy). \index{classification concept}
 
 <div class="figure" style="text-align: center">
 <img src="images/StandardizedVocabularies/hierarchy.png" alt="Standard, non-Standard source and Classification Concepts and their hierarchical relationships in the Condition Domain. SNOMED is used for most Standard Condition Concepts (with some oncology-related concepts derived from ICDO3), MedDRA Concepts are used for hierarchical Classification Concepts, and all other vocabularies contain non-Standard or source Concepts, which do not participate in the hierarchy." width="100%" />
@@ -129,7 +131,7 @@ Visit | CMS Place of Service, ABMT, NUCC | SNOMED, HCPCS, CPT4, UB04 | None at t
 
 ### Concept Codes
 
-These are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the Concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e. the same code can exist in different vocabularies with completely different meanings (see Table \@ref(tab:code1001))
+These are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the Concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e. the same code can exist in different vocabularies with completely different meanings (see Table \@ref(tab:code1001)) \index{concept!code}
 
 Table: (\#tab:code1001) Concepts with identical Concept Code 1001, but different Vocabularies, Domains and Concept Classes.
 
@@ -145,7 +147,7 @@ Concept ID | Concept Code | Concept Name | Domain ID | Vocabulary ID | Concept C
 
 ### Life Cycle
 
-Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible situations, as described in Table \@ref(tab:validityRules).
+Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible situations, as described in Table \@ref(tab:validityRules). \index{concept!life cycle}
 
 Table: (\#tab:validityRules) Validity rules for concepts, with active, deprecated, upgraded and reused concepts. 
 
@@ -160,13 +162,13 @@ In general, Concept Codes are not reused. But there are a few vocabularies that 
 
 ## Relationships
 
-Relationships are defined between any two Concepts, inside Domains and vocabularies and across. The nature of the Relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP_ID field of the CONCEPT_RELATIONSHIP table. Relationships are symmetrical, i.e. for each Relationship an equivalent Relationship exists, where the content of the fields CONCEPT_ID_1 and CONCEPT_ID_2 are swapped, and the RELATIONHSIP_ID is changed to its opposite. For example, the "Maps to" relationship has an opposite relationship "Mapped from". 
-
+Relationships are defined between any two Concepts, inside Domains and vocabularies and across. The nature of the Relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP_ID field of the CONCEPT_RELATIONSHIP table. Relationships are symmetrical, i.e. for each Relationship an equivalent Relationship exists, where the content of the fields CONCEPT_ID_1 and CONCEPT_ID_2 are swapped, and the RELATIONHSIP_ID is changed to its opposite. For example, the "Maps to" relationship has an opposite relationship "Mapped from". \index{concept!relationship}
+ 
 CONCEPT_RELATIONSHIP table records also have life cycle fields RELATIONSHIP_START_DATE, RELATIONSHIP_END_DATE and INVALID_REASON. However, only active records with INVALID_REASON = NULL are available through ATHENA. Inactive Relationships are kept in the Pallas system for internal processing only. The RELATIONSHIP table serves as the reference with the full list of Relationship IDs and their reverse counterparts.
 
 ### Mapping Relationships
 
-These relationships provide translations from non-Standard to Standard concepts, supported by two Relationship ID pairs (see Table \@ref(tab:mappingRelationships)).
+These relationships provide translations from non-Standard to Standard concepts, supported by two Relationship ID pairs (see Table \@ref(tab:mappingRelationships)). \index{concept!mapping}
 
 Table: (\#tab:mappingRelationships) Type of mapping relationships.
 
@@ -203,7 +205,7 @@ A more detailed description of mapping conventions can be found in the OHDSI Wik
 
 ### Hierarchical Relationships
 
-Relationship which indicate a hierarchy are defined through the "Is a"/"Subsumes" Relationship pair. Hierarchical Relationships are defined such that the child Concept has all the attributes of the parent Concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 "Atrial fibrillation" is related to SNOMED 17366009 "Atrial arrhythmia" through a "Is a" relationship. Both Concepts have an identical set of attributes, except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent, and more than one child Concept. In this example, SNOMED 49436004 "Atrial fibrillation" is also an "Is a" to SNOMED 40593004 "Fibrillation".
+Relationship which indicate a hierarchy are defined through the "Is a"/"Subsumes" Relationship pair. Hierarchical Relationships are defined such that the child Concept has all the attributes of the parent Concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 "Atrial fibrillation" is related to SNOMED 17366009 "Atrial arrhythmia" through a "Is a" relationship. Both Concepts have an identical set of attributes, except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent, and more than one child Concept. In this example, SNOMED 49436004 "Atrial fibrillation" is also an "Is a" to SNOMED 40593004 "Fibrillation". \index{concept!hierarchy}
 
 ### Relationships Between Concepts of Different Vocabularies
 
@@ -234,7 +236,7 @@ Within a Domain, Standard and Classification Concepts are organized in a hierarc
 
 The CONCEPT_ANCESTOR table is built automatically from the CONCEPT_RELATIONSHIP table traversing all possible Concepts connected through hierarchical Relationships. These are the "Is a"/"Subsumes" pairs (see Figure \@ref(fig:conceptAncestor)), and other Relationships connecting hierarchies across vocabularies. The choice whether a Relationship participates in the hierarchy constructor is defined for each Relationship ID by the flag DEFINES_ANCESTRY in the RELATIONSHIP reference table. 
 
-(ref:foo) Hierarchy of the condition "Atrial fibrillation". First degree ancestry is defined through "Is a" and "Subsumes" relationships, while all higher degree relations are inferred and stored in the CONCEPT_ANCESTOR table. Each concept is also its own descendant with both levels of separation equal to 0.   
+(ref:foo) Hierarchy of the condition "Atrial fibrillation". First degree ancestry is defined through "Is a" and "Subsumes" relationships, while all higher degree relations are inferred and stored in the CONCEPT_ANCESTOR table. Each concept is also its own descendant with both levels of separation equal to 0. \index{concept!ancestor}   
   
 <div class="figure" style="text-align: center">
 <img src="images/StandardizedVocabularies/conceptAncestor.png" alt="(ref:foo)" width="100%" />

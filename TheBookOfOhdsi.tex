@@ -2098,6 +2098,8 @@ Suggested answers can be found in Appendix \ref{Cdmanswers}.
 \hypertarget{StandardizedVocabularies}{%
 \chapter{Standardized Vocabularies}\label{StandardizedVocabularies}}
 
+\index{standardized vocabularies}
+
 \emph{Chapter leads: Christian Reich \& Anna Ostropolets}
 
 The OMOP Standardized Vocabularies as part of the OMOP CDM is a foundational part of the OHDSI research network. It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all th way through to the researcher, who is faced with a myriad of different ways to describe clinical Events. OMOP requires harmonization not only to a standardized format, but also a rigorous standard content.
@@ -2107,7 +2109,7 @@ In this chapter we first describe the main principles of the Standardized Vocabu
 \hypertarget{why-vocabularies-and-why-standardizing}{%
 \section{Why Vocabularies, and Why Standardizing}\label{why-vocabularies-and-why-standardizing}}
 
-Medical vocabularies go back to the Bills of Mortality in medieval London to manage outbreaks of the plague and other diseases (see Figure \ref{fig:bill}).
+Medical vocabularies go back to the Bills of Mortality in medieval London to manage outbreaks of the plague and other diseases (see Figure \ref{fig:bill}). \index{Bill of Mortality}
 
 \begin{figure}
 
@@ -2137,12 +2139,12 @@ The Standardized Vocabularies are available to the community free of charge and 
 \hypertarget{building-the-standardized-vocabularies}{%
 \subsection{Building the Standardized Vocabularies}\label{building-the-standardized-vocabularies}}
 
-All vocabularies of the Standardized Vocabularies are consolidated into the same common format. This relieves the researchers from having to understand and handle multiple different formats and life cycle conventions of the originating vocabularies. All vocabularies are regularly refreshed and incorporated using the Pallas System\footnote{\url{https://github.com/OHDSI/Vocabulary-v5.0}}. It is built and run by the OHDSI Vocabulary Team, which is part of the overall OMOP CDM Workgroup. If you find mistakes please report and help improve our resource by posting in either the OHDSI Forums\footnote{\url{https://forums.ohdsi.org}} or CDM Github page\footnote{\url{https://github.com/OHDSI/CommonDataModel/issues}}.
+All vocabularies of the Standardized Vocabularies are consolidated into the same common format. This relieves the researchers from having to understand and handle multiple different formats and life cycle conventions of the originating vocabularies. All vocabularies are regularly refreshed and incorporated using the Pallas system\footnote{\url{https://github.com/OHDSI/Vocabulary-v5.0}}. It is built and run by the OHDSI Vocabulary Team, which is part of the overall OMOP CDM Workgroup. If you find mistakes please report and help improve our resource by posting in either the OHDSI Forums\footnote{\url{https://forums.ohdsi.org}} or CDM Github page\footnote{\url{https://github.com/OHDSI/CommonDataModel/issues}}. \index{Pallas system}
 
 \hypertarget{access-to-the-standardized-vocabularies}{%
 \subsection{Access to the Standardized Vocabularies}\label{access-to-the-standardized-vocabularies}}
 
-In order to obtain the Standardized Vocabularies, you do not have to run Pallas yourself. Instead, you can download the latest version from ATHENA\footnote{\url{http://athena.ohdsi.org}} and load it into your local database. ATHENA also allows faceted search of the Vocabularies.
+In order to obtain the Standardized Vocabularies, you do not have to run Pallas yourself. Instead, you can download the latest version from ATHENA\footnote{\url{http://athena.ohdsi.org}} and load it into your local database. ATHENA also allows faceted search of the Vocabularies. \index{ATHENA} \index{standardized vocabularies!download} \index{standardized vocabularies!search}
 
 To download a zip file with all Standardized Vocabularies tables select all the vocabularies you need for your OMOP CDM. Vocabularies with Standard Concepts (see below) and very common usage are preselected. Add vocabularies that are used in your source data. Vocabularies that are proprietary have no select button. Click on the ``License required'' button to incorporate such a vocabulary into your list. The Vocabulary Team will contact you and request you demonstrate your license or help you connect to the right folks to obtain one.
 
@@ -2154,7 +2156,7 @@ OHDSI generally prefers adopting existing vocabularies, rather than de-novo cons
 \hypertarget{concepts}{%
 \section{Concepts}\label{concepts}}
 
-All clinical Events in the OMOP CDM are expressed as Concepts, which represent the semantic notion of each Event. They are the fundamental building blocks of the data records, making almost tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure \ref{fig:concept}).
+All clinical Events in the OMOP CDM are expressed as Concepts, which represent the semantic notion of each Event. They are the fundamental building blocks of the data records, making almost all tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure \ref{fig:concept}). \index{concept}
 
 \begin{figure}
 
@@ -2170,7 +2172,7 @@ This system is meant to be \textbf{comprehensive}, i.e.~there are enough Concept
 \hypertarget{concept-ids}{%
 \subsection{Concept IDs}\label{concept-ids}}
 
-Each Concept is assigned a Concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM Event tables.
+Each Concept is assigned a Concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM Event tables. \index{concept!identifier}
 
 \hypertarget{concept-names}{%
 \subsection{Concept Names}\label{concept-names}}
@@ -2181,7 +2183,7 @@ Each concept has one name. Names are always in English. They are imported from t
 \subsection{Domains}\label{domains-1}}
 
 Each Concept is assigned a Domain in the DOMAIN\_ID field, which in contrast to the numerical CONCEPT\_ID is a short case-sensitive unique alphanumeric ID for the Domain. Examples of such Domain identifiers are Condition, Drug, Procedure, Visit, Device, Specimen, etc. ``Dirty'', ambiguous or pre-coordinated (combination) Concepts can belong to a combination Domain, but Standard Concepts (see below) are always assigned a singular Domain. Domains also direct to which CDM table and field a clinical Event or Event attribute is recorded.
-Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in \href{https://github.com/ohDSI/vocabulary-v5.0}{Pallas}. Source vocabularies tend to combine codes of mixed Domains, but to a varying degree (see Figure \ref{fig:domains}).
+Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in \href{https://github.com/ohDSI/vocabulary-v5.0}{Pallas}. Source vocabularies tend to combine codes of mixed Domains, but to a varying degree (see Figure \ref{fig:domains}). \index{domain!concept}
 
 \begin{figure}
 
@@ -2197,12 +2199,12 @@ The Domain heuristic follows the definitions of the Domains. These definitions a
 \hypertarget{vocabularies}{%
 \subsection{Vocabularies}\label{vocabularies}}
 
-Each Vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID ``ICD9CM''. There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file (see below).
+Each Vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID ``ICD9CM''. There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file (see below). \index{vocabulary}
 
 \hypertarget{concept-classes}{%
 \subsection{Concept Classes}\label{concept-classes}}
 
-Some vocabularies classify their codes or Concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such Concept Classes, which SNOMED refers to as ``Semantic Tags'': ``Clinical Finding'', ``Social Context'', ``Body Structure'' etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have Concept Classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any Concept Classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID.
+Some vocabularies classify their codes or Concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such Concept Classes, which SNOMED refers to as ``Semantic Tags'': ``Clinical Finding'', ``Social Context'', ``Body Structure'' etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have Concept Classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any Concept Classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID. \index{concept!class}
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:sublassification} Vocabularies with or without horizontal and vertical subclassification principles in Concept Class.}\tabularnewline
@@ -2250,7 +2252,7 @@ Horizontal Concept Classes allow to determine a specific hierarchical level. For
 \hypertarget{standard-concepts}{%
 \subsection{Standard Concepts}\label{standard-concepts}}
 
-For each clinical Event, out of all the Concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define ``Atrial fibrillation'' in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-Standard or source Concepts and mapped to the Standard ones. Standard Concepts are indicated through an ``S'' in the STANDARD\_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "\_CONCEPT\_ID".
+For each clinical Event, out of all the Concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define ``Atrial fibrillation'' in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-Standard or source Concepts and mapped to the Standard ones. Standard Concepts are indicated through an ``S'' in the STANDARD\_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "\_CONCEPT\_ID". \index{standard concept}
 
 \hypertarget{non-standard-concepts}{%
 \subsection{Non-Standard Concepts}\label{non-standard-concepts}}
@@ -2260,7 +2262,7 @@ Non-Standard Concepts are not used to represent the clinical Events, but are sti
 \hypertarget{classification-concepts}{%
 \subsection{Classification Concepts}\label{classification-concepts}}
 
-These Concepts are not Standard, and hence cannot be used to represent the data. But they are participating in the hierarchy with the Standard Concepts, and can therefore be used to perform hierarchical queries. For example, querying for all descendants of MedDRA code 10037908 (not visible for users who have not obtained a MedDRA license, see above for access restrictions) will retrieve the Standard SNOMED concept for Atrial Fibrillation (see below for hierarchical queries using the CONCEPT\_ANCESTOR table) - see Figure \ref{fig:hierarchy}.
+These Concepts are not Standard, and hence cannot be used to represent the data. But they are participating in the hierarchy with the Standard Concepts, and can therefore be used to perform hierarchical queries. For example, querying for all descendants of MedDRA code 10037908 (not visible for users who have not obtained a MedDRA license, see above for access restrictions) will retrieve the Standard SNOMED concept for Atrial Fibrillation (see below for hierarchical queries using the CONCEPT\_ANCESTOR table) - see Figure \ref{fig:hierarchy}. \index{classification concept}
 
 \begin{figure}
 
@@ -2368,7 +2370,7 @@ None at this point\strut
 \hypertarget{concept-codes}{%
 \subsection{Concept Codes}\label{concept-codes}}
 
-These are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the Concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e.~the same code can exist in different vocabularies with completely different meanings (see Table \ref{tab:code1001})
+These are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the Concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e.~the same code can exist in different vocabularies with completely different meanings (see Table \ref{tab:code1001}) \index{concept!code}
 
 \begin{longtable}[]{@{}llllll@{}}
 \caption{\label{tab:code1001} Concepts with identical Concept Code 1001, but different Vocabularies, Domains and Concept Classes.}\tabularnewline
@@ -2501,7 +2503,7 @@ Specimen\strut
 \hypertarget{life-cycle}{%
 \subsection{Life Cycle}\label{life-cycle}}
 
-Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible situations, as described in Table \ref{tab:validityRules}.
+Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible situations, as described in Table \ref{tab:validityRules}. \index{concept!life cycle}
 
 \begin{longtable}[]{@{}lllll@{}}
 \caption{\label{tab:validityRules} Validity rules for concepts, with active, deprecated, upgraded and reused concepts.}\tabularnewline
@@ -2585,14 +2587,14 @@ In general, Concept Codes are not reused. But there are a few vocabularies that 
 \hypertarget{relationships}{%
 \section{Relationships}\label{relationships}}
 
-Relationships are defined between any two Concepts, inside Domains and vocabularies and across. The nature of the Relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP\_ID field of the CONCEPT\_RELATIONSHIP table. Relationships are symmetrical, i.e.~for each Relationship an equivalent Relationship exists, where the content of the fields CONCEPT\_ID\_1 and CONCEPT\_ID\_2 are swapped, and the RELATIONHSIP\_ID is changed to its opposite. For example, the ``Maps to'' relationship has an opposite relationship ``Mapped from''.
+Relationships are defined between any two Concepts, inside Domains and vocabularies and across. The nature of the Relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP\_ID field of the CONCEPT\_RELATIONSHIP table. Relationships are symmetrical, i.e.~for each Relationship an equivalent Relationship exists, where the content of the fields CONCEPT\_ID\_1 and CONCEPT\_ID\_2 are swapped, and the RELATIONHSIP\_ID is changed to its opposite. For example, the ``Maps to'' relationship has an opposite relationship ``Mapped from''. \index{concept!relationship}
 
 CONCEPT\_RELATIONSHIP table records also have life cycle fields RELATIONSHIP\_START\_DATE, RELATIONSHIP\_END\_DATE and INVALID\_REASON. However, only active records with INVALID\_REASON = NULL are available through ATHENA. Inactive Relationships are kept in the Pallas system for internal processing only. The RELATIONSHIP table serves as the reference with the full list of Relationship IDs and their reverse counterparts.
 
 \hypertarget{mapping-relationships}{%
 \subsection{Mapping Relationships}\label{mapping-relationships}}
 
-These relationships provide translations from non-Standard to Standard concepts, supported by two Relationship ID pairs (see Table \ref{tab:mappingRelationships}).
+These relationships provide translations from non-Standard to Standard concepts, supported by two Relationship ID pairs (see Table \ref{tab:mappingRelationships}). \index{concept!mapping}
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:mappingRelationships} Type of mapping relationships.}\tabularnewline
@@ -2663,7 +2665,7 @@ A more detailed description of mapping conventions can be found in the OHDSI Wik
 \hypertarget{hierarchical-relationships}{%
 \subsection{Hierarchical Relationships}\label{hierarchical-relationships}}
 
-Relationship which indicate a hierarchy are defined through the ``Is a''/``Subsumes'' Relationship pair. Hierarchical Relationships are defined such that the child Concept has all the attributes of the parent Concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 ``Atrial fibrillation'' is related to SNOMED 17366009 ``Atrial arrhythmia'' through a ``Is a'' relationship. Both Concepts have an identical set of attributes, except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent, and more than one child Concept. In this example, SNOMED 49436004 ``Atrial fibrillation'' is also an ``Is a'' to SNOMED 40593004 ``Fibrillation''.
+Relationship which indicate a hierarchy are defined through the ``Is a''/``Subsumes'' Relationship pair. Hierarchical Relationships are defined such that the child Concept has all the attributes of the parent Concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 ``Atrial fibrillation'' is related to SNOMED 17366009 ``Atrial arrhythmia'' through a ``Is a'' relationship. Both Concepts have an identical set of attributes, except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent, and more than one child Concept. In this example, SNOMED 49436004 ``Atrial fibrillation'' is also an ``Is a'' to SNOMED 40593004 ``Fibrillation''. \index{concept!hierarchy}
 
 \hypertarget{relationships-between-concepts-of-different-vocabularies}{%
 \subsection{Relationships Between Concepts of Different Vocabularies}\label{relationships-between-concepts-of-different-vocabularies}}
@@ -2735,7 +2737,7 @@ The CONCEPT\_ANCESTOR table is built automatically from the CONCEPT\_RELATIONSHI
 
 }
 
-\caption{Hierarchy of the condition ``Atrial fibrillation''. First degree ancestry is defined through ``Is a'' and ``Subsumes'' relationships, while all higher degree relations are inferred and stored in the CONCEPT\_ANCESTOR table. Each concept is also its own descendant with both levels of separation equal to 0.}\label{fig:conceptAncestor}
+\caption{Hierarchy of the condition ``Atrial fibrillation''. First degree ancestry is defined through ``Is a'' and ``Subsumes'' relationships, while all higher degree relations are inferred and stored in the CONCEPT\_ANCESTOR table. Each concept is also its own descendant with both levels of separation equal to 0. \index{concept!ancestor}}\label{fig:conceptAncestor}
 \end{figure}
 
 The ancestral degree, or the number of steps between Ancestor and Descendant, is captured in the MIN\_LEVELS\_OF\_SEPARATION and MAX\_LEVELS\_OF\_SEPARATION fields, defining the shortest or longest possible connection. Not all hierarchical Relationships contribute equally to the Levels of Separation calculation. If a step is counted for the degree is determined by the IS\_HIERARCHICAL flag in the RELATIONSHIP reference table for each Relationship ID.
@@ -4757,7 +4759,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.p2lw1h06children ;"
+## [1] "SELECT * FROM temp_schema.szyl2n0schildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -10740,6 +10742,8 @@ The methods used to determine the gold standard are described in the remainder o
 \hypertarget{source-record-verification}{%
 \section{Source Record Verification}\label{source-record-verification}}
 
+\index{source record verification}
+
 A common method used to validate cohort definitions has been clinical adjudication through source record verification: a thorough examination of a person's records by one or more domain experts with sufficient knowledge to competently classify the clinical condition or characteristic of interest. Chart review generally follows the following steps:
 
 \begin{enumerate}
@@ -10799,6 +10803,8 @@ A review of validation efforts for myocardial infarction (MI) cohort definitions
 \hypertarget{phevaluator}{%
 \section{PheValuator}\label{phevaluator}}
 
+\index{PheValuator}
+
 The OHDSI community has developed a different approach to constructing a gold standard, using diagnostic predictive models. \citep{Swerdel2019phevaluator} The general idea is to emulate the ascertainment of the health outcome similar to the way clinicians would in a source record validation but in an automated way that can be applied at scale. The tool has been developed as an open-source R package called PheValuator\footnote{\url{https://github.com/OHDSI/PheValuator}}. PheValuator uses functions from the Patient Level Prediction package.
 
 The process is as follows:
@@ -10833,7 +10839,7 @@ The following are the steps for testing cohort definitions for MI using PheValua
 \subsubsection*{Step 1: Define the xSpec Cohort}\label{step-1-define-the-xspec-cohort}}
 \addcontentsline{toc}{subsubsection}{Step 1: Define the xSpec Cohort}
 
-To determine those with MI with a high probability. We required a condition occurrence record with a concept for myocardial infarction or any of its descendants, with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. Figure \ref{fig:xSpec} illustrates this cohort definition for MI in ATLAS.
+To determine those with MI with a high probability. We required a condition occurrence record with a concept for myocardial infarction or any of its descendants, with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. Figure \ref{fig:xSpec} illustrates this cohort definition for MI in ATLAS. \index{xSpec cohort}
 
 \begin{figure}
 
@@ -10848,7 +10854,7 @@ To determine those with MI with a high probability. We required a condition occu
 \subsubsection*{Step 2: Define the xSens Cohort}\label{step-2-define-the-xsens-cohort}}
 \addcontentsline{toc}{subsubsection}{Step 2: Define the xSens Cohort}
 
-We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure \ref{fig:xSens} illustrates the xSens cohort definition for MI in ATLAS.
+We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure \ref{fig:xSens} illustrates the xSens cohort definition for MI in ATLAS. \index{xSens cohort}
 
 \begin{figure}
 

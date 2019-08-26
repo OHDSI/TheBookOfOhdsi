@@ -64,6 +64,8 @@ The methods used to determine the gold standard are described in the remainder o
 
 ## Source Record Verification 
 
+\index{source record verification}
+
 A common method used to validate cohort definitions has been clinical adjudication through source record verification: a thorough examination of a person’s records by one or more domain experts with sufficient knowledge to competently classify the clinical condition or characteristic of interest. Chart review generally follows the following steps:
 
 1. Obtain permission from local institutional review board (IRB) and/or persons as needed to conduct study including chart review
@@ -97,6 +99,8 @@ A review of validation efforts for myocardial infarction (MI) cohort definitions
 
 ## PheValuator
 
+\index{PheValuator}
+
 The OHDSI community has developed a different approach to constructing a gold standard, using diagnostic predictive models. [@Swerdel2019phevaluator] The general idea is to emulate the ascertainment of the health outcome similar to the way clinicians would in a source record validation but in an automated way that can be applied at scale. The tool has been developed as an open-source R package called PheValuator[^phevaluatorUrl]. PheValuator uses functions from the Patient Level Prediction package.
 
 [^phevaluatorUrl]: https://github.com/OHDSI/PheValuator
@@ -121,7 +125,7 @@ The following are the steps for testing cohort definitions for MI using PheValua
 
 #### Step 1: Define the xSpec Cohort {-}
 
-To determine those with MI with a high probability. We required a condition occurrence record with a concept for myocardial infarction or any of its descendants, with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. Figure \@ref(fig:xSpec) illustrates this cohort definition for MI in ATLAS.
+To determine those with MI with a high probability. We required a condition occurrence record with a concept for myocardial infarction or any of its descendants, with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. Figure \@ref(fig:xSpec) illustrates this cohort definition for MI in ATLAS. \index{xSpec cohort}
 
 <div class="figure" style="text-align: center">
 <img src="images/ClinicalValidity/xSpec.png" alt="An extremely specific cohort definition (xSpec) for myocardial infarction." width="100%" />
@@ -130,7 +134,7 @@ To determine those with MI with a high probability. We required a condition occu
  
 #### Step 2: Define the xSens Cohort {-}
  
-We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure \@ref(fig:xSens) illustrates the xSens cohort definition for MI in ATLAS.
+We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure \@ref(fig:xSens) illustrates the xSens cohort definition for MI in ATLAS. \index{xSens cohort}
 
 <div class="figure" style="text-align: center">
 <img src="images/ClinicalValidity/xSens.png" alt="An extremely sensitive cohort definition (xSens) for myocardial infarction." width="100%" />
