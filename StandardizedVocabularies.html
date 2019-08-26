@@ -677,7 +677,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 6</span> Standardized Vocabularies</h1>
 <p></p>
 <p><em>Chapter leads: Christian Reich &amp; Anna Ostropolets</em></p>
-<p>The OMOP Standardized Vocabularies as part of the Common Data Model (CDM) is a foundational part of the OHDSI research network. It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical Events. OHDSI requires harmonization not only to a standardized format, but also a rigorous standard content.</p>
+<p>The OMOP Standardized Vocabularies, often referred to simply as “the Vocabulary” is a foundational part of the OHDSI research network, and an integral part of the Common Data Model (CDM). It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical events. OHDSI requires harmonization not only to a standardized format, but also a rigorous standard content.</p>
 <p>In this chapter we first describe the main principles of the Standardized Vocabularies, its components, and the relevant rules and conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.</p>
 <div id="why-vocabularies-and-why-standardizing" class="section level2">
 <h2><span class="header-section-number">6.1</span> Why Vocabularies, and Why Standardizing</h2>
@@ -703,7 +703,7 @@ Figure 6.1: 1660 London Bill of Mortality, showing the cause of death for deceas
 <div id="accessVocabularies" class="section level3">
 <h3><span class="header-section-number">6.1.2</span> Access to the Standardized Vocabularies</h3>
 <p>In order to obtain the Standardized Vocabularies, you do not have to run Pallas yourself. Instead, you can download the latest version from ATHENA<a href="references.html#fn23" class="footnote-ref" id="fnref23"><sup>23</sup></a> and load it into your local database. ATHENA also allows faceted search of the Vocabularies.   </p>
-<p>To download a zip file with all Standardized Vocabularies tables select all the vocabularies you need for your OMOP CDM. Vocabularies with Standard Concepts (see Section<a href="StandardizedVocabularies.html#standardConcepts">6.2.6</a>) and very common usage are preselected. Add vocabularies that are used in your source data. Vocabularies that are proprietary have no select button. Click on the “License required” button to incorporate such a vocabulary into your list. The Vocabulary Team will contact you and request you demonstrate your license or help you connect to the right folks to obtain one.</p>
+<p>To download a zip file with all Standardized Vocabularies tables select all the vocabularies you need for your OMOP CDM. Vocabularies with Standard Concepts (see Section <a href="StandardizedVocabularies.html#standardConcepts">6.2.6</a>) and very common usage are preselected. Add vocabularies that are used in your source data. Vocabularies that are proprietary have no select button. Click on the “License required” button to incorporate such a vocabulary into your list. The Vocabulary Team will contact you and request you demonstrate your license or help you connect to the right folks to obtain one.</p>
 </div>
 <div id="source-of-vocabularies-adopt-versus-build" class="section level3">
 <h3><span class="header-section-number">6.1.3</span> Source of Vocabularies: Adopt Versus Build</h3>
@@ -712,7 +712,7 @@ Figure 6.1: 1660 London Bill of Mortality, showing the cause of death for deceas
 </div>
 <div id="concepts" class="section level2">
 <h2><span class="header-section-number">6.2</span> Concepts</h2>
-<p>All clinical Events in the OMOP CDM are expressed as concepts, which represent the semantic notion of each Event. They are the fundamental building blocks of the data records, making almost all tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure <a href="StandardizedVocabularies.html#fig:concept">6.2</a>). </p>
+<p>All clinical events in the OMOP CDM are expressed as concepts, which represent the semantic notion of each event. They are the fundamental building blocks of the data records, making almost all tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure <a href="StandardizedVocabularies.html#fig:concept">6.2</a>). </p>
 <div class="figure" style="text-align: center"><span id="fig:concept"></span>
 <img src="images/StandardizedVocabularies/concept.png" alt="Standard representation of vocabulary concepts in the OMOP CDM. The example provided is the CONCEPT table record for the SNOMED code for Atrial Fibrillation." width="90%" />
 <p class="caption">
@@ -722,7 +722,7 @@ Figure 6.2: Standard representation of vocabulary concepts in the OMOP CDM. The 
 <p>This system is meant to be <strong>comprehensive</strong>, i.e. there are enough concepts to cover any event relevant to the patient’s healthcare experience (e.g. Conditions, Procedures, Exposures to Drug, etc.) as well as some of the administrative information of the healthcare system (e.g. Visits, Care Sites, etc.).</p>
 <div id="concept-ids" class="section level3">
 <h3><span class="header-section-number">6.2.1</span> Concept IDs</h3>
-<p>Each concept is assigned a concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM Event tables. </p>
+<p>Each concept is assigned a concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM event tables. </p>
 </div>
 <div id="concept-names" class="section level3">
 <h3><span class="header-section-number">6.2.2</span> Concept Names</h3>
@@ -730,23 +730,23 @@ Figure 6.2: Standard representation of vocabulary concepts in the OMOP CDM. The 
 </div>
 <div id="conceptDomains" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Domains</h3>
-<p>Each concept is assigned a Domain in the DOMAIN_ID field, which in contrast to the numerical CONCEPT_ID is a short case-sensitive unique alphanumeric ID for the Domain. Examples of such Domain identifiers are “Condition”, “Drug”, “Procedure”, “Visit”, “Device”, “Specimen”, etc. Ambiguous or pre-coordinated (combination) concepts can belong to a combination Domain, but Standard Concepts (see Section<a href="StandardizedVocabularies.html#standardConcepts">6.2.6</a>) are always assigned a singular Domain. Domains also direct to which CDM table and field a clinical Event or Event attribute is recorded.
-Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in <a href="https://github.com/ohDSI/vocabulary-v5.0">Pallas</a>. Source vocabularies tend to combine codes of mixed Domains, but to a varying degree (see Figure <a href="StandardizedVocabularies.html#fig:domains">6.3</a>). </p>
+<p>Each concept is assigned a domain in the DOMAIN_ID field, which in contrast to the numerical CONCEPT_ID is a short case-sensitive unique alphanumeric ID for the domain. Examples of such domain identifiers are “Condition”, “Drug”, “Procedure”, “Visit”, “Device”, “Specimen”, etc. Ambiguous or pre-coordinated (combination) concepts can belong to a combination domain, but Standard Concepts (see Section <a href="StandardizedVocabularies.html#standardConcepts">6.2.6</a>) are always assigned a singular domain. Domains also direct to which CDM table and field a clinical event or event attribute is recorded.
+Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in <a href="https://github.com/ohDSI/vocabulary-v5.0">Pallas</a>. Source vocabularies tend to combine codes of mixed domains, but to a varying degree (see Figure <a href="StandardizedVocabularies.html#fig:domains">6.3</a>). </p>
 <div class="figure" style="text-align: center"><span id="fig:domains"></span>
-<img src="images/StandardizedVocabularies/domains.png" alt="Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single Domain, but in reality they are mixed." width="70%" />
+<img src="images/StandardizedVocabularies/domains.png" alt="Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single domain, but in reality they are mixed." width="70%" />
 <p class="caption">
-Figure 6.3: Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single Domain, but in reality they are mixed.
+Figure 6.3: Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single domain, but in reality they are mixed.
 </p>
 </div>
-<p>The Domain heuristic follows the definitions of the Domains. These definitions are derived from the table and field definitions in the CDM (see Chapter <a href="CommonDataModel.html#CommonDataModel">5</a>). The heuristic is not perfect, there are grey zones (see Section <a href="StandardizedVocabularies.html#specialSituations">6.6</a> “Special Situations”). If you find concept Domains misassigned please report and help improve the process through a <a href="https://forums.ohdsi.org">Forums</a> or <a href="https://github.com/OHDSI/CommonDataModel/issues">CDM issue</a> post.</p>
+<p>The domain heuristic follows the definitions of the domains. These definitions are derived from the table and field definitions in the CDM (see Chapter <a href="CommonDataModel.html#CommonDataModel">5</a>). The heuristic is not perfect, there are grey zones (see Section <a href="StandardizedVocabularies.html#specialSituations">6.6</a> “Special Situations”). If you find concept domains misassigned please report and help improve the process through a <a href="https://forums.ohdsi.org">Forums</a> or <a href="https://github.com/OHDSI/CommonDataModel/issues">CDM issue</a> post.</p>
 </div>
 <div id="vocabularies" class="section level3">
 <h3><span class="header-section-number">6.2.4</span> Vocabularies</h3>
-<p>Each Vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID “ICD9CM”. There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file. </p>
+<p>Each vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID “ICD9CM”. There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file. </p>
 </div>
 <div id="concept-classes" class="section level3">
 <h3><span class="header-section-number">6.2.5</span> Concept Classes</h3>
-<p>Some vocabularies classify their codes or concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such concept classes, which SNOMED refers to as “Semantic Tags”: “Clinical Finding”, “Social Context”, “Body Structure” etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have concept classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any concept classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID. </p>
+<p>Some vocabularies classify their codes or concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such concept classes, which SNOMED refers to as “Semantic Tags”: “Clinical Finding”, “Social Context”, “Body Structure” etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have concept classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any concept classes, such as HCPCS, use the vocabulary ID as the Concept Class ID. </p>
 <table>
 <caption><span id="tab:sublassification">Table 6.1: </span> Vocabularies with or without horizontal and vertical sub-classification principles in concept class.</caption>
 <colgroup>
@@ -782,11 +782,11 @@ Figure 6.3: Domain assignment in procedure vocabularies CPT4 and HCPCS. By intui
 </div>
 <div id="standardConcepts" class="section level3">
 <h3><span class="header-section-number">6.2.6</span> Standard Concepts</h3>
-<p>For each clinical Event, out of all the concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define “Atrial fibrillation” in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-standard or source concepts and mapped to the Standard ones. Standard Concepts are indicated through an “S” in the STANDARD_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "_CONCEPT_ID". </p>
+<p>For each clinical event, out of all the concepts representing the meaning of the event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define “Atrial fibrillation” in the Condition domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-standard or source concepts and mapped to the Standard ones. Standard Concepts are indicated through an “S” in the STANDARD_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "_CONCEPT_ID". </p>
 </div>
 <div id="non-standard-concepts" class="section level3">
 <h3><span class="header-section-number">6.2.7</span> Non-Standard Concepts</h3>
-<p>Non-standard concepts are not used to represent the clinical Events, but are still part of the Standardized Vocabularies, and are often found in the source data. For that reason, they are also called “source concepts”. The conversion of source concepts to Standard Concepts is a process called “mapping” (see Section <a href="StandardizedVocabularies.html#conceptMapping">6.3.1</a>). Non-standard concepts have no value (NULL) In the STANDARD_CONCEPT field.</p>
+<p>Non-standard concepts are not used to represent the clinical events, but are still part of the Standardized Vocabularies, and are often found in the source data. For that reason, they are also called “source concepts”. The conversion of source concepts to Standard Concepts is a process called “mapping” (see Section <a href="StandardizedVocabularies.html#conceptMapping">6.3.1</a>). Non-standard concepts have no value (NULL) In the STANDARD_CONCEPT field.</p>
 </div>
 <div id="classification-concepts" class="section level3">
 <h3><span class="header-section-number">6.2.8</span> Classification Concepts</h3>
@@ -797,7 +797,7 @@ Figure 6.3: Domain assignment in procedure vocabularies CPT4 and HCPCS. By intui
 Figure 6.4: Standard, non-standard source and classification concepts and their hierarchical relationships in the Condition domain. SNOMED is used for most standard condition concepts (with some oncology-related concepts derived from ICDO3), MedDRA concepts are used for hierarchical classification concepts, and all other vocabularies contain non-standard or source concepts, which do not participate in the hierarchy.
 </p>
 </div>
-<p>The choice of concept designation as Standard, non-standard and classification is typically done for each domain separately at the vocabulary level. This is based on the quality of the concepts, the built-in hierarchy and the declared purpose of the vocabulary. Also, not all concepts of a Vocabulary that are used for Standard Concepts. The designation is separate for each domain, each concept has to be active (see Section <a href="StandardizedVocabularies.html#conceptLifeCycle">6.2.10</a>) and there might be an order of precedence if more than one concept from different vocabularies compete for the same meaning. In other words, there is no such a thing as a “standard vocabulary”. See Table <a href="StandardizedVocabularies.html#tab:vocabList">6.2</a> for examples.</p>
+<p>The choice of concept designation as Standard, non-standard and classification is typically done for each domain separately at the vocabulary level. This is based on the quality of the concepts, the built-in hierarchy and the declared purpose of the vocabulary. Also, not all concepts of a vocabulary that are used for Standard Concepts. The designation is separate for each domain, each concept has to be active (see Section <a href="StandardizedVocabularies.html#conceptLifeCycle">6.2.10</a>) and there might be an order of precedence if more than one concept from different vocabularies compete for the same meaning. In other words, there is no such a thing as a “standard vocabulary”. See Table <a href="StandardizedVocabularies.html#tab:vocabList">6.2</a> for examples.</p>
 <table style="width:100%;">
 <caption><span id="tab:vocabList">Table 6.2: </span> List of vocabularies to utilize for Standard/non-standard/classification concept assignments.</caption>
 <colgroup>
@@ -976,7 +976,7 @@ Figure 6.4: Standard, non-standard source and classification concepts and their 
 <li>INVALID_REASON: “R”</li>
 </ul></li>
 </ul>
-<p>In general, concept codes are not reused. But there are a few vocabularies that deviate from this rule, in particular HCPCS, NDC and DRG. For those, the same concept code appears in more than one concept of the same vocabulary. There CONCPT_ID value stays unique. These reused concept codes are marked with an “R” in the INVALID_REASON field, and the VALID_START_DATE to VALID_END_DATE period should be used to distinguish concepts with the same concept codes.</p>
+<p>In general, concept codes are not reused. But there are a few vocabularies that deviate from this rule, in particular HCPCS, NDC and DRG. For those, the same concept code appears in more than one concept of the same vocabulary. There CONCEPT_ID value stays unique. These reused concept codes are marked with an “R” in the INVALID_REASON field, and the VALID_START_DATE to VALID_END_DATE period should be used to distinguish concepts with the same concept codes.</p>
 </div>
 </div>
 <div id="relationships" class="section level2">
@@ -1009,7 +1009,7 @@ Figure 6.4: Standard, non-standard source and classification concepts and their 
 </tr>
 </tbody>
 </table>
-<p>The purpose of these mapping relationships is to allow a crosswalk between equivalent concepts to harmonize how clinical Events are represented in the OMOP CDM. This is a main achievement of the Standardized Vocabularies.</p>
+<p>The purpose of these mapping relationships is to allow a crosswalk between equivalent concepts to harmonize how clinical events are represented in the OMOP CDM. This is a main achievement of the Standardized Vocabularies.</p>
 <p>“Equivalent concepts” means it carries the same meaning, and, importantly, the hierarchical descendants cover the same semantic space. If an equivalent concept is not available and the concept is not Standard, it is still mapped, but to a slightly broader concept (so-called “up-hill mappings”). For example, ICD10CM W61.51 “Bitten by goose” has no equivalent in the SNOMED vocabulary, which is generally used for standard condition concepts. Instead, it is mapped to SNOMED 217716004 “Peck by bird”, losing the context of the bird being a goose. Up-hill mappings are only used if the loss of information is considered irrelevant to standard research use cases.</p>
 <p>Some mappings connect a source concept to more than one Standard Concept. For example, ICD9CM 070.43 “Hepatitis E with hepatic coma” is mapped to both SNOMED 235867002 “Acute hepatitis E” as well as SNOMED 72836002 “Hepatic Coma”. The reason for this is that the original source concept is a pre-coordinated combination of two Conditions, hepatitis and coma. SNOMED does not have that combination, which results in two records written for the ICD9CM record, one with each mapped Standard Concept.</p>
 <p>Relationships “Maps to value” have the purpose of splitting of a value for OMOP CDM tables following an entity-attribute-value (EAV) model. This is typically the case in the following situations:</p>
@@ -1040,7 +1040,7 @@ Figure 6.5: One-to-many mapping between source concept and Standard Concepts. A 
 <div id="relationships-between-concepts-of-the-same-vocabulary" class="section level3">
 <h3><span class="header-section-number">6.3.4</span> Relationships Between Concepts of the Same Vocabulary</h3>
 <p>Internal vocabulary relationships are usually supplied by the vocabulary provider. A full descriptions can be found in the vocabulary documentation under the individual vocabulary at the OHDSI Wiki<a href="references.html#fn25" class="footnote-ref" id="fnref25"><sup>25</sup></a>.</p>
-<p>Many of these define relationships between clinical Events and can be used for information retrieval. For example, disorders of the urethra be found by following the “Finding site of” Relationship (see Table <a href="StandardizedVocabularies.html#tab:findingSite">6.5</a>):</p>
+<p>Many of these define relationships between clinical events and can be used for information retrieval. For example, disorders of the urethra be found by following the “Finding site of” Relationship (see Table <a href="StandardizedVocabularies.html#tab:findingSite">6.5</a>):</p>
 <table>
 <caption><span id="tab:findingSite">Table 6.5: </span> “Finding site of” relationship of the “Urethra”, indicating Conditions that are situated all in the this anatomical structure.</caption>
 <colgroup>
@@ -1092,7 +1092,7 @@ Figure 6.6: Hierarchy of the condition “Atrial fibrillation”. First degree a
 <div id="internal-reference-tables" class="section level2">
 <h2><span class="header-section-number">6.5</span> Internal Reference Tables</h2>
 <p>DOMAIN_ID, VOCABULARY_ID, CONCEPT_CLASS_ID (all in CONCEPT records) and CONCEPT_RELATIONSHIP_ID (in CONCEPT_RELATIONSHIP) are all controlled by their own vocabularies. They are defined in the four reference tables DOMAIN, VOCABULARY, CONCEPT_CLASS and RELATIONSHIP, containing the *_ID fields as primary keys, a more detailed *_NAME field and a *_CONCEPT_ID field with a reference back to the CONCEPT table, which contains a concept for each of the reference table records. The purpose of these duplicate records is to support an information model allowing for automatic navigation engines.</p>
-<p>The VOCABULARY table also contains the VOCABULARY_REFERENCE and VOCABULARY_VERSION fields referring to the source and version of the original Vocabulary. The RELATIONSHIP table has the additional fields DEFINES_ANCESTRY, IS_HIERARCHICAL and REVERSE_RELATIONSHIP_ID. The latter defines the counter Relationship ID for a pair of Relationships.</p>
+<p>The VOCABULARY table also contains the VOCABULARY_REFERENCE and VOCABULARY_VERSION fields referring to the source and version of the original vocabulary. The RELATIONSHIP table has the additional fields DEFINES_ANCESTRY, IS_HIERARCHICAL and REVERSE_RELATIONSHIP_ID. The latter defines the counter Relationship ID for a pair of Relationships.</p>
 </div>
 <div id="specialSituations" class="section level2">
 <h2><span class="header-section-number">6.6</span> Special Situations</h2>
@@ -1142,7 +1142,7 @@ Figure 6.6: Hierarchy of the condition “Atrial fibrillation”. First degree a
 
 <div class="rmdsummary">
 <ul>
-<li>All Events and administrative facts are represented in the OMOP Standardized Vocabularies as concepts, concept relationships and concept ancestor hierarchy</li>
+<li>All events and administrative facts are represented in the OMOP Standardized Vocabularies as concepts, concept relationships and concept ancestor hierarchy</li>
 <li>Most of these are adopted from existing coding schemes or vocabularies, some of them are curated de-novo by the OHDSI Vocabulary Team</li>
 <li>All concepts are assigned a domain, which controls where the fact represented by the concept is stored</li>
 <li>Concepts of equivalent meaning in different Vocabularies are mapped to one of them, which is designated the Standard Concept. The others are source concepts</li>
