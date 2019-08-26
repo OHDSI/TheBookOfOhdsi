@@ -152,7 +152,7 @@ renderTranslateQuerySql(connection, sql, cdm = "main")
 
 
 
-## Standardized Vocabularies {Vocabanswers}
+## Standardized Vocabularies {#Vocabanswers}
 
 #### Exercise \@ref(exr:exerciseVocab1) {-}
 

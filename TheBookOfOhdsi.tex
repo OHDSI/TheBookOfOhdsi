@@ -316,9 +316,7 @@
 \chapter*{Preface}\label{preface}}
 \addcontentsline{toc}{chapter}{Preface}
 
-This is a book about OHDSI, and is currently very much under development.
-
-The book is written in \href{https://rmarkdown.rstudio.com}{RMarkdown} with \href{https://bookdown.org}{bookdown}. It is automatically rebuilt from \href{https://github.com/OHDSI/TheBookOfOhdsi}{source} by \href{http://travis-ci.org/}{travis}.
+This is a book about Observational Health Data Sciences and Informatics (OHDSI). It was written by the OHSDI community to serve as a central knowledge repository, and it is still is being written: The Book of OHDSI is a living document, maintained through open source development tools. The online version is continuously updated and available for free at \url{http://book.ohdsi.org}. A physical copy of the book is available from Amazon at cost price.
 
 \hypertarget{goals-of-this-book}{%
 \section*{Goals of this Book}\label{goals-of-this-book}}
@@ -453,6 +451,12 @@ SqlRender & 1.6.2\\
 This book is licensed under the \href{http://creativecommons.org/publicdomain/zero/1.0/}{Creative Commons Zero v1.0 Universal license}.
 
 \includegraphics{images/Preface/cc0.png}
+
+\hypertarget{how-the-book-is-developed}{%
+\section*{How the Book Is Developed}\label{how-the-book-is-developed}}
+\addcontentsline{toc}{section}{How the Book Is Developed}
+
+The book is written in \href{https://rmarkdown.rstudio.com}{RMarkdown} using the \href{https://bookdown.org}{bookdown} package. The online version is automatically rebuilt from the source repository at \url{https://github.com/OHDSI/TheBookOfOhdsi} through the continuous intergration system \href{http://travis-ci.org/}{``travis''}. At regular intervals a snapshot is taken of the state of the book and marked as an ``edition''. These editions will be available as physical copies from Amazon .
 
 \mainmatter
 
@@ -959,7 +963,7 @@ The CDM is platform-independent. Data types are defined generically using ANSI S
 \hypertarget{domains}{%
 \subsection{General Conventions of Domains}\label{domains}}
 
-Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \ref{concepts-sources}). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION\_CONCEPT\_ID of the CONDITION\_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an CDM, these records are found in the DRUG\_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \ref{tab:domains}.
+Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \ref{conceptDomains}). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION\_CONCEPT\_ID of the CONDITION\_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an CDM, these records are found in the DRUG\_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \ref{tab:domains}.
 
 \begin{longtable}[]{@{}llll@{}}
 \caption{\label{tab:domains} Number of standard concepts belonging to each domain.}\tabularnewline
@@ -1078,7 +1082,7 @@ Source Values are only provided for convenience and quality assurance (QA) purpo
 Without context, the code 011 could be interpreted as ``Hospital Inpatient (Including Medicare Part A)'' from the UB04 vocabulary, or as ``Nervous System Neoplasms without Complications, Comorbidities'' from the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The CONCEPT\_ID value that represents the 011 ICD9CM code is \href{http://athena.ohdsi.org/search-terms/terms/44828631}{44828631}. This differentiates the ICD9CM from the UBO4 and DRG. The ICD9CM TB Source Concept maps to Standard Concept \href{http://athena.ohdsi.org/search-terms/terms/253954}{253954} from the SNOMED vocabulary through the relationship ``Non-standard to Standard map (OMOP)'' as shown in figure \ref{fig:pulmTubMap}. This same mapping relationships exists for Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes.
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{images/CommonDataModel/pulmTubMap} \caption{sNOMED code for Pulmonary Tuberculosis}\label{fig:pulmTubMap}
+\includegraphics[width=1\linewidth]{images/CommonDataModel/pulmTubMap} \caption{SNOMED code for Pulmonary Tuberculosis}\label{fig:pulmTubMap}
 \end{figure}
 
 An example of how the Standard Concept to Source Concept relationship is depicted is shown in Table \ref{tab:conditionOccurrence}.
@@ -2102,9 +2106,9 @@ Suggested answers can be found in Appendix \ref{Cdmanswers}.
 
 \emph{Chapter leads: Christian Reich \& Anna Ostropolets}
 
-The OMOP Standardized Vocabularies as part of the OMOP CDM is a foundational part of the OHDSI research network. It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all th way through to the researcher, who is faced with a myriad of different ways to describe clinical Events. OMOP requires harmonization not only to a standardized format, but also a rigorous standard content.
+The OMOP Standardized Vocabularies as part of the Common Data Model (CDM) is a foundational part of the OHDSI research network. It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical Events. OHDSI requires harmonization not only to a standardized format, but also a rigorous standard content.
 
-In this chapter we first describe the main principles of the Standardized Vocabularies, it's components, and the relevant rules and conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
+In this chapter we first describe the main principles of the Standardized Vocabularies, its components, and the relevant rules and conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
 
 \hypertarget{why-vocabularies-and-why-standardizing}{%
 \section{Why Vocabularies, and Why Standardizing}\label{why-vocabularies-and-why-standardizing}}
@@ -2122,7 +2126,7 @@ Medical vocabularies go back to the Bills of Mortality in medieval London to man
 
 Since then, the classifications have greatly expanded in size and complexity and spread into other aspects of healthcare, such as procedures and services, drugs, medical devices etc. The main principles have remained the same: They are controlled vocabularies, terminologies, hierarchies or ontologies that some healthcare community agree upon for the purpose of capturing, classifying and analyzing patient data. Many of these vocabularies are maintained by public and government agencies with a long-term mandate for doing so. For example, the World Health Organization produces the International Classification of Disease (ICD) with the recent addition of its 11th revision (ICD11). Local governments create country-specific versions, such as ICD10CM (USA), ICD10GM (Germany) etc. Governments also control the marketing and sale of drugs and maintain national repositories of such certified drugs. Vocabularies are also used in the private sector, either as commercial products or for internal use, such as electronic health record (EHR) systems or for medical insurance claim reporting.
 
-As a result, each country, region, healthcare system and institution tend to have their own classifications that would most likely only be relevant where it is used. This myriad of vocabularies prevents interoperability of the systems they are used in. Standardization is the key that enables patient data exchange, unlocks health data analysis on a global level and allows systematic and standardized research including performance characterization and quality assessment. To address that problem, multinational organizations have sprung up and started creating broad standards, such as the WHO mentioned above and the Standard Nomenclature of Medicine (SNOMED) or Logical Observation Identifiers Names and Codes (LOINC). In the US, the Health IT Standards Committee (HITAC) recommends the use of SNOMED, LOINC and the drug vocabulary RxNorm as standards to the National Coordinator for Health IT (ONC) for use in a common platform for nationwide health information exchange across diverse entities.
+As a result, each country, region, healthcare system and institution tends to have their own classifications that would most likely only be relevant where it is used. This myriad of vocabularies prevents interoperability of the systems they are used in. Standardization is the key that enables patient data exchange, unlocks health data analysis on a global level and allows systematic and standardized research including performance characterization and quality assessment. To address that problem, multinational organizations have sprung up and started creating broad standards, such as the WHO mentioned above and the Standard Nomenclature of Medicine (SNOMED) or Logical Observation Identifiers Names and Codes (LOINC). In the US, the Health IT Standards Committee (HITAC) recommends the use of SNOMED, LOINC and the drug vocabulary RxNorm as standards to the National Coordinator for Health IT (ONC) for use in a common platform for nationwide health information exchange across diverse entities.
 
 OHDSI developed the OMOP CDM, a global standard for observational research. As part of the CDM, the OMOP Standardized Vocabularies are available for two main purposes:
 
@@ -2134,29 +2138,29 @@ OHDSI developed the OMOP CDM, a global standard for observational research. As p
   Standardization and mapping for use in research
 \end{itemize}
 
-The Standardized Vocabularies are available to the community free of charge and \textbf{must be used} for each OMOP CDM instance \textbf{as its mandatory reference table}.
+The Standardized Vocabularies are available to the community free of charge and \textbf{must be used} for OMOP CDM instance \textbf{as its mandatory reference table}.
 
 \hypertarget{building-the-standardized-vocabularies}{%
 \subsection{Building the Standardized Vocabularies}\label{building-the-standardized-vocabularies}}
 
 All vocabularies of the Standardized Vocabularies are consolidated into the same common format. This relieves the researchers from having to understand and handle multiple different formats and life cycle conventions of the originating vocabularies. All vocabularies are regularly refreshed and incorporated using the Pallas system\footnote{\url{https://github.com/OHDSI/Vocabulary-v5.0}}. It is built and run by the OHDSI Vocabulary Team, which is part of the overall OMOP CDM Workgroup. If you find mistakes please report and help improve our resource by posting in either the OHDSI Forums\footnote{\url{https://forums.ohdsi.org}} or CDM Github page\footnote{\url{https://github.com/OHDSI/CommonDataModel/issues}}. \index{Pallas system}
 
-\hypertarget{access-to-the-standardized-vocabularies}{%
-\subsection{Access to the Standardized Vocabularies}\label{access-to-the-standardized-vocabularies}}
+\hypertarget{accessVocabularies}{%
+\subsection{Access to the Standardized Vocabularies}\label{accessVocabularies}}
 
 In order to obtain the Standardized Vocabularies, you do not have to run Pallas yourself. Instead, you can download the latest version from ATHENA\footnote{\url{http://athena.ohdsi.org}} and load it into your local database. ATHENA also allows faceted search of the Vocabularies. \index{ATHENA} \index{standardized vocabularies!download} \index{standardized vocabularies!search}
 
-To download a zip file with all Standardized Vocabularies tables select all the vocabularies you need for your OMOP CDM. Vocabularies with Standard Concepts (see below) and very common usage are preselected. Add vocabularies that are used in your source data. Vocabularies that are proprietary have no select button. Click on the ``License required'' button to incorporate such a vocabulary into your list. The Vocabulary Team will contact you and request you demonstrate your license or help you connect to the right folks to obtain one.
+To download a zip file with all Standardized Vocabularies tables select all the vocabularies you need for your OMOP CDM. Vocabularies with Standard Concepts (see Section\ref{standardConcepts}) and very common usage are preselected. Add vocabularies that are used in your source data. Vocabularies that are proprietary have no select button. Click on the ``License required'' button to incorporate such a vocabulary into your list. The Vocabulary Team will contact you and request you demonstrate your license or help you connect to the right folks to obtain one.
 
 \hypertarget{source-of-vocabularies-adopt-versus-build}{%
 \subsection{Source of Vocabularies: Adopt Versus Build}\label{source-of-vocabularies-adopt-versus-build}}
 
-OHDSI generally prefers adopting existing vocabularies, rather than de-novo construction, because (i) many vocabularies have already been utilized in observational data in the community, and (ii) construction and maintenance of vocabularies is complex and requires the input of many stakeholders over long periods of time to mature. For that reason, dedicated organizations provide vocabularies, which are subject to a life cycle of generation, deprecation, merging and splitting (see below). Currently, OHDSI only produces internal administrative vocabularies like Type Concepts and, with the only exception being RxNorm Extension, which is a drug vocabulary covering the ex-US (see below).
+OHDSI generally prefers adopting existing vocabularies, rather than de-novo construction, because (i) many vocabularies have already been utilized in observational data in the community, and (ii) construction and maintenance of vocabularies is complex and requires the input of many stakeholders over long periods of time to mature. For that reason, dedicated organizations provide vocabularies, which are subject to a life cycle of generation, deprecation, merging and splitting (see Section \ref{conceptLifeCycle}). Currently, OHDSI only produces internal administrative vocabularies like Type Concepts and, with the only exception being RxNorm Extension, which is a drug vocabulary covering the ex-US (see Section \ref{rxNormExtension}).
 
 \hypertarget{concepts}{%
 \section{Concepts}\label{concepts}}
 
-All clinical Events in the OMOP CDM are expressed as Concepts, which represent the semantic notion of each Event. They are the fundamental building blocks of the data records, making almost all tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure \ref{fig:concept}). \index{concept}
+All clinical Events in the OMOP CDM are expressed as concepts, which represent the semantic notion of each Event. They are the fundamental building blocks of the data records, making almost all tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure \ref{fig:concept}). \index{concept}
 
 \begin{figure}
 
@@ -2164,53 +2168,53 @@ All clinical Events in the OMOP CDM are expressed as Concepts, which represent t
 
 }
 
-\caption{Standard representation of vocabulary Concepts in the OMOP CDM. The example provided is the CONCEPT table record for the SNOMED code for Atrial Fibrillation.}\label{fig:concept}
+\caption{Standard representation of vocabulary concepts in the OMOP CDM. The example provided is the CONCEPT table record for the SNOMED code for Atrial Fibrillation.}\label{fig:concept}
 \end{figure}
 
-This system is meant to be \textbf{comprehensive}, i.e.~there are enough Concepts to cover anyEvent relevant to the patient's healthcare experience (e.g.~Conditions, Procedures, Exposures to Drug, etc.) as well as some of the administrative information of the healthcare system (e.g.~Visits, Care Sites, etc.).
+This system is meant to be \textbf{comprehensive}, i.e.~there are enough concepts to cover any event relevant to the patient's healthcare experience (e.g.~Conditions, Procedures, Exposures to Drug, etc.) as well as some of the administrative information of the healthcare system (e.g.~Visits, Care Sites, etc.).
 
 \hypertarget{concept-ids}{%
 \subsection{Concept IDs}\label{concept-ids}}
 
-Each Concept is assigned a Concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM Event tables. \index{concept!identifier}
+Each concept is assigned a concept ID to be used as Primary Key. This meaningless integer ID, rather than the original code from the vocabulary, is used to record data in the CDM Event tables. \index{concept!identifier}
 
 \hypertarget{concept-names}{%
 \subsection{Concept Names}\label{concept-names}}
 
-Each concept has one name. Names are always in English. They are imported from the source of the vocabulary. If the source vocabulary has more than one name, the most expressive is selected and the remaining ones are stored in the CONCEPT\_SYNONYM table under the same CONCEPT\_ID key. Non-English names are recorded in CONCEPT\_SYNONYM as well, with the appropriate language Concept ID in the LANGUAGE\_CONCEPT\_ID field. The name is 255 characters long, which means that very long names get truncated and the full length version recorded as another synonym, which can hold up to 1000 characters.
+Each concept has one name. Names are always in English. They are imported from the source of the vocabulary. If the source vocabulary has more than one name, the most expressive is selected and the remaining ones are stored in the CONCEPT\_SYNONYM table under the same CONCEPT\_ID key. Non-English names are recorded in CONCEPT\_SYNONYM as well, with the appropriate language concept ID in the LANGUAGE\_CONCEPT\_ID field. The name is 255 characters long, which means that very long names get truncated and the full length version recorded as another synonym, which can hold up to 1000 characters.
 
-\hypertarget{domains-1}{%
-\subsection{Domains}\label{domains-1}}
+\hypertarget{conceptDomains}{%
+\subsection{Domains}\label{conceptDomains}}
 
-Each Concept is assigned a Domain in the DOMAIN\_ID field, which in contrast to the numerical CONCEPT\_ID is a short case-sensitive unique alphanumeric ID for the Domain. Examples of such Domain identifiers are Condition, Drug, Procedure, Visit, Device, Specimen, etc. ``Dirty'', ambiguous or pre-coordinated (combination) Concepts can belong to a combination Domain, but Standard Concepts (see below) are always assigned a singular Domain. Domains also direct to which CDM table and field a clinical Event or Event attribute is recorded.
+Each concept is assigned a Domain in the DOMAIN\_ID field, which in contrast to the numerical CONCEPT\_ID is a short case-sensitive unique alphanumeric ID for the Domain. Examples of such Domain identifiers are ``Condition'', ``Drug'', ``Procedure'', ``Visit'', ``Device'', ``Specimen'', etc. Ambiguous or pre-coordinated (combination) concepts can belong to a combination Domain, but Standard Concepts (see Section\ref{standardConcepts}) are always assigned a singular Domain. Domains also direct to which CDM table and field a clinical Event or Event attribute is recorded.
 Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in \href{https://github.com/ohDSI/vocabulary-v5.0}{Pallas}. Source vocabularies tend to combine codes of mixed Domains, but to a varying degree (see Figure \ref{fig:domains}). \index{domain!concept}
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{images/StandardizedVocabularies/domains} 
+{\centering \includegraphics[width=0.7\linewidth]{images/StandardizedVocabularies/domains} 
 
 }
 
 \caption{Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single Domain, but in reality they are mixed.}\label{fig:domains}
 \end{figure}
 
-The Domain heuristic follows the definitions of the Domains. These definitions are derived from the table and field definitions in the CDM (see Chapter \ref{CommonDataModel}). The heuristic is not perfect, there are grey zones (see below in Special Situations). If you find Concept Domains misassigned please report and help improve the process through a \href{https://forums.ohdsi.org}{Forums} or \href{https://github.com/OHDSI/CommonDataModel/issues}{CDM issue} post.
+The Domain heuristic follows the definitions of the Domains. These definitions are derived from the table and field definitions in the CDM (see Chapter \ref{CommonDataModel}). The heuristic is not perfect, there are grey zones (see Section \ref{specialSituations} ``Special Situations''). If you find concept Domains misassigned please report and help improve the process through a \href{https://forums.ohdsi.org}{Forums} or \href{https://github.com/OHDSI/CommonDataModel/issues}{CDM issue} post.
 
 \hypertarget{vocabularies}{%
 \subsection{Vocabularies}\label{vocabularies}}
 
-Each Vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID ``ICD9CM''. There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file (see below). \index{vocabulary}
+Each Vocabulary has a short case-sensitive unique alphanumeric ID, which generally follows the abbreviated name of the vocabulary, omitting dashes. For example, ICD-9-CM has the vocabulary ID ``ICD9CM''. There are 111 vocabularies currently supported by OHDSI, of which 78 are adopted from external sources, the rest are OMOP-internal vocabularies. These vocabularies are refreshed usually at a quarterly schedule. The source and the version of the vocabularies is defined in the VOCABULARY reference file. \index{vocabulary}
 
 \hypertarget{concept-classes}{%
 \subsection{Concept Classes}\label{concept-classes}}
 
-Some vocabularies classify their codes or Concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such Concept Classes, which SNOMED refers to as ``Semantic Tags'': ``Clinical Finding'', ``Social Context'', ``Body Structure'' etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have Concept Classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any Concept Classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID. \index{concept!class}
+Some vocabularies classify their codes or concepts, denoted through their case-sensitive unique alphanumerical IDs. For example, SNOMED has 33 such concept classes, which SNOMED refers to as ``Semantic Tags'': ``Clinical Finding'', ``Social Context'', ``Body Structure'' etc. These are vertical divisions of the concepts. Others, such as MedDRA or RxNorm, have concept classes classifying horizontal levels in their stratified hierarchies. Vocabularies without any concept classes, such as HCPCS, use the Vocabulary ID as the Concept Class ID. \index{concept!class}
 
 \begin{longtable}[]{@{}ll@{}}
-\caption{\label{tab:sublassification} Vocabularies with or without horizontal and vertical subclassification principles in Concept Class.}\tabularnewline
+\caption{\label{tab:sublassification} Vocabularies with or without horizontal and vertical sub-classification principles in concept class.}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.19\columnwidth}\raggedright
-Concept Class subdivision principle\strut
+Concept class subdivision principle\strut
 \end{minipage} & \begin{minipage}[b]{0.75\columnwidth}\raggedright
 Vocabulary\strut
 \end{minipage}\tabularnewline
@@ -2218,7 +2222,7 @@ Vocabulary\strut
 \endfirsthead
 \toprule
 \begin{minipage}[b]{0.19\columnwidth}\raggedright
-Concept Class subdivision principle\strut
+Concept class subdivision principle\strut
 \end{minipage} & \begin{minipage}[b]{0.75\columnwidth}\raggedright
 Vocabulary\strut
 \end{minipage}\tabularnewline
@@ -2247,22 +2251,22 @@ APC, all Type Concepts, Ethnicity, OXMIS, Race, Revenue Code, Sponsor, Supplier,
 \bottomrule
 \end{longtable}
 
-Horizontal Concept Classes allow to determine a specific hierarchical level. For example, in the Drug vocabulary RxNorm the Concept Class ``Ingredient'' defines the top level of the hierarchy. In the vertical model, members of a Concept Class can be of any hierarchical level from the top to the very bottom.
+Horizontal concept classes allow to determine a specific hierarchical level. For example, in the Drug vocabulary RxNorm the concept class ``Ingredient'' defines the top level of the hierarchy. In the vertical model, members of a concept class can be of any hierarchical level from the top to the very bottom.
 
-\hypertarget{standard-concepts}{%
-\subsection{Standard Concepts}\label{standard-concepts}}
+\hypertarget{standardConcepts}{%
+\subsection{Standard Concepts}\label{standardConcepts}}
 
-For each clinical Event, out of all the Concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define ``Atrial fibrillation'' in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-Standard or source Concepts and mapped to the Standard ones. Standard Concepts are indicated through an ``S'' in the STANDARD\_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "\_CONCEPT\_ID". \index{standard concept}
+For each clinical Event, out of all the concepts representing the meaning of the Event one is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define ``Atrial fibrillation'' in the Condition Domain, but only the SNOMED concept is Standard and represents the Condition in the data. The others are designated non-standard or source concepts and mapped to the Standard ones. Standard Concepts are indicated through an ``S'' in the STANDARD\_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "\_CONCEPT\_ID". \index{standard concept}
 
 \hypertarget{non-standard-concepts}{%
 \subsection{Non-Standard Concepts}\label{non-standard-concepts}}
 
-Non-Standard Concepts are not used to represent the clinical Events, but are still part of the Standardized Vocabularies, and are often found in the source data. For that reason, they are also called source Concepts. The conversion of source Concepts to Standard Concepts is a process called Mapping (see below). Non-Standard Concepts have no value (NULL) In the STANDARD\_CONCEPT field.
+Non-standard concepts are not used to represent the clinical Events, but are still part of the Standardized Vocabularies, and are often found in the source data. For that reason, they are also called ``source concepts''. The conversion of source concepts to Standard Concepts is a process called ``mapping'' (see Section \ref{conceptMapping}). Non-standard concepts have no value (NULL) In the STANDARD\_CONCEPT field.
 
 \hypertarget{classification-concepts}{%
 \subsection{Classification Concepts}\label{classification-concepts}}
 
-These Concepts are not Standard, and hence cannot be used to represent the data. But they are participating in the hierarchy with the Standard Concepts, and can therefore be used to perform hierarchical queries. For example, querying for all descendants of MedDRA code 10037908 (not visible for users who have not obtained a MedDRA license, see above for access restrictions) will retrieve the Standard SNOMED concept for Atrial Fibrillation (see below for hierarchical queries using the CONCEPT\_ANCESTOR table) - see Figure \ref{fig:hierarchy}. \index{classification concept}
+These concepts are not Standard, and hence cannot be used to represent the data. But they are participating in the hierarchy with the Standard Concepts, and can therefore be used to perform hierarchical queries. For example, querying for all descendants of MedDRA code 10037908 (not visible for users who have not obtained a MedDRA license, see Section \ref{accessVocabularies} for access restrictions) will retrieve the Standard SNOMED concept for Atrial Fibrillation (see Section \ref{conceptAncestor} for hierarchical queries using the CONCEPT\_ANCESTOR table) - see Figure \ref{fig:hierarchy}. \index{classification concept}
 
 \begin{figure}
 
@@ -2270,98 +2274,98 @@ These Concepts are not Standard, and hence cannot be used to represent the data.
 
 }
 
-\caption{Standard, non-Standard source and Classification Concepts and their hierarchical relationships in the Condition Domain. SNOMED is used for most Standard Condition Concepts (with some oncology-related concepts derived from ICDO3), MedDRA Concepts are used for hierarchical Classification Concepts, and all other vocabularies contain non-Standard or source Concepts, which do not participate in the hierarchy.}\label{fig:hierarchy}
+\caption{Standard, non-standard source and classification concepts and their hierarchical relationships in the Condition domain. SNOMED is used for most standard condition concepts (with some oncology-related concepts derived from ICDO3), MedDRA concepts are used for hierarchical classification concepts, and all other vocabularies contain non-standard or source concepts, which do not participate in the hierarchy.}\label{fig:hierarchy}
 \end{figure}
 
-The choice of Concept designation as Standard, non-Standard and Classification is typically done for each Domain separately at the vocabulary level. This is based on the quality of the Concepts, the built-in hierarchy and the declared purpose of the vocabulary. Also, not all Concepts of a Vocabulary that are used for Standard Concepts. The designation is separate for each Domain, each Concept has to be active (see below) and there might be an order of precedence if more than one Concept from different vocabularies compete for the same meaning. In other words, there is no such a thing as a ``standard vocabulary''. See Table \ref{tab:vocabList} for examples.
+The choice of concept designation as Standard, non-standard and classification is typically done for each domain separately at the vocabulary level. This is based on the quality of the concepts, the built-in hierarchy and the declared purpose of the vocabulary. Also, not all concepts of a Vocabulary that are used for Standard Concepts. The designation is separate for each domain, each concept has to be active (see Section \ref{conceptLifeCycle}) and there might be an order of precedence if more than one concept from different vocabularies compete for the same meaning. In other words, there is no such a thing as a ``standard vocabulary''. See Table \ref{tab:vocabList} for examples.
 
 \begin{longtable}[]{@{}llll@{}}
-\caption{\label{tab:vocabList} List of vocabularies to utilize for Standard/non-Standard/Classification Concept assignments.}\tabularnewline
+\caption{\label{tab:vocabList} List of vocabularies to utilize for Standard/non-standard/classification concept assignments.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.11\columnwidth}\raggedright
+\begin{minipage}[b]{0.14\columnwidth}\raggedright
 Domain\strut
 \end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedright
 for Standard Concepts\strut
 \end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedright
-for Source Concepts\strut
-\end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedright
-for Classification Concepts\strut
+for source concepts\strut
+\end{minipage} & \begin{minipage}[b]{0.23\columnwidth}\raggedright
+for classification concepts\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.11\columnwidth}\raggedright
+\begin{minipage}[b]{0.14\columnwidth}\raggedright
 Domain\strut
 \end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedright
 for Standard Concepts\strut
 \end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedright
-for Source Concepts\strut
-\end{minipage} & \begin{minipage}[b]{0.26\columnwidth}\raggedright
-for Classification Concepts\strut
+for source concepts\strut
+\end{minipage} & \begin{minipage}[b]{0.23\columnwidth}\raggedright
+for classification concepts\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
 Condition\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED, ICDO3\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED Veterinary\strut
-\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright
 MedDRA\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
 Procedure\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED, CPT4, HCPCS, ICD10PCS, ICD9Proc, OPCS4\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED Veterinary, HemOnc, NAACCR\strut
-\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright
 None at this point\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
 Measurement\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED, LOINC\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED Veterinary, NAACCR, CPT4, HCPCS, OPCS4, PPI\strut
-\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright
 None at this point\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
 Drug\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 RxNorm, RxNorm Extension, CVX\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 HCPCS, CPT4, HemOnc, NAAACCR\strut
-\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright
 ATC\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
 Device\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 Others, currently not normalized\strut
-\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright
 None at this point\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
 Observation\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 Others\strut
-\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright
 None at this point\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.14\columnwidth}\raggedright
 Visit\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 CMS Place of Service, ABMT, NUCC\strut
 \end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
 SNOMED, HCPCS, CPT4, UB04\strut
-\end{minipage} & \begin{minipage}[t]{0.26\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\raggedright
 None at this point\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -2370,22 +2374,22 @@ None at this point\strut
 \hypertarget{concept-codes}{%
 \subsection{Concept Codes}\label{concept-codes}}
 
-These are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the Concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e.~the same code can exist in different vocabularies with completely different meanings (see Table \ref{tab:code1001}) \index{concept!code}
+These are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e.~the same code can exist in different vocabularies with completely different meanings (see Table \ref{tab:code1001}) \index{concept!code}
 
 \begin{longtable}[]{@{}llllll@{}}
-\caption{\label{tab:code1001} Concepts with identical Concept Code 1001, but different Vocabularies, Domains and Concept Classes.}\tabularnewline
+\caption{\label{tab:code1001} Concepts with identical concept code 1001, but different Vocabularies, domains and concept classes.}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.14\columnwidth}\raggedright
 Concept ID\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
 Concept Code\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright
 Concept Name\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
 Domain ID\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
 Vocabulary ID\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
 Concept Class\strut
 \end{minipage}\tabularnewline
 \midrule
@@ -2393,245 +2397,228 @@ Concept Class\strut
 \toprule
 \begin{minipage}[b]{0.14\columnwidth}\raggedright
 Concept ID\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright
 Concept Code\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\raggedright
 Concept Name\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
 Domain ID\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
 Vocabulary ID\strut
-\end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright
 Concept Class\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
 \begin{minipage}[t]{0.14\columnwidth}\raggedright
 35803438\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
 1001\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
 Granulocyte colony-stimulating factors\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Drug\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 HemOnc\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Component Class\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.14\columnwidth}\raggedright
 35942070\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
 1001\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
 AJCC TNM Clin T\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Measurement\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NAACCR\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 NAACCR Variable\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.14\columnwidth}\raggedright
 1036059\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
 1001\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
 Antipyrine\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Drug\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 RxNorm\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Ingredient\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.14\columnwidth}\raggedright
 38003544\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
 1001\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
 Residential Treatment - Psychiatric\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Revenue Code\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Revenue Code\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Revenue Code\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.14\columnwidth}\raggedright
 43228317\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
 1001\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
 Aceprometazine maleate\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Drug\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 BDPM\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Ingredient\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.14\columnwidth}\raggedright
 45417187\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
 1001\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
 Brompheniramine Maleate, 10 mg/mL injectable solution\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Drug\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Multum\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Multum\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.14\columnwidth}\raggedright
 45912144\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright
 1001\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\raggedright
 Serum\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Specimen\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 CIEL\strut
-\end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 Specimen\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
-\hypertarget{life-cycle}{%
-\subsection{Life Cycle}\label{life-cycle}}
+\hypertarget{conceptLifeCycle}{%
+\subsection{Life Cycle}\label{conceptLifeCycle}}
 
-Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible situations, as described in Table \ref{tab:validityRules}. \index{concept!life cycle}
+Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, and the other way around support new concepts and place them into context. There are three fields in the CONCEPT table that describe the possible life-cycle statuses:
 
-\begin{longtable}[]{@{}lllll@{}}
-\caption{\label{tab:validityRules} Validity rules for concepts, with active, deprecated, upgraded and reused concepts.}\tabularnewline
-\toprule
-\begin{minipage}[b]{0.17\columnwidth}\raggedright
-Life cycle state\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-Explanation\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-VALID\_START\_DATE\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-VALID\_END\_DATE\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-INVALID\_REASON\strut
-\end{minipage}\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-\begin{minipage}[b]{0.17\columnwidth}\raggedright
-Life cycle state\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-Explanation\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-VALID\_START\_DATE\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-VALID\_END\_DATE\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
-INVALID\_REASON\strut
-\end{minipage}\tabularnewline
-\midrule
-\endhead
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-Active or new Concept\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-Concept in use\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-Set to 2099-12-31 as a convention to indicate ``Might become invalid in an undefined future, but active right now''\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-NULL\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-Deprecated Concept with no successor\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-Concept inactive and cannot be used as Standard (see below)\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-as above\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-Day in the past indicating deprecation, or if that is not known day of vocabulary refresh where Concept in vocabulary went missing or set to inactive\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-``D''\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-Upgraded Concept with successor\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-Concept inactive, but has defined successor. These are typically Concepts which went through de-duplication.\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-as above\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-Day in the past indicating an upgrade, or if that is not known day of vocabulary refresh where the upgrade was included\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-``U''\strut
-\end{minipage}\tabularnewline
-\begin{minipage}[t]{0.17\columnwidth}\raggedright
-Reused code for another new Concept\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-The vocabulary reused the Concept code of this deprecated Concept for a new Concept\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-as above\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-As in deprecated Concept with no successor above.\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
-``R''\strut
-\end{minipage}\tabularnewline
-\bottomrule
-\end{longtable}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Active or new concept}
 
-In general, Concept Codes are not reused. But there are a few vocabularies that deviate from this rule, in particular HCPCS, NDC and DRG. For those, the same concept code appears in more than one concept of the same vocabulary. There CONCPT\_ID value stays unique. These reused Concept Codes are marked with an ``R'' in the INVALID\_REASON field, and the VALID\_START\_DATE to VALID\_END\_DATE period should be used to distinguish Concepts with the same Concept Codes.
+  \begin{itemize}
+  \tightlist
+  \item
+    Description: Concept in use.
+  \item
+    VALID\_START\_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1.
+  \item
+    VALID\_END\_DATE: Set to 2099-12-31 as a convention to indicate ``Might become invalid in an undefined future, but active right now''.
+  \item
+    INVALID\_REASON: NULL
+  \end{itemize}
+\item
+  \textbf{Deprecated Concept with no successor}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Description: Concept inactive and cannot be used as Standard (see Section \ref{standardConcepts}).
+  \item
+    VALID\_START\_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1.
+  \item
+    VALID\_END\_DATE: Day in the past indicating deprecation, or if that is not known day of vocabulary refresh where concept in vocabulary went missing or set to inactive.
+  \item
+    INVALID\_REASON: ``D''
+  \end{itemize}
+\item
+  \textbf{Upgraded Concept with successor}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Description: Concept inactive, but has defined successor. These are typically concepts which went through de-duplication.
+  \item
+    VALID\_START\_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1.
+  \item
+    VALID\_END\_DATE: Day in the past indicating an upgrade, or if that is not known day of vocabulary refresh where the upgrade was included.
+  \item
+    INVALID\_REASON: ``U''
+  \end{itemize}
+\item
+  \textbf{Reused code for another new concept}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Description: The vocabulary reused the concept code of this deprecated concept for a new concept.
+  \item
+    VALID\_START\_DATE: Day of instantiation of concept, if that is not known day of incorporation of concept in Vocabularies, if that is not known 1970-1-1.
+  \item
+    VALID\_END\_DATE: Day in the past indicating deprecation, or if that is not known day of vocabulary refresh where concept in vocabulary went missing or set to inactive.
+  \item
+    INVALID\_REASON: ``R''
+  \end{itemize}
+\end{itemize}
+
+In general, concept codes are not reused. But there are a few vocabularies that deviate from this rule, in particular HCPCS, NDC and DRG. For those, the same concept code appears in more than one concept of the same vocabulary. There CONCPT\_ID value stays unique. These reused concept codes are marked with an ``R'' in the INVALID\_REASON field, and the VALID\_START\_DATE to VALID\_END\_DATE period should be used to distinguish concepts with the same concept codes.
 
 \hypertarget{relationships}{%
 \section{Relationships}\label{relationships}}
 
-Relationships are defined between any two Concepts, inside Domains and vocabularies and across. The nature of the Relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP\_ID field of the CONCEPT\_RELATIONSHIP table. Relationships are symmetrical, i.e.~for each Relationship an equivalent Relationship exists, where the content of the fields CONCEPT\_ID\_1 and CONCEPT\_ID\_2 are swapped, and the RELATIONHSIP\_ID is changed to its opposite. For example, the ``Maps to'' relationship has an opposite relationship ``Mapped from''. \index{concept!relationship}
+Relationships are defined between any two concepts, inside domains and vocabularies and across. The nature of the Relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP\_ID field of the CONCEPT\_RELATIONSHIP table. Relationships are symmetrical, i.e.~for each Relationship an equivalent Relationship exists, where the content of the fields CONCEPT\_ID\_1 and CONCEPT\_ID\_2 are swapped, and the RELATIONHSIP\_ID is changed to its opposite. For example, the ``Maps to'' relationship has an opposite relationship ``Mapped from''. \index{concept!relationship}
 
 CONCEPT\_RELATIONSHIP table records also have life cycle fields RELATIONSHIP\_START\_DATE, RELATIONSHIP\_END\_DATE and INVALID\_REASON. However, only active records with INVALID\_REASON = NULL are available through ATHENA. Inactive Relationships are kept in the Pallas system for internal processing only. The RELATIONSHIP table serves as the reference with the full list of Relationship IDs and their reverse counterparts.
 
-\hypertarget{mapping-relationships}{%
-\subsection{Mapping Relationships}\label{mapping-relationships}}
+\hypertarget{conceptMapping}{%
+\subsection{Mapping Relationships}\label{conceptMapping}}
 
-These relationships provide translations from non-Standard to Standard concepts, supported by two Relationship ID pairs (see Table \ref{tab:mappingRelationships}). \index{concept!mapping}
+These relationships provide translations from non-standard to Standard concepts, supported by two Relationship ID pairs (see Table \ref{tab:mappingRelationships}). \index{concept!mapping}
 
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:mappingRelationships} Type of mapping relationships.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.11\columnwidth}\raggedright
+\begin{minipage}[b]{0.20\columnwidth}\raggedright
 Relationship ID pair\strut
-\end{minipage} & \begin{minipage}[b]{0.83\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.74\columnwidth}\raggedright
 Purpose\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.11\columnwidth}\raggedright
+\begin{minipage}[b]{0.20\columnwidth}\raggedright
 Relationship ID pair\strut
-\end{minipage} & \begin{minipage}[b]{0.83\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.74\columnwidth}\raggedright
 Purpose\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.20\columnwidth}\raggedright
 ``Maps to'' and ``Mapped from''\strut
-\end{minipage} & \begin{minipage}[t]{0.83\columnwidth}\raggedright
-Mapping to Standard Concepts. Standard Concepts are mapped to themselves, non-Standard Concepts to Standard Concepts. Most non-Standard and all Standard Concepts have this relationship to a Standard Concept. The former are stored in *\_SOURCE\_CONCEPT\_ID, and the latter in the *\_CONCEPT\_ID fields. Classification Concepts are not mapped.\strut
+\end{minipage} & \begin{minipage}[t]{0.74\columnwidth}\raggedright
+Mapping to Standard Concepts. Standard Concepts are mapped to themselves, non-standard concepts to Standard Concepts. Most non-standard and all Standard Concepts have this relationship to a Standard Concept. The former are stored in *\_SOURCE\_CONCEPT\_ID, and the latter in the *\_CONCEPT\_ID fields. Classification concepts are not mapped.\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.11\columnwidth}\raggedright
+\begin{minipage}[t]{0.20\columnwidth}\raggedright
 ``Maps to value'' and ``Value mapped from''\strut
-\end{minipage} & \begin{minipage}[t]{0.83\columnwidth}\raggedright
-Mapping to a Concept that represents a Value to be placed into the VALUE\_AS\_CONCEPT\_ID fields of the MEASUREMENT and OBSERVATION tables.\strut
+\end{minipage} & \begin{minipage}[t]{0.74\columnwidth}\raggedright
+Mapping to a concept that represents a Value to be placed into the VALUE\_AS\_CONCEPT\_ID fields of the MEASUREMENT and OBSERVATION tables.\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
 
-The purpose of these mapping relationships is to allow a crosswalk between equivalent Concepts to harmonize how clinical Events are represented in the OMOP CDM. This is a main achievement of the Standardized Vocabularies.
+The purpose of these mapping relationships is to allow a crosswalk between equivalent concepts to harmonize how clinical Events are represented in the OMOP CDM. This is a main achievement of the Standardized Vocabularies.
 
-``Equivalent Concepts'' means it carries the same meaning, and, importantly, the hierarchical descendants cover the same semantic space. If an equivalent Concept is not available and the Concept is not Standard, it is still mapped, but to a slightly broader concept (so-called ``up-hill mappings''). For example, ICD10CM W61.51 ``Bitten by goose'' has no equivalent in the SNOMED vocabulary, which is generally used for Standard Condition Concepts. Instead, it is mapped to SNOMED 217716004 ``Peck by bird'', losing the context of the bird being a goose. Up-hill mappings are only used if the loss of information is considered irrelevant to standard research use cases.
+``Equivalent concepts'' means it carries the same meaning, and, importantly, the hierarchical descendants cover the same semantic space. If an equivalent concept is not available and the concept is not Standard, it is still mapped, but to a slightly broader concept (so-called ``up-hill mappings''). For example, ICD10CM W61.51 ``Bitten by goose'' has no equivalent in the SNOMED vocabulary, which is generally used for standard condition concepts. Instead, it is mapped to SNOMED 217716004 ``Peck by bird'', losing the context of the bird being a goose. Up-hill mappings are only used if the loss of information is considered irrelevant to standard research use cases.
 
-Some mappings connect a source Concept to more than one Standard Concept. For example, ICD9CM 070.43 ``Hepatitis E with hepatic coma'' is mapped to both SNOMED 235867002 ``Acute hepatitis E'' as well as SNOMED 72836002 ``Hepatic Coma''. The reason for this is that the original source Concept is a pre-coordinated combination of two Conditions, hepatitis and coma. SNOMED does not have that combination, which results in two records written for the ICD9CM record, one with each mapped Standard Concept.
+Some mappings connect a source concept to more than one Standard Concept. For example, ICD9CM 070.43 ``Hepatitis E with hepatic coma'' is mapped to both SNOMED 235867002 ``Acute hepatitis E'' as well as SNOMED 72836002 ``Hepatic Coma''. The reason for this is that the original source concept is a pre-coordinated combination of two Conditions, hepatitis and coma. SNOMED does not have that combination, which results in two records written for the ICD9CM record, one with each mapped Standard Concept.
 
 Relationships ``Maps to value'' have the purpose of splitting of a value for OMOP CDM tables following an entity-attribute-value (EAV) model. This is typically the case in the following situations:
 
@@ -2647,7 +2634,7 @@ Relationships ``Maps to value'' have the purpose of splitting of a value for OMO
   Need for immunization
 \end{itemize}
 
-In these situations, the source Concept is a combination of the attribute (test or history) and the value (test result or disease). The ``Maps to'' relationship maps this source to the attribute concept, and the ``Maps to value'' to the value Concept. See Figure \ref{fig:conceptValue} for an example.
+In these situations, the source concept is a combination of the attribute (test or history) and the value (test result or disease). The ``Maps to'' relationship maps this source to the attribute concept, and the ``Maps to value'' to the value concept. See Figure \ref{fig:conceptValue} for an example.
 
 \begin{figure}
 
@@ -2655,17 +2642,17 @@ In these situations, the source Concept is a combination of the attribute (test 
 
 }
 
-\caption{One-to-many mapping between source Concept and Standard Concepts. A pre-coordinated Concept is split into two Concepts, one of which is the attribute (here history of clinical finding) and the other one is the value (peptic ulcer). While "Maps to" relationship will map to Concepts of the Measurement or Observation Domains, the ‘Maps to value" Concepts have no Domain restriction.}\label{fig:conceptValue}
+\caption{One-to-many mapping between source concept and Standard Concepts. A pre-coordinated concept is split into two concepts, one of which is the attribute (here history of clinical finding) and the other one is the value (peptic ulcer). While "Maps to" relationship will map to concepts of the Measurement or Observation domains, the ‘Maps to value" concepts have no domain restriction.}\label{fig:conceptValue}
 \end{figure}
 
-Mapping of Concepts is another central feature of the OMOP Standardized Vocabularies provided for free and supporting the efforts of the community conducting Network Studies. Mapping Relationships are derived from external sources or maintained manually by the Vocabulary Team. This means they are not perfect. If you find wrong or objectionable mapping Relationships it is crucial that you report and help improve the process through a \href{https://forums.ohdsi.org}{Forums} or \href{https://github.com/OHDSI/CommonDataModel/issues}{CDM issue} post.
+Mapping of concepts is another central feature of the OMOP Standardized Vocabularies provided for free and supporting the efforts of the community conducting Network Studies. Mapping Relationships are derived from external sources or maintained manually by the Vocabulary Team. This means they are not perfect. If you find wrong or objectionable mapping Relationships it is crucial that you report and help improve the process through a \href{https://forums.ohdsi.org}{Forums} or \href{https://github.com/OHDSI/CommonDataModel/issues}{CDM issue} post.
 
 A more detailed description of mapping conventions can be found in the OHDSI Wiki\footnote{\url{https://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary:mapping}}
 
 \hypertarget{hierarchical-relationships}{%
 \subsection{Hierarchical Relationships}\label{hierarchical-relationships}}
 
-Relationship which indicate a hierarchy are defined through the ``Is a''/``Subsumes'' Relationship pair. Hierarchical Relationships are defined such that the child Concept has all the attributes of the parent Concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 ``Atrial fibrillation'' is related to SNOMED 17366009 ``Atrial arrhythmia'' through a ``Is a'' relationship. Both Concepts have an identical set of attributes, except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent, and more than one child Concept. In this example, SNOMED 49436004 ``Atrial fibrillation'' is also an ``Is a'' to SNOMED 40593004 ``Fibrillation''. \index{concept!hierarchy}
+Relationship which indicate a hierarchy are defined through the ``Is a''/``Subsumes'' Relationship pair. Hierarchical Relationships are defined such that the child concept has all the attributes of the parent concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 ``Atrial fibrillation'' is related to SNOMED 17366009 ``Atrial arrhythmia'' through a ``Is a'' relationship. Both concepts have an identical set of attributes, except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent, and more than one child concept. In this example, SNOMED 49436004 ``Atrial fibrillation'' is also an ``Is a'' to SNOMED 40593004 ``Fibrillation''. \index{concept!hierarchy}
 
 \hypertarget{relationships-between-concepts-of-different-vocabularies}{%
 \subsection{Relationships Between Concepts of Different Vocabularies}\label{relationships-between-concepts-of-different-vocabularies}}
@@ -2682,39 +2669,39 @@ Many of these define relationships between clinical Events and can be used for i
 \begin{longtable}[]{@{}ll@{}}
 \caption{\label{tab:findingSite} ``Finding site of'' relationship of the ``Urethra'', indicating Conditions that are situated all in the this anatomical structure.}\tabularnewline
 \toprule
-\begin{minipage}[b]{0.47\columnwidth}\raggedright
+\begin{minipage}[b]{0.35\columnwidth}\raggedright
 CONCEPT\_ID\_1\strut
-\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.59\columnwidth}\raggedright
 CONCEPT\_ID\_2\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-\begin{minipage}[b]{0.47\columnwidth}\raggedright
+\begin{minipage}[b]{0.35\columnwidth}\raggedright
 CONCEPT\_ID\_1\strut
-\end{minipage} & \begin{minipage}[b]{0.47\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{0.59\columnwidth}\raggedright
 CONCEPT\_ID\_2\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\begin{minipage}[t]{0.35\columnwidth}\raggedright
 4000504 ``Urethra part''\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright
 36713433 ``Partial duplication of urethra Urethra part''\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\begin{minipage}[t]{0.35\columnwidth}\raggedright
 4000504 ``Urethra part''\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright
 433583 ``Epispadias''\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\begin{minipage}[t]{0.35\columnwidth}\raggedright
 4000504 ``Urethra part''\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright
 443533 ``Epispadias, male''\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.47\columnwidth}\raggedright
+\begin{minipage}[t]{0.35\columnwidth}\raggedright
 4000504 ``Urethra part''\strut
-\end{minipage} & \begin{minipage}[t]{0.47\columnwidth}\raggedright
+\end{minipage} & \begin{minipage}[t]{0.59\columnwidth}\raggedright
 4005956 ``Epispadias, female''\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -2722,12 +2709,12 @@ CONCEPT\_ID\_2\strut
 
 The quality and comprehensiveness of these relationships varies with that of the original vocabulary. Generally, vocabularies that are used to draw Standard Concepts from, such as SNOMED, are chosen for the reason of their better curation and therefore tend to have higher quality internal Relationships as well.
 
-\hypertarget{hierarchy}{%
-\section{Hierarchy}\label{hierarchy}}
+\hypertarget{conceptAncestor}{%
+\section{Hierarchy}\label{conceptAncestor}}
 
-Within a Domain, Standard and Classification Concepts are organized in a hierarchical structure and stored in the CONCEPT\_ANCESTOR table. This allows querying and retrieving concepts and all their hierarchical descendants. These descendants have the same attributes like their ancestor, but additional ones, or more defined ones.
+Within a domain, standard and classification concepts are organized in a hierarchical structure and stored in the CONCEPT\_ANCESTOR table. This allows querying and retrieving concepts and all their hierarchical descendants. These descendants have the same attributes like their ancestor, but additional ones, or more defined ones.
 
-The CONCEPT\_ANCESTOR table is built automatically from the CONCEPT\_RELATIONSHIP table traversing all possible Concepts connected through hierarchical Relationships. These are the ``Is a''/``Subsumes'' pairs (see Figure \ref{fig:conceptAncestor}), and other Relationships connecting hierarchies across vocabularies. The choice whether a Relationship participates in the hierarchy constructor is defined for each Relationship ID by the flag DEFINES\_ANCESTRY in the RELATIONSHIP reference table.
+The CONCEPT\_ANCESTOR table is built automatically from the CONCEPT\_RELATIONSHIP table traversing all possible concepts connected through hierarchical Relationships. These are the ``Is a''/``Subsumes'' pairs (see Figure \ref{fig:conceptAncestor}), and other Relationships connecting hierarchies across vocabularies. The choice whether a Relationship participates in the hierarchy constructor is defined for each Relationship ID by the flag DEFINES\_ANCESTRY in the RELATIONSHIP reference table.
 
 
 
@@ -2742,17 +2729,17 @@ The CONCEPT\_ANCESTOR table is built automatically from the CONCEPT\_RELATIONSHI
 
 The ancestral degree, or the number of steps between Ancestor and Descendant, is captured in the MIN\_LEVELS\_OF\_SEPARATION and MAX\_LEVELS\_OF\_SEPARATION fields, defining the shortest or longest possible connection. Not all hierarchical Relationships contribute equally to the Levels of Separation calculation. If a step is counted for the degree is determined by the IS\_HIERARCHICAL flag in the RELATIONSHIP reference table for each Relationship ID.
 
-At the moment, a high-quality comprehensive hierarchy exists only for two Domains: Drug and Condition. Procedure, Measurement and Observation Domains are only partially covered and in the process of construction. The Ancestry is particularly useful for the Drug domain as it allows browsing all drugs with a given ingredient or members of drug classes irrespective of the country of origin, brand name or other attributes.
+At the moment, a high-quality comprehensive hierarchy exists only for two domains: Drug and Condition. Procedure, Measurement and Observation domains are only partially covered and in the process of construction. The Ancestry is particularly useful for the Drug domain as it allows browsing all drugs with a given ingredient or members of drug classes irrespective of the country of origin, brand name or other attributes.
 
 \hypertarget{internal-reference-tables}{%
 \section{Internal Reference Tables}\label{internal-reference-tables}}
 
-DOMAIN\_ID, VOCABULARY\_ID, CONCEPT\_CLASS\_ID (all in CONCEPT records) and CONCEPT\_RELATIONSHIP\_ID (in CONCEPT\_RELATIONSHIP) are all controlled by their own vocabularies. They are defined in the four reference tables DOMAIN, VOCABULARY, CONCEPT\_CLASS and RELATIONSHIP, containing the *\_ID fields as primary keys, a more detailed *\_NAME field and a *\_CONCEPT\_ID field with a reference back to the CONCEPT table, which contains a Concept for each of the reference table records. The purpose of these duplicate records is to support an information model allowing for automatic navigation engines.
+DOMAIN\_ID, VOCABULARY\_ID, CONCEPT\_CLASS\_ID (all in CONCEPT records) and CONCEPT\_RELATIONSHIP\_ID (in CONCEPT\_RELATIONSHIP) are all controlled by their own vocabularies. They are defined in the four reference tables DOMAIN, VOCABULARY, CONCEPT\_CLASS and RELATIONSHIP, containing the *\_ID fields as primary keys, a more detailed *\_NAME field and a *\_CONCEPT\_ID field with a reference back to the CONCEPT table, which contains a concept for each of the reference table records. The purpose of these duplicate records is to support an information model allowing for automatic navigation engines.
 
 The VOCABULARY table also contains the VOCABULARY\_REFERENCE and VOCABULARY\_VERSION fields referring to the source and version of the original Vocabulary. The RELATIONSHIP table has the additional fields DEFINES\_ANCESTRY, IS\_HIERARCHICAL and REVERSE\_RELATIONSHIP\_ID. The latter defines the counter Relationship ID for a pair of Relationships.
 
-\hypertarget{special-situations}{%
-\section{Special Situations}\label{special-situations}}
+\hypertarget{specialSituations}{%
+\section{Special Situations}\label{specialSituations}}
 
 \hypertarget{gender}{%
 \subsection{Gender}\label{gender}}
@@ -2767,42 +2754,42 @@ These follow the definitions of how the US government defines this. Ethnicity is
 \hypertarget{diagnostic-coding-schemes-and-omop-conditions}{%
 \subsection{Diagnostic Coding Schemes and OMOP Conditions}\label{diagnostic-coding-schemes-and-omop-conditions}}
 
-Commonly used coding schemes such as ICD9 or ICD10 define more or less well-defined diagnoses based on a proper diagnostic work-up. The Condition domain is not identical with this semantic space, but partially overlapping. On one hand, Conditions in additional contain signs and symptoms that are recorded before a diagnosis is derived, but on the other hand ICDs contain Concepts of different Domains (see above).
+Commonly used coding schemes such as ICD9 or ICD10 define more or less well-defined diagnoses based on a proper diagnostic work-up. The Condition domain is not identical with this semantic space, but partially overlapping. On one hand, Conditions in additional contain signs and symptoms that are recorded before a diagnosis is derived, but on the other hand ICDs contain concepts of different domains.
 
 \hypertarget{procedure-coding-systems}{%
 \subsection{Procedure Coding Systems}\label{procedure-coding-systems}}
 
-Similarly, coding schemes like HCPCS and CPT4 are thought to be listings of medical procedures. In reality, the are more like a menu of justifications for payment for medical service. Many of these services are subsumed under the Procedure Domain, but many Concepts fall outside this realm.
+Similarly, coding schemes like HCPCS and CPT4 are thought to be listings of medical procedures. In reality, the are more like a menu of justifications for payment for medical service. Many of these services are subsumed under the Procedure domain, but many concepts fall outside this realm.
 
 \hypertarget{devices}{%
 \subsection{Devices}\label{devices}}
 
-Device Concepts have no standardized coding scheme that could be used to source Standard Concepts. In many source data, devices are not even coded, or contained in an external coding scheme. For this same reason, there is currently no hierarchical system available.
+Device concepts have no standardized coding scheme that could be used to source Standard Concepts. In many source data, devices are not even coded, or contained in an external coding scheme. For this same reason, there is currently no hierarchical system available.
 
 \hypertarget{visits-and-services}{%
 \subsection{Visits and Services}\label{visits-and-services}}
 
-Visits Concepts define the nature of healthcare encounters. In many source systems they are called Place of Service, denoting some organization or physical structure, such a hospital. In others, they are called services. These also differ between countries, and their definition is hard to obtain. Care Sites are often specializing on one of few Visits (XYZ Hospital), but still should not be defined by them (even in XYZ hospital Patients might encounter non-hospital Visits).
+Visits concepts define the nature of healthcare encounters. In many source systems they are called Place of Service, denoting some organization or physical structure, such a hospital. In others, they are called services. These also differ between countries, and their definition is hard to obtain. Care Sites are often specializing on one of few Visits (XYZ Hospital), but still should not be defined by them (even in XYZ hospital Patients might encounter non-hospital Visits).
 
 \hypertarget{providers-and-specialties}{%
 \subsection{Providers and Specialties}\label{providers-and-specialties}}
 
-Any human Provider is defined in the Provider Domain. These can be medical professionals such as doctors and nurses, but also non-medical providers like optometrists or shoemakers. Specialities are descendants of the Provider ``Physician''. Care Sites cannot carry a specialty, even though they are often defined by the specialty of their main staff (``Surgical department'').
+Any human Provider is defined in the Provider domain. These can be medical professionals such as doctors and nurses, but also non-medical providers like optometrists or shoemakers. Specialities are descendants of the Provider ``Physician''. Care Sites cannot carry a specialty, even though they are often defined by the specialty of their main staff (``Surgical department'').
 
 \hypertarget{therapeutic-areas-with-special-requirements}{%
 \subsection{Therapeutic Areas With Special Requirements}\label{therapeutic-areas-with-special-requirements}}
 
-The Standardized Vocabularies are covering all aspects of healthcare in a comprehensive fashion. However, some therapeutic areas have special needs and require special Vocabularies. Examples are Oncology, Radiology, Genomics. Special OHDSI Working Groups develop these extensions. As a result, the OMOP Standardized Vocabularies constitutes an integrated system, where Concepts from different origins and purposes all reside in the same Domain-specific hierarchies.
+The Standardized Vocabularies are covering all aspects of healthcare in a comprehensive fashion. However, some therapeutic areas have special needs and require special Vocabularies. Examples are Oncology, Radiology, Genomics. Special OHDSI Working Groups develop these extensions. As a result, the OMOP Standardized Vocabularies constitutes an integrated system, where concepts from different origins and purposes all reside in the same domain-specific hierarchies.
 
-\hypertarget{standard-concepts-in-the-drug-domain}{%
-\subsection{Standard Concepts in the Drug Domain}\label{standard-concepts-in-the-drug-domain}}
+\hypertarget{rxNormExtension}{%
+\subsection{Standard Concepts in the Drug Domain}\label{rxNormExtension}}
 
-Many Concepts of the Drug Domain are sourced from RxNorm, a publically available vocabulary produced by the US National Library of Medicine. However, Drugs outside the US may or may not be covered, depending on whether or not the combination of ingredient, form and strength is marketed in the US. Drugs that are not on the US market are added by the OHDSI Vocabulary Team under a vocabulary called \href{https://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary:rxnorm_extension}{RxNorm Extension}, which is the only large Domain vocabulary produced by OHDSI.
+Many concepts of the Drug domain are sourced from RxNorm, a publically available vocabulary produced by the US National Library of Medicine. However, Drugs outside the US may or may not be covered, depending on whether or not the combination of ingredient, form and strength is marketed in the US. Drugs that are not on the US market are added by the OHDSI Vocabulary Team under a vocabulary called \href{https://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary:rxnorm_extension}{RxNorm Extension}, which is the only large domain vocabulary produced by OHDSI.
 
 \hypertarget{flavors-of-null}{%
 \subsection{Flavors of NULL}\label{flavors-of-null}}
 
-Many vocabularies contain contain codes about absence of information. For example, of the five Gender Concepts 8507 ``Male'', 8532 ``Female'', 8570 ``Ambiguous'', 8551 ``Unknown'' and 8521 ``Other'' only the first two are Standard, and the other three are source Concepts with no mapping. In the Standardized Vocabularies, there is no distinction made why a piece of information is not available, might that be because of an active withdrawal of information by the patient, a missing value, a value that is not defined or standardized in some way, or the absence of a mapping record in CONCEPT\_RELATIONSHIP. Any such Concept is not mapped, which corresponds to a default mapping to the Standard Concept with the Concept ID = 0.
+Many vocabularies contain contain codes about absence of information. For example, of the five gender concepts 8507 ``Male'', 8532 ``Female'', 8570 ``Ambiguous'', 8551 ``Unknown'' and 8521 ``Other'' only the first two are Standard, and the other three are source concepts with no mapping. In the Standardized Vocabularies, there is no distinction made why a piece of information is not available, might that be because of an active withdrawal of information by the patient, a missing value, a value that is not defined or standardized in some way, or the absence of a mapping record in CONCEPT\_RELATIONSHIP. Any such concept is not mapped, which corresponds to a default mapping to the Standard Concept with the concept ID = 0.
 
 \hypertarget{summary-3}{%
 \section{Summary}\label{summary-3}}
@@ -2811,21 +2798,21 @@ Many vocabularies contain contain codes about absence of information. For exampl
 \begin{itemize}
 \tightlist
 \item
-  All Events and administrative facts are represented in the OMOP Standardized Vocabularies as Concepts, Concept Relationships and Concept Ancestor hierarchy
+  All Events and administrative facts are represented in the OMOP Standardized Vocabularies as concepts, concept relationships and concept ancestor hierarchy
 \item
   Most of these are adopted from existing coding schemes or vocabularies, some of them are curated de-novo by the OHDSI Vocabulary Team
 \item
-  All Concepts are assigned a Domain, which controls where the fact represented by the Concept is stored
+  All concepts are assigned a domain, which controls where the fact represented by the concept is stored
 \item
-  Concepts of equivalent meaning in different Vocabularies are mapped to one of them, which is designated the Standard Concept. The others are source Concepts
+  Concepts of equivalent meaning in different Vocabularies are mapped to one of them, which is designated the Standard Concept. The others are source concepts
 \item
-  Mapping is done through the Concept Relationships ``Maps to'' and ``Maps to value''
+  Mapping is done through the concept relationships ``Maps to'' and ``Maps to value''
 \item
-  There is an additional class of Concepts called Classification Concepts, which are non Standard, but in contrast to source Concepts they participate in the hierarchy
+  There is an additional class of concepts called classification concepts, which are non-standard, but in contrast to source concepts they participate in the hierarchy
 \item
   Concepts have a life cycle over time
 \item
-  Concepts within a Domain are organized into hierarchies. The quality of he hierarchy differes between Domains, and the completion of the hierarchy system is an ongoing task
+  Concepts within a domain are organized into hierarchies. The quality of he hierarchy differes between domains, and the completion of the hierarchy system is an ongoing task
 \item
   You are strongly encouraged to engage with the community if you believe you found a mistake or inaccuracy
 \end{itemize}
@@ -3140,7 +3127,7 @@ race\strut
 When race = `WHITE' then set as 8527, when race = `BLACK' then set as 8516, when race = `ASIAN' then set as 8515, otherwise set as 0. These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ETHNICITY\_CONCEPT\_ID\strut
+ETHNICITY\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 race ethnicity\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
@@ -3168,49 +3155,49 @@ CARE\_SITE\_ID\strut
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-PERSON\_SOURCE\_VALUE\strut
+PERSON\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 id\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-GENDER\_SOURCE\_VALUE\strut
+GENDER\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 gender\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-GENDER\_SOURCE\_CONCEPT\_ID\strut
+GENDER\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-RACE\_SOURCE\_VALUE\strut
+RACE\_SOURCE\_ VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 race\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-RACE\_SOURCE\_CONCEPT\_ID\strut
+RACE\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 \strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ETHNICITY\_SOURCE\_VALUE\strut
+ETHNICITY\_ SOURCE\_VALUE\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 ethnicity\strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
 In this case the ETHNICITY\_SOURCE\_VALUE will have more granularity than the ETHNICITY\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
-ETHNICITY\_SOURCE\_CONCEPT\_ID\strut
+ETHNICITY\_ SOURCE\_CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.12\columnwidth}\raggedright
 \strut
 \end{minipage} & \begin{minipage}[t]{0.51\columnwidth}\raggedright
@@ -4759,7 +4746,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.szyl2n0schildren ;"
+## [1] "SELECT * FROM temp_schema.sdk01p2kchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -6469,7 +6456,7 @@ The pathway analysis aims to summarize the treatments (events) received by perso
 
 }
 
-\caption{OHDSI Treatment Pathways “sunburst” visualization for hypertension}\label{fig:treatmentPathwaysSunburstDataViz}
+\caption{OHDSI Treatment Pathways "sunburst" visualization for hypertension}\label{fig:treatmentPathwaysSunburstDataViz}
 \end{figure}
 
 As an example, figure \ref{fig:treatmentPathwaysSunburstDataViz} represents a population of persons initiating treatment for hypertension. The first ring in the center shows the proportion of persons based on their first-line therapy. In this example, Hydrochlorothiazide is the most common first-line therapy for this population. The boxes that extend from the Hydrochlorothiazide section represent the 2nd and 3rd line therapies recorded for persons in the cohort.
@@ -6539,7 +6526,7 @@ To search for a specific condition of interest, click on the Table tab to reveal
 
 }
 
-\caption{Atlas Data Sources: Conditions with “hypertension” found in the concept name}\label{fig:atlasDataSourcesConditionFiltered}
+\caption{Atlas Data Sources: Conditions with "hypertension" found in the concept name}\label{fig:atlasDataSourcesConditionFiltered}
 \end{figure}
 
 We can explore a detailed drill-down report of a condition by clicking on a row. In this case, we will select ``essential hypertension'' to get a breakdown of the trends of the selected condition over time and by gender, the prevalence of the condition by month, the type recorded with the condition and the age at first occurrence of the diagnosis:
@@ -7596,7 +7583,7 @@ If the options ``keep all'' or ``keep first'' are selected, we may wish to censo
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{images/PopulationLevelEstimation/tar} 
+{\centering \includegraphics[width=0.9\linewidth]{images/PopulationLevelEstimation/tar} 
 
 }
 
@@ -14073,8 +14060,8 @@ This information is stored in the OBSERVATION\_PERIOD table:
 ## 1                    61        61                    1968-01-21 ...
 \end{verbatim}
 
-\hypertarget{standardized-vocabularies-vocabanswers}{%
-\section{Standardized Vocabularies \{Vocabanswers\}}\label{standardized-vocabularies-vocabanswers}}
+\hypertarget{Vocabanswers}{%
+\section{Standardized Vocabularies}\label{Vocabanswers}}
 
 \hypertarget{exercise-refexrexercisevocab1}{%
 \subsubsection*{Exercise \ref{exr:exerciseVocab1}}\label{exercise-refexrexercisevocab1}}

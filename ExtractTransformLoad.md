@@ -145,17 +145,17 @@ Table: (\#tab:syntheaEtlPerson) ETL logic to convert the Synthea Patients table 
 | DAY_OF_BIRTH                | birthdate   | Take day from birthdate |
 | BIRTH_DATETIME              | birthdate   | With midnight as time 00:00:00. Here, the source did not supply a time of birth so the choice was made to set it at midnight.  |
 | RACE_CONCEPT_ID             | race        | When race = 'WHITE' then set as 8527, when race = 'BLACK' then set as 8516, when race = 'ASIAN' then set as 8515, otherwise set as 0. These concepts were chosen because they are the standard concepts belonging to the race domain that most closely align with the race categories in the source.  |
-| ETHNICITY_CONCEPT_ID        | race  ethnicity | When race = ‘HISPANIC’, or when ethnicity in (‘CENTRAL_AMERICAN’, ‘DOMINICAN’, ‘MEXICAN’, ‘PUERTO_RICAN’, ‘SOUTH_AMERICAN’) then set as 38003563, otherwise set as 0. This is a good example of how multiple source columns can contribute to one CDM column. In the CDM ethnicity is represented as either Hispanic or not Hispanic so values from both the source column race and source column ethnicity will determine this value. |
+| ETHNICITY_ CONCEPT_ID        | race  ethnicity | When race = ‘HISPANIC’, or when ethnicity in (‘CENTRAL_AMERICAN’, ‘DOMINICAN’, ‘MEXICAN’, ‘PUERTO_RICAN’, ‘SOUTH_AMERICAN’) then set as 38003563, otherwise set as 0. This is a good example of how multiple source columns can contribute to one CDM column. In the CDM ethnicity is represented as either Hispanic or not Hispanic so values from both the source column race and source column ethnicity will determine this value. |
 | LOCATION_ID                 |             |   |
 | PROVIDER_ID                 |             |   |
 | CARE_SITE_ID                |             |   |
-| PERSON_SOURCE_VALUE         | id          |   |
-| GENDER_SOURCE_VALUE         | gender      |   |
-| GENDER_SOURCE_CONCEPT_ID    |             |   |
-| RACE_SOURCE_VALUE           | race        |   |
-| RACE_SOURCE_CONCEPT_ID      |             |   |
-| ETHNICITY_SOURCE_VALUE      | ethnicity   |  In this case the ETHNICITY_SOURCE_VALUE will have more granularity than the ETHNICITY_CONCEPT_ID.  |
-| ETHNICITY_SOURCE_CONCEPT_ID |             |   |
+| PERSON_SOURCE_ VALUE         | id          |   |
+| GENDER_SOURCE_ VALUE         | gender      |   |
+| GENDER_SOURCE_ CONCEPT_ID    |             |   |
+| RACE_SOURCE_ VALUE           | race        |   |
+| RACE_SOURCE_ CONCEPT_ID      |             |   |
+| ETHNICITY_ SOURCE_VALUE      | ethnicity   |  In this case the ETHNICITY_SOURCE_VALUE will have more granularity than the ETHNICITY_CONCEPT_ID.  |
+| ETHNICITY_ SOURCE_CONCEPT_ID |             |   |
 
 For more examples on how the Synthea dataset was mapped to the CDM please see the full specification document[^syntheaEtlUrl].
 
