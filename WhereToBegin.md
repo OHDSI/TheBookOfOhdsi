@@ -1,4 +1,4 @@
-# Where to begin {#WhereToBegin}
+# Where to Begin {#WhereToBegin}
 
 *Chapter Leads: Hamed Abedtash & Kristin Kostka*
 
