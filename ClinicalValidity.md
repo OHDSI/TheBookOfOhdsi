@@ -30,14 +30,10 @@ In this chapter, we will discuss the methods for validating cohort definitions. 
 
 Once the cohort definition for the study has been determined, the validity of the definition can be evaluated. A common approach to assess validity is by comparing some or all persons in a defined cohort to a reference ‘gold standard’, and expressing the results in a confusion matrix, a two-by-two contingency table that stratifies persons according to their gold standard classification and qualification within the cohort definition. Figure \@ref(fig:matrix) shows the elements of the confusion matrix.
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.75\linewidth]{images/ClinicalValidity/matrix} 
-
-}
-
-\caption{Confusion matrix.}(\#fig:matrix)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ClinicalValidity/matrix.png" alt="Confusion matrix." width="75%" />
+<p class="caption">(\#fig:matrix)Confusion matrix.</p>
+</div>
 
 The true and false results from the cohort definition are determined by applying the definition to a group of persons. Those included in the definition are considered positive for the health condition and are labeled “True”. Those persons not included in the cohort definition are considered negative for the health condition and are labeled “False”. While the absolute truth of a person’s heath state considered in the cohort definition is very difficult to determine, there are multiple methods to establish a reference gold standard, two of which will be described later in the chapter. Regardless of the method used, the labeling of these persons is the same as described for the cohort definition. 
 
@@ -131,27 +127,19 @@ The following are the steps for testing cohort definitions for MI using PheValua
 
 To determine those with MI with a high probability. We required a condition occurrence record with a concept for myocardial infarction or any of its descendants, with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. Figure \@ref(fig:xSpec) illustrates this cohort definition for MI in ATLAS. \index{xSpec cohort}
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ClinicalValidity/xSpec} 
-
-}
-
-\caption{An extremely specific cohort definition (xSpec) for myocardial infarction.}(\#fig:xSpec)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ClinicalValidity/xSpec.png" alt="An extremely specific cohort definition (xSpec) for myocardial infarction." width="100%" />
+<p class="caption">(\#fig:xSpec)An extremely specific cohort definition (xSpec) for myocardial infarction.</p>
+</div>
  
 #### Step 2: Define the xSens Cohort {-}
  
 We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure \@ref(fig:xSens) illustrates the xSens cohort definition for MI in ATLAS. \index{xSens cohort}
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/ClinicalValidity/xSens} 
-
-}
-
-\caption{An extremely sensitive cohort definition (xSens) for myocardial infarction.}(\#fig:xSens)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ClinicalValidity/xSens.png" alt="An extremely sensitive cohort definition (xSens) for myocardial infarction." width="100%" />
+<p class="caption">(\#fig:xSens)An extremely sensitive cohort definition (xSens) for myocardial infarction.</p>
+</div>
  
 #### Step 3: Fit the Predictive Model {-}
 
@@ -238,22 +226,18 @@ The model and the evaluation cohort files created in this step will be used in t
 
 The next step is to create and test the cohort definitions to be evaluated. The desired performance characteristics may depend on the intended use of the cohort to address the research question of interest. For certain questions, a very sensitive algorithm may be required; others may require a more specific algorithm. The process for determining the performance characteristics for a cohort definition using PheValuator is shown in Figure \@ref(fig:phevaluatorDiagram).
 
-\begin{figure}
+<div class="figure" style="text-align: center">
+<img src="images/ClinicalValidity/PheValuatorEvaluation.png" alt="Determining the Performance Characteristics of a cohort definition using PheValuator. p(O) = Probability of outcome; TP = True Positive; FN = False Negative; TN = True Negative; FP = False Positive." width="100%" />
+<p class="caption">(\#fig:phevaluatorDiagram)Determining the Performance Characteristics of a cohort definition using PheValuator. p(O) = Probability of outcome; TP = True Positive; FN = False Negative; TN = True Negative; FP = False Positive.</p>
+</div>
 
-{\centering \includegraphics[width=1\linewidth]{images/ClinicalValidity/PheValuatorEvaluation} 
-
-}
-
-\caption{Determining the Performance Characteristics of a Cohort Definition using PheValuator }(\#fig:phevaluatorDiagram)
-\end{figure}
-
-In part A of Figure \@ref(fig:phevaluatorDiagram), we examined the persons from the cohort definition to be tested and found those persons from the evaluation cohort (created in the previous step) who were included in the cohort definition (Person IDs 016, 019, 022, 023, and 025) and those from the evaluation cohort who were not included (PersonIds 017, 018, 020, 021, and 024). For each of these included/excluded persons, we had previously determined the probability of the health outcome using the predictive model (p(O) in Figure 1B).
+In part A of Figure \@ref(fig:phevaluatorDiagram), we examined the persons from the cohort definition to be tested and found those persons from the evaluation cohort (created in the previous step) who were included in the cohort definition (Person IDs 016, 019, 022, 023, and 025) and those from the evaluation cohort who were not included (PersonIds 017, 018, 020, 021, and 024). For each of these included/excluded persons, we had previously determined the probability of the health outcome using the predictive model (p(O)).
 
 We estimated the values for True Positives, True Negatives, False Positives, and False Negatives as follows (Part B of Figure \@ref(fig:phevaluatorDiagram)):
 
 1. If the cohort definition included a person from the evaluation cohort, i.e., the cohort definition considered the person a “positive”, the predicted probability for the health outcome indicated the expected value of the number of counts contributed by that person to the True Positives and one minus the probability indicated the expected value of the number of counts contributed by that person to the False Positives for that person. We summed all the expected values of counts across persons to get the total expected value. For example, PersonId 016 had a predicted probability of 99% for the presence of the health outcome, 0.99 was added to the True Positives (expected value of counts added 0.99) and 1.00–0.99 = 0.01 was added to the False Positives (0.01 expected value). This was repeated for all the persons from the evaluation cohort included in the cohort definition (i.e., PersonIds 019, 022, 023, and 025).
 
-2. Similarly, if the cohort definition did not include a person from the evaluation cohort, i.e., the cohort definition considered the person a “negative”, one minus the predicted probability for the phenotype for that person was the expected value of counts contributed to True Negatives and was added to it, and the predicted probability for the phenotype was the expected value of counts contributed to the False Negatives and was added to it. For example, PersonId 017 had a predicted probability of 1% for the presence of the health outcome (and, correspondingly, 99% for the absence of the health outcome) and 1.00 – 0.01 = 0.99 was added to the True Negatives and 0.01 was added to the False Negatives. This was repeated for all the persons from the evaluation cohort not included in the cohort definition (i.e., PersonIds 018, 020, 021, and 024).
+2. Similarly, if the cohort definition did not include a person from the evaluation cohort, i.e. the cohort definition considered the person a “negative”, one minus the predicted probability for the phenotype for that person was the expected value of counts contributed to True Negatives and was added to it, and the predicted probability for the phenotype was the expected value of counts contributed to the False Negatives and was added to it. For example, PersonId 017 had a predicted probability of 1% for the presence of the health outcome (and, correspondingly, 99% for the absence of the health outcome) and 1.00 – 0.01 = 0.99 was added to the True Negatives and 0.01 was added to the False Negatives. This was repeated for all the persons from the evaluation cohort not included in the cohort definition (i.e., PersonIds 018, 020, 021, and 024).
 
 After summing these values over the full set of persons in the evaluation cohort, we filled the four cells of the confusion matrix with the expected values of counts for each cell, and we were able to create point estimates of the PA performance characteristics like sensitivity, specificity, and positive predictive value (Figure 1C). We emphasize that these expected cell counts cannot be used to assess the variance of the estimates, only the point estimates. In the example, the sensitivity, specificity, PPV, and NPV were 0.99, 0.63, 0.42, and 0.99, respectively.
 

@@ -2066,7 +2066,7 @@ For these first exercises you will need to review the CDM tables discussed earli
 \subsubsection*{Prerequisites}\label{prerequisites-1}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
-For these last two exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
+For these last three exercises we assume R, R-Studio and Java have been installed as described in Section \ref{installR}. Also required are the \href{https://ohdsi.github.io/SqlRender/}{SqlRender}, \href{https://ohdsi.github.io/DatabaseConnector/}{DatabaseConnector}, and \href{https://ohdsi.github.io/Eunomia/}{Eunomia} packages, which can be installed using:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2106,9 +2106,9 @@ Suggested answers can be found in Appendix \ref{Cdmanswers}.
 
 \emph{Chapter leads: Christian Reich \& Anna Ostropolets}
 
-The OMOP Standardized Vocabularies, often referred to simply as ``the Vocabulary'' is a foundational part of the OHDSI research network, and an integral part of the Common Data Model (CDM). It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical events. OHDSI requires harmonization not only to a standardized format, but also to a rigorous standard content.
+The OMOP Standardized Vocabularies, often referred to simply as ``the Vocabulary'', are a foundational part of the OHDSI research network, and an integral part of the Common Data Model (CDM). They allow standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical events. OHDSI requires harmonization not only to a standardized format, but also to a rigorous standard content.
 
-In this chapter we first describe the main principles of the Standardized Vocabularies, its components, and the relevant rules, conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
+In this chapter we first describe the main principles of the Standardized Vocabularies, their components, and the relevant rules, conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
 
 \hypertarget{why-vocabularies-and-why-standardizing}{%
 \section{Why Vocabularies, and Why Standardizing}\label{why-vocabularies-and-why-standardizing}}
@@ -2155,7 +2155,7 @@ To download a zip file with all Standardized Vocabularies tables select all the 
 \hypertarget{source-of-vocabularies-adopt-versus-build}{%
 \subsection{Source of Vocabularies: Adopt Versus Build}\label{source-of-vocabularies-adopt-versus-build}}
 
-OHDSI generally prefers adopting existing vocabularies, rather than de-novo construction, because (i) many vocabularies have already been utilized in observational data in the community, and (ii) construction and maintenance of vocabularies is complex and requires the input of many stakeholders over long periods of time to mature. For that reason, dedicated organizations provide vocabularies, which are subject to a life cycle of generation, deprecation, merging and splitting (see Section \ref{conceptLifeCycle}). Currently, OHDSI only produces internal administrative vocabularies like Type Concepts (e.g.~condition type concepts). The only exception is RxNorm Extension, a vocabulary covering drugs that are only used outside the United States (see Section \ref{rxNormExtension}).
+OHDSI generally prefers adopting existing vocabularies, rather than de-novo construction, because (i) many vocabularies have already been utilized in observational data in the community, and (ii) construction and maintenance of vocabularies is complex and requires the input of many stakeholders over long periods of time to mature. For that reason, dedicated organizations provide vocabularies, which are subject to a life-cycle of generation, deprecation, merging and splitting (see Section \ref{conceptLifeCycle}). Currently, OHDSI only produces internal administrative vocabularies like Type Concepts (e.g.~condition type concepts). The only exception is RxNorm Extension, a vocabulary covering drugs that are only used outside the United States (see Section \ref{rxNormExtension}).
 
 \hypertarget{concepts}{%
 \section{Concepts}\label{concepts}}
@@ -2256,7 +2256,7 @@ Horizontal concept classes allow you to determine a specific hierarchical level.
 \hypertarget{standardConcepts}{%
 \subsection{Standard Concepts}\label{standardConcepts}}
 
-One Concept representing the meaning of each clinical event is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define ``Atrial fibrillation'' in the condition domain, but only the SNOMED concept is Standard and represents the condition in the data. The others are designated non-standard or source concepts and mapped to the Standard ones. Standard Concepts are indicated through an ``S'' in the STANDARD\_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "\_CONCEPT\_ID". \index{standard concept}
+One concept representing the meaning of each clinical event is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define ``Atrial fibrillation'' in the condition domain, but only the SNOMED concept is Standard and represents the condition in the data. The others are designated non-standard or source concepts and mapped to the Standard ones. Standard Concepts are indicated through an ``S'' in the STANDARD\_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "\_CONCEPT\_ID". \index{standard concept}
 
 \hypertarget{non-standard-concepts}{%
 \subsection{Non-Standard Concepts}\label{non-standard-concepts}}
@@ -2377,7 +2377,7 @@ None at this point\strut
 Concept codes are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e.~the same code can exist in different vocabularies with completely different meanings (see Table \ref{tab:code1001}) \index{concept!code}
 
 \begin{longtable}[]{@{}llllll@{}}
-\caption{\label{tab:code1001} Concepts with identical concept code 1001, but different Vocabularies, domains and concept classes.}\tabularnewline
+\caption{\label{tab:code1001} Concepts with identical concept code 1001, but different vocabularies, domains and concept classes.}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.14\columnwidth}\raggedright
 Concept ID\strut
@@ -2505,9 +2505,9 @@ Specimen\strut
 \end{longtable}
 
 \hypertarget{conceptLifeCycle}{%
-\subsection{Life Cycle}\label{conceptLifeCycle}}
+\subsection{Life-Cycle}\label{conceptLifeCycle}}
 
-Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, as well as supporting new concepts and placing them into context. There are three fields in the CONCEPT table that describe the possible life-cycle statuses:
+Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, as well as supporting new concepts and placing them into context. There are three fields in the CONCEPT table that describe the possible life-cycle statuses: VALID\_START\_DATE, VALID\_END\_DATE, and INVALID\_REASON. Their values differ depending on the concept life-cycle status:
 
 \begin{itemize}
 \tightlist
@@ -2577,7 +2577,7 @@ In general, concept codes are not reused. But there are a few vocabularies that 
 Any two concepts can have a defined relationship, regardless of whether the two concepts belong to the same domain or vocabulary.
 The nature of the relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP\_ID field of the CONCEPT\_RELATIONSHIP table. Relationships are symmetrical, i.e.~for each relationship an equivalent relationship exists, where the content of the fields CONCEPT\_ID\_1 and CONCEPT\_ID\_2 are swapped, and the RELATIONHSIP\_ID is changed to its opposite. For example, the ``Maps to'' relationship has an opposite relationship ``Mapped from.'' \index{concept!relationship}
 
-CONCEPT\_RELATIONSHIP table records also have life cycle fields RELATIONSHIP\_START\_DATE, RELATIONSHIP\_END\_DATE and INVALID\_REASON. However, only active records with INVALID\_REASON = NULL are available through ATHENA. Inactive relationships are kept in the Pallas system for internal processing only. The RELATIONSHIP table serves as the reference with the full list of relationship IDs and their reverse counterparts.
+CONCEPT\_RELATIONSHIP table records also have life-cycle fields RELATIONSHIP\_START\_DATE, RELATIONSHIP\_END\_DATE and INVALID\_REASON. However, only active records with INVALID\_REASON = NULL are available through ATHENA. Inactive relationships are kept in the Pallas system for internal processing only. The RELATIONSHIP table serves as the reference with the full list of relationship IDs and their reverse counterparts.
 
 \hypertarget{conceptMapping}{%
 \subsection{Mapping Relationships}\label{conceptMapping}}
@@ -2787,7 +2787,7 @@ Many vocabularies contain codes about absence of information. For example, of th
 \item
   There is an additional class of concepts called classification concepts, which are non-standard, but in contrast to source concepts they participate in the hierarchy.
 \item
-  Concepts have a life cycle over time.
+  Concepts have a life-cycle over time.
 \item
   Concepts within a domain are organized into hierarchies. The quality of the hierarchy differs between domains, and the completion of the hierarchy system is an ongoing task.
 \item
@@ -4723,7 +4723,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.ztu6k0zochildren ;"
+## [1] "SELECT * FROM temp_schema.s25jg732children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -10481,7 +10481,7 @@ The above function will execute all available data quality checks on the schema 
 \end{Highlighting}
 \end{Shaded}
 
-The variable \texttt{jsonPath} should be the path to the JSON file containing the results of the Dashboard. Most likely this will be in the format ``outputFolder/cdmSourceName/results\_cdmSourceName.json'' where the parameters \texttt{outputFolder} and \texttt{cdmSourceName} are the values passed to the \texttt{executeDqChecks} function above.
+The variable \texttt{jsonPath} should be the path to the JSON file containing the results of the Dashboard, located in the \texttt{outputFolder} specified when calling the \texttt{executeDqChecks} function above.
 
 When you first open the Dashboard you will be presented with the overview table, as seen in Figure \ref{fig:dqdOverview}. This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate.
 
@@ -10928,10 +10928,10 @@ The next step is to create and test the cohort definitions to be evaluated. The 
 
 }
 
-\caption{Determining the Performance Characteristics of a Cohort Definition using PheValuator }\label{fig:phevaluatorDiagram}
+\caption{Determining the Performance Characteristics of a cohort definition using PheValuator. p(O) = Probability of outcome; TP = True Positive; FN = False Negative; TN = True Negative; FP = False Positive.}\label{fig:phevaluatorDiagram}
 \end{figure}
 
-In part A of Figure \ref{fig:phevaluatorDiagram}, we examined the persons from the cohort definition to be tested and found those persons from the evaluation cohort (created in the previous step) who were included in the cohort definition (Person IDs 016, 019, 022, 023, and 025) and those from the evaluation cohort who were not included (PersonIds 017, 018, 020, 021, and 024). For each of these included/excluded persons, we had previously determined the probability of the health outcome using the predictive model (p(O) in Figure 1B).
+In part A of Figure \ref{fig:phevaluatorDiagram}, we examined the persons from the cohort definition to be tested and found those persons from the evaluation cohort (created in the previous step) who were included in the cohort definition (Person IDs 016, 019, 022, 023, and 025) and those from the evaluation cohort who were not included (PersonIds 017, 018, 020, 021, and 024). For each of these included/excluded persons, we had previously determined the probability of the health outcome using the predictive model (p(O)).
 
 We estimated the values for True Positives, True Negatives, False Positives, and False Negatives as follows (Part B of Figure \ref{fig:phevaluatorDiagram}):
 
@@ -10940,7 +10940,7 @@ We estimated the values for True Positives, True Negatives, False Positives, and
 \item
   If the cohort definition included a person from the evaluation cohort, i.e., the cohort definition considered the person a ``positive'', the predicted probability for the health outcome indicated the expected value of the number of counts contributed by that person to the True Positives and one minus the probability indicated the expected value of the number of counts contributed by that person to the False Positives for that person. We summed all the expected values of counts across persons to get the total expected value. For example, PersonId 016 had a predicted probability of 99\% for the presence of the health outcome, 0.99 was added to the True Positives (expected value of counts added 0.99) and 1.00--0.99 = 0.01 was added to the False Positives (0.01 expected value). This was repeated for all the persons from the evaluation cohort included in the cohort definition (i.e., PersonIds 019, 022, 023, and 025).
 \item
-  Similarly, if the cohort definition did not include a person from the evaluation cohort, i.e., the cohort definition considered the person a ``negative'', one minus the predicted probability for the phenotype for that person was the expected value of counts contributed to True Negatives and was added to it, and the predicted probability for the phenotype was the expected value of counts contributed to the False Negatives and was added to it. For example, PersonId 017 had a predicted probability of 1\% for the presence of the health outcome (and, correspondingly, 99\% for the absence of the health outcome) and 1.00 -- 0.01 = 0.99 was added to the True Negatives and 0.01 was added to the False Negatives. This was repeated for all the persons from the evaluation cohort not included in the cohort definition (i.e., PersonIds 018, 020, 021, and 024).
+  Similarly, if the cohort definition did not include a person from the evaluation cohort, i.e.~the cohort definition considered the person a ``negative'', one minus the predicted probability for the phenotype for that person was the expected value of counts contributed to True Negatives and was added to it, and the predicted probability for the phenotype was the expected value of counts contributed to the False Negatives and was added to it. For example, PersonId 017 had a predicted probability of 1\% for the presence of the health outcome (and, correspondingly, 99\% for the absence of the health outcome) and 1.00 -- 0.01 = 0.99 was added to the True Negatives and 0.01 was added to the False Negatives. This was repeated for all the persons from the evaluation cohort not included in the cohort definition (i.e., PersonIds 018, 020, 021, and 024).
 \end{enumerate}
 
 After summing these values over the full set of persons in the evaluation cohort, we filled the four cells of the confusion matrix with the expected values of counts for each cell, and we were able to create point estimates of the PA performance characteristics like sensitivity, specificity, and positive predictive value (Figure 1C). We emphasize that these expected cell counts cannot be used to assess the variance of the estimates, only the point estimates. In the example, the sensitivity, specificity, PPV, and NPV were 0.99, 0.63, 0.42, and 0.99, respectively.
