@@ -105,6 +105,29 @@ cat("  CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
 ")
 ```
 
+#### Exercise \@ref(exr:exercisePersonSource) {-}
+
+To find the set of records, we can query the CONDITION_OCCURRENCE table using the CONDITION_SOURCE_VALUE field:
+
+```{r eval=FALSE}
+sql <- "SELECT *
+FROM @cdm.condition_occurrence
+WHERE condition_source_value = 'K92.2';"
+
+result <- renderTranslateQuerySql(connection, sql, cdm = "main")
+head(result)
+```
+```{r echo=FALSE,message=FALSE,eval=TRUE}
+cat("  CONDITION_OCCURRENCE_ID PERSON_ID CONDITION_CONCEPT_ID ...
+1                    4657       273               192671 ...
+2                    1021        61               192671 ...
+3                    5978       351               192671 ...
+4                    9798       579               192671 ...
+5                    9301       549               192671 ...
+6                    1997       116               192671 ...
+")
+```
+
 #### Exercise \@ref(exr:exercisePerson61Records) {-}
 
 This information is stored in the OBSERVATION_PERIOD table:
@@ -124,6 +147,34 @@ cat("  OBSERVATION_PERIOD_ID PERSON_ID OBSERVATION_PERIOD_START_DATE ...
 1                    61        61                    1968-01-21 ...
 ")
 ```
+
+
+
+## Standardized Vocabularies {#Vocabanswers}
+
+#### Exercise \@ref(exr:exerciseVocab1) {-}
+
+Concept ID 192671 ("Gastrointestinal hemorrhage")
+
+#### Exercise \@ref(exr:exerciseVocab2) {-}
+
+ICD-10CM codes:
+
+- K29.91 "Gastroduodenitis, unspecified, with bleeding"
+- K92.2 "Gastrointestinal hemorrhage, unspecified"
+
+ICD-9CM codes:
+
+- 578 "Gastrointestinal hemorrhage"
+- 578.9 "Hemorrhage of gastrointestinal tract, unspecified"
+
+#### Exercise \@ref(exr:exerciseVocab3) {-}
+
+MedDRA preferred terms:
+
+- "Gastrointestinal haemorrhage" (Concept ID 35707864)
+- "Intestinal haemorrhage" (Concept ID 35707858)
+
 
 
 
