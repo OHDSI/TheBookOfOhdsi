@@ -12,10 +12,14 @@ In this chapter we first describe the main principles of the Standardized Vocabu
 
 Medical vocabularies go back to the Bills of Mortality in medieval London to manage outbreaks of the plague and other diseases (see Figure \@ref(fig:bill)). \index{Bill of Mortality}
   
-<div class="figure" style="text-align: center">
-<img src="images/StandardizedVocabularies/bill.jpg" alt="1660 London Bill of Mortality, showing the cause of death for deceased inhabitants using a classification system of 62 diseases known at the time." width="100%" />
-<p class="caption">(\#fig:bill)1660 London Bill of Mortality, showing the cause of death for deceased inhabitants using a classification system of 62 diseases known at the time.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/StandardizedVocabularies/bill} 
+
+}
+
+\caption{1660 London Bill of Mortality, showing the cause of death for deceased inhabitants using a classification system of 62 diseases known at the time.}(\#fig:bill)
+\end{figure}
   
 Since then, the classifications have greatly expanded in size and complexity and spread into other aspects of healthcare, such as procedures and services, drugs, medical devices, etc. The main principles have remained the same: they are controlled vocabularies, terminologies, hierarchies or ontologies that some healthcare communities agree upon for the purpose of capturing, classifying and analyzing patient data. Many of these vocabularies are maintained by public and government agencies with a long-term mandate for doing so. For example, the World Health Organization (WHO) produces the International Classification of Disease (ICD) with the recent addition of its 11th revision (ICD11). Local governments create country-specific versions, such as ICD10CM (USA), ICD10GM (Germany), etc. Governments also control the marketing and sale of drugs and maintain national repositories of such certified drugs. Vocabularies are also used in the private sector, either as commercial products or for internal use, such as electronic health record (EHR) systems or for medical insurance claim reporting.
 
@@ -52,10 +56,14 @@ OHDSI generally prefers adopting existing vocabularies, rather than de-novo cons
 
 All clinical events in the OMOP CDM are expressed as concepts, which represent the semantic notion of each event. They are the fundamental building blocks of the data records, making almost all tables fully normalized with few exceptions. Concepts are stored in the CONCEPT table (see Figure \@ref(fig:concept)). \index{concept}
   
-<div class="figure" style="text-align: center">
-<img src="images/StandardizedVocabularies/concept.png" alt="Standard representation of vocabulary concepts in the OMOP CDM. The example provided is the CONCEPT table record for the SNOMED code for Atrial Fibrillation." width="90%" />
-<p class="caption">(\#fig:concept)Standard representation of vocabulary concepts in the OMOP CDM. The example provided is the CONCEPT table record for the SNOMED code for Atrial Fibrillation.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/StandardizedVocabularies/concept} 
+
+}
+
+\caption{Standard representation of vocabulary concepts in the OMOP CDM. The example provided is the CONCEPT table record for the SNOMED code for Atrial Fibrillation.}(\#fig:concept)
+\end{figure}
 
 This system is meant to be **comprehensive**, i.e. there are enough concepts to cover any event relevant to the patient's healthcare experience (e.g. conditions, procedures, exposures to drug, etc.) as well as some of the administrative information of the healthcare system (e.g. visits, care sites, etc.).
 
@@ -72,10 +80,14 @@ Each concept has one name. Names are always in English. They are imported from t
 Each concept is assigned a domain in the DOMAIN_ID field, which in contrast to the numerical CONCEPT_ID is a short case-sensitive unique alphanumeric ID for the domain. Examples of such domain identifiers are "Condition," "Drug," "Procedure," "Visit," "Device," "Specimen," etc. Ambiguous or pre-coordinated (combination) concepts can belong to a combination domain, but Standard Concepts (see Section \@ref(standardConcepts)) are always assigned a singular domain. Domains also direct to which CDM table and field a clinical event or event attribute is recorded.
 Domain assignments are an OMOP-specific feature done during vocabulary ingestion using a heuristic laid out in [Pallas](https://github.com/ohDSI/vocabulary-v5.0). Source vocabularies tend to combine codes of mixed domains, but to a varying degree (see Figure \@ref(fig:domains)). \index{domain!concept}
 
-<div class="figure" style="text-align: center">
-<img src="images/StandardizedVocabularies/domains.png" alt="Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single domain, but in reality they are mixed." width="70%" />
-<p class="caption">(\#fig:domains)Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single domain, but in reality they are mixed.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{images/StandardizedVocabularies/domains} 
+
+}
+
+\caption{Domain assignment in procedure vocabularies CPT4 and HCPCS. By intuition, these vocabularies should contain codes and concepts of a single domain, but in reality they are mixed.}(\#fig:domains)
+\end{figure}
 
 The domain heuristic follows the definitions of the domains. These definitions are derived from the table and field definitions in the CDM (see Chapter \@ref(CommonDataModel)). The heuristic is not perfect; there are grey zones (see Section \@ref(specialSituations) "Special Situations"). If you find concept domains assigned incorrectly please report and help improve the process through a [Forums](https://forums.ohdsi.org) or [CDM issue](https://github.com/OHDSI/CommonDataModel/issues) post.
 
@@ -110,10 +122,14 @@ Non-standard concepts are not used to represent the clinical events, but they ar
 
 These concepts are not Standard, and hence cannot be used to represent the data. But they are participating in the hierarchy with the Standard Concepts, and can therefore be used to perform hierarchical queries. For example, querying for all descendants of MedDRA code 10037908 (not visible for users who have not obtained a MedDRA license, see Section \@ref(accessVocabularies) for access restrictions) will retrieve the Standard SNOMED concept for Atrial Fibrillation (see Section \@ref(conceptAncestor) for hierarchical queries using the CONCEPT_ANCESTOR table) - see Figure \@ref(fig:hierarchy). \index{classification concept}
 
-<div class="figure" style="text-align: center">
-<img src="images/StandardizedVocabularies/hierarchy.png" alt="Standard, non-standard source and classification concepts and their hierarchical relationships in the condition domain. SNOMED is used for most standard condition concepts (with some oncology-related concepts derived from ICDO3), MedDRA concepts are used for hierarchical classification concepts, and all other vocabularies contain non-standard or source concepts, which do not participate in the hierarchy." width="100%" />
-<p class="caption">(\#fig:hierarchy)Standard, non-standard source and classification concepts and their hierarchical relationships in the condition domain. SNOMED is used for most standard condition concepts (with some oncology-related concepts derived from ICDO3), MedDRA concepts are used for hierarchical classification concepts, and all other vocabularies contain non-standard or source concepts, which do not participate in the hierarchy.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/StandardizedVocabularies/hierarchy} 
+
+}
+
+\caption{Standard, non-standard source and classification concepts and their hierarchical relationships in the condition domain. SNOMED is used for most standard condition concepts (with some oncology-related concepts derived from ICDO3), MedDRA concepts are used for hierarchical classification concepts, and all other vocabularies contain non-standard or source concepts, which do not participate in the hierarchy.}(\#fig:hierarchy)
+\end{figure}
 
 The choice of concept designation as Standard, non-standard and classification is typically done for each domain separately at the vocabulary level. This is based on the quality of the concepts, the built-in hierarchy and the declared purpose of the vocabulary. Also, not all concepts of a vocabulary are used as Standard Concepts. The designation is separate for each domain, each concept has to be active (see Section \@ref(conceptLifeCycle)) and there might be an order of precedence if more than one concept from different vocabularies compete for the same meaning. In other words, there is no such a thing as a "standard vocabulary." See Table \@ref(tab:vocabList) for examples.
 
@@ -205,10 +221,14 @@ Relationships "Maps to value" have the purpose of splitting of a value for OMOP 
 
 In these situations, the source concept is a combination of the attribute (test or history) and the value (test result or disease). The "Maps to" relationship maps this source to the attribute concept, and the "Maps to value" to the value concept. See Figure \@ref(fig:conceptValue) for an example.
 
-<div class="figure" style="text-align: center">
-<img src="images/StandardizedVocabularies/conceptValue.png" alt="One-to-many mapping between source concept and Standard Concepts. A pre-coordinated concept is split into two concepts, one of which is the attribute (here history of clinical finding) and the other one is the value (peptic ulcer). While &quot;Maps to&quot; relationship will map to concepts of the measurement or observation domains, the ‘Maps to value&quot; concepts have no domain restriction." width="100%" />
-<p class="caption">(\#fig:conceptValue)One-to-many mapping between source concept and Standard Concepts. A pre-coordinated concept is split into two concepts, one of which is the attribute (here history of clinical finding) and the other one is the value (peptic ulcer). While "Maps to" relationship will map to concepts of the measurement or observation domains, the ‘Maps to value" concepts have no domain restriction.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/StandardizedVocabularies/conceptValue} 
+
+}
+
+\caption{One-to-many mapping between source concept and Standard Concepts. A pre-coordinated concept is split into two concepts, one of which is the attribute (here history of clinical finding) and the other one is the value (peptic ulcer). While "Maps to" relationship will map to concepts of the measurement or observation domains, the ‘Maps to value" concepts have no domain restriction.}(\#fig:conceptValue)
+\end{figure}
   
 Mapping of concepts is another central feature of the OMOP Standardized Vocabularies provided for free and supporting the efforts of the community conducting Network Studies. Mapping relationships are derived from external sources or maintained manually by the Vocabulary Team. This means they are not perfect. If you find wrong or objectionable mapping relationships it is crucial that you report and help improve the process through a [Forums](https://forums.ohdsi.org) or [CDM issue](https://github.com/OHDSI/CommonDataModel/issues) post.
 
@@ -251,10 +271,14 @@ The CONCEPT_ANCESTOR table is built automatically from the CONCEPT_RELATIONSHIP 
 
 (ref:foo) Hierarchy of the condition "Atrial fibrillation." First degree ancestry is defined through "Is a" and "Subsumes" relationships, while all higher degree relations are inferred and stored in the CONCEPT_ANCESTOR table. Each concept is also its own descendant with both levels of separation equal to 0. \index{concept!ancestor}   
   
-<div class="figure" style="text-align: center">
-<img src="images/StandardizedVocabularies/conceptAncestor.png" alt="(ref:foo)" width="100%" />
-<p class="caption">(\#fig:conceptAncestor)(ref:foo)</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/StandardizedVocabularies/conceptAncestor} 
+
+}
+
+\caption{(ref:foo)}(\#fig:conceptAncestor)
+\end{figure}
 
 The ancestral degree, or the number of steps between Ancestor and Descendant, is captured in the MIN_LEVELS_OF_SEPARATION and MAX_LEVELS_OF_SEPARATION fields, defining the shortest or longest possible connection. Not all hierarchical relationships contribute equally to the Levels of Separation calculation. A step counted for the degree is determined by the IS_HIERARCHICAL flag in the RELATIONSHIP reference table for each relationship ID. 
 
