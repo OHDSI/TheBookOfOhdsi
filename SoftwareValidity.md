@@ -46,7 +46,7 @@ The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) provides a 
 
 ## Methods Library Software Development Process
 
-The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers (for example the CohortMethod issue tracker[^issueTrackerUrl]) and the OHDSI Forums[^forumsUrl]. Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup leadership (Drs. Marc Suchard and Martijn Schuemie) and OHDSI Patient-Level Prediction Workgroup leadership (Drs. Peter Rijnbeek and Jenna Reps) only.
+The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers (for example the CohortMethod issue tracker[^issueTrackerUrl]) and the OHDSI Forums.[^forumsUrl] Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup leadership (Drs. Marc Suchard and Martijn Schuemie) and OHDSI Patient-Level Prediction Workgroup leadership (Drs. Peter Rijnbeek and Jenna Reps) only.
 
 [^issueTrackerUrl]: https://github.com/OHDSI/CohortMethod/issues 
 [^forumsUrl]: http://forums.ohdsi.org/
@@ -67,7 +67,7 @@ New versions are released by the OHDSI Population-Level Estimation Workgroup and
 
 ### Documentation
 
-All packages in the Methods Library are documented through R’s internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) software is used to combine a function’s documentation and source code in a single file. The package manual is available on demand through R’s command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package. All documentation can be viewed though the Methods Library website[^methodsLibrarySiteUrl].
+All packages in the Methods Library are documented through R’s internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) software is used to combine a function’s documentation and source code in a single file. The package manual is available on demand through R’s command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package. All documentation can be viewed though the Methods Library website.[^methodsLibrarySiteUrl]
 
 [^methodsLibrarySiteUrl]: https://ohdsi.github.io/MethodsLibrary/
 

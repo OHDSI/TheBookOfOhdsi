@@ -30,7 +30,7 @@ The Standardized Vocabularies are available to the community free of charge and 
 
 ### Building the Standardized Vocabularies
 
-All vocabularies of the Standardized Vocabularies are consolidated into the same common format. This relieves the researchers from having to understand and handle multiple different formats and life-cycle conventions of the originating vocabularies. All vocabularies are regularly refreshed and incorporated using the Pallas system[^pallasUrl]. It is built and run by the OHDSI Vocabulary Team, which is part of the overall OMOP CDM Workgroup. If you find mistakes please report and help improve our resource by posting in either the OHDSI Forums[^forums2Url] or CDM Github page[^cdmIssuesUrl]. \index{Pallas system}
+All vocabularies of the Standardized Vocabularies are consolidated into the same common format. This relieves the researchers from having to understand and handle multiple different formats and life-cycle conventions of the originating vocabularies. All vocabularies are regularly refreshed and incorporated using the Pallas system.[^pallasUrl] It is built and run by the OHDSI Vocabulary Team, which is part of the overall OMOP CDM Workgroup. If you find mistakes please report and help improve our resource by posting in either the OHDSI Forums[^forums2Url] or CDM Github page.[^cdmIssuesUrl] \index{Pallas system}
 
 [^pallasUrl]: https://github.com/OHDSI/Vocabulary-v5.0
 [^forums2Url]: https://forums.ohdsi.org
@@ -212,7 +212,7 @@ In these situations, the source concept is a combination of the attribute (test 
   
 Mapping of concepts is another central feature of the OMOP Standardized Vocabularies provided for free and supporting the efforts of the community conducting Network Studies. Mapping relationships are derived from external sources or maintained manually by the Vocabulary Team. This means they are not perfect. If you find wrong or objectionable mapping relationships it is crucial that you report and help improve the process through a [Forums](https://forums.ohdsi.org) or [CDM issue](https://github.com/OHDSI/CommonDataModel/issues) post.
 
-A more detailed description of mapping conventions can be found in the OHDSI Wiki[^vocabMappingUrl].
+A more detailed description of mapping conventions can be found in the OHDSI Wiki.[^vocabMappingUrl]
 
 [^vocabMappingUrl]: https://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary:mapping
 
@@ -226,7 +226,7 @@ These relationships are typically of the type "Vocabulary A - Vocabulary B eq", 
 
 ### Relationships Between Concepts of the Same Vocabulary
 
-Internal vocabulary relationships are usually supplied by the vocabulary provider. Full descriptions can be found in the vocabulary documentation under the individual vocabulary at the OHDSI Wiki[^vocabVocabulariesUrl]. 
+Internal vocabulary relationships are usually supplied by the vocabulary provider. Full descriptions can be found in the vocabulary documentation under the individual vocabulary at the OHDSI Wiki.[^vocabVocabulariesUrl]
 
 [^vocabVocabulariesUrl]: https://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary
 
@@ -325,7 +325,7 @@ Many vocabularies contain codes about absence of information. For example, of th
 
 #### Prerequisites {-}
 
-For these first exercises you will need to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdm2Url] or ATLAS[^atlasCdm2Url].
+For these first exercises you will need to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdm2Url] or ATLAS.[^atlasCdm2Url]
 
 [^athenaCdm2Url]: http://athena.ohdsi.org/
 [^atlasCdm2Url]: http://atlas-demo.ohdsi.org

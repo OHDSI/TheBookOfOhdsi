@@ -36,7 +36,7 @@ The first strategy views every analysis as a single individual study. The analys
 
 The second strategy develops an application that allows users to answer a specific class of questions in real time or near-real time. Once the application has been developed, users can interactively define queries, submit them, and view the results. An example of this strategy is the cohort definition and generation tool in ATLAS. This tool allows users to specify cohort definitions of varying complexity, and execute the definition against a database to see how many people meet the various inclusion and exclusion criteria. 
 
-The third strategy similarly focuses on a class of questions, but then attempts to exhaustively generate all the evidence for the questions within the class. Users can then explore the evidence as needed through a variety of interfaces. One example is the OHDSI study into the effects of depression treatments. [@schuemie_2018b] In this study all depression treatments are compared for a large set of outcomes of interest across four large observational databases. The full set of results, including 17,718 empirically calibrated hazard ratios along with extensive study diagnostics, is available in an interactive web app[^systematicEvidenceUrl].
+The third strategy similarly focuses on a class of questions, but then attempts to exhaustively generate all the evidence for the questions within the class. Users can then explore the evidence as needed through a variety of interfaces. One example is the OHDSI study into the effects of depression treatments. [@schuemie_2018b] In this study all depression treatments are compared for a large set of outcomes of interest across four large observational databases. The full set of results, including 17,718 empirically calibrated hazard ratios along with extensive study diagnostics, is available in an interactive web app.[^systematicEvidenceUrl]
 
 [^systematicEvidenceUrl]: http://data.ohdsi.org/SystematicEvidence/
 
@@ -95,19 +95,19 @@ Feedback \index{ATLAS!feedback}
 
 ### Security
 
-ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform. The security system is built leveraging the Apache Shiro library. Additional information on the security system can be found in the online WebAPI security wiki[^webApiSecurityWikiUrl]. \index{ATLAS!security}
+ATLAS and the WebAPI provide a granular security model to control access to features or data sources within the overall platform. The security system is built leveraging the Apache Shiro library. Additional information on the security system can be found in the online WebAPI security wiki.[^webApiSecurityWikiUrl] \index{ATLAS!security}
 
 [^webApiSecurityWikiUrl]: https://github.com/OHDSI/WebAPI/wiki/Security-Configuration
 
 ### Documentation 
 
-Documentation for ATLAS can be found online in the ATLAS GitHub repository wiki[^atlasRepoWikiUrl]. This wiki includes information on the various application features as well as links to online video tutorials.  \index{ATLAS!documentation}
+Documentation for ATLAS can be found online in the ATLAS GitHub repository wiki.[^atlasRepoWikiUrl] This wiki includes information on the various application features as well as links to online video tutorials.  \index{ATLAS!documentation}
 
 [^atlasRepoWikiUrl]: https://github.com/OHDSI/ATLAS/wiki 
 
 ### How to Install
 
-Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS GitHub repository Setup Guide[^atlasSetupGuideUrl] and WebAPI GitHub repository Installation Guide[^webApiInstallationGuideUrl]. \index{ATLAS!installation}
+Installation of ATLAS is done in combination with the OHDSI WebAPI. Installation guides for each component are available online in the ATLAS GitHub repository Setup Guide[^atlasSetupGuideUrl] and WebAPI GitHub repository Installation Guide.[^webApiInstallationGuideUrl] \index{ATLAS!installation}
 
 [^atlasSetupGuideUrl]: https://github.com/OHDSI/Atlas/wiki/Atlas-Setup-Guide
 [^webApiInstallationGuideUrl]: https://github.com/OHDSI/WebAPI/wiki/WebAPI-Installation-Guide
@@ -254,14 +254,14 @@ Deploying the entire OHDSI tool stack, including ATLAS and the Methods Library, 
 
 ### Broadsea
 
-Broadsea[^broadseaUrl] uses Docker container technology[^dockerUrl]. The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS. \index{tools deployment!Broadsea}
+Broadsea[^broadseaUrl] uses Docker container technology.[^dockerUrl] The OHDSI tools are packaged along with dependencies into a single portable binary file called a Docker Image. This image can then be run on a Docker engine service, creating a virtual machine with all the software installed and ready to run. Docker engines are available for most operating systems, including Microsoft Windows, MacOS, and Linux. The Broadsea Docker image contains the main OHDSI tools, including the Methods Library and ATLAS. \index{tools deployment!Broadsea}
 
 [^broadseaUrl]: https://github.com/OHDSI/Broadsea
 [^dockerUrl]: https://www.docker.com/
 
 ### Amazon AWS
 
-Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box[^ohdsiInaBoxUrl] and OHDSIonAWS[^ohdsiOnAwsUrl]. \index{tools deployment!Amazon AWS}
+Amazon has prepared two environments that can be instantiated in the AWS cloud computing environment with a click of the button: OHDSI-in-a-Box[^ohdsiInaBoxUrl] and OHDSIonAWS.[^ohdsiOnAwsUrl] \index{tools deployment!Amazon AWS}
 
 OHDSI-in-a-Box is specifically created as a learning environment, and is used in most of the tutorials provided by the OHDSI community. It includes many OHDSI tools, sample data sets, RStudio and other supporting software in a single, low cost Windows virtual machine.  A PostgreSQL database is used to store the CDM and also to store the intermediary results from ATLAS. The OMOP CDM data mapping and ETL tools are also included in OHDSI-in-a-Box. The architecture for OHDSI-in-a-Box is depicted in Figure \@ref(fig:ohdsiinaboxDiagram).
 

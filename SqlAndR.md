@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.zhgt0e6mchildren ;"
+## [1] "SELECT * FROM temp_schema.jbxzazxochildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -357,7 +357,7 @@ A Shiny app is included in the SqlRender package for interactively editing sourc
 launchSqlRenderDeveloper()
 ```
 
-That will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web[^sqlDeveloperUrl]. 
+That will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web.[^sqlDeveloperUrl] 
 
 <div class="figure" style="text-align: center">
 <img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
@@ -661,7 +661,7 @@ WHERE LOWER(ingredient.concept_name) = 'ibuprofen'
 
 \index{QueryLibrary}
 
-QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application[^queryLibraryUrl] shown in Figure \@ref(fig:queryLibrary), and as an R package[^queryLibraryPackageUrl]. 
+QueryLibrary is a library of commonly-used SQL queries for the CDM. It is available as an online application[^queryLibraryUrl] shown in Figure \@ref(fig:queryLibrary), and as an R package.[^queryLibraryPackageUrl]
 
 [^queryLibraryUrl]: http://data.ohdsi.org/QueryLibrary
 

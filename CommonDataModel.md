@@ -131,7 +131,7 @@ An example of how the Standard Concept to Source Concept relationship is depicte
 
 \index{Common Data Model!standardized tables}
 
-The CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki[^cdmWikiUrl1].
+The CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tables, 4 health system data tables, 2 health economics data tables, 3 standardized derived elements, and 2 Results schema tables. These tables are fully specified in the CDM Wiki.[^cdmWikiUrl1]
 
 [^cdmWikiUrl1]: https://github.com/OHDSI/CommonDataModel/wiki
 
@@ -363,7 +363,7 @@ This chapter covers only a portion of the tables available in the CDM as example
 
 #### Prerequisites {-}
 
-For these first exercises you will need to review the CDM tables discussed earlier, and you will have to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdmUrl] or ATLAS[^atlasCdmUrl].
+For these first exercises you will need to review the CDM tables discussed earlier, and you will have to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdmUrl] or ATLAS.[^atlasCdmUrl]
 
 [^athenaCdmUrl]: http://athena.ohdsi.org/
 [^atlasCdmUrl]: http://atlas-demo.ohdsi.org
