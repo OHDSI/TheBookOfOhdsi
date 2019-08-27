@@ -213,11 +213,11 @@ A more detailed description of mapping conventions can be found in the OHDSI Wik
 
 ### Hierarchical Relationships
 
-Relationships which indicate a hierarchy are defined through the "Is a"/"Subsumes" relationship pair. Hierarchical relationships are defined such that the child concept has all the attributes of the parent concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 "Atrial fibrillation" is related to SNOMED 17366009 "Atrial arrhythmia" through a "Is a" relationship. Both concepts have an identical set of attributes except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent and more than one child concept. In this example, SNOMED 49436004 "Atrial fibrillation" is also an "Is a" to SNOMED 40593004 "Fibrillation." \index{concept!hierarchy}
+Relationships which indicate a hierarchy are defined through the "Is a" - "Subsumes" relationship pair. Hierarchical relationships are defined such that the child concept has all the attributes of the parent concept, plus one or more additional attributes or a more precisely defined attribute. For example, SNOMED 49436004 "Atrial fibrillation" is related to SNOMED 17366009 "Atrial arrhythmia" through a "Is a" relationship. Both concepts have an identical set of attributes except the type of arrhythmia, which is defined as fibrillation in one but not the other. Concepts can have more than one parent and more than one child concept. In this example, SNOMED 49436004 "Atrial fibrillation" is also an "Is a" to SNOMED 40593004 "Fibrillation." \index{concept!hierarchy}
 
 ### Relationships Between Concepts of Different Vocabularies
 
-These relationships are typically of the type "Vocabulary A - Vocabulary B eq", which is either supplied by the original source of the vocabulary or is built by the OHDSI Vocabulary team. They may serve as approximate mappings but often times are less precise than the better curated mapping relationships. High-quality equivalence relationships  (such as ‘Source - RxNorm eq’)  are always duplicated by "Maps to" relationship.
+These relationships are typically of the type "Vocabulary A - Vocabulary B equivalent", which is either supplied by the original source of the vocabulary or is built by the OHDSI Vocabulary team. They may serve as approximate mappings but often times are less precise than the better curated mapping relationships. High-quality equivalence relationships  (such as "Source - RxNorm equivalent")  are always duplicated by "Maps to" relationship.
 
 ### Relationships Between Concepts of the Same Vocabulary
 
@@ -236,13 +236,13 @@ CONCEPT_ID_1 | CONCEPT_ID_2
 4000504 "Urethra part" | 443533 "Epispadias, male"
 4000504 "Urethra part" | 4005956 "Epispadias, female"
 	
-The quality and comprehensiveness of these relationships varies with that of the original vocabulary. Generally, vocabularies that are used to draw Standard Concepts from, such as SNOMED, are chosen for the reason of their better curation and therefore tend to have higher quality internal relationships as well.
+The quality and comprehensiveness of these relationships varies depending on the quality in the original vocabulary. Generally, vocabularies that are used to draw Standard Concepts from, such as SNOMED, are chosen for the reason of their better curation and therefore tend to have higher quality internal relationships as well.
 
 ## Hierarchy {#conceptAncestor}
 
-Within a domain, standard and classification concepts are organized in a hierarchical structure and stored in the CONCEPT_ANCESTOR table. This allows querying and retrieving concepts and all their hierarchical descendants. These descendants have the same attributes as their ancestor, but additional ones, or more defined ones.
+Within a domain, standard and classification concepts are organized in a hierarchical structure and stored in the CONCEPT_ANCESTOR table. This allows querying and retrieving concepts and all their hierarchical descendants. These descendants have the same attributes as their ancestor, but also additional or more defined ones.
 
-The CONCEPT_ANCESTOR table is built automatically from the CONCEPT_RELATIONSHIP table traversing all possible concepts connected through hierarchical relationships. These are the "Is a"/"Subsumes" pairs (see Figure \@ref(fig:conceptAncestor)), and other relationships connecting hierarchies across vocabularies. The choice whether a relationship participates in the hierarchy constructor is defined for each relationship ID by the flag DEFINES_ANCESTRY in the RELATIONSHIP reference table. 
+The CONCEPT_ANCESTOR table is built automatically from the CONCEPT_RELATIONSHIP table traversing all possible concepts connected through hierarchical relationships. These are the "Is a" - "Subsumes" pairs (see Figure \@ref(fig:conceptAncestor)), and other relationships connecting hierarchies across vocabularies. The choice whether a relationship participates in the hierarchy constructor is defined for each relationship ID by the flag DEFINES_ANCESTRY in the RELATIONSHIP reference table. 
 
 (ref:foo) Hierarchy of the condition "Atrial fibrillation." First degree ancestry is defined through "Is a" and "Subsumes" relationships, while all higher degree relations are inferred and stored in the CONCEPT_ANCESTOR table. Each concept is also its own descendant with both levels of separation equal to 0. \index{concept!ancestor}   
   
@@ -250,9 +250,9 @@ The CONCEPT_ANCESTOR table is built automatically from the CONCEPT_RELATIONSHIP 
 knitr::include_graphics("images/StandardizedVocabularies/conceptAncestor.png")
 ```  
 
-The ancestral degree, or the number of steps between Ancestor and Descendant, is captured in the MIN_LEVELS_OF_SEPARATION and MAX_LEVELS_OF_SEPARATION fields, defining the shortest or longest possible connection. Not all hierarchical relationships contribute equally to the Levels of Separation calculation. A step counted for the degree is determined by the IS_HIERARCHICAL flag in the RELATIONSHIP reference table for each relationship ID. 
+The ancestral degree, or the number of steps between ancestor and descendant, is captured in the MIN_LEVELS_OF_SEPARATION and MAX_LEVELS_OF_SEPARATION fields, defining the shortest or longest possible connection. Not all hierarchical relationships contribute equally to the levels-of-separation calculation. A step counted for the degree is determined by the IS_HIERARCHICAL flag in the RELATIONSHIP reference table for each relationship ID. 
 
-At the moment, a high-quality comprehensive hierarchy exists only for two domains: drug and condition. Procedure, measurement and observation domains are only partially covered and in the process of construction. The Ancestry is particularly useful for the drug domain as it allows browsing all drugs with a given ingredient or members of drug classes irrespective of the country of origin, brand name or other attributes.
+At the moment, a high-quality comprehensive hierarchy exists only for two domains: drug and condition. Procedure, measurement and observation domains are only partially covered and in the process of construction. The ancestry is particularly useful for the drug domain as it allows browsing all drugs with a given ingredient or members of drug classes irrespective of the country of origin, brand name or other attributes.
 
 ## Internal Reference Tables
 
@@ -284,7 +284,7 @@ Device concepts have no standardized coding scheme that could be used to source 
 
 ### Visits and Services
 
-Visits concepts define the nature of healthcare encounters. In many source systems they are called Place of Service, denoting some organization or physical structure, such as a hospital. In others, they are called services. These also differ between countries, and their definition is hard to obtain. Care Sites are often specializing on one of few visits (XYZ Hospital), but still should not be defined by them (even in XYZ hospital Patients might encounter non-hospital visits).
+Visits concepts define the nature of healthcare encounters. In many source systems they are called Place of Service, denoting some organization or physical structure, such as a hospital. In others, they are called services. These also differ between countries, and their definition is hard to obtain. Care sites are often specializing on one of few visits (XYZ Hospital), but still should not be defined by them (even in XYZ hospital patients might encounter non-hospital visits).
 
 ### Providers and Specialties
 
@@ -292,11 +292,11 @@ Any human provider is defined in the provider domain. These can be medical profe
 
 ### Therapeutic Areas With Special Requirements
 
-The Standardized Vocabularies are covering all aspects of healthcare in a comprehensive fashion. However, some therapeutic areas have special needs and require special Vocabularies. Examples are Oncology, Radiology, Genomics. Special OHDSI Working Groups develop these extensions. As a result, the OMOP Standardized Vocabularies constitutes an integrated system, where concepts from different origins and purposes all reside in the same domain-specific hierarchies.
+The Standardized Vocabularies cover all aspects of healthcare in a comprehensive fashion. However, some therapeutic areas have special needs and require special vocabularies. Examples are oncology, radiology, and genomics. Special OHDSI Working Groups develop these extensions. As a result, the OMOP Standardized Vocabularies constitutes an integrated system, where concepts from different origins and purposes all reside in the same domain-specific hierarchies.
 
 ### Standard Concepts in the Drug Domain {#rxNormExtension}
 
-Many concepts of the drug domain are sourced from RxNorm, a publicly’ available vocabulary produced by the US National Library of Medicine. However, drugs outside the US may or may not be covered, depending on whether or not the combination of ingredient, form and strength is marketed in the US. Drugs that are not on the US market are added by the OHDSI Vocabulary Team under a vocabulary called [RxNorm Extension](https://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary:rxnorm_extension), which is the only large domain vocabulary produced by OHDSI.
+Many concepts of the drug domain are sourced from RxNorm, a publicly available vocabulary produced by the US National Library of Medicine. However, drugs outside the US may or may not be covered, depending on whether or not the combination of ingredient, form and strength is marketed in the US. Drugs that are not on the US market are added by the OHDSI Vocabulary Team under a vocabulary called [RxNorm Extension](https://www.ohdsi.org/web/wiki/doku.php?id=documentation:vocabulary:rxnorm_extension), which is the only large domain vocabulary produced by OHDSI.
 
 ### Flavors of NULL
 
@@ -305,10 +305,10 @@ Many vocabularies contain codes about absence of information. For example, of th
 ## Summary
 
 ```{block2, type='rmdsummary'}
-- All events and administrative facts are represented in the OMOP Standardized Vocabularies as concepts, concept relationships and concept ancestor hierarchy.
+- All events and administrative facts are represented in the OMOP Standardized Vocabularies as concepts, concept relationships, and concept ancestor hierarchy.
 - Most of these are adopted from existing coding schemes or vocabularies, while some of them are curated de-novo by the OHDSI Vocabulary Team.
-- All concepts are assigned a domain, which controls where the fact represented by the concept is stored.
-- Concepts of equivalent meaning in different Vocabularies are mapped to one of them, which is designated the Standard Concept. The others are source concepts.
+- All concepts are assigned a domain, which controls where the fact represented by the concept is stored in the CDM.
+- Concepts of equivalent meaning in different vocabularies are mapped to one of them, which is designated the Standard Concept. The others are source concepts.
 - Mapping is done through the concept relationships "Maps to" and "Maps to value".
 - There is an additional class of concepts called classification concepts, which are non-standard, but in contrast to source concepts they participate in the hierarchy.
 - Concepts have a life-cycle over time.
@@ -321,7 +321,7 @@ Many vocabularies contain codes about absence of information. For example, of th
 
 #### Prerequisites {-}
 
-For these first exercises you will need to look up concepts in the Vocabulary, which can be done through ATHENA[^athenaCdm2Url] or ATLAS.[^atlasCdm2Url]
+For these first exercises you will need to look up concepts in the Standardized Vocabularies, which can be done through ATHENA[^athenaCdm2Url] or ATLAS.[^atlasCdm2Url]
 
 [^athenaCdm2Url]: http://athena.ohdsi.org/
 [^atlasCdm2Url]: http://atlas-demo.ohdsi.org
