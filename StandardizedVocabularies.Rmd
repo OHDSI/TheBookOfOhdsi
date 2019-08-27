@@ -4,9 +4,9 @@
 
 *Chapter leads: Christian Reich & Anna Ostropolets*
 
-The OMOP Standardized Vocabularies, often referred to simply as "the Vocabulary" is a foundational part of the OHDSI research network, and an integral part of the Common Data Model (CDM). It allows standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical events. OHDSI requires harmonization not only to a standardized format, but also to a rigorous standard content. 
+The OMOP Standardized Vocabularies, often referred to simply as "the Vocabulary", are a foundational part of the OHDSI research network, and an integral part of the Common Data Model (CDM). They allow standardization of methods, definitions and results by defining the content of the data, paving the way for true remote (behind the firewall) network research and analytics. Usually, finding and interpreting the content of observational healthcare data, whether it is structured data using coding schemes or laid down in free text, is passed all the way through to the researcher, who is faced with a myriad of different ways to describe clinical events. OHDSI requires harmonization not only to a standardized format, but also to a rigorous standard content. 
 
-In this chapter we first describe the main principles of the Standardized Vocabularies, its components, and the relevant rules, conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
+In this chapter we first describe the main principles of the Standardized Vocabularies, their components, and the relevant rules, conventions and some typical situations, all of which are necessary to understand and utilizing this foundational resource. We also point out where the support of the community is required to continuously improve it.
 
 ## Why Vocabularies, and Why Standardizing 
 
@@ -45,7 +45,7 @@ To download a zip file with all Standardized Vocabularies tables select all the 
 
 ### Source of Vocabularies: Adopt Versus Build
 
-OHDSI generally prefers adopting existing vocabularies, rather than de-novo construction, because (i) many vocabularies have already been utilized in observational data in the community, and (ii) construction and maintenance of vocabularies is complex and requires the input of many stakeholders over long periods of time to mature. For that reason, dedicated organizations provide vocabularies, which are subject to a life cycle of generation, deprecation, merging and splitting (see Section \@ref(conceptLifeCycle)). Currently, OHDSI only produces internal administrative vocabularies like Type Concepts (e.g. condition type concepts). The only exception is RxNorm Extension, a vocabulary covering drugs that are only used outside the United States (see Section \@ref(rxNormExtension)).
+OHDSI generally prefers adopting existing vocabularies, rather than de-novo construction, because (i) many vocabularies have already been utilized in observational data in the community, and (ii) construction and maintenance of vocabularies is complex and requires the input of many stakeholders over long periods of time to mature. For that reason, dedicated organizations provide vocabularies, which are subject to a life-cycle of generation, deprecation, merging and splitting (see Section \@ref(conceptLifeCycle)). Currently, OHDSI only produces internal administrative vocabularies like Type Concepts (e.g. condition type concepts). The only exception is RxNorm Extension, a vocabulary covering drugs that are only used outside the United States (see Section \@ref(rxNormExtension)).
 
 ## Concepts
 
@@ -97,7 +97,7 @@ Horizontal concept classes allow you to determine a specific hierarchical level.
 
 ### Standard Concepts {#standardConcepts}
 
-One Concept representing the meaning of each clinical event is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define "Atrial fibrillation" in the condition domain, but only the SNOMED concept is Standard and represents the condition in the data. The others are designated non-standard or source concepts and mapped to the Standard ones. Standard Concepts are indicated through an "S" in the STANDARD_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "_CONCEPT_ID". \index{standard concept}
+One concept representing the meaning of each clinical event is designated the Standard. For example, MESH code D001281, CIEL code 148203, SNOMED code 49436004, ICD9CM code 427.31 and Read code G573000 all define "Atrial fibrillation" in the condition domain, but only the SNOMED concept is Standard and represents the condition in the data. The others are designated non-standard or source concepts and mapped to the Standard ones. Standard Concepts are indicated through an "S" in the STANDARD_CONCEPT field. And only these Standard Concepts are used to record data in the CDM fields ending in "_CONCEPT_ID". \index{standard concept}
 
 ### Non-Standard Concepts
 
@@ -129,7 +129,7 @@ Visit | CMS Place of Service, ABMT, NUCC | SNOMED, HCPCS, CPT4, UB04 | None at t
 
 Concept codes are the identifiers used in the source vocabularies. For example, ICD9CM or NDC codes are stored in this field, while the OMOP tables use the concept ID as a foreign key into the CONCEPT table. The reason is that the name space overlaps across vocabularies, i.e. the same code can exist in different vocabularies with completely different meanings (see Table \@ref(tab:code1001)) \index{concept!code}
 
-Table: (\#tab:code1001) Concepts with identical concept code 1001, but different Vocabularies, domains and concept classes.
+Table: (\#tab:code1001) Concepts with identical concept code 1001, but different vocabularies, domains and concept classes.
 
 Concept ID | Concept Code | Concept Name | Domain ID | Vocabulary ID | Concept Class
 :--------- |:---- |:------------ |:---------- |:---------- |:---------- 
@@ -141,9 +141,9 @@ Concept ID | Concept Code | Concept Name | Domain ID | Vocabulary ID | Concept C
 45417187 | 1001 | Brompheniramine Maleate, 10 mg/mL injectable solution | Drug | Multum | Multum
 45912144 | 1001 | Serum | Specimen | CIEL | Specimen
 
-### Life Cycle {#conceptLifeCycle}
+### Life-Cycle {#conceptLifeCycle}
 
-Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, as well as supporting new concepts and placing them into context. There are three fields in the CONCEPT table that describe the possible life-cycle statuses:
+Vocabularies are rarely permanent corpora with a fixed set of codes. Instead, codes and concepts are added and get deprecated. The OMOP CDM is a model to support longitudinal patient data, which means it needs to support concepts that were used in the past and might no longer be active, as well as supporting new concepts and placing them into context. There are three fields in the CONCEPT table that describe the possible life-cycle statuses: VALID_START_DATE, VALID_END_DATE, and INVALID_REASON. Their values differ depending on the concept life-cycle status:
 
 - **Active or new concept**
 	- Description: Concept in use.
@@ -173,7 +173,7 @@ In general, concept codes are not reused. But there are a few vocabularies that 
 Any two concepts can have a defined relationship, regardless of whether the two concepts belong to the same domain or vocabulary.
 The nature of the relationships is indicated in its short case-sensitive unique alphanumeric ID in the RELATIONSHIP_ID field of the CONCEPT_RELATIONSHIP table. Relationships are symmetrical, i.e. for each relationship an equivalent relationship exists, where the content of the fields CONCEPT_ID_1 and CONCEPT_ID_2 are swapped, and the RELATIONHSIP_ID is changed to its opposite. For example, the "Maps to" relationship has an opposite relationship "Mapped from." \index{concept!relationship}
  
-CONCEPT_RELATIONSHIP table records also have life cycle fields RELATIONSHIP_START_DATE, RELATIONSHIP_END_DATE and INVALID_REASON. However, only active records with INVALID_REASON = NULL are available through ATHENA. Inactive relationships are kept in the Pallas system for internal processing only. The RELATIONSHIP table serves as the reference with the full list of relationship IDs and their reverse counterparts.
+CONCEPT_RELATIONSHIP table records also have life-cycle fields RELATIONSHIP_START_DATE, RELATIONSHIP_END_DATE and INVALID_REASON. However, only active records with INVALID_REASON = NULL are available through ATHENA. Inactive relationships are kept in the Pallas system for internal processing only. The RELATIONSHIP table serves as the reference with the full list of relationship IDs and their reverse counterparts.
 
 ### Mapping Relationships {#conceptMapping}
 
@@ -311,7 +311,7 @@ Many vocabularies contain codes about absence of information. For example, of th
 - Concepts of equivalent meaning in different Vocabularies are mapped to one of them, which is designated the Standard Concept. The others are source concepts.
 - Mapping is done through the concept relationships "Maps to" and "Maps to value".
 - There is an additional class of concepts called classification concepts, which are non-standard, but in contrast to source concepts they participate in the hierarchy.
-- Concepts have a life cycle over time.
+- Concepts have a life-cycle over time.
 - Concepts within a domain are organized into hierarchies. The quality of the hierarchy differs between domains, and the completion of the hierarchy system is an ongoing task.
 - You are strongly encouraged to engage with the community if you believe you found a mistake or inaccuracy.
 
