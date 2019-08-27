@@ -8,7 +8,7 @@ For example, a health insurance claims database is designed to capture all care 
 
 The chapter serves to explain what is meant by creating and sharing cohort definitions, the methods for developing cohorts, and how to build your own cohorts using ATLAS or SQL.
 
-## What is a cohort?
+## What Is a Cohort?
 
 In OHDSI research, we define a cohort as a set of persons who satisfy one or more inclusion criteria for a duration of time. The term cohort is often interchanged with the term *phenotype*. Cohorts are used throughout OHDSI analytical tools and network studies as the primary building blocks for executing a research question. For instance, in a study aiming to predict the risk of angioedema in a group of people initiation ACE inhibitors, we define two cohorts: the outcome cohort (angioedema), and the target cohort (people initiating ACE inhibitors). An important aspect of cohorts in OHDSI is that they are typically defined independently from the other cohorts in the study, thus allowing re-use. For example, in our example the angioedema cohort would identify all angioedema events in the population, including those outside the target population. Our analytics tools will take the intersection of these two cohorts when needed at analysis time. The advantage of this is that the same angioedema cohort definition can now also be used in other analyses, for example an estimation study comparing ACE inhibitors to some other exposure. Cohort definitions can vary from study to study depending on the research question of interest.
 
@@ -36,13 +36,13 @@ There are two main approaches to constructing a cohort:
 
 The next sections will discuss these approaches in further detail.
 
-## Rule-based cohort definitions
+## Rule-Based Cohort Definitions
 
 A rule-based cohort definition begins with explicitly stating one or more inclusion criteria (e.g. “people with angioedema”) in a specific duration of time (e.g. “who developed this condition within the last 6 months”). \index{cohort!rule-based design}
 
 The standard components we use to assemble these criteria are:
 
-- **Domain**: The CDM domain(s) where the data are stored (e.g. PROCEDURE_OCCURRENCE, DRUG_EXPOSURE) define the type of clinical information and the allowable concepts that can be represented inside that CDM table. Domains are discussed in more detail in Section \@ref(domains).
+- **Domain**: The CDM domain(s) where the data are stored (e.g. "Procedure Occurrence", "Drug Exposure") define the type of clinical information and the allowable concepts that can be represented inside that CDM table. Domains are discussed in more detail in Section \@ref(domains).
 
 - **Concept set**: A data-agnostic expression that defines one or more Standard Concepts encompassing the clinical entity of interest. These concept sets are interoperable across different observational health data as they represent the standard terms the clinical entity maps to in the Vocabulary. Concept sets are discussed in Section \@ref(conceptSets).
 
@@ -52,7 +52,7 @@ The standard components we use to assemble these criteria are:
 
 As you are building your cohort definition, you may find it helpful to think of Domains analogous to building blocks (see Figure \@ref(fig:cohortLegos)) that represent cohort attributes. If you are confused about allowable content in each domain, you can always refer to the Common Data Model chapter (Chapter \@ref(CommonDataModel)) for help.
 
-```{r cohortLegos, fig.cap='Building Blocks of Cohort definitions',echo=FALSE, out.width='50%', fig.align='center'}
+```{r cohortLegos, fig.cap='Building Blocks of Cohort definitions.',echo=FALSE, out.width='50%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/cohort-legos.png")
 ```
 
@@ -73,21 +73,40 @@ In the OHDSI tools there is no distinction between inclusion and exclusion crite
 
 ```
 
-## Concept sets {#conceptSets}
+## Concept Sets {#conceptSets}
 
 \index{concept set}
 
-TODO: add section on concept sets
+A concept set is an expression representing a list of concepts that can be used as a reusable component in various analyses. It can be thought of as a standardized, computer-executable equivalent of the code lists often used in observational studies. A concept set expression consists of a list of concepts with the following attributes:
 
-## Probabilistic cohort definitions
+- **Exclude**: Exclude this concept (and any of its descendants if selected) from the concept set.
+- **Descendants**: Consider not only this concept, but also all of its descendants.
+- **Mapped**: Allow to search for non-standard concepts.
+
+For example, a concept set expression could contains two concepts as depicted in Table \@ref(tab:conceptSetExpression). Here we include concept [4329847](http://athena.ohdsi.org/search-terms/terms/4329847) ("Myocardial infarction") and all of its descendants, but exclude concept [314666](http://athena.ohdsi.org/search-terms/terms/314666) ("Old myocardial infarction") and all of its descendants.
+
+Table: (\#tab:conceptSetExpression) An example concept set expression.
+
+| Concept Id | Concept Name | Excluded | Descendants | Mapped |
+| ---------- |:------------ | -------- | ----------- | ------ |
+| 4329847    | Myocardial infarction | NO | YES | NO |
+| 314666     | Old myocardial infarction | YES | YES | NO |
+
+As shown in Figure \@ref(fig:conceptSet), this will include "Myocardial infarction" and all of its descendants except "Old myocardial infarction" and its descendants. In total, this concept set expression implies nearly a hundred Standard Concepts. These Standard Concepts in turn reflect hundreds of source codes (e.g. ICD-9 and ICD-10 codes) that may appear in the various databases. 
+
+```{r conceptSet, fig.cap='A concept set including "Myocardial infaction (with descendants), but excluding "Old myocardial infarction" (with descendants).',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/Cohorts/conceptSet.png")
+```
+
+## Probabilistic Cohort Definitions
 
 Rule-based cohort definitions are a popular method for assembling cohort definitions. However, assembling necessary expert consensus to create a study cohort can be prohibitively time consuming. Probabilistic cohort design is an alternative, machine-driven method to expedite the selection of cohort attributes. In this approach, supervised machine learning allows a phenotyping algorithm to learn from a set of labeled examples (cases) of what attributes contribute to cohort membership. This algorithm can then be used to better ascertain the defining characteristics of a phenotype and what trade-offs occur in overall study accuracy when choosing to modify phenotype criteria. \index{cohort!probabilistic design}
 
-An example of applying this approach on data in the CDM is the APHRODITE (Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation) R-package[^aphroditeUrl] . This package provides a cohort building framework that combines the ability of learning from imperfectly labeled data [@Banda2017APHRODITE]. \index{APHRODITE}
+An example of applying this approach on data in the CDM is the APHRODITE (Automated PHenotype Routine for Observational Definition, Identification, Training and Evaluation) R-package[^aphroditeUrl] . This package provides a cohort building framework that combines the ability of learning from imperfectly labeled data. [@Banda2017APHRODITE] \index{APHRODITE}
 
 [^aphroditeUrl]: https://github.com/OHDSI/Aphrodite
 
-## Cohort definition validity
+## Cohort Definition Validity
 
 When you are building a cohort, you should consider which of these is more important to you: *finding all the eligible patients?* versus *Getting only the ones you are confident about?*
 
@@ -97,11 +116,11 @@ As mentioned at the beginning of the chapter, a cohort definition is an attempt 
 
 ### OHDSI Gold Standard Phenotype Library
 
-To assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to develop a community-backed phenotype library from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page [^gsplUrl]. Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool [@Swerdel2019phevaluator] , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
+To assist the community in the inventory and overall evaluation of existing cohort definitions and algorithms, the OHDSI Gold Standard Phenotype Library (GSPL) Workgroup was formed. The purpose of the GSPL workgroup is to develop a community-backed phenotype library from rules-based and probabilistic methods. The GSPL enable members of the OHDSI community to find, evaluate, and utilize community-validated cohort definitions for research and other activities. These “gold standard” definitions will reside in a library, the entries of which are held to specific standards of design and evaluation. For additional information related to the GSPL, consult the OHDSI workgroup page.[^gsplUrl] Research within this workgroup includes APHRODITE [@Banda2017APHRODITE] and the PheValuator tool [@Swerdel2019phevaluator] , discussed in the prior section, as well as work done to share the Electronic Medical Records and Genomics [eMERGE](https://emerge.mc.vanderbilt.edu/) [Phenotype Library](https://phekb.org/phenotypes) across the OHDSI network [@Hripcsak2019eMERGE]. If phenotype curation is your interest, consider contributing to this workgroup. \index{phenotype library}
 
 [^gsplUrl]: https://www.ohdsi.org/web/wiki/doku.php?id=projects:workgroups:gold-library-wg
 
-## Defining a cohort for hypertension
+## Defining a Cohort for Hypertension
 
 We begin to practice our cohort skills by putting together a cohort definition using a rule-based approach. In this example, we want to find *patients who initiate ACE inhibitors monotherapy as first-line treatments for hypertension*
 
@@ -113,7 +132,7 @@ knitr::include_graphics("images/Cohorts/CohortPractice.png")
 
 You can build a cohort in the user interface of ATLAS or you can write a query directly against your CDM. We will briefly discuss both in this chapter.
 
-## Implementing a cohort using ATLAS
+## Implementing a Cohort Using ATLAS
 
 To begin in ATLAS, click on the ![](images/Cohorts/cohortdefinition.png) module. When the module loads, click on "New cohort". The next screen you will see will be an empty cohort definition. Figure \@ref(fig:ATLASdefineacohort) shows what you will see on your screen.
 
@@ -127,7 +146,12 @@ Before you do anything else, you are encouraged to change the name of the cohort
 ATLAS will not allow two cohorts to have the same exact names. ATLAS will give you a pop-up error message if you choose a name already used by another ATLAS cohort.
 ```
 
-Once you have chosen a name, you can save the cohort by clicking ![](images/Cohorts/save.png). Now we can proceed with defining the initial cohort event. You will click "Add initial event". You now have to pick which domain you are building a criteria around. You may ask yourself, "how do I know which domain is the initial cohort event?" Let's figure that out.
+Once you have chosen a name, you can save the cohort by clicking ![](images/Cohorts/save.png). 
+
+
+### Initial Event Criteria
+
+Now we can proceed with defining the initial cohort event. You will click "Add initial event". You now have to pick which domain you are building a criteria around. You may ask yourself, "how do I know which domain is the initial cohort event?" Let's figure that out.
 
 ```{r ATLASinitialevent, fig.cap='Adding an Initial Event',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-initialevent.png")
@@ -141,9 +165,11 @@ The screen will update with your selected criteria but you are not done yet. As 
 knitr::include_graphics("images/Cohorts/ATLAS-drugexposure.png")
 ```
 
+### Defining the Concept Set
+
 You will need to click ![](images/Cohorts/downarrow.png) to open the dialogue box that will allow you to retrieve a concept set to define ACE Inhibitors.
 
-#### Scenario 1: You have not built a concept set {-} 
+#### Scenario 1: You Have Not Built a Concept Set {-} 
 
 If you have not assembled your concept sets to apply to your criteria, you will need to do so before you move forward. You may build a concept set within the cohort definition by navigating to the "Concept set" tab and clicking "New Concept Set". You will need to rename the concept set from "Unnamed Concept Set" to a name of your choosing. From there you can use the ![](images/Cohorts/search-2.png) module to look for clinical concepts that represent ACE inhibitors (Figure \@ref(fig:aceinhibitors)).
 
@@ -151,9 +177,15 @@ If you have not assembled your concept sets to apply to your criteria, you will 
 knitr::include_graphics("images/Cohorts/aceinhibitors.png")
 ```
 
-When you have found terms that you would like to use to define this drug exposure, you can select the concept by clicking on ![](images/Cohorts/shoppingcart.png). You can return to your cohort definition by using the breadcrumbs at the top of right of the navigation window and clicking ![](images/Cohorts/save.png). You can refer back to Chapter \@ref(StandardizedVocabularies) (Standardized Vocabularies) on how to navigate the vocabularies to find clinical concepts of interest.
+When you have found terms that you would like to use to define this drug exposure, you can select the concept by clicking on ![](images/Cohorts/shoppingcart.png). You can return to your cohort definition by using the left arrow in the top left of Figure \@ref(fig:aceinhibitors). You can refer back to Chapter \@ref(StandardizedVocabularies) (Standardized Vocabularies) on how to navigate the vocabularies to find clinical concepts of interest.
 
-#### Scenario 2: You have already built a concept set{-}
+Figure \@ref(fig:aceConceptSetExpression) shows our concept set expression. We selected all ACE inhibitor ingredients we are interested in, and include all their descendants, thus including all drugs that contain any of these ingredients. We can click on "Included concepts" to see all 21,536 concepts implied by this expression, or we can click on "Included Source Codes" to explore all source codes in the various coding systems that are implied.
+
+```{r aceConceptSetExpression, fig.cap='Importing a Concept Set from ATLAS Repository',echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("images/Cohorts/aceConceptSetExpression.png")
+```
+
+#### Scenario 2: You Have Already Built a Concept Set{-}
 
 If you have already created a concept set and saved it in ATLAS, you can click to "Import Concept Set". A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS (Figure \@ref(fig:ATLASfindyourconcept)).
 
@@ -163,7 +195,9 @@ knitr::include_graphics("images/Cohorts/ATLAS-findingyourconcept.png")
 
 In the example in Figure \@ref(fig:ATLASfindyourconcept), the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set "ace inhibitors" in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.)  You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.
 
-Now that you've attached a concept set, you are not done **yet**. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the *first exposure* of ACE inhibitors in the patient's record. To specify this, you need to click "+Add attribute". You will want to select the "Add first exposure criteria". Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
+### Additional Initial Event Criteria
+
+Now that you've attached a concept set, you are not done yet. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the *first exposure* of ACE inhibitors in the patient's record. To specify this, you need to click "+Add attribute". You will want to select the "Add first exposure criteria". Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
 
 From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (Figure \@ref(fig:atlasfirsttimeever)).
 
@@ -191,6 +225,8 @@ knitr::include_graphics("images/Cohorts/EarliestEventExplained.png")
 
 In Figure \@ref(fig:EarliestEventExplained), each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first time occurrence. Logically, limiting to the initial event is redundant though it is helpful to maintain our explicit logic in every selection we make. When you are building your own cohorts, you may opt to engage the Researchers section of the [OHDSI Forum](http://forums.ohdsi.org) to get a second opinion on how to construct your cohort logic.
 
+### Inclusion Criteria
+
 Once we have specified a cohort entry event, you could proceed to one of two places to add your additional qualifying events: "Restrict initial events" and "New inclusion criteria". The fundamental difference between these two options is what interim information you want ATLAS to serve back to you. If you add additional qualifying criteria into the Cohort Entry Event box by selecting "Restrict initial events", when you choose to generate a count in ATLAS, you will only get back the number of people who meet ALL of these criteria. If you opt to add criteria into the "New inclusion criteria", you will get an attrition chart to show you how many patients are lost by applying additional inclusion criteria. It is highly encouraged to utilize the Inclusion Criteria section so you can understand the impact of each rule on the overall success of the cohort definition. You may find a certain inclusion criteria severely limits the number of people who end up in the cohort. You may choose to relax this criterion to get a larger cohort. This will ultimately be at the discretion of the expert consensus assembling this cohort.
 
 You will now want to click "New inclusion criteria" to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: *With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)*. You will click "New inclusion criteria" to add a new criteria. You should name your criteria and, if desired, put a little description of what you are looking for. This is for your own purposes to recall what you build -- it will not impact the integrity of the cohort you are defining.
@@ -215,6 +251,8 @@ Lastly, you will want to add your another criterion to look for patients: *with 
 knitr::include_graphics("images/Cohorts/ATLAS-IC3.png")
 ```
 
+### Cohort Exit Criteria
+
 You have now added all of your qualifying inclusion criteria. You must now specify your cohort exit criteria. You will ask yourself, "when are people no longer eligible to be included in this cohort?" In this cohort, we are following new-users of a drug exposure. We want to look at continuous observation period as it relates to the drug exposure. As such, the exit criterion is specified to follow for the entirety of the continuous drug exposure. If there is a subsequent break in the drug exposure, the patient will exit the cohort at this time. We do this as we cannot determine what happened to the person during the break in the drug exposure. We can also set a criteria on the persistence window to specify an allowable gap between drug exposures. In this case, our experts leading this study concluded that a maximum of 30 days between exposure records is allowable when inferring the era of persistence exposure.
 
 **Why are gaps allowed?** In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can cover a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patient may logically still have access to the initial drug exposure because the unit of dispense exceeded one day.
@@ -227,13 +265,13 @@ knitr::include_graphics("images/Cohorts/cohort-exit.png")
 
 In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Make sure to hit the ![](images/Cohorts/save.png) button. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the "Export" tab to share your cohort definition to other collaborators in the form of SQL code or JSON files to load into ATLAS.
 
-## Implementing the cohort using SQL
+## Implementing the Cohort Using SQL
 
 Here we describe how to create the same cohort, but using SQL and R. As discussed in Chapter \@ref(SqlAndR), OHDSI provides two R packages, called SqlRender and DatabaseConnector, which together allow writing SQL code that can be automatically translated and executed against a wide variety of database platforms.
 
 For clarity, we will split the SQL into several chunks, each chunk generating a temp table that is used in the next. This is likely not the most computationally efficient way to do it, but it is easier to read than a single very long statement.
 
-### Connecting to the database
+### Connecting to the Database
 
 We first need to tell R how to connect to the server. We use the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
@@ -251,7 +289,7 @@ cohortTable <- "my_cohorts"
 
 The last three lines define the `cdmDbSchema`, `cohortDbSchema`, and `cohortTable` variables. We will use these later to tell R where the data in CDM format live, and where the cohorts of interest have to be created. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example `cdmDbSchema <- "my_cdm_data.dbo"`.
 
-### Specifying the concepts
+### Specifying the Concepts
 
 For readability we will define the concept IDs we need in R, and pass them to the SQL:
 
@@ -273,7 +311,7 @@ allHtDrugs <- c(904542, 907013, 932745, 942350, 956874, 970250, 974166,
                   1398937, 40226742, 40235485)
 ```
 
-### Finding first use
+### Finding First Use
 
 We will first find first use of ACE inhibitors for each patient:
 
@@ -297,7 +335,7 @@ renderTranslateExecuteSql(conn,
 
 Note that we join the DRUG_EXPOSURE table to the CONCEPT_ANCESTOR table to find all drugs that contain an ACE inhibitor.
 
-### Require 365 days of prior observation
+### Require 365 Days of Prior Observation
 
 Next, we require 365 of continuous prior observation by joining to the OBSERVATION_PERIOD table:
 
@@ -315,7 +353,7 @@ WHERE DATEADD(DAY, 365, observation_period_start_date) < cohort_start_date;"
 renderTranslateExecuteSql(conn, sql, cdm_db_schema = cdmDbSchema)
 ```
 
-### Require prior hypertension
+### Require Prior Hypertension
 
 We require a hypertension diagnosis in the 365 days prior:
 
@@ -340,7 +378,7 @@ renderTranslateExecuteSql(conn,
 
 Note that we `SELECT DISTINCT`, because else if a person has multiple hypertension diagnoses in their past, we would create duplicate cohort entries.
 
-### No prior treatment
+### No Prior Treatment
 
 We require no prior exposure to any hypertension treatment:
 
@@ -394,7 +432,7 @@ renderTranslateExecuteSql(conn,
                           all_ht_drugs = allHtDrugs)
 ```
 
-### Cohort exit
+### Cohort Exit
 
 We have now fully specified our cohort except the cohort end date. The cohort is defined to end when the exposure stops, allowing for a maximum 30-day gap between subsequent exposures. This means we need to not only consider the first drug exposure, but also subsequent drug exposures to ACE inhibitors. The SQL for combining subsequent exposures into eras can be highly complex. Luckily, standard code has been defined that can efficiently create eras. (This code was written by Chris Knoll, and is often referred to within OHDSI as 'the magic'). We first create a temp table containing all exposures we wish to merge:
 

@@ -10,9 +10,9 @@ Software validity is an essential component of evidence quality: only if our ana
 
 In this chapter we first describe best practices for writing valid analysis code. After this we discuss how the Methods library is validated through its software development process and testing. \index{software development process}
 
-## Study code validity
+## Study Code Validity
 
-### Automation as a requirement for reproducibility {#automation}
+### Automation As a Requirement for Reproducibility {#automation}
 
 Traditionally, observational studies are often viewed as a journey rather than a process: a database expert may extract a data set from the database and hand this over to the data analyst, who may open it in a spreadsheet editor or other interactive tool, and start working on the analysis. In the end, a result is produced, but little is preserved of how it came about. The destination of the journey was reached, but it is not possible to retrace the exact steps taken to get there. This practice is entirely unacceptable, both because it is not reproducible, but also because it lacks transparency; we do not know exactly what was done to produce the result, so we also cannot verify that no mistakes were made. \index{study code validity}
 
@@ -20,7 +20,7 @@ Every analysis generating evidence must therefore be fully automated. By automat
 
 The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) R package, we can connect directly to the data in CDM format, and many advanced analytics are available through the other R packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). 
 
-### Programming best practices
+### Programming Best Practices
 
 Observational analyses can become very complex, with many steps needed to produce the final results. This complexity can make it harder to maintain the analysis code and increase the likelihood of making errors, as well as making it harder to notice errors. Luckily, computer programmers have over many years developed best practices for writing code that can deal with complexity, which are easy to read, reuse, adapt, and verify. [@Martin_2008] A full discussion of these best practices could fill many books. Here, we highlight these four important principles: \index{programming best practices}
 
@@ -29,7 +29,7 @@ Observational analyses can become very complex, with many steps needed to produc
 - **Clear naming**: Variables and functions should have clear names, making code read almost like natural language. For example, instead of `x <- spl(y, 100)`, we can write code that reads `sampledPatients <- takeSample(patients, sampleSize = 100)`. Try to resist the urge to abbreviate. Modern languages have no limits on the length of variable and function names. 
 - **Reuse**: One advantage of writing clear, well encapsulated functions is that they can often be reused. This not only saves time, it also means there will be less code, so less complexity and fewer opportunities for errors.
 
-### Code validation
+### Code Validation
 
 Several approaches exist to verify the validity of software code, but two are especially relevant for code implementing an observational study:
 
@@ -44,9 +44,9 @@ Other software validation practices such as unit testing are less relevant here 
 
 The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) provides a large set of functions, allowing most observational studies to be implemented using only a few lines of code. Using the Methods Library therefore shifts most of the burden of establishing the validity of one's study code to the Library. Validity of the Methods Library is ensured by its software development process and by extensive testing.
 
-## Methods Library software development process
+## Methods Library Software Development Process
 
-The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers (for example the CohortMethod issue tracker[^issueTrackerUrl]) and the OHDSI Forums[^forumsUrl]. Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup leadership (Drs. Marc Suchard and Martijn Schuemie) and OHDSI Patient-Level Prediction Workgroup leadership (Drs. Peter Rijnbeek and Jenna Reps) only.
+The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers (for example the CohortMethod issue tracker[^issueTrackerUrl]) and the OHDSI Forums.[^forumsUrl] Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup leadership (Drs. Marc Suchard and Martijn Schuemie) and OHDSI Patient-Level Prediction Workgroup leadership (Drs. Peter Rijnbeek and Jenna Reps) only.
 
 [^issueTrackerUrl]: https://github.com/OHDSI/CohortMethod/issues 
 [^forumsUrl]: http://forums.ohdsi.org/
@@ -67,7 +67,7 @@ New versions are released by the OHDSI Population-Level Estimation Workgroup and
 
 ### Documentation
 
-All packages in the Methods Library are documented through R’s internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) software is used to combine a function’s documentation and source code in a single file. The package manual is available on demand through R’s command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package. All documentation can be viewed though the Methods Library website[^methodsLibrarySiteUrl].
+All packages in the Methods Library are documented through R’s internal documentation framework. Each package has a package manual that describes every function available in the package. To promote alignment between the function documentation and the function implementation, the [roxygen2](https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html) software is used to combine a function’s documentation and source code in a single file. The package manual is available on demand through R’s command line interface, as a PDF in the package repositories, and as a web page. In addition, many packages also have vignettes that highlight specific use cases of a package. All documentation can be viewed though the Methods Library website.[^methodsLibrarySiteUrl]
 
 [^methodsLibrarySiteUrl]: https://ohdsi.github.io/MethodsLibrary/
 
@@ -97,11 +97,11 @@ The OHDSI Methods Library is hosted on the GitHub[^githubUrl] system. GitHub’s
 
 The OHDSI Methods Library is hosted on the GitHub system. GitHub’s disaster recovery facilities are described at [https://github.com/security](https://github.com/security).
 
-## Methods Library testing 
+## Methods Library Testing 
 
 We distinguish between two types of tests performed on the Methods Library: Tests for individual functions in the packages (so-called "unit tests"), and tests for more complex functionality using simulations.
 
-### Unit test
+### Unit Test
 
 A large set of automated validation tests is maintained and upgraded by OHDSI to enable the testing of source code against known data and known results. Each test begins with specifying some simple input data, then executes a function in one of the packages on this input, and evaluates whether the output is exactly what would be expected. For simple functions, the expected result is often obvious (for example when performing propensity score matching on example data containing only a few subjects); for more complicated functions the expected result may be generated using combinations of other functions available in R (for example, Cyclops, our large-scale regression engine, is tested among others by comparing results on simple problems with other regression routines in R).  We aim for these tests in total to cover 100% of the lines of executable source code.
 
