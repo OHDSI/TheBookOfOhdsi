@@ -16,14 +16,10 @@ For more than a decade, many have argued for the vision of a **learning healthca
 
 Why? In part, because the journey from patient-level data to reliable evidence is an ardous one. There is no single defined path from data to evidence, and no single map that can help to navigate along the way. In fact, there is no single notion of 'data', nor is there a singular notion of 'evidence'.
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiCommunity/datajourney} 
-
-}
-
-\caption{The journey from data to evidence}(\#fig:datajourney)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiCommunity/datajourney.png" alt="The journey from data to evidence" width="100%" />
+<p class="caption">(\#fig:datajourney)The journey from data to evidence</p>
+</div>
 
 There are different types of observational databases which capture disparate patient-level data in source systems. These databases are as diverse as the healthcare system itself, reflecting different populations, care settings, and data capture processes. There are also different types of evidence that could be useful to inform decision-making, which can be classified by the analytic use cases of clinical characterization, population-level effect estimation, and patient-level prediction. Independent from the origin (source data) and desired destination (evidence), the challenge is further complicated by the breadth of clinical, scientific, and technical competencies that are required to undertake the journey. It requires a thorough understanding of health informatics, including its full provenence of the source data from the point-of-care interaction between a patient and provider through the administrative and clinical systems and into final repository, with an appreciation of the biases that can arise as part of the health policies and behavioral incentives associated with the data capture and curation processeses. It requires mastery of epidemiologic principles and statistical methods to translate a clinical question into an observational study design properly suited produce a relavant answer. It requires the technical ability to implement and execute computationally-efficient data science algorithms to datasets containing millions of patients with billions of clinical observations over years of longitudinal follow-up. It requires the clinical knowledge to synthesize what has been learned across an observational data network with evidence from other information sources, and to determine how this new knowledge should impact health policy and clinical practice. Accordingly, it is quite rare that any one individual would possess the requisite skills and resources to successfully trek from data to evidence alone. Instead, the journey often requires collaboration across multiple individuals and organizations to ensure that the best available data are analyzed using the most appropriate methods to produce the evidence that all stakeholders can trust and use in their decision-making processes.
 
@@ -73,14 +69,10 @@ OHDSI has grown since its inception in 2014 to include >2,500 collaborators on i
 
 [^collaboratorUrl]: https://www.ohdsi.org/who-we-are/collaborators/
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiCommunity/mapOfCollaborators} 
-
-}
-
-\caption{Map of OHDSI collaborators}(\#fig:collaboratormap)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiCommunity/mapOfCollaborators.png" alt="Map of OHDSI collaborators" width="100%" />
+<p class="caption">(\#fig:collaboratormap)Map of OHDSI collaborators</p>
+</div>
 
 OHDSI has also established a data network of >100 different healthcare databases from >20 countries, collectively capturing >1 billion patient records by applying a distributed network approach using an open community data standard it maintains, the OMOP Common Data Model (CDM). A distributed network means that patient-level data are not required to be shared between individuals or organizations. Instead, research questions are asked by indvidiuals within the community in the form of a study protocol and accompanied by analysis code that generates evidence as a set of aggregated summary statistics, and only these summary statistics are shared amongst the partners who opt to collaborate in the study. With the OHDSI distributed network, each data partner retains full autonomy over the use of their patient-level data, and continue to observe the data governance policies within their respective institutions. 
 
@@ -88,7 +80,7 @@ The OHDSI developer community has created a robust library of open-source analyt
 
 [^GitUrl]: https://github.com/OHDSI
 
-OHDSI’s open science community approach, coupled with its open-source tools, has enabled tremendous advances in observational research. One of the first OHDSI network analyses examined treatment pathways across three chronic diseases: diabetes, depression, and hypertension. Published in the Proceedings of the National Academy of Science, it was one of the largest observational studies ever conducted, with results from 11 data sources covering more than 250 million patients and revealed tremendous geographic differences and patient heterogeneity in treatment choices that had never been previously observable.[@Hripcsak7329] OHDSI has developed new statistical methods for confounding adjustment [@tian_2018] and evaluating the validity of observational evidence for causal inference,[@schuemie_2018] and has applied these approaches in multiple contexts, from an individual safety surveillance question in epilepsy [@duke_2017] to comparative effectiveness of second-line diabetes medications [@vashisht2018] to a large-scale population-level effect estimation study for comparative safety of depression treatments.[@schuemie_2018b] The OHDSI community has also established a framework for how to responsibly apply machine learning algorithms to observational healthcare data, [@reps2018] which has been applied across various therapeutic areas.[@johnston_2019; @cepeda_2018; @reps2019dead]
+OHDSI’s open science community approach, coupled with its open-source tools, has enabled tremendous advances in observational research. One of the first OHDSI network analyses examined treatment pathways across three chronic diseases: diabetes, depression, and hypertension. Published in the Proceedings of the National Academy of Science, it was one of the largest observational studies ever conducted, with results from 11 data sources covering more than 250 million patients and revealed tremendous geographic differences and patient heterogeneity in treatment choices that had never been previously observable.[@Hripcsak7329] OHDSI has developed new statistical methods for confounding adjustment [@tian_2018] and evaluating the validity of observational evidence for causal inference,[@schuemie_2018] and has applied these approaches in multiple contexts, from an individual safety surveillance question in epilepsy [@duke_2017] to comparative effectiveness of second-line diabetes medications [@vashisht_2018] to a large-scale population-level effect estimation study for comparative safety of depression treatments.[@schuemie_2018b] The OHDSI community has also established a framework for how to responsibly apply machine learning algorithms to observational healthcare data, [@reps2018] which has been applied across various therapeutic areas.[@johnston_2019; @cepeda_2018; @reps_2019]
 
 ## Collaborating in OHDSI
 
