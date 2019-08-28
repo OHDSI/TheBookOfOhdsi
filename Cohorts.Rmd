@@ -181,29 +181,23 @@ When you have found terms that you would like to use to define this drug exposur
 
 Figure \@ref(fig:aceConceptSetExpression) shows our concept set expression. We selected all ACE inhibitor ingredients we are interested in, and include all their descendants, thus including all drugs that contain any of these ingredients. We can click on "Included concepts" to see all 21,536 concepts implied by this expression, or we can click on "Included Source Codes" to explore all source codes in the various coding systems that are implied.
 
-```{r aceConceptSetExpression, fig.cap='Importing a Concept Set from ATLAS Repository',echo=FALSE, out.width='100%', fig.align='center'}
+```{r aceConceptSetExpression, fig.cap='A concept set containing ACE inhibitor drugs.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/aceConceptSetExpression.png")
 ```
 
 #### Scenario 2: You Have Already Built a Concept Set{-}
 
-If you have already created a concept set and saved it in ATLAS, you can click to "Import Concept Set". A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS (Figure \@ref(fig:ATLASfindyourconcept)).
+If you have already created a concept set and saved it in ATLAS, you can click to "Import Concept Set". A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS as shown in Figure \@ref(fig:ATLASfindyourconcept). In the example figure the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set "ace inhibitors" in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.)  You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.
 
 ```{r ATLASfindyourconcept, fig.cap='Importing a Concept Set from ATLAS Repository',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/ATLAS-findingyourconcept.png")
 ```
 
-In the example in Figure \@ref(fig:ATLASfindyourconcept), the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set "ace inhibitors" in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.)  You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.
-
 ### Additional Initial Event Criteria
 
 Now that you've attached a concept set, you are not done yet. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the *first exposure* of ACE inhibitors in the patient's record. To specify this, you need to click "+Add attribute". You will want to select the "Add first exposure criteria". Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
 
-From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (Figure \@ref(fig:atlasfirsttimeever)).
-
-```{r atlasfirsttimeever, fig.cap="Drug Exposure at First Time in the Person's History",echo=FALSE, out.width='90%', fig.align='center'}
-knitr::include_graphics("images/Cohorts/ATLAS-firsttimeever.png")
-```
+From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (see Figure \@ref(fig:initialEventAce)).
 
 ```{block2, type='rmdimportant'}
 The current design of ATLAS may confuse some. Despite its appearance, the ![](images/Cohorts/redX.png) is not intended to mean "No". It is an actionable feature to allow the user to delete the criteria. If you click ![](images/Cohorts/redX.png), this criteria will go away. Thus, you need to leave the criteria with the ![](images/Cohorts/redX.png) to keep the criteria active.
@@ -211,7 +205,6 @@ The current design of ATLAS may confuse some. Despite its appearance, the ![](im
 ```
 
 Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a look-back window to know that you are looking at enough of the patient's history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the index date You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. We will require 365 days of of continuous observation prior to the initial event. You will update your observation period to: *with continuous observation of 365 days before*, as shown in Figure \@ref(fig:initialEventAce). This look-back window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require 0 days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the "earliest event" per person.
-
 
 ```{r initialEventAce, fig.cap='Setting the required continuous observation before the index date.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/Cohorts/initialEventAce.png")
