@@ -60,7 +60,7 @@ Any healthcare database that is mapped to OMOP and used for analytics should, fr
 
 ### Accessibility
 
-Accessibility of OMOP mapped data through an open protocol is typically achieved through the SQL interface, which combined with the OMOP CDM provides a standardized and well-documented method for accessing OMOP data. However, as discussed above, OMOP sources are often not directly available over the internet for security reasons. Creating a secure worldwide healthcare data network that is accessible for researchers is an active research topic and operational goal of projects like IMI EHDEN. However, results of analyses in multiple OMOP databases, as shown through OHDSI initiatives such as LEGEND and http://howfoften.org, can be openly published.
+Accessibility of OMOP mapped data through an open protocol is typically achieved through the SQL interface, which combined with the OMOP CDM provides a standardized and well-documented method for accessing OMOP data. However, as discussed above, OMOP sources are often not directly available over the internet for security reasons. Creating a secure worldwide healthcare data network that is accessible for researchers is an active research topic and operational goal of projects like IMI EHDEN. However, results of analyses in multiple OMOP databases, as shown through OHDSI initiatives such as LEGEND and http://howoften.org, can be openly published.
 
 ### Interoperability
 

@@ -74,7 +74,7 @@ convertSubsubsection <- function(rmdFile) {
 lapply(rmdFiles, convertSubsubsection)
 
 # Fix header capitalization --------------------------------------------------
-ignoreWords <- c("in", "the", "a", "an", "of", "for", "and", "to", "into", "from", "xSpec", "xSens", "on", "this")
+ignoreWords <- c("in", "the", "a", "an", "of", "for", "and", "to", "into", "from", "xSpec", "xSens", "on", "this", "as")
 
 fixWordCapitalization <- function(word) {
   if (word %in% ignoreWords) {
