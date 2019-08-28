@@ -74,9 +74,10 @@ The FAIR principles around reusability focus on important issues such as the dat
 Data licensing is a complicated topic, especially across jurisdictions, and it would fall outside of the scope of this book to cover it extensively. However, it is important to state that if you intend for your data (e.g. analysis results) to be freely used by others, it is good practice to explicitly provide these permissions via a data license. This is not yet a common practice for most data that can be found on the internet, and the OHDSI community is unfortunately not an exception here.
  Concerning the data provenance of OMOP databases, potential improvements exist for making meta-data available in an automated way, including, for example, CDM version, Standardized Vocabularies release, custom code lists, etc. The OHDSI ETL tools do not currently produce this information automatically, but working groups such as the Data Quality Working Group and Metadata Working Group actively work on these. Another important aspect is the provenance of the underlying databases itself; it is important to know if a hospital or GP information system was replaced or changed, and when known data omissions or other data issues occurred historically. Exploring ways to attach this metadata systematically in the OMOP CDM is the domain of the Metadata Working Group.
 
-## Conclusions
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- The OHDSI community can be seen as an open-science community that is actively pursuing the interoperability and reproducibility of medical evidence generation. 
 
-To conclude, the OHDSI community itself can be seen as an open-science community that is actively pursuing the interoperability and reproducibility of medical evidence generation. It also advocates a paradigm shift from single study and single estimate medical research to large-scale systematic evidence generation, where facts such as baseline occurrence are known and the evidence focuses on statistically estimating the effects of interventions and treatments from real world healthcare sources.
+- It also advocates a paradigm shift from single study and single estimate medical research to large-scale systematic evidence generation, where facts such as baseline occurrence are known and the evidence focuses on statistically estimating the effects of interventions and treatments from real world healthcare sources.
+</div>\EndKnitrBlock{rmdsummary}
 
 [^1]: https://www.ohdsi.org/wp-content/uploads/2014/07/ARM-OHDSI_Duke.pdf
 [^2]: https://www.ehden.eu/webinars/
@@ -88,3 +89,5 @@ To conclude, the OHDSI community itself can be seen as an open-science community
 [^10]: https://www.ohdsi.org/web/wiki/doku.php?id=projects:overview
 [^11]: https://github.com/ohdsi
 [^12]: https://github.com/OHDSI/TheBookOfOhdsi
+
+

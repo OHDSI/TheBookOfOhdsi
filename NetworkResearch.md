@@ -1,6 +1,6 @@
 # OHDSI Network Research {#NetworkResearch}
 
-Chapter Leads: Kristin Kostka, Greg Klebanov, Sara Dempster
+*Chapter leads: Kristin Kostka, Greg Klebanov & Sara Dempster*
 
 The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including OMOP Standardized Vocabularies, the Common Data Model (CDM), analytical methods packages, ATLAS and the study steps (Chapter \@ref(StudySteps)) to run a retrospective database study. OHDSI network studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
 

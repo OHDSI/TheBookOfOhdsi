@@ -186,7 +186,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.7.4" data-path="OpenScience.html"><a href="OpenScience.html#interoperability"><i class="fa fa-check"></i><b>3.7.4</b> Interoperability</a></li>
 <li class="chapter" data-level="3.7.5" data-path="OpenScience.html"><a href="OpenScience.html#reusability"><i class="fa fa-check"></i><b>3.7.5</b> Reusability</a></li>
 </ul></li>
-<li class="chapter" data-level="3.8" data-path="OpenScience.html"><a href="OpenScience.html#conclusions"><i class="fa fa-check"></i><b>3.8</b> Conclusions</a></li>
 </ul></li>
 <li class="part"><span><b>II Uniform Data Representation</b></span></li>
 <li class="chapter" data-level="4" data-path="CommonDataModel.html"><a href="CommonDataModel.html"><i class="fa fa-check"></i><b>4</b> The Common Data Model</a><ul>
@@ -921,7 +920,7 @@ Figure 6.6: Mapping of Synthea Patients table to CDM PERSON table.
 </div>
 <div id="step-2-create-the-code-mappings" class="section level2">
 <h2><span class="header-section-number">6.3</span> Step 2: Create the Code Mappings</h2>
-<p>More and more source codes are being added to the OMOP Vocabulary all the time. This means that the coding systems in the data being transformed to the CDM may already be included and mapped. Check the VOCABULARY table in the OMOP Vocabulary to see which vocabularies are included. To extract the mapping from non-standard source codes (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having relationship_id = “Maps to”. For example, to find the standard concept ID for the ICD-10CM code ‘I21’ (“Acute Myocardial Infarction”), we can use the following SQL:</p>
+<p>More and more source codes are being added to the OMOP Vocabulary all the time. This means that the coding systems in the data being transformed to the CDM may already be included and mapped. Check the VOCABULARY table in the OMOP Vocabulary to see which vocabularies are included. To extract the mapping from non-standard source codes (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having relationship_id = “Maps to”. For example, to find the standard concept ID for the ICD-10CM code ‘I21’ (“Acute Myocardial Infarction”), we can use the following SQL:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="ExtractTransformLoad.html#cb3-1"></a><span class="kw">SELECT</span> concept_id_2 standard_concept_id</span>
 <span id="cb3-2"><a href="ExtractTransformLoad.html#cb3-2"></a><span class="kw">FROM</span> concept_relationship</span>
 <span id="cb3-3"><a href="ExtractTransformLoad.html#cb3-3"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> concept source_concept</span>
