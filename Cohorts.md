@@ -183,37 +183,29 @@ When you have found terms that you would like to use to define this drug exposur
 Figure \@ref(fig:aceConceptSetExpression) shows our concept set expression. We selected all ACE inhibitor ingredients we are interested in, and include all their descendants, thus including all drugs that contain any of these ingredients. We can click on "Included concepts" to see all 21,536 concepts implied by this expression, or we can click on "Included Source Codes" to explore all source codes in the various coding systems that are implied.
 
 <div class="figure" style="text-align: center">
-<img src="images/Cohorts/aceConceptSetExpression.png" alt="Importing a Concept Set from ATLAS Repository" width="100%" />
-<p class="caption">(\#fig:aceConceptSetExpression)Importing a Concept Set from ATLAS Repository</p>
+<img src="images/Cohorts/aceConceptSetExpression.png" alt="A concept set containing ACE inhibitor drugs." width="100%" />
+<p class="caption">(\#fig:aceConceptSetExpression)A concept set containing ACE inhibitor drugs.</p>
 </div>
 
 #### Scenario 2: You Have Already Built a Concept Set{-}
 
-If you have already created a concept set and saved it in ATLAS, you can click to "Import Concept Set". A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS (Figure \@ref(fig:ATLASfindyourconcept)).
+If you have already created a concept set and saved it in ATLAS, you can click to "Import Concept Set". A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS as shown in Figure \@ref(fig:ATLASfindyourconcept). In the example figure the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set "ace inhibitors" in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.)  You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.
 
 <div class="figure" style="text-align: center">
 <img src="images/Cohorts/ATLAS-findingyourconcept.png" alt="Importing a Concept Set from ATLAS Repository" width="100%" />
 <p class="caption">(\#fig:ATLASfindyourconcept)Importing a Concept Set from ATLAS Repository</p>
 </div>
 
-In the example in Figure \@ref(fig:ATLASfindyourconcept), the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set "ace inhibitors" in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.)  You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.
-
 ### Additional Initial Event Criteria
 
 Now that you've attached a concept set, you are not done yet. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the *first exposure* of ACE inhibitors in the patient's record. To specify this, you need to click "+Add attribute". You will want to select the "Add first exposure criteria". Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
 
-From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (Figure \@ref(fig:atlasfirsttimeever)).
-
-<div class="figure" style="text-align: center">
-<img src="images/Cohorts/ATLAS-firsttimeever.png" alt="Drug Exposure at First Time in the Person's History" width="90%" />
-<p class="caption">(\#fig:atlasfirsttimeever)Drug Exposure at First Time in the Person's History</p>
-</div>
+From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (see Figure \@ref(fig:initialEventAce)).
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">The current design of ATLAS may confuse some. Despite its appearance, the ![](images/Cohorts/redX.png) is not intended to mean "No". It is an actionable feature to allow the user to delete the criteria. If you click ![](images/Cohorts/redX.png), this criteria will go away. Thus, you need to leave the criteria with the ![](images/Cohorts/redX.png) to keep the criteria active.
 </div>\EndKnitrBlock{rmdimportant}
 
 Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a look-back window to know that you are looking at enough of the patient's history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the index date You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. We will require 365 days of of continuous observation prior to the initial event. You will update your observation period to: *with continuous observation of 365 days before*, as shown in Figure \@ref(fig:initialEventAce). This look-back window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require 0 days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the "earliest event" per person.
-
 
 <div class="figure" style="text-align: center">
 <img src="images/Cohorts/initialEventAce.png" alt="Setting the required continuous observation before the index date." width="100%" />

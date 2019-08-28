@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-08-27" />
+<meta name="date" content="2019-08-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -860,79 +860,72 @@ Figure 11.7: Searching the Vocabulary - ACE Inhibitors
 <p>When you have found terms that you would like to use to define this drug exposure, you can select the concept by clicking on <img src="images/Cohorts/shoppingcart.png" />. You can return to your cohort definition by using the left arrow in the top left of Figure <a href="Cohorts.html#fig:aceinhibitors">11.7</a>. You can refer back to Chapter <a href="StandardizedVocabularies.html#StandardizedVocabularies">6</a> (Standardized Vocabularies) on how to navigate the vocabularies to find clinical concepts of interest.</p>
 <p>Figure <a href="Cohorts.html#fig:aceConceptSetExpression">11.8</a> shows our concept set expression. We selected all ACE inhibitor ingredients we are interested in, and include all their descendants, thus including all drugs that contain any of these ingredients. We can click on “Included concepts” to see all 21,536 concepts implied by this expression, or we can click on “Included Source Codes” to explore all source codes in the various coding systems that are implied.</p>
 <div class="figure" style="text-align: center"><span id="fig:aceConceptSetExpression"></span>
-<img src="images/Cohorts/aceConceptSetExpression.png" alt="Importing a Concept Set from ATLAS Repository" width="100%" />
+<img src="images/Cohorts/aceConceptSetExpression.png" alt="A concept set containing ACE inhibitor drugs." width="100%" />
 <p class="caption">
-Figure 11.8: Importing a Concept Set from ATLAS Repository
+Figure 11.8: A concept set containing ACE inhibitor drugs.
 </p>
 </div>
 </div>
 <div id="scenario-2-you-have-already-built-a-concept-set" class="section level4 unnumbered">
 <h4>Scenario 2: You Have Already Built a Concept Set</h4>
-<p>If you have already created a concept set and saved it in ATLAS, you can click to “Import Concept Set”. A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS (Figure <a href="Cohorts.html#fig:ATLASfindyourconcept">11.9</a>).</p>
+<p>If you have already created a concept set and saved it in ATLAS, you can click to “Import Concept Set”. A dialogue box will open that will be prompt you to find your concept in the concept set repository of your ATLAS as shown in Figure <a href="Cohorts.html#fig:ATLASfindyourconcept">11.9</a>. In the example figure the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set “ace inhibitors” in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.) You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.</p>
 <div class="figure" style="text-align: center"><span id="fig:ATLASfindyourconcept"></span>
 <img src="images/Cohorts/ATLAS-findingyourconcept.png" alt="Importing a Concept Set from ATLAS Repository" width="100%" />
 <p class="caption">
 Figure 11.9: Importing a Concept Set from ATLAS Repository
 </p>
 </div>
-<p>In the example in Figure <a href="Cohorts.html#fig:ATLASfindyourconcept">11.9</a>, the user is retrieving concept sets stored in ATLAS. The user typed in the name given to this concept set “ace inhibitors” in the right hand search. This shortened the concept set list to only concepts with matching names. From there, the user can click on the row of the concept set to select it. (Note: the dialogue box will disappear once you have selected a concept set.) You will know this action is successful when the Any Drug box is updated with the name of the concept set you selected.</p>
 </div>
 </div>
 <div id="additional-initial-event-criteria" class="section level3">
 <h3><span class="header-section-number">11.7.3</span> Additional Initial Event Criteria</h3>
 <p>Now that you’ve attached a concept set, you are not done yet. Your question is looking for new users or the first time in someone’s history they are exposed to ACE inhibitors. This translate to the <em>first exposure</em> of ACE inhibitors in the patient’s record. To specify this, you need to click “+Add attribute”. You will want to select the “Add first exposure criteria”. Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.</p>
-<p>From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (Figure <a href="Cohorts.html#fig:atlasfirsttimeever">11.10</a>).</p>
-<div class="figure" style="text-align: center"><span id="fig:atlasfirsttimeever"></span>
-<img src="images/Cohorts/ATLAS-firsttimeever.png" alt="Drug Exposure at First Time in the Person's History" width="90%" />
-<p class="caption">
-Figure 11.10: Drug Exposure at First Time in the Person’s History
-</p>
-</div>
+<p>From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (see Figure <a href="Cohorts.html#fig:initialEventAce">11.10</a>).</p>
 
 <div class="rmdimportant">
 <p>The current design of ATLAS may confuse some. Despite its appearance, the <img src="images/Cohorts/redX.png" /> is not intended to mean “No”. It is an actionable feature to allow the user to delete the criteria. If you click <img src="images/Cohorts/redX.png" />, this criteria will go away. Thus, you need to leave the criteria with the <img src="images/Cohorts/redX.png" /> to keep the criteria active.</p>
 </div>
 
-<p>Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a look-back window to know that you are looking at enough of the patient’s history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the index date You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. We will require 365 days of of continuous observation prior to the initial event. You will update your observation period to: <em>with continuous observation of 365 days before</em>, as shown in Figure <a href="Cohorts.html#fig:initialEventAce">11.11</a>. This look-back window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require 0 days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the “earliest event” per person.</p>
+<p>Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a look-back window to know that you are looking at enough of the patient’s history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the index date You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. We will require 365 days of of continuous observation prior to the initial event. You will update your observation period to: <em>with continuous observation of 365 days before</em>, as shown in Figure <a href="Cohorts.html#fig:initialEventAce">11.10</a>. This look-back window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require 0 days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the “earliest event” per person.</p>
 <div class="figure" style="text-align: center"><span id="fig:initialEventAce"></span>
 <img src="images/Cohorts/initialEventAce.png" alt="Setting the required continuous observation before the index date." width="100%" />
 <p class="caption">
-Figure 11.11: Setting the required continuous observation before the index date.
+Figure 11.10: Setting the required continuous observation before the index date.
 </p>
 </div>
 <p>To further explain how this logic comes together, you can think about assembling patient timelines.</p>
 <div class="figure" style="text-align: center"><span id="fig:EarliestEventExplained"></span>
 <img src="images/Cohorts/EarliestEventExplained.png" alt="Explaining patient eligibility by criteria applied" width="100%" />
 <p class="caption">
-Figure 11.12: Explaining patient eligibility by criteria applied
+Figure 11.11: Explaining patient eligibility by criteria applied
 </p>
 </div>
-<p>In Figure <a href="Cohorts.html#fig:EarliestEventExplained">11.12</a>, each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first time occurrence. Logically, limiting to the initial event is redundant though it is helpful to maintain our explicit logic in every selection we make. When you are building your own cohorts, you may opt to engage the Researchers section of the <a href="http://forums.ohdsi.org">OHDSI Forum</a> to get a second opinion on how to construct your cohort logic.</p>
+<p>In Figure <a href="Cohorts.html#fig:EarliestEventExplained">11.11</a>, each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first time occurrence. Logically, limiting to the initial event is redundant though it is helpful to maintain our explicit logic in every selection we make. When you are building your own cohorts, you may opt to engage the Researchers section of the <a href="http://forums.ohdsi.org">OHDSI Forum</a> to get a second opinion on how to construct your cohort logic.</p>
 </div>
 <div id="inclusion-criteria" class="section level3">
 <h3><span class="header-section-number">11.7.4</span> Inclusion Criteria</h3>
 <p>Once we have specified a cohort entry event, you could proceed to one of two places to add your additional qualifying events: “Restrict initial events” and “New inclusion criteria”. The fundamental difference between these two options is what interim information you want ATLAS to serve back to you. If you add additional qualifying criteria into the Cohort Entry Event box by selecting “Restrict initial events”, when you choose to generate a count in ATLAS, you will only get back the number of people who meet ALL of these criteria. If you opt to add criteria into the “New inclusion criteria”, you will get an attrition chart to show you how many patients are lost by applying additional inclusion criteria. It is highly encouraged to utilize the Inclusion Criteria section so you can understand the impact of each rule on the overall success of the cohort definition. You may find a certain inclusion criteria severely limits the number of people who end up in the cohort. You may choose to relax this criterion to get a larger cohort. This will ultimately be at the discretion of the expert consensus assembling this cohort.</p>
 <p>You will now want to click “New inclusion criteria” to add a subsequent piece of logic about membership to this cohort. The functionality in this section is identical to the way we discussed building cohort criteria above. You may specific the criteria and add specific attributes. Our first additional criteria is to subset the cohort to only patients: <em>With at least 1 occurrence of hypertension disorder between 365 and 0 days after index date (first initiation of an ACE inhibitor)</em>. You will click “New inclusion criteria” to add a new criteria. You should name your criteria and, if desired, put a little description of what you are looking for. This is for your own purposes to recall what you build – it will not impact the integrity of the cohort you are defining.</p>
-<p>Once you have annotated this new criteria, you will click on the “+Add criteria to group” button to build your actual criteria for this rule. This button functions similar to the “Add Initial Event” except we are no longer specifying an initial event. We could add multiple criteria to this – which is why it specifies “add criteria to group”. An example would be if you have multiple ways of finding a disease (e.g. logic for a CONDITION_OCCURRENCE, logic using a DRUG_EXPOSURE as a proxy for this condition, logic for using a MEASUREMENT as a proxy for this condition). These would be separate domains and require different criteria but can be grouped into one criteria looking for this condition. In this case, we want to find a diagnosis of hypertension so we “Add condition occurrence”. We will follow similar steps as we did with the initial event by attaching a concept set to this record. We also want to specify the event starts between 365 days before and 0 days after the index date (the occurrence of the first ACE inhibitor use). Now check your logic against Figure <a href="Cohorts.html#fig:ATLASIC1">11.13</a>.</p>
+<p>Once you have annotated this new criteria, you will click on the “+Add criteria to group” button to build your actual criteria for this rule. This button functions similar to the “Add Initial Event” except we are no longer specifying an initial event. We could add multiple criteria to this – which is why it specifies “add criteria to group”. An example would be if you have multiple ways of finding a disease (e.g. logic for a CONDITION_OCCURRENCE, logic using a DRUG_EXPOSURE as a proxy for this condition, logic for using a MEASUREMENT as a proxy for this condition). These would be separate domains and require different criteria but can be grouped into one criteria looking for this condition. In this case, we want to find a diagnosis of hypertension so we “Add condition occurrence”. We will follow similar steps as we did with the initial event by attaching a concept set to this record. We also want to specify the event starts between 365 days before and 0 days after the index date (the occurrence of the first ACE inhibitor use). Now check your logic against Figure <a href="Cohorts.html#fig:ATLASIC1">11.12</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:ATLASIC1"></span>
 <img src="images/Cohorts/ATLAS-IC1.png" alt="Additional Inclusion criteria 1" width="100%" />
 <p class="caption">
-Figure 11.13: Additional Inclusion criteria 1
+Figure 11.12: Additional Inclusion criteria 1
 </p>
 </div>
-<p>You will then want to add another criterion to look for patients: <em>with exactly 0 occurrences of hypertension drugs ALL days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)</em>. This process begins as we did before by clicking the “New inclusion criteria” button, adding your annotations to this criterion and then clicking “+Add criteria to group”. This is a DRUG_EXPOSURE so you will click “Add Drug Exposure”, attach a concept set for hypertensive drugs, and will specify ALL days before and 0 days after the index date. Make sure to confirm you have <em>exactly 0</em> occurrence selected. Now check your logic against Figure <a href="Cohorts.html#fig:ATLASIC2">11.14</a>.</p>
+<p>You will then want to add another criterion to look for patients: <em>with exactly 0 occurrences of hypertension drugs ALL days before and 1 day before index start date (no exposure to HT drugs before an ACE inhibitor)</em>. This process begins as we did before by clicking the “New inclusion criteria” button, adding your annotations to this criterion and then clicking “+Add criteria to group”. This is a DRUG_EXPOSURE so you will click “Add Drug Exposure”, attach a concept set for hypertensive drugs, and will specify ALL days before and 0 days after the index date. Make sure to confirm you have <em>exactly 0</em> occurrence selected. Now check your logic against Figure <a href="Cohorts.html#fig:ATLASIC2">11.13</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:ATLASIC2"></span>
 <img src="images/Cohorts/ATLAS-IC2.png" alt="Additional Inclusion Criteria 2" width="100%" />
 <p class="caption">
-Figure 11.14: Additional Inclusion Criteria 2
+Figure 11.13: Additional Inclusion Criteria 2
 </p>
 </div>
 <p>You may be confused why “having no occurrences” is coded as “exactly 0 occurrences.” This is a nuance of how ATLAS consumes knowledge. ATLAS only consumes inclusion criteria. You must use logical operators to indicate when you want the absence of a specific attribute such as: “Exactly 0.” Over time you will become more familiar with the logical operators available in ATLAS criteria.</p>
-<p>Lastly, you will want to add your another criterion to look for patients: <em>with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)</em> . This process begins as we did before by clicking the “New inclusion criteria” button, adding your annotations to this criterion and then clicking “+Add criteria to group”. This is a DRUG_EXPOSURE so you will click “Add Drug Exposure”, attach a concept set for hypertensive drugs, and will specify 0 days before and 7 days after the index date. Now check your logic against Figure <a href="Cohorts.html#fig:ATLASIC3">11.15</a>.</p>
+<p>Lastly, you will want to add your another criterion to look for patients: <em>with exactly 1 occurrence of hypertension drugs between 0 days before and 7 days after index start date AND can only start one HT drug (an ACE inhibitor)</em> . This process begins as we did before by clicking the “New inclusion criteria” button, adding your annotations to this criterion and then clicking “+Add criteria to group”. This is a DRUG_EXPOSURE so you will click “Add Drug Exposure”, attach a concept set for hypertensive drugs, and will specify 0 days before and 7 days after the index date. Now check your logic against Figure <a href="Cohorts.html#fig:ATLASIC3">11.14</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:ATLASIC3"></span>
 <img src="images/Cohorts/ATLAS-IC3.png" alt="Additional Inclusion Criteria 3" width="100%" />
 <p class="caption">
-Figure 11.15: Additional Inclusion Criteria 3
+Figure 11.14: Additional Inclusion Criteria 3
 </p>
 </div>
 </div>
@@ -940,11 +933,11 @@ Figure 11.15: Additional Inclusion Criteria 3
 <h3><span class="header-section-number">11.7.5</span> Cohort Exit Criteria</h3>
 <p>You have now added all of your qualifying inclusion criteria. You must now specify your cohort exit criteria. You will ask yourself, “when are people no longer eligible to be included in this cohort?” In this cohort, we are following new-users of a drug exposure. We want to look at continuous observation period as it relates to the drug exposure. As such, the exit criterion is specified to follow for the entirety of the continuous drug exposure. If there is a subsequent break in the drug exposure, the patient will exit the cohort at this time. We do this as we cannot determine what happened to the person during the break in the drug exposure. We can also set a criteria on the persistence window to specify an allowable gap between drug exposures. In this case, our experts leading this study concluded that a maximum of 30 days between exposure records is allowable when inferring the era of persistence exposure.</p>
 <p><strong>Why are gaps allowed?</strong> In some data sets, we see only portions of clinical interactions. Drug exposures, in particular, may represent a dispense of a prescription that can cover a certain period of time. Thus, we allow a certain amount of time between drug exposures as we know the patient may logically still have access to the initial drug exposure because the unit of dispense exceeded one day.</p>
-<p>We can configure this by selecting the Event will persist “end of a continuous drug exposure”. We then will add our persistence window to “allow for a maximum of 30 days” and append the concept set for “ACE inhibitors”. Now check your logic against Figure <a href="Cohorts.html#fig:ATLAScohortexit">11.16</a>.</p>
+<p>We can configure this by selecting the Event will persist “end of a continuous drug exposure”. We then will add our persistence window to “allow for a maximum of 30 days” and append the concept set for “ACE inhibitors”. Now check your logic against Figure <a href="Cohorts.html#fig:ATLAScohortexit">11.15</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:ATLAScohortexit"></span>
 <img src="images/Cohorts/cohort-exit.png" alt="Cohort Exit Criteria" width="100%" />
 <p class="caption">
-Figure 11.16: Cohort Exit Criteria
+Figure 11.15: Cohort Exit Criteria
 </p>
 </div>
 <p>In the case of this cohort, there are no other censoring events. However, you may build other cohorts where you need to specify this criteria. You would proceed similarly to the way we have added other attributes to this cohort definition. You have now successfully finished creating your cohort. Make sure to hit the <img src="images/Cohorts/save.png" /> button. Congratulations! Building a cohort is the most important building block of answering a question in the OHDSI tools. You can now use the “Export” tab to share your cohort definition to other collaborators in the form of SQL code or JSON files to load into ATLAS.</p>

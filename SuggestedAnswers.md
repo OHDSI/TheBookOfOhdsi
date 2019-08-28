@@ -491,7 +491,7 @@ Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to creat
 <p class="caption">(\#fig:conceptSearchAtlas)Selecting the standard concept for the ingredient "celecoxib".</p>
 </div>
 
-Click on the left arrow shown at the top left of Figure \@ref(fig:conceptSearchAtlas) to return to your cohort definition. Click on "+Add Initial Event" and then "Add Drug Era". Select your previously created concept set for the drug era criterion. Click on "Add attribute..." and select "Add First Exposure Criteria. Set the required continuous observation to at least 365 days before the index date. The result should look like Figure \@ref(fig:celecoxibCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
+Click on the left arrow shown at the top left of Figure \@ref(fig:conceptSearchAtlas) to return to your cohort definition. Click on "+Add Initial Event" and then "Add Drug Era". Select your previously created concept set for the drug era criterion. Click on "Add attribute..." and select "Add First Exposure Criteria." Set the required continuous observation to at least 365 days before the index date. The result should look like Figure \@ref(fig:celecoxibCohortDefinition). Leave the Inclusion Criteria, Cohort Exit, and Cohort Eras section as they are. Make sure to save the cohort definition by clicking ![](images/Cohorts/save.png), and close it by clicking ![](images/SuggestedAnswers/close.png).
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/celecoxibCohortDefinition.png" alt="A simple celecoxib new user cohort definition." width="100%" />
@@ -661,7 +661,7 @@ plotPs(ps, showCountsLabel = TRUE, showAucLabel = TRUE)
 
 Note that this distribution looks a bit odd, with several spikes. This is because we are using a very small simulated dataset. Real preference score distributions tend to be much smoother.
 
-The propensity model achieves an AUC of 063, suggested there are differences between target and comparator cohort. We see quite a lot overlap between the two groups suggesting PS adjustment can make them more comparable.
+The propensity model achieves an AUC of 0.63, suggested there are differences between target and comparator cohort. We see quite a lot overlap between the two groups suggesting PS adjustment can make them more comparable.
 
 
 #### Exercise \@ref(exr:exercisePle5) {-}

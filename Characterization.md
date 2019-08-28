@@ -504,7 +504,7 @@ As shown, the metrics calculated are the same but the interpretation is differen
 
 #### Prerequisites {-}
 
-For the first exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
+For these exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCharacterization1"><strong>(\#exr:exerciseCharacterization1) </strong></span>We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.
 </div>\EndKnitrBlock{exercise}
