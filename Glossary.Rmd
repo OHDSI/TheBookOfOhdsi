@@ -177,7 +177,7 @@ Visit
 : The span of time a person continuously receives medical services from one or more providers at a care site in a given setting within the health care system. 
 
 Vocabulary
-: A list of words and often phrases, usually arranged alphabetically and defined or translated. See Chapter \@ref(StandardizedVocabulary).
+: A list of words and often phrases, usually arranged alphabetically and defined or translated. See Chapter \@ref(StandardizedVocabularies).
 
 White Rabbit
 : A software tool for profiling a database before defining the ETL to the CDM. See Chapter \@ref(ExtractTransformLoad).
