@@ -1,6 +1,6 @@
 # Where to Begin {#WhereToBegin}
 
-*Chapter Leads: Hamed Abedtash & Kristin Kostka*
+*Chapter leads: Hamed Abedtash & Kristin Kostka*
 
 > “A journey of a thousand miles begins with a single step.” - Lao Tzu
 
