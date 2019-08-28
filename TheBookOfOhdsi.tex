@@ -922,7 +922,7 @@ Any healthcare database that is mapped to OMOP and used for analytics should, fr
 \hypertarget{accessibility}{%
 \subsection{Accessibility}\label{accessibility}}
 
-Accessibility of OMOP mapped data through an open protocol is typically achieved through the SQL interface, which combined with the OMOP CDM provides a standardized and well-documented method for accessing OMOP data. However, as discussed above, OMOP sources are often not directly available over the internet for security reasons. Creating a secure worldwide healthcare data network that is accessible for researchers is an active research topic and operational goal of projects like IMI EHDEN. However, results of analyses in multiple OMOP databases, as shown through OHDSI initiatives such as LEGEND and \url{http://howfoften.org}, can be openly published.
+Accessibility of OMOP mapped data through an open protocol is typically achieved through the SQL interface, which combined with the OMOP CDM provides a standardized and well-documented method for accessing OMOP data. However, as discussed above, OMOP sources are often not directly available over the internet for security reasons. Creating a secure worldwide healthcare data network that is accessible for researchers is an active research topic and operational goal of projects like IMI EHDEN. However, results of analyses in multiple OMOP databases, as shown through OHDSI initiatives such as LEGEND and \url{http://howoften.org}, can be openly published.
 
 \hypertarget{interoperability}{%
 \subsection{Interoperability}\label{interoperability}}
@@ -957,7 +957,7 @@ Why do we need a Common Data Model for observational healthcare data?
 
 Depending on their primary needs none of the observational databases capture all clinical events equally well. Therefore, research results must be drawn from many disparate data sources and compared and contrasted to understand the effect of potential capture bias. In addition, in order to draw conclusions with statistical power we need large numbers of observed patients. That explains the need for assessing and analyzing multiple data sources concurrently. In order to do that, data need to be harmonized into a common data standard. In addition, patient data require a high level of protection. To extract data for analysis purposes as it is done traditionally requires strict data use agreements and complex access control. A common data standard can eleviate this need by omitting the extraction step and allowing a standardized analytic to be executed on the data in it's native environment - the analytic comes to the data instead of the data to the analytic.
 
-This standard is provided by the Common Data Model (CDM). The CDM, combined with its standardized content (see chapter \ref{StandardizedVocabularies}), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables.
+This standard is provided by the Common Data Model (CDM). The CDM, combined with its standardized content (see Chapter \ref{StandardizedVocabularies}), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables.
 
 An overview of all the tables in the CDM is provided in Figure \ref{fig:cdmDiagram}. \index{Common Data Model!data model diagram}
 
@@ -977,9 +977,9 @@ The CDM is optimized for typical observational research purposes of \index{Commo
 \item
   Characterization of these patient populations for various parameters like demographic information, disease natural history, healthcare delivery, utilization and cost, morbidities, treatments and sequence of treatment etc.,
 \item
-  Predicting the occurrence of these outcomes in individual patients - see chapter \ref{PatientLevelPrediction},
+  Predicting the occurrence of these outcomes in individual patients - see Chapter \ref{PatientLevelPrediction},
 \item
-  Estimating the effect these interventions have a population - see chapter \ref{PopulationLevelEstimation},
+  Estimating the effect these interventions have a population - see Chapter \ref{PopulationLevelEstimation},
 \end{itemize}
 
 To achieve this goal, the development of the CDM follows the following design elements:
@@ -1021,14 +1021,14 @@ The CDM is considered a ``person-centric'' model, meaning that all clinical Even
 \hypertarget{general-conventions-of-schemas}{%
 \subsection{General Conventions of Schemas}\label{general-conventions-of-schemas}}
 
-Schemas, or database users in some systems, allow for separation between read-only and read-write tables. The clinical Event and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user or analytic tool. Tables that need to be manipulated by web-based tools or end users are stored in the ``Results'' schema. The two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITON. These tables are meant to describe groups of interest that the user might define, as detailed in chapter \ref{Cohorts}. These tables can be written to, meaning that a cohort can be stored in the COHORT table at run time. Since there is only one read-write schema for all users it is up to the implementation of the CDM how multiple user access is organized and controlled.
+Schemas, or database users in some systems, allow for separation between read-only and read-write tables. The clinical Event and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user or analytic tool. Tables that need to be manipulated by web-based tools or end users are stored in the ``Results'' schema. The two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITON. These tables are meant to describe groups of interest that the user might define, as detailed in Chapter \ref{Cohorts}. These tables can be written to, meaning that a cohort can be stored in the COHORT table at run time. Since there is only one read-write schema for all users it is up to the implementation of the CDM how multiple user access is organized and controlled.
 
 \hypertarget{general-conventions-of-data-tables}{%
 \subsection{General Conventions of Data Tables}\label{general-conventions-of-data-tables}}
 
 The CDM is platform-independent. Data types are defined generically using ANSI SQL data types (VARCHAR, INTEGER, FLOAT, DATE, DATETIME, CLOB). Precision is provided only for VARCHAR. It reflects the minimal required string length, but can be expanded within a concrete CDM instantiation. The CDM does not prescribe the date and datetime format. Standard queries against CDM may vary for local instances and date/datetime configurations.
 
-\emph{Note}: While the data model itself is platform-independent, many of the tools that have been built to work with it require certain specifications. For more about this please see chapter \ref{OhdsiAnalyticsTools}.
+\emph{Note}: While the data model itself is platform-independent, many of the tools that have been built to work with it require certain specifications. For more about this please see Chapter \ref{OhdsiAnalyticsTools}.
 
 \hypertarget{domains}{%
 \subsection{General Conventions of Domains}\label{domains}}
@@ -1068,7 +1068,7 @@ Concept Count & Domain ID & Concept Count & Domain ID\tabularnewline
 
 In CDM data tables the content of each record is fully normalized and represented through Concepts. Concepts are stored in Event tables with their CONCEPT\_ID values, which are foreign keys to the CONCEPT table, which serves as the general reference table. All CDM instances use the same CONCEPT table as a reference of the Concepts, which together with the Common Data Model is a key mechanism of interoperability and the foundation of the OHDSI research network. If a Standard Concept does not exist or cannot be identified, the value of the CONCEPT\_ID is set to 0, representing a non-existing concept, an unknown or un-mappable value.
 
-Records in the CONCEPT table contain detailed information about each concept (name, domain, class etc.). Concepts, Concept Relationships, Concept Ancestors and other information relating to Concepts is contained in the tables of the Standardized Vocabularies (see chapter \ref{StandardizedVocabularies}).
+Records in the CONCEPT table contain detailed information about each concept (name, domain, class etc.). Concepts, Concept Relationships, Concept Ancestors and other information relating to Concepts is contained in the tables of the Standardized Vocabularies (see Chapter \ref{StandardizedVocabularies}).
 
 \hypertarget{general-naming-conventions-of-fields}{%
 \subsection{General Naming Conventions of Fields}\label{general-naming-conventions-of-fields}}
@@ -4793,7 +4793,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.zy5bo3dhchildren ;"
+## [1] "SELECT * FROM temp_schema.qyp9ac80children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -12010,7 +12010,7 @@ Chapter Leads: Kristin Kostka, Greg Klebanov, Sara Dempster
 The mission of OHDSI is to generate high-quality evidence through observational research. A primary way this is accomplished is through collaborative research studies. In prior chapters we discussed how the OHDSI community has authored standards and tools to facilitate high-quality, reproducible research, including OMOP Standardized Vocabularies, the Common Data Model (CDM), analytical methods packages, ATLAS and the study steps (Chapter \ref{StudySteps}) to run a retrospective database study. OHDSI network studies represent the culmination of a transparent, consistent and reproducible way to conduct research across a large number of geographically dispersed data. In this chapter we will discuss what constitutes an OHDSI network study, how to run a network study and discuss enabling technologies such as the ARACHNE Research Network.
 
 \hypertarget{ohdsi-as-a-research-network}{%
-\section{OHDSI As a Research Network}\label{ohdsi-as-a-research-network}}
+\section{OHDSI as a Research Network}\label{ohdsi-as-a-research-network}}
 
 \index{research network}
 
