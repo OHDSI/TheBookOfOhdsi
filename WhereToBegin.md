@@ -11,11 +11,11 @@ Everyone is welcome to actively participate in OHDSI, whether you are a patient,
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.75\linewidth]{images/WhereToBegin/join-the-journey} 
+{\centering \includegraphics[width=0.9\linewidth]{images/WhereToBegin/joinTheJourney} 
 
 }
 
-\caption{Join the journey}(\#fig:jointhejourney)
+\caption{Join the journey - How to become an OHDSI collaborator.}(\#fig:jointhejourney)
 \end{figure}
 
 
