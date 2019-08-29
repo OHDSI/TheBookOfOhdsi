@@ -6,7 +6,7 @@
 
 In order to get from the native/raw data to the OMOP Common Data Model (CDM) we have to create an extract, transform, and load (ETL) process. This process should restructure the data to the CDM, and add mappings to the Standardized Vocabularies, and is typically implemented as a set of automated scripts, for example SQL scripts. It is important that this ETL process is repeatable, so that it can be rerun whenever the source data is refreshed. \index{ETL|see {extract, transform and load (ETL)}} \index{raw data} \index{native data|see {raw data}} \index{source data|see{raw data}}
 
-Creating an ETL is usually a large undertaking. Over the years, we have developed best practices, consisting of of four major steps:
+Creating an ETL is usually a large undertaking. Over the years, we have developed best practices, consisting of four major steps:
 
 1. Data experts and CDM experts together design the ETL.
 2. People with medical knowledge create the code mappings.

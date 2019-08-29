@@ -113,7 +113,7 @@ For more complex functionality it is not always obvious what the expected output
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- An observational study should be implemented as an automated script that executes the entire analysis, from data in the CDM to the results, to ensure reproducability and transparency.
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- An observational study should be implemented as an automated script that executes the entire analysis, from data in the CDM to the results, to ensure reproducibility and transparency.
 
 - Custom study code should adhere to best programming practices, including abstraction, encapsulation, clear naming, and code reuse.
 

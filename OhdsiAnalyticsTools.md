@@ -15,7 +15,7 @@ Figure \@ref(fig:implementations) shows the various ways in which we can choose 
 <p class="caption">(\#fig:implementations)Different ways to implement an analysis against data in the CDM.</p>
 </div>
 
-There a three main approaches to implementing a study.  The first is to write custom code that does not make use of any of the tools OHDSI has to offer. One could write a de novo analysis in R, SAS, or any other language. This provides the maximum flexibility, and may in fact be the only option if the specific analysis is not supported by any of our tools. However, this path requires a lot of technical skill, time, and effort, and as the analysis increases in complexity it becomes harder to avoid errors in the code.
+There are three main approaches to implementing a study.  The first is to write custom code that does not make use of any of the tools OHDSI has to offer. One could write a de novo analysis in R, SAS, or any other language. This provides the maximum flexibility, and may in fact be the only option if the specific analysis is not supported by any of our tools. However, this path requires a lot of technical skill, time, and effort, and as the analysis increases in complexity it becomes harder to avoid errors in the code.
 
 The second approach involves developing the analysis in R, and making use of the packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). At a minimum, one could use the [SqlRender](https://ohdsi.github.io/SqlRender/) and [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) packages described in more detail in Chapter \@ref(SqlAndR) that allow the same code to be executed on various database platforms, such as PostgreSQL, SQL Server, and Oracle. Other packages such as [CohortMethod](https://ohdsi.github.io/CohortMethod/) and [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) offer R functions for advanced analytics against the CDM that can be called on in one's code. This still requires a lot of technical expertise, but by re-using the validated components of the Methods Library we can be more efficient and less prone to error than when using completely custom code.
 
@@ -145,7 +145,7 @@ R provides a standard way to document packages. Each package has a *package manu
 
 [^methodsLibraryUrl]: https://ohdsi.github.io/MethodsLibrary
 
-In addition to the package manual, many packages provide *vignettes*. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette[^vignetteUrl] describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website , through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. \index{vignette}
+In addition to the package manual, many packages provide *vignettes*. Vignettes are long-form documentation that describe how a package can be used to perform certain tasks. For example, one vignette[^vignetteUrl] describes how to perform multiple analyses efficiently using the CohortMethod package. Vignettes can also be found through the Methods Library website, through the package GitHub repositories, and for those packages available through CRAN they can be found in CRAN. \index{vignette}
 
 [^vignetteUrl]: https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html
 
@@ -155,11 +155,11 @@ Two computing environments are relevant when discussing the system requirements:
 
 The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). 
 
-The analytics workstation is where the Methods Library is installed and run. This can either be a local machine, such as someone's laptop, or a remote server running RStudio Server. In all cases the requirements are that R is installed, preferably together with RStudio. The Methods Library also requires that Java is installed. The analytics workstation should also be able to connect to the database server, specifically, any firewall between them should have the database server access ports opened the the workstation. Some of the analytics can be computationally intensive, so having multiple processing cores and ample memory can help speed up the analyses. We recommend having at least four cores and 16 gigabytes of memory.
+The analytics workstation is where the Methods Library is installed and run. This can either be a local machine, such as someone's laptop, or a remote server running RStudio Server. In all cases the requirements are that R is installed, preferably together with RStudio. The Methods Library also requires that Java is installed. The analytics workstation should also be able to connect to the database server, specifically, any firewall between them should have the database server access ports opened the workstation. Some of the analytics can be computationally intensive, so having multiple processing cores and ample memory can help speed up the analyses. We recommend having at least four cores and 16 gigabytes of memory.
 
 ### How to Install {#installR}
 
-Here are the steps for installing the required environment to run the OHDSI R packages. Four things needs to be installed: \index{R!installation}
+Here are the steps for installing the required environment to run the OHDSI R packages. Four things need to be installed: \index{R!installation}
 
 1. **R** is a statistical computing environment. It comes with a basic user interface that is primarily a command-line interface.
 2. **RTools** is a set of programs that is required on Windows to build R packages from source.
@@ -268,8 +268,8 @@ OHDSI-in-a-Box is specifically created as a learning environment, and is used in
 [^ohdsiInaBoxUrl]: https://github.com/OHDSI/OHDSI-in-a-Box
 
 <div class="figure" style="text-align: center">
-<img src="images/OhdsiAnalyticsTools/OHDSI-in-a-BoxDiagram.png" alt="The Amazon Web Services architecure for OHDSI-in-a-Box." width="100%" />
-<p class="caption">(\#fig:ohdsiinaboxDiagram)The Amazon Web Services architecure for OHDSI-in-a-Box.</p>
+<img src="images/OhdsiAnalyticsTools/OHDSI-in-a-BoxDiagram.png" alt="The Amazon Web Services architecture for OHDSI-in-a-Box." width="100%" />
+<p class="caption">(\#fig:ohdsiinaboxDiagram)The Amazon Web Services architecture for OHDSI-in-a-Box.</p>
 </div>
 
 OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalable and fault tolerant OHDSI environments that can be used by organizations to perform their data analytics. It includes several sample datasets and can also automatically load your organization's real healthcare data. The data is placed in the Amazon Redshift database platform, which is supported by the OHDSI tools. Intermediary results of ATLAS are stored in a PostgreSQL database. On the front end, users have access to ATLAS and to RStudio through a web interface (leveraging RStudio Server). In RStudio the OHDSI Methods Library has already been installed, and can be used to connect to the databases. The automation to deploy OHDSIonAWS is open-source, and can be customized to include your organization's management tools and best practices.  The architecture for OHDSIonAWS is depicted in Figure \@ref(fig:ohdsionawsDiagram).
@@ -288,14 +288,14 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
     - writing code that uses the R packages in the OHDSI Methods Library
     - using the interactive analysis platform ATLAS
 
-- OHDSI tools use different analysis stragies
+- OHDSI tools use different analysis strategies
     - Single studies
     - Real-time queries
     - Large-scale analytics
 
 - The majority of OHDSI analytics tool are embedded in
     - The interactive analysis platform ATLAS
-    - The OHDSI Methods Libary R packages
+    - The OHDSI Methods Library R packages
 
 - Several strategies exist facilitating the deployment of the OHDSI tools.
 </div>\EndKnitrBlock{rmdsummary}

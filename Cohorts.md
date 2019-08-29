@@ -92,8 +92,8 @@ Table: (\#tab:conceptSetExpression) An example concept set expression.
 As shown in Figure \@ref(fig:conceptSet), this will include "Myocardial infarction" and all of its descendants except "Old myocardial infarction" and its descendants. In total, this concept set expression implies nearly a hundred Standard Concepts. These Standard Concepts in turn reflect hundreds of source codes (e.g. ICD-9 and ICD-10 codes) that may appear in the various databases. 
 
 <div class="figure" style="text-align: center">
-<img src="images/Cohorts/conceptSet.png" alt="A concept set including &quot;Myocardial infaction (with descendants), but excluding &quot;Old myocardial infarction&quot; (with descendants)." width="100%" />
-<p class="caption">(\#fig:conceptSet)A concept set including "Myocardial infaction (with descendants), but excluding "Old myocardial infarction" (with descendants).</p>
+<img src="images/Cohorts/conceptSet.png" alt="A concept set including &quot;Myocardial infaction&quot; (with descendants), but excluding &quot;Old myocardial infarction&quot; (with descendants)." width="100%" />
+<p class="caption">(\#fig:conceptSet)A concept set including "Myocardial infaction" (with descendants), but excluding "Old myocardial infarction" (with descendants).</p>
 </div>
 
 ## Probabilistic Cohort Definitions
@@ -108,7 +108,7 @@ An example of applying this approach on data in the CDM is the APHRODITE (Automa
 
 When you are building a cohort, you should consider which of these is more important to you: *finding all the eligible patients?* versus *Getting only the ones you are confident about?*
 
-Your strategy to construct your cohort will depend on your the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you’re trying to answer. You may opt to build a cohort definition that uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher’s discretion what threshold of stringency is necessary to adequately study the cohort of interest.
+Your strategy to construct your cohort will depend on the clinical stringency of how your expert consensus defines the disease. This is to say, the right cohort design will depend on the question you’re trying to answer. You may opt to build a cohort definition that uses everything you can get, uses the lowest common denominator so you can share it across OHDSI sites or is a compromise of the two. It is ultimately at the researcher’s discretion what threshold of stringency is necessary to adequately study the cohort of interest.
 
 As mentioned at the beginning of the chapter, a cohort definition is an attempt to infer something we would like to observe from the data that is recorded. This begs the question how well we succeeded in that attempt. In general, the validation of a rule-based cohort definition or probabilistic algorithm can be thought of as a test of the proposed cohort compared to some form of “gold standard” reference (e.g. manual chart review of cases). This is discussed in detail in Chapter \@ref(ClinicalValidity) ("Clinical Validity").
 
@@ -198,14 +198,14 @@ If you have already created a concept set and saved it in ATLAS, you can click t
 
 ### Additional Initial Event Criteria
 
-Now that you've attached a concept set, you are not done yet. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translate to the *first exposure* of ACE inhibitors in the patient's record. To specify this, you need to click "+Add attribute". You will want to select the "Add first exposure criteria". Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
+Now that you've attached a concept set, you are not done yet. Your question is looking for new users or the first time in someone's history they are exposed to ACE inhibitors. This translates to the *first exposure* of ACE inhibitors in the patient's record. To specify this, you need to click "+Add attribute". You will want to select the "Add first exposure criteria". Notice, you could specify other attributes of a criteria you build. You could specify an attribute of age at occurrence, the date of occurrence, gender or other attributes related to the drug. Criteria available for selection will look different for each domain.
 
 From there, the window will automatically close. Once selected, this additional attribute will show up in the same box as the initial criteria (see Figure \@ref(fig:initialEventAce)).
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">The current design of ATLAS may confuse some. Despite its appearance, the ![](images/Cohorts/redX.png) is not intended to mean "No". It is an actionable feature to allow the user to delete the criteria. If you click ![](images/Cohorts/redX.png), this criteria will go away. Thus, you need to leave the criteria with the ![](images/Cohorts/redX.png) to keep the criteria active.
 </div>\EndKnitrBlock{rmdimportant}
 
-Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a look-back window to know that you are looking at enough of the patient's history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the index date You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. We will require 365 days of of continuous observation prior to the initial event. You will update your observation period to: *with continuous observation of 365 days before*, as shown in Figure \@ref(fig:initialEventAce). This look-back window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require 0 days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the "earliest event" per person.
+Now you have built an initial qualifying event. To ensure you are capturing the first observed drug exposure, you will want to add a look-back window to know that you are looking at enough of the patient's history to know what comes first. It is possible that a patient with a short observation period may have received an exposure elsewhere that we do not see. We cannot control this but we can mandate a minimum amount of time the patient must be in the data prior to the index date You can do this by adjusting the continuous observation drop downs. You could also click the box and type in a value to these windows. We will require 365 days of continuous observation prior to the initial event. You will update your observation period to: *with continuous observation of 365 days before*, as shown in Figure \@ref(fig:initialEventAce). This look-back window is the discretion of your study team. You may choose differently in other cohorts. This creates, as best as we are able, a minimum period of time we see the patient to ensure we are capturing the first record. This criteria is about prior history and does not involve time after the index event. Therefore, we require 0 days after the index event. Our qualifying event is the first-ever use of ACE inhibitors. Thus, we limit initial events to the "earliest event" per person.
 
 <div class="figure" style="text-align: center">
 <img src="images/Cohorts/initialEventAce.png" alt="Setting the required continuous observation before the index date." width="100%" />
@@ -219,7 +219,7 @@ To further explain how this logic comes together, you can think about assembling
 <p class="caption">(\#fig:EarliestEventExplained)Explaining patient eligibility by criteria applied</p>
 </div>
 
-In Figure \@ref(fig:EarliestEventExplained), each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first time occurrence. Logically, limiting to the initial event is redundant though it is helpful to maintain our explicit logic in every selection we make. When you are building your own cohorts, you may opt to engage the Researchers section of the [OHDSI Forum](http://forums.ohdsi.org) to get a second opinion on how to construct your cohort logic.
+In Figure \@ref(fig:EarliestEventExplained), each line represents a single patient that may be eligible to join the cohort. The filled in stars represent a time the patient fulfills the specified criteria. As additional criteria is applied, you may see some stars are a lighter shade. This means that these patients have other records that satisfy the criteria but there is another record that proceeds that. By the time we get to the last criteria, we are looking at the cumulative view of patients who have ACE inhibitors for the first time and have 365 days prior to the first-time occurrence. Logically, limiting to the initial event is redundant though it is helpful to maintain our explicit logic in every selection we make. When you are building your own cohorts, you may opt to engage the Researchers section of the [OHDSI Forum](http://forums.ohdsi.org) to get a second opinion on how to construct your cohort logic.
 
 ### Inclusion Criteria
 
@@ -619,7 +619,7 @@ For the first exercise, access to an ATLAS instance is required. You can use the
 - Ages 16 or older
 - With at least 365 days of continuous observation prior to exposure
 - Without prior exposure to any NSAID (Non-Steroidal Anti-Inflammatory Drug)
-- Without prior diagnose of cancer
+- Without prior diagnosis of cancer
 - With cohort exit defined as discontinuation of exposure (allowing for a 30-day gap)
 </div>\EndKnitrBlock{exercise}
 

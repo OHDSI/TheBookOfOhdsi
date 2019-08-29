@@ -70,7 +70,7 @@ $$
 Incidence\;Rate = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{person\;time\;at\;risk\;contributed\;by\;persons\;in\;cohort}
 $$
 
-An incidence rate is a mesure of the number of new outcomes during the cumulative TAR for the population. When a person experiences the outcome in the TAR, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative TAR is referred to as **person-time** and is expressed in days, months or years.\index{incidence!rate} \index{person-time}
+An incidence rate is a measure of the number of new outcomes during the cumulative TAR for the population. When a person experiences the outcome in the TAR, their contribution to the total person-time stops at the occurrence of the outcome event. The cumulative TAR is referred to as **person-time** and is expressed in days, months or years.\index{incidence!rate} \index{person-time}
 
 When calculated for therapies, incidence proportions and incidence rates of use of a given therapy are classic population-level DUS.
 
@@ -290,7 +290,7 @@ settings <- createCovariateSettings(useConditionEraLongTerm = TRUE,
                                     endDays = -1) 
 ```
 
-This redefines the long term window as 180 days prior up to (but not including) the cohort start date, and redefines the short term window as 14 days prior up to (but not including) the cohort start date. 
+This redefines the long-term window as 180 days prior up to (but not including) the cohort start date, and redefines the short term window as 14 days prior up to (but not including) the cohort start date. 
 
 Again, we can also specify which concept IDs should or should not be used to construct covariates: 
 
@@ -367,7 +367,7 @@ Cohort pathways aims to provide analytic capabilities to summarize the events fo
 
 In figure \@ref(fig:pathwaysPersonEventView), the person is part of the target cohort with a defined start and end date. Then, the numbered line segments represent where that person also is identified in an event cohort for a duration of time. Event cohorts allow us to describe any clinical event of interest that is represented in the CDM such that we are not constrained to creating a pathway for a single domain or concept. 
 
-To start, click on ![](images/Characterization/atlasPathwaysMenuItem.png) in the left bar of ATLAS to create a new cohort pathways study. Provide a descriptive name and press the save button . 
+To start, click on ![](images/Characterization/atlasPathwaysMenuItem.png) in the left bar of ATLAS to create a new cohort pathways study. Provide a descriptive name and press the save button. 
 
 ### Design
 
@@ -504,7 +504,7 @@ As shown, the metrics calculated are the same but the interpretation is differen
 
 #### Prerequisites {-}
 
-For these exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
+For these exercises, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCharacterization1"><strong>(\#exr:exerciseCharacterization1) </strong></span>We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.
 </div>\EndKnitrBlock{exercise}
