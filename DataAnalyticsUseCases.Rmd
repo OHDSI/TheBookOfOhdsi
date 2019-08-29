@@ -35,7 +35,7 @@ Typical characterization questions are formulated as:
 - What proportion of patients...?
 - What is the distribution of values for lab...?
 - What are the HbA1c levels for patients with...?
-- What are the [lab values] for patients...?
+- What are the lab values for patients...?
 - What is the median length of exposure for patients on....?
 - What are the trends over time in...?
 - What are other drugs that these patients are using?
