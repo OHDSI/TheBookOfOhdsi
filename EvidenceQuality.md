@@ -13,7 +13,7 @@ Before embarking on any journey, it can be helpful to envision what the ideal de
 
 <div class="figure" style="text-align: center">
 <img src="images/EvidenceQuality/reliableevidenceattributes.png" alt="Desired attributes of reliable evidence" width="100%" />
-<p class="caption">(\#fig:datajourney)Desired attributes of reliable evidence</p>
+<p class="caption">(\#fig:attributesOfEvidence)Desired attributes of reliable evidence</p>
 </div>
 
 Reliable evidence should be **repeatable**, meaning that researchers should expect to produce identical results when applying the same analysis to the same data for any given question. Implicit in this minimum requirement is the notion that evidence is the result of the execution of a defined process with a specified input, and should be free of manual intervention of post-hoc decision-making along the way. More ideally, reliable evidence should be **reproducible** such that a different researcher should be able to perform the same task of executing a given analysis on a given database and expect to produce an identical result as the first researcher. Reproducibility requires that the process is fully-specified, generally in both human-readable and computer-executable form such that no study decisions are left to the discretion of the investigator. The most efficient solution to achieve repeatability and reproducibility is to use standardized analytics routines that have defined inputs and outputs, and apply these procedures against version-controlled databases.

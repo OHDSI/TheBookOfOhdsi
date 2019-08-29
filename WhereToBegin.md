@@ -33,7 +33,7 @@ In the OHDSI forums, you can find categories of content including:
 
 To being posting your own topics, you will need to sign up for an account. Once you have a forums account, you are encouraged to introduce yourself on the General Topic under the thread called "Welcome to OHDSI! - Please introduce yourself". You are invited to reply and 1) Introduce yourself and tell us a bit about what you do and 2) Let us know how you’d like to help out in the community (ex. software development, run studies, write research papers, etc). Now you are on your OHDSI Journey! From here, you are encouraged to join in the discussion. The OHDSI Community encourages using the Forums as your way to ask questions, discuss new ideas and collaborate. \index{forum}
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">You can select topics to ‘watch’. What this means is whenever a new post is added in a topic you’re watching, you will receive an email and be able to reply to the post directly through your email. Watch the general thread to recieve details about upcoming meeting agendas, collaboration opportunities and have the weekly OHDSI digest delivered directly to your inbox!
+\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">You can select topics to "watch." What this means is whenever a new post is added in a topic you’re watching, you will receive an email and be able to reply to the post directly through your email. Watch the general thread to recieve details about upcoming meeting agendas, collaboration opportunities and have the weekly OHDSI digest delivered directly to your inbox!
 </div>\EndKnitrBlock{rmdimportant}
 
 ### OHDSI Events
