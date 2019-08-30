@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Sciences and Informatics"
-date: "2019-08-29"
+date: "2019-08-30"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -52,7 +52,6 @@ Each section has multiple chapters, and, as appropriate, each chapter follows th
 
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapter. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
-\begin{center}
 
 ------------------  -----------------  ---------------------
 Hamed Abedtash      Mustafa Ascha      Mark Beno            
@@ -75,7 +74,6 @@ Mui Van Zandt       Erica Voss         Kristin Waite
 Mike Warfe          Jamie Weaver       James Wiggins        
 Andrew Williams     Chan You Seng                           
 ------------------  -----------------  ---------------------
-\end{center}
 
 ## Software Versions {-}
 
