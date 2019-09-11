@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Sciences and Informatics"
-date: "2019-09-06"
+date: "2019-09-11"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -66,7 +66,7 @@ Akihiko Nishimura   Ellen Palmer       Nirav Patil
 Jose Posada         Nicole Pratt       Dani Prieto-Alhambra 
 Christian Reich     Jenna Reps         Peter Rijnbeek       
 Patrick Ryan        Craig Sachson      Izzy Saridakis       
-Paula Saroufim      Martijn Schuemie   Sarah Seager         
+Paola Saroufim      Martijn Schuemie   Sarah Seager         
 Anthony Sena        Chan Seng You      Sunah Song           
 Matt Spotnitz       Marc Suchard       Joel Swerdel         
 Devin Tian          Don Torok          Kees van Bochove     
