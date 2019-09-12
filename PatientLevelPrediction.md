@@ -1,4 +1,4 @@
-# Patient Level Prediction {#PatientLevelPrediction}
+# Patient-Level Prediction {#PatientLevelPrediction}
 
 *Chapter leads: Peter Rijnbeek & Jenna Reps*
 
