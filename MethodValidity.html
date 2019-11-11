@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-10-09" />
+<meta name="date" content="2019-11-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1043,7 +1043,7 @@ Study diagnostics allow us to evaluate design choices even before fully executin
 <h2><span class="header-section-number">18.4</span> OHDSI Methods Benchmark</h2>
 <p></p>
 <p>Although the recommended practice is to empirically evaluate a method’s performance within the context that it is applied, using negative and positive controls that are in ways similar to the exposures-outcomes pairs of interest (for example using the same exposure or the same outcome) and on the database used in the study, there is also value in evaluating a method’s performance in general. This is why the OHDSI Methods Evaluation Benchmark was developed. The benchmark evaluates performance using a wide range of control questions, including those with chronic or acute outcomes, and long-term or short-term exposures. The results on this benchmark can help demonstrate the overall usefulness of a method, and can be used to form a prior belief about the performance of a method when a context-specific empirical evaluation is not (yet) available. The benchmark consists of 200 carefully selected negative controls that can be stratified into eight categories, with the controls in each category either sharing the same exposure or the same outcome. From these 200 negative controls, 600 synthetic positive controls are derived as described in Section <a href="MethodValidity.html#PositiveControls">18.2.2</a>. To evaluate a method, it must be used to produce effect size estimates for all controls, after which the metrics described in Section <a href="MethodValidity.html#metrics">18.2.3</a> can be computed. The benchmark is publicly available, and can be deployed as described in the <a href="https://ohdsi.github.io/MethodEvaluation/articles/OhdsiMethodsBenchmark.html">Running the OHDSI Methods Benchmark vignette</a> in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> package.</p>
-<p>We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app<a href="references.html#fn63" class="footnote-ref" id="fnref63"><sup>63</sup></a>, show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95% confidence interval, as shown in Figure <a href="MethodValidity.html#fig:methodEval">18.9</a>.</p>
+<p>We have run all the methods in the OHDSI Methods Library through this benchmark, with various analysis choices per method. For example, the cohort method was evaluated using propensity score matching, stratification, and weighting. This experiment was executed on four large observational healthcare databases. The results, viewable in an online Shiny app<a href="#fn63" class="footnote-ref" id="fnref63"><sup>63</sup></a>, show that although several methods show high AUC (the ability to distinguish positive controls from negative controls), most methods in most settings demonstrate high type 1 error and low coverage of the 95% confidence interval, as shown in Figure <a href="MethodValidity.html#fig:methodEval">18.9</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:methodEval"></span>
 <img src="images/MethodValidity/methodEval.png" alt="Coverage of the 95\% confidence interval for the methods in the Methods Library. Each dot represents the performance of a specific set of analysis choices. The dashed line indicates nominal performance (95\% coverage). SCCS = Self-Controlled Case Series, GI = Gastrointestinal, IBD = inflammatory bowel disease." width="100%" />
 <p class="caption">
@@ -1118,6 +1118,12 @@ Figure 18.9: Coverage of the 95% confidence interval for the methods in the Meth
 <p>Zaadstra, B. M., A. M. Chorus, S. van Buuren, H. Kalsbeek, and J. M. van Noort. 2008. “Selective association of multiple sclerosis with infectious mononucleosis.” <em>Mult. Scler.</em> 14 (3): 307–13.</p>
 </div>
 </div>
+<div class="footnotes">
+<hr />
+<ol start="63">
+<li id="fn63"><p><a href="http://data.ohdsi.org/MethodEvalViewer/" class="uri">http://data.ohdsi.org/MethodEvalViewer/</a><a href="MethodValidity.html#fnref63" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>
@@ -1140,15 +1146,13 @@ Figure 18.9: Coverage of the 95% confidence interval for the methods in the Meth
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",

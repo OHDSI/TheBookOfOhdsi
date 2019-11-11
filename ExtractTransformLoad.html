@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-10-09" />
+<meta name="date" content="2019-11-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -704,7 +704,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Two closely-integrated tools have been developed to support the ETL design process: White Rabbit, and Rabbit-in-a-Hat.</p>
 <div id="white-rabbit" class="section level3">
 <h3><span class="header-section-number">6.2.1</span> White Rabbit</h3>
-<p>To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the <a href="https://github.com/OHDSI/WhiteRabbit">White Rabbit</a> tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the <a href="https://github.com/OHDSI/CommonDataModel">OMOP CDM</a>. White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub.<a href="references.html#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>  </p>
+<p>To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the <a href="https://github.com/OHDSI/WhiteRabbit">White Rabbit</a> tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the <a href="https://github.com/OHDSI/CommonDataModel">OMOP CDM</a>. White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub.<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>  </p>
 <div id="scope-and-purpose" class="section level4 unnumbered">
 <h4>Scope and Purpose</h4>
 <p>White Rabbit’s main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon RedShift). The scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.</p>
@@ -789,7 +789,7 @@ Figure 6.4: Example values for a single column.
 </div>
 <div id="writing-etl-logic" class="section level4 unnumbered">
 <h4>Writing ETL Logic</h4>
-<p>Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea<a href="references.html#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a> database might look during conversion.</p>
+<p>Once you have opened your White Rabbit scan report in Rabbit-In-a-Hat you are ready to begin designing and writing the logic for how to convert the source data to the OMOP CDM. As an example, the next few sections will depict how some of the tables in the Synthea<a href="#fn31" class="footnote-ref" id="fnref31"><sup>31</sup></a> database might look during conversion.</p>
 </div>
 <div id="general-flow-of-an-etl" class="section level4 unnumbered">
 <h4>General Flow of an ETL</h4>
@@ -919,7 +919,7 @@ Figure 6.6: Mapping of Synthea Patients table to CDM PERSON table.
 </tr>
 </tbody>
 </table>
-<p>For more examples on how the Synthea dataset was mapped to the CDM please see the full specification document.<a href="references.html#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a></p>
+<p>For more examples on how the Synthea dataset was mapped to the CDM please see the full specification document.<a href="#fn32" class="footnote-ref" id="fnref32"><sup>32</sup></a></p>
 </div>
 </div>
 </div>
@@ -953,7 +953,7 @@ Figure 6.6: Mapping of Synthea Patients table to CDM PERSON table.
 </ul>
 <div id="usagi" class="section level3">
 <h3><span class="header-section-number">6.3.1</span> Usagi</h3>
-<p>Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate<a href="references.html#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a> often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub.<a href="references.html#fn34" class="footnote-ref" id="fnref34"><sup>34</sup></a>  </p>
+<p>Usagi is a tool to aid the manual process of creating a code mapping. It can make suggested mappings based on textual similarity of code descriptions. If the source codes are only available in a foreign language, we have found that Google Translate<a href="#fn33" class="footnote-ref" id="fnref33"><sup>33</sup></a> often gives surprisingly good translation of the terms into English. Usagi allows the user to search for the appropriate target concepts if the automated suggestion is not correct. Finally, the user can indicate which mappings are approved to be used in the ETL. Usagi is available on GitHub.<a href="#fn34" class="footnote-ref" id="fnref34"><sup>34</sup></a>  </p>
 <div id="scope-and-purpose-2" class="section level4 unnumbered">
 <h4>Scope and Purpose</h4>
 <p>Source codes that need mapping are loaded into the Usagi (if the codes are not in English additional translations columns are needed). A term similarity approach is used to connect source codes to Vocabulary concepts. However, these code connections need to be manually reviewed and Usagi provides an interface to facilitate that. Usagi will only propose concepts that are marked as Standard concepts in the Vocabulary.</p>
@@ -1113,8 +1113,8 @@ Figure 6.9: Usagi concept information panel.
 <div id="etl-conventions-and-themis" class="section level2">
 <h2><span class="header-section-number">6.6</span> ETL Conventions and THEMIS</h2>
 <p>As more groups converted data to the CDM it became apparent that conventions needed to be specified. For example, what should the ETL do in a situation where a person record lacks a birth year? The goal of the CDM is to standardized healthcare data however if every group handles data specific scenarios differently it makes it more difficult to systematically use data across the network.</p>
-<p>The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki.<a href="references.html#fn35" class="footnote-ref" id="fnref35"><sup>35</sup></a> Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.</p>
-<p>While it will never be possible to document all possible data scenarios that exist and what to do when they occur, there is an OHDSI work group trying to document common scenarios. THEMIS<a href="references.html#fn36" class="footnote-ref" id="fnref36"><sup>36</sup></a> is made up of individuals in the community who gather conventions, clarify them, share them with the community for comment, and then document finalized conventions in the CDM Wiki. Themis is an ancient Greek Titaness of divine order, fairness, law, natural law, and custom which seemed a good fit for this groups remit. When performing an ETL, if there is a scenario that you are unsure how to handle, THEMIS recommends that a question about the scenario is posed on the OHDSI Forums.<a href="references.html#fn37" class="footnote-ref" id="fnref37"><sup>37</sup></a> Most likely if you have a question, others in the community probably have it as well. THEMIS uses these discussions, as well as work group meetings and face-to-face discussions, to help inform what other conventions need to be documented.</p>
+<p>The OHDSI community started documenting conventions to improve consistency across CDMs. These defined conventions, that the OHDSI community has agreed upon, can be found on the CDM Wiki.<a href="#fn35" class="footnote-ref" id="fnref35"><sup>35</sup></a> Each CDM table has its own set of conventions that can be referred to when designing an ETL. For example, persons are allowed to be missing a birth month or day, but if they lack a birth year the person should be dropped. In designing an ETL, refer to the conventions to help make certain design decisions that will be consistent with the community.</p>
+<p>While it will never be possible to document all possible data scenarios that exist and what to do when they occur, there is an OHDSI work group trying to document common scenarios. THEMIS<a href="#fn36" class="footnote-ref" id="fnref36"><sup>36</sup></a> is made up of individuals in the community who gather conventions, clarify them, share them with the community for comment, and then document finalized conventions in the CDM Wiki. Themis is an ancient Greek Titaness of divine order, fairness, law, natural law, and custom which seemed a good fit for this groups remit. When performing an ETL, if there is a scenario that you are unsure how to handle, THEMIS recommends that a question about the scenario is posed on the OHDSI Forums.<a href="#fn37" class="footnote-ref" id="fnref37"><sup>37</sup></a> Most likely if you have a question, others in the community probably have it as well. THEMIS uses these discussions, as well as work group meetings and face-to-face discussions, to help inform what other conventions need to be documented.</p>
 </div>
 <div id="CDMandETLMaintenance" class="section level2">
 <h2><span class="header-section-number">6.7</span> CDM and ETL Maintenance</h2>
@@ -1131,7 +1131,7 @@ Figure 6.9: Usagi concept information panel.
 <li>The 80/20 rule. If you can avoid it do not spend too much time manually mapping source codes to concepts sets. Ideally, map the source codes that cover the majority of your data. This should be enough to get you started and you can address any remaining codes in the future based on use cases.</li>
 <li>It’s ok if you lose data that is not of research quality. Often these are the records that would be discarded before starting an analysis anyway, we just remove them during the ETL process instead.</li>
 <li>A CDM requires maintenance. Just because you complete an ETL does not mean you do not need to touch it ever again. Your raw data might change, there might be a bug in the code, there may be new vocabulary or an update to the CDM. Plan for an allocate resources to these changes so your ETL is always up-to-date.</li>
-<li>For support with getting started with the OHDSI CDM, performing your database conversion, or running the analytics tools, please visit our Implementers Forum.<a href="references.html#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a></li>
+<li>For support with getting started with the OHDSI CDM, performing your database conversion, or running the analytics tools, please visit our Implementers Forum.<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a></li>
 </ul>
 </div>
 <div id="summary-4" class="section level2">
@@ -1250,6 +1250,20 @@ Figure 6.10: Example source data.
 
 
 
+<div class="footnotes">
+<hr />
+<ol start="30">
+<li id="fn30"><p><a href="https://github.com/OHDSI/WhiteRabbit" class="uri">https://github.com/OHDSI/WhiteRabbit</a>.<a href="ExtractTransformLoad.html#fnref30" class="footnote-back">↩︎</a></p></li>
+<li id="fn31"><p>Synthea<sup>TM</sup> is a patient generator that aims to model real patients. Data are created based on parameters passed to the application.The structure of the data can be found here: <a href="https://github.com/synthetichealth/synthea/wiki" class="uri">https://github.com/synthetichealth/synthea/wiki</a>.<a href="ExtractTransformLoad.html#fnref31" class="footnote-back">↩︎</a></p></li>
+<li id="fn32"><p><a href="https://ohdsi.github.io/ETL-Synthea/" class="uri">https://ohdsi.github.io/ETL-Synthea/</a><a href="ExtractTransformLoad.html#fnref32" class="footnote-back">↩︎</a></p></li>
+<li id="fn33"><p><a href="https://translate.google.com/" class="uri">https://translate.google.com/</a><a href="ExtractTransformLoad.html#fnref33" class="footnote-back">↩︎</a></p></li>
+<li id="fn34"><p><a href="https://github.com/OHDSI/Usagi" class="uri">https://github.com/OHDSI/Usagi</a><a href="ExtractTransformLoad.html#fnref34" class="footnote-back">↩︎</a></p></li>
+<li id="fn35"><p><a href="https://github.com/OHDSI/CommonDataModel/wiki" class="uri">https://github.com/OHDSI/CommonDataModel/wiki</a>].<a href="ExtractTransformLoad.html#fnref35" class="footnote-back">↩︎</a></p></li>
+<li id="fn36"><p><a href="https://github.com/OHDSI/Themis" class="uri">https://github.com/OHDSI/Themis</a><a href="ExtractTransformLoad.html#fnref36" class="footnote-back">↩︎</a></p></li>
+<li id="fn37"><p><a href="http://forums.ohdsi.org/" class="uri">http://forums.ohdsi.org/</a><a href="ExtractTransformLoad.html#fnref37" class="footnote-back">↩︎</a></p></li>
+<li id="fn38"><p><a href="https://forums.ohdsi.org/c/implementers" class="uri">https://forums.ohdsi.org/c/implementers</a><a href="ExtractTransformLoad.html#fnref38" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>
@@ -1272,15 +1286,13 @@ Figure 6.10: Example source data.
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",

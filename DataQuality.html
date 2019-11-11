@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-10-09" />
+<meta name="date" content="2019-11-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -856,7 +856,7 @@ Figure 15.1: Unit testing an ETL (Extract-Transform-Load) process using the Rabb
 <p>Another assessment is to review the prevalence and changes in prevalence over time of the resulting cohorts generated using the cohort definitions developed for the study, and see whether these agree with expectations based on external clinical knowledge. For example, exposure of a new drug should be absent before introduction to the market, and will likely increase over time after introduction. Similarly, the prevalence of outcomes should be in line with what is known of the prevalence of the condition in the population. If a study is executed across a network of databases, we can compare the prevalence of cohorts across databases. If a cohort is highly prevalent in one database, but is missing in another database, there might be a DQ issue. Note that such an assessment overlaps with the notion of <em>clinical validity</em>, as discussed in Chapter <a href="ClinicalValidity.html#ClinicalValidity">16</a>; we may find unexpected prevalence in some databases not because of DQ issues, but because our cohort definition is not truly capturing the health states we are interested in, or because these health state rightly vary over databases that capture different patient populations.</p>
 <div id="checking-mappings" class="section level3">
 <h3><span class="header-section-number">15.3.1</span> Checking Mappings</h3>
-<p>One possible source of error that firmly falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker<a href="references.html#fn57" class="footnote-ref" id="fnref57"><sup>57</sup></a> and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard Concepts, but also the source codes. We can review both the source codes that map to the concepts used in the study, as well as those that don’t.</p>
+<p>One possible source of error that firmly falls under our control is the mapping of source codes to Standard Concepts. The mappings in the Vocabulary are meticulously crafted, and errors in the mapping that are noted by members of the community are reported in the Vocabulary issue tracker<a href="#fn57" class="footnote-ref" id="fnref57"><sup>57</sup></a> and fixed in future releases. Nevertheless, it is impossible to completely check all mappings by hand, and errors likely still exist. When performing a study, we therefore recommend reviewing the mappings for those concepts most relevant to the study. Fortunately, this can be achieved quite easily because in the CDM we store not only the Standard Concepts, but also the source codes. We can review both the source codes that map to the concepts used in the study, as well as those that don’t.</p>
 <p>One way to review the source codes that map is to use the <code>checkCohortSourceCodes</code> function in the <a href="https://ohdsi.github.io/MethodEvaluation/">MethodEvaluation</a> R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalence of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure <a href="DataQuality.html#fig:sourceCodes">15.2</a> shows a (partial) breakdown of a concept set called “Depressive disorder.” The most prevalent concept in this concept set in the database of interest is concept <a href="http://athena.ohdsi.org/search-terms/terms/440383">440383</a> (“Depressive disorder”). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-10 code F32.9 (“Major depressive disorder, single episode, unspecified”) should have also mapped to the concept. This problem has since been resolved in the Vocabulary.</p>
 <div class="figure" style="text-align: center"><span id="fig:sourceCodes"></span>
 <img src="images/DataQuality/sourceCodes.png" alt="Example output of the checkCohortSourceCodes function. " width="100%" />
@@ -1106,6 +1106,12 @@ Figure 15.8: Source codes used in the angioedema cohort definition.
 <p>Weiskopf, Nicole Gray, and Chunhua Weng. 2013. “Methods and Dimensions of Electronic Health Record Data Quality Assessment: Enabling Reuse for Clinical Research.” <em>Journal of the American Medical Informatics Association: JAMIA</em> 20 (1): 144–51. <a href="https://doi.org/10.1136/amiajnl-2011-000681">https://doi.org/10.1136/amiajnl-2011-000681</a>.</p>
 </div>
 </div>
+<div class="footnotes">
+<hr />
+<ol start="57">
+<li id="fn57"><p><a href="https://github.com/OHDSI/Vocabulary-v5.0/issues" class="uri">https://github.com/OHDSI/Vocabulary-v5.0/issues</a><a href="DataQuality.html#fnref57" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
             </section>
 
           </div>
@@ -1128,15 +1134,13 @@ Figure 15.8: Source codes used in the angioedema cohort definition.
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
