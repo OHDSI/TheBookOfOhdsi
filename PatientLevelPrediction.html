@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 Patient-Level Prediction | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.14.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.15.1 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 Patient-Level Prediction | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-11-11" />
+<meta name="date" content="2019-11-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -455,7 +455,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#the-prediction-problem"><i class="fa fa-check"></i><b>13.1</b> The Prediction Problem</a></li>
 <li class="chapter" data-level="13.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#data-extraction-2"><i class="fa fa-check"></i><b>13.2</b> Data Extraction</a><ul>
 <li class="chapter" data-level="13.2.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#data-extraction-example"><i class="fa fa-check"></i><b>13.2.1</b> Data Extraction Example</a></li>
-<li class="chapter" data-level="13.2.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#missingness"><i class="fa fa-check"></i><b>13.2.2</b> Missingness</a></li>
+<li class="chapter" data-level="13.2.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#negative-vs-missing"><i class="fa fa-check"></i><b>13.2.2</b> Negative vs Missing</a></li>
 </ul></li>
 <li class="chapter" data-level="13.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#modelFitting"><i class="fa fa-check"></i><b>13.3</b> Fitting the Model</a><ul>
 <li class="chapter" data-level="13.3.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>13.3.1</b> Regularized Logistic Regression</a></li>
@@ -826,9 +826,9 @@ Figure 13.1: The prediction problem.
 </table>
 <p>Based on this example data, and assuming the time at risk is the year following the index date (the target cohort start date), we can construct the covariates and the outcome status. A covariate indicating “Essential hypertension in the year prior” will have the value 0 (not present) for person ID 1 (the condition occurred <em>after</em> the index date), and the value 1 (present) for person ID 2. Similarly, the outcome status will be 0 for person ID 1 (this person had no entry in the outcome cohort), and 1 for person ID 2 (the outcome occurred within a year following the index date).</p>
 </div>
-<div id="missingness" class="section level3">
-<h3><span class="header-section-number">13.2.2</span> Missingness</h3>
-<p>Observational healthcare data rarely reflects whether data is missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present at that time, or because it was not recorded. It is important to realize that the machine learning algorithm cannot distinguish between the two scenarios and will simply assess the predictive value in the available data. </p>
+<div id="negative-vs-missing" class="section level3">
+<h3><span class="header-section-number">13.2.2</span> Negative vs Missing</h3>
+<p>Observational healthcare data rarely reflects whether value is negative or missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present (negative) at that time, or because it was not recorded (missing). It is important to realize that the machine learning algorithm cannot distinguish between the negative and missing and will simply assess the predictive value in the available data. </p>
 </div>
 </div>
 <div id="modelFitting" class="section level2">
@@ -1896,6 +1896,7 @@ Predictive models are not causal models, and predictors should not be mistaken f
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "linkedin": false,
@@ -1914,6 +1915,10 @@ gitbook.start({
 "text": "Edit"
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

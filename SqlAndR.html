@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 SQL and R | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.14.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.15.1 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 SQL and R | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2019-11-11" />
+<meta name="date" content="2019-11-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -455,7 +455,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#the-prediction-problem"><i class="fa fa-check"></i><b>13.1</b> The Prediction Problem</a></li>
 <li class="chapter" data-level="13.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#data-extraction-2"><i class="fa fa-check"></i><b>13.2</b> Data Extraction</a><ul>
 <li class="chapter" data-level="13.2.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#data-extraction-example"><i class="fa fa-check"></i><b>13.2.1</b> Data Extraction Example</a></li>
-<li class="chapter" data-level="13.2.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#missingness"><i class="fa fa-check"></i><b>13.2.2</b> Missingness</a></li>
+<li class="chapter" data-level="13.2.2" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#negative-vs-missing"><i class="fa fa-check"></i><b>13.2.2</b> Negative vs Missing</a></li>
 </ul></li>
 <li class="chapter" data-level="13.3" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#modelFitting"><i class="fa fa-check"></i><b>13.3</b> Fitting the Model</a><ul>
 <li class="chapter" data-level="13.3.1" data-path="PatientLevelPrediction.html"><a href="PatientLevelPrediction.html#regularized-logistic-regression"><i class="fa fa-check"></i><b>13.3.1</b> Regularized Logistic Regression</a></li>
@@ -946,7 +946,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="SqlAndR.html#cb30-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb30-2"><a href="SqlAndR.html#cb30-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.qlmy9zm3children ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.ysop5dmxchildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -1609,6 +1609,7 @@ Figure 9.2: QueryLibrary: a library of SQL queries against the CDM.
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "linkedin": false,
@@ -1627,6 +1628,10 @@ gitbook.start({
 "text": "Edit"
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

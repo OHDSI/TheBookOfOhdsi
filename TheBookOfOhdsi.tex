@@ -73,7 +73,11 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
-\usepackage{graphicx,grffile}
+\usepackage{graphicx}
+% grffile has become a legacy package: https://ctan.org/pkg/grffile
+\IfFileExists{grffile.sty}{%
+\usepackage{grffile}
+}{}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -126,7 +130,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{2019-11-11}
+    \date{2019-11-20}
 
 \usepackage{booktabs}
 \usepackage{longtable}
@@ -4794,7 +4798,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.d8xhm30ochildren ;"
+## [1] "SELECT * FROM temp_schema.yjnconlxchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -8590,10 +8594,10 @@ PERSON\_ID & CONDITION\_CONCEPT\_ID & CONDITION\_START\_DATE\tabularnewline
 
 Based on this example data, and assuming the time at risk is the year following the index date (the target cohort start date), we can construct the covariates and the outcome status. A covariate indicating ``Essential hypertension in the year prior'' will have the value 0 (not present) for person ID 1 (the condition occurred \emph{after} the index date), and the value 1 (present) for person ID 2. Similarly, the outcome status will be 0 for person ID 1 (this person had no entry in the outcome cohort), and 1 for person ID 2 (the outcome occurred within a year following the index date).
 
-\hypertarget{missingness}{%
-\subsection{Missingness}\label{missingness}}
+\hypertarget{negative-vs-missing}{%
+\subsection{Negative vs Missing}\label{negative-vs-missing}}
 
-Observational healthcare data rarely reflects whether data is missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present at that time, or because it was not recorded. It is important to realize that the machine learning algorithm cannot distinguish between the two scenarios and will simply assess the predictive value in the available data. \index{missing data}
+Observational healthcare data rarely reflects whether value is negative or missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present (negative) at that time, or because it was not recorded (missing). It is important to realize that the machine learning algorithm cannot distinguish between the negative and missing and will simply assess the predictive value in the available data. \index{missing data}
 
 \hypertarget{modelFitting}{%
 \section{Fitting the Model}\label{modelFitting}}
