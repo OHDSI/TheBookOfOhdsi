@@ -92,7 +92,7 @@ Based on this example data, and assuming the time at risk is the year following 
 
 ### Negative vs Missing
 
-Observational healthcare data rarely reflects whether value is negative or missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present (negative) at that time, or because it was not recorded (missing). It is important to realize that the machine learning algorithm cannot distinguish between the negative and missing and will simply assess the predictive value in the available data. \index{missing data}
+Observational healthcare data rarely reflects whether a value is negative or missing. In the prior example, we simply observed the person with ID 1 had no essential hypertension occurrence prior to the index date. This could be because the condition was not present (negative) at that time, or because it was not recorded (missing). It is important to realize that the machine learning algorithm cannot distinguish between the negative and missing and will simply assess the predictive value in the available data. \index{missing data}
 
 ## Fitting the Model {#modelFitting}
 
