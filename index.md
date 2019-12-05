@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Sciences and Informatics"
-date: "2019-11-20"
+date: "2019-12-05"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -53,27 +53,47 @@ Each section has multiple chapters, and, as appropriate, each chapter follows th
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapter. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
 
-------------------  -----------------  ---------------------
-Hamed Abedtash      Mustafa Ascha      Mark Beno            
-Clair Blacketer     David Blatt        Brian Christian      
-Gino Cloft          Frank DeFalco      Sara Dempster        
-Jon Duke            Sergio Eslava      Clark Evans          
-Thomas Falconer     George Hripcsak    Vojtech Huser        
-Mark Khayter        Greg Klebanov      Kristin Kostka       
-Bob Lanese          Wanda Lattimore    Chun Li              
-David Madigan       Sindhoosha Malay   Harry Menegay        
-Akihiko Nishimura   Ellen Palmer       Nirav Patil          
-Jose Posada         Nicole Pratt       Dani Prieto-Alhambra 
-Christian Reich     Jenna Reps         Peter Rijnbeek       
-Patrick Ryan        Craig Sachson      Izzy Saridakis       
-Paola Saroufim      Martijn Schuemie   Sarah Seager         
-Anthony Sena        Chan Seng You      Sunah Song           
-Matt Spotnitz       Marc Suchard       Joel Swerdel         
-Devin Tian          Don Torok          Kees van Bochove     
-Mui Van Zandt       Erica Voss         Kristin Waite        
-Mike Warfe          Jamie Weaver       James Wiggins        
-Andrew Williams     Chan You Seng                           
-------------------  -----------------  ---------------------
+\begin{tabular}{l|l|l}
+\hline
+Hamed Abedtash & Mustafa Ascha & Mark Beno\\
+\hline
+Clair Blacketer & David Blatt & Brian Christian\\
+\hline
+Gino Cloft & Frank DeFalco & Sara Dempster\\
+\hline
+Jon Duke & Sergio Eslava & Clark Evans\\
+\hline
+Thomas Falconer & George Hripcsak & Vojtech Huser\\
+\hline
+Mark Khayter & Greg Klebanov & Kristin Kostka\\
+\hline
+Bob Lanese & Wanda Lattimore & Chun Li\\
+\hline
+David Madigan & Sindhoosha Malay & Harry Menegay\\
+\hline
+Akihiko Nishimura & Ellen Palmer & Nirav Patil\\
+\hline
+Jose Posada & Nicole Pratt & Dani Prieto-Alhambra\\
+\hline
+Christian Reich & Jenna Reps & Peter Rijnbeek\\
+\hline
+Patrick Ryan & Craig Sachson & Izzy Saridakis\\
+\hline
+Paola Saroufim & Martijn Schuemie & Sarah Seager\\
+\hline
+Anthony Sena & Chan Seng You & Sunah Song\\
+\hline
+Matt Spotnitz & Marc Suchard & Joel Swerdel\\
+\hline
+Devin Tian & Don Torok & Kees van Bochove\\
+\hline
+Mui Van Zandt & Erica Voss & Kristin Waite\\
+\hline
+Mike Warfe & Jamie Weaver & James Wiggins\\
+\hline
+Andrew Williams & Chan You Seng & \\
+\hline
+\end{tabular}
 
 ## Software Versions {-}
 
@@ -84,25 +104,33 @@ A large part of this book is about the open-source software of OHDSI, and this s
 - EUNOMIA: version 1.0.0
 - Methods Library packages: see Table \@ref(tab:packageVersions)
 
+\begin{table}
 
-Table: (\#tab:packageVersions)Versions of packages in the Methods Library used in this book.
-
-Package                    Version 
--------------------------  --------
-CaseControl                1.6.0   
-CaseCrossover              1.1.0   
-CohortMethod               3.1.0   
-Cyclops                    2.0.2   
-DatabaseConnector          2.4.1   
-EmpiricalCalibration       2.0.0   
-EvidenceSynthesis          0.0.4   
-FeatureExtraction          2.2.4   
-MethodEvaluation           1.1.0   
-ParallelLogger             1.1.0   
-PatientLevelPrediction     3.0.6   
-SelfControlledCaseSeries   1.4.0   
-SelfControlledCohort       1.5.0   
-SqlRender                  1.6.2   
+\caption{(\#tab:packageVersions)Versions of packages in the Methods Library used in this book.}
+\centering
+\begin{tabular}[t]{ll}
+\toprule
+Package & Version\\
+\midrule
+CaseControl & 1.6.0\\
+CaseCrossover & 1.1.0\\
+CohortMethod & 3.1.0\\
+Cyclops & 2.0.2\\
+DatabaseConnector & 2.4.1\\
+\addlinespace
+EmpiricalCalibration & 2.0.0\\
+EvidenceSynthesis & 0.0.4\\
+FeatureExtraction & 2.2.4\\
+MethodEvaluation & 1.1.0\\
+ParallelLogger & 1.1.0\\
+\addlinespace
+PatientLevelPrediction & 3.0.6\\
+SelfControlledCaseSeries & 1.4.0\\
+SelfControlledCohort & 1.5.0\\
+SqlRender & 1.6.2\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 ## License {-}
 

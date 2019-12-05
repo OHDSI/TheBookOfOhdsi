@@ -138,19 +138,27 @@ As manuscripts are written, each participating collaborator is encouraged to rev
 
 The current network study process is manual -- with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, sharing code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes. 
 
-<div class="figure" style="text-align: center">
-<img src="images/NetworkStudies/ARACHNE.png" alt="The ARACHNE Network Study Process." width="90%" />
-<p class="caption">(\#fig:arachne)The ARACHNE Network Study Process.</p>
-</div>
+\begin{figure}[h]
+
+{\centering \includegraphics[width=0.9\linewidth]{images/NetworkStudies/ARACHNE} 
+
+}
+
+\caption{The ARACHNE Network Study Process.}(\#fig:arachne)
+\end{figure}
 
 ARACHNE is a platform that is designed to streamline and automate the process of conducting network studies. ARACHNE uses OHDSI standards and establishes a consistent, transparent, secure and compliant observational research process across multiple organizations. ARACHNE standardizes the communication protocol to access the data and exchange analysis results, while enabling authentication and authorization for restricted content. It brings participating organizations - data providers, investigators, sponsors and data scientists - into a single collaborative study team and facilitates an end-to-end observational study coordination. The tool enables the creation of a complete, standards-based R, Python and SQL execution environment including approval workflows controlled by the data custodian.
  
 ARACHNE is built to provide a seamless integration with other OHDSI tools, including ACHILLES reports and an ability to import ATLAS design artifacts, create self-contained packages and automatically execute those across multiple sites. The future vision is to eventually enable multiple networks to be linked together for the purpose of conducting research not only between organizations within a single network, but also between organizations across multiple networks. 
 
-<div class="figure" style="text-align: center">
-<img src="images/NetworkStudies/ARACHNENON.png" alt="The ARACHNE Network of Networks." width="90%" />
-<p class="caption">(\#fig:arachneNon)The ARACHNE Network of Networks.</p>
-</div>
+\begin{figure}[h]
+
+{\centering \includegraphics[width=0.9\linewidth]{images/NetworkStudies/ARACHNENON} 
+
+}
+
+\caption{The ARACHNE Network of Networks.}(\#fig:arachneNon)
+\end{figure}
  
 ## Best Practice for OHDSI Network Studies
 

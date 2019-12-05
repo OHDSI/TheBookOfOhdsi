@@ -9,10 +9,14 @@ The OHDSI community represents a mosaic of stakeholders across academia, industr
 ## Join the Journey 
 Everyone is welcome to actively participate in OHDSI, whether you are a patient, a health professional, a researcher, or someone who simply believes in our cause. OHDSI maintains an inclusive membership model. To become an OHDSI collaborator requires no membership fee. Collaboration is as simple as raising a hand to be included in the yearly OHDSI membership count. Involvement is entirely at-will. A collaborator can have any level of contribution within the community, ranging from someone who attends weekly community calls to leading network studies or OHDSI working groups. Collaborators do not have to be data holders to be considered active members of the community. The OHDSI community aims to serve data holders, researchers, health care providers and patients & consumers alike. A record of collaborator profiles are maintained and periodically updated on the OHDSI website. Membership is fostered via OHDSI community calls, workgroups and regional chapters.\index{join the journey} \index{workgroups} \index{chapters}
 
-<div class="figure" style="text-align: center">
-<img src="images/WhereToBegin/joinTheJourney.png" alt="Join the journey - How to become an OHDSI collaborator." width="90%" />
-<p class="caption">(\#fig:jointhejourney)Join the journey - How to become an OHDSI collaborator.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/WhereToBegin/joinTheJourney} 
+
+}
+
+\caption{Join the journey - How to become an OHDSI collaborator.}(\#fig:jointhejourney)
+\end{figure}
 
 
 ### OHDSI Forums
