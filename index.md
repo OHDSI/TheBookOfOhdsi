@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Sciences and Informatics"
-date: "2019-12-06"
+date: "2020-02-05"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -81,17 +81,17 @@ Patrick Ryan & Craig Sachson & Izzy Saridakis\\
 \hline
 Paola Saroufim & Martijn Schuemie & Sarah Seager\\
 \hline
-Anthony Sena & Chan Seng You & Sunah Song\\
+Anthony Sena & Sunah Song & Matt Spotnitz\\
 \hline
-Matt Spotnitz & Marc Suchard & Joel Swerdel\\
+Marc Suchard & Joel Swerdel & Devin Tian\\
 \hline
-Devin Tian & Don Torok & Kees van Bochove\\
+Don Torok & Kees van Bochove & Mui Van Zandt\\
 \hline
-Mui Van Zandt & Erica Voss & Kristin Waite\\
+Erica Voss & Kristin Waite & Mike Warfe\\
 \hline
-Mike Warfe & Jamie Weaver & James Wiggins\\
+Jamie Weaver & James Wiggins & Andrew Williams\\
 \hline
-Andrew Williams & Chan You Seng & \\
+Seng Chan You &  & \\
 \hline
 \end{tabular}
 
