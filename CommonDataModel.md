@@ -148,7 +148,7 @@ Endometriosis is a painful condition whereby cells normally found in the lining 
 
 > Every step of this painful journey I had to convince everyone how much pain I was in.
 
-Lauren had been experiencing endometriosis symptoms for many years; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at [https://www.endometriosis-uk.org/laurens-story](https://www.endometriosis-uk.org/laurens-story).
+Lauren had been experiencing endometriosis symptoms for many years; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at [https://endometriosis-uk.org/laurens-story](https://endometriosis-uk.org/laurens-story).
 
 ### PERSON Table{#person}
 
