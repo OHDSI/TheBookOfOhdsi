@@ -9,14 +9,10 @@ The OHDSI community represents a mosaic of stakeholders across academia, industr
 ## Join the Journey 
 Everyone is welcome to actively participate in OHDSI, whether you are a patient, a health professional, a researcher, or someone who simply believes in our cause. OHDSI maintains an inclusive membership model. To become an OHDSI collaborator requires no membership fee. Collaboration is as simple as raising a hand to be included in the yearly OHDSI membership count. Involvement is entirely at-will. A collaborator can have any level of contribution within the community, ranging from someone who attends weekly community calls to leading network studies or OHDSI working groups. Collaborators do not have to be data holders to be considered active members of the community. The OHDSI community aims to serve data holders, researchers, health care providers and patients & consumers alike. A record of collaborator profiles are maintained and periodically updated on the OHDSI website. Membership is fostered via OHDSI community calls, workgroups and regional chapters.\index{join the journey} \index{workgroups} \index{chapters}
 
-\begin{figure}
-
-{\centering \includegraphics[width=0.9\linewidth]{images/WhereToBegin/joinTheJourney} 
-
-}
-
-\caption{Join the journey - How to become an OHDSI collaborator.}(\#fig:jointhejourney)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/WhereToBegin/joinTheJourney.png" alt="Join the journey - How to become an OHDSI collaborator." width="90%" />
+<p class="caption">(\#fig:jointhejourney)Join the journey - How to become an OHDSI collaborator.</p>
+</div>
 
 
 ### OHDSI Forums
@@ -96,7 +92,7 @@ By now, you may be wondering: *where do I fit into the OHDSI Community?*
 
 **I am a clinical researcher looking to start a study.** If you are a clinical researcher interesting in using the OHDSI Research Network to answer a specific question -- maybe even publish a paper -- you're in the right place. You can start by posting your idea to the [OHDSI Researchers Topic](https://forums.ohdsi.org/c/researchers) on the OHDSI Forum. This will help you connect with researchers of similar interest. OHDSI loves to publish and has many resources available to expedite turning your research question into an analysis and a paper. You can find more information in Chapters \@ref(Characterization), \@ref(PopulationLevelEstimation), and \@ref(PatientLevelPrediction).
 
-**I want to read and consume the information the OHDSI community is produce.** Whether you're a patient, a practicing clinician or subject matter expertise in healthcare, OHDSI wants to provide you with high quality evidence to help you better understand health outcomes. Maybe it's been a while since you have written code. Maybe you never program. You have a place in this community.  We call you an *evidence consumer* -- you are the individuals who are turning OHDSI research into action. You are sifting through to know what evidence OHDSI has generated and is generating, possibly also wanting to suggest questions relevant for you. We welcome you to join the discussion. Start asking questions on the [OHDSI Forum](http://forum.ohdsi.org). Attend Community Calls and hear about the latest research. Attend the OHDSI Symposiums and Face-to-Face Meetings to engage directly with the community. Your questions are an important part of the OHDSI community. Speak up and help us learn more about what evidence you are searching for!
+**I want to read and consume the information the OHDSI community produces.** Whether you're a patient, a practicing clinician or subject matter expertise in healthcare, OHDSI wants to provide you with high quality evidence to help you better understand health outcomes. Maybe it's been a while since you have written code. Maybe you never program. You have a place in this community.  We call you an *evidence consumer* -- you are the individuals who are turning OHDSI research into action. You are sifting through to know what evidence OHDSI has generated and is generating, possibly also wanting to suggest questions relevant for you. We welcome you to join the discussion. Start asking questions on the [OHDSI Forum](http://forum.ohdsi.org). Attend Community Calls and hear about the latest research. Attend the OHDSI Symposiums and Face-to-Face Meetings to engage directly with the community. Your questions are an important part of the OHDSI community. Speak up and help us learn more about what evidence you are searching for!
 
 **I work in a healthcare leadership role. I may be a data owner and/or represent one. I am evaluating the utility of the OMOP CDM and OHDSI analytical tools for my organization.** As an administrator/leader of an organization, you may have heard about OHDSI and are curious to know the OMOP CDM could work for your use cases. You may start by looking through [OHDSI Past Events](https://www.ohdsi.org/past-events/) materials to see the body of research. You may join a Community Call and simply listen in. You may also find that Chapter \@ref(DataAnalyticsUseCases) (Data Analytics Use Cases) helps you understand the kind of research the OMOP CDM and OHDSI analytics tools can enable. The OHDSI Community is here for you in your journey. Don't be afraid to speak up and ask for examples if you have specific areas you're interested in. More than 200 organizations around the world are collaborating in OHDSI, there's plenty of success stories to help showcase the value of this community.
 

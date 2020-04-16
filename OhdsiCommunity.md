@@ -16,14 +16,10 @@ For more than a decade, many have argued for the vision of a **learning healthca
 
 Why? In part, because the journey from patient-level data to reliable evidence is an arduous one. There is no single defined path from data to evidence, and no single map that can help to navigate along the way. In fact, there is no single notion of "data," nor is there a singular notion of "evidence."
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiCommunity/datajourney} 
-
-}
-
-\caption{The journey from data to evidence}(\#fig:datajourney)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiCommunity/datajourney.png" alt="The journey from data to evidence" width="100%" />
+<p class="caption">(\#fig:datajourney)The journey from data to evidence</p>
+</div>
 
 There are different types of observational databases which capture disparate patient-level data in source systems. These databases are as diverse as the healthcare system itself, reflecting different populations, care settings, and data capture processes. There are also different types of evidence that could be useful to inform decision-making, which can be classified by the analytic use cases of clinical characterization, population-level effect estimation, and patient-level prediction. Independent from the origin (source data) and desired destination (evidence), the challenge is further complicated by the breadth of clinical, scientific, and technical competencies that are required to undertake the journey. It requires a thorough understanding of health informatics, including its full provenance of the source data from the point-of-care interaction between a patient and provider through the administrative and clinical systems and into final repository, with an appreciation of the biases that can arise as part of the health policies and behavioral incentives associated with the data capture and curation processes. It requires mastery of epidemiologic principles and statistical methods to translate a clinical question into an observational study design properly suited to produce a relevant answer. It requires the technical ability to implement and execute computationally-efficient data science algorithms to datasets containing millions of patients with billions of clinical observations over years of longitudinal follow-up. It requires the clinical knowledge to synthesize what has been learned across an observational data network with evidence from other information sources, and to determine how this new knowledge should impact health policy and clinical practice. Accordingly, it is quite rare that any one individual would possess the requisite skills and resources to successfully trek from data to evidence alone. Instead, the journey often requires collaboration across multiple individuals and organizations to ensure that the best available data are analyzed using the most appropriate methods to produce the evidence that all stakeholders can trust and use in their decision-making processes.
 
@@ -79,14 +75,10 @@ OHDSI has grown since its inception in 2014 to include over 2,500 collaborators 
 
 [^collaboratorUrl]: https://www.ohdsi.org/who-we-are/collaborators/
 
-\begin{figure}
-
-{\centering \includegraphics[width=1\linewidth]{images/OhdsiCommunity/mapOfCollaborators} 
-
-}
-
-\caption{Map of OHDSI collaborators as of August, 2019}(\#fig:collaboratormap)
-\end{figure}
+<div class="figure" style="text-align: center">
+<img src="images/OhdsiCommunity/mapOfCollaborators.png" alt="Map of OHDSI collaborators as of August, 2019" width="100%" />
+<p class="caption">(\#fig:collaboratormap)Map of OHDSI collaborators as of August, 2019</p>
+</div>
 
 As of August, 2019, OHDSI has also established a data network of over 100 different healthcare databases from over 20 countries, collectively capturing over one billion patient records by applying a distributed network approach using an open-community data standard it maintains, the OMOP CDM. A distributed network means that patient-level data are not required to be shared between individuals or organizations. Instead, research questions are asked by individuals within the community in the form of a study protocol and accompanied by analysis code that generates evidence as a set of aggregated summary statistics, and only these summary statistics are shared amongst the partners who opt to collaborate in the study. With the OHDSI distributed network, each data partner retains full autonomy over the use of their patient-level data, and continues to observe the data governance policies within their respective institutions. 
 

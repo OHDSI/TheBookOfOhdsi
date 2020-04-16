@@ -1,37 +1,48 @@
-\documentclass[11pt]{book}
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  11pt]{book}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fixltx2e} % provides \textsubscript
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
-\else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
-  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-    \setmainfont[]{Times New Roman}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+  \setmainfont[]{Times New Roman}
 \fi
-% use upquote if available, for straight quotes in verbatim environments
+% Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-% use microtype if available
-\IfFileExists{microtype.sty}{%
-\usepackage{microtype}
-\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={The Book of OHDSI},
+  pdfauthor={Observational Health Data Sciences and Informatics},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[paperheight=10in,paperwidth=7in,margin=1in,inner=1in,outer=0.65in,top=0.8in,bottom=0.8in]{geometry}
-\usepackage{hyperref}
-\hypersetup{unicode=true,
-            pdftitle={The Book of OHDSI},
-            pdfauthor={Observational Health Data Sciences and Informatics},
-            pdfborder={0 0 0},
-            breaklinks=true}
-\urlstyle{same}  % don't use monospace font for urls
-\usepackage{natbib}
-\bibliographystyle{apalike}
 \usepackage{color}
 \usepackage{fancyvrb}
 \newcommand{\VerbBar}{|}
@@ -73,11 +84,15 @@
 \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs}
-\usepackage{graphicx}
-% grffile has become a legacy package: https://ctan.org/pkg/grffile
-\IfFileExists{grffile.sty}{%
-\usepackage{grffile}
-}{}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -86,52 +101,14 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
-\setlength{\emergencystretch}{3em}  % prevent overfull lines
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
-% Redefines (sub)paragraphs to behave more like sections
-\ifx\paragraph\undefined\else
-\let\oldparagraph\paragraph
-\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
-\fi
-\ifx\subparagraph\undefined\else
-\let\oldsubparagraph\subparagraph
-\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
-\fi
-
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
-
-%%% Change title format to be more compact
-\usepackage{titling}
-
-% Create subtitle command for use in maketitle
-\providecommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
-\setlength{\droptitle}{-2em}
-
-  \title{The Book of OHDSI}
-    \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
-    \author{Observational Health Data Sciences and Informatics}
-    \preauthor{\centering\large\emph}
-  \postauthor{\par}
-      \predate{\centering\large\emph}
-  \postdate{\par}
-    \date{2019-11-20}
-
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{amsthm}
@@ -292,6 +269,12 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+\usepackage[]{natbib}
+\bibliographystyle{apalike}
+
+\title{The Book of OHDSI}
+\author{Observational Health Data Sciences and Informatics}
+\date{2020-04-16}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -385,17 +368,17 @@ Patrick Ryan & Craig Sachson & Izzy Saridakis\\
 \hline
 Paola Saroufim & Martijn Schuemie & Sarah Seager\\
 \hline
-Anthony Sena & Chan Seng You & Sunah Song\\
+Anthony Sena & Sunah Song & Matt Spotnitz\\
 \hline
-Matt Spotnitz & Marc Suchard & Joel Swerdel\\
+Marc Suchard & Joel Swerdel & Devin Tian\\
 \hline
-Devin Tian & Don Torok & Kees van Bochove\\
+Don Torok & Kees van Bochove & Mui Van Zandt\\
 \hline
-Mui Van Zandt & Erica Voss & Kristin Waite\\
+Erica Voss & Kristin Waite & Mike Warfe\\
 \hline
-Mike Warfe & Jamie Weaver & James Wiggins\\
+Jamie Weaver & James Wiggins & Andrew Williams\\
 \hline
-Andrew Williams & Chan You Seng & \\
+Seng Chan You &  & \\
 \hline
 \end{tabular}
 
@@ -825,7 +808,7 @@ By now, you may be wondering: \emph{where do I fit into the OHDSI Community?}
 
 \textbf{I am a clinical researcher looking to start a study.} If you are a clinical researcher interesting in using the OHDSI Research Network to answer a specific question -- maybe even publish a paper -- you're in the right place. You can start by posting your idea to the \href{https://forums.ohdsi.org/c/researchers}{OHDSI Researchers Topic} on the OHDSI Forum. This will help you connect with researchers of similar interest. OHDSI loves to publish and has many resources available to expedite turning your research question into an analysis and a paper. You can find more information in Chapters \ref{Characterization}, \ref{PopulationLevelEstimation}, and \ref{PatientLevelPrediction}.
 
-\textbf{I want to read and consume the information the OHDSI community is produce.} Whether you're a patient, a practicing clinician or subject matter expertise in healthcare, OHDSI wants to provide you with high quality evidence to help you better understand health outcomes. Maybe it's been a while since you have written code. Maybe you never program. You have a place in this community. We call you an \emph{evidence consumer} -- you are the individuals who are turning OHDSI research into action. You are sifting through to know what evidence OHDSI has generated and is generating, possibly also wanting to suggest questions relevant for you. We welcome you to join the discussion. Start asking questions on the \href{http://forum.ohdsi.org}{OHDSI Forum}. Attend Community Calls and hear about the latest research. Attend the OHDSI Symposiums and Face-to-Face Meetings to engage directly with the community. Your questions are an important part of the OHDSI community. Speak up and help us learn more about what evidence you are searching for!
+\textbf{I want to read and consume the information the OHDSI community produces.} Whether you're a patient, a practicing clinician or subject matter expertise in healthcare, OHDSI wants to provide you with high quality evidence to help you better understand health outcomes. Maybe it's been a while since you have written code. Maybe you never program. You have a place in this community. We call you an \emph{evidence consumer} -- you are the individuals who are turning OHDSI research into action. You are sifting through to know what evidence OHDSI has generated and is generating, possibly also wanting to suggest questions relevant for you. We welcome you to join the discussion. Start asking questions on the \href{http://forum.ohdsi.org}{OHDSI Forum}. Attend Community Calls and hear about the latest research. Attend the OHDSI Symposiums and Face-to-Face Meetings to engage directly with the community. Your questions are an important part of the OHDSI community. Speak up and help us learn more about what evidence you are searching for!
 
 \textbf{I work in a healthcare leadership role. I may be a data owner and/or represent one. I am evaluating the utility of the OMOP CDM and OHDSI analytical tools for my organization.} As an administrator/leader of an organization, you may have heard about OHDSI and are curious to know the OMOP CDM could work for your use cases. You may start by looking through \href{https://www.ohdsi.org/past-events/}{OHDSI Past Events} materials to see the body of research. You may join a Community Call and simply listen in. You may also find that Chapter \ref{DataAnalyticsUseCases} (Data Analytics Use Cases) helps you understand the kind of research the OMOP CDM and OHDSI analytics tools can enable. The OHDSI Community is here for you in your journey. Don't be afraid to speak up and ask for examples if you have specific areas you're interested in. More than 200 organizations around the world are collaborating in OHDSI, there's plenty of success stories to help showcase the value of this community.
 
@@ -1182,7 +1165,7 @@ Endometriosis is a painful condition whereby cells normally found in the lining 
 Every step of this painful journey I had to convince everyone how much pain I was in.
 \end{quote}
 
-Lauren had been experiencing endometriosis symptoms for many years; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at \url{https://www.endometriosis-uk.org/laurens-story}.
+Lauren had been experiencing endometriosis symptoms for many years; however, it took a ruptured cyst in her ovary before she was diagnosed. You can read more about Lauren at \url{https://endometriosis-uk.org/laurens-story}.
 
 \hypertarget{person}{%
 \subsection{PERSON Table}\label{person}}
@@ -4798,7 +4781,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.kefo0gk7children ;"
+## [1] "SELECT * FROM temp_schema.u701opprchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -7310,7 +7293,7 @@ The self-controlled cohort (SCC) design \citep{ryan_2013} compares the rate of o
 
 \caption{\label{tab:sccChoices}Main design choices in a self-controlled cohort design.}
 \centering
-\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
+\begin{tabular}[t]{l>{\raggedright\arraybackslash}p{9cm}}
 \toprule
 Choice & Description\\
 \midrule
@@ -7319,7 +7302,7 @@ Outcome cohort & A cohort representing the outcome of interest\\
 Time-at-risk & At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?\\
 Control time & The time period used as the control time\\
 \bottomrule
-\end{tabu}
+\end{tabular}
 \end{table}
 
 Because the same subject that make up the exposed group are also used as the control group, no adjustment for between-person differences need to be made. However, the method is vulnerable to other differences, such as differences in the baseline risk of the outcome between different time periods.
@@ -7344,7 +7327,7 @@ Case-control studies \citep{vandenbroucke_2012} consider the question ``are pers
 
 \caption{\label{tab:ccChoices}Main design choices in a case-control design.}
 \centering
-\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
+\begin{tabular}[t]{l>{\raggedright\arraybackslash}p{9cm}}
 \toprule
 Choice & Description\\
 \midrule
@@ -7354,7 +7337,7 @@ Target cohort & A cohort representing the treatment\\
 Nesting cohort & Optionally, a cohort defining the subpopulation from which cases and controls are drawn\\
 Time-at-risk & At what time (often relative to the index date) do we consider exposure status?\\
 \bottomrule
-\end{tabu}
+\end{tabular}
 \end{table}
 
 Often, one selects controls to match cases based on characteristics such as age and sex to make them more comparable. Another widespread practice is to nest the analysis within a specific subgroup of people, for example people that have all been diagnosed with one of the indications of the exposure of interest.
@@ -7379,7 +7362,7 @@ The case-crossover \citep{maclure_1991} design evaluates whether the rate of exp
 
 \caption{\label{tab:ccrChoices}Main design choices in a case-crossover design.}
 \centering
-\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
+\begin{tabular}[t]{l>{\raggedright\arraybackslash}p{9cm}}
 \toprule
 Choice & Description\\
 \midrule
@@ -7388,7 +7371,7 @@ Target cohort & A cohort representing the treatment\\
 Time-at-risk & At what time (often relative to the index date) do we consider exposure status?\\
 Control time & The time period used as the control time\\
 \bottomrule
-\end{tabu}
+\end{tabular}
 \end{table}
 
 Cases serve as their own controls. As self-controlled designs, they should be robust to confounding due to between-person differences. One concern is that, because the outcome date is always later than the control date, the method will be positively biased if the overall frequency of exposure increases over time (or negatively biased if there is a decrease). To address this, the case-time-control design \citep{suissa_1995} was developed, which adds controls, matched for example on age and sex, to the case-crossover design to adjust for exposure trends. \index{case-time-control design}
@@ -7413,7 +7396,7 @@ The Self-Controlled Case Series (SCCS) design \citep{farrington_1995, whitaker_2
 
 \caption{\label{tab:sccsChoices}Main design choices in a self-controlled case series design.}
 \centering
-\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedright\arraybackslash}p{9cm}}
+\begin{tabular}[t]{l>{\raggedright\arraybackslash}p{9cm}}
 \toprule
 Choice & Description\\
 \midrule
@@ -7422,7 +7405,7 @@ Outcome cohort & A cohort representing the outcome of interest\\
 Time-at-risk & At what time (often relative to the target cohort start and end dates) do we consider the risk of the outcome?\\
 Model & The model to estimate the effect, including any adjustments for time-varying confounders\\
 \bottomrule
-\end{tabu}
+\end{tabular}
 \end{table}
 
 Like other self-controlled designs, the SCCS is robust to confounding due to between-person differences, but vulnerable to confounding due to time-varying effects. Several adjustments are possible to attempt to account for these, for example by including age and season. A special variant of the SCCS includes not just the exposure of interest, but all other exposures to drugs recorded in the database \citep{simpson_2013} potentially adding thousands of additional variables to the model. L1-regularization using cross-validation to select the regularization hyperparameter is applied to the coefficients of all exposures except the exposure of interest.
@@ -11502,7 +11485,7 @@ We compute a calibrated CI that uses the systematic error model. Let \(\hat{\the
 
 \[\hat{\theta}_{n+1} \sim N(
 \theta_{n+1} + \hat{a} + \hat{b} \times \theta_{n+1},
-\hat{c} + \hat{d} \times \mid \theta_{n+1} \mid) + \hat{\tau}_{n+1}^2) .\]
+\hat{c} + \hat{d} \times \mid \theta_{n+1} \mid + \hat{\tau}_{n+1}^2) .\]
 
 We find the lower bound of the calibrated 95\% CI by solving this equation for \(\theta_{n+1}\):
 
@@ -15138,10 +15121,9 @@ To view the list of data quality checks:
 \end{Highlighting}
 \end{Shaded}
 
-\bibliography{book.bib,packages.bib}
+  \bibliography{book.bib,packages.bib}
 
 \backmatter
 \printindex
-
 
 \end{document}
