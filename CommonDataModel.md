@@ -394,7 +394,18 @@ The Eunomia package provides a simulated dataset in the CDM that will run inside
 connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 ```
 
-The CDM database schema is "main".
+The CDM database schema is "main". This is a SQL query example to retrieve one row of the CONDITION_OCCURRENCE table:
+
+
+```r
+library(DatabaseConnector)
+connection <- connect(connectionDetails)
+sql <- "SELECT *
+FROM @cdm.condition_occurrence
+LIMIT 1;"
+result <- renderTranslateQuerySql(connection, sql, cdm = "main")
+```
+
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseGiBleedRecords"><strong>(\#exr:exerciseGiBleedRecords) </strong></span>Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" (with concept ID [192671](http://athena.ohdsi.org/search-terms/terms/192671)).
 </div>\EndKnitrBlock{exercise}

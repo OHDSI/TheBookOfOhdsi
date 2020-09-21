@@ -848,7 +848,7 @@ The Shiny app opens with a summary of the performance metrics on the test and tr
 <p class="caption">(\#fig:shinyROC)The ROC plot.</p>
 </div>
 
-The calibration plot in Figure \@ref(fig:shinyCal) shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \@ref(fig:shinyDemo) however shows that the model is not well calibrated for the younger patients, as the curved line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
+The calibration plot in Figure \@ref(fig:shinyCal) shows that generally the observed risk matches the predicted risk as the dots are around the diagonal line. The demographic calibration plot in Figure \@ref(fig:shinyDemo) however shows that the model is not well calibrated for the younger patients, as the blue line (the predicted risk) differs from the red line (the observed risk) for those aged below 40. This may indicate we need to remove the under 40s from the target population (as the observed risk for the younger patients is nearly zero).
 
 <div class="figure" style="text-align: center">
 <img src="images/PatientLevelPrediction/shiny/singleShiny/singleShinyCal.png" alt="The calibration of the model" width="100%" />

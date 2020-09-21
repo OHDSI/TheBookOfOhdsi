@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Extract Transform Load | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.18.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Extract Transform Load | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-04-16" />
+<meta name="date" content="2020-09-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -926,13 +927,13 @@ Figure 6.6: Mapping of Synthea Patients table to CDM PERSON table.
 <div id="step-2-create-the-code-mappings" class="section level2">
 <h2><span class="header-section-number">6.3</span> Step 2: Create the Code Mappings</h2>
 <p>More and more source codes are being added to the OMOP Vocabulary all the time. This means that the coding systems in the data being transformed to the CDM may already be included and mapped. Check the VOCABULARY table in the OMOP Vocabulary to see which vocabularies are included. To extract the mapping from non-standard source codes (e.g. ICD-10CM codes) to standard concepts (e.g. SNOMED codes), we can use the records in the CONCEPT_RELATIONSHIP table having relationship_id = “Maps to”. For example, to find the standard concept ID for the ICD-10CM code ‘I21’ (“Acute Myocardial Infarction”), we can use the following SQL:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="ExtractTransformLoad.html#cb3-1"></a><span class="kw">SELECT</span> concept_id_2 standard_concept_id</span>
-<span id="cb3-2"><a href="ExtractTransformLoad.html#cb3-2"></a><span class="kw">FROM</span> concept_relationship</span>
-<span id="cb3-3"><a href="ExtractTransformLoad.html#cb3-3"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> concept source_concept</span>
-<span id="cb3-4"><a href="ExtractTransformLoad.html#cb3-4"></a>  <span class="kw">ON</span> concept_id <span class="op">=</span> concept_id_1</span>
-<span id="cb3-5"><a href="ExtractTransformLoad.html#cb3-5"></a><span class="kw">WHERE</span> concept_code <span class="op">=</span> <span class="st">&#39;I21&#39;</span></span>
-<span id="cb3-6"><a href="ExtractTransformLoad.html#cb3-6"></a>  <span class="kw">AND</span> vocabulary_id <span class="op">=</span> <span class="st">&#39;ICD10CM&#39;</span></span>
-<span id="cb3-7"><a href="ExtractTransformLoad.html#cb3-7"></a>  <span class="kw">AND</span> relationship_id <span class="op">=</span> <span class="st">&#39;Maps to&#39;</span>; </span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="ExtractTransformLoad.html#cb5-1"></a><span class="kw">SELECT</span> concept_id_2 standard_concept_id</span>
+<span id="cb5-2"><a href="ExtractTransformLoad.html#cb5-2"></a><span class="kw">FROM</span> concept_relationship</span>
+<span id="cb5-3"><a href="ExtractTransformLoad.html#cb5-3"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> concept source_concept</span>
+<span id="cb5-4"><a href="ExtractTransformLoad.html#cb5-4"></a>  <span class="kw">ON</span> concept_id <span class="op">=</span> concept_id_1</span>
+<span id="cb5-5"><a href="ExtractTransformLoad.html#cb5-5"></a><span class="kw">WHERE</span> concept_code <span class="op">=</span> <span class="st">&#39;I21&#39;</span></span>
+<span id="cb5-6"><a href="ExtractTransformLoad.html#cb5-6"></a>  <span class="kw">AND</span> vocabulary_id <span class="op">=</span> <span class="st">&#39;ICD10CM&#39;</span></span>
+<span id="cb5-7"><a href="ExtractTransformLoad.html#cb5-7"></a>  <span class="kw">AND</span> relationship_id <span class="op">=</span> <span class="st">&#39;Maps to&#39;</span>; </span></code></pre></div>
 <table>
 <thead>
 <tr class="header">

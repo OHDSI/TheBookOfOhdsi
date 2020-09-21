@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 15 Data Quality | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.18.1 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 15 Data Quality | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-04-16" />
+<meta name="date" content="2020-09-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -803,17 +804,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p></p>
 <p>In addition to high level data quality checks, individual level data checks should be performed. The ETL (Extract-Transform-Load) process by which data are converted to the CDM is often quite complex, and with that complexity comes the danger of making mistakes that may go unnoticed. Moreover, as time goes by the source data model may change, or the CDM may be updated, making it necessary to modify the ETL process. Changes to a process as complicated as an ETL can have unintended consequences, requiring all aspects of the ETL to be reconsidered and reviewed.</p>
 <p>To make sure the ETL does what it is supposed to do, and continues to do so, it is highly recommended to construct a set of unit tests. A unit test is a small piece of code that automatically checks a single aspect. The Rabbit-in-a-Hat tool described in Chapter <a href="ExtractTransformLoad.html#ExtractTransformLoad">6</a> can create a unit test framework that makes writing such unit tests easier. This framework is a collection of R functions created specifically for the source database and target CDM version of the ETL. Some of these functions are for creating fake data entries that adhere to the source data schema, while other functions can be used to specify expectations on the data in the CDM format. Here is an example unit test:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="DataQuality.html#cb138-1"></a><span class="kw">source</span>(<span class="st">&quot;Framework.R&quot;</span>)</span>
-<span id="cb138-2"><a href="DataQuality.html#cb138-2"></a><span class="kw">declareTest</span>(<span class="dv">101</span>, <span class="st">&quot;Person gender mappings&quot;</span>)</span>
-<span id="cb138-3"><a href="DataQuality.html#cb138-3"></a><span class="kw">add_enrollment</span>(<span class="dt">member_id =</span> <span class="st">&quot;M000000102&quot;</span>, <span class="dt">gender_of_member =</span> <span class="st">&quot;male&quot;</span>)</span>
-<span id="cb138-4"><a href="DataQuality.html#cb138-4"></a><span class="kw">add_enrollment</span>(<span class="dt">member_id =</span> <span class="st">&quot;M000000103&quot;</span>, <span class="dt">gender_of_member =</span> <span class="st">&quot;female&quot;</span>)</span>
-<span id="cb138-5"><a href="DataQuality.html#cb138-5"></a><span class="kw">expect_person</span>(<span class="dt">PERSON_ID =</span> <span class="dv">102</span>, <span class="dt">GENDER_CONCEPT_ID =</span> <span class="dv">8507</span></span>
-<span id="cb138-6"><a href="DataQuality.html#cb138-6"></a><span class="kw">expect_person</span>(<span class="dt">PERSON_ID =</span> <span class="dv">103</span>, <span class="dt">GENDER_CONCEPT_ID =</span> <span class="dv">8532</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="DataQuality.html#cb140-1"></a><span class="kw">source</span>(<span class="st">&quot;Framework.R&quot;</span>)</span>
+<span id="cb140-2"><a href="DataQuality.html#cb140-2"></a><span class="kw">declareTest</span>(<span class="dv">101</span>, <span class="st">&quot;Person gender mappings&quot;</span>)</span>
+<span id="cb140-3"><a href="DataQuality.html#cb140-3"></a><span class="kw">add_enrollment</span>(<span class="dt">member_id =</span> <span class="st">&quot;M000000102&quot;</span>, <span class="dt">gender_of_member =</span> <span class="st">&quot;male&quot;</span>)</span>
+<span id="cb140-4"><a href="DataQuality.html#cb140-4"></a><span class="kw">add_enrollment</span>(<span class="dt">member_id =</span> <span class="st">&quot;M000000103&quot;</span>, <span class="dt">gender_of_member =</span> <span class="st">&quot;female&quot;</span>)</span>
+<span id="cb140-5"><a href="DataQuality.html#cb140-5"></a><span class="kw">expect_person</span>(<span class="dt">PERSON_ID =</span> <span class="dv">102</span>, <span class="dt">GENDER_CONCEPT_ID =</span> <span class="dv">8507</span></span>
+<span id="cb140-6"><a href="DataQuality.html#cb140-6"></a><span class="kw">expect_person</span>(<span class="dt">PERSON_ID =</span> <span class="dv">103</span>, <span class="dt">GENDER_CONCEPT_ID =</span> <span class="dv">8532</span>)</span></code></pre></div>
 <p>In this example, the framework generated by Rabbit-in-a-Hat is sourced, loading the functions that are used in the remainder of the code. We then declare we will start testing person gender mappings. The source schema has an ENROLLMENT table, and we use the add_enrollment function created by Rabbit-in-a-Hat to create two entries with different values for the MEMBER_ID and GENDER_OF_MEMBER fields. Finally, we specify the expectation that after the ETL two entries should exist in the PERSON table with various expected values.</p>
 <p>Note that the ENROLLMENT table has many other fields, but we do not care much about what values these other fields have in the context of this test. However, leaving those values (e.g. date of birth) empty might cause the ETL to discard the record or throw an error. To overcome this problem while keeping the test code easy to read, the <code>add_enrollment</code> function will assign default values (the most prevalent values as observed in the White Rabbit scan report) to field values that are not explicitly specified by the user.</p>
 <p>Similar unit tests can be created for all other logic in an ETL, typically resulting in hundreds of tests. When we are done defining the test, we can use the framework to generate two sets of SQL statements, one to create the fake source data, and one to create the tests on the ETL-ed data:</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="DataQuality.html#cb139-1"></a>insertSql &lt;-<span class="st"> </span><span class="kw">generateInsertSql</span>(<span class="dt">databaseSchema =</span> <span class="st">&quot;source_schema&quot;</span>)</span>
-<span id="cb139-2"><a href="DataQuality.html#cb139-2"></a>testSql &lt;-<span class="st"> </span><span class="kw">generateTestSql</span>(<span class="dt">databaseSchema =</span> <span class="st">&quot;cdm_test_schema&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="DataQuality.html#cb141-1"></a>insertSql &lt;-<span class="st"> </span><span class="kw">generateInsertSql</span>(<span class="dt">databaseSchema =</span> <span class="st">&quot;source_schema&quot;</span>)</span>
+<span id="cb141-2"><a href="DataQuality.html#cb141-2"></a>testSql &lt;-<span class="st"> </span><span class="kw">generateTestSql</span>(<span class="dt">databaseSchema =</span> <span class="st">&quot;cdm_test_schema&quot;</span>)</span></code></pre></div>
 <p>The overall process is depicted in Figure <a href="DataQuality.html#fig:testFramework">15.1</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:testFramework"></span>
 <img src="images/DataQuality/testFramework.png" alt="Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework." width="90%" />
@@ -877,27 +878,27 @@ Figure 15.3: Example orphan source code.
 <h2><span class="header-section-number">15.4</span> ACHILLES in Practice</h2>
 <p>Here we will demonstrate how to run ACHILLES against a database in the CDM format.</p>
 <p>We first need to tell R how to connect to the server. ACHILLES uses the <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> package, which provides a function called <code>createConnectionDetails</code>. Type <code>?createConnectionDetails</code> for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="DataQuality.html#cb140-1"></a><span class="kw">library</span>(Achilles)</span>
-<span id="cb140-2"><a href="DataQuality.html#cb140-2"></a>connDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
-<span id="cb140-3"><a href="DataQuality.html#cb140-3"></a>                                       <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,</span>
-<span id="cb140-4"><a href="DataQuality.html#cb140-4"></a>                                       <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
-<span id="cb140-5"><a href="DataQuality.html#cb140-5"></a>                                       <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)</span>
-<span id="cb140-6"><a href="DataQuality.html#cb140-6"></a></span>
-<span id="cb140-7"><a href="DataQuality.html#cb140-7"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span></span>
-<span id="cb140-8"><a href="DataQuality.html#cb140-8"></a>cdmVersion &lt;-<span class="st"> &quot;5.3.0&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="DataQuality.html#cb142-1"></a><span class="kw">library</span>(Achilles)</span>
+<span id="cb142-2"><a href="DataQuality.html#cb142-2"></a>connDetails &lt;-<span class="st"> </span><span class="kw">createConnectionDetails</span>(<span class="dt">dbms =</span> <span class="st">&quot;postgresql&quot;</span>,</span>
+<span id="cb142-3"><a href="DataQuality.html#cb142-3"></a>                                       <span class="dt">server =</span> <span class="st">&quot;localhost/ohdsi&quot;</span>,</span>
+<span id="cb142-4"><a href="DataQuality.html#cb142-4"></a>                                       <span class="dt">user =</span> <span class="st">&quot;joe&quot;</span>,</span>
+<span id="cb142-5"><a href="DataQuality.html#cb142-5"></a>                                       <span class="dt">password =</span> <span class="st">&quot;supersecret&quot;</span>)</span>
+<span id="cb142-6"><a href="DataQuality.html#cb142-6"></a></span>
+<span id="cb142-7"><a href="DataQuality.html#cb142-7"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data&quot;</span></span>
+<span id="cb142-8"><a href="DataQuality.html#cb142-8"></a>cdmVersion &lt;-<span class="st"> &quot;5.3.0&quot;</span></span></code></pre></div>
 <p>The last two lines define the <code>cdmDbSchema</code> variable, as well as the CDM version. We will use these later to tell R where the data in the CDM format live, and what version CDM is used. Note that for Microsoft SQL Server, database schemas need to specify both the database and the schema, so for example <code>cdmDbSchema &lt;- "my_cdm_data.dbo"</code>.</p>
 <p>Next, we run ACHILLES:</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="DataQuality.html#cb141-1"></a>result &lt;-<span class="st"> </span><span class="kw">achilles</span>(connectionDetails,</span>
-<span id="cb141-2"><a href="DataQuality.html#cb141-2"></a>                   <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb141-3"><a href="DataQuality.html#cb141-3"></a>                   <span class="dt">resultsDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb141-4"><a href="DataQuality.html#cb141-4"></a>                   <span class="dt">sourceName =</span> <span class="st">&quot;My database&quot;</span>,</span>
-<span id="cb141-5"><a href="DataQuality.html#cb141-5"></a>                   <span class="dt">cdmVersion =</span> cdmVersion)</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="DataQuality.html#cb143-1"></a>result &lt;-<span class="st"> </span><span class="kw">achilles</span>(connectionDetails,</span>
+<span id="cb143-2"><a href="DataQuality.html#cb143-2"></a>                   <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb143-3"><a href="DataQuality.html#cb143-3"></a>                   <span class="dt">resultsDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb143-4"><a href="DataQuality.html#cb143-4"></a>                   <span class="dt">sourceName =</span> <span class="st">&quot;My database&quot;</span>,</span>
+<span id="cb143-5"><a href="DataQuality.html#cb143-5"></a>                   <span class="dt">cdmVersion =</span> cdmVersion)</span></code></pre></div>
 <p>This function will create several tables in the <code>resultsDatabaseSchema</code>, which we’ve set here to the same database schema as the CDM data.</p>
 <p>We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="DataQuality.html#cb142-1"></a><span class="kw">exportToJson</span>(connectionDetails,</span>
-<span id="cb142-2"><a href="DataQuality.html#cb142-2"></a>             <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,</span>
-<span id="cb142-3"><a href="DataQuality.html#cb142-3"></a>             <span class="dt">resultsDatabaseSchema =</span> cdmDatabaseSchema,</span>
-<span id="cb142-4"><a href="DataQuality.html#cb142-4"></a>             <span class="dt">outputPath =</span> <span class="st">&quot;achillesOut&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="DataQuality.html#cb144-1"></a><span class="kw">exportToJson</span>(connectionDetails,</span>
+<span id="cb144-2"><a href="DataQuality.html#cb144-2"></a>             <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,</span>
+<span id="cb144-3"><a href="DataQuality.html#cb144-3"></a>             <span class="dt">resultsDatabaseSchema =</span> cdmDatabaseSchema,</span>
+<span id="cb144-4"><a href="DataQuality.html#cb144-4"></a>             <span class="dt">outputPath =</span> <span class="st">&quot;achillesOut&quot;</span>)</span></code></pre></div>
 <p>The JSON files will be written to the achillesOut sub-folder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure <a href="DataQuality.html#fig:achillesDataDensity">15.4</a> shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.</p>
 <div class="figure" style="text-align: center"><span id="fig:achillesDataDensity"></span>
 <img src="images/DataQuality/achillesDataDensity.png" alt="The data density plot in the ACHILLES web viewer." width="100%" />
@@ -916,15 +917,15 @@ Figure 15.5: Monthly rate of diabetes coded in the ACHILLES web viewer.
 <div id="dqdInPractice" class="section level2">
 <h2><span class="header-section-number">15.5</span> Data Quality Dashboard in Practice</h2>
 <p>Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section <a href="DataQuality.html#achillesInPractice">15.4</a>. For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable <code>cdmDbSchema</code> to tell R where to look for the data.</p>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="DataQuality.html#cb143-1"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data.dbo&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="DataQuality.html#cb145-1"></a>cdmDbSchema &lt;-<span class="st"> &quot;my_cdm_data.dbo&quot;</span></span></code></pre></div>
 <p>Next, we run the Dashboard…</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="DataQuality.html#cb144-1"></a>DataQualityDashboard<span class="op">::</span><span class="kw">executeDqChecks</span>(<span class="dt">connectionDetails =</span> connectionDetails, </span>
-<span id="cb144-2"><a href="DataQuality.html#cb144-2"></a>                                      <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema, </span>
-<span id="cb144-3"><a href="DataQuality.html#cb144-3"></a>                                      <span class="dt">resultsDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb144-4"><a href="DataQuality.html#cb144-4"></a>                                      <span class="dt">cdmSourceName =</span> <span class="st">&quot;My database&quot;</span>,</span>
-<span id="cb144-5"><a href="DataQuality.html#cb144-5"></a>                                      <span class="dt">outputFolder =</span> <span class="st">&quot;My output&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="DataQuality.html#cb146-1"></a>DataQualityDashboard<span class="op">::</span><span class="kw">executeDqChecks</span>(<span class="dt">connectionDetails =</span> connectionDetails, </span>
+<span id="cb146-2"><a href="DataQuality.html#cb146-2"></a>                                      <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema, </span>
+<span id="cb146-3"><a href="DataQuality.html#cb146-3"></a>                                      <span class="dt">resultsDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb146-4"><a href="DataQuality.html#cb146-4"></a>                                      <span class="dt">cdmSourceName =</span> <span class="st">&quot;My database&quot;</span>,</span>
+<span id="cb146-5"><a href="DataQuality.html#cb146-5"></a>                                      <span class="dt">outputFolder =</span> <span class="st">&quot;My output&quot;</span>)</span></code></pre></div>
 <p>The above function will execute all available data quality checks on the schema specified. It will then write a table to the <code>resultsDatabaseSchema</code> which we have here set to the same schema as the CDM. This table will include all information about each check run including the CDM table, CDM field, check name, check description, Kahn category and subcategory, number of violating rows, the threshold level, and whether the check passes or fails, among others. In addition to a table this function also writes a JSON file to the location specified as the <code>outputFolder</code>. Using this JSON file we can launch a web viewer to inspect the results.</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="DataQuality.html#cb145-1"></a><span class="kw">viewDqDashboard</span>(jsonPath)</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="DataQuality.html#cb147-1"></a><span class="kw">viewDqDashboard</span>(jsonPath)</span></code></pre></div>
 <p>The variable <code>jsonPath</code> should be the path to the JSON file containing the results of the Dashboard, located in the <code>outputFolder</code> specified when calling the <code>executeDqChecks</code> function above.</p>
 <p>When you first open the Dashboard you will be presented with the overview table, as seen in Figure <a href="DataQuality.html#fig:dqdOverview">15.6</a>. This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate.</p>
 <div class="figure" style="text-align: center"><span id="fig:dqdOverview"></span>
@@ -944,14 +945,14 @@ Figure 15.7: Drilldown into Data Quality Checks in the Data Quality Dashboard.
 <div id="study-specific-checks-in-practice" class="section level2">
 <h2><span class="header-section-number">15.6</span> Study-Specific Checks in Practice</h2>
 <p>Next, we will execute several checks specifically for the angioedema cohort definition provided in Appendix <a href="CohortDefinitions.html#Angioedema">B.4</a>. We will assume the connection details have been set as described in Section <a href="DataQuality.html#achillesInPractice">15.4</a>, and that the cohort definition JSON and SQL of the cohort definition have been saved in the files “cohort.json” and “cohort.sql”, respectively. The JSON and SQL can be obtained from the Export tab in the ATLAS cohort definition function.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="DataQuality.html#cb146-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
-<span id="cb146-2"><a href="DataQuality.html#cb146-2"></a>json &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.json&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.json&quot;</span>)<span class="op">$</span>size)</span>
-<span id="cb146-3"><a href="DataQuality.html#cb146-3"></a>sql &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.sql&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.sql&quot;</span>)<span class="op">$</span>size)</span>
-<span id="cb146-4"><a href="DataQuality.html#cb146-4"></a><span class="kw">checkCohortSourceCodes</span>(connectionDetails,</span>
-<span id="cb146-5"><a href="DataQuality.html#cb146-5"></a>                       <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb146-6"><a href="DataQuality.html#cb146-6"></a>                       <span class="dt">cohortJson =</span> json,</span>
-<span id="cb146-7"><a href="DataQuality.html#cb146-7"></a>                       <span class="dt">cohortSql =</span> sql,</span>
-<span id="cb146-8"><a href="DataQuality.html#cb146-8"></a>                       <span class="dt">outputFile =</span> <span class="st">&quot;output.html&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="DataQuality.html#cb148-1"></a><span class="kw">library</span>(MethodEvaluation)</span>
+<span id="cb148-2"><a href="DataQuality.html#cb148-2"></a>json &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.json&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.json&quot;</span>)<span class="op">$</span>size)</span>
+<span id="cb148-3"><a href="DataQuality.html#cb148-3"></a>sql &lt;-<span class="st"> </span><span class="kw">readChar</span>(<span class="st">&quot;cohort.sql&quot;</span>, <span class="kw">file.info</span>(<span class="st">&quot;cohort.sql&quot;</span>)<span class="op">$</span>size)</span>
+<span id="cb148-4"><a href="DataQuality.html#cb148-4"></a><span class="kw">checkCohortSourceCodes</span>(connectionDetails,</span>
+<span id="cb148-5"><a href="DataQuality.html#cb148-5"></a>                       <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb148-6"><a href="DataQuality.html#cb148-6"></a>                       <span class="dt">cohortJson =</span> json,</span>
+<span id="cb148-7"><a href="DataQuality.html#cb148-7"></a>                       <span class="dt">cohortSql =</span> sql,</span>
+<span id="cb148-8"><a href="DataQuality.html#cb148-8"></a>                       <span class="dt">outputFile =</span> <span class="st">&quot;output.html&quot;</span>)</span></code></pre></div>
 <p>We can open the output file in a web browser as shown in Figure <a href="DataQuality.html#fig:sourceCodesAngioedema">15.8</a>. Here we see that the angioedema cohort definition has two concept sets: “Inpatient or ER visit”, and “Angioedema”. In this example database the visits were found through database-specific source codes “ER” and “IP”, that are not in the Vocabulary, although they were mapped during the ETL to standard concepts. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.</p>
 <div class="figure" style="text-align: center"><span id="fig:sourceCodesAngioedema"></span>
 <img src="images/DataQuality/sourceCodesAngioedema.png" alt="Source codes used in the angioedema cohort definition." width="100%" />
@@ -960,14 +961,14 @@ Figure 15.8: Source codes used in the angioedema cohort definition.
 </p>
 </div>
 <p>Next, we can search for orphan source codes, which are source codes that do not map to standard concept codes. Here we look for the Standard Concept “Angioedema,” and then we look for any codes and concepts that have “Angioedema” or any of the synonyms we provide as part of their name:</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="DataQuality.html#cb147-1"></a>orphans &lt;-<span class="st"> </span><span class="kw">findOrphanSourceCodes</span>(connectionDetails,</span>
-<span id="cb147-2"><a href="DataQuality.html#cb147-2"></a>                                 <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
-<span id="cb147-3"><a href="DataQuality.html#cb147-3"></a>                                 <span class="dt">conceptName =</span> <span class="st">&quot;Angioedema&quot;</span>,</span>
-<span id="cb147-4"><a href="DataQuality.html#cb147-4"></a>                                 <span class="dt">conceptSynonyms =</span> <span class="kw">c</span>(<span class="st">&quot;Angioneurotic edema&quot;</span>,</span>
-<span id="cb147-5"><a href="DataQuality.html#cb147-5"></a>                                                     <span class="st">&quot;Giant hives&quot;</span>,</span>
-<span id="cb147-6"><a href="DataQuality.html#cb147-6"></a>                                                     <span class="st">&quot;Giant urticaria&quot;</span>,</span>
-<span id="cb147-7"><a href="DataQuality.html#cb147-7"></a>                                                     <span class="st">&quot;Periodic edema&quot;</span>))</span>
-<span id="cb147-8"><a href="DataQuality.html#cb147-8"></a><span class="kw">View</span>(orphans)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="DataQuality.html#cb149-1"></a>orphans &lt;-<span class="st"> </span><span class="kw">findOrphanSourceCodes</span>(connectionDetails,</span>
+<span id="cb149-2"><a href="DataQuality.html#cb149-2"></a>                                 <span class="dt">cdmDatabaseSchema =</span> cdmDbSchema,</span>
+<span id="cb149-3"><a href="DataQuality.html#cb149-3"></a>                                 <span class="dt">conceptName =</span> <span class="st">&quot;Angioedema&quot;</span>,</span>
+<span id="cb149-4"><a href="DataQuality.html#cb149-4"></a>                                 <span class="dt">conceptSynonyms =</span> <span class="kw">c</span>(<span class="st">&quot;Angioneurotic edema&quot;</span>,</span>
+<span id="cb149-5"><a href="DataQuality.html#cb149-5"></a>                                                     <span class="st">&quot;Giant hives&quot;</span>,</span>
+<span id="cb149-6"><a href="DataQuality.html#cb149-6"></a>                                                     <span class="st">&quot;Giant urticaria&quot;</span>,</span>
+<span id="cb149-7"><a href="DataQuality.html#cb149-7"></a>                                                     <span class="st">&quot;Periodic edema&quot;</span>))</span>
+<span id="cb149-8"><a href="DataQuality.html#cb149-8"></a><span class="kw">View</span>(orphans)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -1037,12 +1038,12 @@ Figure 15.8: Source codes used in the angioedema cohort definition.
 <div id="prerequisites-9" class="section level4 unnumbered">
 <h4>Prerequisites</h4>
 <p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">8.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, <a href="https://github.com/OHDSI/Achilles">ACHILLES</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="DataQuality.html#cb148-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
-<span id="cb148-2"><a href="DataQuality.html#cb148-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Achilles&quot;</span>)</span>
-<span id="cb148-3"><a href="DataQuality.html#cb148-3"></a>devtools<span class="op">:</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/DataQualityDashboard&quot;</span>)</span>
-<span id="cb148-4"><a href="DataQuality.html#cb148-4"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="DataQuality.html#cb150-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
+<span id="cb150-2"><a href="DataQuality.html#cb150-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Achilles&quot;</span>)</span>
+<span id="cb150-3"><a href="DataQuality.html#cb150-3"></a>devtools<span class="op">:</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/DataQualityDashboard&quot;</span>)</span>
+<span id="cb150-4"><a href="DataQuality.html#cb150-4"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span></code></pre></div>
 <p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="DataQuality.html#cb149-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="DataQuality.html#cb151-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
 <p>The CDM database schema is “main”.</p>
 
 <div class="exercise">

@@ -1,7 +1,7 @@
 --- 
 title: "The Book of OHDSI"
 author: "Observational Health Data Sciences and Informatics"
-date: "2020-04-16"
+date: "2020-09-21"
 classoption: 11pt      
 geometry:
 - paperheight=10in 
@@ -34,7 +34,7 @@ url: https://ohdsi.github.io/TheBookOfOhdsi/
 
 ## Goals of this Book {-}
 
-This book aims to be a central knowledge repository for OHDSI, and it focuses on describing the OHDSI community, OHDSI data standards, and OHDSI tools. It is intended both for both OHDSI newcomers and veterans alike, and aims to be practical, providing the necessary theory and subsequent instructions on how to do things. After reading this book you will understand what OHDSI is, and how you can join the journey. You will learn what the common data model and standard vocabularies are, and how they can be used to standardize an observational healthcare database. You will learn the three main use cases for these data: characterization, population-level estimation, and patient-level prediction. You will read about OHDSI's open-source tools that support all three activities and how to use those tools. Chapters on data quality, clinical validity, software validity, and method validity will explain how to establish the quality of the generated evidence. Lastly, you will learn how to use the OHDSI tools to execute these studies in a distributed research network.
+This book aims to be a central knowledge repository for OHDSI, and it focuses on describing the OHDSI community, OHDSI data standards, and OHDSI tools. It is intended for both OHDSI newcomers and veterans alike, and aims to be practical, providing the necessary theory and subsequent instructions on how to do things. After reading this book you will understand what OHDSI is, and how you can join the journey. You will learn what the common data model and standard vocabularies are, and how they can be used to standardize an observational healthcare database. You will learn the three main use cases for these data: characterization, population-level estimation, and patient-level prediction. You will read about OHDSI's open-source tools that support all three activities and how to use those tools. Chapters on data quality, clinical validity, software validity, and method validity will explain how to establish the quality of the generated evidence. Lastly, you will learn how to use the OHDSI tools to execute these studies in a distributed research network.
 
 ## Structure of the Book {-}
 
@@ -53,27 +53,35 @@ Each section has multiple chapters, and, as appropriate, each chapter follows th
 Each chapter lists one or more chapter leads. These are the people who lead the writing of the chapter. However, there are many others that have contributed to the book, whom we would like to acknowledge here:
 
 
-------------------  -----------------  ---------------------
-Hamed Abedtash      Mustafa Ascha      Mark Beno            
-Clair Blacketer     David Blatt        Brian Christian      
-Gino Cloft          Frank DeFalco      Sara Dempster        
-Jon Duke            Sergio Eslava      Clark Evans          
-Thomas Falconer     George Hripcsak    Vojtech Huser        
-Mark Khayter        Greg Klebanov      Kristin Kostka       
-Bob Lanese          Wanda Lattimore    Chun Li              
-David Madigan       Sindhoosha Malay   Harry Menegay        
-Akihiko Nishimura   Ellen Palmer       Nirav Patil          
-Jose Posada         Nicole Pratt       Dani Prieto-Alhambra 
-Christian Reich     Jenna Reps         Peter Rijnbeek       
-Patrick Ryan        Craig Sachson      Izzy Saridakis       
-Paola Saroufim      Martijn Schuemie   Sarah Seager         
-Anthony Sena        Sunah Song         Matt Spotnitz        
-Marc Suchard        Joel Swerdel       Devin Tian           
-Don Torok           Kees van Bochove   Mui Van Zandt        
-Erica Voss          Kristin Waite      Mike Warfe           
-Jamie Weaver        James Wiggins      Andrew Williams      
-Seng Chan You                                               
-------------------  -----------------  ---------------------
+```
+## Warning in kable_pipe(x = structure(c("Hamed Abedtash",
+## "Clair Blacketer", : The table should have a header
+## (column names)
+```
+
+
+
+|                  |                 |                     |
+|:-----------------|:----------------|:--------------------|
+|Hamed Abedtash    |Mustafa Ascha    |Mark Beno            |
+|Clair Blacketer   |David Blatt      |Brian Christian      |
+|Gino Cloft        |Frank DeFalco    |Sara Dempster        |
+|Jon Duke          |Sergio Eslava    |Clark Evans          |
+|Thomas Falconer   |George Hripcsak  |Vojtech Huser        |
+|Mark Khayter      |Greg Klebanov    |Kristin Kostka       |
+|Bob Lanese        |Wanda Lattimore  |Chun Li              |
+|David Madigan     |Sindhoosha Malay |Harry Menegay        |
+|Akihiko Nishimura |Ellen Palmer     |Nirav Patil          |
+|Jose Posada       |Nicole Pratt     |Dani Prieto-Alhambra |
+|Christian Reich   |Jenna Reps       |Peter Rijnbeek       |
+|Patrick Ryan      |Craig Sachson    |Izzy Saridakis       |
+|Paola Saroufim    |Martijn Schuemie |Sarah Seager         |
+|Anthony Sena      |Sunah Song       |Matt Spotnitz        |
+|Marc Suchard      |Joel Swerdel     |Devin Tian           |
+|Don Torok         |Kees van Bochove |Mui Van Zandt        |
+|Erica Voss        |Kristin Waite    |Mike Warfe           |
+|Jamie Weaver      |James Wiggins    |Andrew Williams      |
+|Seng Chan You     |                 |                     |
 
 ## Software Versions {-}
 
@@ -87,22 +95,22 @@ A large part of this book is about the open-source software of OHDSI, and this s
 
 Table: (\#tab:packageVersions)Versions of packages in the Methods Library used in this book.
 
-Package                    Version 
--------------------------  --------
-CaseControl                1.6.0   
-CaseCrossover              1.1.0   
-CohortMethod               3.1.0   
-Cyclops                    2.0.2   
-DatabaseConnector          2.4.1   
-EmpiricalCalibration       2.0.0   
-EvidenceSynthesis          0.0.4   
-FeatureExtraction          2.2.4   
-MethodEvaluation           1.1.0   
-ParallelLogger             1.1.0   
-PatientLevelPrediction     3.0.6   
-SelfControlledCaseSeries   1.4.0   
-SelfControlledCohort       1.5.0   
-SqlRender                  1.6.2   
+|Package                  |Version |
+|:------------------------|:-------|
+|CaseControl              |1.6.0   |
+|CaseCrossover            |1.1.0   |
+|CohortMethod             |3.1.0   |
+|Cyclops                  |2.0.2   |
+|DatabaseConnector        |2.4.1   |
+|EmpiricalCalibration     |2.0.0   |
+|EvidenceSynthesis        |0.0.4   |
+|FeatureExtraction        |2.2.4   |
+|MethodEvaluation         |1.1.0   |
+|ParallelLogger           |1.1.0   |
+|PatientLevelPrediction   |3.0.6   |
+|SelfControlledCaseSeries |1.4.0   |
+|SelfControlledCohort     |1.5.0   |
+|SqlRender                |1.6.2   |
 
 ## License {-}
 
