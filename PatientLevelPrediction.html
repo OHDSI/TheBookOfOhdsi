@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 Patient-Level Prediction | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 Patient-Level Prediction | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
-  <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
+  <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi//images/Cover/Cover.png" />
   <meta property="og:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
@@ -19,12 +19,12 @@
   <meta name="twitter:title" content="Chapter 13 Patient-Level Prediction | The Book of OHDSI" />
   
   <meta name="twitter:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
+  <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi//images/Cover/Cover.png" />
 
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-09-21" />
+<meta name="date" content="2020-10-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -691,7 +693,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Clinical decision making is a complicated task in which the clinician has to infer a diagnosis or treatment pathway based on the available medical history of the patient and the current clinical guidelines. Clinical prediction models have been developed to support this decision-making process and are used in clinical practice in a wide spectrum of specialties. These models predict a diagnostic or prognostic outcome based on a combination of patient characteristics, e.g. demographic information, disease history, and treatment history.   </p>
 <p>The number of publications describing clinical prediction models has increased strongly over the last 10 years. Most currently-used models are estimated using small datasets and consider only a small set of patient characteristics. This low sample size, and thus low statistical power, forces the data analyst to make strong modelling assumptions. The selection of the limited set of patient characteristics is strongly guided by the expert knowledge at hand. This contrasts sharply with the reality of modern medicine wherein patients generate a rich digital trail, which is well beyond the power of any medical practitioner to fully assimilate. Presently, health care is generating a huge amount of patient-specific information stored in Electronic Health Records (EHRs). This includes structured data in the form of diagnosis, medication, laboratory test results, and unstructured data contained in clinical narratives. It is unknown how much predictive accuracy can be gained by leveraging the large amount of data originating from the complete EHR of a patient. </p>
 <p>Advances in machine learning for large dataset analysis have led to increased interest in applying patient-level prediction on this type of data. However, many published efforts in patient-level prediction do not follow the model development guidelines, fail to perform extensive external validation, or provide insufficient model details which limits the ability of independent researchers to reproduce the models and perform external validation. This makes it hard to fairly evaluate the predictive performance of the models and reduces the likelihood of the model being used appropriately in clinical practice. To improve standards, several papers have been written detailing guidelines for best practices in developing and reporting prediction models. For example, the Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis (TRIPOD) statement<a href="#fn56" class="footnote-ref" id="fnref56"><sup>56</sup></a> provides clear recommendations for reporting prediction model development and validation and addresses some of the concerns related to transparency.  </p>
-<p>Massive-scale, patient-specific predictive modeling has become reality due to OHDSI, where the common data model (CDM) allows for uniform and transparent analysis at an unprecedented scale. The growing network of databases standardized to the CDM enables external validation of models in different healthcare settings on a global scale. We believe this provides immediate opportunity to serve large communities of patients who are in most need of improved quality of care. Such models can inform truly personalized medical care, leading hopefully to sharply improved patient outcomes.</p>
+<p>Massive-scale, patient-specific predictive modeling has become reality due to OHDSI, where the Common Data Model (CDM) allows for uniform and transparent analysis at an unprecedented scale. The growing network of databases standardized to the CDM enables external validation of models in different healthcare settings on a global scale. We believe this provides immediate opportunity to serve large communities of patients who are in most need of improved quality of care. Such models can inform truly personalized medical care, leading hopefully to sharply improved patient outcomes.</p>
 <p>In this chapter we describe OHDSI’s standardized framework for patient-level prediction, <span class="citation">(Reps et al. <a href="#ref-reps2018" role="doc-biblioref">2018</a>)</span> and discuss the <a href="https://ohdsi.github.io/PatientLevelPrediction/">PatientLevelPrediction</a> R package that implements established best practices for development and validation. We start with providing the necessary theory behind the development and evaluation of patient-level prediction and provide a high-level overview of the implemented machine learning algorithms. We then discuss an example prediction problem and provide step-by-step guidance on its definition and implementation using ATLAS or custom R code. Finally, we discuss the use of Shiny applications for the dissemination of study results.</p>
 <div id="the-prediction-problem" class="section level2">
 <h2><span class="header-section-number">13.1</span> The Prediction Problem</h2>
@@ -1003,14 +1005,48 @@ Figure 13.2: Decision boundary.
 <div id="decision-tree" class="section level3">
 <h3><span class="header-section-number">13.3.7</span> Decision Tree</h3>
 <p>A decision tree is a classifier that partitions the variable space using individual tests selected using a greedy approach. It aims to find partitions that have the highest information gain to separate the classes. The decision tree can easily overfit by enabling a large number of partitions (tree depth) and often needs some regularization (e.g., pruning or specifying hyper-parameters that limit the complexity of the model). We use the sklearn DecisionTreeClassifier implementation in Python.  </p>
-<p>Table: (#tab:decisionTreeParameters) Hyper-parameters for decision trees.</p>
-<div class="line-block">Parameter| Description | Typical values |</div>
-<p>|:——– |:———– |:————– |<br />
-| classWeight | “Balance” or “None” | None |
-| maxDepth | The maximum depth of the tree | 10 |
-| minImpuritySplit | Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf | 10^-7|
-| minSamplesLeaf | The minimum number of samples per leaf | 10 |
-| minSamplesSplit | The minimum samples per split | 2 |</p>
+<table>
+<caption><span id="tab:decisionTreeParameters">Table 13.9: </span> Hyper-parameters for decision trees.</caption>
+<colgroup>
+<col width="25%" />
+<col width="33%" />
+<col width="41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Parameter</th>
+<th align="left">Description</th>
+<th align="left">Typical values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">classWeight</td>
+<td align="left">“Balance” or “None”</td>
+<td align="left">None</td>
+</tr>
+<tr class="even">
+<td align="left">maxDepth</td>
+<td align="left">The maximum depth of the tree</td>
+<td align="left">10</td>
+</tr>
+<tr class="odd">
+<td align="left">minImpuritySplit</td>
+<td align="left">Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf</td>
+<td align="left">10^-7</td>
+</tr>
+<tr class="even">
+<td align="left">minSamplesLeaf</td>
+<td align="left">The minimum number of samples per leaf</td>
+<td align="left">10</td>
+</tr>
+<tr class="odd">
+<td align="left">minSamplesSplit</td>
+<td align="left">The minimum samples per split</td>
+<td align="left">2</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="multilayer-perceptron" class="section level3">
 <h3><span class="header-section-number">13.3.8</span> Multilayer Perceptron</h3>

@@ -178,7 +178,7 @@ Column name|Value|Explanation
 |GENDER_SOURCE_ VALUE|F|The gender value as it appears in the source is stored here.|
 |GENDER_SOURCE_ CONCEPT_ID|0|If the gender value in the source was coded using a coding scheme supported by OHDSI that Concept would go here. For example, if her gender was "sex-F" in the source and it was stated to be in the PCORNet vocabulary concept [44814665](http://athena.ohdsi.org/search-terms/terms/44814665) would go in this field.|
 |RACE_SOURCE_ VALUE|white|The race value as it appears in the source is stored here.|
-|RACE_SOURCE_ CONCEPT_ID|0|Same principle as GENDER_CONCEPT_ID.|
+|RACE_SOURCE_ CONCEPT_ID|0|Same principle as GENDER_SOURCE_CONCEPT_ID.|
 |ETHNICITY_SOURCE_ VALUE|english|The ethnicity value as it appears in the source is stored here.|
 |ETHNICITY_SOURCE_ CONCEPT_ID|0|Same principle as GENDER_SOURCE_CONCEPT_ID.|
 
@@ -215,7 +215,7 @@ Column name|Value|Explanation
 
 ### VISIT_OCCURRENCE{#visitOccurrence}
 
-the VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discreet events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits. 
+the VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discrete events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits. 
 
 #### How Are Lauren's Encounters Represented As Visits?  {-}
 

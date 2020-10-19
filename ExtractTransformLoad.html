@@ -6,12 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Extract Transform Load | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Extract Transform Load | The Book of OHDSI" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://ohdsi.github.io/TheBookOfOhdsi/" />
-  <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
+  <meta property="og:image" content="https://ohdsi.github.io/TheBookOfOhdsi//images/Cover/Cover.png" />
   <meta property="og:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
   <meta name="github-repo" content="OHDSI/TheBookOfOhdsi" />
 
@@ -19,12 +19,12 @@
   <meta name="twitter:title" content="Chapter 6 Extract Transform Load | The Book of OHDSI" />
   
   <meta name="twitter:description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi/images/Cover/Cover.png" />
+  <meta name="twitter:image" content="https://ohdsi.github.io/TheBookOfOhdsi//images/Cover/Cover.png" />
 
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-09-21" />
+<meta name="date" content="2020-10-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -1120,8 +1122,8 @@ Figure 6.9: Usagi concept information panel.
 <div id="CDMandETLMaintenance" class="section level2">
 <h2><span class="header-section-number">6.7</span> CDM and ETL Maintenance</h2>
 <p>It is no small effort to design the ETL, create the mappings, implement the ETL, and build out quality control measures. Unfortunately, the effort does not stop there. There is a cycle of ETL maintenance that is a continuous process after the first CDM is built. Some common triggers that require maintenance are: changes in the source data, a bug in the ETL, a new OMOP Vocabulary is released, or the CDM itself has changed or updated. If one of these triggers occur the following might need updating: the ETL documentation, the software programming running the ETL, and test cases and quality controls.</p>
-<p>Often a healthcare data source is forever changing. New data might be available (e.g. a new column in the data might exist). Patience scenarios that never existed before suddenly do (e.g. a new patient who has a death record before they were born). Your understanding of the data may improve (e.g. some of the records around inpatient child birth come across as outpatient due to how claims are processed). Not all changes in the source data my trigger a change in the ETL processing of it, however at a bare minimum the changes that break the ETL processing will need to be addressed.</p>
-<p>If bugs are found, they should be addressed. However, it is important to keep in mind that not all bugs are created equal. For example, let say in the COST table the column cost was being rounded to a whole digit (e.g. the source data had $3.82 and this became $4.00 in the CDM). If the primary researchers using the data were mostly performing characterizations of patient’s drug exposures and conditions, a bug such as this is of little importance and can be addressed in the future. If the primary researchers using the data also included health economists, this would be a critical bug that need to be addressed immediately.</p>
+<p>Often a healthcare data source is forever changing. New data might be available (e.g. a new column in the data might exist). Patients’ scenarios that never existed before suddenly do (e.g. a new patient who has a death record before they were born). Your understanding of the data may improve (e.g. some of the records around inpatient child birth come across as outpatient due to how claims are processed). Not all changes in the source data may trigger a change in the ETL processing of it, however at a bare minimum the changes that break the ETL processing will need to be addressed.</p>
+<p>If bugs are found, they should be addressed. However, it is important to keep in mind that not all bugs are created equal. For example, let’s say in the COST table the column cost was being rounded to a whole digit (e.g. the source data had $3.82 and this became $4.00 in the CDM). If the primary researchers using the data were mostly performing characterizations of patient’s drug exposures and conditions, a bug such as this is of little importance and can be addressed in the future. If the primary researchers using the data also included health economists, this would be a critical bug that need to be addressed immediately.</p>
 <p>The OMOP Vocabulary is also ever changing just as our source data may be. In fact, the Vocabulary can have multiple releases in one given month as vocabularies update. Each CDM is run on a specific version of a Vocabulary and running on a newer improved Vocabulary could result in changes in how sources codes get mapped to in the standardized vocabularies. Often differences between Vocabularies are minor, so building a new CDM every time a new Vocabulary is release is not necessary. However, it is good practice to adopt a new Vocabulary once or twice a year which would require reprocessing the CDM again. It is rare are there changes in a new version of a Vocabulary that would require the ETL code itself to be updated.</p>
 <p>The final trigger that could require CDM or ETL maintenance is when the common data model itself updates. As the community grows and new data requirements are found this may lead to additional data being stored in the CDM. This might mean data that you previously were not storing in the CDM might have a location in a new CDM version. Less frequently are changes to existing CDM structure, however it is a possibility. For example, the CDM is moved to adopting DATETIME fields over the original DATE fields would could cause an error in ETL processing. CDM versions are not released often and sites can choose when they migrate.</p>
 </div>

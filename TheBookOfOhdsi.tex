@@ -273,7 +273,7 @@
 
 \title{The Book of OHDSI}
 \author{Observational Health Data Sciences and Informatics}
-\date{2020-09-21}
+\date{2020-10-19}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -1325,7 +1325,7 @@ RACE\_SOURCE\_ CONCEPT\_ID\strut
 \end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright
 0\strut
 \end{minipage} & \begin{minipage}[t]{0.49\columnwidth}\raggedright
-Same principle as GENDER\_CONCEPT\_ID.\strut
+Same principle as GENDER\_SOURCE\_CONCEPT\_ID.\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.28\columnwidth}\raggedright
 ETHNICITY\_SOURCE\_ VALUE\strut
@@ -1439,7 +1439,7 @@ The best option in the Vocabulary with the concept class ``Obs Period Type'' is 
 \hypertarget{visitOccurrence}{%
 \subsection{VISIT\_OCCURRENCE}\label{visitOccurrence}}
 
-the VISIT\_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discreet events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits.
+the VISIT\_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discrete events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits.
 
 \hypertarget{how-are-laurens-encounters-represented-as-visits}{%
 \subsubsection*{How Are Lauren's Encounters Represented As Visits?}\label{how-are-laurens-encounters-represented-as-visits}}
@@ -3582,9 +3582,9 @@ While it will never be possible to document all possible data scenarios that exi
 
 It is no small effort to design the ETL, create the mappings, implement the ETL, and build out quality control measures. Unfortunately, the effort does not stop there. There is a cycle of ETL maintenance that is a continuous process after the first CDM is built. Some common triggers that require maintenance are: changes in the source data, a bug in the ETL, a new OMOP Vocabulary is released, or the CDM itself has changed or updated. If one of these triggers occur the following might need updating: the ETL documentation, the software programming running the ETL, and test cases and quality controls.
 
-Often a healthcare data source is forever changing. New data might be available (e.g.~a new column in the data might exist). Patience scenarios that never existed before suddenly do (e.g.~a new patient who has a death record before they were born). Your understanding of the data may improve (e.g.~some of the records around inpatient child birth come across as outpatient due to how claims are processed). Not all changes in the source data my trigger a change in the ETL processing of it, however at a bare minimum the changes that break the ETL processing will need to be addressed.
+Often a healthcare data source is forever changing. New data might be available (e.g.~a new column in the data might exist). Patients' scenarios that never existed before suddenly do (e.g.~a new patient who has a death record before they were born). Your understanding of the data may improve (e.g.~some of the records around inpatient child birth come across as outpatient due to how claims are processed). Not all changes in the source data may trigger a change in the ETL processing of it, however at a bare minimum the changes that break the ETL processing will need to be addressed.
 
-If bugs are found, they should be addressed. However, it is important to keep in mind that not all bugs are created equal. For example, let say in the COST table the column cost was being rounded to a whole digit (e.g.~the source data had \$3.82 and this became \$4.00 in the CDM). If the primary researchers using the data were mostly performing characterizations of patient's drug exposures and conditions, a bug such as this is of little importance and can be addressed in the future. If the primary researchers using the data also included health economists, this would be a critical bug that need to be addressed immediately.
+If bugs are found, they should be addressed. However, it is important to keep in mind that not all bugs are created equal. For example, let's say in the COST table the column cost was being rounded to a whole digit (e.g.~the source data had \$3.82 and this became \$4.00 in the CDM). If the primary researchers using the data were mostly performing characterizations of patient's drug exposures and conditions, a bug such as this is of little importance and can be addressed in the future. If the primary researchers using the data also included health economists, this would be a critical bug that need to be addressed immediately.
 
 The OMOP Vocabulary is also ever changing just as our source data may be. In fact, the Vocabulary can have multiple releases in one given month as vocabularies update. Each CDM is run on a specific version of a Vocabulary and running on a newer improved Vocabulary could result in changes in how sources codes get mapped to in the standardized vocabularies. Often differences between Vocabularies are minor, so building a new CDM every time a new Vocabulary is release is not necessary. However, it is good practice to adopt a new Vocabulary once or twice a year which would require reprocessing the CDM again. It is rare are there changes in a new version of a Vocabulary that would require the ETL code itself to be updated.
 
@@ -4790,7 +4790,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.vx9m8t0uchildren ;"
+## [1] "SELECT * FROM temp_schema.x2uimep0children ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -8418,7 +8418,7 @@ The number of publications describing clinical prediction models has increased s
 
 Advances in machine learning for large dataset analysis have led to increased interest in applying patient-level prediction on this type of data. However, many published efforts in patient-level prediction do not follow the model development guidelines, fail to perform extensive external validation, or provide insufficient model details which limits the ability of independent researchers to reproduce the models and perform external validation. This makes it hard to fairly evaluate the predictive performance of the models and reduces the likelihood of the model being used appropriately in clinical practice. To improve standards, several papers have been written detailing guidelines for best practices in developing and reporting prediction models. For example, the Transparent Reporting of a multivariable prediction model for Individual Prognosis Or Diagnosis (TRIPOD) statement\footnote{\url{https://www.equator-network.org/reporting-guidelines/tripod-statement/}} provides clear recommendations for reporting prediction model development and validation and addresses some of the concerns related to transparency. \index{machine learning} \index{TRIPOD}
 
-Massive-scale, patient-specific predictive modeling has become reality due to OHDSI, where the common data model (CDM) allows for uniform and transparent analysis at an unprecedented scale. The growing network of databases standardized to the CDM enables external validation of models in different healthcare settings on a global scale. We believe this provides immediate opportunity to serve large communities of patients who are in most need of improved quality of care. Such models can inform truly personalized medical care, leading hopefully to sharply improved patient outcomes.
+Massive-scale, patient-specific predictive modeling has become reality due to OHDSI, where the Common Data Model (CDM) allows for uniform and transparent analysis at an unprecedented scale. The growing network of databases standardized to the CDM enables external validation of models in different healthcare settings on a global scale. We believe this provides immediate opportunity to serve large communities of patients who are in most need of improved quality of care. Such models can inform truly personalized medical care, leading hopefully to sharply improved patient outcomes.
 
 In this chapter we describe OHDSI's standardized framework for patient-level prediction, \citep{reps2018} and discuss the \href{https://ohdsi.github.io/PatientLevelPrediction/}{PatientLevelPrediction} R package that implements established best practices for development and validation. We start with providing the necessary theory behind the development and evaluation of patient-level prediction and provide a high-level overview of the implemented machine learning algorithms. We then discuss an example prediction problem and provide step-by-step guidance on its definition and implementation using ATLAS or custom R code. Finally, we discuss the use of Shiny applications for the dissemination of study results.
 
@@ -8780,16 +8780,65 @@ Learning rate shrinks the contribution of each classifier by learning\_rate. The
 
 A decision tree is a classifier that partitions the variable space using individual tests selected using a greedy approach. It aims to find partitions that have the highest information gain to separate the classes. The decision tree can easily overfit by enabling a large number of partitions (tree depth) and often needs some regularization (e.g., pruning or specifying hyper-parameters that limit the complexity of the model). We use the sklearn DecisionTreeClassifier implementation in Python. \index{decision tree} \index{python}
 
-Table: \label{tab:decisionTreeParameters} Hyper-parameters for decision trees.
-
-Parameter\textbar{} Description \textbar{} Typical values \textbar{}
-
-\textbar:-------- \textbar:----------- \textbar:-------------- \textbar{}\\
-\textbar{} classWeight \textbar{} ``Balance'' or ``None'' \textbar{} None \textbar{}
-\textbar{} maxDepth \textbar{} The maximum depth of the tree \textbar{} 10 \textbar{}
-\textbar{} minImpuritySplit \textbar{} Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf \textbar{} 10\^{}-7\textbar{}
-\textbar{} minSamplesLeaf \textbar{} The minimum number of samples per leaf \textbar{} 10 \textbar{}
-\textbar{} minSamplesSplit \textbar{} The minimum samples per split \textbar{} 2 \textbar{}
+\begin{longtable}[]{@{}lll@{}}
+\caption{\label{tab:decisionTreeParameters} Hyper-parameters for decision trees.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage} & \begin{minipage}[b]{0.38\columnwidth}\raggedright
+Typical values\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.23\columnwidth}\raggedright
+Parameter\strut
+\end{minipage} & \begin{minipage}[b]{0.30\columnwidth}\raggedright
+Description\strut
+\end{minipage} & \begin{minipage}[b]{0.38\columnwidth}\raggedright
+Typical values\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+classWeight\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+``Balance'' or ``None''\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+None\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+maxDepth\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The maximum depth of the tree\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+10\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+minImpuritySplit\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+Threshold for early stopping in tree growth. A node will split if its impurity is above the threshold, otherwise it is a leaf\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+10\^{}-7\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+minSamplesLeaf\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The minimum number of samples per leaf\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+10\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.23\columnwidth}\raggedright
+minSamplesSplit\strut
+\end{minipage} & \begin{minipage}[t]{0.30\columnwidth}\raggedright
+The minimum samples per split\strut
+\end{minipage} & \begin{minipage}[t]{0.38\columnwidth}\raggedright
+2\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 \hypertarget{multilayer-perceptron}{%
 \subsection{Multilayer Perceptron}\label{multilayer-perceptron}}
