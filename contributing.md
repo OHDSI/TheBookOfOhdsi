@@ -2,38 +2,38 @@
 
 # Contributing to The Book of OHDSI
 
-First, thanks for contributing! 
+First, thanks for contributing!
 
-These guidelines are meant to help you contribute to The Book of OHDSI, [which you can view here](ohdsi.github.io/TheBookOfOhdsi). The book is meant to provide step by step instructions on how to run a study using OHDSI tools. Throughout the book, we will use hypertension as a disease of interest. 
+These guidelines are meant to help you contribute to The Book of OHDSI, [which you can view here](ohdsi.github.io/TheBookOfOhdsi). The book is meant to provide step by step instructions on how to run a study using OHDSI tools. Throughout the book, we will use hypertension as a disease of interest.
 
 # Guidelines
 
 ## Chapter structure
 
-In general, chapters will follow this outline: 
+In general, chapters will follow this outline:
 	Introduction
 	Theory
 	Practice
 	Advanced Topics (as appropriate)
 	Exercises
 
-Each chapter has one or more leaders who take final responsibility for chapter content, review, and editing. **However**, each chapter can have many contributors. 
+Each chapter has one or more leaders who take final responsibility for chapter content, review, and editing. **However**, each chapter can have many contributors.
 
 ## Workflow
 
-- Use RStudio to write in rmarkdown files.   
-- Make pull request to github repo   
-- When your pull request is accepted, the book is automatically updated on the site  
+- Use RStudio to write in rmarkdown files.
+- Make pull request to github repo
+- When your pull request is accepted, the book is automatically updated on the site
 
 ## Keep in mind
 
-- [There is a cheat sheet for you to get started with markdown](https://raw.githubusercontent.com/OHDSI/TheBookOfOhdsi/master/extras/CheatSheet.pdf)  
-- Hyperlinks should show the actual URL, so that a printed copy would still have a readable link.   
-- Tables and figures should be designed with small screens in mind.   
-- Keep filename extensions in lower case, so 'figure.png', not 'figure.PNG'.  
-- Only use alphanumeric characters in labels. So not ```{r figure_1} but ```{r figure1}.  
-- Tables and lists only render correctly if they have an empty line in front of them.  
-- Extra rows in the book.bib file (not used in the text) are not a problem.  
+- [There is a cheat sheet for you to get started with markdown](https://raw.githubusercontent.com/OHDSI/TheBookOfOhdsi/master/extras/CheatSheet.pdf)
+- Hyperlinks should show the actual URL, so that a printed copy would still have a readable link.
+- Tables and figures should be designed with small screens in mind.
+- Keep filename extensions in lower case, so 'figure.png', not 'figure.PNG'.
+- Only use alphanumeric characters in labels. So not ```{r figure_1} but ```{r figure1}.
+- Tables and lists only render correctly if they have an empty line in front of them.
+- Extra rows in the book.bib file (not used in the text) are not a problem.
 
 # Book outline
 
@@ -82,11 +82,11 @@ Our Standards
 
 Examples of behavior that contributes to creating a positive environment include:
 
-- Using welcoming and inclusive language  
-- Being respectful of differing viewpoints and experiences  
-- Gracefully accepting constructive criticism  
-- Focusing on what is best for the community  
-- Showing empathy towards other community members  
+- Using welcoming and inclusive language
+- Being respectful of differing viewpoints and experiences
+- Gracefully accepting constructive criticism
+- Focusing on what is best for the community
+- Showing empathy towards other community members
 
 # Examples of unacceptable behavior by participants include:
 
@@ -112,8 +112,7 @@ This Code of Conduct applies both within project spaces and in public spaces whe
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at [INSERT EMAIL ADDRESS]. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
                                         Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
-                                        
+
 # Attribution
 
 This Code of Conduct is adapted from the Contributor Covenant, version 1.4, available at http://contributor-covenant.org/version/1/
-

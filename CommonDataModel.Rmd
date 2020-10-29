@@ -1,4 +1,4 @@
-# (PART) Uniform Data Representation {-} 
+# (PART) Uniform Data Representation {-}
 
 # The Common Data Model {#CommonDataModel}
 
@@ -6,11 +6,11 @@
 
 Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content. \index{Common Data Model} \index{CDM |see {Common Data Model}} \index{relational data model|see {Common Data Model}}
 
-Why do we need a Common Data Model for observational healthcare data? 
+Why do we need a Common Data Model for observational healthcare data?
 
 Depending on their primary needs none of the observational databases capture all clinical events equally well. Therefore, research results must be drawn from many disparate data sources and compared and contrasted to understand the effect of potential capture bias. In addition, in order to draw conclusions with statistical power we need large numbers of observed patients. That explains the need for assessing and analyzing multiple data sources concurrently. In order to do that, data need to be harmonized into a common data standard. In addition, patient data require a high level of protection. To extract data for analysis purposes as it is done traditionally requires strict data use agreements and complex access control. A common data standard can alleviate this need by omitting the extraction step and allowing a standardized analytic to be executed on the data in it's native environment - the analytic comes to the data instead of the data to the analytic.
 
-This standard is provided by the Common Data Model (CDM). The CDM, combined with its standardized content (see Chapter \@ref(StandardizedVocabularies)), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables. 
+This standard is provided by the Common Data Model (CDM). The CDM, combined with its standardized content (see Chapter \@ref(StandardizedVocabularies)), will ensure that research methods can be systematically applied to produce meaningfully comparable and reproducible results. In this chapter we provide an overview of the data model itself, design, conventions, and discussion of select tables.
 
 An overview of all the tables in the CDM is provided in Figure \@ref(fig:cdmDiagram). \index{Common Data Model!data model diagram}
 
@@ -27,7 +27,7 @@ The CDM is optimized for typical observational research purposes of \index{Commo
 * Estimating the effect these interventions have a population - see Chapter \@ref(PopulationLevelEstimation),
 
 To achieve this goal, the development of the CDM follows the following design elements:
- 
+
   - **Suitability for purpose**: The CDM aims to provide data organized in a way optimal for analysis, rather than for the purpose of addressing the operational needs of health care providers or payers. \index{Common Data Model!suitability for purpose}
   - **Data protection**: All data that might jeopardize the identity and protection of patients, such as names, precise birthdays etc. are limited. Exceptions are possible when the research expressly requires more detailed information, such as precise birth dates for the study of infants.\index{Common Data Model!data protection}
   - **Design of domains**: The domains are modeled in a person-centric relational data model, where for each record the identity of the person and a date is captured as a minimum. Here, a relational data model is one where the data is represented as a collection of tables linked by primary and foreign keys.
@@ -38,7 +38,7 @@ To achieve this goal, the development of the CDM follows the following design el
   - **Technology neutrality**: The CDM does not require a specific technology. It can be realized in any relational database, such as Oracle, SQL Server etc., or as SAS analytical datasets.\index{Common Data Model!technology neutrality}
   - **Scalability**: The CDM is optimized for data processing and computational analysis to accommodate data sources that vary in size, including databases with up to hundreds of millions of persons and billions of clinical observations. \index{Common Data Model!scalability}
   - **Backwards compatibility**: All changes from previous CDMs are clearly delineated in the github repository  [(https://github.com/OHDSI/CommonDataModel)](https://github.com/OHDSI/CommonDataModel). Older versions of the CDM can be easily created from the current version, and no information is lost that was present previously. \index{Common Data Model!backwards compatibility}
-  
+
 ## Data Model Conventions
 
 There are a number of implicit and explicit conventions that have been adopted in the CDM. Developers of methods that run against the CDM need to understand these conventions. \index{Common Data Model!conventions}
@@ -53,13 +53,13 @@ Schemas, or database users in some systems, allow for separation between read-on
 
 ### General Conventions of Data Tables
 
-The CDM is platform-independent. Data types are defined generically using ANSI SQL data types (VARCHAR, INTEGER, FLOAT, DATE, DATETIME, CLOB). Precision is provided only for VARCHAR. It reflects the minimal required string length, but can be expanded within a concrete CDM instantiation. The CDM does not prescribe the date and datetime format. Standard queries against CDM may vary for local instances and date/datetime configurations. 
+The CDM is platform-independent. Data types are defined generically using ANSI SQL data types (VARCHAR, INTEGER, FLOAT, DATE, DATETIME, CLOB). Precision is provided only for VARCHAR. It reflects the minimal required string length, but can be expanded within a concrete CDM instantiation. The CDM does not prescribe the date and datetime format. Standard queries against CDM may vary for local instances and date/datetime configurations.
 
 *Note*: While the data model itself is platform-independent, many of the tools that have been built to work with it require certain specifications. For more about this please see Chapter \@ref(OhdsiAnalyticsTools).
 
 ### General Conventions of Domains{#domains}
 
-Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \@ref(conceptDomains)). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION_CONCEPT_ID of the CONDITION_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an CDM, these records are found in the DRUG_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \@ref(tab:domains). 
+Events of different nature are organized into Domains. These Events are stored in tables and fields which are Domain-specific, and represented by Standard Concepts that are also Domain-specific as defined in the Standardized Vocabularies (see section \@ref(conceptDomains)). Each Standard Concept has a unique Domain assignment, which defines which table they are recorded in. Even though the correct Domain assignment is subject for debate in the community, this strict Domain-table-field correspondence rule assures that there is always an unambiguous location for any code or concept. For example, signs, symptoms and diagnosis Concepts are of the Condition Domain, and are recorded in the CONDITION_CONCEPT_ID of the CONDITION_OCCURRENCE table. So-called Procedure Drugs are typically recorded as procedure codes in a procedure table in the source data. In an CDM, these records are found in the DRUG_EXPOSURE table because the mapped Standard Concepts have the Domain assignment Drug. There is a total of 30 Domains, as shown in table \@ref(tab:domains).
 
 Table: (\#tab:domains) Number of standard concepts belonging to each domain.
 
@@ -81,7 +81,7 @@ Concept Count|Domain ID|Concept Count|Domain ID
 336|Type Concept|2|Ethnicity
 194|Relationship|1|Observation Type
 
-### Representation of Content Through Concepts 
+### Representation of Content Through Concepts
 
 In CDM data tables the content of each record is fully normalized and represented through Concepts. Concepts are stored in Event tables with their CONCEPT_ID values, which are foreign keys to the CONCEPT table, which serves as the general reference table. All CDM instances use the same CONCEPT table as a reference of  the Concepts, which together with the Common Data Model is a key mechanism of interoperability and the foundation of the OHDSI research network. If a Standard Concept does not exist or cannot be identified, the value of the CONCEPT_ID is set to 0, representing a non-existing concept, an unknown or un-mappable value.
 
@@ -106,17 +106,17 @@ Table: (\#tab:fieldConventions) Field name conventions.
 Many tables contain equivalent information in multiple places: as a Source Value, a Source Concept and as a Standard Concept.
 
 * **Source Values** are the original representation of an Event record in the source data. They can be codes from widely used coding systems, which are often public domain, such as ICD9CM, NDC or Read, proprietary coding systems like CPT4, GPI or MedDRA, or controlled vocabularies used only in the source data, such as F for female and M for male. They can also be short free text phrases that are not standardized and controlled. Source Values are stored in the [Event]_SOURCE_VALUE fields in the data tables.
-* **Concepts** are CDM-specific entities that normalize the meaning of a clinical fact. Most Concepts are based on existing public or proprietary coding systems in healthcare, while others were created de-novo (CONCEPT_CODE starts with "OMOP"). Concepts have unique IDs across all domains. 
+* **Concepts** are CDM-specific entities that normalize the meaning of a clinical fact. Most Concepts are based on existing public or proprietary coding systems in healthcare, while others were created de-novo (CONCEPT_CODE starts with "OMOP"). Concepts have unique IDs across all domains.
 * **Source Concepts** are the Concepts that represent the code used in the source. Source Concepts are only used for existing public or proprietary coding systems, not for OMOP-generated Concepts. Source Concepts are stored in the [Event]_SOURCE_CONCEPT_ID field in the data tables.
-* **Standard Concepts** are those Concepts that are used to define the meaning of a clinical entity uniquely across all databases and independent from the coding system used in the sources. Standard Concepts are typically drawn from existing public or proprietary vocabulary sources. Non-standard Concepts that have the equivalent meaning to a Standard Concept have a mapping to the Standard Concept in the Standardized Vocabularies. Standard Concepts are referred to in the [Event]_CONCEPT_ID field of the data tables. 
+* **Standard Concepts** are those Concepts that are used to define the meaning of a clinical entity uniquely across all databases and independent from the coding system used in the sources. Standard Concepts are typically drawn from existing public or proprietary vocabulary sources. Non-standard Concepts that have the equivalent meaning to a Standard Concept have a mapping to the Standard Concept in the Standardized Vocabularies. Standard Concepts are referred to in the [Event]_CONCEPT_ID field of the data tables.
 
-Source Values are only provided for convenience and quality assurance (QA) purposes. They may contain information that is only meaningful in the context of a specific data source. The use of Source Values and Source Concepts is optional, even though **strongly recommended** if the source data make use of coding systems. Standard Concepts **are mandatory** however. This mandatory use of Standard Concepts is what allows all CDM instances to speak the same language. For example, the condition "Pulmonary Tuberculosis" (TB, Figure \@ref(fig:pulmTubICD9)) shows that the ICD9CM code for TB is 011. 
+Source Values are only provided for convenience and quality assurance (QA) purposes. They may contain information that is only meaningful in the context of a specific data source. The use of Source Values and Source Concepts is optional, even though **strongly recommended** if the source data make use of coding systems. Standard Concepts **are mandatory** however. This mandatory use of Standard Concepts is what allows all CDM instances to speak the same language. For example, the condition "Pulmonary Tuberculosis" (TB, Figure \@ref(fig:pulmTubICD9)) shows that the ICD9CM code for TB is 011.
 
 ```{r pulmTubICD9, fig.cap="ICD9CM code for Pulmonary Tuberculosis",echo=FALSE, out.width="75%", fig.align="center"}
 knitr::include_graphics("images/CommonDataModel/pulmTubICD9.png")
 ```
 
-Without context, the code 011 could be interpreted as "Hospital Inpatient (Including Medicare Part A)" from the UB04 vocabulary, or as "Nervous System Neoplasms without Complications, Comorbidities" from the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The CONCEPT_ID value that represents the 011 ICD9CM code is [44828631](http://athena.ohdsi.org/search-terms/terms/44828631). This differentiates the ICD9CM from the UBO4 and DRG. The ICD9CM TB Source Concept maps to Standard Concept [253954](http://athena.ohdsi.org/search-terms/terms/253954) from the SNOMED vocabulary through the relationship "Non-standard to Standard map (OMOP)" as shown in figure \@ref(fig:pulmTubMap). This same mapping relationships exists for Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes. 
+Without context, the code 011 could be interpreted as "Hospital Inpatient (Including Medicare Part A)" from the UB04 vocabulary, or as "Nervous System Neoplasms without Complications, Comorbidities" from the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The CONCEPT_ID value that represents the 011 ICD9CM code is [44828631](http://athena.ohdsi.org/search-terms/terms/44828631). This differentiates the ICD9CM from the UBO4 and DRG. The ICD9CM TB Source Concept maps to Standard Concept [253954](http://athena.ohdsi.org/search-terms/terms/253954) from the SNOMED vocabulary through the relationship "Non-standard to Standard map (OMOP)" as shown in figure \@ref(fig:pulmTubMap). This same mapping relationships exists for Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes.
 
 ```{r pulmTubMap, fig.cap="SNOMED code for Pulmonary Tuberculosis",echo=FALSE, out.width="100%"}
 knitr::include_graphics("images/CommonDataModel/pulmTubMap.png")
@@ -132,11 +132,11 @@ The CDM contains 16 Clinical Event tables, 10 Vocabulary tables, 2 metadata tabl
 
 [^cdmWikiUrl1]: https://github.com/OHDSI/CommonDataModel/wiki
 
-To illustrate how these tables are used in practice, the data of one person will be used as a common thread throughout the rest of the chapter. 
+To illustrate how these tables are used in practice, the data of one person will be used as a common thread throughout the rest of the chapter.
 
-### Running Example: Endometriosis 
+### Running Example: Endometriosis
 
-Endometriosis is a painful condition whereby cells normally found in the lining of a woman's uterus occur elsewhere in the body. Severe cases can lead to infertility, bowel, and bladder problems. The following sections will detail one patient's experience with this disease and how it might be represented in the Common Data Model. 
+Endometriosis is a painful condition whereby cells normally found in the lining of a woman's uterus occur elsewhere in the body. Severe cases can lead to infertility, bowel, and bladder problems. The following sections will detail one patient's experience with this disease and how it might be represented in the Common Data Model.
 
 ```{r Lauren1, echo=FALSE, out.width="50%", fig.align="center"}
 knitr::include_graphics("images/CommonDataModel/Lauren.jpg")
@@ -155,7 +155,7 @@ Lauren had been experiencing endometriosis symptoms for many years; however, it 
 * She is white
 * She is English
 
-With that in mind, her PERSON table might look something like this: 
+With that in mind, her PERSON table might look something like this:
 
 Table: (\#tab:person) The PERSON table.
 
@@ -214,7 +214,7 @@ Column name|Value|Explanation
 
 ### VISIT_OCCURRENCE{#visitOccurrence}
 
-the VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discrete events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits. 
+the VISIT_OCCURRENCE table houses information about a patient's encounters with the health care system. Within the OHDSI vernacular these are referred to as Visits and are considered to be discrete events. There are 12 top categories of Visits with an extensive hierarchy, depicting the many different circumstances healthcare might be delivered. The most common Visits recorded are inpatient, outpatient, emergency department and non-medical institution Visits.
 
 #### How Are Lauren's Encounters Represented As Visits?  {-}
 
@@ -254,7 +254,7 @@ Revisiting her account she says:
 
 > About 3 years ago I noticed my periods, which had also been painful, were getting increasingly more painful. I started becoming aware of a sharp jabbing pain right by my colon and feeling tender and bloated around my tailbone and lower pelvis area. My periods had become so painful that I was missing 1-2 days of work a month. Painkillers sometimes dulled the pain, but usually they didn’t do much.
 
-The SNOMED code for painful menstruation cramps, otherwise known as dysmenorrhea, is 266599000. Table \@ref(tab:conditionOccurrence) shows how that would be represented in the CONDITION_OCCURRENCE table: 
+The SNOMED code for painful menstruation cramps, otherwise known as dysmenorrhea, is 266599000. Table \@ref(tab:conditionOccurrence) shows how that would be represented in the CONDITION_OCCURRENCE table:
 
 Table: (\#tab:conditionOccurrence) The CONDITION_OCCURRENCE table.
 
@@ -278,11 +278,11 @@ Column name|Value|Explanation
 
 ### DRUG_EXPOSURE{#drugExposure}
 
-The DRUG_EXPOSURE table captures records about the intent or actual introduction of a drug into the body of the patient. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Drug exposures are inferred from clinical events associated with orders, prescriptions written, pharmacy dispensings, procedural administrations, and other patient-reported information. 
+The DRUG_EXPOSURE table captures records about the intent or actual introduction of a drug into the body of the patient. Drugs include prescription and over-the-counter medicines, vaccines, and large-molecule biologic therapies. Drug exposures are inferred from clinical events associated with orders, prescriptions written, pharmacy dispensings, procedural administrations, and other patient-reported information.
 
 #### How Are Lauren's Drug Exposures Represented?  {-}
 
-To help with her dysmenorrhea pain, Lauren was given 60 oral tablets with 375 mg Acetaminophen (aka Paracetamol, e.g. sold in the US under NDC code 69842087651) each for 30 days at her Visit on 2010-01-06. Here's how that might look in the DRUG_EXPOSURE table: 
+To help with her dysmenorrhea pain, Lauren was given 60 oral tablets with 375 mg Acetaminophen (aka Paracetamol, e.g. sold in the US under NDC code 69842087651) each for 30 days at her Visit on 2010-01-06. Here's how that might look in the DRUG_EXPOSURE table:
 
 Table: (\#tab:drugExposure) The DRUG_EXPOSURE table.
 
@@ -317,7 +317,7 @@ The PROCEDURE_OCCURRENCE table contains records of activities or processes order
 
  * Medical Claims include procedure codes that are submitted as part of a claim for health services rendered, including procedures performed.
  * Electronic Health Records that capture procedures as orders.
- 
+
 #### What Procedures Did Lauren Have?  {-}
 
 From her description we know she had an ultrasound of her left ovary on 2013-01-14 that showed a 4x5cm cyst. Here's how that would look in the PROCEDURE_OCCURRENCE table:
@@ -417,7 +417,7 @@ Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrh
 ```
 
 ```{exercise, exercisePersonSource}
-Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" using source codes. This database uses ICD-10, and the relevant ICD-10 code is "K92.2". 
+Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" using source codes. This database uses ICD-10, and the relevant ICD-10 code is "K92.2".
 
 ```
 

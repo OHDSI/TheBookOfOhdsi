@@ -16,9 +16,9 @@ In this chapter we first describe best practices for writing valid analysis code
 
 Traditionally, observational studies are often viewed as a journey rather than a process: a database expert may extract a data set from the database and hand this over to the data analyst, who may open it in a spreadsheet editor or other interactive tool, and start working on the analysis. In the end, a result is produced, but little is preserved of how it came about. The destination of the journey was reached, but it is not possible to retrace the exact steps taken to get there. This practice is entirely unacceptable, both because it is not reproducible, but also because it lacks transparency; we do not know exactly what was done to produce the result, so we also cannot verify that no mistakes were made. \index{study code validity}
 
-Every analysis generating evidence must therefore be fully automated. By automated we mean the analysis should be implemented as a single script, and we should be able to redo the entire analysis from database in CDM format to results, including tables and figures, with a single command. The analysis can be of arbitrary complexity, perhaps producing just a single count, or generating empirically calibrated estimates for millions of research questions, but the same principle applies. The script can invoke other scripts, which in turn can invoke even lower-level analysis processes. 
+Every analysis generating evidence must therefore be fully automated. By automated we mean the analysis should be implemented as a single script, and we should be able to redo the entire analysis from database in CDM format to results, including tables and figures, with a single command. The analysis can be of arbitrary complexity, perhaps producing just a single count, or generating empirically calibrated estimates for millions of research questions, but the same principle applies. The script can invoke other scripts, which in turn can invoke even lower-level analysis processes.
 
-The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) R package, we can connect directly to the data in CDM format, and many advanced analytics are available through the other R packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/). 
+The analysis script can be implemented in any computer language, although in OHDSI the preferred language is R. Thanks to the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) R package, we can connect directly to the data in CDM format, and many advanced analytics are available through the other R packages in the [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/).
 
 ### Programming Best Practices
 
@@ -26,7 +26,7 @@ Observational analyses can become very complex, with many steps needed to produc
 
 - **Abstraction**: Rather than write a single large script that does everything, leading to so-called "spaghetti code" where dependencies between lines of code can go from anywhere to anywhere (e.g. a value set on line 10 is used in line 1,000), we can organize our code in units called "functions." A function should have a clear goal, for example "take random sample," and once created we can then use this function in our larger script without having to think of the minutiae of what the function does; we can abstract the function to a simple-to-understand concept.
 - **Encapsulation**: For abstraction to work, we should make sure that dependencies of a function are minimized and clearly defined. Our example sampling function should have a few arguments (e.g. a dataset and a sample size), and one output (e.g. the sample). Nothing else should influence what the function does. So-called "global variables", variables that are set outside a function, are not arguments of a function, but are nevertheless used in the function, should be avoided.
-- **Clear naming**: Variables and functions should have clear names, making code read almost like natural language. For example, instead of `x <- spl(y, 100)`, we can write code that reads `sampledPatients <- takeSample(patients, sampleSize = 100)`. Try to resist the urge to abbreviate. Modern languages have no limits on the length of variable and function names. 
+- **Clear naming**: Variables and functions should have clear names, making code read almost like natural language. For example, instead of `x <- spl(y, 100)`, we can write code that reads `sampledPatients <- takeSample(patients, sampleSize = 100)`. Try to resist the urge to abbreviate. Modern languages have no limits on the length of variable and function names.
 - **Reuse**: One advantage of writing clear, well encapsulated functions is that they can often be reused. This not only saves time, it also means there will be less code, so less complexity and fewer opportunities for errors.
 
 ### Code Validation
@@ -36,7 +36,7 @@ Several approaches exist to verify the validity of software code, but two are es
 - **Code review**: One person writes the code, and another person reviews the code.
 - **Double coding**: Two persons both independently write the analysis code, and afterwards the results of the two scripts are compared.
 
-Code review has the advantage that it is usually less work, but the disadvantage is that the reviewer might miss some errors. Double coding on the other hand is usually very labor intensive, but it is less likely, although not impossible, that errors are missed. Another disadvantage of double coding is that two separate implementations *almost always*  produce different results, due to the many minor arbitrary choices that need to made (e.g. should "until exposure end" be interpreted as including the exposure end date, or not?). As a consequence, the two supposedly independent programmers often need to work together to align their analyses, thus breaking their independence. 
+Code review has the advantage that it is usually less work, but the disadvantage is that the reviewer might miss some errors. Double coding on the other hand is usually very labor intensive, but it is less likely, although not impossible, that errors are missed. Another disadvantage of double coding is that two separate implementations *almost always*  produce different results, due to the many minor arbitrary choices that need to made (e.g. should "until exposure end" be interpreted as including the exposure end date, or not?). As a consequence, the two supposedly independent programmers often need to work together to align their analyses, thus breaking their independence.
 
 Other software validation practices such as unit testing are less relevant here because a study is typically a one-time activity with highly complex relationships between input (the data in CDM) and outputs (the study results), making these practices less usable. Note that these practices are applied in the Methods Library.
 
@@ -48,7 +48,7 @@ The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) provides a 
 
 The OHDSI Methods Library is developed by the OHDSI community. Proposed changes to the Library are discussed in two venues: The GitHub issue trackers (for example the CohortMethod issue tracker[^issueTrackerUrl]) and the OHDSI Forums.[^forumsUrl] Both are open to the public. Any member of the community can contribute software code to the Library, however, final approval of any changes incorporated in the released versions of the software is performed by the OHDSI Population-Level Estimation Workgroup leadership (Drs. Marc Suchard and Martijn Schuemie) and OHDSI Patient-Level Prediction Workgroup leadership (Drs. Peter Rijnbeek and Jenna Reps) only.
 
-[^issueTrackerUrl]: https://github.com/OHDSI/CohortMethod/issues 
+[^issueTrackerUrl]: https://github.com/OHDSI/CohortMethod/issues
 [^forumsUrl]: http://forums.ohdsi.org/
 
 Users can install the Methods Library in R directly from the master branches in the GitHub repositories, or through a system known as "drat" that is always up-to-date with the master branches. A number of the Methods Library packages are available through R’s Comprehensive R Archive Network (CRAN), and this number is expected to increase over time.
@@ -71,11 +71,11 @@ All packages in the Methods Library are documented through R’s internal docume
 
 [^methodsLibrarySiteUrl]: https://ohdsi.github.io/MethodsLibrary/
 
-All Method Library source code is available to end users. Feedback from the community is facilitated using GitHub’s issue tracking system and the OHDSI forums. 
+All Method Library source code is available to end users. Feedback from the community is facilitated using GitHub’s issue tracking system and the OHDSI forums.
 
 ###  Availability of Current and Historical Archive Versions
 
-Current and historical versions of the Methods Library packages are available in two locations. First, the GitHub version control system contains the full development history of each package, and the state of a package at each point in time can be reconstructed and retrieved. Most importantly, each released version is tagged in GitHub. Second, the released R source packages are stored in the OHDSI GitHub drat repository. 
+Current and historical versions of the Methods Library packages are available in two locations. First, the GitHub version control system contains the full development history of each package, and the state of a package at each point in time can be reconstructed and retrieved. Most importantly, each released version is tagged in GitHub. Second, the released R source packages are stored in the OHDSI GitHub drat repository.
 
 ###  Maintenance, Support and Retirement
 
@@ -85,7 +85,7 @@ Each current version of the Methods Library is actively supported by OHDSI with 
 
 Members of the OHDSI community represent multiple statistical disciplines and are based at academic, not-for-profit and industry-affiliated institutions on multiple continents.
 
-All leaders of the OHDSI Population-Level Estimation Workgroup and OHDSI Patient-Level Prediction Workgroup hold PhDs from accredited academic institutions and have published extensively in peer reviewed journals. 
+All leaders of the OHDSI Population-Level Estimation Workgroup and OHDSI Patient-Level Prediction Workgroup hold PhDs from accredited academic institutions and have published extensively in peer reviewed journals.
 
 ###  Physical and Logical Security
 
@@ -97,7 +97,7 @@ The OHDSI Methods Library is hosted on the GitHub[^githubUrl] system. GitHub’s
 
 The OHDSI Methods Library is hosted on the GitHub system. GitHub’s disaster recovery facilities are described at [https://github.com/security](https://github.com/security).
 
-## Methods Library Testing 
+## Methods Library Testing
 
 We distinguish between two types of tests performed on the Methods Library: Tests for individual functions in the packages (so-called "unit tests"), and tests for more complex functionality using simulations.
 
@@ -120,9 +120,8 @@ For more complex functionality it is not always obvious what the expected output
 
 - Custom study code can be validated using code review or double coding.
 
-- The Methods Library provides validated functionality that can be used in observational studies. 
+- The Methods Library provides validated functionality that can be used in observational studies.
 
 - The Methods Library is validated by using a software development process aimed at creating valid software, and by testing.
 
 ```
-

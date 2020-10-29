@@ -15,16 +15,16 @@ Bias
 : The expected value of the error (the difference between the true value and the estimated value).
 
 Boolean
-: Variable that has only two values (true or false). 
+: Variable that has only two values (true or false).
 
 Care site
 : A uniquely identified institutional (physical or organizational) unit where healthcare delivery is practiced (office, ward, hospital, clinic, etc.).
 
 Case control
-: A type of retrospective study design for population-level effect estimation. Case-control studies match "cases" with the target outcome to "controls" without the target outcome. Then they look back in time and compare the odds of exposure in the cases and the controls. 
+: A type of retrospective study design for population-level effect estimation. Case-control studies match "cases" with the target outcome to "controls" without the target outcome. Then they look back in time and compare the odds of exposure in the cases and the controls.
 
 Causal effect
-: What population-level estimation concerns itself with. One definition equates a "causal effect" as the average of the "unit-level causal effects" in a target population. The unit-level causal effect is the contrast between the outcome had an individual been exposed and the outcome had that individual not been exposed (or been exposed to A as against B). 
+: What population-level estimation concerns itself with. One definition equates a "causal effect" as the average of the "unit-level causal effects" in a target population. The unit-level causal effect is the contrast between the outcome had an individual been exposed and the outcome had that individual not been exposed (or been exposed to A as against B).
 
 Characterization
 : Descriptive study of a cohort or entire database. See Chapter \@ref(Characterization).
@@ -72,13 +72,13 @@ Domain
 : A Domain defines the set of allowable Concepts for the standardized fields in the CDM tables. For example, the "Condition" Domain contains Concepts that describe a condition of a patient, and these Concepts can only be stored in the condition_concept_id field of the CONDITION_OCCURRENCE and CONDITION_ERA tables.
 
 Electronic Health Record (EHR)
-: Data generated during course of care and recorded in an electronic system. 
+: Data generated during course of care and recorded in an electronic system.
 
 Epidemiology
 : The study of the distribution, patterns and determinants of health and disease conditions in defined populations.
 
 Evidence-based medicine
-: The use of empirical and scientific evidence in making decisions about the care of individual patients.  
+: The use of empirical and scientific evidence in making decisions about the care of individual patients.
 
 ETL (Extract-Transform-Load)
 : The process of converting data from one format to another, for example from a source format to the CDM. See Chapter \@ref(ExtractTransformLoad).
@@ -87,7 +87,7 @@ Matching
 : Many population-level effect estimation approaches attempt to identify the causal effects of exposures by comparing outcomes in exposed patients to those same outcomes in unexposed patients (or exposed to A versus B). Since these two patient groups might differ in ways other than exposure, "matching" attempts to create exposed and unexposed patient groups that are as similar as possible at least with respect to measured patient characteristics.
 
 Measurement
-: A structured value (numerical or categorical) obtained through systematic and standardized examination or testing of a person or person's sample. 
+: A structured value (numerical or categorical) obtained through systematic and standardized examination or testing of a person or person's sample.
 
 Measurement error
 : Occurs when a recorded measurement (e.g., blood pressure, patient age, duration of treatment) differs from the corresponding true measurement.
@@ -99,7 +99,7 @@ Methods Library
 : A set of R packages developed by the OHDSI community for performing  observational studies.
 
 Model misspecification
-: Many OHDSI methods employ statistical models such as proportional hazards regression or random forests. Insofar as the mechanism that generated the data deviate from the assumed model, the model is "misspecified." 
+: Many OHDSI methods employ statistical models such as proportional hazards regression or random forests. Insofar as the mechanism that generated the data deviate from the assumed model, the model is "misspecified."
 
 Negative control
 : An exposure-outcome pair where the exposure is believed to not cause or prevent the outcome. Can be used to assess whether effect estimation methods produce results in line with the truth. See Chapter \@ref(MethodValidity).
@@ -111,7 +111,7 @@ Observation period
 : The span of time for which a person is at-risk to have clinical events recorded within the source systems, even if no events in fact are recorded (healthy patient with no healthcare interactions).
 
 Observational study
-: A study where the researcher has no control over the intervention. 
+: A study where the researcher has no control over the intervention.
 
 OHDSI SQL
 : A SQL dialect that can be automatically translated to various other SQL dialects using the SqlRender R package. OHDSI SQL is mostly a subset of SQL Server SQL, but allows for additional parameterization. See Chapter \@ref(SqlAndR).
@@ -135,10 +135,10 @@ Positive control
 : An exposure-outcome pair where the exposure is believed to cause or prevent the outcome. Can be used to assess whether effect estimation methods produce results in line with the truth. See Chapter \@ref(MethodValidity).
 
 Procedure
-: Activity or process ordered by, or carried out by, a healthcare provider on the patient to have a diagnostic or therapeutic purpose. 
+: Activity or process ordered by, or carried out by, a healthcare provider on the patient to have a diagnostic or therapeutic purpose.
 
 Propensity score (PS)
-: a single metric used in population-level estimation to balance populations in order to mimic randomization between two treatment groups in an observational study.  The PS represents the probability of a patient receiving a treatment of interest as a function of a set of observed baseline covariates. It is most often calculated using a logistic regression model where the binary outcome is set to one for the group receiving the target treatment of interest and to zero for the comparator treatment. See Chapter \@ref(PopulationLevelEstimation). 
+: a single metric used in population-level estimation to balance populations in order to mimic randomization between two treatment groups in an observational study.  The PS represents the probability of a patient receiving a treatment of interest as a function of a set of observed baseline covariates. It is most often calculated using a logistic regression model where the binary outcome is set to one for the group receiving the target treatment of interest and to zero for the comparator treatment. See Chapter \@ref(PopulationLevelEstimation).
 
 Protocol
 : A human readable document that fully specifies the design of a study.
@@ -168,18 +168,16 @@ Source code
 : A code used in a source database. For example an ICD-10 code.
 
 Standard Concept
-: A concept that is designated as valid concept and allowed to appear in the CDM. 
+: A concept that is designated as valid concept and allowed to appear in the CDM.
 
 THEMIS
-: OHDSI workgroup that addresses target data format that is of higher granularity and detail with respect to CDM model specifications. 
+: OHDSI workgroup that addresses target data format that is of higher granularity and detail with respect to CDM model specifications.
 
 Visit
-: The span of time a person continuously receives medical services from one or more providers at a care site in a given setting within the health care system. 
+: The span of time a person continuously receives medical services from one or more providers at a care site in a given setting within the health care system.
 
 Vocabulary
 : A list of words and often phrases, usually arranged alphabetically and defined or translated. See Chapter \@ref(StandardizedVocabularies).
 
 White Rabbit
 : A software tool for profiling a database before defining the ETL to the CDM. See Chapter \@ref(ExtractTransformLoad).
-
-

@@ -26,7 +26,7 @@ Use the era end date of *ACE inhibitors* (Table \@ref(tab:aceInhibitors))
 
 #### Cohort Collapse Strategy {-}
 
-Collapse cohort by era with a gap size of 30 days. 
+Collapse cohort by era with a gap size of 30 days.
 
 #### Concept Set Definitions {-}
 
@@ -80,7 +80,7 @@ Limit qualifying cohort to: earliest event per person.
 
 #### End Date Strategy {-}
 
-Custom Drug Era Exit Criteria. 
+Custom Drug Era Exit Criteria.
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
 
 Use the era end date of *ACE inhibitors* (Table \@ref(tab:aceInhibitorsMono))
@@ -90,7 +90,7 @@ Use the era end date of *ACE inhibitors* (Table \@ref(tab:aceInhibitorsMono))
 
 #### Cohort Collapse Strategy {-}
 
-Collapse cohort by era with a gap size of 0 days. 
+Collapse cohort by era with a gap size of 0 days.
 
 #### Concept Set Definitions {-}
 
@@ -183,7 +183,7 @@ Table: (\#tab:htnDrugsAceMono) Hypertension drugs
 
 #### Initial Event Cohort {-}
 
-People having any of the following: 
+People having any of the following:
 
 * a condition occurrence of *Acute myocardial Infarction* (Table \@ref(tab:ami))
 
@@ -199,12 +199,12 @@ Limit qualifying cohort to: all events per person.
 
 #### End Date Strategy {-}
 
-Date Offset Exit Criteria. 
+Date Offset Exit Criteria.
 This cohort definition end date will be the index event's start date plus 7 days
 
 #### Cohort Collapse Strategy {-}
 
-Collapse cohort by era with a gap size of 180 days. 
+Collapse cohort by era with a gap size of 180 days.
 
 #### Concept Set Definitions {-}
 
@@ -228,9 +228,9 @@ Table: (\#tab:inpatientOrErAmi) Inpatient or ER visit
 
 #### Initial Event Cohort {-}
 
-People having any of the following: 
+People having any of the following:
 
-* a condition occurrence of *Angioedema* (Table \@ref(tab:angioedema)) 
+* a condition occurrence of *Angioedema* (Table \@ref(tab:angioedema))
 
 with continuous observation of at least 0 days prior and 0 days after event index date, and limit initial events to: all events per person.
 
@@ -249,7 +249,7 @@ This cohort definition end date will be the index event's start date plus 7 days
 
 #### Cohort Collapse Strategy {-}
 
-Collapse cohort by era with a gap size of 30 days. 
+Collapse cohort by era with a gap size of 30 days.
 
 #### Concept Set Definitions {-}
 
@@ -302,7 +302,7 @@ Limit qualifying cohort to: earliest event per person.
 
 #### End Date Strategy {-}
 
-Custom Drug Era Exit Criteria. 
+Custom Drug Era Exit Criteria.
 This strategy creates a drug era from the codes found in the specified concept set. If the index event is found within an era, the cohort end date will use the era's end date. Otherwise, it will use the observation period end date that contains the index event.
 
 Use the era end date of *Thiazide or thiazide-like diuretic* (Table \@ref(tab:thiazidesMono))
@@ -312,7 +312,7 @@ Use the era end date of *Thiazide or thiazide-like diuretic* (Table \@ref(tab:th
 
 #### Cohort Collapse Strategy {-}
 
-Collapse cohort by era with a gap size of 0 days. 
+Collapse cohort by era with a gap size of 0 days.
 
 #### Concept Set Definitions {-}
 
@@ -398,7 +398,7 @@ Table: (\#tab:htnDrugsThzMono) Hypertension drugs
 
 #### Initial Event Cohort {-}
 
-People having any of the following: 
+People having any of the following:
 
 * a drug exposure of *First-line hypertension drugs* (Table \@ref(tab:HTN1yrFO1stLine)) for the first time in the person's history
 
@@ -420,7 +420,7 @@ No end date strategy selected. By default, the cohort end date will be the end o
 
 #### Cohort Collapse Strategy {-}
 
-Collapse cohort by era with a gap size of 0 days. 
+Collapse cohort by era with a gap size of 0 days.
 
 #### Concept Set Definitions {-}
 
@@ -428,100 +428,100 @@ Table: (\#tab:HTN1yrFO1stLine) First-line hypertension drugs
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 907013 | Metolazone | NO | YES | NO | 
-| 974166 | Hydrochlorothiazide | NO | YES | NO | 
-| 978555 | Indapamide | NO | YES | NO | 
-| 1307863 | Verapamil | NO | YES | NO | 
-| 1308216 | Lisinopril | NO | YES | NO | 
-| 1308842 | valsartan | NO | YES | NO | 
-| 1310756 | moexipril | NO | YES | NO | 
-| 1317640 | telmisartan | NO | YES | NO | 
-| 1318137 | Nicardipine | NO | YES | NO | 
-| 1318853 | Nifedipine | NO | YES | NO | 
-| 1319880 | Nisoldipine | NO | YES | NO | 
-| 1326012 | Isradipine | NO | YES | NO | 
-| 1328165 | Diltiazem | NO | YES | NO | 
-| 1331235 | quinapril | NO | YES | NO | 
-| 1332418 | Amlodipine | NO | YES | NO | 
-| 1334456 | Ramipril | NO | YES | NO | 
-| 1335471 | benazepril | NO | YES | NO | 
-| 1340128 | Captopril | NO | YES | NO | 
-| 1341927 | Enalapril | NO | YES | NO | 
-| 1342439 | trandolapril | NO | YES | NO | 
-| 1346686 | eprosartan | NO | YES | NO | 
-| 1347384 | irbesartan | NO | YES | NO | 
-| 1351557 | candesartan | NO | YES | NO | 
-| 1353776 | Felodipine | NO | YES | NO | 
-| 1363749 | Fosinopril | NO | YES | NO | 
-| 1367500 | Losartan | NO | YES | NO | 
-| 1373225 | Perindopril | NO | YES | NO | 
-| 1395058 | Chlorthalidone | NO | YES | NO | 
-| 40226742 | olmesartan | NO | YES | NO | 
-| 40235485 | azilsartan | NO | YES | NO | 
+| 907013 | Metolazone | NO | YES | NO |
+| 974166 | Hydrochlorothiazide | NO | YES | NO |
+| 978555 | Indapamide | NO | YES | NO |
+| 1307863 | Verapamil | NO | YES | NO |
+| 1308216 | Lisinopril | NO | YES | NO |
+| 1308842 | valsartan | NO | YES | NO |
+| 1310756 | moexipril | NO | YES | NO |
+| 1317640 | telmisartan | NO | YES | NO |
+| 1318137 | Nicardipine | NO | YES | NO |
+| 1318853 | Nifedipine | NO | YES | NO |
+| 1319880 | Nisoldipine | NO | YES | NO |
+| 1326012 | Isradipine | NO | YES | NO |
+| 1328165 | Diltiazem | NO | YES | NO |
+| 1331235 | quinapril | NO | YES | NO |
+| 1332418 | Amlodipine | NO | YES | NO |
+| 1334456 | Ramipril | NO | YES | NO |
+| 1335471 | benazepril | NO | YES | NO |
+| 1340128 | Captopril | NO | YES | NO |
+| 1341927 | Enalapril | NO | YES | NO |
+| 1342439 | trandolapril | NO | YES | NO |
+| 1346686 | eprosartan | NO | YES | NO |
+| 1347384 | irbesartan | NO | YES | NO |
+| 1351557 | candesartan | NO | YES | NO |
+| 1353776 | Felodipine | NO | YES | NO |
+| 1363749 | Fosinopril | NO | YES | NO |
+| 1367500 | Losartan | NO | YES | NO |
+| 1373225 | Perindopril | NO | YES | NO |
+| 1395058 | Chlorthalidone | NO | YES | NO |
+| 40226742 | olmesartan | NO | YES | NO |
+| 40235485 | azilsartan | NO | YES | NO |
 
 
 Table: (\#tab:HTN1yrFODrugs) Hypertension drugs
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 904542 | Triamterene | NO | YES | NO | 
-| 907013 | Metolazone | NO | YES | NO | 
-| 932745 | Bumetanide | NO | YES | NO | 
-| 942350 | torsemide | NO | YES | NO | 
-| 956874 | Furosemide | NO | YES | NO | 
-| 970250 | Spironolactone | NO | YES | NO | 
-| 974166 | Hydrochlorothiazide | NO | YES | NO | 
-| 978555 | Indapamide | NO | YES | NO | 
-| 991382 | Amiloride | NO | YES | NO | 
-| 1305447 | Methyldopa | NO | YES | NO | 
-| 1307046 | Metoprolol | NO | YES | NO | 
-| 1307863 | Verapamil | NO | YES | NO | 
-| 1308216 | Lisinopril | NO | YES | NO | 
-| 1308842 | valsartan | NO | YES | NO | 
-| 1309068 | Minoxidil | NO | YES | NO | 
-| 1309799 | eplerenone | NO | YES | NO | 
-| 1310756 | moexipril | NO | YES | NO | 
-| 1313200 | Nadolol | NO | YES | NO | 
-| 1314002 | Atenolol | NO | YES | NO | 
-| 1314577 | nebivolol | NO | YES | NO | 
-| 1317640 | telmisartan | NO | YES | NO | 
-| 1317967 | aliskiren | NO | YES | NO | 
-| 1318137 | Nicardipine | NO | YES | NO | 
-| 1318853 | Nifedipine | NO | YES | NO | 
-| 1319880 | Nisoldipine | NO | YES | NO | 
-| 1319998 | Acebutolol | NO | YES | NO | 
-| 1322081 | Betaxolol | NO | YES | NO | 
-| 1326012 | Isradipine | NO | YES | NO | 
-| 1327978 | Penbutolol | NO | YES | NO | 
-| 1328165 | Diltiazem | NO | YES | NO | 
-| 1331235 | quinapril | NO | YES | NO | 
-| 1332418 | Amlodipine | NO | YES | NO | 
-| 1334456 | Ramipril | NO | YES | NO | 
-| 1335471 | benazepril | NO | YES | NO | 
-| 1338005 | Bisoprolol | NO | YES | NO | 
-| 1340128 | Captopril | NO | YES | NO | 
-| 1341238 | Terazosin | NO | YES | NO | 
-| 1341927 | Enalapril | NO | YES | NO | 
-| 1342439 | trandolapril | NO | YES | NO | 
-| 1344965 | Guanfacine | NO | YES | NO | 
-| 1345858 | Pindolol | NO | YES | NO | 
-| 1346686 | eprosartan | NO | YES | NO | 
-| 1346823 | carvedilol | NO | YES | NO | 
-| 1347384 | irbesartan | NO | YES | NO | 
-| 1350489 | Prazosin | NO | YES | NO | 
-| 1351557 | candesartan | NO | YES | NO | 
-| 1353766 | Propranolol | NO | YES | NO | 
-| 1353776 | Felodipine | NO | YES | NO | 
-| 1363053 | Doxazosin | NO | YES | NO | 
-| 1363749 | Fosinopril | NO | YES | NO | 
-| 1367500 | Losartan | NO | YES | NO | 
-| 1373225 | Perindopril | NO | YES | NO | 
-| 1373928 | Hydralazine | NO | YES | NO | 
-| 1386957 | Labetalol | NO | YES | NO | 
-| 1395058 | Chlorthalidone | NO | YES | NO | 
-| 1398937 | Clonidine | NO | YES | NO | 
-| 40226742 | olmesartan | NO | YES | NO | 
-| 40235485 | azilsartan | NO | YES | NO | 
+| 904542 | Triamterene | NO | YES | NO |
+| 907013 | Metolazone | NO | YES | NO |
+| 932745 | Bumetanide | NO | YES | NO |
+| 942350 | torsemide | NO | YES | NO |
+| 956874 | Furosemide | NO | YES | NO |
+| 970250 | Spironolactone | NO | YES | NO |
+| 974166 | Hydrochlorothiazide | NO | YES | NO |
+| 978555 | Indapamide | NO | YES | NO |
+| 991382 | Amiloride | NO | YES | NO |
+| 1305447 | Methyldopa | NO | YES | NO |
+| 1307046 | Metoprolol | NO | YES | NO |
+| 1307863 | Verapamil | NO | YES | NO |
+| 1308216 | Lisinopril | NO | YES | NO |
+| 1308842 | valsartan | NO | YES | NO |
+| 1309068 | Minoxidil | NO | YES | NO |
+| 1309799 | eplerenone | NO | YES | NO |
+| 1310756 | moexipril | NO | YES | NO |
+| 1313200 | Nadolol | NO | YES | NO |
+| 1314002 | Atenolol | NO | YES | NO |
+| 1314577 | nebivolol | NO | YES | NO |
+| 1317640 | telmisartan | NO | YES | NO |
+| 1317967 | aliskiren | NO | YES | NO |
+| 1318137 | Nicardipine | NO | YES | NO |
+| 1318853 | Nifedipine | NO | YES | NO |
+| 1319880 | Nisoldipine | NO | YES | NO |
+| 1319998 | Acebutolol | NO | YES | NO |
+| 1322081 | Betaxolol | NO | YES | NO |
+| 1326012 | Isradipine | NO | YES | NO |
+| 1327978 | Penbutolol | NO | YES | NO |
+| 1328165 | Diltiazem | NO | YES | NO |
+| 1331235 | quinapril | NO | YES | NO |
+| 1332418 | Amlodipine | NO | YES | NO |
+| 1334456 | Ramipril | NO | YES | NO |
+| 1335471 | benazepril | NO | YES | NO |
+| 1338005 | Bisoprolol | NO | YES | NO |
+| 1340128 | Captopril | NO | YES | NO |
+| 1341238 | Terazosin | NO | YES | NO |
+| 1341927 | Enalapril | NO | YES | NO |
+| 1342439 | trandolapril | NO | YES | NO |
+| 1344965 | Guanfacine | NO | YES | NO |
+| 1345858 | Pindolol | NO | YES | NO |
+| 1346686 | eprosartan | NO | YES | NO |
+| 1346823 | carvedilol | NO | YES | NO |
+| 1347384 | irbesartan | NO | YES | NO |
+| 1350489 | Prazosin | NO | YES | NO |
+| 1351557 | candesartan | NO | YES | NO |
+| 1353766 | Propranolol | NO | YES | NO |
+| 1353776 | Felodipine | NO | YES | NO |
+| 1363053 | Doxazosin | NO | YES | NO |
+| 1363749 | Fosinopril | NO | YES | NO |
+| 1367500 | Losartan | NO | YES | NO |
+| 1373225 | Perindopril | NO | YES | NO |
+| 1373928 | Hydralazine | NO | YES | NO |
+| 1386957 | Labetalol | NO | YES | NO |
+| 1395058 | Chlorthalidone | NO | YES | NO |
+| 1398937 | Clonidine | NO | YES | NO |
+| 40226742 | olmesartan | NO | YES | NO |
+| 40235485 | azilsartan | NO | YES | NO |
 
 
 Table: (\#tab:HTN1yrFOHypertensiveDisorder) Hypertensive disorder
@@ -557,7 +557,7 @@ Use the era end date of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE))
 
 #### Cohort Collapse Strategy {-}
 
-Collapse cohort by era with a gap size of 30 days. 
+Collapse cohort by era with a gap size of 30 days.
 
 #### Concept Set Definitions {-}
 
@@ -565,20 +565,20 @@ Table: (\#tab:ACEiUseACE) ACE inhibitors
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 1308216 | Lisinopril | NO | YES | NO | 
-| 1310756 | moexipril | NO | YES | NO | 
-| 1331235 | quinapril | NO | YES | NO | 
-| 1334456 | Ramipril | NO | YES | NO | 
-| 1335471 | benazepril | NO | YES | NO | 
-| 1340128 | Captopril | NO | YES | NO | 
-| 1341927 | Enalapril | NO | YES | NO | 
-| 1342439 | trandolapril | NO | YES | NO | 
-| 1363749 | Fosinopril | NO | YES | NO | 
-| 1373225 | Perindopril | NO | YES | NO | 
+| 1308216 | Lisinopril | NO | YES | NO |
+| 1310756 | moexipril | NO | YES | NO |
+| 1331235 | quinapril | NO | YES | NO |
+| 1334456 | Ramipril | NO | YES | NO |
+| 1335471 | benazepril | NO | YES | NO |
+| 1340128 | Captopril | NO | YES | NO |
+| 1341927 | Enalapril | NO | YES | NO |
+| 1342439 | trandolapril | NO | YES | NO |
+| 1363749 | Fosinopril | NO | YES | NO |
+| 1373225 | Perindopril | NO | YES | NO |
 
 ## Angiotensin Receptor Blocker (ARB) Use {#ARBUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *Angiotensin Receptor Blockers (ARBs)* (Table \@ref(tab:ARBUseARBs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *Angiotensin Receptor Blockers (ARBs)* (Table \@ref(tab:ARBUseARBs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -586,18 +586,18 @@ Table: (\#tab:ARBUseARBs) Angiotensin Receptor Blockers (ARBs)
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 1308842 | valsartan | NO | YES | NO | 
-| 1317640 | telmisartan | NO | YES | NO | 
-| 1346686 | eprosartan | NO | YES | NO | 
-| 1347384 | irbesartan | NO | YES | NO | 
-| 1351557 | candesartan | NO | YES | NO | 
-| 1367500 | Losartan | NO | YES | NO | 
-| 40226742 | olmesartan | NO | YES | NO | 
-| 40235485 | azilsartan | NO | YES | NO | 
+| 1308842 | valsartan | NO | YES | NO |
+| 1317640 | telmisartan | NO | YES | NO |
+| 1346686 | eprosartan | NO | YES | NO |
+| 1347384 | irbesartan | NO | YES | NO |
+| 1351557 | candesartan | NO | YES | NO |
+| 1367500 | Losartan | NO | YES | NO |
+| 40226742 | olmesartan | NO | YES | NO |
+| 40235485 | azilsartan | NO | YES | NO |
 
 ## Thiazide Or Thiazide-Like Diuretic Use {#THZUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *Thiazide or thiazide-like diuretic* (Table \@ref(tab:THZUseTHZ)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *Thiazide or thiazide-like diuretic* (Table \@ref(tab:THZUseTHZ)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -605,14 +605,14 @@ Table: (\#tab:THZUseTHZ) Thiazide or thiazide-like diuretic
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 907013 | Metolazone | NO | YES | NO | 
-| 974166 | Hydrochlorothiazide | NO | YES | NO | 
-| 978555 | Indapamide | NO | YES | NO | 
-| 1395058 | Chlorthalidone | NO | YES | NO | 
+| 907013 | Metolazone | NO | YES | NO |
+| 974166 | Hydrochlorothiazide | NO | YES | NO |
+| 978555 | Indapamide | NO | YES | NO |
+| 1395058 | Chlorthalidone | NO | YES | NO |
 
 ## Dihydropyridine Calcium Channel Blocker (dCCB) Use {#dCCBUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *dihydropyridine Calcium Channel Blocker (dCCB)* (Table \@ref(tab:dCCBUsedCBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *dihydropyridine Calcium Channel Blocker (dCCB)* (Table \@ref(tab:dCCBUsedCBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -620,16 +620,16 @@ Table: (\#tab:dCCBUsedCBB) Dihydropyridine Calcium channel blockers (dCCB)
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 1318137 | Nicardipine | NO | YES | NO | 
-| 1318853 | Nifedipine | NO | YES | NO | 
-| 1319880 | Nisoldipine | NO | YES | NO | 
-| 1326012 | Isradipine | NO | YES | NO | 
-| 1332418 | Amlodipine | NO | YES | NO | 
-| 1353776 | Felodipine | NO | YES | NO | 
+| 1318137 | Nicardipine | NO | YES | NO |
+| 1318853 | Nifedipine | NO | YES | NO |
+| 1319880 | Nisoldipine | NO | YES | NO |
+| 1326012 | Isradipine | NO | YES | NO |
+| 1332418 | Amlodipine | NO | YES | NO |
+| 1353776 | Felodipine | NO | YES | NO |
 
 ## Non-Dihydropyridine Calcium Channel Blocker (ndCCB) Use {#ndCCBUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *non-dihydropyridine Calcium channel blockers (ndCCB)* (Table \@ref(tab:ndCCBUsendCCB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *non-dihydropyridine Calcium channel blockers (ndCCB)* (Table \@ref(tab:ndCCBUsendCCB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -637,12 +637,12 @@ Table: (\#tab:ndCCBUsendCCB) non-dihydropyridine Calcium channel blockers (ndCCB
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 1307863 | Verapamil | NO | YES | NO | 
-| 1328165 | Diltiazem | NO | YES | NO | 
+| 1307863 | Verapamil | NO | YES | NO |
+| 1328165 | Diltiazem | NO | YES | NO |
 
 ## Beta-Blocker Use {#BBUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *Beta blockers* (Table \@ref(tab:BBUseBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *Beta blockers* (Table \@ref(tab:BBUseBB)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -650,22 +650,22 @@ Table: (\#tab:BBUseBB) Beta blockers
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 1307046 | Metoprolol | NO | YES | NO | 
-| 1313200 | Nadolol | NO | YES | NO | 
-| 1314002 | Atenolol | NO | YES | NO | 
-| 1314577 | nebivolol | NO | YES | NO | 
-| 1319998 | Acebutolol | NO | YES | NO | 
-| 1322081 | Betaxolol | NO | YES | NO | 
-| 1327978 | Penbutolol | NO | YES | NO | 
-| 1338005 | Bisoprolol | NO | YES | NO | 
-| 1345858 | Pindolol | NO | YES | NO | 
-| 1346823 | carvedilol | NO | YES | NO | 
-| 1353766 | Propranolol | NO | YES | NO | 
-| 1386957 | Labetalol | NO | YES | NO | 
+| 1307046 | Metoprolol | NO | YES | NO |
+| 1313200 | Nadolol | NO | YES | NO |
+| 1314002 | Atenolol | NO | YES | NO |
+| 1314577 | nebivolol | NO | YES | NO |
+| 1319998 | Acebutolol | NO | YES | NO |
+| 1322081 | Betaxolol | NO | YES | NO |
+| 1327978 | Penbutolol | NO | YES | NO |
+| 1338005 | Bisoprolol | NO | YES | NO |
+| 1345858 | Pindolol | NO | YES | NO |
+| 1346823 | carvedilol | NO | YES | NO |
+| 1353766 | Propranolol | NO | YES | NO |
+| 1386957 | Labetalol | NO | YES | NO |
 
 ## Diuretic-Loop Use {#DLoopUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - Loop* (Table \@ref(tab:DLoopUseDLoops)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - Loop* (Table \@ref(tab:DLoopUseDLoops)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -673,13 +673,13 @@ Table: (\#tab:DLoopUseDLoops) Diuretics - Loop
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 932745 | Bumetanide | NO | YES | NO | 
-| 942350 | torsemide | NO | YES | NO | 
-| 956874 | Furosemide | NO | YES | NO | 
+| 932745 | Bumetanide | NO | YES | NO |
+| 942350 | torsemide | NO | YES | NO |
+| 956874 | Furosemide | NO | YES | NO |
 
 ## Diuretic-Potassium Sparing Use {#DPUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - potassium sparing* (Table \@ref(tab:DPUseDPs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *Diuretics - potassium sparing* (Table \@ref(tab:DPUseDPs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -687,12 +687,12 @@ Table: (\#tab:DPUseDPs) Diuretics - potassium sparing
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 904542 | Triamterene | NO | YES | NO | 
-| 991382 | Amiloride | NO | YES | NO | 
+| 904542 | Triamterene | NO | YES | NO |
+| 991382 | Amiloride | NO | YES | NO |
 
 ## Alpha-1 Blocker Use {#A1BUse}
 
-Same as *cohort definition \@ref(ACEiUse)* with *Alpha-1 blocker* (Table \@ref(tab:A1BUseA1Bs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)). 
+Same as *cohort definition \@ref(ACEiUse)* with *Alpha-1 blocker* (Table \@ref(tab:A1BUseA1Bs)) in place of *ACE inhibitors* (Table \@ref(tab:ACEiUseACE)).
 
 #### Concept Set Definitions {-}
 
@@ -700,6 +700,6 @@ Table: (\#tab:A1BUseA1Bs) Alpha-1 blocker
 
 | Concept Id | Concept Name | Excluded | Descendants | Mapped |
 | ---------- |:------------ | -------- | ----------- | ------ |
-| 1341238 | Terazosin | NO | YES | NO | 
-| 1350489 | Prazosin | NO | YES | NO | 
-| 1363053 | Doxazosin | NO | YES | NO | 
+| 1341238 | Terazosin | NO | YES | NO |
+| 1350489 | Prazosin | NO | YES | NO |
+| 1363053 | Doxazosin | NO | YES | NO |
