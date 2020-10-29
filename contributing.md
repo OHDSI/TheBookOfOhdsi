@@ -1,5 +1,3 @@
-
-
 # Contributing to The Book of OHDSI
 
 First, thanks for contributing!
