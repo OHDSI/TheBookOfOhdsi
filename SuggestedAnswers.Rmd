@@ -485,7 +485,7 @@ Now that we have our cohort defined, we can characterize it. Click on ![](images
 knitr::include_graphics("images/SuggestedAnswers/celecoxibCharacterization.png")
 ```
 
-Click on the "Exections" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
+Click on the "Executions" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
 
 ```{r celecoxibCharacterizationResults, fig.cap='Characterization settings.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/SuggestedAnswers/celecoxibCharacterizationResults.png")
@@ -555,6 +555,7 @@ cmData <- getDbCohortMethodData(
   covariateSettings = covSettings)
 summary(cmData)
 ```
+
 ```{r echo=FALSE,message=FALSE,eval=TRUE}
 cat("CohortMethodData object summary
 
@@ -591,6 +592,7 @@ studyPop <- createStudyPopulation(
   riskWindowEnd = 99999)
 drawAttritionDiagram(studyPop)
 ```
+
 ```{r echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics("images/SuggestedAnswers/attrition.png")
 ```
@@ -606,6 +608,7 @@ model <- fitOutcomeModel(population = studyPop,
                          modelType = "cox")
 model
 ```
+
 ```{r echo=FALSE,message=FALSE,eval=TRUE}
 cat("Model type: cox
 Stratified: FALSE
@@ -667,6 +670,7 @@ adjModel <- fitOutcomeModel(population = strataPop,
                          stratified = TRUE)
 adjModel
 ```
+
 ```{r echo=FALSE,message=FALSE,eval=TRUE}
 cat("Model type: cox
 Stratified: TRUE
@@ -785,7 +789,7 @@ We can now view the results using the Shiny app:
 viewPlp(lassoResults)
 ```
 
-This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
+This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical practice.
 
 ```{r plpShiny, fig.cap='Patient-level prediction Shiny app.',echo=FALSE, out.width='100%', fig.align='center'}
 knitr::include_graphics("images/SuggestedAnswers/plpShiny.png")
