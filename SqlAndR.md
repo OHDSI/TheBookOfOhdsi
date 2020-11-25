@@ -24,20 +24,20 @@ In OHDSI, we would like to be agnostic to the specific dialect a platform uses; 
 
 Each database platform also comes with its own software tools for querying the database using SQL. In OHDSI we developed the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, one R package that can connect to many database platforms. DatabaseConnector will also be discussed later in this chapter. \index{DatabaseConnector}
 
-So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyze the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. \index{R} 
+So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyze the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. \index{R}
 
-In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector. \index{Query Library} \index{SQL Query Libary|see {Query Library}}
+In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \@ref(QueryTheCdm) we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector. \index{Query Library} \index{SQL Query Library|see {Query Library}}
 
 ## SqlRender {#SqlRender}
 
-The [SqlRender](https://ohdsi.github.io/SqlRender/) package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using: 
+The [SqlRender](https://ohdsi.github.io/SqlRender/) package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:
 
 
 ```r
 install.packages("SqlRender")
 ```
 
-SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.
+SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon Redshift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.
 
 ### SQL Parameterization
 
@@ -161,7 +161,7 @@ These SQL Server functions have been tested and were found to be translated corr
 
 Table: (\#tab:sqlFunctions) Functions supported by translate.
 
-|Function           |Function           |Function           |    
+|Function           |Function           |Function           |
 |:----------------- |:----------------- |:----------------- |
 |ABS               |EXP        |RAND       |
 |ACOS              |FLOOR      |RANK       |
@@ -210,17 +210,17 @@ INSERT INTO other_table (field_1) VALUES (1);
 
 -- Inserting from SELECT:
 INSERT INTO other_table (field_1) SELECT value FROM table;
-  
+
 -- Simple drop commands:
 DROP TABLE table;
 
 -- Drop table if it exists:
 IF OBJECT_ID('ACHILLES_analysis', 'U') IS NOT NULL
   DROP TABLE ACHILLES_analysis;
-  
+
 -- Drop temp table if it exists:
 IF OBJECT_ID('tempdb..#cohorts', 'U') IS NOT NULL
-  DROP TABLE #cohorts;  
+  DROP TABLE #cohorts;
 
 -- Common table expressions:
 WITH cte AS (SELECT * FROM table) SELECT * FROM cte;
@@ -228,7 +228,7 @@ WITH cte AS (SELECT * FROM table) SELECT * FROM cte;
 -- OVER clauses:
 SELECT ROW_NUMBER() OVER (PARTITION BY a ORDER BY b)
   AS "Row Number" FROM table;
-  
+
 -- CASE WHEN clauses:
 SELECT CASE WHEN a=1 THEN a ELSE 0 END AS value FROM table;
 
@@ -248,11 +248,11 @@ String concatenation is one area where SQL Server is less specific than other di
 
 #### Table Aliases and the AS Keyword {-}
 
-Many SQL dialects allow the use of the `AS` keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:
+Many SQL dialects allow the use of the `AS` keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, Redshift, etc.:
 
 ```sql
 -- Using AS keyword
-SELECT * 
+SELECT *
 FROM my_table AS table_1
 INNER JOIN (
   SELECT * FROM other_table
@@ -260,7 +260,7 @@ INNER JOIN (
 ON table_1.person_id = table_2.person_id;
 
 -- Not using AS keyword
-SELECT * 
+SELECT *
 FROM my_table table_1
 INNER JOIN (
   SELECT * FROM other_table
@@ -275,7 +275,7 @@ However, Oracle will throw an error when the `AS` keyword is used. In the above 
 Temp tables can be very useful to store intermediate results, and when used correctly can dramatically improve performance of queries. On most database platforms temp tables have very nice properties: they're only visible to the current user, are automatically dropped when the session ends, and can be created even when the user has no write access. Unfortunately, in Oracle temp tables are basically permanent tables, with the only difference that the data inside the table is only visible to the current user. This is why, in Oracle, SqlRender will try to emulate temp tables by
 
 1. Adding a random string to the table name so tables from different users will not conflict.
-2. Allowing the user to specify the schema where the temp tables will be created. 
+2. Allowing the user to specify the schema where the temp tables will be created.
 
 For example:
 
@@ -285,7 +285,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.ka3yeppkchildren ;"
+## [1] "SELECT * FROM temp_schema.y9jkinx3children ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -323,14 +323,14 @@ SELECT * FROM #temp WHERE CAST(txt AS INT) = 1;
 
 #### Case Sensitivity in String Comparisons {-}
 
-Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of 
+Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of
 
 ```sql
-SELECT * FROM concept WHERE concep_class_id = 'Clinical Finding'
+SELECT * FROM concept WHERE concept_class_id = 'Clinical Finding'
 ```
 it is preferred to use
 ```sql
-SELECT * FROM concept WHERE LOWER(concep_class_id) = 'clinical finding'
+SELECT * FROM concept WHERE LOWER(concept_class_id) = 'clinical finding'
 ```
 
 #### Schemas and Databases {-}
@@ -343,7 +343,7 @@ SELECT * FROM @databaseSchema.person
 ```
 where on SQL Server we can include both database and schema names in the value: `databaseSchema = "cdm_data.dbo"`. On other platforms, we can use the same code, but now only specify the schema as the parameter value: `databaseSchema = "cdm_data"`.
 
-The one situation where this will fail is the `USE` command, since `USE cdm_data.dbo;` will throw an error. It is therefore preferred not to use the `USE` command, but always specify the database / schema where a table is located. 
+The one situation where this will fail is the `USE` command, since `USE cdm_data.dbo;` will throw an error. It is therefore preferred not to use the `USE` command, but always specify the database / schema where a table is located.
 
 
 #### Debugging Parameterized SQL {-}
@@ -357,7 +357,7 @@ A Shiny app is included in the SqlRender package for interactively editing sourc
 launchSqlRenderDeveloper()
 ```
 
-That will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web.[^sqlDeveloperUrl] 
+That will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web.[^sqlDeveloperUrl]
 
 <div class="figure" style="text-align: center">
 <img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
@@ -377,7 +377,7 @@ In the app you can enter OHDSI SQL, select the target dialect as well as provide
 install.packages("DatabaseConnector")
 ```
 
-DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type `?jdbcDrivers` for instructions on how to download these drivers. Once downloaded, you can use the `pathToDriver` argument of the `connect`, `dbConnect`, and `createConnectionDetails` functions.
+DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon ), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type `?jdbcDrivers` for instructions on how to download these drivers. Once downloaded, you can use the `pathToDriver` argument of the `connect`, `dbConnect`, and `createConnectionDetails` functions.
 
 ### Creating a Connection
 
@@ -469,7 +469,7 @@ Sometimes the data to be fetched from the database is too large to fit into memo
 x <- querySql.ffdf(conn, "SELECT * FROM person")
 ```
 
-x is now an ffdf object. 
+x is now an ffdf object.
 
 ### Querying Different Platforms Using the Same SQL
 
@@ -477,7 +477,7 @@ The following convenience functions are available that first call the `render` a
 
 
 ```r
-x <- renderTranslateQuerySql(conn, 
+x <- renderTranslateQuerySql(conn,
                              sql = "SELECT TOP 10 * FROM @schema.person",
                              schema = "cdm_synpuf")
 ```
@@ -506,7 +506,7 @@ We can start by just querying how many people are in the database:
 ```sql
 SELECT COUNT(*) AS person_count FROM @cdm.person;
 ```
-| PERSON_COUNT |     
+| PERSON_COUNT |
 | ------------:|
 | 26299001     |
 
@@ -514,12 +514,12 @@ SELECT COUNT(*) AS person_count FROM @cdm.person;
 Or perhaps we're interested in the average length of an observation period:
 
 ```sql
-SELECT AVG(DATEDIFF(DAY, 
-                    observation_period_start_date, 
+SELECT AVG(DATEDIFF(DAY,
+                    observation_period_start_date,
                     observation_period_end_date) / 365.25) AS num_years
 FROM @cdm.observation_period;
 ```
-| NUM_YEARS |     
+| NUM_YEARS |
 | ---------:|
 | 1.980803  |
 
@@ -532,7 +532,7 @@ FROM @cdm.person
 INNER JOIN @cdm.observation_period
   ON person.person_id = observation_period.person_id;
 ```
-| MAX_AGE |     
+| MAX_AGE |
 | -------:|
 |      90 |
 
@@ -553,17 +553,17 @@ AS (
 		) age_computed
 	)
 SELECT MIN(age) AS min_age,
-	MIN(CASE 
+	MIN(CASE
 			WHEN order_nr < .25 * n
 				THEN 9999
 			ELSE age
 			END) AS q25_age,
-	MIN(CASE 
+	MIN(CASE
 			WHEN order_nr < .50 * n
 				THEN 9999
 			ELSE age
 			END) AS median_age,
-	MIN(CASE 
+	MIN(CASE
 			WHEN order_nr < .75 * n
 				THEN 9999
 			ELSE age
@@ -593,7 +593,7 @@ quantile(age[, 1], c(0, 0.25, 0.5, 0.75, 1))
 ```
 
 ```
-##   0%  25%  50%  75% 100% 
+##   0%  25%  50%  75% 100%
 ##    0    6   17   34   90
 ```
 
@@ -602,13 +602,13 @@ Here we compute age on the server, download all ages, and then compute the age d
 Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:
 
 ```sql
-SELECT TOP 10 condition_source_value, 
+SELECT TOP 10 condition_source_value,
   COUNT(*) AS code_count
 FROM @cdm.condition_occurrence
 GROUP BY condition_source_value
 ORDER BY -COUNT(*);
 ```
-| CONDITION_SOURCE_VALUE | CODE_COUNT |    
+| CONDITION_SOURCE_VALUE | CODE_COUNT |
 | ----------------------:| ----------:|
 |                   4019 |   49094668 |
 |                  25000 |   36149139 |
@@ -635,7 +635,7 @@ INNER JOIN @cdm.concept
   ON person.gender_concept_id = concept.concept_id
 GROUP BY concept_name;
 ```
-| SUBJECT_COUNT | CONCEPT_NAME |    
+| SUBJECT_COUNT | CONCEPT_NAME |
 | -------------:| ------------:|
 |      14927548 |       FEMALE |
 |      11371453 |         MALE |
@@ -690,7 +690,7 @@ We'll define exposure as first exposure to lisinopril. By first we mean no earli
 
 ### Outcome
 
-We define angioedema as any occurrence of an angioedema diagnosis code during an inpatient or emergency room (ER) visit. 
+We define angioedema as any occurrence of an angioedema diagnosis code during an inpatient or emergency room (ER) visit.
 
 ### Time-At-Risk
 
@@ -698,7 +698,7 @@ We will compute the incidence rate in the first week following treatment initiat
 
 ## Implementing the Study Using SQL and R
 
-Although we are not bound to any of the OHDSI tool conventions, it is helpful to follow the same principles. In this case, we will use SQL to populate a cohort table, similarly to how the OHDSI tools work. The COHORT table is defined in the CDM, and has a predefined set of fields that we will also use. We first must create the COHORT table in a database schema where we have write access, which likely is not the same as the database schema that holds the data in CDM format. 
+Although we are not bound to any of the OHDSI tool conventions, it is helpful to follow the same principles. In this case, we will use SQL to populate a cohort table, similarly to how the OHDSI tools work. The COHORT table is defined in the CDM, and has a predefined set of fields that we will also use. We first must create the COHORT table in a database schema where we have write access, which likely is not the same as the database schema that holds the data in CDM format.
 
 
 ```r
@@ -926,7 +926,7 @@ disconnect(conn)
 
 ### Compatibility
 
-Because we use OHDSI SQL together with DatabaseConnector and SqlRender throughout, the code we reviewed here will run on any database platform supported by OHDSI. 
+Because we use OHDSI SQL together with DatabaseConnector and SqlRender throughout, the code we reviewed here will run on any database platform supported by OHDSI.
 
 Note that for demonstration purposes we chose to create our cohorts using hand-crafted SQL. It would probably have been more convenient to construct cohort definition in ATLAS, and use the SQL generated by ATLAS to instantiate the cohorts. ATLAS also produced OHDSI SQL, and can therefore easily be used together with SqlRender and DatabaseConnector.
 
@@ -951,8 +951,8 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 
 ```r
-install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
-devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+install.packages(c("SqlRender", "DatabaseConnector", "remotes"))
+remotes::install_github("ohdsi/Eunomia", ref = "v1.0.0")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:

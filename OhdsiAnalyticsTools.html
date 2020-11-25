@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 OHDSI Analytics Tools | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.4 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 OHDSI Analytics Tools | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,8 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -815,7 +815,7 @@ Figure 8.4: Packages in the OHDSI Methods Library.
 <div id="system-requirements" class="section level3">
 <h3><span class="header-section-number">8.4.4</span> System Requirements</h3>
 <p>Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation. </p>
-<p>The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery).</p>
+<p>The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon Redshift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery).</p>
 <p>The analytics workstation is where the Methods Library is installed and run. This can either be a local machine, such as someone’s laptop, or a remote server running RStudio Server. In all cases the requirements are that R is installed, preferably together with RStudio. The Methods Library also requires that Java is installed. The analytics workstation should also be able to connect to the database server, specifically, any firewall between them should have the database server access ports opened the workstation. Some of the analytics can be computationally intensive, so having multiple processing cores and ample memory can help speed up the analyses. We recommend having at least four cores and 16 gigabytes of memory.</p>
 </div>
 <div id="installR" class="section level3">
@@ -823,7 +823,7 @@ Figure 8.4: Packages in the OHDSI Methods Library.
 <p>Here are the steps for installing the required environment to run the OHDSI R packages. Four things need to be installed: </p>
 <ol style="list-style-type: decimal">
 <li><strong>R</strong> is a statistical computing environment. It comes with a basic user interface that is primarily a command-line interface.</li>
-<li><strong>RTools</strong> is a set of programs that is required on Windows to build R packages from source.</li>
+<li><strong>Rtools</strong> is a set of programs that is required on Windows to build R packages from source.</li>
 <li><strong>RStudio</strong> is an IDE (Integrated Development Environment) that makes R easier to use. It includes a code editor, debugging and visualization tools. Please use it to obtain a nice R experience.</li>
 <li><strong>Java</strong> is a computing environment that is needed to run some of the components in the OHDSI R packages, for example those needed to connect to a database.</li>
 </ol>
@@ -862,9 +862,9 @@ Figure 8.7: Disabling the 32-bit version of R.
 <p>Once completed, you should be able to select R from your Start Menu.</p>
 </div>
 <div id="installing-rtools" class="section level4 unnumbered">
-<h4>Installing RTools</h4>
+<h4>Installing Rtools</h4>
 <ol style="list-style-type: decimal">
-<li><p>Go to <a href="https://cran.r-project.org/">https://cran.r-project.org/</a>, click on “Download R for Windows”, then “Rtools”, and select the very latest version of RTools to download.</p></li>
+<li><p>Go to <a href="https://cran.r-project.org/">https://cran.r-project.org/</a>, click on “Download R for Windows”, then “Rtools”, and select the very latest version of Rtools to download.</p></li>
 <li><p>After downloading has completed run the installer. Select the default options everywhere.</p></li>
 </ol>
 </div>
@@ -932,9 +932,9 @@ Figure 8.10: The Amazon Web Services architecture for OHDSI-in-a-Box.
 </div>
 <p>OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalable and fault tolerant OHDSI environments that can be used by organizations to perform their data analytics. It includes several sample datasets and can also automatically load your organization’s real healthcare data. The data is placed in the Amazon Redshift database platform, which is supported by the OHDSI tools. Intermediary results of ATLAS are stored in a PostgreSQL database. On the front end, users have access to ATLAS and to RStudio through a web interface (leveraging RStudio Server). In RStudio the OHDSI Methods Library has already been installed, and can be used to connect to the databases. The automation to deploy OHDSIonAWS is open-source, and can be customized to include your organization’s management tools and best practices. The architecture for OHDSIonAWS is depicted in Figure <a href="OhdsiAnalyticsTools.html#fig:ohdsionawsDiagram">8.11</a>.</p>
 <div class="figure" style="text-align: center"><span id="fig:ohdsionawsDiagram"></span>
-<img src="images/OhdsiAnalyticsTools/OHDSIonAWSDiagram.png" alt="The Amazon Web Services architecure for OHDSIonAWS." width="100%" />
+<img src="images/OhdsiAnalyticsTools/OHDSIonAWSDiagram.png" alt="The Amazon Web Services architecture for OHDSIonAWS." width="100%" />
 <p class="caption">
-Figure 8.11: The Amazon Web Services architecure for OHDSIonAWS.
+Figure 8.11: The Amazon Web Services architecture for OHDSIonAWS.
 </p>
 </div>
 </div>

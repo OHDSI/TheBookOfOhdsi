@@ -14,7 +14,7 @@ Advances in machine learning for large dataset analysis have led to increased in
 
 Massive-scale, patient-specific predictive modeling has become reality due to OHDSI, where the Common Data Model (CDM) allows for uniform and transparent analysis at an unprecedented scale. The growing network of databases standardized to the CDM enables external validation of models in different healthcare settings on a global scale. We believe this provides immediate opportunity to serve large communities of patients who are in most need of improved quality of care. Such models can inform truly personalized medical care, leading hopefully to sharply improved patient outcomes.
 
-In this chapter we describe OHDSI’s standardized framework for patient-level prediction, [@reps2018] and discuss the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) R package that implements established best practices for development and validation. We start with providing the necessary theory behind the development and evaluation of patient-level prediction and provide a high-level overview of the implemented machine learning algorithms. We then discuss an example prediction problem and provide step-by-step guidance on its definition and implementation using ATLAS or custom R code. Finally, we discuss the use of Shiny applications for the dissemination of study results. 
+In this chapter we describe OHDSI’s standardized framework for patient-level prediction, [@reps2018] and discuss the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) R package that implements established best practices for development and validation. We start with providing the necessary theory behind the development and evaluation of patient-level prediction and provide a high-level overview of the implemented machine learning algorithms. We then discuss an example prediction problem and provide step-by-step guidance on its definition and implementation using ATLAS or custom R code. Finally, we discuss the use of Shiny applications for the dissemination of study results.
 
 ## The Prediction Problem
 
@@ -29,7 +29,7 @@ As shown in Table \@ref(tab:plpDesign), to define a prediction problem we have t
 
 > Among *[target cohort definition]*, who will go on to have *[outcome cohort definition]* within *[time-at-risk period]*?
 
-Furthermore, we have to make design choices for the model we like to develop, and determine the observational datasets to perform internal and external validation. 
+Furthermore, we have to make design choices for the model we like to develop, and determine the observational datasets to perform internal and external validation.
 
 Table: (\#tab:plpDesign) Main design choices in a prediction design.
 
@@ -58,7 +58,7 @@ This conceptual framework works for all types of prediction problems, for exampl
 - Treatment adherence
   - **Structure**: Among new users of *[a treatment]*, who will achieve *[adherence metric]* at *[time window]*?
   - **Example**: Which patients with diabetes who start on metformin achieve >=80% proportion of days covered at one year?
-  
+
 ## Data Extraction
 
 When creating a predictive model we use a process known as supervised learning --- a form of machine learning --- that infers the relationship between the covariates and the outcome status based on a labelled set of examples\index{supervised learning}. Therefore, we need methods to extract the covariates from the CDM for the persons in the target cohort and we need to obtain their outcome labels.
@@ -71,7 +71,7 @@ We also need to obtain the **outcome status** (also referred to as the "labels" 
 
 Table \@ref(tab:plpExampleCohorts) shows an example COHORT table with two cohorts. The cohort with cohort definition ID 1 is the target cohort (e.g. "people recently diagnosed with atrial fibrillation"). Cohort definition ID 2 defines the outcome cohort (e.g. "stroke").
 
-Table: (\#tab:plpExampleCohorts) Example COHORT table. For simplicity the COHORT_END_DATE has been omitted. 
+Table: (\#tab:plpExampleCohorts) Example COHORT table. For simplicity the COHORT_END_DATE has been omitted.
 
 | COHORT_DEFINITION_ID | SUBJECT_ID | COHORT_START_DATE |
 |:--------------------:|:----------:|:-----------------:|
@@ -96,7 +96,7 @@ Observational healthcare data rarely reflects whether a value is negative or mis
 
 ## Fitting the Model {#modelFitting}
 
-When fitting a prediction model we are trying to learn the relationship between the covariates and the observed outcome status from labelled examples. Suppose we only have two covariates, systolic and diastolic blood pressure, then we can represent each patient as a plot in two dimensional space as shown in Figure \@ref(fig:decisionBoundary). In this figure the shape of the data point corresponds to the patient's outcome status (e.g. stroke). 
+When fitting a prediction model we are trying to learn the relationship between the covariates and the observed outcome status from labelled examples. Suppose we only have two covariates, systolic and diastolic blood pressure, then we can represent each patient as a plot in two dimensional space as shown in Figure \@ref(fig:decisionBoundary). In this figure the shape of the data point corresponds to the patient's outcome status (e.g. stroke).
 
 A supervised learning model will try to find a decision boundary that optimally separates the two outcome classes. Different supervised learning techniques lead to different decision boundaries and there are often hyper-parameters that can impact the complexity of the decision boundary. \index{decision boundary}
 
@@ -105,7 +105,7 @@ A supervised learning model will try to find a decision boundary that optimally 
 <p class="caption">(\#fig:decisionBoundary)Decision boundary.</p>
 </div>
 
-In Figure \@ref(fig:decisionBoundary) we can see three different decision boundaries. The boundaries are used to infer the outcome status of any new data point. If a new data point falls into the shaded area then the model will predict "has outcome", otherwise it will predict "no outcome". Ideally a decision boundary should perfectly partition the two classes. However, there is a risk that too complex models "overfit" to the data. This can negatively impact the generalizability of the model to unseen data. For example, if the data contains noise, with mislabeled or incorrectly positioned data points, we would not want to fit our model to that noise. We therefore may prefer to define a decision boundary that does not perfectly discriminate in our training data but captures the "real" complexity. Techniques such as regularization aim to maximize model performance while minimizing complexity.   
+In Figure \@ref(fig:decisionBoundary) we can see three different decision boundaries. The boundaries are used to infer the outcome status of any new data point. If a new data point falls into the shaded area then the model will predict "has outcome", otherwise it will predict "no outcome". Ideally a decision boundary should perfectly partition the two classes. However, there is a risk that too complex models "overfit" to the data. This can negatively impact the generalizability of the model to unseen data. For example, if the data contains noise, with mislabeled or incorrectly positioned data points, we would not want to fit our model to that noise. We therefore may prefer to define a decision boundary that does not perfectly discriminate in our training data but captures the "real" complexity. Techniques such as regularization aim to maximize model performance while minimizing complexity.
 
 Each supervised learning algorithm has a different way to learn the decision boundary and it is not straightforward which algorithm will work best on your data. As the No Free Lunch theorem states not one algorithm is always going to outperform the others on all prediction problems.\index{no free lunch} Therefore, we recommend trying multiple supervised learning algorithms with various hyper-parameter settings when developing patient-level prediction models.
 
@@ -210,7 +210,7 @@ Deep learning such as deep nets, convolutional neural networks or recurrent neur
 
 ### Other Algorithms
 
-Other algorithms can be added to the patient-level prediction framework. This is out-of-scope for this chapter. Details can be found in the ["Adding Custom Patient-Level Prediction Algorithms" vignette](https://ohdsi.github.io/PatientLevelPrediction/articles/AddingCustomAlgorithms.html) in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. 
+Other algorithms can be added to the patient-level prediction framework. This is out-of-scope for this chapter. Details can be found in the ["Adding Custom Patient-Level Prediction Algorithms" vignette](https://ohdsi.github.io/PatientLevelPrediction/articles/AddingCustomAlgorithms.html) in the [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package.
 
 ## Evaluating Prediction Models
 
@@ -221,9 +221,9 @@ We can evaluate a prediction model by measuring the agreement between the model'
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">For evaluation we must use a different dataset than was used to develop the model, or else we run the risk of favoring models that are over-fitted (see Section \@ref(modelFitting)) and may not perform well for new patients.</div>\EndKnitrBlock{rmdimportant}
 
- We distinguish between 
+ We distinguish between
 
-- **Internal validation**: Using different sets of data extracted from the same database to develop and evaluate the model. 
+- **Internal validation**: Using different sets of data extracted from the same database to develop and evaluate the model.
 - **External validation**: Developing the model in one database, and evaluating in another database. \index{validation!internal validation} \index{validation!external validation}
 
 There are two ways to perform internal validation:
@@ -278,7 +278,7 @@ The AUC provides a way to determine how different the predicted risk distributio
 <p class="caption">(\#fig:figuretheoryroctheory)How the ROC plots are linked to discrimination. If the two classes have similar distributions of predicted risk, the ROC will be close to the diagonal, with AUC close to 0.5.</p>
 </div>
 
-For rare outcomes even a model with a high AUC may not be practical, because for every positive above a given threshold there could also be many negatives (i.e. the positive predictive value will be low). Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a high false positive rate may be unwanted. When the outcome is rare another measure known as the area under the precision-recall curve (AUPRC) is therefore recommended. The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. \index{area under the precision-recall curve} 
+For rare outcomes even a model with a high AUC may not be practical, because for every positive above a given threshold there could also be many negatives (i.e. the positive predictive value will be low). Depending on the severity of the outcome and cost (health risk and/or monetary) of some intervention, a high false positive rate may be unwanted. When the outcome is rare another measure known as the area under the precision-recall curve (AUPRC) is therefore recommended. The AUPRC is the area under the line generated by plotting the sensitivity on the x-axis (also known as the recall) and the positive predictive value (also known as the precision) on the y-axis. \index{area under the precision-recall curve}
 
 #### Calibration {-}
 
@@ -312,13 +312,13 @@ The final study population in which we will develop our model is often a subset 
 
 ### Model Development Settings
 
-To develop the prediction model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. we prefer to let the data speak for itself and try different approaches to find the best one. In our framework we have therefore implemented many algorithms as described in Section \@ref(modelFitting), and allow others to be added. In this example, to keep things simple, we select just one algorithm: Gradient Boosting Machines. 
+To develop the prediction model we have to decide which algorithm(s) we like to train. We see the selection of the best algorithm for a certain prediction problem as an empirical question, i.e. we prefer to let the data speak for itself and try different approaches to find the best one. In our framework we have therefore implemented many algorithms as described in Section \@ref(modelFitting), and allow others to be added. In this example, to keep things simple, we select just one algorithm: Gradient Boosting Machines.
 
 Furthermore, we have to decide on the covariates that we will use to train our model. In our example, we like to add gender, age, all conditions, drugs and drug groups, and visit counts. We will look for these clinical events in the year before and any time prior to the index date.
 
 ### Model Evaluation
 
-Finally, we have to define how we will evaluate our model. For simplicity, we here choose internal validation. We have to decide how we divide our dataset in a training and test dataset and how we assign patients to these two sets. Here we will use a typical 75% - 25% split. Note that for very large datasets we could use more data for training. 
+Finally, we have to define how we will evaluate our model. For simplicity, we here choose internal validation. We have to decide how we divide our dataset in a training and test dataset and how we assign patients to these two sets. Here we will use a typical 75% - 25% split. Note that for very large datasets we could use more data for training.
 
 ### Study Summary
 
@@ -385,7 +385,7 @@ The next section enables the selection of non-time bound variables.
 - Age group: binary variables for every 5 years of age (0-4, 5-9, 10-14, ..., 95+)
 - Race: a binary variable for each race, 1 means the patient has that race recorded, 0 otherwise
 - Ethnicity: a binary variable for each ethnicity, 1 means the patient has that ethnicity recorded, 0 otherwise
-- Index year: a binary variable for each cohort start date year, 1 means that was the patients cohort start date year, 0 otherwise. **It often does not make sense to include index year, since we would like to apply our model to the future**. 
+- Index year: a binary variable for each cohort start date year, 1 means that was the patients cohort start date year, 0 otherwise. **It often does not make sense to include index year, since we would like to apply our model to the future**.
 - Index month - a binary variable for each cohort start date month, 1 means that was the patient's cohort start date month, 0 otherwise
 - Prior observation time: [Not recommended for prediction] a continuous variable corresponding to how long in days the patient was in the database prior to the cohort start date
 - Post observation time: [Not recommended for prediction] a continuous variable corresponding to how long in days the patient was in the database post cohort start date
@@ -441,7 +441,7 @@ The next option selects covariates corresponding to concept IDs in each domain f
 - Observation: Construct covariates for each observation concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the observation table, the covariate value is 1, otherwise 0.
 - Device: Construct covariates for each device concept ID and time interval selected and if a patient has the concept ID recorded during the specified time interval prior to the cohort start date in the device table, the covariate value is 1, otherwise 0.
 - Visit Count: Construct covariates for each visit and time interval selected and count the number of visits recorded during the time interval as the covariate value.
-- Visit Concept Count: Construct covariates for each visit, domain and time interval selected and count the number of records per domain recorded during the visit type and time interval as the covariate value. 
+- Visit Concept Count: Construct covariates for each visit, domain and time interval selected and count the number of records per domain recorded during the visit type and time interval as the covariate value.
 
 The distinct count option counts the number of distinct concept IDs per domain and time interval.
 
@@ -463,7 +463,7 @@ The final option is whether to include commonly used risk scores as covariates. 
 
 The population settings is where addition inclusion criteria can be applied to the target population and is also where the time-at-risk is defined. To add a population setting into the study, click on the "Add Population Settings" button. This will open up the population setting view.
 
-The first set of options enable the user to specify the time-at-risk period. This is the time interval where we look to see whether the outcome of interest occurs. If a patient has the outcome during the time-at-risk period then we will classify them as "Has outcome", otherwise they are classified as "No outcome". "**Define the time-at-risk window start, relative to target cohort entry:**" defines the start of the time-at-risk, relative to the target cohort start or end date. Similarly, "**Define the time-at-risk window end:**" defines the end of the time-at-risk. 
+The first set of options enable the user to specify the time-at-risk period. This is the time interval where we look to see whether the outcome of interest occurs. If a patient has the outcome during the time-at-risk period then we will classify them as "Has outcome", otherwise they are classified as "No outcome". "**Define the time-at-risk window start, relative to target cohort entry:**" defines the start of the time-at-risk, relative to the target cohort start or end date. Similarly, "**Define the time-at-risk window end:**" defines the end of the time-at-risk.
 
 "**Minimum lookback period applied to target cohort**" specifies the minimum baseline period, the minimum number of days prior to the cohort start date that a patient is continuously observed. The default is 365 days. Expanding the minimum look-back will give a more complete picture of a patient (as they must have been observed for longer) but will filter patients who do not have the minimum number of days prior observation.
 
@@ -471,7 +471,7 @@ If "**Should subjects without time at risk be removed?**" is set to yes, then a 
 
 The option "**Include people with outcomes who are not observed for the whole at risk period?**" is related to the previous option. If set to "yes", then people who experience the outcome during the time-at-risk are always kept, even if they are not observed for the specified minimum amount of time.
 
-The option "**Should only the first exposure per subject be included?**" is only useful if our target cohort  contains patients multiple times with different cohort start dates. In this situation, picking "yes" will result in only keeping the earliest target cohort date per patient in the analysis. Otherwise a patient can be in the dataset multiple times. 
+The option "**Should only the first exposure per subject be included?**" is only useful if our target cohort  contains patients multiple times with different cohort start dates. In this situation, picking "yes" will result in only keeping the earliest target cohort date per patient in the analysis. Otherwise a patient can be in the dataset multiple times.
 
 Setting "**Remove patients who have observed the outcome prior to cohort entry?**" to "yes" will remove patients who have the outcome prior to the time-at-risk start date, so the model is for patients who have never experienced the outcome before. If "no" is selected, then patients could have had the outcome prior. Often, having the outcome prior is very predictive of having the outcome during the time-at-risk.
 
@@ -522,7 +522,7 @@ For our example we make the choices shown in Figure \@ref(fig:trainingSettings).
 
 ### Importing and Exporting a Study
 
-To export a study, click on the "Export" tab under "Utilities." ATLAS will produce JSON that can be directly copied and pasted into a file that contains all of the data, such as the study name, cohort definitions, models selected, covariates, settings, needed to run the study. 
+To export a study, click on the "Export" tab under "Utilities." ATLAS will produce JSON that can be directly copied and pasted into a file that contains all of the data, such as the study name, cohort definitions, models selected, covariates, settings, needed to run the study.
 
 To import a study, click on the "Import" tab under "Utilities." Paste the contents of a patient-level prediction study JSON into this window, then click on the Import button below the other tab buttons. Note that this will overwrite all previous settings for that study, so this is typically done using a new, empty study design.
 
@@ -549,7 +549,7 @@ Once you have opened the project in R Studio, you can open the README file, and 
 
 ## Implementing the Study in R
 
-An alternative to implementing our study design using ATLAS is to write the study code ourselves in R. We can make use of the functions provided in the  [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM. 
+An alternative to implementing our study design using ATLAS is to write the study code ourselves in R. We can make use of the functions provided in the  [PatientLevelPrediction](https://ohdsi.github.io/PatientLevelPrediction/) package. The package enables data extraction, model building, and model evaluation using data from databases that are translated into the OMOP CDM.
 
 ### Cohort Instantiation
 
@@ -583,7 +583,7 @@ sql <- paste("SELECT cohort_definition_id, COUNT(*) AS count",
 "FROM @cohortsDbSchema.cohortsDbTable",
 "GROUP BY cohort_definition_id")
 conn <- connect(connDetails)
-renderTranslateQuerySql(connection = conn, 
+renderTranslateQuerySql(connection = conn,
                         sql = sql,
                         cohortsDbSchema = cohortsDbSchema,
                         cohortsDbTable = cohortsDbTable)
@@ -672,8 +672,8 @@ For example, if we use the following settings for the gradient boosting machine:
 
 
 ```r
-gbmModel <- setGradientBoostingMachine(ntrees = 5000, 
-                                       maxDepth = c(4,7,10), 
+gbmModel <- setGradientBoostingMachine(ntrees = 5000,
+                                       maxDepth = c(4,7,10),
                                        learnRate = c(0.001,0.01,0.1,0.9))
 ```
 
@@ -681,17 +681,17 @@ The `runPlP` function uses the population, `plpData`, and model settings to trai
 
 
 ```r
-gbmResults <- runPlp(population = population, 
-                     plpData = plpData, 
-                     modelSettings = gbmModel, 
+gbmResults <- runPlp(population = population,
+                     plpData = plpData,
+                     modelSettings = gbmModel,
                      testSplit = 'person',
-                     testFraction = 0.25, 
-                     nfold = 2, 
+                     testFraction = 0.25,
+                     nfold = 2,
                      splitSeed = 1234)
 ```
-Under the hood the package will now use the R xgboost package to fit a a gradient boosting machine model using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance, etc. 
+Under the hood the package will now use the R xgboost package to fit a a gradient boosting machine model using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance, etc.
 
-In the `runPlp` function there are several parameters to save the `plpData`, `plpResults`, `plpPlots`, `evaluation`, etc. objects which are all set to `TRUE` by default. 
+In the `runPlp` function there are several parameters to save the `plpData`, `plpResults`, `plpPlots`, `evaluation`, etc. objects which are all set to `TRUE` by default.
 
 We can save the model using:
 
@@ -723,7 +723,7 @@ gbmResults <- loadPlpResult("gbmResults")
 
 ### Internal Validation
 
-Once we execute the study, the `runPlp` function returns the trained model and the evaluation of the model on the train/test sets. You can interactively view the results by running: `viewPlp(runPlp = gbmResults)`. This will open a Shiny App in which we can view all performance measures created by the framework, including interactive plots (see Figure \@ref(fig:shinySummary) in the section on the Shiny Application). 
+Once we execute the study, the `runPlp` function returns the trained model and the evaluation of the model on the train/test sets. You can interactively view the results by running: `viewPlp(runPlp = gbmResults)`. This will open a Shiny App in which we can view all performance measures created by the framework, including interactive plots (see Figure \@ref(fig:shinySummary) in the section on the Shiny Application).
 
 To generate and save all the evaluation plots to a folder run the following code:
 
@@ -771,7 +771,7 @@ To make things easier we also provide the `externalValidatePlp` function for per
 
 ```r
 valResult <- externalValidatePlp(
-	plpResult = result, 
+	plpResult = result,
 	connectionDetails = connectionDetails,
 	validationSchemaTarget = 'mainschema.dob',
 	validationSchemaOutcome = 'mainschema.dob',
@@ -789,13 +789,13 @@ If we have multiple databases to validate the model on then we can run:
 
 ```r
 valResults <- externalValidatePlp(
-	plpResult = result, 
+	plpResult = result,
 	connectionDetails = connectionDetails,
 	validationSchemaTarget = list('mainschema.dob',
-								'difschema.dob', 
+								'difschema.dob',
 								'anotherschema.dob'),
 	validationSchemaOutcome = list('mainschema.dob',
-								 'difschema.dob', 
+								 'difschema.dob',
 								 'anotherschema.dob'),
 	validationSchemaCdm = list('cdms1chema.dbo',
 							 'cdm2schema.dbo',
@@ -822,8 +822,8 @@ Exploring the performance of a prediction model is easiest with the `viewPlp` fu
 
 
 ```r
-plpResult <- loadPlpResult(file.path(outputFolder, 
-                                     'Analysis_1', 
+plpResult <- loadPlpResult(file.path(outputFolder,
+                                     'Analysis_1',
                                      'plpResult'))
 ```
 
@@ -884,7 +884,7 @@ The interactive Shiny app will start at the summary page as shown in Figure \@re
 This summary page table contains:
 
 - basic information about the model (e.g., database information, classifier type, time-at-risk settings, target population and outcome names)
-- hold out target population count and incidence of outcome 
+- hold out target population count and incidence of outcome
 - discrimination metrics: AUC, AUPRC
 
 To the left of the table is the filter option, where we can specify the development/validation databases to focus on, the type of model, the time at risk settings of interest and/or the cohorts of interest. For example, to pick the models corresponding to the target population "New users of ACE inhibitors as first line mono-therapy for hypertension", select this in the *Target Cohort* option.
@@ -912,8 +912,8 @@ This summary view shows the selected prediction question in the standard format,
 To look at the overall discrimination of the model click on the "Discrimination" tab to view the ROC plot, precision-recall plot, and distribution plots. The line on the plots corresponds to the selected threshold point. Figure \@ref(fig:shinyPerformanceDisc) show the ROC and precision-recall plots. The ROC plot shows the model was able to discriminate between those who will have the outcome within the year and those who will not. However, the performance looks less impressive when we see the precision-recall plot, as the low incidence of the outcome means there is a high false positive rate.
 
 <div class="figure" style="text-align: center">
-<img src="images/PatientLevelPrediction/shiny/shinyPerformanceDisc.png" alt="The ROC and precision-recall plots used to access the overal discrimination ability of the model." width="100%" />
-<p class="caption">(\#fig:shinyPerformanceDisc)The ROC and precision-recall plots used to access the overal discrimination ability of the model.</p>
+<img src="images/PatientLevelPrediction/shiny/shinyPerformanceDisc.png" alt="The ROC and precision-recall plots used to access the overall discrimination ability of the model." width="100%" />
+<p class="caption">(\#fig:shinyPerformanceDisc)The ROC and precision-recall plots used to access the overall discrimination ability of the model.</p>
 </div>
 
 Figure \@ref(fig:shinyPerformanceDist) shows the prediction and preference score distributions.
@@ -996,9 +996,9 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 
 ```r
-install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
-devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
-devtools::install_github("ohdsi/PatientLevelPrediction")
+install.packages(c("SqlRender", "DatabaseConnector", "remotes"))
+remotes::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+remotes::install_github("ohdsi/PatientLevelPrediction")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
@@ -1028,6 +1028,6 @@ The NSAID new-user cohort has COHORT_DEFINITION_ID = 4. The GI bleed cohort has 
 </div>\EndKnitrBlock{exercise}
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePlp3"><strong>(\#exr:exercisePlp3) </strong></span>Build a prediction model using LASSO and evaluate its performance using the Shiny application. How well is your model performing?
-  </div>\EndKnitrBlock{exercise}
+</div>\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(Plpanswers).

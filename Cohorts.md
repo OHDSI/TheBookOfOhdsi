@@ -67,7 +67,7 @@ When creating a cohort definition, you need to ask yourself the following questi
 
 **Cohort exit criteria**: The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g. persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterium "Exclude people with prior hypertension" can be formulated as the inclusion criterium "Include people with 0 occurrences of prior hypertension".
+\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterion "Exclude people with prior hypertension" can be formulated as the inclusion criterion "Include people with 0 occurrences of prior hypertension".
 </div>\EndKnitrBlock{rmdimportant}
 
 ## Concept Sets {#conceptSets}
@@ -89,11 +89,11 @@ Table: (\#tab:conceptSetExpression) An example concept set expression.
 | 4329847    | Myocardial infarction | NO | YES | NO |
 | 314666     | Old myocardial infarction | YES | YES | NO |
 
-As shown in Figure \@ref(fig:conceptSet), this will include "Myocardial infarction" and all of its descendants except "Old myocardial infarction" and its descendants. In total, this concept set expression implies nearly a hundred Standard Concepts. These Standard Concepts in turn reflect hundreds of source codes (e.g. ICD-9 and ICD-10 codes) that may appear in the various databases. 
+As shown in Figure \@ref(fig:conceptSet), this will include "Myocardial infarction" and all of its descendants except "Old myocardial infarction" and its descendants. In total, this concept set expression implies nearly a hundred Standard Concepts. These Standard Concepts in turn reflect hundreds of source codes (e.g. ICD-9 and ICD-10 codes) that may appear in the various databases.
 
 <div class="figure" style="text-align: center">
-<img src="images/Cohorts/conceptSet.png" alt="A concept set including &quot;Myocardial infaction&quot; (with descendants), but excluding &quot;Old myocardial infarction&quot; (with descendants)." width="100%" />
-<p class="caption">(\#fig:conceptSet)A concept set including "Myocardial infaction" (with descendants), but excluding "Old myocardial infarction" (with descendants).</p>
+<img src="images/Cohorts/conceptSet.png" alt="A concept set including &quot;Myocardial infarction&quot; (with descendants), but excluding &quot;Old myocardial infarction&quot; (with descendants)." width="100%" />
+<p class="caption">(\#fig:conceptSet)A concept set including "Myocardial infarction" (with descendants), but excluding "Old myocardial infarction" (with descendants).</p>
 </div>
 
 ## Probabilistic Cohort Definitions
@@ -144,7 +144,7 @@ Before you do anything else, you are encouraged to change the name of the cohort
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">ATLAS will not allow two cohorts to have the same exact names. ATLAS will give you a pop-up error message if you choose a name already used by another ATLAS cohort.</div>\EndKnitrBlock{rmdimportant}
 
-Once you have chosen a name, you can save the cohort by clicking ![](images/Cohorts/save.png). 
+Once you have chosen a name, you can save the cohort by clicking ![](images/Cohorts/save.png).
 
 
 ### Initial Event Criteria
@@ -169,7 +169,7 @@ The screen will update with your selected criteria but you are not done yet. As 
 
 You will need to click ![](images/Cohorts/downarrow.png) to open the dialogue box that will allow you to retrieve a concept set to define ACE Inhibitors.
 
-#### Scenario 1: You Have Not Built a Concept Set {-} 
+#### Scenario 1: You Have Not Built a Concept Set {-}
 
 If you have not assembled your concept sets to apply to your criteria, you will need to do so before you move forward. You may build a concept set within the cohort definition by navigating to the "Concept set" tab and clicking "New Concept Set". You will need to rename the concept set from "Unnamed Concept Set" to a name of your choosing. From there you can use the ![](images/Cohorts/search-2.png) module to look for clinical concepts that represent ACE inhibitors (Figure \@ref(fig:aceinhibitors)).
 
@@ -330,9 +330,9 @@ INNER JOIN @cdm_db_schema.concept_ancestor
 WHERE ancestor_concept_id IN (@ace_i)
 GROUP BY person_id;"
 
-renderTranslateExecuteSql(conn, 
-                          sql, 
-                          cdm_db_schema = cdmDbSchema, 
+renderTranslateExecuteSql(conn,
+                          sql,
+                          cdm_db_schema = cdmDbSchema,
                           ace_i = aceI)
 ```
 
@@ -375,9 +375,9 @@ INNER JOIN @cdm_db_schema.concept_ancestor
   ON descendant_concept_id = condition_concept_id
 WHERE ancestor_concept_id = @hypertension;"
 
-renderTranslateExecuteSql(conn, 
-                          sql, 
-                          cdm_db_schema = cdmDbSchema, 
+renderTranslateExecuteSql(conn,
+                          sql,
+                          cdm_db_schema = cdmDbSchema,
                           hypertension = hypertension)
 ```
 
@@ -404,9 +404,9 @@ LEFT JOIN (
     AND drug_exposure_start_date < cohort_start_date
 WHERE person_id IS NULL;"
 
-renderTranslateExecuteSql(conn, 
-                          sql, 
-                          cdm_db_schema = cdmDbSchema, 
+renderTranslateExecuteSql(conn,
+                          sql,
+                          cdm_db_schema = cdmDbSchema,
                           all_ht_drugs = allHtDrugs)
 ```
 
@@ -433,9 +433,9 @@ GROUP BY subject_id,
   cohort_start_date
 HAVING COUNT(*) = 1;"
 
-renderTranslateExecuteSql(conn, 
-                          sql, 
-                          cdm_db_schema = cdmDbSchema, 
+renderTranslateExecuteSql(conn,
+                          sql,
+                          cdm_db_schema = cdmDbSchema,
                           all_ht_drugs = allHtDrugs)
 ```
 
@@ -456,8 +456,8 @@ sql <- "
     ON descendant_concept_id = drug_concept_id
   WHERE ancestor_concept_id IN (@ace_i);"
 renderTranslateExecuteSql(conn,
-                          sql, 
-                          cdm_db_schema = cdmDbSchema, 
+                          sql,
+                          cdm_db_schema = cdmDbSchema,
                           ace_i = aceI)
 ```
 
@@ -532,7 +532,7 @@ GROUP BY ends.person_id,
   ends.era_end_date;"
 
 renderTranslateExecuteSql(conn,
-                          sql, 
+                          sql,
                           cdm_db_schema = cdmDbSchema,
                           max_gap = 30)
 ```
@@ -553,9 +553,9 @@ INNER JOIN #exposure_era ee
   ON mt.subject_id = ee.subject_id
     AND mt.cohort_start_date = ee.cohort_start_date;"
 
-renderTranslateExecuteSql(conn, 
-                          sql, 
-                          cohort_db_schema = cohortDbSchema, 
+renderTranslateExecuteSql(conn,
+                          sql,
+                          cohort_db_schema = cohortDbSchema,
                           cohort_table = cohortTable)
 ```
 
@@ -611,10 +611,10 @@ disconnect(conn)
 
 #### Prerequisites {-}
 
-For the first exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
+For the first exercise, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have access to.
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCohortsAtlas"><strong>(\#exr:exerciseCohortsAtlas) </strong></span>Use ATLAS to create a cohort definition following these criteria:
-  
+
 - New users of diclofenac
 - Ages 16 or older
 - With at least 365 days of continuous observation prior to exposure
@@ -629,8 +629,8 @@ For the second exercise we assume R, R-Studio and Java have been installed as de
 
 
 ```r
-install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
-devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+install.packages(c("SqlRender", "DatabaseConnector", "remotes"))
+remotes::install_github("ohdsi/Eunomia", ref = "v1.0.0")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
@@ -643,7 +643,7 @@ connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 The CDM database schema is "main".
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCohortsSql"><strong>(\#exr:exerciseCohortsSql) </strong></span>Use SQL and R to create a cohort for acute myocardial infarction (AMI) in the existing COHORT table, following these criteria:
-  
+
 - An occurrence of a myocardial infarction diagnose (concept 4329847 "Myocardial infarction" and all of its descendants, excluding concept 314666 "Old myocardial infarction" and any of its descendants).
 - During an inpatient or ER visit (concepts 9201, 9203, and 262 for "Inpatient visit", "Emergency Room Visit", and "Emergency Room and Inpatient Visit", respectively).
 </div>\EndKnitrBlock{exercise}

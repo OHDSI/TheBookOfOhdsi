@@ -2,7 +2,7 @@
 
 *Chapter leads: Martijn Schuemie & Frank DeFalco*
 
-OHDSI offers a wide range of open source tools to support various data-analytics use cases on observational patient-level data. What these tools have in common is that they can all interact with one or more databases using the Common Data Model (CDM). Furthermore, these tools standardize the analytics for various use cases; Rather than having to start from scratch, an analysis can be implemented by filling in standard templates. This makes performing analysis easier, and also improves reproducibility and transparency. For example, there appear to be a near-infinite number of ways to compute an incidence rate, but these can be specified in the OHDSI tools with a few choices, and anyone making those same choices will compute incidence rates the same way. 
+OHDSI offers a wide range of open source tools to support various data-analytics use cases on observational patient-level data. What these tools have in common is that they can all interact with one or more databases using the Common Data Model (CDM). Furthermore, these tools standardize the analytics for various use cases; Rather than having to start from scratch, an analysis can be implemented by filling in standard templates. This makes performing analysis easier, and also improves reproducibility and transparency. For example, there appear to be a near-infinite number of ways to compute an incidence rate, but these can be specified in the OHDSI tools with a few choices, and anyone making those same choices will compute incidence rates the same way.
 
 In this chapter we first describe various ways in which we can choose to implement an analysis, and what strategies the analysis can employ. We then review the various OHDSI tools and how they fit the various use cases.
 
@@ -34,7 +34,7 @@ In addition to the strategy used to implement our analysis against the CDM, for 
 
 The first strategy views every analysis as a single individual study. The analysis must be pre-specified in a protocol, implemented as code, executed against the data, after which the result can be compiled and interpreted. For every question, all steps must be repeated. An example of such an analysis is the OHDSI study into the risk of angioedema associated with levetiracetam compared with phenytoin. [@duke_2017] Here, a protocol was first written, analysis code using the OHDSI Methods Library was developed and executed across the OHDSI network, and results were compiled and disseminated in a journal publication.
 
-The second strategy develops an application that allows users to answer a specific class of questions in real time or near-real time. Once the application has been developed, users can interactively define queries, submit them, and view the results. An example of this strategy is the cohort definition and generation tool in ATLAS. This tool allows users to specify cohort definitions of varying complexity, and execute the definition against a database to see how many people meet the various inclusion and exclusion criteria. 
+The second strategy develops an application that allows users to answer a specific class of questions in real time or near-real time. Once the application has been developed, users can interactively define queries, submit them, and view the results. An example of this strategy is the cohort definition and generation tool in ATLAS. This tool allows users to specify cohort definitions of varying complexity, and execute the definition against a database to see how many people meet the various inclusion and exclusion criteria.
 
 The third strategy similarly focuses on a class of questions, but then attempts to exhaustively generate all the evidence for the questions within the class. Users can then explore the evidence as needed through a variety of interfaces. One example is the OHDSI study into the effects of depression treatments. [@schuemie_2018b] In this study all depression treatments are compared for a large set of outcomes of interest across four large observational databases. The full set of results, including 17,718 empirically calibrated hazard ratios along with extensive study diagnostics, is available in an interactive web app.[^systematicEvidenceUrl]
 
@@ -42,7 +42,7 @@ The third strategy similarly focuses on a class of questions, but then attempts 
 
 ## ATLAS
 
-ATLAS is a free, publicly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS[^atlasUrl], and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS} 
+ATLAS is a free, publicly available, web-based tool developed by the OHDSI community that facilitates the design and execution of analyses on standardized, patient-level, observational data in the CDM format.  ATLAS is deployed as a web application in combination with the OHDSI WebAPI and is typically hosted on Apache Tomcat.  Performing real time analyses requires access to the patient-level data in the CDM and is therefore typically installed behind an organization's firewall. However, there is also a public ATLAS[^atlasUrl], and although this ATLAS instance only has access to a few small simulated datasets, it can still be used for many purposes including testing and training. It is even possible to fully define an effect estimation or prediction study using the public instance of ATLAS, and automatically generate the R code for executing the study. That code can then be run in any environment with an available CDM without needing to install ATLAS and the WebAPI. \index{ATLAS}
 
 [^atlasUrl]: http://www.ohdsi.org/web/atlas
 
@@ -57,7 +57,7 @@ A screenshot of ATLAS is provided in Figure \@ref(fig:atlas). On the left is a n
 Data Sources \index{ATLAS!Data Sources} \index{Achilles|see {ATLAS!data sources}}
 : Data sources provides the capability review descriptive, standardized reporting for each of the data sources that you have configured within your Atlas platform. This feature uses the large-scale analytics strategy: all descriptives have been pre-computed. Data sources is discussed in Chapter \@ref(Characterization).
 
-Vocabulary Search \index{ATLAS!vocabulary search} 
+Vocabulary Search \index{ATLAS!vocabulary search}
 : Atlas provides the ability to search and explore the OMOP standardized vocabulary to understand what concepts exist within those vocabularies and how to apply those concepts in your standardized analysis against your data sources. This feature is discussed in Chapter \@ref(StandardizedVocabularies).
 
 Concept Sets \index{ATLAS!concept sets}
@@ -85,10 +85,10 @@ Patient Level Prediction \index{ATLAS!patient level prediction}
 : Prediction is a capability to allow you to apply machine learning algorithms to conduct patient level prediction analyses whereby you can predict an outcome within any given target exposures. This feature can be said to implement the real-time query strategy, as no coding is required, and is discussed in Chapter \@ref(PatientLevelPrediction).
 
 Jobs \index{ATLAS!jobs}
-: Select the Jobs menu item to explore the state of processes that are running through the WebAPI. Jobs are often long running processes such as generating a cohort or computing cohort characterization reports. 
+: Select the Jobs menu item to explore the state of processes that are running through the WebAPI. Jobs are often long running processes such as generating a cohort or computing cohort characterization reports.
 
 Configuration \index{ATLAS!configuration}
-: Select the Configuration menu item to review the data sources that have been configured in the source configuration section. 
+: Select the Configuration menu item to review the data sources that have been configured in the source configuration section.
 
 Feedback \index{ATLAS!feedback}
 : The Feedback link will take you to the issue log for Atlas so that you can log a new issue or to search through existing issues. If you have ideas for new features or enhancements, this is also a place note these for the development community.
@@ -99,11 +99,11 @@ ATLAS and the WebAPI provide a granular security model to control access to feat
 
 [^webApiSecurityWikiUrl]: https://github.com/OHDSI/WebAPI/wiki/Security-Configuration
 
-### Documentation 
+### Documentation
 
 Documentation for ATLAS can be found online in the ATLAS GitHub repository wiki.[^atlasRepoWikiUrl] This wiki includes information on the various application features as well as links to online video tutorials.  \index{ATLAS!documentation}
 
-[^atlasRepoWikiUrl]: https://github.com/OHDSI/ATLAS/wiki 
+[^atlasRepoWikiUrl]: https://github.com/OHDSI/ATLAS/wiki
 
 ### How to Install
 
@@ -121,7 +121,7 @@ The [OHDSI Methods Library](https://ohdsi.github.io/MethodsLibrary/) is the coll
 <p class="caption">(\#fig:methodsLibrary)Packages in the OHDSI Methods Library.</p>
 </div>
 
-The packages offer R functions that together can be used to perform a complete observational study, starting from data in the CDM, and resulting in estimates and supporting statistics, figures, and tables. The packages interact directly with observational data in the CDM, and can be used simply to provide cross-platform compatibility to completely custom analyses as described in Chapter \@ref(SqlAndR), or can provide advanced standardized analytics for population characterization (Chapter \@ref(Characterization)), population-level effect estimation (Chapter \@ref(PopulationLevelEstimation)), and patient-level prediction (Chapter \@ref(PatientLevelPrediction)). The Methods Library supports best practices for use of observational data and observational study design as learned from previous and ongoing research, such as transparency, reproducibility, as well as measuring of the operating characteristics of methods in a particular context and subsequent empirical calibration of estimates produced by the methods. 
+The packages offer R functions that together can be used to perform a complete observational study, starting from data in the CDM, and resulting in estimates and supporting statistics, figures, and tables. The packages interact directly with observational data in the CDM, and can be used simply to provide cross-platform compatibility to completely custom analyses as described in Chapter \@ref(SqlAndR), or can provide advanced standardized analytics for population characterization (Chapter \@ref(Characterization)), population-level effect estimation (Chapter \@ref(PopulationLevelEstimation)), and patient-level prediction (Chapter \@ref(PatientLevelPrediction)). The Methods Library supports best practices for use of observational data and observational study design as learned from previous and ongoing research, such as transparency, reproducibility, as well as measuring of the operating characteristics of methods in a particular context and subsequent empirical calibration of estimates produced by the methods.
 
 The Methods Library has already been used in many published clinical studies [@boland_2017; @duke_2017; @ramcharran_2017; @weinstein_2017; @wang_2017; @ryan_2017; @ryan_2018; @vashisht_2018; @yuan_2018; @johnston_2019], as well as methodological studies. [@schuemie_2014; @schuemie_2016; @reps2018; @tian_2018; @schuemie_2018; @schuemie_2018b; @reps_2019] The validity of the implementations of methods in the Methods library is described in Chapter \@ref(SoftwareValidity).
 
@@ -129,7 +129,7 @@ The Methods Library has already been used in many published clinical studies [@b
 
 One key feature incorporated in all packages is the ability to efficiently run many analyses. For example, when performing population-level estimation, the CohortMethod package allows for computing effect-size estimates for many exposures and outcomes, using various analysis settings, and the package will automatically choose the optimal way to compute all the required intermediary and final data sets. Steps that can be re-used, such as extraction of covariates, or fitting a propensity model that is used for one target-comparator pair but multiple outcomes, will be executed only once. Where possible, computations will take place in parallel to maximize the use of computational resources.
 
-This computational efficiency allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g. negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \@ref(MethodValidity). \index{control hypotheses} 
+This computational efficiency allows for large-scale analytics, answering many questions at once, and is also essential for including control hypotheses (e.g. negative controls) to measure the operating characteristics of our methods, and perform empirical calibration as described in Chapter \@ref(MethodValidity). \index{control hypotheses}
 
 ### Support for Big Data {#BigDataSupport}
 
@@ -149,11 +149,11 @@ In addition to the package manual, many packages provide *vignettes*. Vignettes 
 
 [^vignetteUrl]: https://ohdsi.github.io/CohortMethod/articles/MultipleAnalyses.html
 
-###  System Requirements
+### System Requirements
 
 Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation. \index{system requirements}
 
-The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). 
+The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon Redshift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery).
 
 The analytics workstation is where the Methods Library is installed and run. This can either be a local machine, such as someone's laptop, or a remote server running RStudio Server. In all cases the requirements are that R is installed, preferably together with RStudio. The Methods Library also requires that Java is installed. The analytics workstation should also be able to connect to the database server, specifically, any firewall between them should have the database server access ports opened the workstation. Some of the analytics can be computationally intensive, so having multiple processing cores and ample memory can help speed up the analyses. We recommend having at least four cores and 16 gigabytes of memory.
 
@@ -162,7 +162,7 @@ The analytics workstation is where the Methods Library is installed and run. Thi
 Here are the steps for installing the required environment to run the OHDSI R packages. Four things need to be installed: \index{R!installation}
 
 1. **R** is a statistical computing environment. It comes with a basic user interface that is primarily a command-line interface.
-2. **RTools** is a set of programs that is required on Windows to build R packages from source.
+2. **Rtools** is a set of programs that is required on Windows to build R packages from source.
 3. **RStudio** is an IDE (Integrated Development Environment) that makes R easier to use. It includes a code editor, debugging and visualization tools. Please use it to obtain a nice R experience.
 4. **Java** is a computing environment that is needed to run some of the components in the OHDSI R packages, for example those needed to connect to a database.
 
@@ -172,7 +172,7 @@ Below we describe how to install each of these in a Windows environment.
 
 #### Installing R {-}
 
-1. Go to [https://cran.r-project.org/](https://cran.r-project.org/), click on "Download R for Windows", then "base", then click the Download link indicated in Figure \@ref(fig:downloadR).  
+1. Go to [https://cran.r-project.org/](https://cran.r-project.org/), click on "Download R for Windows", then "base", then click the Download link indicated in Figure \@ref(fig:downloadR).
 
 <div class="figure" style="text-align: center">
 <img src="images/OhdsiAnalyticsTools/downloadR.png" alt="Downloading R from CRAN." width="100%" />
@@ -191,11 +191,11 @@ Below we describe how to install each of these in a Windows environment.
 <p class="caption">(\#fig:no32Bits)Disabling the 32-bit version of R.</p>
 </div>
 
-Once completed, you should be able to select R from your Start Menu. 
+Once completed, you should be able to select R from your Start Menu.
 
-#### Installing RTools {-}
+#### Installing Rtools {-}
 
-1. Go to [https://cran.r-project.org/](https://cran.r-project.org/), click on "Download R for Windows", then "Rtools", and select the very latest version of RTools to download.
+1. Go to [https://cran.r-project.org/](https://cran.r-project.org/), click on "Download R for Windows", then "Rtools", and select the very latest version of Rtools to download.
 
 2. After downloading has completed run the installer. Select the default options everywhere.
 
@@ -277,13 +277,13 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
 [^ohdsiOnAwsUrl]: https://github.com/OHDSI/OHDSIonAWS
 
 <div class="figure" style="text-align: center">
-<img src="images/OhdsiAnalyticsTools/OHDSIonAWSDiagram.png" alt="The Amazon Web Services architecure for OHDSIonAWS." width="100%" />
-<p class="caption">(\#fig:ohdsionawsDiagram)The Amazon Web Services architecure for OHDSIonAWS.</p>
+<img src="images/OhdsiAnalyticsTools/OHDSIonAWSDiagram.png" alt="The Amazon Web Services architecture for OHDSIonAWS." width="100%" />
+<p class="caption">(\#fig:ohdsionawsDiagram)The Amazon Web Services architecture for OHDSIonAWS.</p>
 </div>
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- We can perform analyses against data in the CDM by 
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- We can perform analyses against data in the CDM by
     - writing custom code
     - writing code that uses the R packages in the OHDSI Methods Library
     - using the interactive analysis platform ATLAS
@@ -299,7 +299,3 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
 
 - Several strategies exist facilitating the deployment of the OHDSI tools.
 </div>\EndKnitrBlock{rmdsummary}
-
-
-
-

@@ -1,7 +1,7 @@
 # Data Quality {#DataQuality}
 
 
-*Chapter leads: Martijn Schuemie, Vojtech Huser & Clair Blacketer* 
+*Chapter leads: Martijn Schuemie, Vojtech Huser & Clair Blacketer*
 
 Most of the data used for observational healthcare research were not collected for research purposes. For example, electronic health records (EHRs) aim to capture the information needed to support the care of patients, and administrative claims are collected to provide a grounds for allocating costs to payers. Many have questioned whether it is appropriate to use such data for clinical research, with @vanDerLei_1991 even stating that "Data shall be used only for the purpose for which they were collected." The concern is that because the data were not collected for the research that we would like to do, it is not guaranteed to have sufficient quality. If the quality of the data is poor (garbage in), then the quality of the result of research using that data must be poor as well (garbage out). An important aspect of observational healthcare research therefore deals with assessing data quality, aiming to answer the question:
 
@@ -11,7 +11,7 @@ We can define data quality (DQ) as [@roebuck_2012]: \index{data quality}
 
 > The state of completeness, validity, consistency, timeliness and accuracy that makes data appropriate for a specific use.
 
-Note that it is unlikely that our data are perfect, but they may be good enough for our purposes. 
+Note that it is unlikely that our data are perfect, but they may be good enough for our purposes.
 
 DQ cannot be observed directly, but methodology has been developed to assess it. Two types of DQ assessments can be distinguished [@weiskopf_2013]: assessments to evaluate DQ in general, and assessments to evaluate DQ in the context of a specific study.
 
@@ -21,12 +21,12 @@ In this chapter we will first review possible sources of DQ problems, after whic
 
 There are many threats to the quality of the data, starting as noted in Chapter \@ref(EvidenceQuality) when the doctor records her or his thoughts. @dasu_2003 distinguish the following steps in the life cycle of data, recommending DQ be integrated in each step. They refer to this as the DQ continuum:
 
-1. **Data gathering and integration**. Possible problems include fallible manual entry, biases (e.g. upcoding in claims), erroneous joining of tables in an EHR, and replacing missing values with default ones. 
+1. **Data gathering and integration**. Possible problems include fallible manual entry, biases (e.g. upcoding in claims), erroneous joining of tables in an EHR, and replacing missing values with default ones.
 2. **Data storage and knowledge sharing**. Potential problems are lack of documentation of the data model, and lack of meta-data.
-3. **Data analysis**. Problems can include incorrect data transformations, incorrect data interpretation, and use of inappropriate methodology. 
+3. **Data analysis**. Problems can include incorrect data transformations, incorrect data interpretation, and use of inappropriate methodology.
 4. **Data publishing**. When publishing data for downstream use.
 
-Often the data we use has already been collected and integrated, so there is little we can do to improve step 1. We do have ways to check the DQ produced by this step as will be discussed in subsequent sections in this chapter. 
+Often the data we use has already been collected and integrated, so there is little we can do to improve step 1. We do have ways to check the DQ produced by this step as will be discussed in subsequent sections in this chapter.
 
 Similarly, we often receive the data in a specific form, so we have little influence over part of step 2. However, in OHDSI we convert all our observational data to the Common Data Model (CDM), and we do have ownership over this process. Some have expressed concerns that this specific step can degrade DQ. But because we control this process, we can build stringent safeguards to preserve DQ as discussed later in Section \@ref(etlUnitTests). Several investigations [@defalco_2013;@makadia_2014;@matcho_2014;@voss_2015;@voss_2015b;@hripcsak_2018] have shown that when properly executed, little to no error is introduced when converting to the CDM. In fact, having a well-documented data model that is shared by a large community facilitates data storage in an unambiguous and clear manner.
 
@@ -34,10 +34,10 @@ Step 3 (data analysis) also falls under our control. In OHDSI, we tend to not us
 
 ## Data Quality in General
 
-We can ask the question whether our data are fit for the general purpose of observational research. @kahn_harmonized_2016 define such generic DQ as consisting of three components: 
+We can ask the question whether our data are fit for the general purpose of observational research. @kahn_harmonized_2016 define such generic DQ as consisting of three components:
 
 1. **Conformance**: Do data values adhere to specified standards and formats? Three sub-types are identified:
-   - **Value**: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties? 
+   - **Value**: Are recorded data elements in agreement with the specified formats? For example, are all provider medical specialties valid specialties?
    - **Relational**: Is the recorded data in agreement with specified relational constraints? For example, does the PROVIDER_ID in a DRUG_EXPOSURE data have a corresponding record in the PROVIDER table?
    - **Computation**: Do computations on the data yield the intended results? For example, is BMI computed from height and weight equal to the verbatim BMI recorded in the data?
 2. **Completeness**: Refers to whether a particular variable is present (e.g. is weight as measured in the doctor's office recorded?) as well as whether variables contain all recorded values (e.g. do all persons have a known gender?)
@@ -45,13 +45,13 @@ We can ask the question whether our data are fit for the general purpose of obse
     - **Uniqueness**: For example, does each PERSON_ID occur only once in the PERSON table?
     - **Atemporal**: Do values, distributions, or densities agree with expected values? For example, is the prevalence of diabetes implied by the data in line with the known prevalence?
     - **Temporal**: Are changes in values in line with expectations? For example, are immunization sequences in line with recommendations?
-    
+
     \index{data quality!conformance} \index{data quality!completeness} \index{data quality!plausibility}
 
 Each component can be evaluated in two ways:
 
 * **Verification** focuses on model and metadata data constraints, system assumptions, and local knowledge. It does not rely on an external reference.  The key feature with verification is the ability to determine expected values and distributions using resources within the local environment.
-* **Validation** focuses on the alignment of data values with respect to relevant external benchmarks. One possible source of an external benchmark can be to combine results across multiple data sites. 
+* **Validation** focuses on the alignment of data values with respect to relevant external benchmarks. One possible source of an external benchmark can be to combine results across multiple data sites.
 
 \index{data quality!verification} \index{data quality!validation}
 
@@ -61,11 +61,11 @@ Each component can be evaluated in two ways:
 
 Kahn introduces the term *data quality check* (sometimes referred to as a *data quality rule*) that tests whether data conform to a given requirement (e.g., flagging an implausible age of 141 of a patient, potentially due to incorrect birth year or missing death event). We can implement such checks in software by creating automated DQ tools. One such tool is [ACHILLES](https://github.com/OHDSI/Achilles) (Automated Characterization of Health Information at Large-scale Longitudinal Evidence Systems). [@huser_methods_2018] ACHILLES is a software tool that provides characterization and visualization of a database conforming to the CDM. As such, it can be used to evaluate DQ in a network of databases. [@huser_multisite_2016] ACHILLES is available as a stand-alone tool, and it is also integrated into ATLAS as the "Data Sources" function. \index{data quality!data quality check} \index{ACHILLES}
 
-ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis; two such examples are “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” and “506: Distribution of age at death by gender.” The results of these analyses are stored in a database and can be accessed by a web viewer or by ATLAS. 
+ACHILLES pre-computes over 170 data characterization analyses, with each analysis having an analysis ID and a short description of the analysis; two such examples are “715: Distribution of DAYS_SUPPLY by DRUG_CONCEPT_ID” and “506: Distribution of age at death by gender.” The results of these analyses are stored in a database and can be accessed by a web viewer or by ATLAS.
 
 \index{Data Quality Dashboard}
 
-Another tool created by the community to assess DQ is the [Data Quality Dashboard (DQD)](https://github.com/OHDSI/DataQualityDashboard). Where ACHILLES runs characterization analyses to provide an overall visual understanding of a CDM instance, the DQD goes table by table and field by field to quantify the number of records in a CDM that do not conform to the given specifications. In all, over 1,500 checks are performed, each one organized into the Kahn framework. For each check the result is compared to a threshold whereby a FAIL is considered to be any percentage of violating rows falling above that value. Table \@ref(tab:dqdExamples) shows some example checks.  
+Another tool created by the community to assess DQ is the [Data Quality Dashboard (DQD)](https://github.com/OHDSI/DataQualityDashboard). Where ACHILLES runs characterization analyses to provide an overall visual understanding of a CDM instance, the DQD goes table by table and field by field to quantify the number of records in a CDM that do not conform to the given specifications. In all, over 1,500 checks are performed, each one organized into the Kahn framework. For each check the result is compared to a threshold whereby a FAIL is considered to be any percentage of violating rows falling above that value. Table \@ref(tab:dqdExamples) shows some example checks.
 
 Table: (\#tab:dqdExamples) Example data quality rules in the Data Quality Dashboard.
 
@@ -86,7 +86,7 @@ Within the tool the checks are organized in multiple ways, one being into table,
 
 \index{ETL!unit tests}
 
-In addition to high level data quality checks, individual level data checks should be performed. The ETL (Extract-Transform-Load) process by which data are converted to the CDM is often quite complex, and with that complexity comes the danger of making mistakes that may go unnoticed. Moreover, as time goes by the source data model may change, or the CDM may be updated, making it necessary to modify the ETL process. Changes to a process as complicated as an ETL can have unintended consequences, requiring all aspects of the ETL to be reconsidered and reviewed. 
+In addition to high level data quality checks, individual level data checks should be performed. The ETL (Extract-Transform-Load) process by which data are converted to the CDM is often quite complex, and with that complexity comes the danger of making mistakes that may go unnoticed. Moreover, as time goes by the source data model may change, or the CDM may be updated, making it necessary to modify the ETL process. Changes to a process as complicated as an ETL can have unintended consequences, requiring all aspects of the ETL to be reconsidered and reviewed.
 
 To make sure the ETL does what it is supposed to do, and continues to do so, it is highly recommended to construct a set of unit tests. A unit test is a small piece of code that automatically checks a single aspect. The Rabbit-in-a-Hat tool described in Chapter \@ref(ExtractTransformLoad) can create a unit test framework that makes writing such unit tests easier. This framework is a collection of R functions created specifically for the source database and target CDM version of the ETL. Some of these functions are for creating fake data entries that adhere to the source data schema, while other functions can be used to specify expectations on the data in the CDM format. Here is an example unit test:
 
@@ -130,7 +130,7 @@ Table: (\#tab:exampleTestResults) Example ETL unit test results.
 | 101   | Person gender mappings | PASS   |
 | 101   | Person gender mappings | PASS   |
 
-The power of these unit tests is that we can easily rerun them any time the ETL process is changed. 
+The power of these unit tests is that we can easily rerun them any time the ETL process is changed.
 
 ## Study-Specific Checks
 
@@ -138,7 +138,7 @@ The power of these unit tests is that we can easily rerun them any time the ETL 
 
 The chapter has so far focused on general DQ checks. Such checks should be executed prior to using the data for research. Since these checks are done regardless of the research questions we recommend performing study-specific DQ assessments.
 
-Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specify the length of exposure. 
+Some of these assessments can take the form of DQ rules that are specifically relevant for the study. For example, we may want to impose a rule that at least 90% of the records for our exposure of interest specify the length of exposure.
 
 A standard assessment is to review the concepts that are most relevant for the study in ACHILLES, for example those specified in the study cohort definitions. Sudden changes over time in the rate with which a code is observed may hint at DQ problems. Some examples will be discussed later in this chapter.
 
@@ -166,7 +166,7 @@ Even though the previous example demonstrates a chance finding of a source code 
 
 ## ACHILLES in Practice {#achillesInPractice}
 
-Here we will demonstrate how to run ACHILLES against a database in the CDM format. 
+Here we will demonstrate how to run ACHILLES against a database in the CDM format.
 
 We first need to tell R how to connect to the server. ACHILLES uses the [DatabaseConnector](https://ohdsi.github.io/DatabaseConnector/) package, which provides a function called `createConnectionDetails`. Type `?createConnectionDetails` for the specific settings required for the various database management systems (DBMS). For example, one might connect to a PostgreSQL database using this code:
 
@@ -197,7 +197,7 @@ result <- achilles(connectionDetails,
                    cdmVersion = cdmVersion)
 ```
 
-This function will create several tables in the `resultsDatabaseSchema`, which we've set here to the same database schema as the CDM data. 
+This function will create several tables in the `resultsDatabaseSchema`, which we've set here to the same database schema as the CDM data.
 
 We can view the ACHILLES database characterization. This can be done by pointing ATLAS to the ACHILLES results databases, or by exporting the ACHILLES results to a set of JSON files:
 
@@ -217,7 +217,7 @@ The JSON files will be written to the achillesOut sub-folder, and can be used to
 <p class="caption">(\#fig:achillesDataDensity)The data density plot in the ACHILLES web viewer.</p>
 </div>
 
-Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a sudden change in the prevalence of a diabetes diagnosis code. This change coincides with changes in the reimbursement rules in this specific country, leading to more diagnoses but probably not a true increase in prevalence in the underlying population. 
+Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a sudden change in the prevalence of a diabetes diagnosis code. This change coincides with changes in the reimbursement rules in this specific country, leading to more diagnoses but probably not a true increase in prevalence in the underlying population.
 
 <div class="figure" style="text-align: center">
 <img src="images/DataQuality/achillesCodeChange.png" alt="Monthly rate of diabetes coded in the ACHILLES web viewer." width="100%" />
@@ -236,8 +236,8 @@ Next, we run the Dashboard...
 
 
 ```r
-DataQualityDashboard::executeDqChecks(connectionDetails = connectionDetails, 
-                                      cdmDatabaseSchema = cdmDbSchema, 
+DataQualityDashboard::executeDqChecks(connectionDetails = connectionDetails,
+                                      cdmDatabaseSchema = cdmDbSchema,
                                       resultsDatabaseSchema = cdmDbSchema,
                                       cdmSourceName = "My database",
                                       outputFolder = "My output")
@@ -250,9 +250,9 @@ The above function will execute all available data quality checks on the schema 
 viewDqDashboard(jsonPath)
 ```
 
-The variable `jsonPath` should be the path to the JSON file containing the results of the Dashboard, located in the  `outputFolder` specified when calling the `executeDqChecks` function above. 
+The variable `jsonPath` should be the path to the JSON file containing the results of the Dashboard, located in the  `outputFolder` specified when calling the `executeDqChecks` function above.
 
-When you first open the Dashboard you will be presented with the overview table, as seen in Figure \@ref(fig:dqdOverview). This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate. 
+When you first open the Dashboard you will be presented with the overview table, as seen in Figure \@ref(fig:dqdOverview). This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate.
 
 <div class="figure" style="text-align: center">
 <img src="images/DataQuality/dqdOverview.png" alt="Overview of Data Quality Checks in the Data Quality Dashboard." width="100%" />
@@ -337,10 +337,10 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 
 ```r
-install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
-devtools::install_github("ohdsi/Achilles")
-devtools:install_github("ohdsi/DataQualityDashboard")
-devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+install.packages(c("SqlRender", "DatabaseConnector", "remotes"))
+remotes::install_github("ohdsi/Achilles")
+remotes::install_github("ohdsi/DataQualityDashboard")
+remotes::install_github("ohdsi/Eunomia", ref = "v1.0.0")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
@@ -363,4 +363,3 @@ The CDM database schema is "main".
 </div>\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(DataQualityanswers).
-

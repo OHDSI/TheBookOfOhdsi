@@ -1,4 +1,4 @@
-# Open Science {#OpenScience} 
+# Open Science {#OpenScience}
 
 \index{open science}
 
@@ -14,7 +14,7 @@ Open-science or "Science 2.0" [@wiki:Science_2.0] approaches mean to address a n
 
 The OHDSI community addresses these challenges in its own way, and it puts significant emphasis on the importance of generating medical evidence at scale. As stated in @schuemie_2018b, while the current paradigm "centers on generating one estimate at a time using a unique study design with unknown reliability and publishing (or not) one estimate at a time," the OHDSI community "advocates for high-throughput observational studies using consistent and standardized methods, allowing evaluation, calibration and unbiased dissemination to generate a more reliable and complete evidence base." This is achieved by a combination of a network of medical data sources that map their data to the OMOP common data model, open source analytics code that can be used and verified by all, and large-scale baseline data such as the condition occurrences published at howoften.org. In the following paragraphs, concrete examples are provided and the open-science approach of OHDSI is detailed further using the four principles of Open Standards, Open Source, Open Data and Open Discourse as a guide. The chapter is concluded with a brief reference to the FAIR principles and outlook for OHDSI from an open-science perspective.
 
-## Open-Science in Action: the Study-a-Thon 
+## Open-Science in Action: the Study-a-Thon
 
 \index{study-a-thon}
 
@@ -22,31 +22,31 @@ A recent development in the community is the emergence of 'study-a-thons': short
 
 [^edhenWebinarUrl]: https://youtu.be/X5yuoJoL6xs
 
-## Open Standards 
+## Open Standards
 
 \index{open science!open standards}
 
 A very significant community resource that is maintained in the OHDSI community is the OMOP Common Data Model (see chapter \@ref(CommonDataModel)) and associated Standardized Vocabularies (see chapter \@ref(StandardizedVocabularies)). The model itself is scoped to capture observational healthcare data, and it was originally meant to analyze associations between exposures such as drugs, procedures, devices, etc., and outcomes such as conditions and measurements. It has been extended for various analysis use cases (see also \@ref(DataAnalyticsUseCases)). However, harmonizing healthcare data worldwide from a wide variety of coding systems, healthcare paradigm and different types of healthcare sources requires a massive amount of 'mappings' between source codes and their closest standardized counterparts. The OMOP Standardized Vocabulary is further described in chapter \@ref(DataAnalyticsUseCases) and includes mappings from hundreds of medical coding systems that are used worldwide, and is browsable through the OHDSI Athena tool. By providing these vocabularies and mappings as a freely available community resource, OMOP and the OHDSI community make a significant contribution to healthcare data analytics and is, by several accounts, the most comprehensive model for this purpose, representing approximately 1.2 billion healthcare records worldwide.[^6] [@garza_2016]
 
-## Open Source 
+## Open Source
 
 \index{open science!open source}
 
 Another key resource the OHDSI community provides are open source programs. These can be divided in several categories, such as the helper tools to map data to OMOP (see chapter \@ref(ExtractTransformLoad)), the OHDSI Methods Library which contain a powerful suite of commonly used statistical methods, open source code for published observational studies, and ATLAS, Athena and other infrastructure-related software which underpins the OHDSI ecosystem (see chapter \@ref(OhdsiAnalyticsTools)). From an open-science perspective, one of the most important resources is the code for the actual execution of studies, such as studies from the OHDSI Research Network (see chapter \@ref(NetworkResearch)). In turn, these programs leverage the fully open source OHDSI stack, which can be inspected, reviewed and contributed to via GitHub. For example, network studies often build on the Methods Library, which ensures a consistent re-use of statistical methods across analytical use cases. See chapter \@ref(SoftwareValidity) for a more detailed overview of how the use of and collaboration on open source software in OHDSI ultimately underpins the quality and reliability of the generated evidence.
 
-## Open Data 
+## Open Data
 
 \index{open science!open data}
 
 Because of the privacy-sensitive nature of healthcare data, fully open, comprehensive patient-level datasets are typically not available. However, it is possible to leverage OMOP mapped datasets to publish important aggregated data and results sets, such as the earlier mentioned http://howoften.org and other public result sets that are published to http://data.ohdsi.org. Also, the OHDSI community provides simulated datasets such as SynPUF for testing and development purposes, and the OHDSI Research Network (see \@ref(NetworkResearch)) can be leveraged to run studies in a network of available datasources that have mapped their data to OMOP. In order to make the mapping between the source data and the OMOP CDM transparent, it is encouraged for data sources to re-use the OHDSI ETL or 'mapping' tools and publish their mapping code as open source as well.
 
-## Open Discourse 
+## Open Discourse
 
 \index{open science!open discourse}
 
 Open standards, open source and open data are great assets, but left by themselves, they will not impact medical practice. Key to the open-science practice and impact of OHDSI is the implementation of medical evidence generation and the translation of the science to medical practice. The OHDSI community has several annual OHDSI Symposia, held in the United States, Europe, and Asia as well as dedicated communities of practice in, amongst others, China and Korea. These symposia discuss the advancements in statistical methods, data and software tooling, the standardized vocabularies, and all other aspects of the OHDSI open source community. The OHDSI forums[^8] and wiki[^9] facilitate thousands of researchers worldwide in practicing observational research. The community calls[^10] and the code, issues and pull requests in Github[^11] constantly evolve the open-community assets such as code and the CDM, and in the OHDSI Network Studies, global observational research is practiced in an open and transparent way using hundreds of millions of patient records worldwide. Openness and open discourse is encouraged throughout the community, and this very book is written via an open process facilitated by the OHDSI wiki, community calls and a GitHub repository.[^12] It needs to be stressed however that without all the OHDSI collaborators, the processes and tools would be empty shells. Indeed, one could argue that the true value of the OHDSI community is with its members, who share a vision of improving health through collaborative and open-science, as discussed in Chapter \@ref(OhdsiCommunity).
 
-## OHDSI and the FAIR Guiding Principles 
+## OHDSI and the FAIR Guiding Principles
 
 \index{FAIR}
 
@@ -74,7 +74,7 @@ The FAIR principles around reusability focus on important issues such as the dat
 Data licensing is a complicated topic, especially across jurisdictions, and it would fall outside of the scope of this book to cover it extensively. However, it is important to state that if you intend for your data (e.g. analysis results) to be freely used by others, it is good practice to explicitly provide these permissions via a data license. This is not yet a common practice for most data that can be found on the internet, and the OHDSI community is unfortunately not an exception here.
  Concerning the data provenance of OMOP databases, potential improvements exist for making meta-data available in an automated way, including, for example, CDM version, Standardized Vocabularies release, custom code lists, etc. The OHDSI ETL tools do not currently produce this information automatically, but working groups such as the Data Quality Working Group and Metadata Working Group actively work on these. Another important aspect is the provenance of the underlying databases itself; it is important to know if a hospital or GP information system was replaced or changed, and when known data omissions or other data issues occurred historically. Exploring ways to attach this metadata systematically in the OMOP CDM is the domain of the Metadata Working Group.
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- The OHDSI community can be seen as an open-science community that is actively pursuing the interoperability and reproducibility of medical evidence generation. 
+\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- The OHDSI community can be seen as an open-science community that is actively pursuing the interoperability and reproducibility of medical evidence generation.
 
 - It also advocates a paradigm shift from single study and single estimate medical research to large-scale systematic evidence generation, where facts such as baseline occurrence are known and the evidence focuses on statistically estimating the effects of interventions and treatments from real world healthcare sources.
 </div>\EndKnitrBlock{rmdsummary}
@@ -89,5 +89,3 @@ Data licensing is a complicated topic, especially across jurisdictions, and it w
 [^10]: https://www.ohdsi.org/web/wiki/doku.php?id=projects:overview
 [^11]: https://github.com/ohdsi
 [^12]: https://github.com/OHDSI/TheBookOfOhdsi
-
-

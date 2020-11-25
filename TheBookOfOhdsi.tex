@@ -268,12 +268,13 @@
 \usepackage{threeparttablex}
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
+\usepackage{xcolor}
 \usepackage[]{natbib}
 \bibliographystyle{apalike}
 
 \title{The Book of OHDSI}
 \author{Observational Health Data Sciences and Informatics}
-\date{2020-10-19}
+\date{2020-11-25}
 
 \usepackage{amsthm}
 \newtheorem{theorem}{Theorem}[chapter]
@@ -937,7 +938,7 @@ Concerning the data provenance of OMOP databases, potential improvements exist f
 
 \emph{Chapter lead: Clair Blacketer}
 
-Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formating and encoding of the content. \index{Common Data Model} \index{CDM |see {Common Data Model}} \index{relational data model|see {Common Data Model}}
+Observational data provides a view of what happens to a patient while receiving healthcare. Data are collected and stored for increasingly large numbers of patients all over the world creating what is often called Big Health Data. The purpose of these collections are threefold: (i) directly to facilitate research (often in the form of survey or registry data), or (ii) to support the conduct of healthcare (usually called EHR - Electronic Health Records) or (iii) to manage the payment for healthcare (usually called claims data). All three are routinely used for clinical research, the latter two as secondary use data, and all three typically have their unique formatting and encoding of the content. \index{Common Data Model} \index{CDM |see {Common Data Model}} \index{relational data model|see {Common Data Model}}
 
 Why do we need a Common Data Model for observational healthcare data?
 
@@ -1007,7 +1008,7 @@ The CDM is considered a ``person-centric'' model, meaning that all clinical Even
 \hypertarget{general-conventions-of-schemas}{%
 \subsection{General Conventions of Schemas}\label{general-conventions-of-schemas}}
 
-Schemas, or database users in some systems, allow for separation between read-only and read-write tables. The clinical Event and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user or analytic tool. Tables that need to be manipulated by web-based tools or end users are stored in the ``Results'' schema. The two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITON. These tables are meant to describe groups of interest that the user might define, as detailed in Chapter \ref{Cohorts}. These tables can be written to, meaning that a cohort can be stored in the COHORT table at run time. Since there is only one read-write schema for all users it is up to the implementation of the CDM how multiple user access is organized and controlled.
+Schemas, or database users in some systems, allow for separation between read-only and read-write tables. The clinical Event and vocabulary tables are in the ``CDM'' schema and are considered read-only to the end user or analytic tool. Tables that need to be manipulated by web-based tools or end users are stored in the ``Results'' schema. The two tables in the ``Results'' schema are COHORT and COHORT\_DEFINITION. These tables are meant to describe groups of interest that the user might define, as detailed in Chapter \ref{Cohorts}. These tables can be written to, meaning that a cohort can be stored in the COHORT table at run time. Since there is only one read-write schema for all users it is up to the implementation of the CDM how multiple user access is organized and controlled.
 
 \hypertarget{general-conventions-of-data-tables}{%
 \subsection{General Conventions of Data Tables}\label{general-conventions-of-data-tables}}
@@ -2126,8 +2127,8 @@ For these last three exercises we assume R, R-Studio and Java have been installe
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"remotes"}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -2928,7 +2929,7 @@ To initiate an ETL process on a database you need to understand your data, inclu
 \subsubsection*{Scope and Purpose}\label{scope-and-purpose}}
 \addcontentsline{toc}{subsubsection}{Scope and Purpose}
 
-White Rabbit's main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon RedShift). The scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.
+White Rabbit's main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon Redshift). The scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.
 
 \hypertarget{process-overview}{%
 \subsubsection*{Process Overview}\label{process-overview}}
@@ -3265,7 +3266,7 @@ More and more source codes are being added to the OMOP Vocabulary all the time. 
   \KeywordTok{ON}\NormalTok{ concept_id }\OperatorTok{=}\NormalTok{ concept_id_1}
 \KeywordTok{WHERE}\NormalTok{ concept_code }\OperatorTok{=} \StringTok{'I21'}
   \KeywordTok{AND}\NormalTok{ vocabulary_id }\OperatorTok{=} \StringTok{'ICD10CM'}
-  \KeywordTok{AND}\NormalTok{ relationship_id }\OperatorTok{=} \StringTok{'Maps to'}\NormalTok{; }
+  \KeywordTok{AND}\NormalTok{ relationship_id }\OperatorTok{=} \StringTok{'Maps to'}\NormalTok{;}
 \end{Highlighting}
 \end{Shaded}
 
@@ -3313,7 +3314,7 @@ The typical sequence for using this software is:
 \item
   Load codes from your sources system (``source codes'') that you would like to map to Vocabulary concepts.
 \item
-  Usagi will run term similarity approach to map source codes to Vocabulary concepts.
+  Usagi will run a term similarity approach to map source codes to Vocabulary concepts.
 \item
   Leverage Usagi interface to check, and where needed, improve suggested mappings. Preferably an individual who has experience with the coding system and medical terminology should be used for this review.
 \item
@@ -3324,7 +3325,7 @@ The typical sequence for using this software is:
 \subsubsection*{Importing Source Codes into Usagi}\label{importing-source-codes-into-usagi}}
 \addcontentsline{toc}{subsubsection}{Importing Source Codes into Usagi}
 
-Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g.~dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g.~you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that.
+Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g.~dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g.~you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate.
 
 Note: source code extracts should be broken out by domain (i.e.~drugs, procedures, conditions, observations) and not lumped into one large file.
 
@@ -3448,7 +3449,7 @@ After selecting the SOURCE\_VOCABULARY\_ID, you give your export CSV a name and 
 
 Often a mapping is not a one-time effort. As data is updated perhaps new source codes are added, and the vocabulary is updated regularly, perhaps requiring an update of the mapping.
 
-When the set of source codes is updated the following steps can be followed to support the update:
+When the set of source codes is updated the following steps can support the update:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -3530,7 +3531,7 @@ For the extract, transform, load process, quality control is iterative. The typi
   \begin{itemize}
   \tightlist
   \item
-    The largest issues in the computer code tend to come from how the source codes in the native data are mapped to Standard Concepts. Mapping can get tricky, especially when it comes to date-specific codes like NDCs. Be sure to double check any area where mappings are done to ensure the correct source vocabularies are translated to the proper concept id.\\
+    The largest issues in the computer code tend to come from how the source codes in the native data are mapped to Standard Concepts. Mapping can get tricky, especially when it comes to date-specific codes like NDCs. Be sure to double check any area where mappings are done to ensure the correct source vocabularies are translated to the proper concept id.
   \end{itemize}
 \item
   Manually compare all information on a sample of persons in the source and target data.
@@ -3546,7 +3547,7 @@ For the extract, transform, load process, quality control is iterative. The typi
   \begin{itemize}
   \tightlist
   \item
-    There may be some expected differences in counts depending on how you chose to address certain issues. For instance, some collaborators choose to drop any people with a NULL gender since those people will not be included in analyses anyway. It may also be the case that visits in the CDM are constructed differently than visits or encounters in the native data. Therefore, when comparing overall counts between the source and CDM data be sure to account for and expect these differences.\\
+    There may be some expected differences in counts depending on how you chose to address certain issues. For instance, some collaborators choose to drop any people with a NULL gender since those people will not be included in analyses anyway. It may also be the case that visits in the CDM are constructed differently than visits or encounters in the native data. Therefore, when comparing overall counts between the source and CDM data be sure to account for and expect these differences.
   \end{itemize}
 \item
   Replicate a study that has already been performed on the source data on the CDM version.
@@ -3586,14 +3587,14 @@ Often a healthcare data source is forever changing. New data might be available 
 
 If bugs are found, they should be addressed. However, it is important to keep in mind that not all bugs are created equal. For example, let's say in the COST table the column cost was being rounded to a whole digit (e.g.~the source data had \$3.82 and this became \$4.00 in the CDM). If the primary researchers using the data were mostly performing characterizations of patient's drug exposures and conditions, a bug such as this is of little importance and can be addressed in the future. If the primary researchers using the data also included health economists, this would be a critical bug that need to be addressed immediately.
 
-The OMOP Vocabulary is also ever changing just as our source data may be. In fact, the Vocabulary can have multiple releases in one given month as vocabularies update. Each CDM is run on a specific version of a Vocabulary and running on a newer improved Vocabulary could result in changes in how sources codes get mapped to in the standardized vocabularies. Often differences between Vocabularies are minor, so building a new CDM every time a new Vocabulary is release is not necessary. However, it is good practice to adopt a new Vocabulary once or twice a year which would require reprocessing the CDM again. It is rare are there changes in a new version of a Vocabulary that would require the ETL code itself to be updated.
+The OMOP Vocabulary is also ever changing just as our source data may be. In fact, the Vocabulary can have multiple releases in one given month as vocabularies update. Each CDM is run on a specific version of a Vocabulary and running on a newer improved Vocabulary could result in changes in how sources codes get mapped to in the standardized vocabularies. Often differences between Vocabularies are minor, so building a new CDM every time a new Vocabulary is released is not necessary. However, it is good practice to adopt a new Vocabulary once or twice a year which would require reprocessing the CDM again. It is rare that changes in a new version of a Vocabulary would require the ETL code itself to be updated.
 
-The final trigger that could require CDM or ETL maintenance is when the common data model itself updates. As the community grows and new data requirements are found this may lead to additional data being stored in the CDM. This might mean data that you previously were not storing in the CDM might have a location in a new CDM version. Less frequently are changes to existing CDM structure, however it is a possibility. For example, the CDM is moved to adopting DATETIME fields over the original DATE fields would could cause an error in ETL processing. CDM versions are not released often and sites can choose when they migrate.
+The final trigger that could require CDM or ETL maintenance is when the common data model itself updates. As the community grows and new data requirements are found this may lead to additional data being stored in the CDM. This might mean data that you previously were not storing in the CDM might have a location in a new CDM version. Less frequently are changes to existing CDM structure, however it is a possibility. For example, the CDM has adopted DATETIME fields over the original DATE fields which could cause an error in ETL processing. CDM versions are not released often and sites can choose when they migrate.
 
 \hypertarget{final-thoughts-on-etl}{%
 \section{Final Thoughts on ETL}\label{final-thoughts-on-etl}}
 
-The ETL process is a difficult one to master for many reasons, not the least of which the fact that we are all working off unique source data, making it hard to create a ``one-size-fits-all'' solution. However, there are some hard won lessons we have learned over the years.
+The ETL process is diff for many reasons, not the least of which is the fact that we are all processing unique source data, making it hard to create a ``one-size-fits-all'' solution. However, over the years we have learned the following hard-won lessons.
 
 \begin{itemize}
 \tightlist
@@ -3602,9 +3603,9 @@ The ETL process is a difficult one to master for many reasons, not the least of 
 \item
   It's ok if you lose data that is not of research quality. Often these are the records that would be discarded before starting an analysis anyway, we just remove them during the ETL process instead.
 \item
-  A CDM requires maintenance. Just because you complete an ETL does not mean you do not need to touch it ever again. Your raw data might change, there might be a bug in the code, there may be new vocabulary or an update to the CDM. Plan for an allocate resources to these changes so your ETL is always up-to-date.
+  A CDM requires maintenance. Just because you complete an ETL does not mean you do not need to touch it ever again. Your raw data might change, there might be a bug in the code, there may be new vocabulary or an update to the CDM. Plan to allocate resources for these changes so your ETL is always up-to-date.
 \item
-  For support with getting started with the OHDSI CDM, performing your database conversion, or running the analytics tools, please visit our Implementers Forum.\footnote{\url{https://forums.ohdsi.org/c/implementers}}
+  For support starting the OHDSI CDM, performing your database conversion, or running the analytics tools, please visit our Implementers Forum.\footnote{\url{https://forums.ohdsi.org/c/implementers}}
 \end{itemize}
 
 \hypertarget{summary-4}{%
@@ -3961,7 +3962,7 @@ Independent of whether there is a causal effect of the exposures, you are also i
 \hypertarget{limitations-of-observational-research}{%
 \section{Limitations of Observational Research}\label{limitations-of-observational-research}}
 
-\index{limitations of obervational research}
+\index{limitations of observational research}
 
 There are many important healthcare questions for which OHDSI databases cannot provide answers. These include:
 
@@ -4197,7 +4198,7 @@ In addition to the package manual, many packages provide \emph{vignettes}. Vigne
 
 Two computing environments are relevant when discussing the system requirements: The database server, and the analytics workstation. \index{system requirements}
 
-The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery).
+The database server must hold the observational healthcare data in CDM format. The Methods Library supports a wide array of database management systems including traditional database systems (PostgreSQL, Microsoft SQL Server, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon Redshift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery).
 
 The analytics workstation is where the Methods Library is installed and run. This can either be a local machine, such as someone's laptop, or a remote server running RStudio Server. In all cases the requirements are that R is installed, preferably together with RStudio. The Methods Library also requires that Java is installed. The analytics workstation should also be able to connect to the database server, specifically, any firewall between them should have the database server access ports opened the workstation. Some of the analytics can be computationally intensive, so having multiple processing cores and ample memory can help speed up the analyses. We recommend having at least four cores and 16 gigabytes of memory.
 
@@ -4212,7 +4213,7 @@ Here are the steps for installing the required environment to run the OHDSI R pa
 \item
   \textbf{R} is a statistical computing environment. It comes with a basic user interface that is primarily a command-line interface.
 \item
-  \textbf{RTools} is a set of programs that is required on Windows to build R packages from source.
+  \textbf{Rtools} is a set of programs that is required on Windows to build R packages from source.
 \item
   \textbf{RStudio} is an IDE (Integrated Development Environment) that makes R easier to use. It includes a code editor, debugging and visualization tools. Please use it to obtain a nice R experience.
 \item
@@ -4274,13 +4275,13 @@ In Windows, both R and Java come in 32-bit and 64-bits architectures. If you ins
 Once completed, you should be able to select R from your Start Menu.
 
 \hypertarget{installing-rtools}{%
-\subsubsection*{Installing RTools}\label{installing-rtools}}
-\addcontentsline{toc}{subsubsection}{Installing RTools}
+\subsubsection*{Installing Rtools}\label{installing-rtools}}
+\addcontentsline{toc}{subsubsection}{Installing Rtools}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Go to \url{https://cran.r-project.org/}, click on ``Download R for Windows'', then ``Rtools'', and select the very latest version of RTools to download.
+  Go to \url{https://cran.r-project.org/}, click on ``Download R for Windows'', then ``Rtools'', and select the very latest version of Rtools to download.
 \item
   After downloading has completed run the installer. Select the default options everywhere.
 \end{enumerate}
@@ -4405,7 +4406,7 @@ OHDSIonAWS is a reference architecture for enterprise class, multi-user, scalabl
 
 }
 
-\caption{The Amazon Web Services architecure for OHDSIonAWS.}\label{fig:ohdsionawsDiagram}
+\caption{The Amazon Web Services architecture for OHDSIonAWS.}\label{fig:ohdsionawsDiagram}
 \end{figure}
 
 \hypertarget{summary-6}{%
@@ -4482,7 +4483,7 @@ Each database platform also comes with its own software tools for querying the d
 
 So although one can query a database that conforms to the CDM without using any OHDSI tools, the recommended path is to use the DatabaseConnector and SqlRender packages. This allows queries that are developed at one site to be used at any other site without modification. R itself also immediately provides features to further analyze the data extracted from the database, such as performing statistical analyses and generating (interactive) plots. \index{R}
 
-In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector. \index{Query Library} \index{SQL Query Libary|see {Query Library}}
+In this chapter we assume the reader has a basic understanding of SQL. We first review how to use SqlRender and DatabaseConnector. If the reader does not intend to use these packages these sections can be skipped. In Section \ref{QueryTheCdm} we discuss how to use SQL (in this case OHDSI SQL) to query the CDM. The following section highlights how to use the OHDSI Standardized Vocabulary when querying the CDM. We highlight the QueryLibrary, a collection of commonly-used queries against the CDM that is publicly available. We close this chapter with an example study estimating incidence rates, and implement this study using SqlRender and DatabaseConnector. \index{Query Library} \index{SQL Query Library|see {Query Library}}
 
 \hypertarget{SqlRender}{%
 \section{SqlRender}\label{SqlRender}}
@@ -4495,7 +4496,7 @@ The \href{https://ohdsi.github.io/SqlRender/}{SqlRender} package is available on
 \end{Highlighting}
 \end{Shaded}
 
-SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.
+SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon Redshift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.
 
 \hypertarget{sql-parameterization}{%
 \subsection{SQL Parameterization}\label{sql-parameterization}}
@@ -4698,17 +4699,17 @@ Similarly, many SQL syntax structures are supported. Here is a non-exhaustive li
 
 \CommentTok{-- Inserting from SELECT:}
 \KeywordTok{INSERT} \KeywordTok{INTO}\NormalTok{ other_table (field_1) }\KeywordTok{SELECT} \FunctionTok{value} \KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
-  
+
 \CommentTok{-- Simple drop commands:}
 \KeywordTok{DROP} \KeywordTok{TABLE} \KeywordTok{table}\NormalTok{;}
 
 \CommentTok{-- Drop table if it exists:}
 \ControlFlowTok{IF}\NormalTok{ OBJECT_ID(}\StringTok{'ACHILLES_analysis'}\NormalTok{, }\StringTok{'U'}\NormalTok{) }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
   \KeywordTok{DROP} \KeywordTok{TABLE}\NormalTok{ ACHILLES_analysis;}
-  
+
 \CommentTok{-- Drop temp table if it exists:}
 \ControlFlowTok{IF}\NormalTok{ OBJECT_ID(}\StringTok{'tempdb..#cohorts'}\NormalTok{, }\StringTok{'U'}\NormalTok{) }\KeywordTok{IS} \KeywordTok{NOT} \KeywordTok{NULL}
-  \KeywordTok{DROP} \KeywordTok{TABLE}\NormalTok{ #cohorts;  }
+  \KeywordTok{DROP} \KeywordTok{TABLE}\NormalTok{ #cohorts;}
 
 \CommentTok{-- Common table expressions:}
 \KeywordTok{WITH}\NormalTok{ cte }\KeywordTok{AS}\NormalTok{ (}\KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM} \KeywordTok{table}\NormalTok{) }\KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM}\NormalTok{ cte;}
@@ -4716,7 +4717,7 @@ Similarly, many SQL syntax structures are supported. Here is a non-exhaustive li
 \CommentTok{-- OVER clauses:}
 \KeywordTok{SELECT} \FunctionTok{ROW_NUMBER}\NormalTok{() }\KeywordTok{OVER}\NormalTok{ (}\KeywordTok{PARTITION} \KeywordTok{BY}\NormalTok{ a }\KeywordTok{ORDER} \KeywordTok{BY}\NormalTok{ b)}
   \KeywordTok{AS} \OtherTok{"Row Number"} \KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
-  
+
 \CommentTok{-- CASE WHEN clauses:}
 \KeywordTok{SELECT} \ControlFlowTok{CASE} \ControlFlowTok{WHEN}\NormalTok{ a}\OperatorTok{=}\DecValTok{1} \ControlFlowTok{THEN}\NormalTok{ a }\ControlFlowTok{ELSE} \DecValTok{0} \ControlFlowTok{END} \KeywordTok{AS} \FunctionTok{value} \KeywordTok{FROM} \KeywordTok{table}\NormalTok{;}
 
@@ -4741,12 +4742,12 @@ String concatenation is one area where SQL Server is less specific than other di
 \subsubsection*{Table Aliases and the AS Keyword}\label{table-aliases-and-the-as-keyword}}
 \addcontentsline{toc}{subsubsection}{Table Aliases and the AS Keyword}
 
-Many SQL dialects allow the use of the \texttt{AS} keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:
+Many SQL dialects allow the use of the \texttt{AS} keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, Redshift, etc.:
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{-- Using AS keyword}
-\KeywordTok{SELECT} \OperatorTok{*} 
+\KeywordTok{SELECT} \OperatorTok{*}
 \KeywordTok{FROM}\NormalTok{ my_table }\KeywordTok{AS}\NormalTok{ table_1}
 \KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ (}
   \KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM}\NormalTok{ other_table}
@@ -4754,7 +4755,7 @@ Many SQL dialects allow the use of the \texttt{AS} keyword when defining a table
 \KeywordTok{ON}\NormalTok{ table_1.person_id }\OperatorTok{=}\NormalTok{ table_2.person_id;}
 
 \CommentTok{-- Not using AS keyword}
-\KeywordTok{SELECT} \OperatorTok{*} 
+\KeywordTok{SELECT} \OperatorTok{*}
 \KeywordTok{FROM}\NormalTok{ my_table table_1}
 \KeywordTok{INNER} \KeywordTok{JOIN}\NormalTok{ (}
   \KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM}\NormalTok{ other_table}
@@ -4790,7 +4791,7 @@ For example:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "SELECT * FROM temp_schema.x2uimep0children ;"
+## [1] "SELECT * FROM temp_schema.i9bg8xexchildren ;"
 \end{verbatim}
 
 Note that the user will need to have write privileges on \texttt{temp\_schema}.
@@ -4842,7 +4843,7 @@ Some DBMS platforms such as SQL Server always perform string comparisons in a ca
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM}\NormalTok{ concept }\KeywordTok{WHERE}\NormalTok{ concep_class_id }\OperatorTok{=} \StringTok{'Clinical Finding'}
+\KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM}\NormalTok{ concept }\KeywordTok{WHERE}\NormalTok{ concept_class_id }\OperatorTok{=} \StringTok{'Clinical Finding'}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4850,7 +4851,7 @@ it is preferred to use
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM}\NormalTok{ concept }\KeywordTok{WHERE} \FunctionTok{LOWER}\NormalTok{(concep_class_id) }\OperatorTok{=} \StringTok{'clinical finding'}
+\KeywordTok{SELECT} \OperatorTok{*} \KeywordTok{FROM}\NormalTok{ concept }\KeywordTok{WHERE} \FunctionTok{LOWER}\NormalTok{(concept_class_id) }\OperatorTok{=} \StringTok{'clinical finding'}
 \end{Highlighting}
 \end{Shaded}
 
@@ -4910,7 +4911,7 @@ In the app you can enter OHDSI SQL, select the target dialect as well as provide
 \end{Highlighting}
 \end{Shaded}
 
-DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type \texttt{?jdbcDrivers} for instructions on how to download these drivers. Once downloaded, you can use the \texttt{pathToDriver} argument of the \texttt{connect}, \texttt{dbConnect}, and \texttt{createConnectionDetails} functions.
+DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon ), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type \texttt{?jdbcDrivers} for instructions on how to download these drivers. Once downloaded, you can use the \texttt{pathToDriver} argument of the \texttt{connect}, \texttt{dbConnect}, and \texttt{createConnectionDetails} functions.
 
 \hypertarget{creating-a-connection}{%
 \subsection{Creating a Connection}\label{creating-a-connection}}
@@ -5021,7 +5022,7 @@ The following convenience functions are available that first call the \texttt{re
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x <-}\StringTok{ }\KeywordTok{renderTranslateQuerySql}\NormalTok{(conn, }
+\NormalTok{x <-}\StringTok{ }\KeywordTok{renderTranslateQuerySql}\NormalTok{(conn,}
                              \DataTypeTok{sql =} \StringTok{"SELECT TOP 10 * FROM @schema.person"}\NormalTok{,}
                              \DataTypeTok{schema =} \StringTok{"cdm_synpuf"}\NormalTok{)}
 \end{Highlighting}
@@ -5069,8 +5070,8 @@ Or perhaps we're interested in the average length of an observation period:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{SELECT} \FunctionTok{AVG}\NormalTok{(DATEDIFF(}\DataTypeTok{DAY}\NormalTok{, }
-\NormalTok{                    observation_period_start_date, }
+\KeywordTok{SELECT} \FunctionTok{AVG}\NormalTok{(DATEDIFF(}\DataTypeTok{DAY}\NormalTok{,}
+\NormalTok{                    observation_period_start_date,}
 \NormalTok{                    observation_period_end_date) }\OperatorTok{/} \FloatTok{365.25}\NormalTok{) }\KeywordTok{AS}\NormalTok{ num_years}
 \KeywordTok{FROM}\NormalTok{ @cdm.observation_period;}
 \end{Highlighting}
@@ -5124,17 +5125,17 @@ A much more complicated query is needed to determine the distribution of age at 
 \NormalTok{        ) age_computed}
 \NormalTok{    )}
 \KeywordTok{SELECT} \FunctionTok{MIN}\NormalTok{(age) }\KeywordTok{AS}\NormalTok{ min_age,}
-    \FunctionTok{MIN}\NormalTok{(}\ControlFlowTok{CASE} 
+    \FunctionTok{MIN}\NormalTok{(}\ControlFlowTok{CASE}
             \ControlFlowTok{WHEN}\NormalTok{ order_nr }\OperatorTok{<} \FloatTok{.25} \OperatorTok{*}\NormalTok{ n}
                 \ControlFlowTok{THEN} \DecValTok{9999}
             \ControlFlowTok{ELSE}\NormalTok{ age}
             \ControlFlowTok{END}\NormalTok{) }\KeywordTok{AS}\NormalTok{ q25_age,}
-    \FunctionTok{MIN}\NormalTok{(}\ControlFlowTok{CASE} 
+    \FunctionTok{MIN}\NormalTok{(}\ControlFlowTok{CASE}
             \ControlFlowTok{WHEN}\NormalTok{ order_nr }\OperatorTok{<} \FloatTok{.50} \OperatorTok{*}\NormalTok{ n}
                 \ControlFlowTok{THEN} \DecValTok{9999}
             \ControlFlowTok{ELSE}\NormalTok{ age}
             \ControlFlowTok{END}\NormalTok{) }\KeywordTok{AS}\NormalTok{ median_age,}
-    \FunctionTok{MIN}\NormalTok{(}\ControlFlowTok{CASE} 
+    \FunctionTok{MIN}\NormalTok{(}\ControlFlowTok{CASE}
             \ControlFlowTok{WHEN}\NormalTok{ order_nr }\OperatorTok{<} \FloatTok{.75} \OperatorTok{*}\NormalTok{ n}
                 \ControlFlowTok{THEN} \DecValTok{9999}
             \ControlFlowTok{ELSE}\NormalTok{ age}
@@ -5172,7 +5173,7 @@ More complex computations can also be performed in R instead of using SQL. For e
 \end{Shaded}
 
 \begin{verbatim}
-##   0%  25%  50%  75% 100% 
+##   0%  25%  50%  75% 100%
 ##    0    6   17   34   90
 \end{verbatim}
 
@@ -5182,7 +5183,7 @@ Queries can use the source values in the CDM. For example, we can retrieve the t
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{SELECT}\NormalTok{ TOP }\DecValTok{10}\NormalTok{ condition_source_value, }
+\KeywordTok{SELECT}\NormalTok{ TOP }\DecValTok{10}\NormalTok{ condition_source_value,}
   \FunctionTok{COUNT}\NormalTok{(}\OperatorTok{*}\NormalTok{) }\KeywordTok{AS}\NormalTok{ code_count}
 \KeywordTok{FROM}\NormalTok{ @cdm.condition_occurrence}
 \KeywordTok{GROUP} \KeywordTok{BY}\NormalTok{ condition_source_value}
@@ -5584,8 +5585,8 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"remotes"}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -5712,7 +5713,7 @@ When creating a cohort definition, you need to ask yourself the following questi
 \textbf{Cohort exit criteria}: The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g.~persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.\index{cohort!exit criteria}
 
 \begin{rmdimportant}
-In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterium ``Exclude people with prior hypertension'' can be formulated as the inclusion criterium ``Include people with 0 occurrences of prior hypertension''.
+In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterion ``Exclude people with prior hypertension'' can be formulated as the inclusion criterion ``Include people with 0 occurrences of prior hypertension''.
 \end{rmdimportant}
 
 \hypertarget{conceptSets}{%
@@ -5757,7 +5758,7 @@ As shown in Figure \ref{fig:conceptSet}, this will include ``Myocardial infarcti
 
 }
 
-\caption{A concept set including "Myocardial infaction" (with descendants), but excluding "Old myocardial infarction" (with descendants).}\label{fig:conceptSet}
+\caption{A concept set including "Myocardial infarction" (with descendants), but excluding "Old myocardial infarction" (with descendants).}\label{fig:conceptSet}
 \end{figure}
 
 \hypertarget{probabilistic-cohort-definitions}{%
@@ -6064,9 +6065,9 @@ We will first find first use of ACE inhibitors for each patient:
 \StringTok{WHERE ancestor_concept_id IN (@ace_i)}
 \StringTok{GROUP BY person_id;"}
 
-\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, }
-\NormalTok{                          sql, }
-                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn,}
+\NormalTok{                          sql,}
+                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}
                           \DataTypeTok{ace_i =}\NormalTok{ aceI)}
 \end{Highlighting}
 \end{Shaded}
@@ -6113,9 +6114,9 @@ We require a hypertension diagnosis in the 365 days prior:
 \StringTok{  ON descendant_concept_id = condition_concept_id}
 \StringTok{WHERE ancestor_concept_id = @hypertension;"}
 
-\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, }
-\NormalTok{                          sql, }
-                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn,}
+\NormalTok{                          sql,}
+                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}
                           \DataTypeTok{hypertension =}\NormalTok{ hypertension)}
 \end{Highlighting}
 \end{Shaded}
@@ -6144,9 +6145,9 @@ We require no prior exposure to any hypertension treatment:
 \StringTok{    AND drug_exposure_start_date < cohort_start_date}
 \StringTok{WHERE person_id IS NULL;"}
 
-\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, }
-\NormalTok{                          sql, }
-                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn,}
+\NormalTok{                          sql,}
+                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}
                           \DataTypeTok{all_ht_drugs =}\NormalTok{ allHtDrugs)}
 \end{Highlighting}
 \end{Shaded}
@@ -6175,9 +6176,9 @@ We require there to be only one exposure to hypertension treatment in the first 
 \StringTok{  cohort_start_date}
 \StringTok{HAVING COUNT(*) = 1;"}
 
-\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, }
-\NormalTok{                          sql, }
-                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn,}
+\NormalTok{                          sql,}
+                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}
                           \DataTypeTok{all_ht_drugs =}\NormalTok{ allHtDrugs)}
 \end{Highlighting}
 \end{Shaded}
@@ -6200,8 +6201,8 @@ We have now fully specified our cohort except the cohort end date. The cohort is
 \StringTok{    ON descendant_concept_id = drug_concept_id}
 \StringTok{  WHERE ancestor_concept_id IN (@ace_i);"}
 \KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn,}
-\NormalTok{                          sql, }
-                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema, }
+\NormalTok{                          sql,}
+                          \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}
                           \DataTypeTok{ace_i =}\NormalTok{ aceI)}
 \end{Highlighting}
 \end{Shaded}
@@ -6277,7 +6278,7 @@ We then run the standard code for merging sequential exposures:
 \StringTok{  ends.era_end_date;"}
 
 \KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn,}
-\NormalTok{                          sql, }
+\NormalTok{                          sql,}
                           \DataTypeTok{cdm_db_schema =}\NormalTok{ cdmDbSchema,}
                           \DataTypeTok{max_gap =} \DecValTok{30}\NormalTok{)}
 \end{Highlighting}
@@ -6299,9 +6300,9 @@ Next, we simply join these ACE inhibitor exposure eras to our original cohort to
 \StringTok{  ON mt.subject_id = ee.subject_id}
 \StringTok{    AND mt.cohort_start_date = ee.cohort_start_date;"}
 
-\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn, }
-\NormalTok{                          sql, }
-                          \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema, }
+\KeywordTok{renderTranslateExecuteSql}\NormalTok{(conn,}
+\NormalTok{                          sql,}
+                          \DataTypeTok{cohort_db_schema =}\NormalTok{ cohortDbSchema,}
                           \DataTypeTok{cohort_table =}\NormalTok{ cohortTable)}
 \end{Highlighting}
 \end{Shaded}
@@ -6367,7 +6368,7 @@ Finally, it is always recommend to clean up any temp tables that were created, a
 \subsubsection*{Prerequisites}\label{prerequisites-4}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
-For the first exercise, access to an ATLAS instance is required. You can use the instance at \url{http://atlas-demo.ohdsi.org}, or any other instance you have acces to.
+For the first exercise, access to an ATLAS instance is required. You can use the instance at \url{http://atlas-demo.ohdsi.org}, or any other instance you have access to.
 
 \begin{exercise}
 \protect\hypertarget{exr:exerciseCohortsAtlas}{}{\label{exr:exerciseCohortsAtlas} }Use ATLAS to create a cohort definition following these criteria:
@@ -6397,8 +6398,8 @@ For the second exercise we assume R, R-Studio and Java have been installed as de
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"remotes"}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6515,7 +6516,7 @@ In figure \ref{fig:incidenceTimeline}, a person has a period of time where they 
 
 There are two metrics for calculating incidence:
 
-\[ 
+\[
 Incidence\;Proportion = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{\#\;persons\;in\;cohort\;with\;TAR}
 \]
 
@@ -6808,9 +6809,9 @@ The function \texttt{createCovariateSettings} allow the user to choose from a la
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{settings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}
-  \DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{, }
-  \DataTypeTok{useDemographicsAgeGroup =} \OtherTok{TRUE}\NormalTok{, }
-  \DataTypeTok{useConditionOccurrenceAnyTimePrior =} \OtherTok{TRUE}\NormalTok{) }
+  \DataTypeTok{useDemographicsGender =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useDemographicsAgeGroup =} \OtherTok{TRUE}\NormalTok{,}
+  \DataTypeTok{useConditionOccurrenceAnyTimePrior =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6832,13 +6833,13 @@ However, the user can change these values. For example:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{settings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useConditionEraLongTerm =} \OtherTok{TRUE}\NormalTok{, }
-                                    \DataTypeTok{useConditionEraShortTerm =} \OtherTok{TRUE}\NormalTok{, }
+\NormalTok{settings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useConditionEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{useConditionEraShortTerm =} \OtherTok{TRUE}\NormalTok{,}
                                     \DataTypeTok{useDrugEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
-                                    \DataTypeTok{useDrugEraShortTerm =} \OtherTok{TRUE}\NormalTok{, }
-                                    \DataTypeTok{longTermStartDays =} \DecValTok{-180}\NormalTok{, }
-                                    \DataTypeTok{shortTermStartDays =} \DecValTok{-14}\NormalTok{, }
-                                    \DataTypeTok{endDays =} \DecValTok{-1}\NormalTok{) }
+                                    \DataTypeTok{useDrugEraShortTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{longTermStartDays =} \DecValTok{-180}\NormalTok{,}
+                                    \DataTypeTok{shortTermStartDays =} \DecValTok{-14}\NormalTok{,}
+                                    \DataTypeTok{endDays =} \DecValTok{-1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6848,16 +6849,16 @@ Again, we can also specify which concept IDs should or should not be used to con
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{settings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useConditionEraLongTerm =} \OtherTok{TRUE}\NormalTok{, }
-                                    \DataTypeTok{useConditionEraShortTerm =} \OtherTok{TRUE}\NormalTok{, }
-                                    \DataTypeTok{useDrugEraLongTerm =} \OtherTok{TRUE}\NormalTok{, }
-                                    \DataTypeTok{useDrugEraShortTerm =} \OtherTok{TRUE}\NormalTok{, }
-                                    \DataTypeTok{longTermStartDays =} \DecValTok{-180}\NormalTok{, }
-                                    \DataTypeTok{shortTermStartDays =} \DecValTok{-14}\NormalTok{, }
-                                    \DataTypeTok{endDays =} \DecValTok{-1}\NormalTok{, }
-                                    \DataTypeTok{excludedCovariateConceptIds =} \DecValTok{1124300}\NormalTok{, }
-                                    \DataTypeTok{addDescendantsToExclude =} \OtherTok{TRUE}\NormalTok{, }
-                                    \DataTypeTok{aggregated =} \OtherTok{TRUE}\NormalTok{) }
+\NormalTok{settings <-}\StringTok{ }\KeywordTok{createCovariateSettings}\NormalTok{(}\DataTypeTok{useConditionEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{useConditionEraShortTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{useDrugEraLongTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{useDrugEraShortTerm =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{longTermStartDays =} \DecValTok{-180}\NormalTok{,}
+                                    \DataTypeTok{shortTermStartDays =} \DecValTok{-14}\NormalTok{,}
+                                    \DataTypeTok{endDays =} \DecValTok{-1}\NormalTok{,}
+                                    \DataTypeTok{excludedCovariateConceptIds =} \DecValTok{1124300}\NormalTok{,}
+                                    \DataTypeTok{addDescendantsToExclude =} \OtherTok{TRUE}\NormalTok{,}
+                                    \DataTypeTok{aggregated =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -6872,27 +6873,27 @@ The following code block will generate aggregated statistics for a cohort:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{covariateSettings <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{() }
+\NormalTok{covariateSettings <-}\StringTok{ }\KeywordTok{createDefaultCovariateSettings}\NormalTok{()}
 
 \NormalTok{covariateData2 <-}\StringTok{ }\KeywordTok{getDbCovariateData}\NormalTok{(}
-  \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails, }
-  \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDatabaseSchema, }
-  \DataTypeTok{cohortDatabaseSchema =}\NormalTok{ resultsDatabaseSchema, }
-  \DataTypeTok{cohortTable =} \StringTok{"cohorts_of_interest"}\NormalTok{, }
-  \DataTypeTok{cohortId =} \DecValTok{1}\NormalTok{, }
-  \DataTypeTok{covariateSettings =}\NormalTok{ covariateSettings, }
-  \DataTypeTok{aggregated =} \OtherTok{TRUE}\NormalTok{) }
+  \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+  \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDatabaseSchema,}
+  \DataTypeTok{cohortDatabaseSchema =}\NormalTok{ resultsDatabaseSchema,}
+  \DataTypeTok{cohortTable =} \StringTok{"cohorts_of_interest"}\NormalTok{,}
+  \DataTypeTok{cohortId =} \DecValTok{1}\NormalTok{,}
+  \DataTypeTok{covariateSettings =}\NormalTok{ covariateSettings,}
+  \DataTypeTok{aggregated =} \OtherTok{TRUE}\NormalTok{)}
 
-\KeywordTok{summary}\NormalTok{(covariateData2) }
+\KeywordTok{summary}\NormalTok{(covariateData2)}
 \end{Highlighting}
 \end{Shaded}
 
 And the output will look similar to the following:
 
 \begin{verbatim}
-## CovariateData Object Summary 
-## 
-## Number of Covariates: 41330 
+## CovariateData Object Summary
+##
+## Number of Covariates: 41330
 ## Number of Non-Zero Covariate Values: 41330
 \end{verbatim}
 
@@ -7121,7 +7122,7 @@ As shown, the metrics calculated are the same but the interpretation is differen
 \subsubsection*{Prerequisites}\label{prerequisites-6}}
 \addcontentsline{toc}{subsubsection}{Prerequisites}
 
-For these exercises, access to an ATLAS instance is required. You can use the instance at \url{http://atlas-demo.ohdsi.org}, or any other instance you have acces to.
+For these exercises, access to an ATLAS instance is required. You can use the instance at \url{http://atlas-demo.ohdsi.org}, or any other instance you have access to.
 
 \begin{exercise}
 \protect\hypertarget{exr:exerciseCharacterization1}{}{\label{exr:exerciseCharacterization1} }We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.
@@ -8347,9 +8348,9 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/CohortMethod"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"remotes"}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/CohortMethod"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -9566,7 +9567,7 @@ First it makes sense to verify that the cohort creation has succeeded by countin
 \StringTok{"FROM @cohortsDbSchema.cohortsDbTable"}\NormalTok{,}
 \StringTok{"GROUP BY cohort_definition_id"}\NormalTok{)}
 \NormalTok{conn <-}\StringTok{ }\KeywordTok{connect}\NormalTok{(connDetails)}
-\KeywordTok{renderTranslateQuerySql}\NormalTok{(}\DataTypeTok{connection =}\NormalTok{ conn, }
+\KeywordTok{renderTranslateQuerySql}\NormalTok{(}\DataTypeTok{connection =}\NormalTok{ conn,}
                         \DataTypeTok{sql =}\NormalTok{ sql,}
                         \DataTypeTok{cohortsDbSchema =}\NormalTok{ cohortsDbSchema,}
                         \DataTypeTok{cohortsDbTable =}\NormalTok{ cohortsDbTable)}
@@ -9662,8 +9663,8 @@ For example, if we use the following settings for the gradient boosting machine:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gbmModel <-}\StringTok{ }\KeywordTok{setGradientBoostingMachine}\NormalTok{(}\DataTypeTok{ntrees =} \DecValTok{5000}\NormalTok{, }
-                                       \DataTypeTok{maxDepth =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{), }
+\NormalTok{gbmModel <-}\StringTok{ }\KeywordTok{setGradientBoostingMachine}\NormalTok{(}\DataTypeTok{ntrees =} \DecValTok{5000}\NormalTok{,}
+                                       \DataTypeTok{maxDepth =} \KeywordTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DecValTok{10}\NormalTok{),}
                                        \DataTypeTok{learnRate =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.001}\NormalTok{,}\FloatTok{0.01}\NormalTok{,}\FloatTok{0.1}\NormalTok{,}\FloatTok{0.9}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
@@ -9672,12 +9673,12 @@ The \texttt{runPlP} function uses the population, \texttt{plpData}, and model se
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gbmResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ population, }
-                     \DataTypeTok{plpData =}\NormalTok{ plpData, }
-                     \DataTypeTok{modelSettings =}\NormalTok{ gbmModel, }
+\NormalTok{gbmResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ population,}
+                     \DataTypeTok{plpData =}\NormalTok{ plpData,}
+                     \DataTypeTok{modelSettings =}\NormalTok{ gbmModel,}
                      \DataTypeTok{testSplit =} \StringTok{'person'}\NormalTok{,}
-                     \DataTypeTok{testFraction =} \FloatTok{0.25}\NormalTok{, }
-                     \DataTypeTok{nfold =} \DecValTok{2}\NormalTok{, }
+                     \DataTypeTok{testFraction =} \FloatTok{0.25}\NormalTok{,}
+                     \DataTypeTok{nfold =} \DecValTok{2}\NormalTok{,}
                      \DataTypeTok{splitSeed =} \DecValTok{1234}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -9771,7 +9772,7 @@ To make things easier we also provide the \texttt{externalValidatePlp} function 
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{valResult <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}
-    \DataTypeTok{plpResult =}\NormalTok{ result, }
+    \DataTypeTok{plpResult =}\NormalTok{ result,}
     \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
     \DataTypeTok{validationSchemaTarget =} \StringTok{'mainschema.dob'}\NormalTok{,}
     \DataTypeTok{validationSchemaOutcome =} \StringTok{'mainschema.dob'}\NormalTok{,}
@@ -9790,13 +9791,13 @@ If we have multiple databases to validate the model on then we can run:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{valResults <-}\StringTok{ }\KeywordTok{externalValidatePlp}\NormalTok{(}
-    \DataTypeTok{plpResult =}\NormalTok{ result, }
+    \DataTypeTok{plpResult =}\NormalTok{ result,}
     \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
     \DataTypeTok{validationSchemaTarget =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
-                                \StringTok{'difschema.dob'}\NormalTok{, }
+                                \StringTok{'difschema.dob'}\NormalTok{,}
                                 \StringTok{'anotherschema.dob'}\NormalTok{),}
     \DataTypeTok{validationSchemaOutcome =} \KeywordTok{list}\NormalTok{(}\StringTok{'mainschema.dob'}\NormalTok{,}
-                                 \StringTok{'difschema.dob'}\NormalTok{, }
+                                 \StringTok{'difschema.dob'}\NormalTok{,}
                                  \StringTok{'anotherschema.dob'}\NormalTok{),}
     \DataTypeTok{validationSchemaCdm =} \KeywordTok{list}\NormalTok{(}\StringTok{'cdms1chema.dbo'}\NormalTok{,}
                              \StringTok{'cdm2schema.dbo'}\NormalTok{,}
@@ -9826,8 +9827,8 @@ Exploring the performance of a prediction model is easiest with the \texttt{view
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(outputFolder, }
-                                     \StringTok{'Analysis_1'}\NormalTok{, }
+\NormalTok{plpResult <-}\StringTok{ }\KeywordTok{loadPlpResult}\NormalTok{(}\KeywordTok{file.path}\NormalTok{(outputFolder,}
+                                     \StringTok{'Analysis_1'}\NormalTok{,}
                                      \StringTok{'plpResult'}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
@@ -9960,7 +9961,7 @@ To look at the overall discrimination of the model click on the ``Discrimination
 
 }
 
-\caption{The ROC and precision-recall plots used to access the overal discrimination ability of the model.}\label{fig:shinyPerformanceDisc}
+\caption{The ROC and precision-recall plots used to access the overall discrimination ability of the model.}\label{fig:shinyPerformanceDisc}
 \end{figure}
 
 Figure \ref{fig:shinyPerformanceDist} shows the prediction and preference score distributions.
@@ -10073,9 +10074,9 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/PatientLevelPrediction"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"remotes"}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/PatientLevelPrediction"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -10145,9 +10146,9 @@ Before embarking on any journey, it can be helpful to envision what the ideal de
 
 Reliable evidence should be \textbf{repeatable}, meaning that researchers should expect to produce identical results when applying the same analysis to the same data for any given question. Implicit in this minimum requirement is the notion that evidence is the result of the execution of a defined process with a specified input, and should be free of manual intervention of post-hoc decision-making along the way. More ideally, reliable evidence should be \textbf{reproducible} such that a different researcher should be able to perform the same task of executing a given analysis on a given database and expect to produce an identical result as the first researcher. Reproducibility requires that the process is fully-specified, generally in both human-readable and computer-executable form such that no study decisions are left to the discretion of the investigator. The most efficient solution to achieve repeatability and reproducibility is to use standardized analytics routines that have defined inputs and outputs, and apply these procedures against version-controlled databases.
 
-We are more likely to be confident that our evidence is reliable if it can be shown to be \textbf{replicable}, such that the same question addressed using the identical analysis against similar data yield similar results. For example, evidence generated from an analysis against an administative claims database from one large private insurer may be strengthened if replicated on claims data from a different insurer. In the context of population-level effect estimation, this attribute aligns well with Sir Austin Bradford Hill's causal viewpoint on consistency, ``Has it been repeatedly observed by different persons, in different places, circumstances and times?\ldots whether chance is the explanation or wehther a true hazard has been revealed may sometimes be answered only by a repetition of the circumstances and the observations.'' \citep{hill_1965} In the context of patient-level prediction, replicability highlights the value of external validation and the ability to evaluate performance of a model that was trained on one database by observing its discriminative accuracy and calibration when applied to a different database. In circumstances where identical analyses are performed against different databases and still show consistently similar results, we have further gain confidence that our evidence is \textbf{generalizable}. A key value of the OHDSI research network is the diversity represented by different populations, geographies and data capture processes. \citet{madigan_2013} showed that effect estimates can be sensitive to choice of data. Recognizing that each data source carries with it inherent limitations and unique biases that limit our confidence in singular findings, there is tremendous power in observing similar patterns across heterogeneous datasets because it greatly diminishes the likelihood that source-specific biases alone can explain the findings. When network studies show consistent population-level effect estimates across multiple claims and EHR databases across US, Europe and Asia, they should be recognized as stronger evidence about the medical intervention that can have a broader scope to impact medical decision-making.
+We are more likely to be confident that our evidence is reliable if it can be shown to be \textbf{replicable}, such that the same question addressed using the identical analysis against similar data yield similar results. For example, evidence generated from an analysis against an administrative claims database from one large private insurer may be strengthened if replicated on claims data from a different insurer. In the context of population-level effect estimation, this attribute aligns well with Sir Austin Bradford Hill's causal viewpoint on consistency, ``Has it been repeatedly observed by different persons, in different places, circumstances and times?\ldots whether chance is the explanation or whether a true hazard has been revealed may sometimes be answered only by a repetition of the circumstances and the observations.'' \citep{hill_1965} In the context of patient-level prediction, replicability highlights the value of external validation and the ability to evaluate performance of a model that was trained on one database by observing its discriminative accuracy and calibration when applied to a different database. In circumstances where identical analyses are performed against different databases and still show consistently similar results, we have further gain confidence that our evidence is \textbf{generalizable}. A key value of the OHDSI research network is the diversity represented by different populations, geographies and data capture processes. \citet{madigan_2013} showed that effect estimates can be sensitive to choice of data. Recognizing that each data source carries with it inherent limitations and unique biases that limit our confidence in singular findings, there is tremendous power in observing similar patterns across heterogeneous datasets because it greatly diminishes the likelihood that source-specific biases alone can explain the findings. When network studies show consistent population-level effect estimates across multiple claims and EHR databases across US, Europe and Asia, they should be recognized as stronger evidence about the medical intervention that can have a broader scope to impact medical decision-making.
 
-Reliable evidence should be \textbf{robust}, meaning that the findings should not be overly sensitive to the subjective choices that can be made within an analysis. If there are alternative statistical methods that can be considered potentially reasonable for a given study, then it can provide reassurance to see that the different methods yield similar results, or conversely can give caution if discordant results are uncovered. \citep{madigan2013design} For population-level effect estimation, sensitivity analyses can include high-level study design choice, such as whether to apply a comparative cohort or self-controlled case series design, or can focus on analytical considerations embedded within a design, such as whether to perform propensity score matching, stratfication or weighting as a confounding adjustment strategy within the comparative cohort framework.
+Reliable evidence should be \textbf{robust}, meaning that the findings should not be overly sensitive to the subjective choices that can be made within an analysis. If there are alternative statistical methods that can be considered potentially reasonable for a given study, then it can provide reassurance to see that the different methods yield similar results, or conversely can give caution if discordant results are uncovered. \citep{madigan2013design} For population-level effect estimation, sensitivity analyses can include high-level study design choice, such as whether to apply a comparative cohort or self-controlled case series design, or can focus on analytical considerations embedded within a design, such as whether to perform propensity score matching, stratification or weighting as a confounding adjustment strategy within the comparative cohort framework.
 
 Last, but potentially most important, evidence should be \textbf{calibrated}. It is not sufficient to have an evidence generating system that produces answers to unknown questions if the performance of that system cannot be verified. A closed system should be expected to have known operating characteristics, which should be able to measured and communicated as context for interpreting any results that the system produces. Statistical artifacts should be able to be empirically demonstrated to have well-defined properties, such as a 95\% confidence interval having 95\% coverage probability or a cohort with a predicted probability of 10\% having a observed proportion of events in 10\% of the population. An observational study should always be accompanied by study diagnostics that test assumptions around the design, methods, and data. These diagnostics should be centered on evaluating the primary threats to study validity: selection bias, confounding, and measurement error. Negative controls have been shown to be a powerful tool for identifying and mitigating systematic error in observational studies. \citep{schuemie_2016, schuemie_2018, schuemie_2018b}
 
@@ -10619,8 +10620,8 @@ Next, we run the Dashboard\ldots{}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{executeDqChecks}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails, }
-                                      \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDbSchema, }
+\NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{executeDqChecks}\NormalTok{(}\DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
+                                      \DataTypeTok{cdmDatabaseSchema =}\NormalTok{ cdmDbSchema,}
                                       \DataTypeTok{resultsDatabaseSchema =}\NormalTok{ cdmDbSchema,}
                                       \DataTypeTok{cdmSourceName =} \StringTok{"My database"}\NormalTok{,}
                                       \DataTypeTok{outputFolder =} \StringTok{"My output"}\NormalTok{)}
@@ -10748,10 +10749,10 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"devtools"}\NormalTok{))}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Achilles"}\NormalTok{)}
-\NormalTok{devtools}\OperatorTok{:}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/DataQualityDashboard"}\NormalTok{)}
-\NormalTok{devtools}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
+\KeywordTok{install.packages}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"SqlRender"}\NormalTok{, }\StringTok{"DatabaseConnector"}\NormalTok{, }\StringTok{"remotes"}\NormalTok{))}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Achilles"}\NormalTok{)}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/DataQualityDashboard"}\NormalTok{)}
+\NormalTok{remotes}\OperatorTok{::}\KeywordTok{install_github}\NormalTok{(}\StringTok{"ohdsi/Eunomia"}\NormalTok{, }\DataTypeTok{ref =} \StringTok{"v1.0.0"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -11059,7 +11060,7 @@ For example:
   \DataTypeTok{cdmShortName =} \StringTok{"myCDM"}\NormalTok{,}
   \DataTypeTok{mainPopnCohort =} \DecValTok{0}\NormalTok{,}
   \DataTypeTok{lowerAgeLimit =} \DecValTok{18}\NormalTok{,}
-  \DataTypeTok{upperAgeLimit =} \DecValTok{90}\NormalTok{, }
+  \DataTypeTok{upperAgeLimit =} \DecValTok{90}\NormalTok{,}
   \DataTypeTok{gender =} \KeywordTok{c}\NormalTok{(}\DecValTok{8507}\NormalTok{, }\DecValTok{8532}\NormalTok{),}
   \DataTypeTok{startDate =} \StringTok{"20100101"}\NormalTok{,}
   \DataTypeTok{endDate =} \StringTok{"20171231"}\NormalTok{)}
@@ -11113,9 +11114,9 @@ Determining the performance characteristics of the cohort definition uses the fu
 \NormalTok{phenoResult <-}\StringTok{ }\KeywordTok{testPhenotype}\NormalTok{(}
   \DataTypeTok{connectionDetails =}\NormalTok{ connectionDetails,}
   \DataTypeTok{cutPoints =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\FloatTok{0.2}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.4}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\StringTok{"EV"}\NormalTok{, }\FloatTok{0.6}\NormalTok{, }\FloatTok{0.7}\NormalTok{, }\FloatTok{0.8}\NormalTok{, }\FloatTok{0.9}\NormalTok{),}
-  \DataTypeTok{resultsFileName =} 
+  \DataTypeTok{resultsFileName =}
     \StringTok{"c:/temp/lr_results_5XMI_eval_myCDM_ePPV0.75_20181206V1.rds"}\NormalTok{,}
-  \DataTypeTok{modelFileName =} 
+  \DataTypeTok{modelFileName =}
     \StringTok{"c:/temp/lr_results_5XMI_train_myCDM_ePPV0.75_20181206V1.rds"}\NormalTok{,}
   \DataTypeTok{cohortPheno =} \DecValTok{1769702}\NormalTok{,}
   \DataTypeTok{phenText =} \StringTok{"All MI by Phenotype 1 X In-patient, 1st Position"}\NormalTok{,}
@@ -12121,7 +12122,7 @@ The OHDSI research network is an international collaboration of researchers seek
 \item
   \textbf{Participate in a premier research community:} Author and publish network research, collaborate with leaders across various disciplines and stakeholder groups.
 \item
-  \textbf{Opportunity to benchmark care:} Network studies can enable clinical characterizaton and quality improvement benchmarks across data partners.
+  \textbf{Opportunity to benchmark care:} Network studies can enable clinical characterization and quality improvement benchmarks across data partners.
 \end{itemize}
 \end{rmdimportant}
 
@@ -12195,9 +12196,9 @@ For each study, site start-up activities may include:
 \begin{itemize}
 \tightlist
 \item
-  Registering the study with the Institutional Review Board (or equivalent), if requred
+  Registering the study with the Institutional Review Board (or equivalent), if required
 \item
-  Receiving Institutional Review Board approval to execute the study, if requred
+  Receiving Institutional Review Board approval to execute the study, if required
 \item
   Receiving database level permissions to read/write a schema to the approved CDM
 \item
@@ -13632,15 +13633,15 @@ Concept ID & Concept Name\tabularnewline
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Table of contents\\
+  Table of contents
 \item
-  List of abbreviations\\
+  List of abbreviations
 \item
   Abstract
 \item
-  Amendments and Updates\\
+  Amendments and Updates
 \item
-  Milestones\\
+  Milestones
 \item
   Rationale and Background
 \item
@@ -13649,13 +13650,13 @@ Concept ID & Concept Name\tabularnewline
   \begin{itemize}
   \tightlist
   \item
-    Primary Hypotheses\\
+    Primary Hypotheses
   \item
-    Secondary Hypotheses\\
+    Secondary Hypotheses
   \item
-    Primary Objectives\\
+    Primary Objectives
   \item
-    Secondary Objectives\\
+    Secondary Objectives
   \end{itemize}
 \item
   Research methods
@@ -13663,17 +13664,17 @@ Concept ID & Concept Name\tabularnewline
   \begin{itemize}
   \tightlist
   \item
-    Study Design\\
+    Study Design
   \item
-    Data Source(s)\\
+    Data Source(s)
   \item
-    Study population\\
+    Study population
   \item
     Exposures
   \item
-    Outcomes\\
+    Outcomes
   \item
-    Covariates\\
+    Covariates
   \end{itemize}
 \item
   Data Analysis Plan
@@ -13681,17 +13682,17 @@ Concept ID & Concept Name\tabularnewline
   \begin{itemize}
   \tightlist
   \item
-    Calculation of time-at risk\\
+    Calculation of time-at risk
   \item
-    Model Specification\\
+    Model Specification
   \item
     Pooling effect estimates across databases
   \item
-    Analyses to perform\\
+    Analyses to perform
   \item
-    Output\\
+    Output
   \item
-    Evidence Evaluation\\
+    Evidence Evaluation
   \end{itemize}
 \item
   Study Diagnostics
@@ -13699,18 +13700,18 @@ Concept ID & Concept Name\tabularnewline
   \begin{itemize}
   \tightlist
   \item
-    Sample Size and Study Power\\
+    Sample Size and Study Power
   \item
-    Cohort Comparability\\
+    Cohort Comparability
   \item
-    Systematic Error Assessment\\
+    Systematic Error Assessment
   \end{itemize}
 \item
-  Strengths and Limitations of the Research Methods\\
+  Strengths and Limitations of the Research Methods
 \item
-  Protection of Human Subjects\\
+  Protection of Human Subjects
 \item
-  Management and Reporting of Adverse Events and Adverse Reactions\\
+  Management and Reporting of Adverse Events and Adverse Reactions
 \item
   Plans for Disseminating and Communicating Study Results
 \item
@@ -14521,7 +14522,7 @@ To compute the number of diagnoses during exposure we extend our previous query 
 \StringTok{INNER JOIN @cdm.condition_occurrence}
 \StringTok{  ON condition_start_date >= drug_era_start_date}
 \StringTok{    AND condition_start_date <= drug_era_end_date}
-\StringTok{INNER JOIN @cdm.concept_ancestor }
+\StringTok{INNER JOIN @cdm.concept_ancestor}
 \StringTok{  ON condition_concept_id =descendant_concept_id}
 \StringTok{WHERE LOWER(ingredient.concept_name) = 'celecoxib'}
 \StringTok{  AND ingredient.concept_class_id = 'Ingredient'}
@@ -14669,8 +14670,8 @@ We then select only those that occur during an inpatient or ER visit, using some
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{sql <-}\StringTok{ "INSERT INTO @cdm.cohort (}
-\StringTok{  subject_id, }
-\StringTok{  cohort_start_date, }
+\StringTok{  subject_id,}
+\StringTok{  cohort_start_date,}
 \StringTok{  cohort_definition_id}
 \StringTok{  )}
 \StringTok{SELECT subject_id,}
@@ -14757,7 +14758,7 @@ Now that we have our cohort defined, we can characterize it. Click on \includegr
 \caption{Characterization settings.}\label{fig:celecoxibCharacterization}
 \end{figure}
 
-Click on the ``Exections'' tab, and click on ``Generate'' for one of the data sources. It may take a while for the generation to complete. When done, we can click on ``View latest results''. The resulting screen will look something like Figure \ref{fig:celecoxibCharacterizationResults}, showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
+Click on the ``Executions'' tab, and click on ``Generate'' for one of the data sources. It may take a while for the generation to complete. When done, we can click on ``View latest results''. The resulting screen will look something like Figure \ref{fig:celecoxibCharacterizationResults}, showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
 
 \begin{figure}
 
@@ -14961,10 +14962,10 @@ We stratify the population based on the propensity scores, and compute the covar
 \begin{Highlighting}[]
 \NormalTok{strataPop <-}\StringTok{ }\KeywordTok{stratifyByPs}\NormalTok{(ps, }\DataTypeTok{numberOfStrata =} \DecValTok{5}\NormalTok{)}
 \NormalTok{bal <-}\StringTok{ }\KeywordTok{computeCovariateBalance}\NormalTok{(strataPop, cmData)}
-\KeywordTok{plotCovariateBalanceScatterPlot}\NormalTok{(bal, }
-                                \DataTypeTok{showCovariateCountLabel =} \OtherTok{TRUE}\NormalTok{, }
-                                \DataTypeTok{showMaxLabel =} \OtherTok{TRUE}\NormalTok{, }
-                                \DataTypeTok{beforeLabel =} \StringTok{"Before stratification"}\NormalTok{, }
+\KeywordTok{plotCovariateBalanceScatterPlot}\NormalTok{(bal,}
+                                \DataTypeTok{showCovariateCountLabel =} \OtherTok{TRUE}\NormalTok{,}
+                                \DataTypeTok{showMaxLabel =} \OtherTok{TRUE}\NormalTok{,}
+                                \DataTypeTok{beforeLabel =} \StringTok{"Before stratification"}\NormalTok{,}
                                 \DataTypeTok{afterLabel =} \StringTok{"After stratification"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -15096,12 +15097,12 @@ We run a LASSO model by first creating a model settings object, and then calling
 \begin{Highlighting}[]
 \NormalTok{lassoModel <-}\StringTok{ }\KeywordTok{setLassoLogisticRegression}\NormalTok{(}\DataTypeTok{seed =} \DecValTok{0}\NormalTok{)}
 
-\NormalTok{lassoResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ population, }
-                       \DataTypeTok{plpData =}\NormalTok{ plpData, }
-                       \DataTypeTok{modelSettings =}\NormalTok{ lassoModel, }
+\NormalTok{lassoResults <-}\StringTok{ }\KeywordTok{runPlp}\NormalTok{(}\DataTypeTok{population =}\NormalTok{ population,}
+                       \DataTypeTok{plpData =}\NormalTok{ plpData,}
+                       \DataTypeTok{modelSettings =}\NormalTok{ lassoModel,}
                        \DataTypeTok{testSplit =} \StringTok{'person'}\NormalTok{,}
-                       \DataTypeTok{testFraction =} \FloatTok{0.25}\NormalTok{, }
-                       \DataTypeTok{nfold =} \DecValTok{2}\NormalTok{, }
+                       \DataTypeTok{testFraction =} \FloatTok{0.25}\NormalTok{,}
+                       \DataTypeTok{nfold =} \DecValTok{2}\NormalTok{,}
                        \DataTypeTok{splitSeed =} \DecValTok{0}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -15116,7 +15117,7 @@ We can now view the results using the Shiny app:
 \end{Highlighting}
 \end{Shaded}
 
-This will launch the app as shown in Figure \ref{fig:plpShiny}. Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
+This will launch the app as shown in Figure \ref{fig:plpShiny}. Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical practice.
 
 \begin{figure}
 
@@ -15156,11 +15157,11 @@ To run the Data Quality Dashboard:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{executeDqChecks}\NormalTok{(}
-\NormalTok{  connectionDetails, }
-  \DataTypeTok{cdmDatabaseSchema =} \StringTok{"main"}\NormalTok{, }
+\NormalTok{  connectionDetails,}
+  \DataTypeTok{cdmDatabaseSchema =} \StringTok{"main"}\NormalTok{,}
   \DataTypeTok{resultsDatabaseSchema =} \StringTok{"main"}\NormalTok{,}
   \DataTypeTok{cdmSourceName =} \StringTok{"Eunomia"}\NormalTok{,}
-  \DataTypeTok{outputFolder =} \StringTok{"C:/dataQualityExample"}\NormalTok{) }
+  \DataTypeTok{outputFolder =} \StringTok{"C:/dataQualityExample"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -15173,7 +15174,7 @@ To view the list of data quality checks:
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{DataQualityDashboard}\OperatorTok{::}\KeywordTok{viewDqDashboard}\NormalTok{(}
-  \StringTok{"C:/dataQualityExample/Eunomia/results_Eunomia.json"}\NormalTok{) }
+  \StringTok{"C:/dataQualityExample/Eunomia/results_Eunomia.json"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

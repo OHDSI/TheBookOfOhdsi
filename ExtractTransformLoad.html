@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Extract Transform Load | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.4 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Extract Transform Load | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,8 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -710,7 +710,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To initiate an ETL process on a database you need to understand your data, including the tables, fields, and content. This is where the <a href="https://github.com/OHDSI/WhiteRabbit">White Rabbit</a> tool comes in. White Rabbit is a software tool to help prepare for ETLs of longitudinal healthcare databases into the <a href="https://github.com/OHDSI/CommonDataModel">OMOP CDM</a>. White Rabbit scans your data and creates a report containing all the information necessary to begin designing the ETL. All source code and installation instructions, as well as a link to the manual, are available on GitHub.<a href="#fn30" class="footnote-ref" id="fnref30"><sup>30</sup></a>  </p>
 <div id="scope-and-purpose" class="section level4 unnumbered">
 <h4>Scope and Purpose</h4>
-<p>White Rabbit’s main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon RedShift). The scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.</p>
+<p>White Rabbit’s main function is to perform a scan of the source data, providing detailed information on the tables, fields, and values that appear in a field. The source data can be in comma-separated text files, or in a database (MySQL, SQL Server, Oracle, PostgreSQL, Microsoft APS, Microsoft Access, Amazon Redshift). The scan will generate a report that can be used as a reference when designing the ETL, for instance by using it in conjunction with the Rabbit-In-a-Hat tool. White Rabbit differs from standard data profiling tools in that it attempts to prevent the display of personally identifiable information (PII) data values in the generated output data file.</p>
 </div>
 <div id="process-overview" class="section level4 unnumbered">
 <h4>Process Overview</h4>
@@ -935,7 +935,7 @@ Figure 6.6: Mapping of Synthea Patients table to CDM PERSON table.
 <span id="cb5-4"><a href="ExtractTransformLoad.html#cb5-4"></a>  <span class="kw">ON</span> concept_id <span class="op">=</span> concept_id_1</span>
 <span id="cb5-5"><a href="ExtractTransformLoad.html#cb5-5"></a><span class="kw">WHERE</span> concept_code <span class="op">=</span> <span class="st">&#39;I21&#39;</span></span>
 <span id="cb5-6"><a href="ExtractTransformLoad.html#cb5-6"></a>  <span class="kw">AND</span> vocabulary_id <span class="op">=</span> <span class="st">&#39;ICD10CM&#39;</span></span>
-<span id="cb5-7"><a href="ExtractTransformLoad.html#cb5-7"></a>  <span class="kw">AND</span> relationship_id <span class="op">=</span> <span class="st">&#39;Maps to&#39;</span>; </span></code></pre></div>
+<span id="cb5-7"><a href="ExtractTransformLoad.html#cb5-7"></a>  <span class="kw">AND</span> relationship_id <span class="op">=</span> <span class="st">&#39;Maps to&#39;</span>;</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -966,14 +966,14 @@ Figure 6.6: Mapping of Synthea Patients table to CDM PERSON table.
 <p>The typical sequence for using this software is:</p>
 <ol style="list-style-type: decimal">
 <li>Load codes from your sources system (“source codes”) that you would like to map to Vocabulary concepts.</li>
-<li>Usagi will run term similarity approach to map source codes to Vocabulary concepts.</li>
+<li>Usagi will run a term similarity approach to map source codes to Vocabulary concepts.</li>
 <li>Leverage Usagi interface to check, and where needed, improve suggested mappings. Preferably an individual who has experience with the coding system and medical terminology should be used for this review.</li>
 <li>Export mapping to the Vocabulary’s SOURCE_TO_CONCEPT_MAP.</li>
 </ol>
 </div>
 <div id="importing-source-codes-into-usagi" class="section level4 unnumbered">
 <h4>Importing Source Codes into Usagi</h4>
-<p>Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g. dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g. you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate to do that.</p>
+<p>Export source codes from source system into a CSV or Excel (.xlsx) file. This should at least have columns containing the source code and an English source code description, however additional information about codes can be brought over as well (e.g. dose unit, or the description in the original language if translated). In addition to information about the source codes, the frequency of the code should preferably also be brought over, since this can help prioritize which codes should receive the most effort in mapping (e.g. you can have 1,000 source codes but only 100 are truly used within the system). If any source code information needs translating to English, use Google Translate.</p>
 <p>Note: source code extracts should be broken out by domain (i.e. drugs, procedures, conditions, observations) and not lumped into one large file.</p>
 <p>Source codes are loaded into Usagi from the File –&gt; Import codes menu. From here an “Import codes …” will display as seen in Figure <a href="ExtractTransformLoad.html#fig:usagiImport">6.7</a>. In this figure, the source code terms were in Dutch and were also translated into English. Usagi will leverage the English translations to map to the standard vocabulary.</p>
 <div class="figure" style="text-align: center"><span id="fig:usagiImport"></span>
@@ -1046,7 +1046,7 @@ Figure 6.9: Usagi concept information panel.
 <div id="updating-an-usagi-mapping" class="section level4 unnumbered">
 <h4>Updating an Usagi Mapping</h4>
 <p>Often a mapping is not a one-time effort. As data is updated perhaps new source codes are added, and the vocabulary is updated regularly, perhaps requiring an update of the mapping.</p>
-<p>When the set of source codes is updated the following steps can be followed to support the update:</p>
+<p>When the set of source codes is updated the following steps can support the update:</p>
 <ol style="list-style-type: decimal">
 <li>Import the new source code file</li>
 <li>Choose File –&gt; Apply previous mapping, and select the old Usagi mapping file</li>
@@ -1090,8 +1090,7 @@ Figure 6.9: Usagi concept information panel.
 <ul>
 <li>Review of the ETL design document, computer code, and code mappings. Any one person can make mistakes, so always at least one other person should review what the what was done.
 <ul>
-<li>The largest issues in the computer code tend to come from how the source codes in the native data are mapped to Standard Concepts. Mapping can get tricky, especially when it comes to date-specific codes like NDCs. Be sure to double check any area where mappings are done to ensure the correct source vocabularies are translated to the proper concept id.<br />
-</li>
+<li>The largest issues in the computer code tend to come from how the source codes in the native data are mapped to Standard Concepts. Mapping can get tricky, especially when it comes to date-specific codes like NDCs. Be sure to double check any area where mappings are done to ensure the correct source vocabularies are translated to the proper concept id.</li>
 </ul></li>
 <li>Manually compare all information on a sample of persons in the source and target data.
 <ul>
@@ -1099,8 +1098,7 @@ Figure 6.9: Usagi concept information panel.
 </ul></li>
 <li>Compare overall counts in the source and target data.
 <ul>
-<li>There may be some expected differences in counts depending on how you chose to address certain issues. For instance, some collaborators choose to drop any people with a NULL gender since those people will not be included in analyses anyway. It may also be the case that visits in the CDM are constructed differently than visits or encounters in the native data. Therefore, when comparing overall counts between the source and CDM data be sure to account for and expect these differences.<br />
-</li>
+<li>There may be some expected differences in counts depending on how you chose to address certain issues. For instance, some collaborators choose to drop any people with a NULL gender since those people will not be included in analyses anyway. It may also be the case that visits in the CDM are constructed differently than visits or encounters in the native data. Therefore, when comparing overall counts between the source and CDM data be sure to account for and expect these differences.</li>
 </ul></li>
 <li>Replicate a study that has already been performed on the source data on the CDM version.
 <ul>
@@ -1124,17 +1122,17 @@ Figure 6.9: Usagi concept information panel.
 <p>It is no small effort to design the ETL, create the mappings, implement the ETL, and build out quality control measures. Unfortunately, the effort does not stop there. There is a cycle of ETL maintenance that is a continuous process after the first CDM is built. Some common triggers that require maintenance are: changes in the source data, a bug in the ETL, a new OMOP Vocabulary is released, or the CDM itself has changed or updated. If one of these triggers occur the following might need updating: the ETL documentation, the software programming running the ETL, and test cases and quality controls.</p>
 <p>Often a healthcare data source is forever changing. New data might be available (e.g. a new column in the data might exist). Patients’ scenarios that never existed before suddenly do (e.g. a new patient who has a death record before they were born). Your understanding of the data may improve (e.g. some of the records around inpatient child birth come across as outpatient due to how claims are processed). Not all changes in the source data may trigger a change in the ETL processing of it, however at a bare minimum the changes that break the ETL processing will need to be addressed.</p>
 <p>If bugs are found, they should be addressed. However, it is important to keep in mind that not all bugs are created equal. For example, let’s say in the COST table the column cost was being rounded to a whole digit (e.g. the source data had $3.82 and this became $4.00 in the CDM). If the primary researchers using the data were mostly performing characterizations of patient’s drug exposures and conditions, a bug such as this is of little importance and can be addressed in the future. If the primary researchers using the data also included health economists, this would be a critical bug that need to be addressed immediately.</p>
-<p>The OMOP Vocabulary is also ever changing just as our source data may be. In fact, the Vocabulary can have multiple releases in one given month as vocabularies update. Each CDM is run on a specific version of a Vocabulary and running on a newer improved Vocabulary could result in changes in how sources codes get mapped to in the standardized vocabularies. Often differences between Vocabularies are minor, so building a new CDM every time a new Vocabulary is release is not necessary. However, it is good practice to adopt a new Vocabulary once or twice a year which would require reprocessing the CDM again. It is rare are there changes in a new version of a Vocabulary that would require the ETL code itself to be updated.</p>
-<p>The final trigger that could require CDM or ETL maintenance is when the common data model itself updates. As the community grows and new data requirements are found this may lead to additional data being stored in the CDM. This might mean data that you previously were not storing in the CDM might have a location in a new CDM version. Less frequently are changes to existing CDM structure, however it is a possibility. For example, the CDM is moved to adopting DATETIME fields over the original DATE fields would could cause an error in ETL processing. CDM versions are not released often and sites can choose when they migrate.</p>
+<p>The OMOP Vocabulary is also ever changing just as our source data may be. In fact, the Vocabulary can have multiple releases in one given month as vocabularies update. Each CDM is run on a specific version of a Vocabulary and running on a newer improved Vocabulary could result in changes in how sources codes get mapped to in the standardized vocabularies. Often differences between Vocabularies are minor, so building a new CDM every time a new Vocabulary is released is not necessary. However, it is good practice to adopt a new Vocabulary once or twice a year which would require reprocessing the CDM again. It is rare that changes in a new version of a Vocabulary would require the ETL code itself to be updated.</p>
+<p>The final trigger that could require CDM or ETL maintenance is when the common data model itself updates. As the community grows and new data requirements are found this may lead to additional data being stored in the CDM. This might mean data that you previously were not storing in the CDM might have a location in a new CDM version. Less frequently are changes to existing CDM structure, however it is a possibility. For example, the CDM has adopted DATETIME fields over the original DATE fields which could cause an error in ETL processing. CDM versions are not released often and sites can choose when they migrate.</p>
 </div>
 <div id="final-thoughts-on-etl" class="section level2">
 <h2><span class="header-section-number">6.8</span> Final Thoughts on ETL</h2>
-<p>The ETL process is a difficult one to master for many reasons, not the least of which the fact that we are all working off unique source data, making it hard to create a “one-size-fits-all” solution. However, there are some hard won lessons we have learned over the years.</p>
+<p>The ETL process is diff for many reasons, not the least of which is the fact that we are all processing unique source data, making it hard to create a “one-size-fits-all” solution. However, over the years we have learned the following hard-won lessons.</p>
 <ul>
 <li>The 80/20 rule. If you can avoid it do not spend too much time manually mapping source codes to concepts sets. Ideally, map the source codes that cover the majority of your data. This should be enough to get you started and you can address any remaining codes in the future based on use cases.</li>
 <li>It’s ok if you lose data that is not of research quality. Often these are the records that would be discarded before starting an analysis anyway, we just remove them during the ETL process instead.</li>
-<li>A CDM requires maintenance. Just because you complete an ETL does not mean you do not need to touch it ever again. Your raw data might change, there might be a bug in the code, there may be new vocabulary or an update to the CDM. Plan for an allocate resources to these changes so your ETL is always up-to-date.</li>
-<li>For support with getting started with the OHDSI CDM, performing your database conversion, or running the analytics tools, please visit our Implementers Forum.<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a></li>
+<li>A CDM requires maintenance. Just because you complete an ETL does not mean you do not need to touch it ever again. Your raw data might change, there might be a bug in the code, there may be new vocabulary or an update to the CDM. Plan to allocate resources for these changes so your ETL is always up-to-date.</li>
+<li>For support starting the OHDSI CDM, performing your database conversion, or running the analytics tools, please visit our Implementers Forum.<a href="#fn38" class="footnote-ref" id="fnref38"><sup>38</sup></a></li>
 </ul>
 </div>
 <div id="summary-4" class="section level2">

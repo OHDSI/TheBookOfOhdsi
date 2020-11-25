@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 13 Patient-Level Prediction | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.4 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 13 Patient-Level Prediction | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,8 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -1524,7 +1524,7 @@ Figure 13.15: Training settings.
 <span id="cb118-2"><a href="PatientLevelPrediction.html#cb118-2"></a><span class="st">&quot;FROM @cohortsDbSchema.cohortsDbTable&quot;</span>,</span>
 <span id="cb118-3"><a href="PatientLevelPrediction.html#cb118-3"></a><span class="st">&quot;GROUP BY cohort_definition_id&quot;</span>)</span>
 <span id="cb118-4"><a href="PatientLevelPrediction.html#cb118-4"></a>conn &lt;-<span class="st"> </span><span class="kw">connect</span>(connDetails)</span>
-<span id="cb118-5"><a href="PatientLevelPrediction.html#cb118-5"></a><span class="kw">renderTranslateQuerySql</span>(<span class="dt">connection =</span> conn, </span>
+<span id="cb118-5"><a href="PatientLevelPrediction.html#cb118-5"></a><span class="kw">renderTranslateQuerySql</span>(<span class="dt">connection =</span> conn,</span>
 <span id="cb118-6"><a href="PatientLevelPrediction.html#cb118-6"></a>                        <span class="dt">sql =</span> sql,</span>
 <span id="cb118-7"><a href="PatientLevelPrediction.html#cb118-7"></a>                        <span class="dt">cohortsDbSchema =</span> cohortsDbSchema,</span>
 <span id="cb118-8"><a href="PatientLevelPrediction.html#cb118-8"></a>                        <span class="dt">cohortsDbTable =</span> cohortsDbTable)</span></code></pre></div>
@@ -1583,16 +1583,16 @@ Figure 13.15: Training settings.
 <h3><span class="header-section-number">13.7.4</span> Model Development</h3>
 <p>In the set function of an algorithm the user can specify a list of eligible values for each hyper-parameter. All possible combinations of the hyper-parameters are included in a so-called grid search using cross-validation on the training set. If a user does not specify any value then the default value is used instead.</p>
 <p>For example, if we use the following settings for the gradient boosting machine: <code>ntrees = c(100,200), maxDepth = 4</code> the grid search will apply the gradient boosting machine algorithm with <code>ntrees = 100</code> and <code>maxDepth = 4</code> plus the default settings for other hyper-parameters and <code>ntrees = 200</code> and <code>maxDepth = 4</code> plus the default settings for other hyper-parameters. The hyper-parameters that lead to the best cross-validation performance will then be chosen for the final model. For our problem we choose to build a gradient boosting machine with several hyper-parameter values:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="PatientLevelPrediction.html#cb124-1"></a>gbmModel &lt;-<span class="st"> </span><span class="kw">setGradientBoostingMachine</span>(<span class="dt">ntrees =</span> <span class="dv">5000</span>, </span>
-<span id="cb124-2"><a href="PatientLevelPrediction.html#cb124-2"></a>                                       <span class="dt">maxDepth =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">7</span>,<span class="dv">10</span>), </span>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="PatientLevelPrediction.html#cb124-1"></a>gbmModel &lt;-<span class="st"> </span><span class="kw">setGradientBoostingMachine</span>(<span class="dt">ntrees =</span> <span class="dv">5000</span>,</span>
+<span id="cb124-2"><a href="PatientLevelPrediction.html#cb124-2"></a>                                       <span class="dt">maxDepth =</span> <span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">7</span>,<span class="dv">10</span>),</span>
 <span id="cb124-3"><a href="PatientLevelPrediction.html#cb124-3"></a>                                       <span class="dt">learnRate =</span> <span class="kw">c</span>(<span class="fl">0.001</span>,<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="fl">0.9</span>))</span></code></pre></div>
 <p>The <code>runPlP</code> function uses the population, <code>plpData</code>, and model settings to train and evaluate the model. We can use the <code>testSplit</code> (person/time) and <code>testFraction</code> parameters to split the data in a 75%-25% split and run the patient-level prediction pipeline:</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="PatientLevelPrediction.html#cb125-1"></a>gbmResults &lt;-<span class="st"> </span><span class="kw">runPlp</span>(<span class="dt">population =</span> population, </span>
-<span id="cb125-2"><a href="PatientLevelPrediction.html#cb125-2"></a>                     <span class="dt">plpData =</span> plpData, </span>
-<span id="cb125-3"><a href="PatientLevelPrediction.html#cb125-3"></a>                     <span class="dt">modelSettings =</span> gbmModel, </span>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="PatientLevelPrediction.html#cb125-1"></a>gbmResults &lt;-<span class="st"> </span><span class="kw">runPlp</span>(<span class="dt">population =</span> population,</span>
+<span id="cb125-2"><a href="PatientLevelPrediction.html#cb125-2"></a>                     <span class="dt">plpData =</span> plpData,</span>
+<span id="cb125-3"><a href="PatientLevelPrediction.html#cb125-3"></a>                     <span class="dt">modelSettings =</span> gbmModel,</span>
 <span id="cb125-4"><a href="PatientLevelPrediction.html#cb125-4"></a>                     <span class="dt">testSplit =</span> <span class="st">&#39;person&#39;</span>,</span>
-<span id="cb125-5"><a href="PatientLevelPrediction.html#cb125-5"></a>                     <span class="dt">testFraction =</span> <span class="fl">0.25</span>, </span>
-<span id="cb125-6"><a href="PatientLevelPrediction.html#cb125-6"></a>                     <span class="dt">nfold =</span> <span class="dv">2</span>, </span>
+<span id="cb125-5"><a href="PatientLevelPrediction.html#cb125-5"></a>                     <span class="dt">testFraction =</span> <span class="fl">0.25</span>,</span>
+<span id="cb125-6"><a href="PatientLevelPrediction.html#cb125-6"></a>                     <span class="dt">nfold =</span> <span class="dv">2</span>,</span>
 <span id="cb125-7"><a href="PatientLevelPrediction.html#cb125-7"></a>                     <span class="dt">splitSeed =</span> <span class="dv">1234</span>)</span></code></pre></div>
 <p>Under the hood the package will now use the R xgboost package to fit a a gradient boosting machine model using 75% of the data and will evaluate the model on the remaining 25%. A results data structure is returned containing information about the model, its performance, etc.</p>
 <p>In the <code>runPlp</code> function there are several parameters to save the <code>plpData</code>, <code>plpResults</code>, <code>plpPlots</code>, <code>evaluation</code>, etc. objects which are all set to <code>TRUE</code> by default.</p>
@@ -1640,7 +1640,7 @@ Figure 13.15: Training settings.
 <span id="cb131-23"><a href="PatientLevelPrediction.html#cb131-23"></a>validationResults &lt;-<span class="st"> </span><span class="kw">applyModel</span>(population, plpData, plpModel)</span></code></pre></div>
 <p>To make things easier we also provide the <code>externalValidatePlp</code> function for performing external validation that also extracts the required data. Assuming we ran <code>result &lt;- runPlp(...)</code> then we can extract the data required for the model and evaluate it on new data. Assuming the validation cohorts are in the table <code>mainschema.dob.cohort</code> with IDs 1 and 2 and the CDM data is in the schema <code>cdmschema.dob</code>:</p>
 <div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="PatientLevelPrediction.html#cb132-1"></a>valResult &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</span>(</span>
-<span id="cb132-2"><a href="PatientLevelPrediction.html#cb132-2"></a>    <span class="dt">plpResult =</span> result, </span>
+<span id="cb132-2"><a href="PatientLevelPrediction.html#cb132-2"></a>    <span class="dt">plpResult =</span> result,</span>
 <span id="cb132-3"><a href="PatientLevelPrediction.html#cb132-3"></a>    <span class="dt">connectionDetails =</span> connectionDetails,</span>
 <span id="cb132-4"><a href="PatientLevelPrediction.html#cb132-4"></a>    <span class="dt">validationSchemaTarget =</span> <span class="st">&#39;mainschema.dob&#39;</span>,</span>
 <span id="cb132-5"><a href="PatientLevelPrediction.html#cb132-5"></a>    <span class="dt">validationSchemaOutcome =</span> <span class="st">&#39;mainschema.dob&#39;</span>,</span>
@@ -1653,13 +1653,13 @@ Figure 13.15: Training settings.
 <span id="cb132-12"><a href="PatientLevelPrediction.html#cb132-12"></a>)</span></code></pre></div>
 <p>If we have multiple databases to validate the model on then we can run:</p>
 <div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="PatientLevelPrediction.html#cb133-1"></a>valResults &lt;-<span class="st"> </span><span class="kw">externalValidatePlp</span>(</span>
-<span id="cb133-2"><a href="PatientLevelPrediction.html#cb133-2"></a>    <span class="dt">plpResult =</span> result, </span>
+<span id="cb133-2"><a href="PatientLevelPrediction.html#cb133-2"></a>    <span class="dt">plpResult =</span> result,</span>
 <span id="cb133-3"><a href="PatientLevelPrediction.html#cb133-3"></a>    <span class="dt">connectionDetails =</span> connectionDetails,</span>
 <span id="cb133-4"><a href="PatientLevelPrediction.html#cb133-4"></a>    <span class="dt">validationSchemaTarget =</span> <span class="kw">list</span>(<span class="st">&#39;mainschema.dob&#39;</span>,</span>
-<span id="cb133-5"><a href="PatientLevelPrediction.html#cb133-5"></a>                                <span class="st">&#39;difschema.dob&#39;</span>, </span>
+<span id="cb133-5"><a href="PatientLevelPrediction.html#cb133-5"></a>                                <span class="st">&#39;difschema.dob&#39;</span>,</span>
 <span id="cb133-6"><a href="PatientLevelPrediction.html#cb133-6"></a>                                <span class="st">&#39;anotherschema.dob&#39;</span>),</span>
 <span id="cb133-7"><a href="PatientLevelPrediction.html#cb133-7"></a>    <span class="dt">validationSchemaOutcome =</span> <span class="kw">list</span>(<span class="st">&#39;mainschema.dob&#39;</span>,</span>
-<span id="cb133-8"><a href="PatientLevelPrediction.html#cb133-8"></a>                                 <span class="st">&#39;difschema.dob&#39;</span>, </span>
+<span id="cb133-8"><a href="PatientLevelPrediction.html#cb133-8"></a>                                 <span class="st">&#39;difschema.dob&#39;</span>,</span>
 <span id="cb133-9"><a href="PatientLevelPrediction.html#cb133-9"></a>                                 <span class="st">&#39;anotherschema.dob&#39;</span>),</span>
 <span id="cb133-10"><a href="PatientLevelPrediction.html#cb133-10"></a>    <span class="dt">validationSchemaCdm =</span> <span class="kw">list</span>(<span class="st">&#39;cdms1chema.dbo&#39;</span>,</span>
 <span id="cb133-11"><a href="PatientLevelPrediction.html#cb133-11"></a>                             <span class="st">&#39;cdm2schema.dbo&#39;</span>,</span>
@@ -1683,8 +1683,8 @@ Figure 13.15: Training settings.
 <div id="model-performance" class="section level3">
 <h3><span class="header-section-number">13.8.1</span> Model Performance</h3>
 <p>Exploring the performance of a prediction model is easiest with the <code>viewPlp</code> function. This requires a results object as the input. If developing models in R we can use the result of <code>runPLp</code> as the input. If using the ATLAS-generated study package, then we need to load one of the models (in this example we will load Analysis_1): </p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="PatientLevelPrediction.html#cb134-1"></a>plpResult &lt;-<span class="st"> </span><span class="kw">loadPlpResult</span>(<span class="kw">file.path</span>(outputFolder, </span>
-<span id="cb134-2"><a href="PatientLevelPrediction.html#cb134-2"></a>                                     <span class="st">&#39;Analysis_1&#39;</span>, </span>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="PatientLevelPrediction.html#cb134-1"></a>plpResult &lt;-<span class="st"> </span><span class="kw">loadPlpResult</span>(<span class="kw">file.path</span>(outputFolder,</span>
+<span id="cb134-2"><a href="PatientLevelPrediction.html#cb134-2"></a>                                     <span class="st">&#39;Analysis_1&#39;</span>,</span>
 <span id="cb134-3"><a href="PatientLevelPrediction.html#cb134-3"></a>                                     <span class="st">&#39;plpResult&#39;</span>))</span></code></pre></div>
 <p>Here “Analysis_1” corresponds to the analysis we specified earlier.</p>
 <p>We can then launch the Shiny app by running:</p>
@@ -1763,9 +1763,9 @@ Figure 13.23: The summary performance measures at a set threshold.
 <p>This summary view shows the selected prediction question in the standard format, a threshold selector and a dashboard containing key threshold-based metrics such as positive predictive value (PPV), negative predictive value (NPV), sensitivity and specificity (see Section <a href="PatientLevelPrediction.html#performance">13.4.2</a>). In Figure <a href="PatientLevelPrediction.html#fig:shinyPerformanceSum">13.23</a> we see that at a threshold of 0.00482 the sensitivity is 83.4% (83.4% of patients with the outcome in the following year have a risk greater than or equal to 0.00482) and the PPV is 1.2% (1.2% of patients with a risk greater than or equal to 0.00482 have the outcome in the following year). As the incidence of the outcome within the year is 0.741%, identifying patients with a risk greater than or equal to 0.00482 would find a subgroup of patients that have nearly double the risk of the population average risk. We can adjust the threshold using the slider to view the performance at other values.</p>
 <p>To look at the overall discrimination of the model click on the “Discrimination” tab to view the ROC plot, precision-recall plot, and distribution plots. The line on the plots corresponds to the selected threshold point. Figure <a href="PatientLevelPrediction.html#fig:shinyPerformanceDisc">13.24</a> show the ROC and precision-recall plots. The ROC plot shows the model was able to discriminate between those who will have the outcome within the year and those who will not. However, the performance looks less impressive when we see the precision-recall plot, as the low incidence of the outcome means there is a high false positive rate.</p>
 <div class="figure" style="text-align: center"><span id="fig:shinyPerformanceDisc"></span>
-<img src="images/PatientLevelPrediction/shiny/shinyPerformanceDisc.png" alt="The ROC and precision-recall plots used to access the overal discrimination ability of the model." width="100%" />
+<img src="images/PatientLevelPrediction/shiny/shinyPerformanceDisc.png" alt="The ROC and precision-recall plots used to access the overall discrimination ability of the model." width="100%" />
 <p class="caption">
-Figure 13.24: The ROC and precision-recall plots used to access the overal discrimination ability of the model.
+Figure 13.24: The ROC and precision-recall plots used to access the overall discrimination ability of the model.
 </p>
 </div>
 <p>Figure <a href="PatientLevelPrediction.html#fig:shinyPerformanceDist">13.25</a> shows the prediction and preference score distributions.</p>
@@ -1847,9 +1847,9 @@ Predictive models are not causal models, and predictors should not be mistaken f
 <div id="prerequisites-8" class="section level4 unnumbered">
 <h4>Prerequisites</h4>
 <p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">8.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> and <a href="https://ohdsi.github.io/PatientLevelPrediction/">PatientLevelPrediction</a> packages, which can be installed using:</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="PatientLevelPrediction.html#cb137-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
-<span id="cb137-2"><a href="PatientLevelPrediction.html#cb137-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span>
-<span id="cb137-3"><a href="PatientLevelPrediction.html#cb137-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/PatientLevelPrediction&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="PatientLevelPrediction.html#cb137-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;remotes&quot;</span>))</span>
+<span id="cb137-2"><a href="PatientLevelPrediction.html#cb137-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span>
+<span id="cb137-3"><a href="PatientLevelPrediction.html#cb137-3"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/PatientLevelPrediction&quot;</span>)</span></code></pre></div>
 <p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="PatientLevelPrediction.html#cb138-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
 <p>The CDM database schema is “main”. These exercises also make use of several cohorts. The <code>createCohorts</code> function in the Eunomia package will create these in the COHORT table:</p>
@@ -1873,7 +1873,7 @@ Predictive models are not causal models, and predictors should not be mistaken f
 
 
 <div class="exercise">
-<span id="exr:exercisePlp3" class="exercise"><strong>Exercise 13.3  </strong></span>Build a prediction model using LASSO and evaluate its performance using the Shiny application. How well is your model performing?
+<p><span id="exr:exercisePlp3" class="exercise"><strong>Exercise 13.3  </strong></span>Build a prediction model using LASSO and evaluate its performance using the Shiny application. How well is your model performing?</p>
 </div>
 
 <p>Suggested answers can be found in Appendix <a href="SuggestedAnswers.html#Plpanswers">E.9</a>.</p>

@@ -1,10 +1,10 @@
---- 
+---
 title: "The Book of OHDSI"
 author: "Observational Health Data Sciences and Informatics"
-date: "2020-10-19"
-classoption: 11pt      
+date: "2020-11-25"
+classoption: 11pt
 geometry:
-- paperheight=10in 
+- paperheight=10in
 - paperwidth=7in
 - margin=1in
 - inner=1in
@@ -38,7 +38,7 @@ This book aims to be a central knowledge repository for OHDSI, and it focuses on
 
 ## Structure of the Book {-}
 
-This book is organized in five major sections: 
+This book is organized in five major sections:
 
 I) The OHDSI Community
 II) Uniform data representation
@@ -46,7 +46,7 @@ III) Data Analytics
 IV) Evidence Quality
 V) OHDSI Studies
 
-Each section has multiple chapters, and, as appropriate, each chapter follows the sequence: Introduction, Theory, Practice, Summary, and Exercises. 
+Each section has multiple chapters, and, as appropriate, each chapter follows the sequence: Introduction, Theory, Practice, Summary, and Exercises.
 
 ## Contributors {-}
 
@@ -121,4 +121,3 @@ This book is licensed under the [Creative Commons Zero v1.0 Universal license](h
 ## How the Book Is Developed {-}
 
 The book is written in [RMarkdown](https://rmarkdown.rstudio.com) using the [bookdown](https://bookdown.org) package. The online version is automatically rebuilt from the source repository at [https://github.com/OHDSI/TheBookOfOhdsi](https://github.com/OHDSI/TheBookOfOhdsi) through the continuous integration system ["travis"](http://travis-ci.org/). At regular intervals a snapshot is taken of the state of the book and marked as an "edition." These editions will be available as physical copies from Amazon.
-

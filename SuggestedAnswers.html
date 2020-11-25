@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>E Suggested Answers | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.4 and GitBook 2.6.7" />
 
   <meta property="og:title" content="E Suggested Answers | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,8 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -1261,7 +1261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb173-7"><a href="SuggestedAnswers.html#cb173-7"></a><span class="st">INNER JOIN @cdm.condition_occurrence</span></span>
 <span id="cb173-8"><a href="SuggestedAnswers.html#cb173-8"></a><span class="st">  ON condition_start_date &gt;= drug_era_start_date</span></span>
 <span id="cb173-9"><a href="SuggestedAnswers.html#cb173-9"></a><span class="st">    AND condition_start_date &lt;= drug_era_end_date</span></span>
-<span id="cb173-10"><a href="SuggestedAnswers.html#cb173-10"></a><span class="st">INNER JOIN @cdm.concept_ancestor </span></span>
+<span id="cb173-10"><a href="SuggestedAnswers.html#cb173-10"></a><span class="st">INNER JOIN @cdm.concept_ancestor</span></span>
 <span id="cb173-11"><a href="SuggestedAnswers.html#cb173-11"></a><span class="st">  ON condition_concept_id =descendant_concept_id</span></span>
 <span id="cb173-12"><a href="SuggestedAnswers.html#cb173-12"></a><span class="st">WHERE LOWER(ingredient.concept_name) = &#39;celecoxib&#39;</span></span>
 <span id="cb173-13"><a href="SuggestedAnswers.html#cb173-13"></a><span class="st">  AND ingredient.concept_class_id = &#39;Ingredient&#39;</span></span>
@@ -1357,8 +1357,8 @@ Figure E.7: Setting the cohort exit date.
 <span id="cb175-18"><a href="SuggestedAnswers.html#cb175-18"></a><span class="kw">renderTranslateExecuteSql</span>(connection, sql, <span class="dt">cdm =</span> <span class="st">&quot;main&quot;</span>)</span></code></pre></div>
 <p>We then select only those that occur during an inpatient or ER visit, using some unique COHORT_DEFINITION_ID (we selected ‘1’):</p>
 <div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="SuggestedAnswers.html#cb176-1"></a>sql &lt;-<span class="st"> &quot;INSERT INTO @cdm.cohort (</span></span>
-<span id="cb176-2"><a href="SuggestedAnswers.html#cb176-2"></a><span class="st">  subject_id, </span></span>
-<span id="cb176-3"><a href="SuggestedAnswers.html#cb176-3"></a><span class="st">  cohort_start_date, </span></span>
+<span id="cb176-2"><a href="SuggestedAnswers.html#cb176-2"></a><span class="st">  subject_id,</span></span>
+<span id="cb176-3"><a href="SuggestedAnswers.html#cb176-3"></a><span class="st">  cohort_start_date,</span></span>
 <span id="cb176-4"><a href="SuggestedAnswers.html#cb176-4"></a><span class="st">  cohort_definition_id</span></span>
 <span id="cb176-5"><a href="SuggestedAnswers.html#cb176-5"></a><span class="st">  )</span></span>
 <span id="cb176-6"><a href="SuggestedAnswers.html#cb176-6"></a><span class="st">SELECT subject_id,</span></span>
@@ -1416,7 +1416,7 @@ Figure E.10: A simple celecoxib new user cohort definition.
 Figure E.11: Characterization settings.
 </p>
 </div>
-<p>Click on the “Exections” tab, and click on “Generate” for one of the data sources. It may take a while for the generation to complete. When done, we can click on “View latest results”. The resulting screen will look something like Figure <a href="SuggestedAnswers.html#fig:celecoxibCharacterizationResults">E.12</a>, showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.</p>
+<p>Click on the “Executions” tab, and click on “Generate” for one of the data sources. It may take a while for the generation to complete. When done, we can click on “View latest results”. The resulting screen will look something like Figure <a href="SuggestedAnswers.html#fig:celecoxibCharacterizationResults">E.12</a>, showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.</p>
 <div class="figure" style="text-align: center"><span id="fig:celecoxibCharacterizationResults"></span>
 <img src="images/SuggestedAnswers/celecoxibCharacterizationResults.png" alt="Characterization settings." width="100%" />
 <p class="caption">
@@ -1551,10 +1551,10 @@ Figure E.17: Incidence results.
 <p>We stratify the population based on the propensity scores, and compute the covariate balance before and after stratification:</p>
 <div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="SuggestedAnswers.html#cb184-1"></a>strataPop &lt;-<span class="st"> </span><span class="kw">stratifyByPs</span>(ps, <span class="dt">numberOfStrata =</span> <span class="dv">5</span>)</span>
 <span id="cb184-2"><a href="SuggestedAnswers.html#cb184-2"></a>bal &lt;-<span class="st"> </span><span class="kw">computeCovariateBalance</span>(strataPop, cmData)</span>
-<span id="cb184-3"><a href="SuggestedAnswers.html#cb184-3"></a><span class="kw">plotCovariateBalanceScatterPlot</span>(bal, </span>
-<span id="cb184-4"><a href="SuggestedAnswers.html#cb184-4"></a>                                <span class="dt">showCovariateCountLabel =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb184-5"><a href="SuggestedAnswers.html#cb184-5"></a>                                <span class="dt">showMaxLabel =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb184-6"><a href="SuggestedAnswers.html#cb184-6"></a>                                <span class="dt">beforeLabel =</span> <span class="st">&quot;Before stratification&quot;</span>, </span>
+<span id="cb184-3"><a href="SuggestedAnswers.html#cb184-3"></a><span class="kw">plotCovariateBalanceScatterPlot</span>(bal,</span>
+<span id="cb184-4"><a href="SuggestedAnswers.html#cb184-4"></a>                                <span class="dt">showCovariateCountLabel =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb184-5"><a href="SuggestedAnswers.html#cb184-5"></a>                                <span class="dt">showMaxLabel =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb184-6"><a href="SuggestedAnswers.html#cb184-6"></a>                                <span class="dt">beforeLabel =</span> <span class="st">&quot;Before stratification&quot;</span>,</span>
 <span id="cb184-7"><a href="SuggestedAnswers.html#cb184-7"></a>                                <span class="dt">afterLabel =</span> <span class="st">&quot;After stratification&quot;</span>)</span></code></pre></div>
 <p><img src="images/SuggestedAnswers/scatter.png" width="70%" style="display: block; margin: auto;" /></p>
 <p>We see that various baseline covariates showed a large (&gt;0.3) standardized difference of means before stratification (x-axis). After stratification, balance is increased, with the maximum standardized difference &lt;= 0.1.</p>
@@ -1645,17 +1645,17 @@ Figure E.17: Incidence results.
 <p>We run a LASSO model by first creating a model settings object, and then calling the <code>runPlp</code> function. In this case we do a person split, training the model on 75% of the data and evaluating on 25% of the data:</p>
 <div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="SuggestedAnswers.html#cb191-1"></a>lassoModel &lt;-<span class="st"> </span><span class="kw">setLassoLogisticRegression</span>(<span class="dt">seed =</span> <span class="dv">0</span>)</span>
 <span id="cb191-2"><a href="SuggestedAnswers.html#cb191-2"></a></span>
-<span id="cb191-3"><a href="SuggestedAnswers.html#cb191-3"></a>lassoResults &lt;-<span class="st"> </span><span class="kw">runPlp</span>(<span class="dt">population =</span> population, </span>
-<span id="cb191-4"><a href="SuggestedAnswers.html#cb191-4"></a>                       <span class="dt">plpData =</span> plpData, </span>
-<span id="cb191-5"><a href="SuggestedAnswers.html#cb191-5"></a>                       <span class="dt">modelSettings =</span> lassoModel, </span>
+<span id="cb191-3"><a href="SuggestedAnswers.html#cb191-3"></a>lassoResults &lt;-<span class="st"> </span><span class="kw">runPlp</span>(<span class="dt">population =</span> population,</span>
+<span id="cb191-4"><a href="SuggestedAnswers.html#cb191-4"></a>                       <span class="dt">plpData =</span> plpData,</span>
+<span id="cb191-5"><a href="SuggestedAnswers.html#cb191-5"></a>                       <span class="dt">modelSettings =</span> lassoModel,</span>
 <span id="cb191-6"><a href="SuggestedAnswers.html#cb191-6"></a>                       <span class="dt">testSplit =</span> <span class="st">&#39;person&#39;</span>,</span>
-<span id="cb191-7"><a href="SuggestedAnswers.html#cb191-7"></a>                       <span class="dt">testFraction =</span> <span class="fl">0.25</span>, </span>
-<span id="cb191-8"><a href="SuggestedAnswers.html#cb191-8"></a>                       <span class="dt">nfold =</span> <span class="dv">2</span>, </span>
+<span id="cb191-7"><a href="SuggestedAnswers.html#cb191-7"></a>                       <span class="dt">testFraction =</span> <span class="fl">0.25</span>,</span>
+<span id="cb191-8"><a href="SuggestedAnswers.html#cb191-8"></a>                       <span class="dt">nfold =</span> <span class="dv">2</span>,</span>
 <span id="cb191-9"><a href="SuggestedAnswers.html#cb191-9"></a>                       <span class="dt">splitSeed =</span> <span class="dv">0</span>)</span></code></pre></div>
 <p>Note that for this example set the random seeds both for the LASSO cross-validation and for the train-test split to make sure the results will be the same on multiple runs.</p>
 <p>We can now view the results using the Shiny app:</p>
 <div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="SuggestedAnswers.html#cb192-1"></a><span class="kw">viewPlp</span>(lassoResults)</span></code></pre></div>
-<p>This will launch the app as shown in Figure <a href="SuggestedAnswers.html#fig:plpShiny">E.18</a>. Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.</p>
+<p>This will launch the app as shown in Figure <a href="SuggestedAnswers.html#fig:plpShiny">E.18</a>. Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical practice.</p>
 <div class="figure" style="text-align: center"><span id="fig:plpShiny"></span>
 <img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
 <p class="caption">
@@ -1680,17 +1680,17 @@ Figure E.18: Patient-level prediction Shiny app.
 <h4>Exercise <a href="DataQuality.html#exr:exerciseRunDQD">15.2</a></h4>
 <p>To run the Data Quality Dashboard:</p>
 <div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="SuggestedAnswers.html#cb194-1"></a>DataQualityDashboard<span class="op">::</span><span class="kw">executeDqChecks</span>(</span>
-<span id="cb194-2"><a href="SuggestedAnswers.html#cb194-2"></a>  connectionDetails, </span>
-<span id="cb194-3"><a href="SuggestedAnswers.html#cb194-3"></a>  <span class="dt">cdmDatabaseSchema =</span> <span class="st">&quot;main&quot;</span>, </span>
+<span id="cb194-2"><a href="SuggestedAnswers.html#cb194-2"></a>  connectionDetails,</span>
+<span id="cb194-3"><a href="SuggestedAnswers.html#cb194-3"></a>  <span class="dt">cdmDatabaseSchema =</span> <span class="st">&quot;main&quot;</span>,</span>
 <span id="cb194-4"><a href="SuggestedAnswers.html#cb194-4"></a>  <span class="dt">resultsDatabaseSchema =</span> <span class="st">&quot;main&quot;</span>,</span>
 <span id="cb194-5"><a href="SuggestedAnswers.html#cb194-5"></a>  <span class="dt">cdmSourceName =</span> <span class="st">&quot;Eunomia&quot;</span>,</span>
-<span id="cb194-6"><a href="SuggestedAnswers.html#cb194-6"></a>  <span class="dt">outputFolder =</span> <span class="st">&quot;C:/dataQualityExample&quot;</span>) </span></code></pre></div>
+<span id="cb194-6"><a href="SuggestedAnswers.html#cb194-6"></a>  <span class="dt">outputFolder =</span> <span class="st">&quot;C:/dataQualityExample&quot;</span>)</span></code></pre></div>
 </div>
 <div id="exercise-refexrexerciseviewdqd" class="section level4 unnumbered">
 <h4>Exercise <a href="DataQuality.html#exr:exerciseViewDQD">15.3</a></h4>
 <p>To view the list of data quality checks:</p>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="SuggestedAnswers.html#cb195-1"></a>DataQualityDashboard<span class="op">::</span><span class="kw">viewDqDashboard</span>(</span>
-<span id="cb195-2"><a href="SuggestedAnswers.html#cb195-2"></a>  <span class="st">&quot;C:/dataQualityExample/Eunomia/results_Eunomia.json&quot;</span>) </span></code></pre></div>
+<span id="cb195-2"><a href="SuggestedAnswers.html#cb195-2"></a>  <span class="st">&quot;C:/dataQualityExample/Eunomia/results_Eunomia.json&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>

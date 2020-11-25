@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 SQL and R | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.4 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 SQL and R | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,8 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -702,7 +702,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">9.1</span> SqlRender</h2>
 <p>The <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a> package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="SqlAndR.html#cb11-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;SqlRender&quot;</span>)</span></code></pre></div>
-<p>SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.</p>
+<p>SqlRender supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon Redshift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The R package comes with a package manual and a vignette that explores the full functionality. Here we describer some of the main features.</p>
 <div id="sql-parameterization" class="section level3">
 <h3><span class="header-section-number">9.1.1</span> SQL Parameterization</h3>
 <p>One of the functions of the package is to support parameterization of SQL. Often, small variations of SQL need to be generated based on some parameters. SqlRender offers a simple markup syntax inside the SQL code to allow parameterization. Rendering the SQL based on parameter values is done using the <code>render()</code> function. </p>
@@ -884,17 +884,17 @@ There are limits to what SQL functions and constructs can be translated properly
 <span id="cb30-21"><a href="SqlAndR.html#cb30-21"></a></span>
 <span id="cb30-22"><a href="SqlAndR.html#cb30-22"></a><span class="co">-- Inserting from SELECT:</span></span>
 <span id="cb30-23"><a href="SqlAndR.html#cb30-23"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> other_table (field_1) <span class="kw">SELECT</span> <span class="fu">value</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb30-24"><a href="SqlAndR.html#cb30-24"></a>  </span>
+<span id="cb30-24"><a href="SqlAndR.html#cb30-24"></a></span>
 <span id="cb30-25"><a href="SqlAndR.html#cb30-25"></a><span class="co">-- Simple drop commands:</span></span>
 <span id="cb30-26"><a href="SqlAndR.html#cb30-26"></a><span class="kw">DROP</span> <span class="kw">TABLE</span> <span class="kw">table</span>;</span>
 <span id="cb30-27"><a href="SqlAndR.html#cb30-27"></a></span>
 <span id="cb30-28"><a href="SqlAndR.html#cb30-28"></a><span class="co">-- Drop table if it exists:</span></span>
 <span id="cb30-29"><a href="SqlAndR.html#cb30-29"></a><span class="cf">IF</span> OBJECT_ID(<span class="st">&#39;ACHILLES_analysis&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb30-30"><a href="SqlAndR.html#cb30-30"></a>  <span class="kw">DROP</span> <span class="kw">TABLE</span> ACHILLES_analysis;</span>
-<span id="cb30-31"><a href="SqlAndR.html#cb30-31"></a>  </span>
+<span id="cb30-31"><a href="SqlAndR.html#cb30-31"></a></span>
 <span id="cb30-32"><a href="SqlAndR.html#cb30-32"></a><span class="co">-- Drop temp table if it exists:</span></span>
 <span id="cb30-33"><a href="SqlAndR.html#cb30-33"></a><span class="cf">IF</span> OBJECT_ID(<span class="st">&#39;tempdb..#cohorts&#39;</span>, <span class="st">&#39;U&#39;</span>) <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb30-34"><a href="SqlAndR.html#cb30-34"></a>  <span class="kw">DROP</span> <span class="kw">TABLE</span> #cohorts;  </span>
+<span id="cb30-34"><a href="SqlAndR.html#cb30-34"></a>  <span class="kw">DROP</span> <span class="kw">TABLE</span> #cohorts;</span>
 <span id="cb30-35"><a href="SqlAndR.html#cb30-35"></a></span>
 <span id="cb30-36"><a href="SqlAndR.html#cb30-36"></a><span class="co">-- Common table expressions:</span></span>
 <span id="cb30-37"><a href="SqlAndR.html#cb30-37"></a><span class="kw">WITH</span> cte <span class="kw">AS</span> (<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span>) <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> cte;</span>
@@ -902,7 +902,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <span id="cb30-39"><a href="SqlAndR.html#cb30-39"></a><span class="co">-- OVER clauses:</span></span>
 <span id="cb30-40"><a href="SqlAndR.html#cb30-40"></a><span class="kw">SELECT</span> <span class="fu">ROW_NUMBER</span>() <span class="kw">OVER</span> (<span class="kw">PARTITION</span> <span class="kw">BY</span> a <span class="kw">ORDER</span> <span class="kw">BY</span> b)</span>
 <span id="cb30-41"><a href="SqlAndR.html#cb30-41"></a>  <span class="kw">AS</span> <span class="ot">&quot;Row Number&quot;</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
-<span id="cb30-42"><a href="SqlAndR.html#cb30-42"></a>  </span>
+<span id="cb30-42"><a href="SqlAndR.html#cb30-42"></a></span>
 <span id="cb30-43"><a href="SqlAndR.html#cb30-43"></a><span class="co">-- CASE WHEN clauses:</span></span>
 <span id="cb30-44"><a href="SqlAndR.html#cb30-44"></a><span class="kw">SELECT</span> <span class="cf">CASE</span> <span class="cf">WHEN</span> a<span class="op">=</span><span class="dv">1</span> <span class="cf">THEN</span> a <span class="cf">ELSE</span> <span class="dv">0</span> <span class="cf">END</span> <span class="kw">AS</span> <span class="fu">value</span> <span class="kw">FROM</span> <span class="kw">table</span>;</span>
 <span id="cb30-45"><a href="SqlAndR.html#cb30-45"></a></span>
@@ -921,9 +921,9 @@ There are limits to what SQL functions and constructs can be translated properly
 </div>
 <div id="table-aliases-and-the-as-keyword" class="section level4 unnumbered">
 <h4>Table Aliases and the AS Keyword</h4>
-<p>Many SQL dialects allow the use of the <code>AS</code> keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, RedShift, etc.:</p>
+<p>Many SQL dialects allow the use of the <code>AS</code> keyword when defining a table alias, but will also work fine without the keyword. For example, both these SQL statements are fine for SQL Server, PostgreSQL, Redshift, etc.:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb31-1"><a href="SqlAndR.html#cb31-1"></a><span class="co">-- Using AS keyword</span></span>
-<span id="cb31-2"><a href="SqlAndR.html#cb31-2"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
+<span id="cb31-2"><a href="SqlAndR.html#cb31-2"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
 <span id="cb31-3"><a href="SqlAndR.html#cb31-3"></a><span class="kw">FROM</span> my_table <span class="kw">AS</span> table_1</span>
 <span id="cb31-4"><a href="SqlAndR.html#cb31-4"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> (</span>
 <span id="cb31-5"><a href="SqlAndR.html#cb31-5"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> other_table</span>
@@ -931,7 +931,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <span id="cb31-7"><a href="SqlAndR.html#cb31-7"></a><span class="kw">ON</span> table_1.person_id <span class="op">=</span> table_2.person_id;</span>
 <span id="cb31-8"><a href="SqlAndR.html#cb31-8"></a></span>
 <span id="cb31-9"><a href="SqlAndR.html#cb31-9"></a><span class="co">-- Not using AS keyword</span></span>
-<span id="cb31-10"><a href="SqlAndR.html#cb31-10"></a><span class="kw">SELECT</span> <span class="op">*</span> </span>
+<span id="cb31-10"><a href="SqlAndR.html#cb31-10"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
 <span id="cb31-11"><a href="SqlAndR.html#cb31-11"></a><span class="kw">FROM</span> my_table table_1</span>
 <span id="cb31-12"><a href="SqlAndR.html#cb31-12"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> (</span>
 <span id="cb31-13"><a href="SqlAndR.html#cb31-13"></a>  <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> other_table</span>
@@ -949,7 +949,7 @@ There are limits to what SQL functions and constructs can be translated properly
 <p>For example:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="SqlAndR.html#cb32-1"></a>sql &lt;-<span class="st"> &quot;SELECT * FROM #children;&quot;</span></span>
 <span id="cb32-2"><a href="SqlAndR.html#cb32-2"></a><span class="kw">translate</span>(sql, <span class="dt">targetDialect =</span> <span class="st">&quot;oracle&quot;</span>, <span class="dt">oracleTempSchema =</span> <span class="st">&quot;temp_schema&quot;</span>)</span></code></pre></div>
-<pre><code>## [1] &quot;SELECT * FROM temp_schema.nriol23ychildren ;&quot;</code></pre>
+<pre><code>## [1] &quot;SELECT * FROM temp_schema.ldz6568ochildren ;&quot;</code></pre>
 <p>Note that the user will need to have write privileges on <code>temp_schema</code>.</p>
 <p>Also note that because Oracle has a limit on table names of 30 characters. <strong>Temp table names are only allowed to be at most 22 characters long</strong>, because else the name will become too long after appending the session ID.</p>
 <p>Furthermore, remember that temp tables are not automatically dropped on Oracle, so you will need to explicitly <code>TRUNCATE</code> and <code>DROP</code> all temp tables once you’re done with them to prevent orphan tables accumulating in the Oracle temp schema.</p>
@@ -972,9 +972,9 @@ There are limits to what SQL functions and constructs can be translated properly
 <div id="case-sensitivity-in-string-comparisons" class="section level4 unnumbered">
 <h4>Case Sensitivity in String Comparisons</h4>
 <p>Some DBMS platforms such as SQL Server always perform string comparisons in a case-insensitive way, while others such as PostgreSQL are always case sensitive. It is therefore recommended to always assume case-sensitive comparisons, and to explicitly make comparisons case-insensitive when unsure about the case. For example, instead of</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb37-1"><a href="SqlAndR.html#cb37-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> concep_class_id <span class="op">=</span> <span class="st">&#39;Clinical Finding&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb37-1"><a href="SqlAndR.html#cb37-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> concept_class_id <span class="op">=</span> <span class="st">&#39;Clinical Finding&#39;</span></span></code></pre></div>
 <p>it is preferred to use</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb38-1"><a href="SqlAndR.html#cb38-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> <span class="fu">LOWER</span>(concep_class_id) <span class="op">=</span> <span class="st">&#39;clinical finding&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb38-1"><a href="SqlAndR.html#cb38-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> concept <span class="kw">WHERE</span> <span class="fu">LOWER</span>(concept_class_id) <span class="op">=</span> <span class="st">&#39;clinical finding&#39;</span></span></code></pre></div>
 </div>
 <div id="schemas-and-databases" class="section level4 unnumbered">
 <h4>Schemas and Databases</h4>
@@ -1004,7 +1004,7 @@ Figure 9.1: The SqlDeveloper Shiny app.
 <h2><span class="header-section-number">9.2</span> DatabaseConnector</h2>
 <p><a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> is an R package for connecting to various database platforms using Java’s JDBC drivers. The DatabaseConnector package is available on CRAN (the Comprehensive R Archive Network), and can therefore be installed using:</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="SqlAndR.html#cb41-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;DatabaseConnector&quot;</span>)</span></code></pre></div>
-<p>DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon RedShift), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type <code>?jdbcDrivers</code> for instructions on how to download these drivers. Once downloaded, you can use the <code>pathToDriver</code> argument of the <code>connect</code>, <code>dbConnect</code>, and <code>createConnectionDetails</code> functions.</p>
+<p>DatabaseConnector supports a wide array of technical platforms including traditional database systems (PostgreSQL, Microsoft SQL Server, SQLite, and Oracle), parallel data warehouses (Microsoft APS, IBM Netezza, and Amazon ), as well as Big Data platforms (Hadoop through Impala, and Google BigQuery). The package already contains most drivers, but because of licensing reasons the drivers for BigQuery, Netezza and Impala are not included but must be obtained by the user. Type <code>?jdbcDrivers</code> for instructions on how to download these drivers. Once downloaded, you can use the <code>pathToDriver</code> argument of the <code>connect</code>, <code>dbConnect</code>, and <code>createConnectionDetails</code> functions.</p>
 <div id="creating-a-connection" class="section level3">
 <h3><span class="header-section-number">9.2.1</span> Creating a Connection</h3>
 <p>To connect to a database a number of details need to be specified, such as the database platform, the location of the server, the user name, and password. We can call the <code>connect</code> function and specify these details directly: </p>
@@ -1054,7 +1054,7 @@ Figure 9.1: The SqlDeveloper Shiny app.
 <div id="querying-different-platforms-using-the-same-sql" class="section level3">
 <h3><span class="header-section-number">9.2.4</span> Querying Different Platforms Using the Same SQL</h3>
 <p>The following convenience functions are available that first call the <code>render</code> and <code>translate</code> functions in the SqlRender package: <code>renderTranslateExecuteSql</code>, <code>renderTranslateQuerySql</code>, <code>renderTranslateQuerySql.ffdf</code>. For example:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="SqlAndR.html#cb53-1"></a>x &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, </span>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="SqlAndR.html#cb53-1"></a>x &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn,</span>
 <span id="cb53-2"><a href="SqlAndR.html#cb53-2"></a>                             <span class="dt">sql =</span> <span class="st">&quot;SELECT TOP 10 * FROM @schema.person&quot;</span>,</span>
 <span id="cb53-3"><a href="SqlAndR.html#cb53-3"></a>                             <span class="dt">schema =</span> <span class="st">&quot;cdm_synpuf&quot;</span>)</span></code></pre></div>
 <p>Note that the SQL Server-specific ‘TOP 10’ syntax will be translated to for example ‘LIMIT 10’ on PostgreSQL, and that the SQL parameter <code>@schema</code> will be instantiated with the provided value ‘cdm_synpuf’.</p>
@@ -1085,8 +1085,8 @@ Figure 9.1: The SqlDeveloper Shiny app.
 </tbody>
 </table>
 <p>Or perhaps we’re interested in the average length of an observation period:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb56-1"><a href="SqlAndR.html#cb56-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(DATEDIFF(<span class="dt">DAY</span>, </span>
-<span id="cb56-2"><a href="SqlAndR.html#cb56-2"></a>                    observation_period_start_date, </span>
+<div class="sourceCode" id="cb56"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb56-1"><a href="SqlAndR.html#cb56-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(DATEDIFF(<span class="dt">DAY</span>,</span>
+<span id="cb56-2"><a href="SqlAndR.html#cb56-2"></a>                    observation_period_start_date,</span>
 <span id="cb56-3"><a href="SqlAndR.html#cb56-3"></a>                    observation_period_end_date) <span class="op">/</span> <span class="fl">365.25</span>) <span class="kw">AS</span> num_years</span>
 <span id="cb56-4"><a href="SqlAndR.html#cb56-4"></a><span class="kw">FROM</span> @cdm.observation_period;</span></code></pre></div>
 <table>
@@ -1134,17 +1134,17 @@ Figure 9.1: The SqlDeveloper Shiny app.
 <span id="cb58-12"><a href="SqlAndR.html#cb58-12"></a>        ) age_computed</span>
 <span id="cb58-13"><a href="SqlAndR.html#cb58-13"></a>    )</span>
 <span id="cb58-14"><a href="SqlAndR.html#cb58-14"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(age) <span class="kw">AS</span> min_age,</span>
-<span id="cb58-15"><a href="SqlAndR.html#cb58-15"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
+<span id="cb58-15"><a href="SqlAndR.html#cb58-15"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span></span>
 <span id="cb58-16"><a href="SqlAndR.html#cb58-16"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.25</span> <span class="op">*</span> n</span>
 <span id="cb58-17"><a href="SqlAndR.html#cb58-17"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
 <span id="cb58-18"><a href="SqlAndR.html#cb58-18"></a>            <span class="cf">ELSE</span> age</span>
 <span id="cb58-19"><a href="SqlAndR.html#cb58-19"></a>            <span class="cf">END</span>) <span class="kw">AS</span> q25_age,</span>
-<span id="cb58-20"><a href="SqlAndR.html#cb58-20"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
+<span id="cb58-20"><a href="SqlAndR.html#cb58-20"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span></span>
 <span id="cb58-21"><a href="SqlAndR.html#cb58-21"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.50</span> <span class="op">*</span> n</span>
 <span id="cb58-22"><a href="SqlAndR.html#cb58-22"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
 <span id="cb58-23"><a href="SqlAndR.html#cb58-23"></a>            <span class="cf">ELSE</span> age</span>
 <span id="cb58-24"><a href="SqlAndR.html#cb58-24"></a>            <span class="cf">END</span>) <span class="kw">AS</span> median_age,</span>
-<span id="cb58-25"><a href="SqlAndR.html#cb58-25"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span> </span>
+<span id="cb58-25"><a href="SqlAndR.html#cb58-25"></a>    <span class="fu">MIN</span>(<span class="cf">CASE</span></span>
 <span id="cb58-26"><a href="SqlAndR.html#cb58-26"></a>            <span class="cf">WHEN</span> order_nr <span class="op">&lt;</span> <span class="fl">.75</span> <span class="op">*</span> n</span>
 <span id="cb58-27"><a href="SqlAndR.html#cb58-27"></a>                <span class="cf">THEN</span> <span class="dv">9999</span></span>
 <span id="cb58-28"><a href="SqlAndR.html#cb58-28"></a>            <span class="cf">ELSE</span> age</span>
@@ -1183,11 +1183,11 @@ Figure 9.1: The SqlDeveloper Shiny app.
 <span id="cb59-5"><a href="SqlAndR.html#cb59-5"></a><span class="st">  ON person.person_id = observation_period.person_id;&quot;</span></span>
 <span id="cb59-6"><a href="SqlAndR.html#cb59-6"></a>age &lt;-<span class="st"> </span><span class="kw">renderTranslateQuerySql</span>(conn, sql, <span class="dt">cdm =</span> <span class="st">&quot;cdm&quot;</span>)</span>
 <span id="cb59-7"><a href="SqlAndR.html#cb59-7"></a><span class="kw">quantile</span>(age[, <span class="dv">1</span>], <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>))</span></code></pre></div>
-<pre><code>##   0%  25%  50%  75% 100% 
+<pre><code>##   0%  25%  50%  75% 100%
 ##    0    6   17   34   90</code></pre>
 <p>Here we compute age on the server, download all ages, and then compute the age distribution. However, this requires millions of rows of data to be downloaded from the database server, and is therefore not very efficient. You will need to decide on a case-by-case basis whether a computation is best performed in SQL or in R.</p>
 <p>Queries can use the source values in the CDM. For example, we can retrieve the top 10 most frequent condition source codes using:</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb61-1"><a href="SqlAndR.html#cb61-1"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> condition_source_value, </span>
+<div class="sourceCode" id="cb61"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb61-1"><a href="SqlAndR.html#cb61-1"></a><span class="kw">SELECT</span> TOP <span class="dv">10</span> condition_source_value,</span>
 <span id="cb61-2"><a href="SqlAndR.html#cb61-2"></a>  <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> code_count</span>
 <span id="cb61-3"><a href="SqlAndR.html#cb61-3"></a><span class="kw">FROM</span> @cdm.condition_occurrence</span>
 <span id="cb61-4"><a href="SqlAndR.html#cb61-4"></a><span class="kw">GROUP</span> <span class="kw">BY</span> condition_source_value</span>
@@ -1551,8 +1551,8 @@ Figure 9.2: QueryLibrary: a library of SQL queries against the CDM.
 <div id="prerequisites-3" class="section level4 unnumbered">
 <h4>Prerequisites</h4>
 <p>For these exercises we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">8.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="SqlAndR.html#cb70-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
-<span id="cb70-2"><a href="SqlAndR.html#cb70-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="SqlAndR.html#cb70-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;remotes&quot;</span>))</span>
+<span id="cb70-2"><a href="SqlAndR.html#cb70-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span></code></pre></div>
 <p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="SqlAndR.html#cb71-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
 <p>The CDM database schema is “main”.</p>

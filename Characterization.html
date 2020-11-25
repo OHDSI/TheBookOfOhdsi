@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 11 Characterization | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.4 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 11 Characterization | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,8 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -739,7 +739,7 @@ Figure 11.2: Person-level view of incidence calculation components. In this exam
 </div>
 <p>In figure <a href="Characterization.html#fig:incidenceTimeline">11.2</a>, a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the TAR, we count that as an incidence of the outcome.</p>
 <p>There are two metrics for calculating incidence:</p>
-<p><span class="math display">\[ 
+<p><span class="math display">\[
 Incidence\;Proportion = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{\#\;persons\;in\;cohort\;with\;TAR}
 \]</span></p>
 <p>An incidence proportion provides a measure of the new outcomes per person in the population during the time-at-risk. Stated another way, this is the proportion of the population of interest that developed the outcome in a defined timeframe.</p>
@@ -932,9 +932,9 @@ Figure 11.16: Custom feature results display.
 <h3><span class="header-section-number">11.8.3</span> Using Prespecified Analyses</h3>
 <p>The function <code>createCovariateSettings</code> allow the user to choose from a large set of predefined covariates. Type <code>?createCovariateSettings</code> to get an overview of the available options. For example:</p>
 <div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="Characterization.html#cb86-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(</span>
-<span id="cb86-2"><a href="Characterization.html#cb86-2"></a>  <span class="dt">useDemographicsGender =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb86-3"><a href="Characterization.html#cb86-3"></a>  <span class="dt">useDemographicsAgeGroup =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb86-4"><a href="Characterization.html#cb86-4"></a>  <span class="dt">useConditionOccurrenceAnyTimePrior =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
+<span id="cb86-2"><a href="Characterization.html#cb86-2"></a>  <span class="dt">useDemographicsGender =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb86-3"><a href="Characterization.html#cb86-3"></a>  <span class="dt">useDemographicsAgeGroup =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb86-4"><a href="Characterization.html#cb86-4"></a>  <span class="dt">useConditionOccurrenceAnyTimePrior =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>This will create binary covariates for gender, age (in 5 year age groups), and each concept observed in the condition_occurrence table any time prior to (and including) the cohort start date.</p>
 <p>Many of the prespecified analyses refer to a short, medium, or long term time window. By default, these windows are defined as:</p>
 <ul>
@@ -943,25 +943,25 @@ Figure 11.16: Custom feature results display.
 <li><strong>Short term</strong>: 30 days prior up to and including the cohort start date.</li>
 </ul>
 <p>However, the user can change these values. For example:</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="Characterization.html#cb87-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useConditionEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb87-2"><a href="Characterization.html#cb87-2"></a>                                    <span class="dt">useConditionEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="Characterization.html#cb87-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useConditionEraLongTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb87-2"><a href="Characterization.html#cb87-2"></a>                                    <span class="dt">useConditionEraShortTerm =</span> <span class="ot">TRUE</span>,</span>
 <span id="cb87-3"><a href="Characterization.html#cb87-3"></a>                                    <span class="dt">useDrugEraLongTerm =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb87-4"><a href="Characterization.html#cb87-4"></a>                                    <span class="dt">useDrugEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb87-5"><a href="Characterization.html#cb87-5"></a>                                    <span class="dt">longTermStartDays =</span> <span class="dv">-180</span>, </span>
-<span id="cb87-6"><a href="Characterization.html#cb87-6"></a>                                    <span class="dt">shortTermStartDays =</span> <span class="dv">-14</span>, </span>
-<span id="cb87-7"><a href="Characterization.html#cb87-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>) </span></code></pre></div>
+<span id="cb87-4"><a href="Characterization.html#cb87-4"></a>                                    <span class="dt">useDrugEraShortTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb87-5"><a href="Characterization.html#cb87-5"></a>                                    <span class="dt">longTermStartDays =</span> <span class="dv">-180</span>,</span>
+<span id="cb87-6"><a href="Characterization.html#cb87-6"></a>                                    <span class="dt">shortTermStartDays =</span> <span class="dv">-14</span>,</span>
+<span id="cb87-7"><a href="Characterization.html#cb87-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>)</span></code></pre></div>
 <p>This redefines the long-term window as 180 days prior up to (but not including) the cohort start date, and redefines the short term window as 14 days prior up to (but not including) the cohort start date.</p>
 <p>Again, we can also specify which concept IDs should or should not be used to construct covariates:</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Characterization.html#cb88-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useConditionEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb88-2"><a href="Characterization.html#cb88-2"></a>                                    <span class="dt">useConditionEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb88-3"><a href="Characterization.html#cb88-3"></a>                                    <span class="dt">useDrugEraLongTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb88-4"><a href="Characterization.html#cb88-4"></a>                                    <span class="dt">useDrugEraShortTerm =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb88-5"><a href="Characterization.html#cb88-5"></a>                                    <span class="dt">longTermStartDays =</span> <span class="dv">-180</span>, </span>
-<span id="cb88-6"><a href="Characterization.html#cb88-6"></a>                                    <span class="dt">shortTermStartDays =</span> <span class="dv">-14</span>, </span>
-<span id="cb88-7"><a href="Characterization.html#cb88-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>, </span>
-<span id="cb88-8"><a href="Characterization.html#cb88-8"></a>                                    <span class="dt">excludedCovariateConceptIds =</span> <span class="dv">1124300</span>, </span>
-<span id="cb88-9"><a href="Characterization.html#cb88-9"></a>                                    <span class="dt">addDescendantsToExclude =</span> <span class="ot">TRUE</span>, </span>
-<span id="cb88-10"><a href="Characterization.html#cb88-10"></a>                                    <span class="dt">aggregated =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Characterization.html#cb88-1"></a>settings &lt;-<span class="st"> </span><span class="kw">createCovariateSettings</span>(<span class="dt">useConditionEraLongTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb88-2"><a href="Characterization.html#cb88-2"></a>                                    <span class="dt">useConditionEraShortTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb88-3"><a href="Characterization.html#cb88-3"></a>                                    <span class="dt">useDrugEraLongTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb88-4"><a href="Characterization.html#cb88-4"></a>                                    <span class="dt">useDrugEraShortTerm =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb88-5"><a href="Characterization.html#cb88-5"></a>                                    <span class="dt">longTermStartDays =</span> <span class="dv">-180</span>,</span>
+<span id="cb88-6"><a href="Characterization.html#cb88-6"></a>                                    <span class="dt">shortTermStartDays =</span> <span class="dv">-14</span>,</span>
+<span id="cb88-7"><a href="Characterization.html#cb88-7"></a>                                    <span class="dt">endDays =</span> <span class="dv">-1</span>,</span>
+<span id="cb88-8"><a href="Characterization.html#cb88-8"></a>                                    <span class="dt">excludedCovariateConceptIds =</span> <span class="dv">1124300</span>,</span>
+<span id="cb88-9"><a href="Characterization.html#cb88-9"></a>                                    <span class="dt">addDescendantsToExclude =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb88-10"><a href="Characterization.html#cb88-10"></a>                                    <span class="dt">aggregated =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 
 <div class="rmdimportant">
 The use of <code>aggregated = TRUE</code> for all of the examples above indicate to FeatureExtraction to provide summary statistics. Excluding this flag will compute covariates for each person in the cohort.
@@ -971,22 +971,22 @@ The use of <code>aggregated = TRUE</code> for all of the examples above indicate
 <div id="creating-aggregated-covariates" class="section level3">
 <h3><span class="header-section-number">11.8.4</span> Creating Aggregated Covariates</h3>
 <p>The following code block will generate aggregated statistics for a cohort:</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Characterization.html#cb89-1"></a>covariateSettings &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>() </span>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Characterization.html#cb89-1"></a>covariateSettings &lt;-<span class="st"> </span><span class="kw">createDefaultCovariateSettings</span>()</span>
 <span id="cb89-2"><a href="Characterization.html#cb89-2"></a></span>
 <span id="cb89-3"><a href="Characterization.html#cb89-3"></a>covariateData2 &lt;-<span class="st"> </span><span class="kw">getDbCovariateData</span>(</span>
-<span id="cb89-4"><a href="Characterization.html#cb89-4"></a>  <span class="dt">connectionDetails =</span> connectionDetails, </span>
-<span id="cb89-5"><a href="Characterization.html#cb89-5"></a>  <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema, </span>
-<span id="cb89-6"><a href="Characterization.html#cb89-6"></a>  <span class="dt">cohortDatabaseSchema =</span> resultsDatabaseSchema, </span>
-<span id="cb89-7"><a href="Characterization.html#cb89-7"></a>  <span class="dt">cohortTable =</span> <span class="st">&quot;cohorts_of_interest&quot;</span>, </span>
-<span id="cb89-8"><a href="Characterization.html#cb89-8"></a>  <span class="dt">cohortId =</span> <span class="dv">1</span>, </span>
-<span id="cb89-9"><a href="Characterization.html#cb89-9"></a>  <span class="dt">covariateSettings =</span> covariateSettings, </span>
-<span id="cb89-10"><a href="Characterization.html#cb89-10"></a>  <span class="dt">aggregated =</span> <span class="ot">TRUE</span>) </span>
+<span id="cb89-4"><a href="Characterization.html#cb89-4"></a>  <span class="dt">connectionDetails =</span> connectionDetails,</span>
+<span id="cb89-5"><a href="Characterization.html#cb89-5"></a>  <span class="dt">cdmDatabaseSchema =</span> cdmDatabaseSchema,</span>
+<span id="cb89-6"><a href="Characterization.html#cb89-6"></a>  <span class="dt">cohortDatabaseSchema =</span> resultsDatabaseSchema,</span>
+<span id="cb89-7"><a href="Characterization.html#cb89-7"></a>  <span class="dt">cohortTable =</span> <span class="st">&quot;cohorts_of_interest&quot;</span>,</span>
+<span id="cb89-8"><a href="Characterization.html#cb89-8"></a>  <span class="dt">cohortId =</span> <span class="dv">1</span>,</span>
+<span id="cb89-9"><a href="Characterization.html#cb89-9"></a>  <span class="dt">covariateSettings =</span> covariateSettings,</span>
+<span id="cb89-10"><a href="Characterization.html#cb89-10"></a>  <span class="dt">aggregated =</span> <span class="ot">TRUE</span>)</span>
 <span id="cb89-11"><a href="Characterization.html#cb89-11"></a></span>
-<span id="cb89-12"><a href="Characterization.html#cb89-12"></a><span class="kw">summary</span>(covariateData2) </span></code></pre></div>
+<span id="cb89-12"><a href="Characterization.html#cb89-12"></a><span class="kw">summary</span>(covariateData2)</span></code></pre></div>
 <p>And the output will look similar to the following:</p>
-<pre><code>## CovariateData Object Summary 
-## 
-## Number of Covariates: 41330 
+<pre><code>## CovariateData Object Summary
+##
+## Number of Covariates: 41330
 ## Number of Non-Zero Covariate Values: 41330</code></pre>
 </div>
 <div id="output-format" class="section level3">
@@ -1138,7 +1138,7 @@ Figure 11.27: Incidence Rate - New users of ACEi receiving ARBs treatment during
 <h2><span class="header-section-number">11.12</span> Exercises</h2>
 <div id="prerequisites-6" class="section level4 unnumbered">
 <h4>Prerequisites</h4>
-<p>For these exercises, access to an ATLAS instance is required. You can use the instance at <a href="http://atlas-demo.ohdsi.org">http://atlas-demo.ohdsi.org</a>, or any other instance you have acces to.</p>
+<p>For these exercises, access to an ATLAS instance is required. You can use the instance at <a href="http://atlas-demo.ohdsi.org">http://atlas-demo.ohdsi.org</a>, or any other instance you have access to.</p>
 
 <div class="exercise">
 <p><span id="exr:exerciseCharacterization1" class="exercise"><strong>Exercise 11.1  </strong></span>We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.</p>

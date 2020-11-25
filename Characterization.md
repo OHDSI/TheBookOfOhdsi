@@ -9,13 +9,13 @@ Observational healthcare databases provide a valuable resource to understand var
 * **Treatment pathways**: describes the sequence of interventions a person received for a duration of time.
 * **Incidence**: measures the occurrence rate of an outcome in a population for a time at risk.
 
-With the exception of database-level characterization, these methods aim to describe a population relative to an event referred to as the index date. This population of interest is defined as a cohort as described in chapter \@ref(Cohorts). The cohort defines the index date for each person in the population of interest. Using the index date as an anchor, we define the time preceding the index date as **baseline** time. The index date and all time after is called the **post-index** time. 
+With the exception of database-level characterization, these methods aim to describe a population relative to an event referred to as the index date. This population of interest is defined as a cohort as described in chapter \@ref(Cohorts). The cohort defines the index date for each person in the population of interest. Using the index date as an anchor, we define the time preceding the index date as **baseline** time. The index date and all time after is called the **post-index** time.
 
 Use-cases for characterization include disease natural history, treatment utilization and quality improvement. In this chapter will describe the methods for characterization. We will use a population of hypertensive persons to demonstrate how to use ATLAS and R to perform these characterization tasks.\index{characterization} \index{cohort characterization|see {characterization!cohort}} \index{baseline time} \index{post-index time} \index{index date} \index{disease natural history|see {characterization}} \index{treatment utilization|see {characterization}} \index{quality improvement|see {characterization}}
 
 ## Database Level Characterization
 
-Before we can answer any characterization question about a population of interest, we must first understand the characteristics of the database we intend to utilize. Database level characterization seeks to describe the totality of a database in terms of the temporal trends and distributions. This quantitative assessment of a database will typically include questions such as: 
+Before we can answer any characterization question about a population of interest, we must first understand the characteristics of the database we intend to utilize. Database level characterization seeks to describe the totality of a database in terms of the temporal trends and distributions. This quantitative assessment of a database will typically include questions such as:
 
 * What is the total count of persons in this database?
 * What is the distribution of age for persons?
@@ -26,7 +26,7 @@ These database-level descriptive statistics also help a researcher to understand
 
 ## Cohort Characterization
 
-Cohort characterization describes the baseline and post-index characteristics of people in a cohort. OHDSI approaches characterization through descriptive statistics of all conditions, drug and device exposures, procedures and other clinical observations that are present in the person’s history. We also summarize the socio-demographics of members of the cohort at the index date. This approach provides a complete summary of the cohort of interest. Importantly, this enables a full exploration of the cohort with an eye towards variation in the data while also allowing for identification of potentially missing values. 
+Cohort characterization describes the baseline and post-index characteristics of people in a cohort. OHDSI approaches characterization through descriptive statistics of all conditions, drug and device exposures, procedures and other clinical observations that are present in the person’s history. We also summarize the socio-demographics of members of the cohort at the index date. This approach provides a complete summary of the cohort of interest. Importantly, this enables a full exploration of the cohort with an eye towards variation in the data while also allowing for identification of potentially missing values.
 
 Cohort characterization methods can be used for person-level drug utilization studies (DUS) to estimate the prevalence of indications and contraindications amongst users of a given treatment. The dissemination of this cohort characterization is a recommended best practice for observational studies as detailed in the Strengthening the Reporting of Observation Studies in Epidemiology (STROBE) guidelines. [@VONELM2008344] \index{characterization!cohort} \index{descriptive statistics|see {characterization}} \index{drug utilization}
 
@@ -41,9 +41,9 @@ The pathway analysis aims to summarize the treatments (events) received by perso
 <p class="caption">(\#fig:treatmentPathwaysSunburstDataViz)OHDSI Treatment Pathways "sunburst" visualization for hypertension</p>
 </div>
 
-As an example, figure \@ref(fig:treatmentPathwaysSunburstDataViz) represents a population of persons initiating treatment for hypertension. The first ring in the center shows the proportion of persons based on their first-line therapy. In this example, Hydrochlorothiazide is the most common first-line therapy for this population. The boxes that extend from the Hydrochlorothiazide section represent the 2nd and 3rd line therapies recorded for persons in the cohort. 
+As an example, figure \@ref(fig:treatmentPathwaysSunburstDataViz) represents a population of persons initiating treatment for hypertension. The first ring in the center shows the proportion of persons based on their first-line therapy. In this example, Hydrochlorothiazide is the most common first-line therapy for this population. The boxes that extend from the Hydrochlorothiazide section represent the 2nd and 3rd line therapies recorded for persons in the cohort.
 
-A pathways analysis provides important evidence about treatment utilization amongst a population. From this analysis we can describe the most prevalent first-line therapies utilized, the proportion of persons that discontinue treatment, switch treatments or augment their therapy. Using the pathway analysis, @Hripcsak7329 found that metformin is the most commonly prescribed medication for diabetes thus confirming general adoption of the first-line recommendation of the American Association of Clinical Endocrinologists diabetes treatment algorithm. Additionally, they noted that 10% of diabetes patients, 24% of hypertension patients, and 11% of depression patients followed a treatment pathway that was shared with no one else in any of the data sources. 
+A pathways analysis provides important evidence about treatment utilization amongst a population. From this analysis we can describe the most prevalent first-line therapies utilized, the proportion of persons that discontinue treatment, switch treatments or augment their therapy. Using the pathway analysis, @Hripcsak7329 found that metformin is the most commonly prescribed medication for diabetes thus confirming general adoption of the first-line recommendation of the American Association of Clinical Endocrinologists diabetes treatment algorithm. Additionally, they noted that 10% of diabetes patients, 24% of hypertension patients, and 11% of depression patients followed a treatment pathway that was shared with no one else in any of the data sources.
 
 In classic DUS terminology, treatment pathway analyses include some population-level DUS estimates such as prevalence of use of one or more medications in a specified population, as well as some person-level DUS including measures of persistence and switching between different therapies.
 
@@ -56,11 +56,11 @@ Incidence rates and proportions are statistics that are used in public health to
 <p class="caption">(\#fig:incidenceTimeline)Person-level view of incidence calculation components. In this example, time-at-risk is defined to start one day after cohort start, and end at cohort end.</p>
 </div>
 
-In figure \@ref(fig:incidenceTimeline), a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the TAR, we count that as an incidence of the outcome. 
+In figure \@ref(fig:incidenceTimeline), a person has a period of time where they are observed in the data denoted by their observation start and end time. Next, the person has a point in time where they enter and exit a cohort by meeting some eligibility criteria. The time at risk window then denotes when we seek to understand the occurrence of an outcome. If the outcome falls into the TAR, we count that as an incidence of the outcome.
 
 There are two metrics for calculating incidence:
 
-$$ 
+$$
 Incidence\;Proportion = \frac{\#\;persons\;in\;cohort\;with\;new\;outcome\;during\;TAR}{\#\;persons\;in\;cohort\;with\;TAR}
 $$
 
@@ -76,12 +76,12 @@ When calculated for therapies, incidence proportions and incidence rates of use 
 
 ## Characterizing Hypertensive Persons
 
-Per the World Health Organization’s (WHO) global brief on hypertension [@WHOHypertension], there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. The WHO brief provides an overview of hypertension and characterizes the burden of the disease across different countries. The WHO provides descriptive statistics around hypertension for geographic regions, socio-economic class and gender. 
+Per the World Health Organization’s (WHO) global brief on hypertension [@WHOHypertension], there are significant health and economic gains attached to early detection, adequate treatment and good control of hypertension. The WHO brief provides an overview of hypertension and characterizes the burden of the disease across different countries. The WHO provides descriptive statistics around hypertension for geographic regions, socio-economic class and gender.
 
 Observational data sources provide a way to characterize hypertensive populations as was done by the WHO. In the subsequent sections of this chapter, we’ll explore the ways that we make use of ATLAS and R to explore a database to understand its composition for studying hypertensive populations. Then, we will use these same tools to describe the natural history and treatment patterns of hypertensive populations.
 
 ## Database Characterization in ATLAS
- 
+
 Here we demonstrate how to use the data sources module in ATLAS to explore database characterization statistics created with [ACHILLES](https://github.com/OHDSI/Achilles) to find database level characteristics related to hypertensive persons. Start by clicking on ![](images/Characterization/atlasDataSourcesMenuItem.png) in the left bar of ATLAS to start. In the first drop down list shown in ATLAS, select the database to explore. Next, use the drop down below the database to start exploring reports. To do this, select the Condition Occurrence from the report drop down which will reveal a treemap visualization of all conditions present in the database:
 
 <div class="figure" style="text-align: center">
@@ -136,16 +136,16 @@ Click on ![](images/Characterization/atlasImportButton.png) to select the featur
 The figure above shows the list of features selected along with a description of what each feature will characterize for each cohort. The features that start with the name "Demographics" will calculate the demographic information for each person at the cohort start date. For the features that start with a domain name (i.e. Visit, Procedure, Condition, Drug, etc), these will characterize all recorded observations in that domain. Each domain feature has four options of time window preceding the cohort star, namely:
 
 * **Any time prior**: uses all available time prior to cohort start that fall into the person’s observation period
-* **Long term**: 365 days prior up to and including the cohort start date. 
-* **Medium term**: 180 days prior up to and including the cohort start date. 
-* **Short term**: 30 days prior up to and including the cohort start date. 
+* **Long term**: 365 days prior up to and including the cohort start date.
+* **Medium term**: 180 days prior up to and including the cohort start date.
+* **Short term**: 30 days prior up to and including the cohort start date.
 
 #### Subgroup Analysis {-}
 
 What if we were interested in creating different characteristics based on gender? We can use the "subgroup analyses" section to define new subgroups of interest to use in our characterization.
 
 To create a subgroup, click on and add your criteria for subgroup membership. This step is similar to the criteria used to identify cohort enrollment. In this example, we’ll define a set of criteria to identify females amongst our cohorts:
-  
+
 <div class="figure" style="text-align: center">
 <img src="images/Characterization/atlasCharacterizationSubgroup.png" alt="Characterization design with female sub group analysis." width="100%" />
 <p class="caption">(\#fig:atlasCharacterizationSubgroup)Characterization design with female sub group analysis.</p>
@@ -172,7 +172,7 @@ Once the analysis is complete, we can view reports by clicking on the "All Execu
 <p class="caption">(\#fig:atlasCharacterizationResultsSummary)Characterization results - condition occurrence long term.</p>
 </div>
 
-The results provide a tabular view of the different features for each cohort selected in the design. In figure \@ref(fig:atlasCharacterizationResultsSummary), a table provides a summary of all conditions present in the two cohorts in the preceding 365 days from the cohort start. Each covariate has a count and percentage for each cohort and the female subgroup we defined within each cohort. 
+The results provide a tabular view of the different features for each cohort selected in the design. In figure \@ref(fig:atlasCharacterizationResultsSummary), a table provides a summary of all conditions present in the two cohorts in the preceding 365 days from the cohort start. Each covariate has a count and percentage for each cohort and the female subgroup we defined within each cohort.
 
 We used the search box to filter the results to see what proportion of persons have a `cardiac arrhythmia` in their history in an effort to understand what cardiovascular-related diagnoses are observed in the populations. We can use the `Explore` link next to the cardiac arrhythmia concept to open a new window with more details about the concept for a single cohort as shown in figure \@ref(fig:atlasCharacterizationResultsExplore):
 
@@ -196,14 +196,14 @@ Once again, we’ll use the explore feature to see the characteristics of Edema 
 <p class="caption">(\#fig:atlasCharacterizationResultsContraExplore)Characterization results - exploring a contraindicated condition details.</p>
 </div>
 
-Here we find that a portion of this population has a record of angioedema in the year prior to starting an anti-hypertensive medication. 
+Here we find that a portion of this population has a record of angioedema in the year prior to starting an anti-hypertensive medication.
 
 <div class="figure" style="text-align: center">
 <img src="images/Characterization/atlasCharacterizationResultsContinuous.png" alt="Characterization results of age for each cohort and sub group." width="100%" />
 <p class="caption">(\#fig:atlasCharacterizationResultsContinuous)Characterization results of age for each cohort and sub group.</p>
 </div>
 
-While domain covariates are computed using a binary indicator (i.e. was a record of the code present in the prior timeframe), some variables provide a continuous value such as the age of persons at cohort start. In the example above, we show the age for the 2 cohorts characterized expressed with the count of persons, mean age, median age and standard deviation. 
+While domain covariates are computed using a binary indicator (i.e. was a record of the code present in the prior timeframe), some variables provide a continuous value such as the age of persons at cohort start. In the example above, we show the age for the 2 cohorts characterized expressed with the count of persons, mean age, median age and standard deviation.
 
 ### Defining Custom Features
 
@@ -259,53 +259,53 @@ The last four lines define the `cdmDbSchema`, `cohortsDbSchema`, and `cohortsDbT
 
 ### Using Prespecified Analyses
 
-The function `createCovariateSettings` allow the user to choose from a large set of predefined covariates. Type `?createCovariateSettings` to get an overview of the available options. For example: 
+The function `createCovariateSettings` allow the user to choose from a large set of predefined covariates. Type `?createCovariateSettings` to get an overview of the available options. For example:
 
 
 ```r
 settings <- createCovariateSettings(
-  useDemographicsGender = TRUE, 
-  useDemographicsAgeGroup = TRUE, 
-  useConditionOccurrenceAnyTimePrior = TRUE) 
+  useDemographicsGender = TRUE,
+  useDemographicsAgeGroup = TRUE,
+  useConditionOccurrenceAnyTimePrior = TRUE)
 ```
 
-This will create binary covariates for gender, age (in 5 year age groups), and each concept observed in the condition_occurrence table any time prior to (and including) the cohort start date. 
+This will create binary covariates for gender, age (in 5 year age groups), and each concept observed in the condition_occurrence table any time prior to (and including) the cohort start date.
 
-Many of the prespecified analyses refer to a short, medium, or long term time window. By default, these windows are defined as: 
+Many of the prespecified analyses refer to a short, medium, or long term time window. By default, these windows are defined as:
 
-* **Long term**: 365 days prior up to and including the cohort start date. 
-* **Medium term**: 180 days prior up to and including the cohort start date. 
-* **Short term**: 30 days prior up to and including the cohort start date. 
+* **Long term**: 365 days prior up to and including the cohort start date.
+* **Medium term**: 180 days prior up to and including the cohort start date.
+* **Short term**: 30 days prior up to and including the cohort start date.
 
-However, the user can change these values. For example: 
+However, the user can change these values. For example:
 
 
 ```r
-settings <- createCovariateSettings(useConditionEraLongTerm = TRUE, 
-                                    useConditionEraShortTerm = TRUE, 
+settings <- createCovariateSettings(useConditionEraLongTerm = TRUE,
+                                    useConditionEraShortTerm = TRUE,
                                     useDrugEraLongTerm = TRUE,
-                                    useDrugEraShortTerm = TRUE, 
-                                    longTermStartDays = -180, 
-                                    shortTermStartDays = -14, 
-                                    endDays = -1) 
+                                    useDrugEraShortTerm = TRUE,
+                                    longTermStartDays = -180,
+                                    shortTermStartDays = -14,
+                                    endDays = -1)
 ```
 
-This redefines the long-term window as 180 days prior up to (but not including) the cohort start date, and redefines the short term window as 14 days prior up to (but not including) the cohort start date. 
+This redefines the long-term window as 180 days prior up to (but not including) the cohort start date, and redefines the short term window as 14 days prior up to (but not including) the cohort start date.
 
-Again, we can also specify which concept IDs should or should not be used to construct covariates: 
+Again, we can also specify which concept IDs should or should not be used to construct covariates:
 
 
 ```r
-settings <- createCovariateSettings(useConditionEraLongTerm = TRUE, 
-                                    useConditionEraShortTerm = TRUE, 
-                                    useDrugEraLongTerm = TRUE, 
-                                    useDrugEraShortTerm = TRUE, 
-                                    longTermStartDays = -180, 
-                                    shortTermStartDays = -14, 
-                                    endDays = -1, 
-                                    excludedCovariateConceptIds = 1124300, 
-                                    addDescendantsToExclude = TRUE, 
-                                    aggregated = TRUE) 
+settings <- createCovariateSettings(useConditionEraLongTerm = TRUE,
+                                    useConditionEraShortTerm = TRUE,
+                                    useDrugEraLongTerm = TRUE,
+                                    useDrugEraShortTerm = TRUE,
+                                    longTermStartDays = -180,
+                                    shortTermStartDays = -14,
+                                    endDays = -1,
+                                    excludedCovariateConceptIds = 1124300,
+                                    addDescendantsToExclude = TRUE,
+                                    aggregated = TRUE)
 ```
 
 \BeginKnitrBlock{rmdimportant}<div class="rmdimportant">The use of `aggregated = TRUE` for all of the examples above indicate to FeatureExtraction to provide summary statistics. Excluding this flag will compute covariates for each person in the cohort.</div>\EndKnitrBlock{rmdimportant}
@@ -313,30 +313,30 @@ settings <- createCovariateSettings(useConditionEraLongTerm = TRUE,
 
 ### Creating Aggregated Covariates
 
-The following code block will generate aggregated statistics for a cohort: 
+The following code block will generate aggregated statistics for a cohort:
 
 
 ```r
-covariateSettings <- createDefaultCovariateSettings() 
+covariateSettings <- createDefaultCovariateSettings()
 
 covariateData2 <- getDbCovariateData(
-  connectionDetails = connectionDetails, 
-  cdmDatabaseSchema = cdmDatabaseSchema, 
-  cohortDatabaseSchema = resultsDatabaseSchema, 
-  cohortTable = "cohorts_of_interest", 
-  cohortId = 1, 
-  covariateSettings = covariateSettings, 
-  aggregated = TRUE) 
+  connectionDetails = connectionDetails,
+  cdmDatabaseSchema = cdmDatabaseSchema,
+  cohortDatabaseSchema = resultsDatabaseSchema,
+  cohortTable = "cohorts_of_interest",
+  cohortId = 1,
+  covariateSettings = covariateSettings,
+  aggregated = TRUE)
 
-summary(covariateData2) 
+summary(covariateData2)
 ```
 
 And the output will look similar to the following:
 
 ```
-## CovariateData Object Summary 
-## 
-## Number of Covariates: 41330 
+## CovariateData Object Summary
+##
+## Number of Covariates: 41330
 ## Number of Non-Zero Covariate Values: 41330
 ```
 
@@ -352,7 +352,7 @@ covariateData2$covariatesContinuous
 
 ### Custom Covariates
 
-FeatureExtraction also provides the ability to define and utilize custom covariates. These details are an advanced topic and covered in the user documentation: http://ohdsi.github.io/FeatureExtraction/. 
+FeatureExtraction also provides the ability to define and utilize custom covariates. These details are an advanced topic and covered in the user documentation: http://ohdsi.github.io/FeatureExtraction/.
 
 ## Cohort Pathways in ATLAS
 
@@ -365,9 +365,9 @@ Cohort pathways aims to provide analytic capabilities to summarize the events fo
 <p class="caption">(\#fig:pathwaysPersonEventView)Pathways analysis in the context of a single person.</p>
 </div>
 
-In figure \@ref(fig:pathwaysPersonEventView), the person is part of the target cohort with a defined start and end date. Then, the numbered line segments represent where that person also is identified in an event cohort for a duration of time. Event cohorts allow us to describe any clinical event of interest that is represented in the CDM such that we are not constrained to creating a pathway for a single domain or concept. 
+In figure \@ref(fig:pathwaysPersonEventView), the person is part of the target cohort with a defined start and end date. Then, the numbered line segments represent where that person also is identified in an event cohort for a duration of time. Event cohorts allow us to describe any clinical event of interest that is represented in the CDM such that we are not constrained to creating a pathway for a single domain or concept.
 
-To start, click on ![](images/Characterization/atlasPathwaysMenuItem.png) in the left bar of ATLAS to create a new cohort pathways study. Provide a descriptive name and press the save button. 
+To start, click on ![](images/Characterization/atlasPathwaysMenuItem.png) in the left bar of ATLAS to create a new cohort pathways study. Provide a descriptive name and press the save button.
 
 ### Design
 
@@ -391,8 +391,8 @@ When complete, your design should look like the one above. Next, we’ll need to
 
 * **Combination window**: This setting allows you to define a window of time, in days, in which overlap between events is considered a combination of events. For example, if two drugs represented by 2 event cohorts (event cohort 1 and event cohort 2) overlap within the combination window the pathways algorithm will combine them into "event cohort 1 + event cohort 2".
 * **Minimum cell count**: Event cohorts with less than this number of people will be censored (removed) from the output to protect privacy.
-* **Max path length**: This refers to the maximum number of sequential events to consider for the analysis. 
-  
+* **Max path length**: This refers to the maximum number of sequential events to consider for the analysis.
+
 ### Executions
 
 Once we have our pathway analysis designed, we can execute this design against one or more databases in our environment. This works the same way as we described for cohort characterization in ATLAS. Once complete, we can review the results of the analysis.
@@ -406,7 +406,7 @@ Once we have our pathway analysis designed, we can execute this design against o
 
 The results of a pathway analysis are broken into 3 sections: The legend section displays the total number of persons in the target cohort along with the number of persons that had 1 or more events in the pathway analysis. Below that summary are the color designations for each of the cohorts that appear in the sunburst plot in the center section.
 
-The sunburst plot is a visualization that represents the various event pathways taken by persons over time. The center of the plot represents the cohort entry and the first color-coded ring shows the proportion of persons in each event cohort. In our example, the center of the circle represents hypertensive persons initiating a first line therapy. Then, the first ring in the sunburst plot shows the proportion of persons that initiated a type of first-line therapy defined by the event cohorts (i.e. ACE inhibitors, Angiotensin receptor blockers, etc). The second set of rings represents the 2nd event cohort for persons. In certain event sequences, a person may never have a 2nd event cohort observed in the data and that proportion is represented by the grey portion of the ring. 
+The sunburst plot is a visualization that represents the various event pathways taken by persons over time. The center of the plot represents the cohort entry and the first color-coded ring shows the proportion of persons in each event cohort. In our example, the center of the circle represents hypertensive persons initiating a first line therapy. Then, the first ring in the sunburst plot shows the proportion of persons that initiated a type of first-line therapy defined by the event cohorts (i.e. ACE inhibitors, Angiotensin receptor blockers, etc). The second set of rings represents the 2nd event cohort for persons. In certain event sequences, a person may never have a 2nd event cohort observed in the data and that proportion is represented by the grey portion of the ring.
 
 
 <div class="figure" style="text-align: center">
@@ -414,14 +414,14 @@ The sunburst plot is a visualization that represents the various event pathways 
 <p class="caption">(\#fig:atlasPathwaysResultsPathDetails)Pathways results displaying path details.</p>
 </div>
 
-Clicking on a section of the sunburst plot will display the path details on the right. Here we can see that the largest proportion of people in our target cohort initiated a first-line therapy with ACE inhibitors and from that group, a smaller proportion started a Thiazide or thiazide diuretics. 
+Clicking on a section of the sunburst plot will display the path details on the right. Here we can see that the largest proportion of people in our target cohort initiated a first-line therapy with ACE inhibitors and from that group, a smaller proportion started a Thiazide or thiazide diuretics.
 
 ## Incidence Analysis in ATLAS
 
 In an incidence calculation, we describe: amongst the persons in the target cohort, who experienced the outcome cohort during the time at risk period. Here we will design an incidence analysis to characterize angioedema and acute myocardial infarction outcomes amongst new users of ACE inhibitors (ACEi) and Thiazides and thiazide-like diuretics (THZ). We will assess these outcomes during the TAR that a person was exposed to the drug. Additionally, we will add an outcome of drug exposure to Angiotensin receptor blockers (ARBs) to measure the incidence of new use of ARBs during exposure to the target cohorts (ACEi and THZ). This outcome definition provides an understanding of how ARBs are utilized amongst the target populations.
 
 
-To start, click on ![](images/Characterization/atlasIncidenceMenuItem.png) in the left bar of ATLAS to create a new incidence analysis. Provide a descriptive name and press the save button ![](images/PopulationLevelEstimation/save.png). 
+To start, click on ![](images/Characterization/atlasIncidenceMenuItem.png) in the left bar of ATLAS to create a new incidence analysis. Provide a descriptive name and press the save button ![](images/PopulationLevelEstimation/save.png).
 
 ### Design
 
@@ -433,7 +433,7 @@ We assume the cohorts used in this example have already been created in ATLAS as
 <p class="caption">(\#fig:atlasIncidenceCohortSelection)Incidence Rate target and outcome definition.</p>
 </div>
 
-On the definition tab, click to choose the *New users of ACE inhibitors* cohort and the *New users of Thiazide or Thiazide-like diuretics* cohort. Close the dialog to view that these cohorts are added to the design. Next we add our outcome cohorts by clicking on and from the dialog box, select the outcome cohorts of *acute myocardial infarction events*, *angioedema events* and *Angiotensin receptor blocker (ARB) use*. Again, close the window to view that these cohorts are added to the outcome cohorts section of the design. 
+On the definition tab, click to choose the *New users of ACE inhibitors* cohort and the *New users of Thiazide or Thiazide-like diuretics* cohort. Close the dialog to view that these cohorts are added to the design. Next we add our outcome cohorts by clicking on and from the dialog box, select the outcome cohorts of *acute myocardial infarction events*, *angioedema events* and *Angiotensin receptor blocker (ARB) use*. Again, close the window to view that these cohorts are added to the outcome cohorts section of the design.
 
 <div class="figure" style="text-align: center">
 <img src="images/Characterization/atlasIncidenceTimeAtRisk.png" alt="Incidence Rate target and outcome definition." width="100%" />
@@ -465,7 +465,7 @@ Select one or more databases and click the Generate button to start the analysis
 
 ### Viewing Results
 
-On the Generation tab, the top portion of the screen allows you to select a target and outcome to use when viewing the results. Just below this a summary of the incidence is shown for each database used in the analysis. 
+On the Generation tab, the top portion of the screen allows you to select a target and outcome to use when viewing the results. Just below this a summary of the incidence is shown for each database used in the analysis.
 
 Select the target cohort of ACEi users and the Acute Myocardial Infarction (AMI) from the respective dropdown lists. Click the ![](images/Characterization/atlasIncidenceReportButton.png) button to reveal the incidence analysis results:
 
@@ -475,11 +475,11 @@ Select the target cohort of ACEi users and the Acute Myocardial Infarction (AMI)
 <p class="caption">(\#fig:atlasIncidenceResults)Incidence Rate analysis output - New ACEi users with AMI outcome.</p>
 </div>
 
-A summary for the database shows the total persons in the cohort that were observed during the TAR along with the total number of cases. The proportion shows the number of cases per 1000 people. The time at risk, in years, is calculated for the target cohort. The incidence rate is expressed as the number of cases per 1000 person-years. 
+A summary for the database shows the total persons in the cohort that were observed during the TAR along with the total number of cases. The proportion shows the number of cases per 1000 people. The time at risk, in years, is calculated for the target cohort. The incidence rate is expressed as the number of cases per 1000 person-years.
 
 We can also view the incidence metrics for the strata that we defined in the design. The same metrics mentioned above are calculated for each stratum. Additionally, a treemap visualization provides a representation of the proportion of each stratum represented by the boxed areas. The color represents the incidence rate as shown in the scale along the bottom.
 
-We can gather the same information to see the incidence of new use of ARBs amongst the ACEi population. Using the dropdown at the top, change the outcome to ARBs use and click the ![](images/Characterization/atlasIncidenceReportButton.png) button to reveal the details. 
+We can gather the same information to see the incidence of new use of ARBs amongst the ACEi population. Using the dropdown at the top, change the outcome to ARBs use and click the ![](images/Characterization/atlasIncidenceReportButton.png) button to reveal the details.
 
 <div class="figure" style="text-align: center">
 <img src="images/Characterization/atlasIncidenceResultsARB.png" alt="Incidence Rate - New users of ACEi receiving ARBs treatment during ACEi exposure." width="100%" />
@@ -504,7 +504,7 @@ As shown, the metrics calculated are the same but the interpretation is differen
 
 #### Prerequisites {-}
 
-For these exercises, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have acces to. 
+For these exercises, access to an ATLAS instance is required. You can use the instance at [http://atlas-demo.ohdsi.org](http://atlas-demo.ohdsi.org), or any other instance you have access to.
 
 \BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCharacterization1"><strong>(\#exr:exerciseCharacterization1) </strong></span>We would like to understand how celecoxib is used in the real world. To start, we would like to understand what data a database has on this drug. Use the ATLAS Data Sources module to find information on celecoxib.
 </div>\EndKnitrBlock{exercise}
@@ -516,4 +516,3 @@ For these exercises, access to an ATLAS instance is required. You can use the in
 </div>\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(Characterizationanswers).
-

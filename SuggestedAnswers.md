@@ -188,28 +188,28 @@ MedDRA preferred terms:
 A) Data experts and CDM experts together design the ETL
 C) People with medical knowledge create the code mappings
 B) A technical person implements the ETL
-D) All are involved in quality control 
+D) All are involved in quality control
 
 #### Exercise \@ref(exr:exerciseEtl2) {-}
 
 Column | Value | Answer
 :---------------- |:----------- |:-----------------------
 PERSON_ID | A123B456 | This column has a data type of integer so the source record value needs to be translated to a numeric value.
-GENDER_CONCEPT_ID | 8532 | 
+GENDER_CONCEPT_ID | 8532 |
 YEAR_OF_BIRTH | NULL | If we do not know the month or day of birth, we do not guess. A person can exist without a month or day of birth. If a person lacks a birth year that person should be dropped.  This person would have to be dropped due to now year of birth.
-MONTH_OF_BIRTH | NULL | 
-DAY_OF_BIRTH | NULL | 
+MONTH_OF_BIRTH | NULL |
+DAY_OF_BIRTH | NULL |
 RACE_CONCEPT_ID | 0 | The race is WHITE which should be mapped to 8527.
 ETHNICITY_CONCEPT_ ID | 8527 | No ethnicity was provided, this should be mapped to 0.
-PERSON_SOURCE_ VALUE | A123B456 | 
-GENDER_SOURCE_ VALUE | F | 
-RACE_SOURCE_VALUE | WHITE | 
-ETHNICITY_SOURCE_ VALUE | NONE PROVIDED | 
+PERSON_SOURCE_ VALUE | A123B456 |
+GENDER_SOURCE_ VALUE | F |
+RACE_SOURCE_VALUE | WHITE |
+ETHNICITY_SOURCE_ VALUE | NONE PROVIDED |
 
 #### Exercise \@ref(exr:exerciseEtl3) {-}
 
 Column | Value
-:------------------------ |:------------- 
+:------------------------ |:-------------
 VISIT_OCCURRENCE_ID | 1
 PERSON_ID | 11
 VISIT_START_DATE | 2004-09-26
@@ -324,7 +324,7 @@ INNER JOIN @cdm.concept ingredient
 INNER JOIN @cdm.condition_occurrence
   ON condition_start_date >= drug_era_start_date
     AND condition_start_date <= drug_era_end_date
-INNER JOIN @cdm.concept_ancestor 
+INNER JOIN @cdm.concept_ancestor
   ON condition_concept_id =descendant_concept_id
 WHERE LOWER(ingredient.concept_name) = 'celecoxib'
   AND ingredient.concept_class_id = 'Ingredient'
@@ -370,7 +370,7 @@ The concept set expression for diclofenac should look like Figure \@ref(fig:coho
 <p class="caption">(\#fig:cohortsAtlasConceptSet1)Concept set expression for diclofenac.</p>
 </div>
 
-Next, we require no prior exposure to any NSAID, as shown in Figure \@ref(fig:cohortsAtlasInclusion1). 
+Next, we require no prior exposure to any NSAID, as shown in Figure \@ref(fig:cohortsAtlasInclusion1).
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/cohortsAtlasInclusion1.png" alt="Requiring no prior exposure to any NSAID." width="100%" />
@@ -384,7 +384,7 @@ The concept set expression for NSAIDs should look like Figure \@ref(fig:cohortsA
 <p class="caption">(\#fig:cohortsAtlasConceptSet2)Concept set expression for NSAIDs</p>
 </div>
 
-Additionally, we require no prior diagnosis of cancer, as shown in Figure \@ref(fig:cohortsAtlasInclusion2). 
+Additionally, we require no prior diagnosis of cancer, as shown in Figure \@ref(fig:cohortsAtlasInclusion2).
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/cohortsAtlasInclusion2.png" alt="Requiring no prior cancer diagnosis." width="100%" />
@@ -398,7 +398,7 @@ The concept set expression for "Broad malignancies" should look like Figure \@re
 <p class="caption">(\#fig:cohortsAtlasConceptSet3)Concept set expression for broad malignancies</p>
 </div>
 
-Finally, we define the cohort exit criteria as discontinuation of exposure (allowing for a 30-day gap), as shown in Figure \@ref(fig:cohortsAtlasExit). 
+Finally, we define the cohort exit criteria as discontinuation of exposure (allowing for a 30-day gap), as shown in Figure \@ref(fig:cohortsAtlasExit).
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/cohortsAtlasExit.png" alt="Setting the cohort exit date." width="100%" />
@@ -436,8 +436,8 @@ We then select only those that occur during an inpatient or ER visit, using some
 
 ```r
 sql <- "INSERT INTO @cdm.cohort (
-  subject_id, 
-  cohort_start_date, 
+  subject_id,
+  cohort_start_date,
   cohort_definition_id
   )
 SELECT subject_id,
@@ -505,7 +505,7 @@ Now that we have our cohort defined, we can characterize it. Click on ![](images
 <p class="caption">(\#fig:celecoxibCharacterization)Characterization settings.</p>
 </div>
 
-Click on the "Exections" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
+Click on the "Executions" tab, and click on "Generate" for one of the data sources. It may take a while for the generation to complete. When done, we can click on "View latest results". The resulting screen will look something like Figure \@ref(fig:celecoxibCharacterizationResults), showing for example that pain and arthropathy are commonly observed, which should not surprise use as these are indications for celecoxib. Lower on the list we may see conditions we were not expecting.
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/celecoxibCharacterizationResults.png" alt="Characterization settings." width="100%" />
@@ -514,7 +514,7 @@ Click on the "Exections" tab, and click on "Generate" for one of the data source
 
 #### Exercise \@ref(exr:exerciseCharacterization3) {-}
 
-Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "GI bleed") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "GI bleed"). Open the  ![](images/Cohorts/search-2.png) module, search for "Gastrointestinal hemorrhage", and click the ![](images/Cohorts/shoppingcart.png) next to the top concept to add the concept to your concept set as show in Figure \@ref(fig:giBleedSearch). 
+Click on ![](images/Cohorts/cohortdefinition.png) and then "New cohort" to create a new cohort. Give the cohort a meaningful name (e.g. "GI bleed") and go to the "Concept Sets" tab. Click on "New Concept Set", and give your concept set a meaningful names (e.g. "GI bleed"). Open the  ![](images/Cohorts/search-2.png) module, search for "Gastrointestinal hemorrhage", and click the ![](images/Cohorts/shoppingcart.png) next to the top concept to add the concept to your concept set as show in Figure \@ref(fig:giBleedSearch).
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/giBleedSearch.png" alt="Selecting the standard concept for &quot;Gastrointestinal hemorrhage&quot;." width="100%" />
@@ -583,6 +583,7 @@ cmData <- getDbCohortMethodData(
 summary(cmData)
 ```
 
+
 ```
 ## CohortMethodData object summary
 ## 
@@ -619,6 +620,7 @@ studyPop <- createStudyPopulation(
   riskWindowEnd = 99999)
 drawAttritionDiagram(studyPop)
 ```
+
 <img src="images/SuggestedAnswers/attrition.png" width="80%" style="display: block; margin: auto;" />
 
 We see that we did not lose any subjects compared to the original cohorts, probably because the restrictions used here were already applied in the cohort definitions.
@@ -633,6 +635,7 @@ model <- fitOutcomeModel(population = studyPop,
                          modelType = "cox")
 model
 ```
+
 
 ```
 ## Model type: cox
@@ -672,10 +675,10 @@ We stratify the population based on the propensity scores, and compute the covar
 ```r
 strataPop <- stratifyByPs(ps, numberOfStrata = 5)
 bal <- computeCovariateBalance(strataPop, cmData)
-plotCovariateBalanceScatterPlot(bal, 
-                                showCovariateCountLabel = TRUE, 
-                                showMaxLabel = TRUE, 
-                                beforeLabel = "Before stratification", 
+plotCovariateBalanceScatterPlot(bal,
+                                showCovariateCountLabel = TRUE,
+                                showMaxLabel = TRUE,
+                                beforeLabel = "Before stratification",
                                 afterLabel = "After stratification")
 ```
 <img src="images/SuggestedAnswers/scatter.png" width="70%" style="display: block; margin: auto;" />
@@ -693,6 +696,7 @@ adjModel <- fitOutcomeModel(population = strataPop,
                          stratified = TRUE)
 adjModel
 ```
+
 
 ```
 ## Model type: cox
@@ -798,12 +802,12 @@ We run a LASSO model by first creating a model settings object, and then calling
 ```r
 lassoModel <- setLassoLogisticRegression(seed = 0)
 
-lassoResults <- runPlp(population = population, 
-                       plpData = plpData, 
-                       modelSettings = lassoModel, 
+lassoResults <- runPlp(population = population,
+                       plpData = plpData,
+                       modelSettings = lassoModel,
                        testSplit = 'person',
-                       testFraction = 0.25, 
-                       nfold = 2, 
+                       testFraction = 0.25,
+                       nfold = 2,
                        splitSeed = 0)
 ```
 
@@ -816,7 +820,7 @@ We can now view the results using the Shiny app:
 viewPlp(lassoResults)
 ```
 
-This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical pratice.
+This will launch the app as shown in Figure \@ref(fig:plpShiny). Here we see an AUC on the test set of 0.645, which is better than random guessing, but maybe not good enough for clinical practice.
 
 <div class="figure" style="text-align: center">
 <img src="images/SuggestedAnswers/plpShiny.png" alt="Patient-level prediction Shiny app." width="100%" />
@@ -850,11 +854,11 @@ To run the Data Quality Dashboard:
 
 ```r
 DataQualityDashboard::executeDqChecks(
-  connectionDetails, 
-  cdmDatabaseSchema = "main", 
+  connectionDetails,
+  cdmDatabaseSchema = "main",
   resultsDatabaseSchema = "main",
   cdmSourceName = "Eunomia",
-  outputFolder = "C:/dataQualityExample") 
+  outputFolder = "C:/dataQualityExample")
 ```
 
 #### Exercise \@ref(exr:exerciseViewDQD) {-}
@@ -864,5 +868,5 @@ To view the list of data quality checks:
 
 ```r
 DataQualityDashboard::viewDqDashboard(
-  "C:/dataQualityExample/Eunomia/results_Eunomia.json") 
+  "C:/dataQualityExample/Eunomia/results_Eunomia.json")
 ```

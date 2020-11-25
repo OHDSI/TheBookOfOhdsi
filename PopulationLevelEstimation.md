@@ -852,9 +852,9 @@ For these exercises we assume R, R-Studio and Java have been installed as descri
 
 
 ```r
-install.packages(c("SqlRender", "DatabaseConnector", "devtools"))
-devtools::install_github("ohdsi/Eunomia", ref = "v1.0.0")
-devtools::install_github("ohdsi/CohortMethod")
+install.packages(c("SqlRender", "DatabaseConnector", "remotes"))
+remotes::install_github("ohdsi/Eunomia", ref = "v1.0.0")
+remotes::install_github("ohdsi/CohortMethod")
 ```
 
 The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:
@@ -896,4 +896,3 @@ The celecoxib new-user cohort has COHORT_DEFINITION_ID = 1. The diclofenac new-u
 </div>\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(Pleanswers).
-

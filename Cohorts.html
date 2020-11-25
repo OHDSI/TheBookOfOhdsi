@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 Defining Cohorts | The Book of OHDSI</title>
   <meta name="description" content="A book about the Observational Health Data Sciences and Informatics (OHDSI). It described the OHDSI community, open standards and open source software." />
-  <meta name="generator" content="bookdown 0.21.2 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.21.4 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 Defining Cohorts | The Book of OHDSI" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Observational Health Data Sciences and Informatics" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-11-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,8 +51,8 @@
 
 
 <script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
-<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104086677-2"></script>
 <script>
@@ -746,7 +746,7 @@ Figure 10.1: Building Blocks of Cohort definitions.
 <p><strong>Cohort exit criteria</strong>: The cohort exit event signifies when a person no longer qualifies for cohort membership. Cohort exit can be defined in multiple ways such as the end of the observation period, a fixed time interval relative to the initial entry event, the last event in a sequence of related observations (e.g. persistent drug exposure) or through other censoring of observation period. Cohort exit strategy will impact whether a person can belong to the cohort multiple times during different time intervals.</p>
 
 <div class="rmdimportant">
-<p>In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterium “Exclude people with prior hypertension” can be formulated as the inclusion criterium “Include people with 0 occurrences of prior hypertension”.</p>
+<p>In the OHDSI tools there is no distinction between inclusion and exclusion criteria. All criteria are formulated as inclusion criteria. For example, the exclusion criterion “Exclude people with prior hypertension” can be formulated as the inclusion criterion “Include people with 0 occurrences of prior hypertension”.</p>
 </div>
 
 </div>
@@ -790,9 +790,9 @@ Figure 10.1: Building Blocks of Cohort definitions.
 </table>
 <p>As shown in Figure <a href="Cohorts.html#fig:conceptSet">10.2</a>, this will include “Myocardial infarction” and all of its descendants except “Old myocardial infarction” and its descendants. In total, this concept set expression implies nearly a hundred Standard Concepts. These Standard Concepts in turn reflect hundreds of source codes (e.g. ICD-9 and ICD-10 codes) that may appear in the various databases.</p>
 <div class="figure" style="text-align: center"><span id="fig:conceptSet"></span>
-<img src="images/Cohorts/conceptSet.png" alt="A concept set including &quot;Myocardial infaction&quot; (with descendants), but excluding &quot;Old myocardial infarction&quot; (with descendants)." width="100%" />
+<img src="images/Cohorts/conceptSet.png" alt="A concept set including &quot;Myocardial infarction&quot; (with descendants), but excluding &quot;Old myocardial infarction&quot; (with descendants)." width="100%" />
 <p class="caption">
-Figure 10.2: A concept set including “Myocardial infaction” (with descendants), but excluding “Old myocardial infarction” (with descendants).
+Figure 10.2: A concept set including “Myocardial infarction” (with descendants), but excluding “Old myocardial infarction” (with descendants).
 </p>
 </div>
 </div>
@@ -1006,9 +1006,9 @@ Figure 10.15: Cohort Exit Criteria
 <span id="cb74-9"><a href="Cohorts.html#cb74-9"></a><span class="st">WHERE ancestor_concept_id IN (@ace_i)</span></span>
 <span id="cb74-10"><a href="Cohorts.html#cb74-10"></a><span class="st">GROUP BY person_id;&quot;</span></span>
 <span id="cb74-11"><a href="Cohorts.html#cb74-11"></a></span>
-<span id="cb74-12"><a href="Cohorts.html#cb74-12"></a><span class="kw">renderTranslateExecuteSql</span>(conn, </span>
-<span id="cb74-13"><a href="Cohorts.html#cb74-13"></a>                          sql, </span>
-<span id="cb74-14"><a href="Cohorts.html#cb74-14"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema, </span>
+<span id="cb74-12"><a href="Cohorts.html#cb74-12"></a><span class="kw">renderTranslateExecuteSql</span>(conn,</span>
+<span id="cb74-13"><a href="Cohorts.html#cb74-13"></a>                          sql,</span>
+<span id="cb74-14"><a href="Cohorts.html#cb74-14"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
 <span id="cb74-15"><a href="Cohorts.html#cb74-15"></a>                          <span class="dt">ace_i =</span> aceI)</span></code></pre></div>
 <p>Note that we join the DRUG_EXPOSURE table to the CONCEPT_ANCESTOR table to find all drugs that contain an ACE inhibitor.</p>
 </div>
@@ -1042,9 +1042,9 @@ Figure 10.15: Cohort Exit Criteria
 <span id="cb76-10"><a href="Cohorts.html#cb76-10"></a><span class="st">  ON descendant_concept_id = condition_concept_id</span></span>
 <span id="cb76-11"><a href="Cohorts.html#cb76-11"></a><span class="st">WHERE ancestor_concept_id = @hypertension;&quot;</span></span>
 <span id="cb76-12"><a href="Cohorts.html#cb76-12"></a></span>
-<span id="cb76-13"><a href="Cohorts.html#cb76-13"></a><span class="kw">renderTranslateExecuteSql</span>(conn, </span>
-<span id="cb76-14"><a href="Cohorts.html#cb76-14"></a>                          sql, </span>
-<span id="cb76-15"><a href="Cohorts.html#cb76-15"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema, </span>
+<span id="cb76-13"><a href="Cohorts.html#cb76-13"></a><span class="kw">renderTranslateExecuteSql</span>(conn,</span>
+<span id="cb76-14"><a href="Cohorts.html#cb76-14"></a>                          sql,</span>
+<span id="cb76-15"><a href="Cohorts.html#cb76-15"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
 <span id="cb76-16"><a href="Cohorts.html#cb76-16"></a>                          <span class="dt">hypertension =</span> hypertension)</span></code></pre></div>
 <p>Note that we <code>SELECT DISTINCT</code>, because else if a person has multiple hypertension diagnoses in their past, we would create duplicate cohort entries.</p>
 </div>
@@ -1066,9 +1066,9 @@ Figure 10.15: Cohort Exit Criteria
 <span id="cb77-13"><a href="Cohorts.html#cb77-13"></a><span class="st">    AND drug_exposure_start_date &lt; cohort_start_date</span></span>
 <span id="cb77-14"><a href="Cohorts.html#cb77-14"></a><span class="st">WHERE person_id IS NULL;&quot;</span></span>
 <span id="cb77-15"><a href="Cohorts.html#cb77-15"></a></span>
-<span id="cb77-16"><a href="Cohorts.html#cb77-16"></a><span class="kw">renderTranslateExecuteSql</span>(conn, </span>
-<span id="cb77-17"><a href="Cohorts.html#cb77-17"></a>                          sql, </span>
-<span id="cb77-18"><a href="Cohorts.html#cb77-18"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema, </span>
+<span id="cb77-16"><a href="Cohorts.html#cb77-16"></a><span class="kw">renderTranslateExecuteSql</span>(conn,</span>
+<span id="cb77-17"><a href="Cohorts.html#cb77-17"></a>                          sql,</span>
+<span id="cb77-18"><a href="Cohorts.html#cb77-18"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
 <span id="cb77-19"><a href="Cohorts.html#cb77-19"></a>                          <span class="dt">all_ht_drugs =</span> allHtDrugs)</span></code></pre></div>
 <p>Note that we use a left join, and only allow rows where the person_id, which comes from the DRUG_EXPOSURE table is NULL, meaning no matching record was found.</p>
 </div>
@@ -1090,9 +1090,9 @@ Figure 10.15: Cohort Exit Criteria
 <span id="cb78-13"><a href="Cohorts.html#cb78-13"></a><span class="st">  cohort_start_date</span></span>
 <span id="cb78-14"><a href="Cohorts.html#cb78-14"></a><span class="st">HAVING COUNT(*) = 1;&quot;</span></span>
 <span id="cb78-15"><a href="Cohorts.html#cb78-15"></a></span>
-<span id="cb78-16"><a href="Cohorts.html#cb78-16"></a><span class="kw">renderTranslateExecuteSql</span>(conn, </span>
-<span id="cb78-17"><a href="Cohorts.html#cb78-17"></a>                          sql, </span>
-<span id="cb78-18"><a href="Cohorts.html#cb78-18"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema, </span>
+<span id="cb78-16"><a href="Cohorts.html#cb78-16"></a><span class="kw">renderTranslateExecuteSql</span>(conn,</span>
+<span id="cb78-17"><a href="Cohorts.html#cb78-17"></a>                          sql,</span>
+<span id="cb78-18"><a href="Cohorts.html#cb78-18"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
 <span id="cb78-19"><a href="Cohorts.html#cb78-19"></a>                          <span class="dt">all_ht_drugs =</span> allHtDrugs)</span></code></pre></div>
 </div>
 <div id="cohort-exit" class="section level3">
@@ -1109,8 +1109,8 @@ Figure 10.15: Cohort Exit Criteria
 <span id="cb79-9"><a href="Cohorts.html#cb79-9"></a><span class="st">    ON descendant_concept_id = drug_concept_id</span></span>
 <span id="cb79-10"><a href="Cohorts.html#cb79-10"></a><span class="st">  WHERE ancestor_concept_id IN (@ace_i);&quot;</span></span>
 <span id="cb79-11"><a href="Cohorts.html#cb79-11"></a><span class="kw">renderTranslateExecuteSql</span>(conn,</span>
-<span id="cb79-12"><a href="Cohorts.html#cb79-12"></a>                          sql, </span>
-<span id="cb79-13"><a href="Cohorts.html#cb79-13"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema, </span>
+<span id="cb79-12"><a href="Cohorts.html#cb79-12"></a>                          sql,</span>
+<span id="cb79-13"><a href="Cohorts.html#cb79-13"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
 <span id="cb79-14"><a href="Cohorts.html#cb79-14"></a>                          <span class="dt">ace_i =</span> aceI)</span></code></pre></div>
 <p>We then run the standard code for merging sequential exposures:</p>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="Cohorts.html#cb80-1"></a>sql &lt;-<span class="st"> &quot;</span></span>
@@ -1180,7 +1180,7 @@ Figure 10.15: Cohort Exit Criteria
 <span id="cb80-65"><a href="Cohorts.html#cb80-65"></a><span class="st">  ends.era_end_date;&quot;</span></span>
 <span id="cb80-66"><a href="Cohorts.html#cb80-66"></a></span>
 <span id="cb80-67"><a href="Cohorts.html#cb80-67"></a><span class="kw">renderTranslateExecuteSql</span>(conn,</span>
-<span id="cb80-68"><a href="Cohorts.html#cb80-68"></a>                          sql, </span>
+<span id="cb80-68"><a href="Cohorts.html#cb80-68"></a>                          sql,</span>
 <span id="cb80-69"><a href="Cohorts.html#cb80-69"></a>                          <span class="dt">cdm_db_schema =</span> cdmDbSchema,</span>
 <span id="cb80-70"><a href="Cohorts.html#cb80-70"></a>                          <span class="dt">max_gap =</span> <span class="dv">30</span>)</span></code></pre></div>
 <p>This code merges all subsequent exposures, allowing for a gap between exposures as defined by the <code>max_gap</code> argument. The resulting drug exposure eras are written to a temp table called <code>#exposure_era</code>.</p>
@@ -1195,9 +1195,9 @@ Figure 10.15: Cohort Exit Criteria
 <span id="cb81-8"><a href="Cohorts.html#cb81-8"></a><span class="st">  ON mt.subject_id = ee.subject_id</span></span>
 <span id="cb81-9"><a href="Cohorts.html#cb81-9"></a><span class="st">    AND mt.cohort_start_date = ee.cohort_start_date;&quot;</span></span>
 <span id="cb81-10"><a href="Cohorts.html#cb81-10"></a></span>
-<span id="cb81-11"><a href="Cohorts.html#cb81-11"></a><span class="kw">renderTranslateExecuteSql</span>(conn, </span>
-<span id="cb81-12"><a href="Cohorts.html#cb81-12"></a>                          sql, </span>
-<span id="cb81-13"><a href="Cohorts.html#cb81-13"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema, </span>
+<span id="cb81-11"><a href="Cohorts.html#cb81-11"></a><span class="kw">renderTranslateExecuteSql</span>(conn,</span>
+<span id="cb81-12"><a href="Cohorts.html#cb81-12"></a>                          sql,</span>
+<span id="cb81-13"><a href="Cohorts.html#cb81-13"></a>                          <span class="dt">cohort_db_schema =</span> cohortDbSchema,</span>
 <span id="cb81-14"><a href="Cohorts.html#cb81-14"></a>                          <span class="dt">cohort_table =</span> cohortTable)</span></code></pre></div>
 <p>Here we store the final cohort in schema and table we defined earlier. We assign it a cohort definition ID of 1, to distinguish it from other cohorts we may wish to store in the same table.</p>
 </div>
@@ -1248,7 +1248,7 @@ Figure 10.15: Cohort Exit Criteria
 <h2><span class="header-section-number">10.10</span> Exercises</h2>
 <div id="prerequisites-4" class="section level4 unnumbered">
 <h4>Prerequisites</h4>
-<p>For the first exercise, access to an ATLAS instance is required. You can use the instance at <a href="http://atlas-demo.ohdsi.org">http://atlas-demo.ohdsi.org</a>, or any other instance you have acces to.</p>
+<p>For the first exercise, access to an ATLAS instance is required. You can use the instance at <a href="http://atlas-demo.ohdsi.org">http://atlas-demo.ohdsi.org</a>, or any other instance you have access to.</p>
 
 <div class="exercise">
 <p><span id="exr:exerciseCohortsAtlas" class="exercise"><strong>Exercise 10.1  </strong></span>Use ATLAS to create a cohort definition following these criteria:</p>
@@ -1266,8 +1266,8 @@ Figure 10.15: Cohort Exit Criteria
 <div id="prerequisites-5" class="section level4 unnumbered">
 <h4>Prerequisites</h4>
 <p>For the second exercise we assume R, R-Studio and Java have been installed as described in Section <a href="OhdsiAnalyticsTools.html#installR">8.4.5</a>. Also required are the <a href="https://ohdsi.github.io/SqlRender/">SqlRender</a>, <a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a>, and <a href="https://ohdsi.github.io/Eunomia/">Eunomia</a> packages, which can be installed using:</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="Cohorts.html#cb83-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;devtools&quot;</span>))</span>
-<span id="cb83-2"><a href="Cohorts.html#cb83-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="Cohorts.html#cb83-1"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;SqlRender&quot;</span>, <span class="st">&quot;DatabaseConnector&quot;</span>, <span class="st">&quot;remotes&quot;</span>))</span>
+<span id="cb83-2"><a href="Cohorts.html#cb83-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ohdsi/Eunomia&quot;</span>, <span class="dt">ref =</span> <span class="st">&quot;v1.0.0&quot;</span>)</span></code></pre></div>
 <p>The Eunomia package provides a simulated dataset in the CDM that will run inside your local R session. The connection details can be obtained using:</p>
 <div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="Cohorts.html#cb84-1"></a>connectionDetails &lt;-<span class="st"> </span>Eunomia<span class="op">::</span><span class="kw">getEunomiaConnectionDetails</span>()</span></code></pre></div>
 <p>The CDM database schema is “main”.</p>
