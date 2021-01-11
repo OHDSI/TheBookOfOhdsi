@@ -14,10 +14,9 @@ This standard is provided by the Common Data Model (CDM). The CDM, combined with
 
 An overview of all the tables in the CDM is provided in Figure \@ref(fig:cdmDiagram). \index{Common Data Model!data model diagram}
 
-<div class="figure">
-<img src="images/CommonDataModel/cdmDiagram.png" alt="Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown." width="100%" />
-<p class="caption">(\#fig:cdmDiagram)Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/CommonDataModel/cdmDiagram} \caption{Overview of all tables in the CDM version 6.0. Note that not all relationships between tables are shown.}(\#fig:cdmDiagram)
+\end{figure}
 ## Design Principles
 
 The CDM is optimized for typical observational research purposes of \index{Common Data Model!design principles}
@@ -113,17 +112,20 @@ Many tables contain equivalent information in multiple places: as a Source Value
 
 Source Values are only provided for convenience and quality assurance (QA) purposes. They may contain information that is only meaningful in the context of a specific data source. The use of Source Values and Source Concepts is optional, even though **strongly recommended** if the source data make use of coding systems. Standard Concepts **are mandatory** however. This mandatory use of Standard Concepts is what allows all CDM instances to speak the same language. For example, the condition "Pulmonary Tuberculosis" (TB, Figure \@ref(fig:pulmTubICD9)) shows that the ICD9CM code for TB is 011.
 
-<div class="figure" style="text-align: center">
-<img src="images/CommonDataModel/pulmTubICD9.png" alt="ICD9CM code for Pulmonary Tuberculosis" width="75%" />
-<p class="caption">(\#fig:pulmTubICD9)ICD9CM code for Pulmonary Tuberculosis</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{images/CommonDataModel/pulmTubICD9} 
+
+}
+
+\caption{ICD9CM code for Pulmonary Tuberculosis}(\#fig:pulmTubICD9)
+\end{figure}
 
 Without context, the code 011 could be interpreted as "Hospital Inpatient (Including Medicare Part A)" from the UB04 vocabulary, or as "Nervous System Neoplasms without Complications, Comorbidities" from the DRG vocabulary. This is where Concept IDs, both Source and Standard, are valuable. The CONCEPT_ID value that represents the 011 ICD9CM code is [44828631](http://athena.ohdsi.org/search-terms/terms/44828631). This differentiates the ICD9CM from the UBO4 and DRG. The ICD9CM TB Source Concept maps to Standard Concept [253954](http://athena.ohdsi.org/search-terms/terms/253954) from the SNOMED vocabulary through the relationship "Non-standard to Standard map (OMOP)" as shown in figure \@ref(fig:pulmTubMap). This same mapping relationships exists for Read, ICD10, CIEL, and MeSH codes, among others, so that any research that references the standard SNOMED concept is sure to include all supported source codes.
 
-<div class="figure">
-<img src="images/CommonDataModel/pulmTubMap.png" alt="SNOMED code for Pulmonary Tuberculosis" width="100%" />
-<p class="caption">(\#fig:pulmTubMap)SNOMED code for Pulmonary Tuberculosis</p>
-</div>
+\begin{figure}
+\includegraphics[width=1\linewidth]{images/CommonDataModel/pulmTubMap} \caption{SNOMED code for Pulmonary Tuberculosis}(\#fig:pulmTubMap)
+\end{figure}
 
 An example of how the Standard Concept to Source Concept relationship is depicted is shown in Table \@ref(tab:conditionOccurrence).
 
@@ -141,7 +143,8 @@ To illustrate how these tables are used in practice, the data of one person will
 
 Endometriosis is a painful condition whereby cells normally found in the lining of a woman's uterus occur elsewhere in the body. Severe cases can lead to infertility, bowel, and bladder problems. The following sections will detail one patient's experience with this disease and how it might be represented in the Common Data Model.
 
-<img src="images/CommonDataModel/Lauren.jpg" width="50%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.5\linewidth]{images/CommonDataModel/Lauren} \end{center}
 
 > Every step of this painful journey I had to convince everyone how much pain I was in.
 
@@ -350,14 +353,16 @@ This chapter covers only a portion of the tables available in the CDM as example
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- The CDM is designed to support a wide range of observational research activities.
+\BeginKnitrBlock{rmdsummary}
+- The CDM is designed to support a wide range of observational research activities.
 
 - The CDM is a person-centric model.
 
 - The CDM not only standardizes the structure of the data, but through the Standardized Vocabularies it also standardizes the representation of the content.
 
 - Source codes are maintained in the CDM for full traceability.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}
 
 ## Exercises
 
@@ -368,14 +373,20 @@ For these first exercises you will need to review the CDM tables discussed earli
 [^athenaCdmUrl]: http://athena.ohdsi.org/
 [^atlasCdmUrl]: http://atlas-demo.ohdsi.org
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseJohnPerson"><strong>(\#exr:exerciseJohnPerson) </strong></span>John is an African American man born on August 4, 1974.  Define an entry in the PERSON table that encodes this information.
-</div>\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseJohnPerson"><strong>(\#exr:exerciseJohnPerson) </strong></span>John is an African American man born on August 4, 1974.  Define an entry in the PERSON table that encodes this information.
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseJohnOp"><strong>(\#exr:exerciseJohnOp) </strong></span>John enrolled in his current insurance on January 1st, 2015. The data from his insurance database were extracted on July 1st, 2019. Define an entry in the OBSERVATION_PERIOD table that encodes this information.
-</div>\EndKnitrBlock{exercise}
+\EndKnitrBlock{exercise}
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseJohnDrug"><strong>(\#exr:exerciseJohnDrug) </strong></span>John was prescribed a 30-day supply of Ibuprofen 200 MG Oral tablets (NDC code: 76168009520) on May 1st, 2019. Define an entry in the DRUG_EXPOSURE table that encodes this information.
-</div>\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseJohnOp"><strong>(\#exr:exerciseJohnOp) </strong></span>John enrolled in his current insurance on January 1st, 2015. The data from his insurance database were extracted on July 1st, 2019. Define an entry in the OBSERVATION_PERIOD table that encodes this information.
+
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseJohnDrug"><strong>(\#exr:exerciseJohnDrug) </strong></span>John was prescribed a 30-day supply of Ibuprofen 200 MG Oral tablets (NDC code: 76168009520) on May 1st, 2019. Define an entry in the DRUG_EXPOSURE table that encodes this information.
+
+\EndKnitrBlock{exercise}
 
 #### Prerequisites {-}
 
@@ -407,14 +418,20 @@ result <- renderTranslateQuerySql(connection, sql, cdm = "main")
 ```
 
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseGiBleedRecords"><strong>(\#exr:exerciseGiBleedRecords) </strong></span>Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" (with concept ID [192671](http://athena.ohdsi.org/search-terms/terms/192671)).
-</div>\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseGiBleedRecords"><strong>(\#exr:exerciseGiBleedRecords) </strong></span>Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" (with concept ID [192671](http://athena.ohdsi.org/search-terms/terms/192671)).
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePersonSource"><strong>(\#exr:exercisePersonSource) </strong></span>Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" using source codes. This database uses ICD-10, and the relevant ICD-10 code is "K92.2".
-</div>\EndKnitrBlock{exercise}
+\EndKnitrBlock{exercise}
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePerson61Records"><strong>(\#exr:exercisePerson61Records) </strong></span>Using SQL and R, retrieve the observation period of the person with PERSON_ID 61.
-</div>\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exercisePersonSource"><strong>(\#exr:exercisePersonSource) </strong></span>Using SQL and R, retrieve all records of the condition "Gastrointestinal hemorrhage" using source codes. This database uses ICD-10, and the relevant ICD-10 code is "K92.2".
+
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exercisePerson61Records"><strong>(\#exr:exercisePerson61Records) </strong></span>Using SQL and R, retrieve the observation period of the person with PERSON_ID 61.
+
+\EndKnitrBlock{exercise}
 
 
 

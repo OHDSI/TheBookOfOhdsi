@@ -9,10 +9,14 @@ The OHDSI community represents a mosaic of stakeholders across academia, industr
 ## Join the Journey
 Everyone is welcome to actively participate in OHDSI, whether you are a patient, a health professional, a researcher, or someone who simply believes in our cause. OHDSI maintains an inclusive membership model. To become an OHDSI collaborator requires no membership fee. Collaboration is as simple as raising a hand to be included in the yearly OHDSI membership count. Involvement is entirely at-will. A collaborator can have any level of contribution within the community, ranging from someone who attends weekly community calls to leading network studies or OHDSI working groups. Collaborators do not have to be data holders to be considered active members of the community. The OHDSI community aims to serve data holders, researchers, health care providers and patients & consumers alike. A record of collaborator profiles are maintained and periodically updated on the OHDSI website. Membership is fostered via OHDSI community calls, workgroups and regional chapters.\index{join the journey} \index{workgroups} \index{chapters}
 
-<div class="figure" style="text-align: center">
-<img src="images/WhereToBegin/joinTheJourney.png" alt="Join the journey - How to become an OHDSI collaborator." width="90%" />
-<p class="caption">(\#fig:jointhejourney)Join the journey - How to become an OHDSI collaborator.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/WhereToBegin/joinTheJourney} 
+
+}
+
+\caption{Join the journey - How to become an OHDSI collaborator.}(\#fig:jointhejourney)
+\end{figure}
 
 
 ### OHDSI Forums
@@ -33,8 +37,10 @@ In the OHDSI forums, you can find categories of content including:
 
 To begin posting your own topics, you will need to sign up for an account. Once you have a forums account, you are encouraged to introduce yourself on the General Topic under the thread called "Welcome to OHDSI! - Please introduce yourself". You are invited to reply and 1) Introduce yourself and tell us a bit about what you do and 2) Let us know how you’d like to help out in the community (ex. software development, run studies, write research papers, etc). Now you are on your OHDSI Journey! From here, you are encouraged to join in the discussion. The OHDSI Community encourages using the Forums as your way to ask questions, discuss new ideas and collaborate. \index{forum}
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">You can select topics to "watch." What this means is whenever a new post is added in a topic you’re watching, you will receive an email and be able to reply to the post directly through your email. Watch the general thread to recieve details about upcoming meeting agendas, collaboration opportunities and have the weekly OHDSI digest delivered directly to your inbox!
-</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}
+You can select topics to "watch." What this means is whenever a new post is added in a topic you’re watching, you will receive an email and be able to reply to the post directly through your email. Watch the general thread to recieve details about upcoming meeting agendas, collaboration opportunities and have the weekly OHDSI digest delivered directly to your inbox!
+
+\EndKnitrBlock{rmdimportant}
 
 ### OHDSI Events
 OHDSI regularly holds in-person events to provide opportunities for collaborators to learn from each other and connect to foster future collaborations.  These events are communicated on the OHDSI website, and are free for anyone interested in attending.
@@ -46,11 +52,11 @@ OHDSI Collaborator face-to-face events are smaller fora which are typically cent
 Learn more about the power of the OHDSI Community. Explore past symposiums, face-to-face meetings and watch OHDSI tutorials by visiting the [OHDSI Past Events section](https://www.ohdsi.org/past-events/) on the OHDSI website. Past Events is updated regularly to archive community events.
 
 ### OHDSI Community Calls
-OHDSI Community Calls are a weekly opportunity to spotlight ongoing activity within the OHDSI community. Held every Tuesday from 12-1pm ET, these teleconferences are a time for the OHDSI community to come together to share recent developments and recognize the accomplishments of individual collaborators, working groups and the community as a whole. Each week’s meeting is recorded, and presentations are archived in the OHDSI website resources.
+OHDSI Community Calls are a weekly opportunity to spotlight ongoing activity within the OHDSI community. Held every Tuesday from 11am-12pm ET, these teleconferences are a time for the OHDSI community to come together to share recent developments and recognize the accomplishments of individual collaborators, working groups and the community as a whole. Each week’s meeting is recorded, and presentations are archived in the OHDSI website resources.
 
 All OHDSI Collaborators are welcome to participate in this weekly teleconference and encouraged to propose topics for community discussion. OHDSI Community Calls can be a forum to share research findings, present and seek feedback for active works-in-progress, demonstrate open-source software tools under development, debate community best practices for data modeling and analytics, and brainstorm future collaborative opportunities for grants/publications/conference workshops. If you are a Collaborator with a topic for an upcoming OHDSI Collaborator meeting, you are invited to post your thoughts on the OHDSI Forums.
 
-As a newcomer to the OHDSI community, it is encouraged to add this call series to your calendar to get acquainted with what is happening across the OHDSI network. If you would like to join an OHDSI call, please consult the [OHDSI wiki](https://www.ohdsi.org/web/wiki/doku.php?id=projects:ohdsi_community). Community call topics vary from week-to-week. You can also consult the OHDSI Weekly Digest on the OHDSI forum for more information on weekly presentation topics. Newcomers are invited to introduce themselves on their first call and tell the community about themselves, their background and what brought them to OHDSI. \index{community!community calls}
+As a newcomer to the OHDSI community, it is encouraged to add this call series to your calendar to get acquainted with what is happening across the OHDSI network. If you would like to join an OHDSI call, please consult the [OHDSI Forums](https://forums.ohdsi.org/) for announcements. Community call topics vary from week-to-week. You can also consult the OHDSI Weekly Digest on the OHDSI forum for more information on weekly presentation topics. Newcomers are invited to introduce themselves on their first call and tell the community about themselves, their background and what brought them to OHDSI. \index{community!community calls}
 
 ### OHDSI Workgroups
 OHDSI has a variety of ongoing projects lead by workgroup teams. Each workgroup has its own leadership team which determine the project’s objectives, goals and artifacts to be contributed to the community. Workgroup participation is open to all who have an interest in contributing to the project objectives and goals. Workgroups may be long-standing, strategic objectives or short-term projects to accomplish a specific need in the community. Workgroup meeting cadence is determined by the project leadership and will vary from group to group. A list of the active workgroups is maintained on the [OHDSI Wiki](https://www.ohdsi.org/web/wiki/doku.php?id=projects:overview). \index{workgroups}
@@ -108,6 +114,8 @@ By now, you may be wondering: *where do I fit into the OHDSI Community?*
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- Getting started in the OHDSI Community is as easy as saying hello! Post on the **OHDSI Forum** and join a Community Call.
+\BeginKnitrBlock{rmdsummary}
+- Getting started in the OHDSI Community is as easy as saying hello! Post on the **OHDSI Forum** and join a Community Call.
 - Post your research or ETL questions to the OHDSI Forum.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}

@@ -10,12 +10,14 @@ The mission of OHDSI is to generate high-quality evidence through observational 
 
 The OHDSI research network is an international collaboration of researchers seeking to advance observational data research in healthcare. Today, the network consists of over 100 databases standardized to the OMOP common data model, collectively representing over 1 billion patient records.  OHDSI is an open network, inviting healthcare institutions across the globe with patient-level data to join the network by converting data to the OMOP CDM and participating in network research studies. As data conversions are complete, collaborators are invited to report site information in the Data Network census maintained by the [OHDSI Program Manager](mailto:contact@ohdsi.org). Each OHDSI network site participates voluntarily. There are no hard obligations. Each site opts-in to each respective network study. In each study, data remains at the site behind a firewall.  No patient-level data pooling occurs across network sites. **Only aggregate results are shared.**
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">**Benefits of a Data Owner Joining the OHDSI Network**
+\BeginKnitrBlock{rmdimportant}
+**Benefits of a Data Owner Joining the OHDSI Network**
 
 - **Access to free tools:** OHDSI publishes free, open source tools for data characterization and standardized analytics (e.g. browsing the clinical concepts, defining and characterizing cohorts, running Population-Level Estimation and Patient-Level Prediction studies).
 - **Participate in a premier research community:** Author and publish network research, collaborate with leaders across various disciplines and stakeholder groups.
 - **Opportunity to benchmark care:** Network studies can enable clinical characterization and quality improvement benchmarks across data partners.
-</div>\EndKnitrBlock{rmdimportant}
+
+\EndKnitrBlock{rmdimportant}
 
 ## OHDSI Network Studies
 
@@ -33,7 +35,9 @@ Network studies, therefore, offer the opportunity to investigate the effects of 
 
 ### Definition of an OHDSI Network Study
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">**When is a study considered a *network* study?** An OHDSI study becomes an OHDSI network study when it is run across multiple CDMs at different institutions.</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}
+**When is a study considered a *network* study?** An OHDSI study becomes an OHDSI network study when it is run across multiple CDMs at different institutions.
+\EndKnitrBlock{rmdimportant}
 The OHDSI approach to network research uses the OMOP CDM and standardized tools and study packages which fully specify all parameters for running a study. OHDSI standardized analytics are designed specifically to reduce artifacts and improve the efficiency and scalability of network studies.
 
 Network studies are an important part of the OHDSI research community. However, there is no mandate that an OHDSI study be packaged and shared across the entire OHDSI network. You may still conduct research using the OMOP CDM and OHDSI methods library within a single institution or limit a research study to only select institutions. These research contributions are equally important to the community. It is at the discretion of each investigator whether a study is designed to run on a single database, conduct a study across a limited set of partners or open the study to full participation the OHDSI network. This chapter intends to speak to the open-to-all network studies that the OHDSI community conducts.
@@ -75,7 +79,9 @@ For each study, site start-up activities may include:
 - Reviewing the study code for any technical anomalies
 - Working with a local IT team to permit and install any dependent R packages needed to execute the package within technical constraints
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">**Data Quality and Network Studies:** As discussed in Chapter \@ref(ExtractTransformLoad), quality control is a fundamental and iterative piece of the ETL process. This should be done regularly outside of the network study process. For a network study, a study lead may ask to review participating site's data quality reports or design custom SQL queries to understand potential variation in contributing data sources. For more detail on the data quality efforts going on within OHDSI, please see Chapter \@ref(DataQuality).</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}
+**Data Quality and Network Studies:** As discussed in Chapter \@ref(ExtractTransformLoad), quality control is a fundamental and iterative piece of the ETL process. This should be done regularly outside of the network study process. For a network study, a study lead may ask to review participating site's data quality reports or design custom SQL queries to understand potential variation in contributing data sources. For more detail on the data quality efforts going on within OHDSI, please see Chapter \@ref(DataQuality).
+\EndKnitrBlock{rmdimportant}
 
 Each site will have a local data analyst who executes the study package. This individual must review the output of the study package to ensure no sensitive information is transmitted, although all the data in CDM had been already de-identified. When you are using pre-built OHDSI methods such as Population-Level Effect Estimation (PLE) and Patient Level Prediction (PLP), there are configurable settings for the minimum cell count for a given analysis. The data analyst is required to review these thresholds and ensure it follows local governance policies.
 
@@ -123,8 +129,10 @@ A study lead should set study milestones in the protocol and communicate anticip
 
 During the results dissemination and publication phase, the study lead will collaborate with other participants on various administrative tasks, such as manuscript development and optimizing data visualizations. Once the study is executed and results are stored centrally for the study lead to further analyze. The study lead is responsible for the creation and dissemination of full study results (e.g. a Shiny Application) for review by participating centers. If the study lead is using an OHDSI study skeleton, either generated by Atlas or manually modified from the GitHub code, the Shiny Application will be automatically created. In the event a study lead is creating custom code, the study lead may use the OHDSI Forum to ask for help to create their own Shiny Application for their study package.
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">Not sure where to publish your OHDSI network study? Consult JANE (Journal/Author Name Estimator), a tool which takes your abstract and scans publications for relevance and fit.[^janeUrl]
-</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}
+Not sure where to publish your OHDSI network study? Consult JANE (Journal/Author Name Estimator), a tool which takes your abstract and scans publications for relevance and fit.[^janeUrl]
+
+\EndKnitrBlock{rmdimportant}
 
 [^janeUrl]: http://jane.biosemantics.org/
 
@@ -138,19 +146,27 @@ As manuscripts are written, each participating collaborator is encouraged to rev
 
 The current network study process is manual -- with study team members using various mechanisms (including Wiki, GitHub and email) to collaborate on study design, sharing code and results. This process is not consistent and scalable and to solve that issue, the OHDSI community is actively working to systemize study processes.
 
-<div class="figure" style="text-align: center">
-<img src="images/NetworkStudies/ARACHNE.png" alt="The ARACHNE Network Study Process." width="90%" />
-<p class="caption">(\#fig:arachne)The ARACHNE Network Study Process.</p>
-</div>
+\begin{figure}[h]
+
+{\centering \includegraphics[width=0.9\linewidth]{images/NetworkStudies/ARACHNE} 
+
+}
+
+\caption{The ARACHNE Network Study Process.}(\#fig:arachne)
+\end{figure}
 
 ARACHNE is a platform that is designed to streamline and automate the process of conducting network studies. ARACHNE uses OHDSI standards and establishes a consistent, transparent, secure and compliant observational research process across multiple organizations. ARACHNE standardizes the communication protocol to access the data and exchange analysis results, while enabling authentication and authorization for restricted content. It brings participating organizations - data providers, investigators, sponsors and data scientists - into a single collaborative study team and facilitates an end-to-end observational study coordination. The tool enables the creation of a complete, standards-based R, Python and SQL execution environment including approval workflows controlled by the data custodian.
 
 ARACHNE is built to provide a seamless integration with other OHDSI tools, including ACHILLES reports and an ability to import ATLAS design artifacts, create self-contained packages and automatically execute those across multiple sites. The future vision is to eventually enable multiple networks to be linked together for the purpose of conducting research not only between organizations within a single network, but also between organizations across multiple networks.
 
-<div class="figure" style="text-align: center">
-<img src="images/NetworkStudies/ARACHNENON.png" alt="The ARACHNE Network of Networks." width="90%" />
-<p class="caption">(\#fig:arachneNon)The ARACHNE Network of Networks.</p>
-</div>
+\begin{figure}[h]
+
+{\centering \includegraphics[width=0.9\linewidth]{images/NetworkStudies/ARACHNENON} 
+
+}
+
+\caption{The ARACHNE Network of Networks.}(\#fig:arachneNon)
+\end{figure}
 
 ## Best Practice for OHDSI Network Studies
 
@@ -166,8 +182,10 @@ As you are conducting a network study, the OHDSI community is available to assis
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- An OHDSI study becomes an OHDSI Network study when it is run across multiple CDMs at different institutions.
+\BeginKnitrBlock{rmdsummary}
+- An OHDSI study becomes an OHDSI Network study when it is run across multiple CDMs at different institutions.
 - OHDSI network studies are open to all. Anyone can lead a network study. Anyone with an OMOP compliant database may opt to participate and contribute results.
 - Need help running a network study? Consult with the OHDSI Study Nurture Committee to help design and execute your study.
 - **Sharing is caring.** All study documentation, code and results are published on the OHDSI GitHub or in an R Shiny application. Study leads are invited to present their research at OHDSI events.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}

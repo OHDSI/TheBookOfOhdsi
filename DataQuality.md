@@ -79,8 +79,10 @@ Table: (\#tab:dqdExamples) Example data quality rules in the Data Quality Dashbo
 
 Within the tool the checks are organized in multiple ways, one being into table, field, and concept level checks. Table checks are those done at a high-level within the CDM, for example determining if all required tables are present. The field level checks are carried out in such a way to evaluate every field within every table for conformance to CDM specifications. These include making sure all primary keys are truly unique and all standard concept fields contain concepts ids in the proper domain, among many others. Concept level checks go a little deeper to examine individual concept ids. Many of these fall into the plausibility category of the Kahn framework such as ensuring that gender-specific concepts are not attributed to persons of incorrect gender (i.e. prostate cancer in a female patient).
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data are at fault the only course of action may be to delete the offending records.
-</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}
+ACHILLES and DQD are executed against the data in the CDM. DQ issues identified this way may be due to the conversion to the CDM, but may also reflect DQ issues already present in the source data. If the conversion is at fault, it is usually within our control to remedy the problem, but if the underlying data are at fault the only course of action may be to delete the offending records.
+
+\EndKnitrBlock{rmdimportant}
 
 ### ETL Unit Tests {#etlUnitTests}
 
@@ -116,10 +118,14 @@ testSql <- generateTestSql(databaseSchema = "cdm_test_schema")
 
 The overall process is depicted in Figure \@ref(fig:testFramework).
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/testFramework.png" alt="Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework." width="90%" />
-<p class="caption">(\#fig:testFramework)Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/DataQuality/testFramework} 
+
+}
+
+\caption{Unit testing an ETL (Extract-Transform-Load) process using the Rabbit-in-a-Hat testing framework.}(\#fig:testFramework)
+\end{figure}
 
 The test SQL returns a table that will look like Table \@ref(tab:exampleTestResults). In this table we see that we passed the two tests we defined earlier.
 
@@ -152,17 +158,25 @@ One possible source of error that firmly falls under our control is the mapping 
 
 One way to review the source codes that map is to use the `checkCohortSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function uses a cohort definition as created by ATLAS as input, and for each concept set used in the cohort definition it checks which source codes map to the concepts in the set. It also computes the prevalence of these codes over time to help identify temporal issues associated with specific source codes. The example output in Figure \@ref(fig:sourceCodes) shows a (partial) breakdown of a concept set called "Depressive disorder." The most prevalent concept in this concept set in the database of interest is concept  [440383](http://athena.ohdsi.org/search-terms/terms/440383) ("Depressive disorder"). We see that three source codes in the database map to this concept: ICD-9 code 3.11, and ICD-10 codes F32.8 and F32.89. On the left we see that the concept as a whole first shows a gradual increase over time, but then shows a sharp drop. If we look at the individual codes, we see that this drop can be explained by the fact that the ICD-9 code stops being used at the time of the drop. Even though this is the same time the ICD-10 codes start being used, the combined prevalence of the ICD-10 codes is much smaller than that of the ICD-9 code. This specific example was due to the fact that the ICD-10 code F32.9 ("Major depressive disorder, single episode, unspecified") should have also mapped to the concept. This problem has since been resolved in the Vocabulary.
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/sourceCodes.png" alt="Example output of the checkCohortSourceCodes function. " width="100%" />
-<p class="caption">(\#fig:sourceCodes)Example output of the checkCohortSourceCodes function. </p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/sourceCodes} 
+
+}
+
+\caption{Example output of the checkCohortSourceCodes function. }(\#fig:sourceCodes)
+\end{figure}
 
 Even though the previous example demonstrates a chance finding of a source code that was not mapped, in general identifying missing mappings is more difficult than checking mappings that are present. It requires knowing which source codes should map but don't. A semi-automated way to perform this assessment is to use the `findOrphanSourceCodes` function in the [MethodEvaluation](https://ohdsi.github.io/MethodEvaluation/) R package. This function allows one to search the vocabulary for source codes using a simple text search, and it checks whether these source codes map to a specific concept or to one of the descendants of that concept. The resulting set of source codes is subsequently restricted to only those that appear in the CDM database at hand. For example, in a study the concept "Gangrenous disorder" ([439928](http://athena.ohdsi.org/search-terms/terms/439928)) and all of its descendants was used to find all occurrences of gangrene. To evaluate whether this truly includes all source codes indicating gangrene, several terms (e.g. "gangrene") were used to search the descriptions in the CONCEPT and SOURCE_TO_CONCEPT_MAP tables to identify source codes. An automated search is then used to evaluate whether each gangrene source code appearing in the data indeed directly or indirectly (through ancestry) maps to the concept "Gangrenous disorder."  The result of this evaluation is shown in Figure \@ref(fig:missingMapping), revealing that the ICD-10 code J85.0 ("Gangrene and necrosis of lung") was only mapped to concept [4324261](http://athena.ohdsi.org/search-terms/terms/4324261) ("Pulmonary necrosis"), which is not a descendant of "Gangrenous disorder."  \index{orphan codes}
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/missingMapping.png" alt="Example orphan source code. " width="70%" />
-<p class="caption">(\#fig:missingMapping)Example orphan source code. </p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{images/DataQuality/missingMapping} 
+
+}
+
+\caption{Example orphan source code. }(\#fig:missingMapping)
+\end{figure}
 
 ## ACHILLES in Practice {#achillesInPractice}
 
@@ -212,17 +226,25 @@ exportToJson(connectionDetails,
 
 The JSON files will be written to the achillesOut sub-folder, and can be used together with the AchillesWeb web application to explore the results. For example, Figure \@ref(fig:achillesDataDensity) shows the ACHILLES data density plot. This plot shows that the bulk of the data starts in 2005. However, there also appear to be a few records from around 1961, which is likely an error in the data.
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/achillesDataDensity.png" alt="The data density plot in the ACHILLES web viewer." width="100%" />
-<p class="caption">(\#fig:achillesDataDensity)The data density plot in the ACHILLES web viewer.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/achillesDataDensity} 
+
+}
+
+\caption{The data density plot in the ACHILLES web viewer.}(\#fig:achillesDataDensity)
+\end{figure}
 
 Another example is shown in Figure \@ref(fig:achillesCodeChange), revealing a sudden change in the prevalence of a diabetes diagnosis code. This change coincides with changes in the reimbursement rules in this specific country, leading to more diagnoses but probably not a true increase in prevalence in the underlying population.
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/achillesCodeChange.png" alt="Monthly rate of diabetes coded in the ACHILLES web viewer." width="100%" />
-<p class="caption">(\#fig:achillesCodeChange)Monthly rate of diabetes coded in the ACHILLES web viewer.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/achillesCodeChange} 
+
+}
+
+\caption{Monthly rate of diabetes coded in the ACHILLES web viewer.}(\#fig:achillesCodeChange)
+\end{figure}
 ## Data Quality Dashboard in Practice {#dqdInPractice}
 
 Here we will demonstrate how to run the Data Quality Dashboard against a database in the CDM format. We do this by executing a large set of checks against the CDM connection described in Section \@ref(achillesInPractice). For now the DQD supports only CDM v5.3.1 so before connecting be sure your database is in the correct version. As with ACHILLES we need to create the variable `cdmDbSchema` to tell R where to look for the data.
@@ -254,17 +276,25 @@ The variable `jsonPath` should be the path to the JSON file containing the resul
 
 When you first open the Dashboard you will be presented with the overview table, as seen in Figure \@ref(fig:dqdOverview). This will show you the total number of checks run in each Kahn category broken out by context, the number and percent that pass in each, as well as the overall pass rate.
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/dqdOverview.png" alt="Overview of Data Quality Checks in the Data Quality Dashboard." width="100%" />
-<p class="caption">(\#fig:dqdOverview)Overview of Data Quality Checks in the Data Quality Dashboard.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/dqdOverview} 
+
+}
+
+\caption{Overview of Data Quality Checks in the Data Quality Dashboard.}(\#fig:dqdOverview)
+\end{figure}
 
 Clicking on *Results* in the left-hand menu will take you to the drilldown results for each check that was run (Figure \@ref(fig:dqdResults)). In this example, the table showing a check run to determine the completeness of individual CDM tables, or, the number and percent of persons in the CDM that have at least one record in the specified table. In this case the five tables listed are all empty which the Dashboard counts as a fail. Clicking on the ![](images/DataQuality/plusIcon.png) icon will open a window that displays the exact query that was run on your data to produce the results listed. This allows for easy identification of the rows that were considered failures by the Dashboard.
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/dqdResults.png" alt="Drilldown into Data Quality Checks in the Data Quality Dashboard." width="100%" />
-<p class="caption">(\#fig:dqdResults)Drilldown into Data Quality Checks in the Data Quality Dashboard.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/dqdResults} 
+
+}
+
+\caption{Drilldown into Data Quality Checks in the Data Quality Dashboard.}(\#fig:dqdResults)
+\end{figure}
 
 ## Study-Specific Checks in Practice
 
@@ -286,10 +316,14 @@ checkCohortSourceCodes(connectionDetails,
 
 We can open the output file in a web browser as shown in Figure \@ref(fig:sourceCodesAngioedema). Here we see that the angioedema cohort definition has two concept sets: "Inpatient or ER visit", and "Angioedema". In this example database the visits were found through database-specific source codes "ER" and "IP", that are not in the Vocabulary, although they were mapped during the ETL to standard concepts. We also see that angioedema is found through one ICD-9 and two ICD-10 codes. We clearly see the point in time of the cut-over between the two coding systems when we look at the spark-lines for the individual codes, but for the concept set as a whole there is no discontinuity at that time.
 
-<div class="figure" style="text-align: center">
-<img src="images/DataQuality/sourceCodesAngioedema.png" alt="Source codes used in the angioedema cohort definition." width="100%" />
-<p class="caption">(\#fig:sourceCodesAngioedema)Source codes used in the angioedema cohort definition.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/DataQuality/sourceCodesAngioedema} 
+
+}
+
+\caption{Source codes used in the angioedema cohort definition.}(\#fig:sourceCodesAngioedema)
+\end{figure}
 
 Next, we can search for orphan source codes, which are source codes that do not map to standard concept codes. Here we look for the Standard Concept "Angioedema," and then we look for any codes and concepts that have "Angioedema" or any of the synonyms we provide as part of their name:
 
@@ -317,7 +351,8 @@ The only potential orphan found that is actually used in the data is "Angioneuro
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- Most observational healthcare data were not collected for research.
+\BeginKnitrBlock{rmdsummary}
+- Most observational healthcare data were not collected for research.
 
 - Data quality checks are an integral part of research. Data quality must be assessed to determine whether the data are of sufficient quality for research purposes.
 
@@ -326,7 +361,8 @@ The only potential orphan found that is actually used in the data is "Angioneuro
 - Some aspects of data quality can be assessed automatically through large sets of predefined rules, for example those in the Data Quality Dashboard.
 
 - Other tools exist to evaluate the mapping of codes relevant for a particular study.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}
 
 ## Exercises
 
@@ -353,13 +389,19 @@ connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 
 The CDM database schema is "main".
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseRunAchilles"><strong>(\#exr:exerciseRunAchilles) </strong></span>Execute ACHILLES against the Eunomia database.
-</div>\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseRunAchilles"><strong>(\#exr:exerciseRunAchilles) </strong></span>Execute ACHILLES against the Eunomia database.
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseRunDQD"><strong>(\#exr:exerciseRunDQD) </strong></span>Execute the DataQualityDashboard against the Eunomia database.
-</div>\EndKnitrBlock{exercise}
+\EndKnitrBlock{exercise}
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseViewDQD"><strong>(\#exr:exerciseViewDQD) </strong></span>Extract the DQD list of checks.
-</div>\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseRunDQD"><strong>(\#exr:exerciseRunDQD) </strong></span>Execute the DataQualityDashboard against the Eunomia database.
+
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseViewDQD"><strong>(\#exr:exerciseViewDQD) </strong></span>Extract the DQD list of checks.
+
+\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(DataQualityanswers).

@@ -151,7 +151,9 @@ translate(sql, targetDialect = "postgresql")
 
 The `targetDialect` parameter can have the following values: "oracle", "postgresql", "pdw", "redshift", "impala", "netezza", "bigquery", "sqlite", and "sql server". \index{SqlRender!translation}
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">There are limits to what SQL functions and constructs can be translated properly, both because only a limited set of translation rules have been implemented in the package, but also some SQL features do not have an equivalent in all dialects. This is the primary reason why OHDSI SQL was developed as its own, new SQL dialect. However, whenever possible we have kept to the SQL Server syntax to avoid reinventing the wheel.</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}
+There are limits to what SQL functions and constructs can be translated properly, both because only a limited set of translation rules have been implemented in the package, but also some SQL features do not have an equivalent in all dialects. This is the primary reason why OHDSI SQL was developed as its own, new SQL dialect. However, whenever possible we have kept to the SQL Server syntax to avoid reinventing the wheel.
+\EndKnitrBlock{rmdimportant}
 
 Despite our best efforts, there are quite a few things to consider when writing OHDSI SQL that will run without error on all supported platforms. In what follows we discuss these considerations in detail.
 
@@ -285,7 +287,7 @@ translate(sql, targetDialect = "oracle", oracleTempSchema = "temp_schema")
 ```
 
 ```
-## [1] "SELECT * FROM temp_schema.y9jkinx3children ;"
+## [1] "SELECT * FROM temp_schema.f2py3upwchildren ;"
 ```
 
 Note that the user will need to have write privileges on `temp_schema`.
@@ -359,10 +361,14 @@ launchSqlRenderDeveloper()
 
 That will open the default browser with the app shown in Figure \@ref(fig:sqlDeveloper). The app is also publicly available on the web.[^sqlDeveloperUrl]
 
-<div class="figure" style="text-align: center">
-<img src="images/SqlAndR/sqlDeveloper.png" alt="The SqlDeveloper Shiny app." width="100%" />
-<p class="caption">(\#fig:sqlDeveloper)The SqlDeveloper Shiny app.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/sqlDeveloper} 
+
+}
+
+\caption{The SqlDeveloper Shiny app.}(\#fig:sqlDeveloper)
+\end{figure}
 
 In the app you can enter OHDSI SQL, select the target dialect as well as provide values for the parameters that appear in your SQL, and the translation will automatically appear at the bottom.
 
@@ -667,10 +673,14 @@ QueryLibrary is a library of commonly-used SQL queries for the CDM. It is availa
 
 [^queryLibraryPackageUrl]: https://github.com/OHDSI/QueryLibrary
 
-<div class="figure" style="text-align: center">
-<img src="images/SqlAndR/queryLibrary.png" alt="QueryLibrary: a library of SQL queries against the CDM." width="100%" />
-<p class="caption">(\#fig:queryLibrary)QueryLibrary: a library of SQL queries against the CDM.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/SqlAndR/queryLibrary} 
+
+}
+
+\caption{QueryLibrary: a library of SQL queries against the CDM.}(\#fig:queryLibrary)
+\end{figure}
 
 The purpose of the library is to help new users learn how to query the CDM. The queries in the library have been reviewed and approved by the OHDSI community. The query library is primarily intended for training purposes, but it is also a valuable resource for experienced users.
 
@@ -905,7 +915,8 @@ ggplot(results, aes(x = age, y = ir, group = gender, color = gender)) +
   xlab("Age") +
   ylab("Incidence (per 1,000 patient weeks)")
 ```
-<img src="images/SqlAndR/ir.png" width="80%" style="display: block; margin: auto;" />
+
+\begin{center}\includegraphics[width=0.8\linewidth]{images/SqlAndR/ir} \end{center}
 
 ### Clean Up
 
@@ -932,7 +943,8 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- **SQL** (Structured Query Language) is a standard language for querying databases, including those that conform to the Common Data Model (CDM).
+\BeginKnitrBlock{rmdsummary}
+- **SQL** (Structured Query Language) is a standard language for querying databases, including those that conform to the Common Data Model (CDM).
 
 - Different database platforms have different SQL dialects, and require different tools to query them.
 
@@ -941,7 +953,8 @@ Note that for demonstration purposes we chose to create our cohorts using hand-c
 - By using R and SQL together we can implement custom analyses that are not supported by the OHDSI tools.
 
 - The **QueryLibrary** provides a collection of re-usable SQL queries for the CDM.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}
 
 ## Exercises
 
@@ -964,12 +977,18 @@ connectionDetails <- Eunomia::getEunomiaConnectionDetails()
 
 The CDM database schema is "main".
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exercisePeopleCount"><strong>(\#exr:exercisePeopleCount) </strong></span>Using SQL and R, compute how many people are in the database.
-</div>\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exercisePeopleCount"><strong>(\#exr:exercisePeopleCount) </strong></span>Using SQL and R, compute how many people are in the database.
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseCelecoxibUsers"><strong>(\#exr:exerciseCelecoxibUsers) </strong></span>Using SQL and R, compute how many people have at least one prescription of celecoxib.
-</div>\EndKnitrBlock{exercise}
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseGiBleedsDuringCelecoxib"><strong>(\#exr:exerciseGiBleedsDuringCelecoxib) </strong></span>Using SQL and R, compute how many diagnoses of gastrointestinal hemorrhage  occur during exposure to celecoxib. (Hint: the concept ID for gastrointestinal hemorrhage is [192671](http://athena.ohdsi.org/search-terms/terms/192671).)
-</div>\EndKnitrBlock{exercise}
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseCelecoxibUsers"><strong>(\#exr:exerciseCelecoxibUsers) </strong></span>Using SQL and R, compute how many people have at least one prescription of celecoxib.
+
+\EndKnitrBlock{exercise}
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseGiBleedsDuringCelecoxib"><strong>(\#exr:exerciseGiBleedsDuringCelecoxib) </strong></span>Using SQL and R, compute how many diagnoses of gastrointestinal hemorrhage  occur during exposure to celecoxib. (Hint: the concept ID for gastrointestinal hemorrhage is [192671](http://athena.ohdsi.org/search-terms/terms/192671).)
+
+\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(SqlAndRanswers).

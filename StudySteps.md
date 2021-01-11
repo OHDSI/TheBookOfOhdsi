@@ -113,10 +113,14 @@ The completed study package can then be used to execute only the preliminary dia
 
 Importantly, we recommend at this stage to have your finalized protocol reviewed by clinical collaborators and stakeholders.
 
-<div class="figure" style="text-align: center">
-<img src="images/StudySteps/studyProcess.png" alt="Diagram of the study process." width="90%" />
-<p class="caption">(\#fig:studyProcess)Diagram of the study process.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.9\linewidth]{images/StudySteps/studyProcess} 
+
+}
+
+\caption{Diagram of the study process.}(\#fig:studyProcess)
+\end{figure}
 
 ### Execute Study
 
@@ -137,11 +141,13 @@ As with the protocol development process, we also recommend that the study findi
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- Study should examine a well-defined question.
+\BeginKnitrBlock{rmdsummary}
+- Study should examine a well-defined question.
 - Perform appropriate checks of data quality, completeness and relevance in advance.
 - Recommend to include source database expert in protocol development process if possible.
 - Document proposed study in a protocol ahead of time.
 - Generate study package code in parallel with written protocol and perform and describe any feasibility and diagnostics prior to executing the final study.
 - Study should be registered and approved (if required) ahead of study execution.
 - Finalized report or manuscript should be reviewed by clinical experts and other stakeholders.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}

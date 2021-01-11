@@ -124,7 +124,9 @@ And the desired output is:
 
 Population-level estimation and patient-level prediction overlap to a certain extent. For example, an important use case for prediction is to predict an outcome for a specific patient had drug A been prescribed and also predict the same outcome had drug B been prescribed. Let's assume that in reality only one of these drugs is prescribed (say drug A) so we get to see whether the outcome following treatment with A actually occurs. Since drug B was not prescribed, the outcome following treatment B, while predictable, is "counterfactual" since it is not ever observed. Each of these prediction tasks falls under patient-level prediction. However, the difference between (or ratio of) the two outcomes is a unit-level *causal* effect, and should be estimated using causal effect estimation methods instead.
 
-\BeginKnitrBlock{rmdimportant}<div class="rmdimportant">People have a natural tendency to erroneously interpret predictive models as if they are causal models. But a predictive model can only show correlation, never causation. For example, diabetic drug use might be a strong predictor for myocardial infarction (MI) because diabetes is a strong risk factor for MI. However, that does not mean that stopping the diabetic drugs will prevent MI!</div>\EndKnitrBlock{rmdimportant}
+\BeginKnitrBlock{rmdimportant}
+People have a natural tendency to erroneously interpret predictive models as if they are causal models. But a predictive model can only show correlation, never causation. For example, diabetic drug use might be a strong predictor for myocardial infarction (MI) because diabetes is a strong risk factor for MI. However, that does not mean that stopping the diabetic drugs will prevent MI!
+\EndKnitrBlock{rmdimportant}
 
 ## Example Use Cases in Hypertension
 
@@ -165,7 +167,8 @@ Missingness in OHDSI databases presents subtle challenges. A health event (e.g.,
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- In observational research we distinguish three large categories of uses cases.
+\BeginKnitrBlock{rmdsummary}
+- In observational research we distinguish three large categories of uses cases.
 
 - **Characterization** aims to answer the questions "What happened to them?"
 
@@ -176,20 +179,25 @@ Missingness in OHDSI databases presents subtle challenges. A health event (e.g.,
 - Prediction models are not causal models; There is no reason to believe that intervening on a strong predictor will impact the outcome.
 
 - There are questions that cannot be answered using observational healthcare data.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}
 
 ## Exercises
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseUseCases1"><strong>(\#exr:exerciseUseCases1) </strong></span>Which use case categories do these questions belong to?
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseUseCases1"><strong>(\#exr:exerciseUseCases1) </strong></span>Which use case categories do these questions belong to?
 
 1. Compute the rate of gastrointestinal (GI) bleeding in patients recently exposed to NSAIDs.
 
 2. Compute the probability that a specific patient experiences a GI bleed in the next year, based on their baseline characteristics.
 
 3. Estimate the increased risk of GI bleeding due to diclofenac compared to celecoxib.
-</div>\EndKnitrBlock{exercise}
 
-\BeginKnitrBlock{exercise}<div class="exercise"><span class="exercise" id="exr:exerciseUseCases2"><strong>(\#exr:exerciseUseCases2) </strong></span>You wish to estimate the increased risk of GI bleeding due to diclofenac compared to no exposure (placebo). Can this be done using observational healthcare data?
-</div>\EndKnitrBlock{exercise}
+\EndKnitrBlock{exercise}
+
+\BeginKnitrBlock{exercise}
+<span class="exercise" id="exr:exerciseUseCases2"><strong>(\#exr:exerciseUseCases2) </strong></span>You wish to estimate the increased risk of GI bleeding due to diclofenac compared to no exposure (placebo). Can this be done using observational healthcare data?
+
+\EndKnitrBlock{exercise}
 
 Suggested answers can be found in Appendix \@ref(UseCasesanswers).

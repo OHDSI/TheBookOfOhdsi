@@ -30,10 +30,14 @@ In this chapter, we will discuss the methods for validating cohort definitions. 
 
 Once the cohort definition for the study has been determined, the validity of the definition can be evaluated. A common approach to assess validity is by comparing some or all persons in a defined cohort to a reference ‘gold standard’ and expressing the results in a confusion matrix, a two-by-two contingency table that stratifies persons according to their gold standard classification and qualification within the cohort definition. Figure \@ref(fig:matrix) shows the elements of the confusion matrix.
 
-<div class="figure" style="text-align: center">
-<img src="images/ClinicalValidity/matrix.png" alt="Confusion matrix." width="75%" />
-<p class="caption">(\#fig:matrix)Confusion matrix.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=0.75\linewidth]{images/ClinicalValidity/matrix} 
+
+}
+
+\caption{Confusion matrix.}(\#fig:matrix)
+\end{figure}
 
 The true and false results from the cohort definition are determined by applying the definition to a group of persons. Those included in the definition are considered positive for the health condition and are labeled “True.” Those persons not included in the cohort definition are considered negative for the health condition and are labeled “False”. While the absolute truth of a person’s heath state considered in the cohort definition is very difficult to determine, there are multiple methods to establish a reference gold standard, two of which will be described later in the chapter. Regardless of the method used, the labeling of these persons is the same as described for the cohort definition.
 
@@ -127,19 +131,27 @@ The following are the steps for testing cohort definitions for MI using PheValua
 
 Determine those with MI with a high probability. We required a condition occurrence record with a concept for myocardial infarction or any of its descendants, with one or more occurrences of MI recorded from a hospital in-patient visit within 5 days, and 4 or more occurrences of MI in the patient record within 365 days. Figure \@ref(fig:xSpec) illustrates this cohort definition for MI in ATLAS. \index{xSpec cohort}
 
-<div class="figure" style="text-align: center">
-<img src="images/ClinicalValidity/xSpec.png" alt="An extremely specific cohort definition (xSpec) for myocardial infarction." width="100%" />
-<p class="caption">(\#fig:xSpec)An extremely specific cohort definition (xSpec) for myocardial infarction.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/ClinicalValidity/xSpec} 
+
+}
+
+\caption{An extremely specific cohort definition (xSpec) for myocardial infarction.}(\#fig:xSpec)
+\end{figure}
 
 #### Step 2: Define the xSens Cohort {-}
 
 We then develop an extremely sensitive cohort (xSens). This cohort may be defined for MI as those persons with at least one condition occurrence record containing a myocardial infarction concept at any time in their medical history. Figure \@ref(fig:xSens) illustrates the xSens cohort definition for MI in ATLAS. \index{xSens cohort}
 
-<div class="figure" style="text-align: center">
-<img src="images/ClinicalValidity/xSens.png" alt="An extremely sensitive cohort definition (xSens) for myocardial infarction." width="100%" />
-<p class="caption">(\#fig:xSens)An extremely sensitive cohort definition (xSens) for myocardial infarction.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/ClinicalValidity/xSens} 
+
+}
+
+\caption{An extremely sensitive cohort definition (xSens) for myocardial infarction.}(\#fig:xSens)
+\end{figure}
 
 #### Step 3: Fit the Predictive Model {-}
 
@@ -226,10 +238,14 @@ The model and the evaluation cohort files created in this step will be used in t
 
 The next step is to create and test the cohort definitions to be evaluated. The desired performance characteristics may depend on the intended use of the cohort to address the research question of interest. For certain questions, a very sensitive algorithm may be required; others may require a more specific algorithm. The process for determining the performance characteristics for a cohort definition using PheValuator is shown in Figure \@ref(fig:phevaluatorDiagram).
 
-<div class="figure" style="text-align: center">
-<img src="images/ClinicalValidity/PheValuatorEvaluation.png" alt="Determining the Performance Characteristics of a cohort definition using PheValuator. p(O) = Probability of outcome; TP = True Positive; FN = False Negative; TN = True Negative; FP = False Positive." width="100%" />
-<p class="caption">(\#fig:phevaluatorDiagram)Determining the Performance Characteristics of a cohort definition using PheValuator. p(O) = Probability of outcome; TP = True Positive; FN = False Negative; TN = True Negative; FP = False Positive.</p>
-</div>
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{images/ClinicalValidity/PheValuatorEvaluation} 
+
+}
+
+\caption{Determining the Performance Characteristics of a cohort definition using PheValuator. p(O) = Probability of outcome; TP = True Positive; FN = False Negative; TN = True Negative; FP = False Positive.}(\#fig:phevaluatorDiagram)
+\end{figure}
 
 In part A of Figure \@ref(fig:phevaluatorDiagram), we examined the persons from the cohort definition to be tested and found those persons from the evaluation cohort (created in the previous step) who were included in the cohort definition (Person IDs 016, 019, 022, 023, and 025) and those from the evaluation cohort who were not included (Person Ids 017, 018, 020, 021, and 024). For each of these included/excluded persons, we had previously determined the probability of the health outcome using the predictive model (p(O)).
 
@@ -306,9 +322,11 @@ Across the OHDSI network, observational databases vary considerably in the popul
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">-	Clinical validity can be established by understanding the characteristics of the underlying data source, evaluating the performance characteristics of the cohorts within an analysis, and assessing the generalizability of the study to the target population of interest.
+\BeginKnitrBlock{rmdsummary}
+-	Clinical validity can be established by understanding the characteristics of the underlying data source, evaluating the performance characteristics of the cohorts within an analysis, and assessing the generalizability of the study to the target population of interest.
 -	 A cohort definition can be evaluated on the extent to which persons identified in the cohort based on the cohort definition and the available observational data accurately reflect the persons who truly belong to the phenotype.
 -	Cohort definition validation requires estimating multiple performance characteristics, including sensitivity, specificity, and positive predictive value, to fully summarize and enable adjustment for measurement error.
 -	Clinical adjudication through source record verification and PheValuator represent two alternative approaches to estimating cohort definition validation.
 -	OHDSI network studies provide a mechanism to examine data source heterogeneity and expand the generalizability of findings to improve clinical validity of real-world evidence.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}

@@ -113,7 +113,8 @@ For more complex functionality it is not always obvious what the expected output
 
 ## Summary
 
-\BeginKnitrBlock{rmdsummary}<div class="rmdsummary">- An observational study should be implemented as an automated script that executes the entire analysis, from data in the CDM to the results, to ensure reproducibility and transparency.
+\BeginKnitrBlock{rmdsummary}
+- An observational study should be implemented as an automated script that executes the entire analysis, from data in the CDM to the results, to ensure reproducibility and transparency.
 
 - Custom study code should adhere to best programming practices, including abstraction, encapsulation, clear naming, and code reuse.
 
@@ -122,4 +123,5 @@ For more complex functionality it is not always obvious what the expected output
 - The Methods Library provides validated functionality that can be used in observational studies.
 
 - The Methods Library is validated by using a software development process aimed at creating valid software, and by testing.
-</div>\EndKnitrBlock{rmdsummary}
+
+\EndKnitrBlock{rmdsummary}
